@@ -28,7 +28,6 @@ export default class EnhanceTable extends Component {
 
   constructor(props) {
     super(props);
-
     // 请求参数缓存
     this.queryCache = {};
     this.state = {
@@ -70,12 +69,15 @@ export default class EnhanceTable extends Component {
           href="#"
           target="_blank"
           onClick={this.editItem.bind(this, record)}
-          className='operate-btn operate-btn-two'
+          className='operate-btn'
         >
-          修改
+          解决
         </a>
         <a href="#" target="_blank" className='operate-btn'>
           详情
+        </a>
+        <a href="#" target="_blank" className='operate-btn'>
+          分类
         </a>
       </div>
     );
@@ -96,6 +98,8 @@ export default class EnhanceTable extends Component {
   };
 
   filterFormChange = (value) => {
+    console.log(value);
+    
     this.setState({
       filterFormValue: value,
     });
@@ -115,26 +119,19 @@ export default class EnhanceTable extends Component {
       filterFormValue: {},
     });
   };
-  toggleCompont = () => {
-    this.props.toggleCompont("SearchTable")
-  };
-  toggleAddFont = () => {
-    this.props.toggleCompont("AddFont")
-  };
+
   render() {
     const tableData = this.props.bindingData.tableData;
     const { filterFormValue } = this.state;
 
     return (
       <div className="filter-table">
-        <IceContainer title="字段配置" className='subtitle' style={styles.marb0}>
+        <IceContainer title="查询" className='subtitle' style={styles.marb0}>
           <FilterForm
             value={filterFormValue}
             onChange={this.filterFormChange}
             onSubmit={this.filterTable}
             onReset={this.resetFilter}
-            toggleCompont={this.toggleCompont}
-            toggleAddFont={this.toggleAddFont}
           />
         </IceContainer>
         <IceContainer style={styles.marb0}>
@@ -172,7 +169,7 @@ export default class EnhanceTable extends Component {
               dataIndex="operation"
               width={150}
               cell={this.renderOperations}
-              lock='right'
+              lock = 'right'
             />
           </Table>
           <div style={styles.paginationWrapper}>
