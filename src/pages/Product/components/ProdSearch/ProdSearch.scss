@@ -1,0 +1,23 @@
+.pch-breadcrumb {
+  background-color: #fff;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 20px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  .layui-breadcrumb {
+      > a {
+          color: #1b2630;
+          font-size: 13px;
+          padding: 0 5px;
+          &:hover {
+              color: #ec9d00 !important;
+          }
+          > cite {
+              //color: $lx-core-font-lighter-color;
+              color: #ec9d00 !important;
+              font-style: normal;
+          }
+      }
+  }
+}

@@ -27,16 +27,16 @@ const customHeaderNavs = [
 const customAsideNavs = [
   {
     text: '产品管理',
-    to: '/',
+    to: '/product',
     icon: 'chart1',
     children: [
       {
         text: '产品查询',
-        to: '',
+        to: '/product/search/1',
       },
       {
         text: '新增产品',
-        to: '',
+        to: '/product/add/2',
       },
     ],
   },
