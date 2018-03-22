@@ -1,6 +1,12 @@
 // <!-- auto generated navs start -->
 const autoGenHeaderNavs = [];
-const autoGenAsideNavs = [];
+const autoGenAsideNavs = [
+  {
+    text: 'entry-query',
+    to: '/enntryManagement/entryQuery',
+    icon: 'nav-list',
+  },
+];
 
 // <!-- auto generated navs end -->
 
@@ -52,6 +58,17 @@ const customAsideNavs = [
       {
         text: '流程配置',
         to: '',
+      },
+    ],
+  },
+  {
+    text: '进件管理',
+    to: '/enntryManagement',
+    icon: 'chart1',
+    children: [
+      {
+        text: '进件查询',
+        to: '/enntryManagement/entryQuery',
       },
     ],
   },
