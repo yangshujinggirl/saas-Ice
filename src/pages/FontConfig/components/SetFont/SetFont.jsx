@@ -7,11 +7,13 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+// import { SortableContainer } from 'react-anything-sortable';
 import "./SetFont.scss"
+// import 'react-anything-sortable/sortable.css';
 
 
-export default class AddFont extends Component {
-  static displayName = 'AddFont';
+export default class setFont extends Component {
+  static displayName = 'SetFont';
 
   constructor(props) {
     super(props);
@@ -27,13 +29,30 @@ export default class AddFont extends Component {
   render() {
     return (
 
-      <div className="addFont">
+      <div className="setFont">
           <IceContainer className='subtitle'>
               <div className="pageName">
-                  <label>页面成名</label>
+                  <label>页面名称</label>
                   <input type="text" name='' />
               </div>
-          </IceContainer>
+            </IceContainer>
+            <div className="container">
+                <div className="container-left">
+                    <ul>
+                        <li className="active">
+                            客户申请信息
+                        </li>
+                        <li>材料提交</li>
+                    </ul>    
+                </div>
+                <div className="container-right">
+                {/* <SortableContainer>
+                    <div>
+                        your item
+                    </div>
+                </SortableContainer> */}
+                </div>                  
+            </div>
       </div>
     );
   }

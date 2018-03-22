@@ -1,4 +1,4 @@
-.addFont {
+.setFont {
     font-size: 14px;
     color: #333333;
     .pageName {
@@ -10,69 +10,36 @@
             border-radius: 4px;
         }
     }
-    .subtitle:not(:first-child) {
-        padding-top:  10px !important;
-    }
-    .diffence {
-        font-size: 15px;
-        &:not(:first-child) {
-            margin-top: 15px; 
-        }
-    }
-    .listCode {
-        border: 1px solid #ECECEC;
-        border-radius: 4px;
-        color: #333;
-        width: 150px;
-        height: 45px;
-        line-height: 45px;
-        font-size: 14px;
-        text-align: center;
-        margin-right: 15px;
-        margin-top: 15px;
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-        
-        .icon {
-            display: none;
-            position: absolute;
-            font-size: 14px;
-            cursor: pointer;
-            right: -7px;
-            top: -20px;
-        }
-    }
-    .selectCode {
-        background: #FFF3DB;
+    .container {
+        display: table;
+        width: 100%;
         border: 1px solid #F6DCA9;
-        border-radius: 4px;
-        color: #FC9E25;
-        .icon {
-            display: block;
-        }
-    }
-    .subDif {
-        font-size: 15px;
-        color: #A7A7A7;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        .select {
-            float: right;
-            margin-top: -20px;
-            span {
-                font-size: 14px;
-                color: #1AA8F0;
-                cursor: pointer;
-                &:first-child {
-                    margin-right: 10px;
-                    
+        .container-left {
+            display: table-cell;
+            width: 150px;
+            box-sizing: border-box;
+            color: #666;
+            line-height: 30px;
+            background: #FDF4E3 ;
+            border-right:1px solid #F6DCA9;
+            padding: 15px 0 15px 20px;
+            height: 100%;
+            li.active {
+                position: relative;
+                color: #FC9E25;
+                &::after {
+                    content: '✽';
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: -11px;
+                    font-size: 12px;
                 }
             }
         }
+        .container-right {
+            background: #fff;
+            display: table-cell;
+        }
     }
-}
-.subtitle {
-    margin-bottom: 0 !important;
-    border-radius: 0 !important;
 }

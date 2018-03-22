@@ -22,10 +22,9 @@ export default class AddFont extends Component {
     };
   }
   toggleCompont = () => { 
-    // this.props.toggle
+    this.props.toggleCompont('SetFont')
   }
   componentDidMount() {
-
   }
   render() {
     return (
@@ -82,7 +81,7 @@ export default class AddFont extends Component {
 
         </IceContainer>
         <div className='btn-list'>
-          <Button onClick={this.props.toggleCompont} type="normal" className='next-btn-search btn'>
+          <Button onClick={this.toggleCompont} type="normal" className='next-btn-search btn'>
               下一步
           </Button>
           <Button className='btn'>

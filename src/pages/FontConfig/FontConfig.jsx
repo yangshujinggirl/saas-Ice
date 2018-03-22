@@ -21,22 +21,22 @@ export default class FontConfig extends Component {
     switch (this.state.iscompont) {
       case 'FilterTable':
         this.setState({
-          Component:<FilterTable tts={this.changeCpm.bind(this)}/>
+          Component:<FilterTable toggleCompont={this.changeCpm.bind(this)}/>
         })
         break;
       case 'SearchTable':
         this.setState({
-          Component:<SearchTable tts={this.changeCpm.bind(this)}/>
+          Component:<SearchTable toggleCompont={this.changeCpm.bind(this)}/>
         })
         break;
       case 'AddFont':
         this.setState({
-          Component:<AddFont tts={this.changeCpm.bind(this)}/>
+          Component:<AddFont toggleCompont={this.changeCpm.bind(this)}/>
         })
         break;  
       case 'SetFont':
         this.setState({
-          Component:<SetFont tts={this.changeCpm.bind(this)}/>
+          Component:<SetFont toggleCompont={this.changeCpm.bind(this)}/>
         })
       break;   
       default:
