@@ -71,7 +71,7 @@ try {
 
   fs.writeFileSync(targetDir + folderSep + 'reducers.js', routerTpl, 'utf8');
 
-  console.log('更新路由成功\r\n' + routerTpl);
+  console.log('更新reducers成功\r\n' + routerTpl);
 } catch (ex) {
   console.log(ex);
 }
