@@ -1,10 +1,13 @@
+
+.product-page {
+    // background: #fff;
+}
 .pch-breadcrumb {
   background-color: #fff;
-  height: 34px;
-  line-height: 34px;
+//   height: 34px;
+//   line-height: 34px;
   padding: 0 20px;
   border-radius: 2px;
-  margin-bottom: 10px;
   .layui-breadcrumb {
       > a {
           color: #1b2630;
@@ -21,6 +24,7 @@
       }
   }
 }
+
 .legend {
     margin-left: 0;
     padding-left: 15px;
@@ -76,52 +80,53 @@
     padding: 25px 0 0 0;
     border-top: 1px solid #d8d8d8;
 }
-// table {
-//     border: 1px solid #f6dca9;
-//     border-spacing: 0;
-//     border-collapse: collapse;
-//     tr td {
-//         border: 1px solid #f6dca9;
-//     }
-//     tr th {
-//         border: 1px solid #f6dca9 !important;
-//         div{
-//             background: #fdf4e3;
-//         }
-//     }
-// }
-// .next-table-cell {
-//     border:  1px solid #f6dca9 !important;
-//     height: 40px !important;
-//     .next-table-cell-wrapper {
-//         padding: 2px 12px !important;
-//     }
-// }
-.searchbtn {
-    width:"50px";
-    height:"22px";
+.table-title {
+    height: 41px;
+    line-height: 41px;
+    text-align: center;
+    border: 1px solid #f6dca9;
+    border-bottom: none;
+    background: #fdf4e3;
+}
+.table {
+    border: 1px solid #f6dca9;
+    border-spacing: 0;
+    border-collapse: collapse;
+    tr td {
+        border: 1px solid #f6dca9;
+    }
+    tr th {
+        background: #fdf4e3;
+        border: 1px solid #f6dca9;
+    }
+}
+.next-btn {
     border: none;
-    color: #fff;
-    margin-left: 15px;
+    border-radius: 2px;
     background: #ec9d00;
-}
-.editbtn ,.deletbtn{
-    width:"40px";
-    height:"30px";
-    border: none;
     color: #fff;
-    margin-left: 15px;
-    background: #ec9d00;
+
 }
-.editbtn {
-    margin-left: 0;
+
+.next-btn-box {
+    width: 100%;
+    text-align: center;
+    // overflow: hidden;
+    height: 100px;
+    position: relative;
+    cursor: pointer;
+    .next-btn-lx {
+        position: absolute;
+        top:20px;
+        left: 50%;
+        height: 50px;
+        width: 150px;
+        background: #ec9d00;
+        color: #fff;
+        text-align: center;
+        line-height: 50px;
+        font-size: 16px;
+    }
 }
-.next-pagination-item {
-    border: none;
-    background: #fff !important;
-    color: #000 !important;
-}
-.next-pagination-item.current {
-    background: #ec9d00 !important;
-    color: #fff !important;
-}
+
+

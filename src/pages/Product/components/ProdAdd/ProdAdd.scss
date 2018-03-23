@@ -127,16 +127,20 @@
         font-size: 16px;
     }
 }
-.sp-list {
-    overflow: hidden;
-    .sp-table {
-        // position: absolute;
-        float: left;
-        width: 45%;
-    
-    }
-    .right-btn {
-        float: left;
-    }
+
+//复选框
+.next-checkbox .next-checkbox-inner {
+    border-color: #C4C6CF !important;
+}
+.next-checkbox .next-checkbox-inner .next-icon {
+    color: #ec9d00 !important;
 }
 
+//单选框
+.next-radio.checked .next-radio-inner {
+    border-color: #ec9d00 !important;
+    background: #fff;
+}
+.next-radio.checked .next-radio-inner::after{
+    background: #ec9d00 !important;
+}

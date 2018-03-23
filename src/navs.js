@@ -39,11 +39,15 @@ const customAsideNavs = [
     children: [
       {
         text: '产品查询',
-        to: '/product/search/1',
+        to: '/product/search',
       },
       {
         text: '新增产品',
-        to: '/product/add/2',
+        to: '/product/add',
+      },,
+      {
+        text: '资料清单',
+        to: '/product/filelist',
       },
     ],
   },
@@ -59,17 +63,6 @@ const customAsideNavs = [
       {
         text: '流程配置',
         to: '',
-      },
-    ],
-  },
-  {
-    text: '进件管理',
-    to: '/enntryManagement',
-    icon: 'chart1',
-    children: [
-      {
-        text: '进件查询',
-        to: '/enntryManagement/entryQuery',
       },
     ],
   },

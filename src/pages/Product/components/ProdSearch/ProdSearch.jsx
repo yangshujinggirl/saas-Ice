@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import { Router, Route, Link } from 'react-router'
+
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
+
 import './ProdSearch.scss';
+
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -18,6 +22,7 @@ import {
   Radio,
   Grid,
   Table,
+  Pagination,
 } from '@icedesign/base';
 
 const { Row, Col } = Grid;
@@ -26,17 +31,27 @@ const { Row, Col } = Grid;
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
+//组件引入
+import SearchEditer from './searchEditer/searchEditer'
 
-const render = () => {
-  return <a style={{width:"24px",height:"22px"}}>查看</a>;
+const getMockData = () => {
+  const result = [];
+  for (let i = 0; i < 10; i++) {
+    result.push({
+      id: 100 + i,
+      title: {
+        name: `宝马 ${3 + i}.0`,
+      },
+      type: 'demo示例',
+      template: '是',
+      status: '已发布',
+      publisher: '小马',
+      rate: '5',
+      time: 2000 + i,
+    });
+  }
+  return result;
 };
-const dataSource = [{
-  id: 1,
-  productCode: 'XCD0000000058',
-  productName: 'chanp',
-  time: '暂无',
-
-}];
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
   const checked = props.checked === undefined ? props.value : props.checked;
@@ -52,7 +67,6 @@ const SwitchForForm = (props) => {
   );
 };
 
-
 export default class ProdSearch extends Component {
   static displayName = 'ProdSearch';
 
@@ -60,37 +74,56 @@ export default class ProdSearch extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
+      selectedRowKeys: [],
+      dataSource: getMockData(),
     };
   }
 
-  onFormChange = (value) => {
+  clearSelectedKeys = () => {
     this.setState({
-      value,
+      selectedRowKeys: [],
     });
   };
-  onSubmit = (data) => {
-    console.log("ok");
-    console.log(data);
+
+  deleteSelectedKeys = () => {
+    const { selectedRowKeys } = this.state;
+    console.log('delete keys', selectedRowKeys);
   };
-  onRowClick = (record, index, e) => {
-    console.log(record, index, e);
+  //删除
+  deleteItem = (record) => {
+    const { id } = record;
+    console.log('delete item', id);
+  };
+  //编辑
+  editItem = (record) => {
+    const { id } = record;
+    let {actions} = this.props;
+    actions.getDetail(record.id);
+  }
+  renderOperator = (value, index, record) => {
+    return (
+      <div>
+        <button 
+          className="editbtn"
+          onClick={this.editItem.bind(this, record)}
+        >
+          编辑</button>
+        <button
+          className="deletbtn"
+          onClick={this.deleteItem.bind(this, record)}
+        >
+          删除
+        </button>
+      </div>
+    );
   };
 
   render() {
     return (
       <div className="create-activity-form" style={styles.container}>
-        <div className="pch-breadcrumb">
-          <span className="layui-breadcrumb">
-            <a>平常金服</a>
-            <span className="lay-separator">/</span>
-            <a>产品管理</a>
-            <span className="lay-separator">/</span>            
-            <a>
-              <cite>产品查询</cite>
-            </a>
-          </span>
-        </div>
+        {/* <SearchEditer /> */}
         <IceContainer title="" >
           <IceFormBinderWrapper>
             <div>
@@ -126,7 +159,6 @@ export default class ProdSearch extends Component {
                     产品类型：
                   </Col>
                   <Col s="4" l="4">
-                    
                     <Select
                       placeholder="请选择"
                       style={{ width: '175px' }}
@@ -139,7 +171,7 @@ export default class ProdSearch extends Component {
                     </Select>
                   </Col>
                 </Row>
-                <Row>
+                <Row wrap style={styles.formItem}>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                       状态：
                   </Col>
@@ -166,7 +198,7 @@ export default class ProdSearch extends Component {
                   </Col>
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
-                  <Col>
+                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                     <button style={styles.btns} type='submit' onClick={this.onSubmit}>
                       查询
                     </button>
@@ -175,27 +207,33 @@ export default class ProdSearch extends Component {
               </div>
             </div>
           </IceFormBinderWrapper>
-          <div style={styles.searchTable}>
-            <Table
-              dataSource={dataSource}
-              onRowClick={this.onRowClick}
-              maxBodyHeight={800}
+          <Table
+              dataSource={this.state.dataSource}
+              isLoading={this.state.isLoading}
+              isZebra={true}
             >
-              <Table.Column title="产品编号" dataIndex="id" lock width={200} />
-              <Table.Column title="产品名称" dataIndex="productCode" width={200} />
-              <Table.Column title="合同显示名称" dataIndex="productName" width={200} />
-              <Table.Column title="状态" dataIndex="time" width={100} />
-              <Table.Column title="产品类型" dataIndex="time" width={200} />
-              <Table.Column title="生效期限" dataIndex="time" width={200} />
-              <Table.Column title="尾款产品" dataIndex="time" width={200} />
-              <Table.Column title="资金方" dataIndex="time" width={200} />
-              <Table.Column title="金额范围(元)" dataIndex="time" width={200} />
-              <Table.Column title="期限范围(月)" dataIndex="time" width={200} />
-              <Table.Column title="贷款比率(%)" dataIndex="time" width={200} />
-              <Table.Column title="执行年利率范围(%)" dataIndex="time" width={200} />
-              <Table.Column title="操作" dataIndex="time" cell={render} width={100} lock="right" />              
+              <Table.Column title="产品编号" dataIndex="id" width={120} />
+              <Table.Column title="产品名称" dataIndex="title.name" width={250} />
+              <Table.Column title="合同显示名称" dataIndex="type" width={160} />
+              <Table.Column title="状态" dataIndex="template" width={100} />
+              <Table.Column title="产品类型" dataIndex="status" width={120} />
+              <Table.Column title="生效期限" dataIndex="rate" width={120} />
+              <Table.Column title="尾款产品" dataIndex="publisher" width={120} />
+              <Table.Column title="资金方" dataIndex="time" width={120} />
+              <Table.Column title="金额范围(元)" dataIndex="time" width={120} />
+              <Table.Column title="期限范围(月)" dataIndex="time" width={120} />
+              <Table.Column title="贷款比率(%)" dataIndex="time" width={120} />
+              <Table.Column title="执行年利率范围(%)" dataIndex="time" width={160} />
+              <Table.Column
+                title="操作"
+                cell={this.renderOperator}
+                lock="right"
+                width={140}
+              />
             </Table>
-          </div>
+            <div style={styles.pagination}>
+              <Pagination shape="arrow-only" onChange={this.change} />
+            </div>
         </IceContainer>    
       </div>
     );
@@ -246,14 +284,15 @@ const styles = {
     border: 'none',
     fontSize: '16px',
     borderRadius: 'none !important',
-    background: '#ec9d00',
     color: '#fff',
+    backgroundColor:'#ec9d00'
   },
   searchTable: {
     width: '1400px',
     margin: '25px',
   },
-  tableList: {
-
+  pagination: {
+    textAlign: 'left',
+    paddingTop: '26px',
   },
 };
