@@ -21,25 +21,25 @@ export default class Filter extends Component {
       >
         <div>
           <Row wrap>
-            <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
+            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>姓名</label>
               <IceFormBinder>
                 <Input name="name" />
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
+            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>身份证号</label>
               <IceFormBinder>
                 <Input name="idcard" />
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
+            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>手机号</label>
               <IceFormBinder>
                 <Input name="phone" />
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={9} style={styles.filterCol}>
+            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
             <div>
               <Button onClick={this.props.toggleCompont} type="normal" className='next-btn-search'>
                 查询

@@ -7,6 +7,11 @@ const autoGenAsideNavs = [
     icon: 'nav-list',
   },
   { text: 'test', to: '/test', icon: 'nav-list' },
+  {
+    text: 'loan-application',
+    to: '/loanManagement/LoanApplication',
+    icon: 'nav-list',
+  },
 ];
 
 // <!-- auto generated navs end -->
@@ -63,6 +68,21 @@ const customAsideNavs = [
       {
         text: '流程配置',
         to: '',
+      },
+    ],
+  },
+  {
+    text: '贷款管理',
+    to: '/loanManagement',
+    icon: 'chart1',
+    children: [
+      {
+        text: '车贷申请',
+        to: '/loanManagement/LoanApplication',
+      },
+      {
+        text: '车贷查询',
+        to: '/loanManagement/entryQuery',
       },
     ],
   },
