@@ -6,6 +6,7 @@ const autoGenAsideNavs = [
     to: '/enntryManagement/entryQuery',
     icon: 'nav-list',
   },
+  { text: 'test', to: '/test', icon: 'nav-list' },
 ];
 
 // <!-- auto generated navs end -->
