@@ -21,105 +21,33 @@ export default class Filter extends Component {
       >
         <div>
           <Row wrap>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>所属应用</label>
+            <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
+              <label style={styles.filterTitle}>姓名</label>
               <IceFormBinder>
-                <Input name="app" />
+                <Input name="name" />
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>分类ID</label>
+            <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
+              <label style={styles.filterTitle}>身份证号</label>
               <IceFormBinder>
-                <Input name="id" />
+                <Input name="idcard" />
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>标签ID</label>
+            <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
+              <label style={styles.filterTitle}>手机号</label>
               <IceFormBinder>
-                <Input name="tag" />
+                <Input name="phone" />
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>开始时间</label>
-              <IceFormBinder
-                valueFormatter={(date, strValue) => {
-                  return strValue;
-                }}
-              >
-                <DatePicker name="startTime" style={styles.filterTool} />
-              </IceFormBinder>
-            </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>结束时间</label>
-              <IceFormBinder
-                valueFormatter={(date, strValue) => {
-                  return strValue;
-                }}
-              >
-                <DatePicker name="endTime" style={styles.filterTool} />
-              </IceFormBinder>
-            </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>尺寸</label>
-              <IceFormBinder>
-                <Select
-                  name="size"
-                  placeholder="请选择"
-                  style={styles.filterTool}
-                >
-                  <Option value="small">Small</Option>
-                  <Option value="medium">Medium</Option>
-                  <Option value="large">Large</Option>
-                </Select>
-              </IceFormBinder>
-            </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>删除状态</label>
-              <IceFormBinder>
-                <Select name="status" style={styles.filterTool}>
-                  <Option value="success">成功</Option>
-                  <Option value="failed">失败</Option>
-                </Select>
-              </IceFormBinder>
-            </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>讨论ID</label>
-              <IceFormBinder>
-                <Input name="commentId" />
-              </IceFormBinder>
-            </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>置顶</label>
-              <IceFormBinder>
-                <Select
-                  name="isStick"
-                  placeholder="请选择"
-                  style={styles.filterTool}
-                >
-                  <Option value="all">不限</Option>
-                  <Option value="stick">置顶</Option>
-                  <Option value="not-stick">不置顶</Option>
-                </Select>
-              </IceFormBinder>
-            </Col>
+            <Col xxs={24} xs={12} l={9} style={styles.filterCol}>
+            <div>
+              <Button onClick={this.props.toggleCompont} type="normal" className='next-btn-search'>
+                查询
+              </Button>
+            </div>
+          </Col>
           </Row>
-          <div
-            style={{
-              textAlign: 'left',
-              marginLeft: '12px',
-            }}
-          >
-            <Button onClick={this.props.onReset} type="normal">
-              重置
-            </Button>
-            <Button
-              onClick={this.props.onSubmit}
-              type="primary"
-              style={{ marginLeft: '10px' }}
-            >
-              确定
-            </Button>
-          </div>
+
         </div>
       </IceFormBinderWrapper>
     );
@@ -135,9 +63,10 @@ const styles = {
 
   filterTitle: {
     width: '68px',
-    textAlign: 'right',
+    textAlign: 'left',
     marginRight: '12px',
     fontSize: '14px',
+    marginLeft:'10px',
   },
 
   filterTool: {

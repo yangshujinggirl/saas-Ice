@@ -58,6 +58,8 @@ export default class EnhanceTable extends Component {
   editItem = (record, e) => {
     e.preventDefault();
     // TODO: record 为该行所对应的数据，可自定义操作行为
+
+
   };
 
   renderOperations = (value, index, record) => {
@@ -68,17 +70,14 @@ export default class EnhanceTable extends Component {
       >
         <a
           href="#"
-          style={styles.operationItem}
           target="_blank"
           onClick={this.editItem.bind(this, record)}
+          className='operate-btn operate-btn-two'
         >
-          解决
+          修改
         </a>
-        <a href="#" style={styles.operationItem} target="_blank">
+        <a href="#" target="_blank" className='operate-btn'>
           详情
-        </a>
-        <a href="#" style={styles.operationItem} target="_blank">
-          分类
         </a>
       </div>
     );
@@ -125,7 +124,7 @@ export default class EnhanceTable extends Component {
 
     return (
       <div className="filter-table">
-        <IceContainer title="查询">
+        <IceContainer title="查询" className='subtitle'>
           <FilterForm
             value={filterFormValue}
             onChange={this.filterFormChange}
@@ -142,27 +141,46 @@ export default class EnhanceTable extends Component {
             hasBorder={false}
           >
             <Table.Column
-              title="问题描述"
+              title="编号"
               cell={this.renderTitle}
-              width={320}
+              width={85}
+              align={'center'}
             />
-            <Table.Column title="问题分类" dataIndex="type" width={85} />
+            <Table.Column title="姓名" dataIndex="type" width={85}  align={'center'}/>
             <Table.Column
-              title="发布时间"
+              title="证件类型"
               dataIndex="publishTime"
-              width={150}
+              width={85}
+              align={'center'}
             />
             <Table.Column
-              title="状态"
+              title="证件号码"
               dataIndex="publishStatus"
               width={85}
               cell={this.renderStatus}
+              align={'center'}
+            />
+
+            <Table.Column
+              title="手机号"
+              dataIndex="publishStatus"
+              width={85}
+              cell={this.renderStatus}
+              align={'center'}
+            />
+            <Table.Column
+              title="金额"
+              dataIndex="publishStatus"
+              width={85}
+              cell={this.renderStatus}
+              align={'center'}
             />
             <Table.Column
               title="操作"
               dataIndex="operation"
-              width={150}
+              width={85}
               cell={this.renderOperations}
+              align={'center'}
             />
           </Table>
           <div style={styles.paginationWrapper}>
