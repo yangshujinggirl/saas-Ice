@@ -1,5 +1,6 @@
 import T from '../constants/DemoConstant'
 import Req from '../reqs/DemoReq'
+import {hashHistory} from 'react-router'
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
@@ -67,7 +68,8 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
-      dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+      // dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+      hashHistory.push('/demo');
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
