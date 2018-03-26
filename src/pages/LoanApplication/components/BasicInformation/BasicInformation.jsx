@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select } from '@icedesign/base';
+import { Input, Grid, Form, Button, Select, Field } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -18,6 +18,679 @@ const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 }
 };
+
+const dataList = {
+  "fields": [
+        {
+          "name": "自定义区域",
+          "fields": [{
+              "id": 1808,
+              "name": "custom.field2557089287270354937398",
+              "label": "单元测试新增界面方案-自定义字段",
+              "fieldset": "自定义区域",
+              "isFixed": false,
+              "isOptional": false,
+              "isCustom": true,
+              "isRequired": false,
+              "isRepeatable": false,
+              "orderId": 1,
+              "fieldsetOrder": 10,
+              "screenSchemeId": 255,
+              "fieldId": 1444
+          }]
+        },
+        {
+            "name": "基本信息",
+            "fields": [
+              {
+                "id": 1807,
+                "name": "borrowerIdType",
+                "label": "展厅名称",
+                "fieldset": "基本信息",
+                "type": "SELECT",
+                "isFixed": true,
+                "isOptional": false,
+                "isCustom": false,
+                "isRequired": true,
+                "isRepeatable": false,
+                "orderId": 4,
+                "options": [
+                  {
+                    "id": 1000018,
+                    "label": "身份证",
+                    "value": "身份证",
+                    "status": 1,
+                    "version": 1
+                  },
+                  {
+                      "id": 1000019,
+                      "label": "户口簿",
+                      "value": "户口簿",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000020,
+                      "label": "中国护照",
+                      "value": "中国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000021,
+                      "label": "士兵证",
+                      "value": "士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000022,
+                      "label": "港澳居民往来内地通行证",
+                      "value": "港澳居民往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000023,
+                      "label": "台湾同胞往来内地通行证",
+                      "value": "台湾同胞往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000024,
+                      "label": "临时身份证",
+                      "value": "临时身份证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000025,
+                      "label": "外国人居留证",
+                      "value": "外国人居留证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000026,
+                      "label": "警官证",
+                      "value": "警官证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000027,
+                      "label": "军人文职干部证",
+                      "value": "军人文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000028,
+                      "label": "武警士兵证",
+                      "value": "武警士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000029,
+                      "label": "武警文职干部证",
+                      "value": "武警文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000030,
+                      "label": "外国护照",
+                      "value": "外国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000031,
+                      "label": "营业执照",
+                      "value": "营业执照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000032,
+                      "label": "组织机构代码证",
+                      "value": "组织机构代码证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000033,
+                      "label": "其他个人证件",
+                      "value": "其他个人证件",
+                      "status": 1,
+                      "version": 1
+                  }],
+                  "fieldsetOrder": 1,
+                  "screenSchemeId": 255,
+                  "fieldId": 1003
+              },
+              {
+                "id": 1808,
+                "name": "borrowerIdType",
+                "label": "证件类型",
+                "fieldset": "基本信息",
+                "type": "SELECT",
+                "isFixed": true,
+                "isOptional": false,
+                "isCustom": false,
+                "isRequired": false,
+                "isRepeatable": false,
+                "orderId": 4,
+                "options": [
+                  {
+                    "id": 1000018,
+                    "label": "身份证",
+                    "value": "身份证",
+                    "status": 1,
+                    "version": 1
+                  },
+                  {
+                      "id": 1000019,
+                      "label": "户口簿",
+                      "value": "户口簿",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000020,
+                      "label": "中国护照",
+                      "value": "中国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000021,
+                      "label": "士兵证",
+                      "value": "士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000022,
+                      "label": "港澳居民往来内地通行证",
+                      "value": "港澳居民往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000023,
+                      "label": "台湾同胞往来内地通行证",
+                      "value": "台湾同胞往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000024,
+                      "label": "临时身份证",
+                      "value": "临时身份证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000025,
+                      "label": "外国人居留证",
+                      "value": "外国人居留证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000026,
+                      "label": "警官证",
+                      "value": "警官证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000027,
+                      "label": "军人文职干部证",
+                      "value": "军人文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000028,
+                      "label": "武警士兵证",
+                      "value": "武警士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000029,
+                      "label": "武警文职干部证",
+                      "value": "武警文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000030,
+                      "label": "外国护照",
+                      "value": "外国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000031,
+                      "label": "营业执照",
+                      "value": "营业执照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000032,
+                      "label": "组织机构代码证",
+                      "value": "组织机构代码证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000033,
+                      "label": "其他个人证件",
+                      "value": "其他个人证件",
+                      "status": 1,
+                      "version": 1
+                  }],
+                  "fieldsetOrder": 1,
+                  "screenSchemeId": 255,
+                  "fieldId": 1003
+              },
+              {
+                "id": 1808,
+                "name": "borrowerIdType",
+                "label": "证件类型",
+                "fieldset": "基本信息",
+                "type": "SELECT",
+                "isFixed": true,
+                "isOptional": false,
+                "isCustom": false,
+                "isRequired": false,
+                "isRepeatable": false,
+                "orderId": 4,
+                "options": [
+                  {
+                    "id": 1000018,
+                    "label": "身份证",
+                    "value": "身份证",
+                    "status": 1,
+                    "version": 1
+                  },
+                  {
+                      "id": 1000019,
+                      "label": "户口簿",
+                      "value": "户口簿",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000020,
+                      "label": "中国护照",
+                      "value": "中国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000021,
+                      "label": "士兵证",
+                      "value": "士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000022,
+                      "label": "港澳居民往来内地通行证",
+                      "value": "港澳居民往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000023,
+                      "label": "台湾同胞往来内地通行证",
+                      "value": "台湾同胞往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000024,
+                      "label": "临时身份证",
+                      "value": "临时身份证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000025,
+                      "label": "外国人居留证",
+                      "value": "外国人居留证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000026,
+                      "label": "警官证",
+                      "value": "警官证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000027,
+                      "label": "军人文职干部证",
+                      "value": "军人文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000028,
+                      "label": "武警士兵证",
+                      "value": "武警士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000029,
+                      "label": "武警文职干部证",
+                      "value": "武警文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000030,
+                      "label": "外国护照",
+                      "value": "外国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000031,
+                      "label": "营业执照",
+                      "value": "营业执照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000032,
+                      "label": "组织机构代码证",
+                      "value": "组织机构代码证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000033,
+                      "label": "其他个人证件",
+                      "value": "其他个人证件",
+                      "status": 1,
+                      "version": 1
+                  }],
+                  "fieldsetOrder": 1,
+                  "screenSchemeId": 255,
+                  "fieldId": 1003
+              },
+              {
+                "id": 1808,
+                "name": "borrowerIdType",
+                "label": "证件类型",
+                "fieldset": "基本信息",
+                "type": "SELECT",
+                "isFixed": true,
+                "isOptional": false,
+                "isCustom": false,
+                "isRequired": false,
+                "isRepeatable": false,
+                "orderId": 4,
+                "options": [
+                  {
+                    "id": 1000018,
+                    "label": "身份证",
+                    "value": "身份证",
+                    "status": 1,
+                    "version": 1
+                  },
+                  {
+                      "id": 1000019,
+                      "label": "户口簿",
+                      "value": "户口簿",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000020,
+                      "label": "中国护照",
+                      "value": "中国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000021,
+                      "label": "士兵证",
+                      "value": "士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000022,
+                      "label": "港澳居民往来内地通行证",
+                      "value": "港澳居民往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000023,
+                      "label": "台湾同胞往来内地通行证",
+                      "value": "台湾同胞往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000024,
+                      "label": "临时身份证",
+                      "value": "临时身份证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000025,
+                      "label": "外国人居留证",
+                      "value": "外国人居留证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000026,
+                      "label": "警官证",
+                      "value": "警官证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000027,
+                      "label": "军人文职干部证",
+                      "value": "军人文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000028,
+                      "label": "武警士兵证",
+                      "value": "武警士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000029,
+                      "label": "武警文职干部证",
+                      "value": "武警文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000030,
+                      "label": "外国护照",
+                      "value": "外国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000031,
+                      "label": "营业执照",
+                      "value": "营业执照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000032,
+                      "label": "组织机构代码证",
+                      "value": "组织机构代码证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000033,
+                      "label": "其他个人证件",
+                      "value": "其他个人证件",
+                      "status": 1,
+                      "version": 1
+                  }],
+                  "fieldsetOrder": 1,
+                  "screenSchemeId": 255,
+                  "fieldId": 1003
+              },
+              {
+                "id": 1808,
+                "name": "borrowerIdType",
+                "label": "证件类型",
+                "fieldset": "基本信息",
+                "type": "SELECT",
+                "isFixed": true,
+                "isOptional": false,
+                "isCustom": false,
+                "isRequired": false,
+                "isRepeatable": false,
+                "orderId": 4,
+                "options": [
+                  {
+                    "id": 1000018,
+                    "label": "身份证",
+                    "value": "身份证",
+                    "status": 1,
+                    "version": 1
+                  },
+                  {
+                      "id": 1000019,
+                      "label": "户口簿",
+                      "value": "户口簿",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000020,
+                      "label": "中国护照",
+                      "value": "中国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000021,
+                      "label": "士兵证",
+                      "value": "士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000022,
+                      "label": "港澳居民往来内地通行证",
+                      "value": "港澳居民往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000023,
+                      "label": "台湾同胞往来内地通行证",
+                      "value": "台湾同胞往来内地通行证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000024,
+                      "label": "临时身份证",
+                      "value": "临时身份证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000025,
+                      "label": "外国人居留证",
+                      "value": "外国人居留证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000026,
+                      "label": "警官证",
+                      "value": "警官证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000027,
+                      "label": "军人文职干部证",
+                      "value": "军人文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000028,
+                      "label": "武警士兵证",
+                      "value": "武警士兵证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000029,
+                      "label": "武警文职干部证",
+                      "value": "武警文职干部证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000030,
+                      "label": "外国护照",
+                      "value": "外国护照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000031,
+                      "label": "营业执照",
+                      "value": "营业执照",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000032,
+                      "label": "组织机构代码证",
+                      "value": "组织机构代码证",
+                      "status": 1,
+                      "version": 1
+                  },
+                  {
+                      "id": 1000033,
+                      "label": "其他个人证件",
+                      "value": "其他个人证件",
+                      "status": 1,
+                      "version": 1
+                  }],
+                  "fieldsetOrder": 1,
+                  "screenSchemeId": 255,
+                  "fieldId": 1003
+              }
+            ]
+        }]
+}
+
 export default class BasicInformation extends Component {
   static displayName = 'BasicInformation';
 
@@ -27,8 +700,10 @@ export default class BasicInformation extends Component {
 
   constructor(props) {
     super(props);
+    this.field = new Field(this)
     this.state = {
       value: {},
+      fixedInfoList:(dataList.fields)[1]
     };
   }
   toggleComponent(){
@@ -48,18 +723,19 @@ export default class BasicInformation extends Component {
     event.preventDefault()
   }
 
-  handleSubmit = () => {
-    this.postForm.validateAll((errors, values) => {
-      console.log('errors', errors, 'values', values);
+  handleSubmit(e) {
+    e.preventDefault();
+    this.field.validate((errors, values) => {
       if (errors) {
-        return false;
+        console.log("Errors in form!!!");
+        return;
       }
-
-      // ajax values
+      console.log("Submit!!!");
+      console.log(values);
     });
-  };
-
+  }
   render() {
+    const { fixedInfoList } = this.state;
     return (
       <div className="content-editor">
         <IceFormBinderWrapper
@@ -70,294 +746,31 @@ export default class BasicInformation extends Component {
           onChange={this.formChange}
         >
           <IceContainer title="车贷申请" className='subtitle'>
-            <Form labelAlign="left" style={styles.form}>
-              <Row  align="center" >
-                <Col sxxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'展厅名称'} required>
-                    <Select style={styles.select}>
-                      <div value="small">small</div>
-                      <div value="medium">medium</div>
-                      <div value="large">large</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'展厅级别'} required>
-                    <Select style={styles.select}>
-                      <div value="small">small</div>
-                      <div value="medium">medium</div>
-                      <div value="large">large</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'展厅层级'} required>
-                    <Select style={styles.select}>
-                      <div value="small">small</div>
-                      <div value="medium">medium</div>
-                      <div value="large">large</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'展厅类型'} required>
-                    <Select style={styles.select}>
-                      <div value="small">small</div>
-                      <div value="medium">medium</div>
-                      <div value="large">large</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-              </Row>
-              <Row  align="center" >
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'开户银行'} required>
-                    <Select style={styles.select}>
-                      <div value="small">small</div>
-                      <div value="medium">medium</div>
-                      <div value="large">large</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'所属支行'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'户名'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'收款账号'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-              </Row>
-              <Row  align="center" >
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'主贷人姓名'} required>
-                    <Input placeholder="请输入主贷人姓名" style={styles.select}/>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'证件类型'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'证件号码'} required>
-                    <Input placeholder="请输入证件号码" style={styles.select}/>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'手机号码'} required>
-                    <Input placeholder="请输入手机号码" style={styles.select}/>
-                  </FormItem>
-                </Col>
-              </Row>
-              <Row  align="center" >
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'申请金额'} required>
-                    <Input placeholder="请输入申请金额" style={styles.select}/>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'申请期限'} required>
-                    <Input placeholder="请输入申请期限（月）" style={styles.select}/>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'产品类型'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'产品名称'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-              </Row>
-              <Row  align="center" >
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'还款周期'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'支付方式'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'执行利率'} required>
-                    <Input placeholder='请输入执行利率' style={styles.select}/>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={6}>
-                  <FormItem {...formItemLayout} label={'还款方式'} required>
-                    <Select style={styles.select}>
-                      <div value="身份证">身份证</div>
-                      <div value="户口簿">户口簿</div>
-                      <div value="中国护照">中国护照</div>
-                      <div value="士兵证">士兵证</div>
-                      <div value="港澳居民往来内地通行证">港澳居民往来内地通行证</div>
-                      <div value="台湾同胞往来内地通行证">台湾同胞往来内地通行证</div>
-                      <div value="临时身份证">临时身份证</div>
-                      <div value="外国人居留证">外国人居留证</div>
-                      <div value="警官证">警官证</div>
-                      <div value="军人文职干部证">军人文职干部证</div>
-                      <div value="武警士兵证">武警士兵证</div>
-                      <div value="武警文职干部证">武警文职干部证</div>
-                      <div value="外国护照">外国护照</div>
-                      <div value="营业执照">营业执照</div>
-                      <div value="组织机构代码证">组织机构代码证</div>
-                      <div value="其他个人证件">其他个人证件</div>
-                    </Select>
-                  </FormItem>
-                </Col>
-              </Row>
+            <Form
+              labelAlign="left"
+              style={styles.form}
+              field={this.field}>
+              <Row  align="center" wrap>
+                {
+                  fixedInfoList.fields.map((ele,index) => (
+                    <Col span={6} key={index}>
+                      <FormItem {...formItemLayout} label={ele.label} required={ele.isRequired?true:false}>
+                        <Select style={styles.select}>
+                          {
+                            ele.options.map((options,index) => (
+                              <div value={options.label} key={index}>{options.label}</div>
+                            ))
+                          }
+                        </Select>
+                      </FormItem>
+                    </Col>
+                    ))
+                  }
+                </Row>
               <Row style={{ marginTop: 24 }} >
                 <Col offset="10" className ='botton-col'>
                   <Button
-                    type="primary" onClick={this.toggleComponent.bind(this)}>
+                    type="primary" onClick={this.handleSubmit.bind(this)}>
                     下一步
                   </Button>
                 </Col>
