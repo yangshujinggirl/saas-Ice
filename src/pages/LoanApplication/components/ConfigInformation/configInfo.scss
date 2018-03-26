@@ -4,8 +4,8 @@
   width: 100%;
   .title{
     float: left;
-    width: 156px;
-    height: 800px;
+    width: 80%;
+    height: 600px;
     opacity: 0.6;
     background: #FDF4E3;
     box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
@@ -13,16 +13,21 @@
     -moz-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
 }
   .config-form{
-    float: left;
-    max-height: 1400px;
-    min-width: 1000px;
-    margin-left: 20px;
-    h4{
-      font-family: PingFangSC-Medium;
-      font-size: 15px;
-      color: #FC9E25;
-      letter-spacing: 0;
+    .info{
+      height: auto;
+      h4{
+        font-family: PingFangSC-Medium;
+        font-size: 15px;
+        //color: #FC9E25;
+        letter-spacing: 0;
+        height: 30px;
+        border-bottom:  1px #D8D8D8 solid;
+      }
+      .upload{
+        width: 100%;
+      }
     }
+
 
   }
 }

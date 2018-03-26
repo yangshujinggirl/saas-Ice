@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select } from '@icedesign/base';
+import { Input, Grid, Form, Button, Selec, Upload } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -11,14 +11,15 @@ import  './configInfo.scss'
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
+const { DragUpload } = Upload;
 
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 }
 };
 
-export default class ContentEditor extends Component {
-  static displayName = 'ContentEditor';
+export default class ConfigInformation extends Component {
+  static displayName = 'ConfigInformation';
 
   static propTypes = {};
 
@@ -45,6 +46,13 @@ export default class ContentEditor extends Component {
     });
   };
 
+  onDragOver= ()=> {
+    console.log("dragover callback");
+  }
+  onDrop = (fileList) =>{
+    console.log("drop callback : ", fileList);
+  }
+
   handleSubmit = () => {
     this.postForm.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
@@ -67,16 +75,28 @@ export default class ContentEditor extends Component {
           onChange={this.formChange}
         >
           <IceContainer title="车贷申请" className='subtitle'>
-            <Row>
-              <Col span="24" className='config-page'>
-                <div xxs={24} xs={12} l={6}className='title'>
+            <Row  className='config-page'>
+              <Col span="3">
+                <div className='title'>
 
                 </div>
 
-                <div xxs={24} xs={12} l={18} className='config-form'>
-                  <h4>基本信息</h4>
+              </Col>
+              <Col span="21" className='config-form'>
+                  <div className='info'>
+                    <h4>基本信息</h4>
+                  </div>
+                  <div className='info'>
+                    <h4>材料提交</h4>
+                    <DragUpload
+                      className='upload'
+                      action="//next-upload.shuttle.alibaba.net/upload" // 该接口仅作测试使用，业务请勿使用
+                      accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                      // onDragOver={onDragOver}
+                      // onDrop={onDrop}
+                    />
+                  </div>
 
-                </div>
               </Col>
 
             </Row>
