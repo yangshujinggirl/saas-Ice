@@ -7,6 +7,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
+
 // import RichEditor from './RichEditor';
 import  './basicInfo.scss'
 
@@ -17,9 +18,8 @@ const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 }
 };
-
-export default class ContentEditor extends Component {
-  static displayName = 'ContentEditor';
+export default class BasicInformation extends Component {
+  static displayName = 'BasicInformation';
 
   static propTypes = {};
 
@@ -41,6 +41,12 @@ export default class ContentEditor extends Component {
       value,
     });
   };
+
+
+  //下一步
+  next = (event) =>{
+    event.preventDefault()
+  }
 
   handleSubmit = () => {
     this.postForm.validateAll((errors, values) => {

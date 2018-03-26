@@ -9,7 +9,7 @@ import FilterForm from './Filter';
 @DataBinder({
   tableData: {
     // 详细请求配置请参见 https://github.com/axios/axios
-    url: '/mock/filter-table-list.json',
+    url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/loans/lists',
     params: {
       page: 1,
     },
@@ -38,13 +38,15 @@ export default class EnhanceTable extends Component {
 
   componentDidMount() {
     this.queryCache.page = 1;
+    this.queryCache.pageSize = 10;
     this.fetchData();
   }
 
   fetchData = () => {
     this.props.updateBindingData('tableData', {
-      data: this.queryCache,
+      data:this.queryCache ,
     });
+    // console.log(this.queryCache)
   };
 
   renderTitle = (value, index, record) => {
@@ -58,9 +60,15 @@ export default class EnhanceTable extends Component {
   editItem = (record, e) => {
     e.preventDefault();
     // TODO: record 为该行所对应的数据，可自定义操作行为
-
-
+    console.log(record);
+    console.log(this.props)
+    // this.props.code(record);
   };
+  detal = (record, e)=>{
+    e.preventDefault();
+    this.props.code(record);
+    this.props.toggleComponent('LoanDetails');
+  }
 
   renderOperations = (value, index, record) => {
     return (
@@ -76,7 +84,10 @@ export default class EnhanceTable extends Component {
         >
           修改
         </a>
-        <a href="#" target="_blank" className='operate-btn'>
+        <a
+           className='operate-btn'
+           onClick={this.detal.bind(this, record)}
+        >
           详情
         </a>
       </div>
@@ -103,13 +114,15 @@ export default class EnhanceTable extends Component {
     });
   };
 
-  filterTable = () => {
+  filterTables = () => {
     // 合并参数，请求数据
     this.queryCache = {
       ...this.queryCache,
       ...this.state.filterFormValue,
     };
-    this.fetchData();
+    console.log(this.queryCache)
+    this.fetchData(this.queryCache);
+
   };
 
   resetFilter = () => {
@@ -121,14 +134,14 @@ export default class EnhanceTable extends Component {
   render() {
     const tableData = this.props.bindingData.tableData;
     const { filterFormValue } = this.state;
-
+    // console.log(tableData)
     return (
       <div className="filter-table">
         <IceContainer title="查询" className='subtitle'>
           <FilterForm
             value={filterFormValue}
             onChange={this.filterFormChange}
-            onSubmit={this.filterTable}
+            onSubmit={this.filterTables}
             onReset={this.resetFilter}
           />
         </IceContainer>
@@ -142,20 +155,20 @@ export default class EnhanceTable extends Component {
           >
             <Table.Column
               title="编号"
-              cell={this.renderTitle}
               width={85}
               align={'center'}
+              dataIndex="code"
             />
-            <Table.Column title="姓名" dataIndex="type" width={85}  align={'center'}/>
+            <Table.Column title="姓名" dataIndex="borrowerName" width={85}  align={'center'}/>
             <Table.Column
               title="证件类型"
-              dataIndex="publishTime"
+              dataIndex="borrowerIdType"
               width={85}
               align={'center'}
             />
             <Table.Column
               title="证件号码"
-              dataIndex="publishStatus"
+              dataIndex="borrowerIdNo"
               width={85}
               cell={this.renderStatus}
               align={'center'}
@@ -163,14 +176,14 @@ export default class EnhanceTable extends Component {
 
             <Table.Column
               title="手机号"
-              dataIndex="publishStatus"
+              dataIndex="borrowerMobile"
               width={85}
               cell={this.renderStatus}
               align={'center'}
             />
             <Table.Column
               title="金额"
-              dataIndex="publishStatus"
+              dataIndex="principalAmount"
               width={85}
               cell={this.renderStatus}
               align={'center'}

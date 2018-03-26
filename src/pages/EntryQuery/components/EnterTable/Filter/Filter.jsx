@@ -24,24 +24,24 @@ export default class Filter extends Component {
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>姓名</label>
               <IceFormBinder>
-                <Input name="name" />
+                <Input name="borrowerName" />
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>身份证号</label>
               <IceFormBinder>
-                <Input name="idcard" />
+                <Input name="borrowerIdNo" />
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>手机号</label>
               <IceFormBinder>
-                <Input name="phone" />
+                <Input name="borrowerMobile" />
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
             <div>
-              <Button onClick={this.props.toggleCompont} type="normal" className='next-btn-search'>
+              <Button onClick={this.props.onSubmit} type="normal" className='next-btn-search'>
                 查询
               </Button>
             </div>

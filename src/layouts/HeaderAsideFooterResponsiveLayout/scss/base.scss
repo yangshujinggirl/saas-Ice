@@ -118,7 +118,7 @@
 }
 
 .next-breadcrumb .next-breadcrumb-text-number {
-  color: #2077FF;
+  color: #FC9E25;
 }
 
 .next-breadcrumb .next-breadcrumb-text-keyword {
@@ -134,15 +134,21 @@
 }
 
 .next-breadcrumb a.next-breadcrumb-text.activated:hover {
-  color: #2077FF;
+  color: #FC9E25;
 }
 
 .next-breadcrumb a.next-breadcrumb-text-number:hover {
-  color: #2077FF;
+  color: #FC9E25;
 }
-
+.next-checkbox.checked .next-checkbox-inner {
+    border-color: #FC9E25 !important;
+    background-color: #FFFFFF;
+}
+.next-checkbox .next-checkbox-inner > .next-icon {
+  color: #FC9E25;    
+}
 .next-breadcrumb a.next-breadcrumb-text-keyword:hover {
-  color: #2077FF;
+  color: #FC9E25;
 }
 .next-btn-primary {
     background-color: #1AA8F0 !important;
@@ -155,6 +161,10 @@
     color: #fff !important;
     border-color: #FC9E25 !important;
 }
+.next-checkbox.indeterminate.hovered .next-checkbox-inner, .next-checkbox.indeterminate.focused .next-checkbox-inner, .next-checkbox.checked.hovered .next-checkbox-inner, .next-checkbox.checked.focused .next-checkbox-inner {
+    border-color: #FC9E25;
+    background-color: #fff;
+}
 .subtitle {
     >h4 {
         text-indent: 15px;
@@ -165,7 +175,7 @@
         box-sizing: content-box;
     }
     >h4::before {
-        background: #EC9D00;
+        background: #FC9E25;
         width: 4px;
         height: 18px;
         content: '';

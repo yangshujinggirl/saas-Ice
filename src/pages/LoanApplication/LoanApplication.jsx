@@ -15,6 +15,7 @@ export default class LoanApplication extends Component {
   }
   componentWillMount() {
     this.state.Component = <BasicInformation toggleComponent={this.changeComponent.bind(this)}/>
+    // this.state.Component = <ConfigInformation toggleComponent={this.changeComponent.bind(this)}/></ConfigInformation>
   }
 
   changeComponent(toggleComponent) {
