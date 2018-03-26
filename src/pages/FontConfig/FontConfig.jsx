@@ -3,6 +3,7 @@ import FilterTable from './components/FilterTable';
 import SearchTable from './components/SearchTable';
 import AddFont from './components/AddFont';
 import SetFont from './components/SetFont';
+import SetFontView from './components/SetFontView';
 
 
 
@@ -38,6 +39,10 @@ export default class FontConfig extends Component {
         this.setState({
           Component:<SetFont toggleCompont={this.changeCpm.bind(this)}/>
         })
+      case 'SetFontView':
+      this.setState({
+        Component:<SetFontView toggleCompont={this.changeCpm.bind(this)}/>
+      })
       break;   
       default:
         break;
