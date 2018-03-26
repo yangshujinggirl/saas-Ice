@@ -57,6 +57,17 @@ export default class CreateActivityForm extends Component {
       },
     };
   }
+  
+  componentDidMount(){
+    let params = this.props.params;
+    if(params && params.id){
+      this.props.actions.getDetail(params.id);
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log('nextProps',nextProps)
+  }
 
   onFormChange = (value) => {
     this.setState({

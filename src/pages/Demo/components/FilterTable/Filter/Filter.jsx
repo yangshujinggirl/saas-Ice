@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {hashHistory} from 'react-router';
 import { Input, Grid, Select, Button, DatePicker } from '@icedesign/base';
 
 // form binder 详细用法请参见官方文档
@@ -12,6 +13,10 @@ const { Option } = Select;
 
 export default class Filter extends Component {
   static displayName = 'Filter';
+
+  handleAdd(){
+    hashHistory.push('/demo/add');
+  }
 
   render() {
     return (
@@ -120,7 +125,7 @@ export default class Filter extends Component {
               确定
             </Button>
             <Button
-              onClick={this.props.changeViewToForm}
+              onClick={this.handleAdd}
               type="primary"
               style={{ marginLeft: '10px' }}
             >

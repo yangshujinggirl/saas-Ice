@@ -5,6 +5,7 @@ import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
+import {browserHistory, hashHistory} from 'react-router';
 
 @DataBinder({
   tableData: {
@@ -66,7 +67,8 @@ export default class EnhanceTable extends Component {
   getDetail = (record, e) => {
     e.preventDefault();
     // TODO: record 为该行所对应的数据，可自定义操作行为
-    this.props.actions.getDetail(1);
+    // this.props.actions.getDetail(1);
+    hashHistory.push('/demo/edit/1');
   };
 
   renderOperations = (value, index, record) => {
