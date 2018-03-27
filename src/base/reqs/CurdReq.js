@@ -64,7 +64,6 @@ class CurdReq extends BaseReq {
     let options = {
       url: url,
       method: 'POST',
-      method: 'GET',
       data: data,
       contentType: 'application/json'
     }

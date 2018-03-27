@@ -35,7 +35,6 @@ class BaseReq {
     } else {
       header['Content-type'] = 'application/json';
     }
-
     return axios(options.url, {
         method: options.method || 'GET',
         headers: header,

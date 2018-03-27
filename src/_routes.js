@@ -4,8 +4,10 @@
  */
 import AccountRoute from "./pages/Account/AccountRoute.js"
 import DemoRoute from "./pages/Demo/DemoRoute.js"
+import LoanApplicationRoute from "./pages/LoanApplication/LoanApplicationRoute.js"
 
 export default [
     AccountRoute,
-    DemoRoute
+    DemoRoute,
+    LoanApplicationRoute
 ];
