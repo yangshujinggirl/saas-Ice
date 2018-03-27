@@ -1,5 +1,5 @@
 import Account from './';
-import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterResponsiveLayout";
+import Layout from "../../layouts/BlankLayout";
 
 export default {
   path: "/account",
@@ -13,7 +13,7 @@ export default {
     path: 'detail/:id',
     component: Account.AccountDetail
   }],
-  component: HeaderAsideFooterResponsiveLayout,
+  component: Layout,
   indexRoute: {
     component: Account.Account
   }

@@ -14,7 +14,7 @@ export default class Demo extends Component {
    */
   render() {
     return (
-      <div className="demo-page">
+      <div className="[MODULEPATH]-page">
         这是详情
       </div>
     );

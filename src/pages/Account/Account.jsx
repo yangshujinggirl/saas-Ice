@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import [MODULE]Form from './components/[MODULE]Form';
+import UserLogin from './components/UserLogin';
 
 export default class Demo extends Component {
 
@@ -9,13 +9,13 @@ export default class Demo extends Component {
   }
 
   /**
-   * <[MODULE]Form {...this.props} />
+   * <Account {...this.props} />
    * @return {[type]} [description]
    */
   render() {
     return (
-      <div className="[MODULEPATH]-page">
-        这是表单
+      <div className="account-page">
+        <UserLogin {...this.props} />
       </div>
     );
   }
