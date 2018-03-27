@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CreateActivityForm from './components/CreateActivityForm';
+// import DemoDetail from './components/DemoDetail';
 
 export default class Demo extends Component {
 
@@ -8,10 +8,14 @@ export default class Demo extends Component {
     
   }
 
+  /**
+   * <DemoDetail {...this.props} />
+   * @return {[type]} [description]
+   */
   render() {
     return (
       <div className="demo-page">
-        <CreateActivityForm {...this.props} />
+        这是详情
       </div>
     );
   }

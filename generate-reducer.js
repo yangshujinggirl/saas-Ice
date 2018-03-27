@@ -69,7 +69,7 @@ try {
   routerTpl = routerTpl.replace('[DEF]', importReducerStr);
   routerTpl = routerTpl.replace('[ABC]', routerStr);
 
-  fs.writeFileSync(targetDir + folderSep + 'reducers.js', routerTpl, 'utf8');
+  fs.writeFileSync(targetDir + folderSep + '_reducers.js', routerTpl, 'utf8');
 
   console.log('更新reducers成功\r\n' + routerTpl);
 } catch (ex) {

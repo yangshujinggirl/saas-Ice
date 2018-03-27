@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CreateActivityForm from './components/CreateActivityForm';
+//import AccountForm from './components/AccountForm';
 
 export default class Demo extends Component {
 
@@ -8,12 +8,14 @@ export default class Demo extends Component {
     
   }
 
+  /**
+   * <AccountForm {...this.props} />
+   * @return {[type]} [description]
+   */
   render() {
-    let {actions, formData} = this.props;
-
     return (
       <div className="demo-page">
-        <CreateActivityForm data={formData} onSubmit={actions.save.bind(this)} {...this.props} />
+        这是表单
       </div>
     );
   }

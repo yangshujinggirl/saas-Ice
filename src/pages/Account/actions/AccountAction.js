@@ -1,5 +1,5 @@
-import T from '../constants/DemoConstant'
-import Req from '../reqs/DemoReq'
+import T from '../constants/AccountConstant'
+import Req from '../reqs/AccountReq'
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 

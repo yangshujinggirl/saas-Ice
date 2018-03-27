@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FilterTable from './components/FilterTable';
+// import [MODULE]Detail from './components/[MODULE]Detail';
 
 export default class Demo extends Component {
 
@@ -8,12 +8,14 @@ export default class Demo extends Component {
     
   }
 
+  /**
+   * <[MODULE]Detail {...this.props} />
+   * @return {[type]} [description]
+   */
   render() {
-    let {actions, formData} = this.props;
-
     return (
       <div className="demo-page">
-        <FilterTable {...this.props} />
+        这是详情
       </div>
     );
   }
