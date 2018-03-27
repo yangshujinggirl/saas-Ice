@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Router, Route, Link } from 'react-router'
-
+import { Router, Route, Link ,hashHistory} from 'react-router';
+import axios from 'axios';
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 
-import './ProdSearch.scss';
+import './ProdSeachList.scss';
 
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
@@ -32,26 +32,9 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 //组件引入
-import SearchEditer from './searchEditer/searchEditer'
+// import SearchEditer from './searchEditer/searchEditer';
 
-const getMockData = () => {
-  const result = [];
-  for (let i = 0; i < 10; i++) {
-    result.push({
-      id: 100 + i,
-      title: {
-        name: `宝马 ${3 + i}.0`,
-      },
-      type: 'demo示例',
-      template: '是',
-      status: '已发布',
-      publisher: '小马',
-      rate: '5',
-      time: 2000 + i,
-    });
-  }
-  return result;
-};
+
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
   const checked = props.checked === undefined ? props.value : props.checked;
@@ -66,8 +49,25 @@ const SwitchForForm = (props) => {
     />
   );
 };
+// @DataBinder({
+//   tableData: {
+//     // 详细请求配置请参见 https://github.com/axios/axios
+//     url: 'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
+//     params: {
+//       fields:'',
+//       limit:10,
+//       page: 1,
+//     },
+//     defaultBindingData: {
+//       list: [],
+//       total: 100,
+//       pageSize: 10,
+//       currentPage: 1,
+//     },
+//   },
+// })
 
-export default class ProdSearch extends Component {
+export default class ProdSeachList extends Component {
   static displayName = 'ProdSearch';
 
   static defaultProps = {};
@@ -75,53 +75,95 @@ export default class ProdSearch extends Component {
   constructor(props) {
     super(props);
 
+    // 请求参数缓存
+    this.queryCache = {};
     this.state = {
-      selectedRowKeys: [],
-      dataSource: getMockData(),
+      filterFormValue: {},
     };
+
   }
+  
+  
 
-  clearSelectedKeys = () => {
-    this.setState({
-      selectedRowKeys: [],
-    });
+  //查看
+  searchItem = (record) => {
+    hashHistory.push("/product/searchdetail/1")//+ record.id);
   };
 
-  deleteSelectedKeys = () => {
-    const { selectedRowKeys } = this.state;
-    console.log('delete keys', selectedRowKeys);
-  };
-  //删除
-  deleteItem = (record) => {
-    const { id } = record;
-    console.log('delete item', id);
-  };
   //编辑
   editItem = (record) => {
-    const { id } = record;
     let {actions} = this.props;
-    actions.getDetail(record.id);
+    console.log(actions.getDetail(record))
   }
   renderOperator = (value, index, record) => {
     return (
       <div>
-        <button 
+        <button
           className="editbtn"
-          onClick={this.editItem.bind(this, record)}
+          onClick = {this.editItem.bind(this, record)}
         >
           编辑</button>
         <button
-          className="deletbtn"
-          onClick={this.deleteItem.bind(this, record)}
+          className="searchbtn"
+          onClick={this.searchItem.bind(this, record)}
         >
-          删除
+          查看
         </button>
       </div>
     );
   };
+  
+
+  componentWillMount(){ 
+    
+  }
+  componentDidMount() {
+  
+  }
+  // fetchData = () => {
+  //   this.props.updateBindingData('tableData', {
+  //     data: this.queryCache,
+  //   });
+  // };
+  // changePage = (currentPage) => {
+  //   this.queryCache.page = currentPage;
+
+  //   this.fetchData();
+  // };
+
+  // filterFormChange = (value) => {
+  //   this.setState({
+  //     filterFormValue: value,
+  //   });
+  // };
+
+  // filterTable = () => {
+  //   // 合并参数，请求数据
+  //   this.queryCache = {
+  //     ...this.queryCache,
+  //     ...this.state.filterFormValue,
+  //   };
+  //   this.fetchData();
+  // };
+
+  // resetFilter = () => {
+  //   console.log("ok")
+  //   this.setState({
+  //     filterFormValue: {},
+  //   });
+  // };
+
+  changeView = () => {
+    
+  }
 
   render() {
+    // const tableData = this.props.bindingData.tableData;
+    // const { filterFormValue } = this.state;
+    let dataSource = this.props.pageData;
+    console.log(dataSource)
     return (
+
       <div className="create-activity-form" style={styles.container}>
         {/* <SearchEditer /> */}
         <IceContainer title="" >
@@ -199,7 +241,7 @@ export default class ProdSearch extends Component {
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    <button style={styles.btns} type='submit' onClick={this.onSubmit}>
+                    <button style={styles.btns} type='submit' onClick={this.resetFilter}>
                       查询
                     </button>
                   </Col>
@@ -208,22 +250,22 @@ export default class ProdSearch extends Component {
             </div>
           </IceFormBinderWrapper>
           <Table
-              dataSource={this.state.dataSource}
+              // dataSource={dataSource}
               isLoading={this.state.isLoading}
               isZebra={true}
             >
-              <Table.Column title="产品编号" dataIndex="id" width={120} />
-              <Table.Column title="产品名称" dataIndex="title.name" width={250} />
-              <Table.Column title="合同显示名称" dataIndex="type" width={160} />
-              <Table.Column title="状态" dataIndex="template" width={100} />
-              <Table.Column title="产品类型" dataIndex="status" width={120} />
-              <Table.Column title="生效期限" dataIndex="rate" width={120} />
-              <Table.Column title="尾款产品" dataIndex="publisher" width={120} />
-              <Table.Column title="资金方" dataIndex="time" width={120} />
-              <Table.Column title="金额范围(元)" dataIndex="time" width={120} />
-              <Table.Column title="期限范围(月)" dataIndex="time" width={120} />
-              <Table.Column title="贷款比率(%)" dataIndex="time" width={120} />
-              <Table.Column title="执行年利率范围(%)" dataIndex="time" width={160} />
+              <Table.Column title="产品编号" dataIndex="code" width={150} />
+              <Table.Column title="产品名称" dataIndex="name" width={200} />
+              <Table.Column title="合同显示名称" dataIndex="cardNo" width={160} />
+              <Table.Column title="状态" dataIndex="type" width={100} />
+              <Table.Column title="产品类型" dataIndex="cityId" width={120} />
+              <Table.Column title="生效期限" dataIndex="createdDate" width={250} />
+              <Table.Column title="尾款产品" dataIndex="areaId" width={120} />
+              <Table.Column title="资金方" dataIndex="createdUser" width={120} />
+              <Table.Column title="金额范围(元)" dataIndex="provinceId" width={120} />
+              <Table.Column title="期限范围(月)" dataIndex="" width={120} />
+              <Table.Column title="贷款比率(%)" dataIndex="" width={120} />
+              <Table.Column title="执行年利率范围(%)" dataIndex="" width={160} />
               <Table.Column
                 title="操作"
                 cell={this.renderOperator}
@@ -232,7 +274,13 @@ export default class ProdSearch extends Component {
               />
             </Table>
             <div style={styles.pagination}>
-              <Pagination shape="arrow-only" onChange={this.change} />
+              <Pagination 
+                shape="arrow-only" 
+                // current={tableData.currentPage}
+                // pageSize={tableData.pageSize}
+                // total={tableData.total}
+                onChange={this.changePage}
+              />
             </div>
         </IceContainer>    
       </div>

@@ -100,11 +100,15 @@
         border: 1px solid #f6dca9;
     }
 }
-.next-btn {
+.back-btn,.dete-btn {
+    display: block;
+    width: 60px;
+    height: 30px;
+    text-align: center;
     border: none;
     border-radius: 2px;
     background: #ec9d00;
-    color: #fff;
+    color: #fff !important;
 
 }
 

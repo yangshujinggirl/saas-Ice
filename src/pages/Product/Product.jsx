@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import ProdSearch from './components/ProdSearch';
-import ProdAdd from './components/ProdAdd';
-import FileList from './components/FileList'
-// import SearchDetail from './components/SearchDetail';
-// import './Prodsearch.scss'
-
+import ProdSearchList from './components/ProdSearch/ProdSeachList'
 export default class Product extends Component {
-  static displayName = 'Product';
 
   constructor(props) {
     super(props);
@@ -18,23 +12,36 @@ export default class Product extends Component {
 
   render() {
     let {view, actions, formData} = this.props;
-    let children;
-    
-    switch(view){
-      case 'search':{
-        children = <ProdSearch data={formData} onSubmit={actions.save.bind(this)} />
-        break;
-      }
-      default: {
-        children = <ProdAdd {...this.props} />
-        break;
-      }
-    }
     return (
       <div className="product-page">
-        {children}
-        {/* { this.props.routes[1].path == 'search' ?<ProdSearch {...this.props}/> : (this.props.routes[1].path == 'add' ? <ProdAdd data={formData} />:<FileList />)} */}
+        <ProdSearchList {...this.props} />
       </div>
     );
+    // let children;
+    // //path path = 'add' view = 'form'
+    
+    // let path =  this.props.routes[1].path;
+    // console.log(this.props.routes)
+    // if(path=='search'|| ''){
+    //   view = 'list'
+    // }else if(path=='add'){
+    //   view = 'from'
+    // }else if(path=='searchdetail'){
+    //   view = 'searchdetail'
+    // }
+    
+    // switch(view){
+    
+    //   case 'from':{
+    //     children = <ProdAdd {...this.props} />
+    //     break;
+    //   };
+    //   case 'searchdetail1':{
+    //     children = <ProdDetail {...this.props} />
+    //     break;
+    //   }
+    //   default: ;
+    // }
+    
   }
 }

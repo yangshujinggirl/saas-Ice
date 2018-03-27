@@ -87,7 +87,18 @@ export const getDetail = (id) => {
     })
   }
 }
+// export const getDetail = (id,task) => {
+//   return (dispatch) => {
 
+//     dispatch(fetchStart())
+
+//     Req.getDetail(id, task).then((res) => {
+//       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+//     }).catch((ex) => {
+//       dispatch(fetchFailed(ex))
+//     })
+//   }
+// }
 // 删除一条记录
 export const remove = (id) => {
   return (dispatch) => {
@@ -110,6 +121,8 @@ export function changeViewToList() {
   return dispatch({ view: 'list' });
 }
 
-export function changeViewToView() {
-  return dispatch({ view: 'view' });
+export function changeViewToFileList() {
+  return dispatch({ view: 'filelist' });
 }
+
+

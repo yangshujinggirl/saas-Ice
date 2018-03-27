@@ -76,40 +76,12 @@
     padding: 25px 0 0 0;
     border-top: 1px solid #d8d8d8;
 }
-// table {
-//     border: 1px solid #f6dca9;
-//     border-spacing: 0;
-//     border-collapse: collapse;
-//     tr td {
-//         border: 1px solid #f6dca9;
-//     }
-//     tr th {
-//         border: 1px solid #f6dca9 !important;
-//         div{
-//             background: #fdf4e3;
-//         }
-//     }
-// }
-// .next-table-cell {
-//     border:  1px solid #f6dca9 !important;
-//     height: 40px !important;
-//     .next-table-cell-wrapper {
-//         padding: 2px 12px !important;
-//     }
-// }
-.searchbtn {
-    width:"50px";
-    height:"22px";
-    border: none;
-    color: #fff;
-    margin-left: 15px;
-    background: #ec9d00;
-}
-.editbtn ,.deletbtn{
+
+.editbtn ,.searchbtn{
     width:"40px";
-    height:"30px";
+    height:"25px";
     border: none;
-    color: #fff;
+    color: #fff !important;
     margin-left: 15px;
     background: #ec9d00;
 }
