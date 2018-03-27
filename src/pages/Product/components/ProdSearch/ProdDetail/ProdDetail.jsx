@@ -60,17 +60,6 @@ export default class ProdDetail extends Component {
         onChange={this.props.onChange}
       >
         <div>
-          <div className="pch-breadcrumb">
-            <span className="layui-breadcrumb">
-              <a>平常金服</a>
-              <span className="lay-separator">/</span>
-              <a>产品管理</a>
-              <span className="lay-separator">/</span>
-              <a>
-                <cite>产品新增</cite>
-              </a>
-            </span>
-          </div>
           <IceContainer>
             <legend className="legend">
               <span className="legLine"></span>基本信息
@@ -106,7 +95,7 @@ export default class ProdDetail extends Component {
             </Row>
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}><span className="label-required">*</span>生效日期：</label>
+                <label style={styles.filterTitle}>生效日期：</label>
                 <span >{dataSource.title}</span>
               </Col>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>

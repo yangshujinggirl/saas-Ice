@@ -53,7 +53,7 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res.data }))
+      dispatch(fetchSuccess({ pageData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -81,7 +81,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ formData: res, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
