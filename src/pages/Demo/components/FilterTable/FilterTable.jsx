@@ -38,7 +38,6 @@ export default class EnhanceTable extends Component {
   }
 
   componentDidMount() {
-    this.queryCache.page = 1;
     this.fetchData();
   }
 

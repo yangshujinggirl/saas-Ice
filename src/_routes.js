@@ -4,8 +4,10 @@
  */
 import AccountRoute from "./pages/Account/AccountRoute.js"
 import DemoRoute from "./pages/Demo/DemoRoute.js"
+import EnterQueryRoute from "./pages/EntryQuery/EnterQueryRoute.js"
 
 export default [
     AccountRoute,
-    DemoRoute
+    DemoRoute,
+    EnterQueryRoute
 ];

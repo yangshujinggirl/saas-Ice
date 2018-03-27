@@ -9,8 +9,7 @@ class EntryQueryReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            // retrieve: this._host + 'http://172.16.0.218:8080/loan-ft1/loans',
-            retrieve: 'http://172.16.0.218:8080/loan-ft1/loans',
+            retrieve: this._host + '/loans',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }
