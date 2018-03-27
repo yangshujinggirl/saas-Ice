@@ -12,8 +12,12 @@ import './UserLogin.scss';
 const { Row, Col } = Grid;
 
 // 寻找背景图片可以从 https://unsplash.com/ 寻找
-const backgroundImage =
+const backgroundImage1 =
   'https://img.alicdn.com/tfs/TB1zsNhXTtYBeNjy1XdXXXXyVXa-2252-1500.png';
+const backgroundImage = require('./admin-login-bg.png');
+
+import {hashHistory} from 'react-router';
+import {Storage} from '../../../../base/utils';
 
 export default class UserLogin extends Component {
   static displayName = 'UserLogin';
@@ -46,9 +50,12 @@ export default class UserLogin extends Component {
         console.log('errors', errors);
         return;
       }
-      console.log('values:', values);
-      Feedback.toast.success('登录成功');
-      // 登录成功后可通过 hashHistory.push('/') 跳转首页
+      this.props.actions.login(values).then((res) => {
+        Feedback.toast.success('登录成功');
+
+        Storage.set('MENUS', (res.data.leaf));
+        hashHistory.push('/') //跳转首页
+      });
     });
   };
 
@@ -63,13 +70,14 @@ export default class UserLogin extends Component {
         />
         <div style={styles.contentWrapper} className="content-wrapper">
           <h2 style={styles.slogan} className="slogan">
-            欢迎使用 <br /> ICE 内容管理系统
+            欢迎使用 <br /> 平常金服SASS系统
           </h2>
           <div style={styles.formContainer}>
             <h4 style={styles.formTitle}>登录</h4>
             <IceFormBinderWrapper
               value={this.state.value}
               onChange={this.formChange}
+              onSubmit={this.handleSubmit}
               ref="form"
             >
               <div style={styles.formItems}>
@@ -81,7 +89,7 @@ export default class UserLogin extends Component {
                       style={styles.inputIcon}
                     />
                     <IceFormBinder name="account" required message="必填">
-                      <Input maxLength={20} placeholder="会员名/邮箱/手机号" />
+                      <Input maxLength={20} placeholder="会员名/手机号" />
                     </IceFormBinder>
                   </Col>
                   <Col>
@@ -116,6 +124,7 @@ export default class UserLogin extends Component {
                 <Row style={styles.formItem}>
                   <Button
                     type="primary"
+                    htmlType="submit"
                     onClick={this.handleSubmit}
                     style={styles.submitBtn}
                   >
@@ -123,15 +132,7 @@ export default class UserLogin extends Component {
                   </Button>
                 </Row>
 
-                <Row className="tips" style={styles.tips}>
-                  <a href="/" style={styles.link}>
-                    立即注册
-                  </a>
-                  <span style={styles.line}>|</span>
-                  <a href="/" style={styles.link}>
-                    忘记密码
-                  </a>
-                </Row>
+                
               </div>
             </IceFormBinderWrapper>
           </div>

@@ -28,6 +28,20 @@ class AccountReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+
+	/**
+	 * 登录
+	 * @return {[type]} [description]
+	 */
+	login(data){
+		let options = {
+			url: this._host + '/login',
+			method: 'POST',
+			contentType: 'application/json',
+			data: data
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new AccountReq();

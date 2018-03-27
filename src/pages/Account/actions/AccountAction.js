@@ -1,6 +1,8 @@
 import T from '../constants/AccountConstant'
 import Req from '../reqs/AccountReq'
 
+import { hashHistory } from 'react-router'
+
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
 /**
@@ -95,7 +97,22 @@ export const remove = (id) => {
     dispatch(fetchStart())
 
     Req.delete(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
+      dispatch(fetchSuccess({ delete: true }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+// 登录
+export const login = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    return Req.login(data).then((res) => {
+      // dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+      return res;
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -113,3 +130,5 @@ export function changeViewToList() {
 export function changeViewToView() {
   return dispatch({ view: 'view' });
 }
+
+export { Req };

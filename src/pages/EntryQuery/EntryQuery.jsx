@@ -6,16 +6,7 @@ export default class EntryQuery extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      iscompont: '',
-      Component: '',
-      code:''
-    };
-  }
-  componentWillMount() {
-    this.state.Component = <FilterTable toggleComponent={this.changeComponent} code={this.getLoanCode}/>
-    // this.state.Component = <LoanDetails toggleComponent={this.changeComponent}
-    //                                     code={this.state.code}/>
+    this.state = {};
   }
   getLoanCode = (data) => {
     this.state.code = data.code;
@@ -27,18 +18,12 @@ export default class EntryQuery extends Component {
     switch (this.state.iscompont) {
       case 'FilterTable':
         this.setState({
-          Component:<FilterTable
-                      toggleComponent={this.changeComponent}
-                      code={this.getLoanCode}
-                    />
+          Component:<FilterTable {...this.props}/>
         })
         break;
       case 'LoanDetails':
         this.setState({
-          Component:<LoanDetails
-                      toggleComponent={this.changeComponent}
-                      code={this.state.code}
-                    />
+          Component:<LoanDetails {...this.props}/>
         })
         break;
       default:
@@ -49,7 +34,7 @@ export default class EntryQuery extends Component {
   render() {
     return (
       <div className="entry-query-page">
-        {this.state.Component}
+        <FilterTable  {...this.props}/>
       </div>
     );
   }
