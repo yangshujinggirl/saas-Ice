@@ -38,18 +38,10 @@ export default class EnhanceTable extends Component {
   }
 
   componentDidMount() {
-    this.queryCache.page = 1;
-    this.fetchData();
-  }
-
-  fetchData = () => {
+    console.log('filterTable componentDidMount')
     let {actions} = this.props;
-    actions.search(this.queryCache);
-
-    // this.props.updateBindingData('tableData', {
-    //   data: this.queryCache,
-    // });
-  };
+    this.props.actions.search();
+  }
 
   renderTitle = (value, index, record) => {
     return (

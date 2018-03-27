@@ -1,5 +1,5 @@
 import [MODULE] from './';
-import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterResponsiveLayout";
+import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
   path: "/[ROUTERPATH]",
@@ -13,7 +13,7 @@ export default {
     path: 'detail/:id',
     component: [MODULE].[MODULE]Detail
   }],
-  component: HeaderAsideFooterResponsiveLayout,
+  component: Layout,
   indexRoute: {
     component: [MODULE].[MODULE]
   }
