@@ -18,6 +18,7 @@ const backgroundImage = require('./admin-login-bg.png');
 
 import {hashHistory} from 'react-router';
 import {Storage} from '../../../../base/utils';
+import AccountReq from '../../reqs/AccountReq';
 
 export default class UserLogin extends Component {
   static displayName = 'UserLogin';
@@ -50,7 +51,9 @@ export default class UserLogin extends Component {
         console.log('errors', errors);
         return;
       }
-      this.props.actions.login(values).then((res) => {
+      AccountReq.login(values).then((res) => {
+        console.log('AccountReq login',res)
+        if(!res || res.code != 200) return;
         Feedback.toast.success('登录成功');
 
         Storage.set('MENUS', (res.data.leaf));

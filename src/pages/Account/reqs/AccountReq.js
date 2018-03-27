@@ -36,7 +36,7 @@ class AccountReq extends CurdReq{
 	 */
 	login(data){
 		let options = {
-			url: 'http://172.16.0.211:8080/crm/saas/login',
+			url: '/crm/saas/login',
 			method: 'POST',
 			contentType: 'application/json',
 			data: data

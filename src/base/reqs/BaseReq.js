@@ -44,10 +44,7 @@ class BaseReq {
       })
       .then(this._processResponse)
       // .then(this._processData)
-      .catch((error) => {
-        console.error('request failed', error)
-        this._processError(error);
-      })
+      .catch(this._processError)
   }
 
   _processHost(url, isJava) {
