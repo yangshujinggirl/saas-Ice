@@ -38,7 +38,10 @@ export default class EnhanceTable extends Component {
   }
 
   componentDidMount() {
-    console.log('filterTable componentDidMount')
+    this.fetchData();
+  }
+
+  fetchData = () => {
     let {actions} = this.props;
     this.props.actions.search();
   }

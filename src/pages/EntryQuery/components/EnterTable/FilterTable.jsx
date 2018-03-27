@@ -33,6 +33,10 @@ export default class EnhanceTable extends Component {
     this.queryCache = {};
     this.state = {
       filterFormValue: {},
+      list: [],
+      total: 100,
+      pageSize: 10,
+      currentPage: 1,
     };
   }
 
@@ -43,10 +47,9 @@ export default class EnhanceTable extends Component {
   }
 
   fetchData = () => {
-    this.props.updateBindingData('tableData', {
-      data:this.queryCache ,
-    });
-    // console.log(this.queryCache)
+    let {actions} = this.props;
+    actions.search(this.queryCache);
+
   };
 
   renderTitle = (value, index, record) => {
@@ -69,7 +72,7 @@ export default class EnhanceTable extends Component {
     this.props.code(record);
     this.props.toggleComponent('LoanDetails');
   }
-
+  //修改和详情按钮
   renderOperations = (value, index, record) => {
     return (
       <div
@@ -103,7 +106,7 @@ export default class EnhanceTable extends Component {
       </IceLabel>
     );
   };
-
+  //改变页码
   changePage = (currentPage) => {
     this.queryCache.page = currentPage;
 
@@ -134,9 +137,8 @@ export default class EnhanceTable extends Component {
   };
 
   render() {
-    const tableData = this.props.bindingData.tableData;
+    const tableData = this.props.pageData || {};
     const { filterFormValue } = this.state;
-    // console.log(tableData)
     return (
       <div className="filter-table">
         <IceContainer title="查询" className='subtitle'>
