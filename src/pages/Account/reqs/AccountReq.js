@@ -10,6 +10,7 @@ class AccountReq extends CurdReq{
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
             retrieve: this._host + '/filter-table-list.json',
+            retrieve: this._host + '/fields?isFixed=true',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }
@@ -35,7 +36,7 @@ class AccountReq extends CurdReq{
 	 */
 	login(data){
 		let options = {
-			url: this._host + '/login',
+			url: 'http://172.16.0.211:8080/crm/saas/login',
 			method: 'POST',
 			contentType: 'application/json',
 			data: data
