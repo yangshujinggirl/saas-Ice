@@ -4,10 +4,12 @@
  */
 import AccountReducer from "./pages/Account/reducers/AccountReducer.js"
 import DemoReducer from "./pages/Demo/reducers/DemoReducer.js"
+import EntryQueryReducer from "./pages/EntryQuery/reducers/EntryQueryReducer.js"
 import ProductReducer from "./pages/Product/reducers/ProductReducer.js"
 
 export default {
     AccountReducer,
     DemoReducer,
+    EntryQueryReducer,
     ProductReducer,
 };
