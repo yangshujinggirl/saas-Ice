@@ -52,6 +52,7 @@ export default class LoanDetails extends Component {
   };
   render() {
     const details = this.props.bindingData.details;
+    console.log(details)
     return (
       <div className="rcontent-edito">
         <IceFormBinderWrapper
@@ -61,7 +62,7 @@ export default class LoanDetails extends Component {
           value={this.state.value}
           onChange={this.formChange}
         >
-            <Detail dataSource={details.list}></Detail>
+            <Detail dataSource={details.fields}></Detail>
         </IceFormBinderWrapper>
         <div className='botton-box'>
           <Button className='botton' onClick={this.props.toggleComponent.bind(this,'FilterTable')}>返回</Button>
