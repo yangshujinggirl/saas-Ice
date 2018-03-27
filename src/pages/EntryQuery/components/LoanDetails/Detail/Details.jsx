@@ -17,7 +17,7 @@ export default class Details extends Component {
     };
   }
   render() {
-    console.log(this.props.dataSource);
+    // console.log(this.props.dataSource);
     if(this.props.dataSource){
       this.props.dataSource.forEach((item,index)=>{
         this.state.Component.push(
@@ -26,7 +26,7 @@ export default class Details extends Component {
               {item.fields.map((i,index1)=>{
                 return(
                   <div className='config-font' key={index1}>
-                    <div>{i.name}</div>
+                    <div>{i.label}</div>
                     <span>:</span>
                     <div>{i.value}</div>
                   </div>

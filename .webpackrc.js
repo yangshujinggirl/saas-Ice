@@ -12,6 +12,12 @@ module.exports = {
                     res.set('X-ICE-PROXY-BY', proxyTarget);
                 },
             },
+          'test': {
+              target: proxyTarget,
+            changeOrigin: true
+          }
         },
     },
+
+
 };
