@@ -1,4 +1,4 @@
-import T from '../constants/DemoConstant'
+import T from '../constants/AccountConstant'
 
 const index = (state = {
   isFetching: false,

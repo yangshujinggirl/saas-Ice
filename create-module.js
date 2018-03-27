@@ -5,6 +5,7 @@
  * 
  */
 const fs = require('fs');
+const child_process = require('child_process');
 const baseDir = './src/pages';
 const baseTempDir = './template';
 const folderSep = '/';
@@ -80,6 +81,11 @@ try {
             })
         }
     })
+
+    // 创建模块后，重新生成reducer、router
+    child_process.execSync('node generate-reducer.js');
+    child_process.execSync('node generate-router.js');
+
 } catch (ex) {
     console.log(ex);
 }
@@ -95,9 +101,9 @@ function copyFile(fileName, sourcePath, targetPath) {
 }
 
 function getRouterPath(folderName, moduleName) {
-    if (folderName == moduleName.toLowerCase()) {
-        return folderName;
+    if (folderName.toLowerCase() == moduleName.toLowerCase()) {
+        return folderName.toLowerCase();
     } else {
-        return folderName + '-' + moduleName.toLowerCase();
+        return folderName.toLowerCase() + '-' + moduleName.toLowerCase();
     }
 }
