@@ -115,11 +115,8 @@ export default class EnhanceTable extends Component {
       filterFormValue: {},
     });
   };
-  toggleCompont = () => {
-    this.props.toggleCompont("SearchTable")
-  };
   toggleAddFont = () => {
-    this.props.toggleCompont("AddFont")
+    this.props.router.push('/font/add')
   };
   render() {
     const tableData = this.props.bindingData.tableData;

@@ -27,7 +27,8 @@ export default class setFont extends Component {
         scrollToFirstError: true
     })
     toggleCompont = () => { 
-        this.props.toggleCompont('SetFontView')
+        console.log(324)
+        this.props.router.push('/font/view')
       }
     handleSort = (sortedArray) => {
         this.setState({
@@ -49,7 +50,9 @@ export default class setFont extends Component {
             arraList: newArr
         });
     }
-
+    upPage = () => {
+        this.props.router.go(-1)
+    }
 
     render() {
         const { init, setValue, getValue } = this.field;
@@ -73,7 +76,7 @@ export default class setFont extends Component {
         ];
         const footer = (
             <div>
-                <Button type="primary" style={{ marginLeft: '10px' }} onClick={this.toggleCompont}>
+                <Button type="primary" style={{ marginLeft: '10px' }}>
                     提交
                 </Button>
                 <Button type="secondary" style={{ marginLeft: '10px' }} onClick={this.onClose}>
@@ -143,12 +146,14 @@ export default class setFont extends Component {
                         <div className='submit'>
                             <Button
                                 type="primary"
-                                style={{ marginLeft: '10px' }}>
+                                style={{ marginLeft: '10px' }}
+                                onClick={this.upPage}>
                                 上一步
                             </Button>
                             <Button
                                 type="secondary"
-                                style={{ marginLeft: '10px' }}>
+                                style={{ marginLeft: '10px' }}
+                                onClick={this.toggleCompont}>
                                 提交
                             </Button>
                             <Button
