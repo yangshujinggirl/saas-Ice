@@ -14,13 +14,10 @@ export default class EntryQuery extends Component {
   }
   componentWillMount() {
     this.state.Component = <FilterTable toggleComponent={this.changeComponent} code={this.getLoanCode}/>
-    // this.state.Component = <LoanDetails toggleComponent={this.changeComponent.bind(this)}/>
+    // this.state.Component = <LoanDetails toggleComponent={this.changeComponent}
+    //                                     code={this.state.code}/>
   }
   getLoanCode = (data) => {
-    console.log(data);
-    // this.setState({
-    //   code : data.code
-    // })
     this.state.code = data.code;
     console.log(this.state.code);
   }
@@ -32,7 +29,7 @@ export default class EntryQuery extends Component {
         this.setState({
           Component:<FilterTable
                       toggleComponent={this.changeComponent}
-                      code={this.getLoanCode.bind(this)}
+                      code={this.getLoanCode}
                     />
         })
         break;

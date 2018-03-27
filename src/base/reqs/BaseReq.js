@@ -79,7 +79,7 @@ class BaseReq {
    * 处理数据正确性，数据验证错误抛出异常
    */
   _processData(data) {
-    if (data.status == 'SUCCESS') {
+    if (data.code == 200) {
       return data;
     } else if (data.status == 401) {
       return;

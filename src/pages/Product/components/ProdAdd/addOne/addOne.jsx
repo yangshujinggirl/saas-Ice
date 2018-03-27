@@ -12,7 +12,7 @@ import {
   Field,
   Table,
 } from '@icedesign/base';
-
+import DataBinder from '@icedesign/data-binder';
 import IceContainer from '@icedesign/container';
 // import CellEditor from './CellEditor';
 // form binder 详细用法请参见官方文档
@@ -21,20 +21,34 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-
-
 import './addOne.scss';
+
 const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
-
-
 const { MonthPicker, YearPicker, RangePicker } = DatePicker;
 
 const generatorData = () => {
-  return Array.from({ length: 3 }).map((item, index) => {
+  return Array.from({ length: 0 }).map((item, index) => {
     return {
-
+    };
+  });
+};
+const generatorData2 = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
+    };
+  });
+};
+const generatorData3 = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
+    };
+  });
+};
+const generatorData4 = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
     };
   });
 };
@@ -56,6 +70,9 @@ export default class AddOne extends Component {
     super(props);
     this.state = {
       dataSource: generatorData(),
+      dataSource2: generatorData2(),
+      dataSource3: generatorData3(),
+      dataSource4: generatorData4(),
     };
   }
   //列表编辑删除
@@ -114,24 +131,114 @@ export default class AddOne extends Component {
     });
   };
 
-
-  addNewItem = () => {
+  addNewItem = (index) => {
     this.state.dataSource.push({
-      todo: '暂无',
-      memo: '暂无',
-      validity: '暂无',
+      applyTermRangeMin:<Input placeholder="最小期限(必填)" />,
+      applyTermRangeMax:<Input placeholder="最大期限(必填)" />,
+      applyLoanPercentageMax:<Input placeholder="最小成数(必填)" />,
+      applyLoanPercentageMax:<Input placeholder="最大成数(必填)" />,
+      quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn" type="button">删除</button>,
     });
     this.setState({
       dataSource: this.state.dataSource,
     });
   };
+  addNewItem2 = (index) =>{
+    this.state.dataSource2.push({
+      channelTypes:<Input placeholder="渠道(必填)" />,
+      interestRatesRangeMin:<Input placeholder="最小执行年利率(必填)" />,
+      interestRatesRangeMax:<Input placeholder="最大执行年利率(必填)" />,
+      quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn" type="button">删除</button>,
+     
+    })
+    this.setState({
+      dataSource2: this.state.dataSource2,
+    });
+  }
+  addNewItem3 = (index) =>{
+    this.state.dataSource3.push({
+      repaymentMethods:<Select style={styles.filterTool}> 
+                        <option value="Equal_Quota">等额还款</option> 
+                        <option value="Equal_Principal">等本还款</option> 
+                        <option value="With_Interest">利随本清</option> 
+                        <option value="Net_Interest">净息还款</option> 
+                        <option value="With_Interest_Extend">利随本清(宽限期)</option> 
+                        <option value="Net_Interest_Extend">净息还款(宽限期)</option> 
+                        <option value="Fixed_Quota">固定额还款</option> 
+                        <option value="Section_End">分段式还款(固定末段外的每段还款额)</option> 
+                        <option value="Section_Each">分段式还款(固定各阶段本金偿还比例)</option> 
+                        <option value="Ladder">阶梯还款</option> 
+                      </Select>,
+      fixedAmount:<Input placeholder="固定金额(必填)" />,
+      gracePeriod:<Input placeholder="宽限期期限(必填)" />,
+      repaymentExpirationGracePeriod:<Select style={styles.filterTool}> 
+                      <option value="Equal_Quota">等额还款</option> 
+                      <option value="Equal_Principal">等本还款</option> 
+                      <option value="With_Interest">利随本清</option> 
+                      <option value="Net_Interest">净息还款</option> 
+                      <option value="With_Interest_Extend">利随本清(宽限期)</option> 
+                      <option value="Net_Interest_Extend">净息还款(宽限期)</option> 
+                      <option value="Fixed_Quota">固定额还款</option> 
+                      <option value="Section_End">分段式还款(固定末段外的每段还款额)</option> 
+                      <option value="Section_Each">分段式还款(固定各阶段本金偿还比例)</option> 
+                      <option value="Ladder">阶梯还款</option> 
+                  </Select>,
+        quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn"type="button">删除</button>,
+     
+    })
+    this.setState({
+      dataSource3: this.state.dataSource3,
+    });
+  }
+addNewItem4 = (index) =>{
+  this.state.dataSource4.push({
+       loanTermMin:<Input placeholder="最小期限(必填)" />,
+      loanTermMax:<Input placeholder="最大期限(必填)" />,
+      termUnit:<Input placeholder="期限单位(必填)" />,
+      penaltyPercentage:<Input placeholder="违约金比例(必填)" />,
+      quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn"type="button">删除</button>,
+   
+  })
+  this.setState({
+    dataSource4: this.state.dataSource4,
+  });
+}
 
+
+formChange = (value) => {
+  this.setState({
+    value,
+  });
+};
+
+  changeView = (e) => {
+    // this.refs.form.validateAll((errors, values) => {
+    //   console.log('values', values);
+    // });
+    this.props.changeView('addTwo');
+  }
+  checkRes = (rule, values, callback) => {
+    if (!values) {
+      callback('请输入...');
+    } else if (values < '0'||0) {
+      callback('必须大于0');
+    } else if (values.length > 16) {
+      callback('金额上');
+    } else {
+      callback();
+    }
+  };
+  // value={this.props.value}
+  //onChange={this.props.onChange}
   render() {
     return (
       <IceFormBinderWrapper
-        value={this.props.value}
-        onChange={this.props.onChange}
-      >
+       
+        ref='form'
+        value={this.state.value}
+        onChange={this.formChange}
+
+        >
         <div>
           <IceContainer>
             <legend className="legend">
@@ -140,31 +247,48 @@ export default class AddOne extends Component {
             <div className="f-box">
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}><label className="label-required">*</label>产品编号</label>
+                  <label style={styles.filterTitle}><label className="label-required">*</label>资金方</label>
                   <IceFormBinder
                     name="productCode"
+                    required
+                    message="必填"
+                    validator={this.check}
                   >
-                    <Input placeholder="产品编号" />
+                   <Select
+                      name="productCode"
+                      placeholder="请选择"
+                      style={styles.filterTool}
+                    >
+                      <Option value="option1">中国</Option>
+                      <Option value="option2">美国</Option>
+                      
+                    </Select>
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="productCode" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>产品名称</label>
                   <IceFormBinder
                     name="prodName"
                   >
-                    <Input placeholder="产品编号" />
+                    <Input placeholder="产品编号" 
+                       required 
+                       message="必填"
+                    />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="prodName" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>合同显示名称</label>
                   <IceFormBinder
                     name="pritName"
                   >
-                    <Input placeholder="合同显示名称" />
+                    <Input placeholder="合同显示名称"
+                      required 
+                      message="必填"
+                    />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="pritName" />
                 </Col>
               </Row>
               <Row wrap>
@@ -173,6 +297,8 @@ export default class AddOne extends Component {
                   <IceFormBinder>
                     <Select
                       name="prodType"
+                      required 
+                       message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -183,12 +309,15 @@ export default class AddOne extends Component {
                       <Option value="option5">保费贷</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="prodType"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>业务表单</label>
                   <IceFormBinder>
                     <Select
                       name="busList"
+                      required 
+                       message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -198,12 +327,15 @@ export default class AddOne extends Component {
                       <Option value="option4">通用表单</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="busList"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>资料收取清单</label>
                   <IceFormBinder>
                     <Select
                       name="dataList"
+                      required 
+                      message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -211,18 +343,27 @@ export default class AddOne extends Component {
                       <Option value="option2">新车贷</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="dataList"/>
                 </Col>
               </Row>
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><span className="label-required">*</span>生效日期</label>
-                  <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
+                  <IceFormBinder
+                    name="effectiveDate"
+                  >
+                     <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
+                  </IceFormBinder>
+                  <IceFormError name="effectiveDate" />
+                 
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>允许贴息</label>
                   <IceFormBinder>
                     <Select
                       name="isPermittedDiscount"
+                      required 
+                      message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -230,12 +371,15 @@ export default class AddOne extends Component {
                       <Option value="option2">否</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="isPermittedDiscount"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>状态</label>
                   <IceFormBinder>
                     <Select
                       name="status"
+                      required 
+                      message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -243,6 +387,7 @@ export default class AddOne extends Component {
                       <Option value="option2">未生效</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="status"/>
                 </Col>
               </Row>
               <Row wrap>
@@ -250,7 +395,9 @@ export default class AddOne extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>尾款产品</label>
                   <IceFormBinder>
                     <Select
-                      name="size"
+                      name="isRetainage"
+                      required 
+                      message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -258,6 +405,7 @@ export default class AddOne extends Component {
                       <Option value="option2">否</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="isRetainage"/>
                 </Col>
               </Row>
               <Row wrap>
@@ -299,7 +447,9 @@ export default class AddOne extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>支付方式</label>
                   <IceFormBinder>
                     <Select
-                      name="size"
+                      name="paymentOfLoan"
+                      required 
+                      message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -307,11 +457,12 @@ export default class AddOne extends Component {
                       <Option value="option2">自助支付</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="paymentOfLoan"/>
                 </Col>
               </Row>
               <Row wrap>
                 <label style={styles.filterTitle}>产品描述</label>
-                <textarea rows="4" cols="120"> </textarea>
+                <Input multiple style={{ width: '50%' }} />
               </Row>
             </div>
             <legend className="legend">
@@ -340,52 +491,65 @@ export default class AddOne extends Component {
                   <label style={styles.filterTitle}><label className="label-required">*</label>申请金额范围(元)</label>
                   <IceFormBinder
                     name="applyAmountMin"
+                    required 
+                    message="必填"
+                    validator={this.checkRes}
                   >
                     <Input style={{ width: '95px' }} />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="applyAmountMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
                     name="applyAmountMax"
+                    required 
+                    message="必填"
                   >
                     <Input style={{ width: '95px' }} />
 
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="applyAmountMax" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>期限范围(月)</label>
                   <IceFormBinder
                     name="applyTermRangeMin"
+                    required 
+                    message="必填"
                   >
                     <Input style={{ width: '95px' }} />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="applyTermRangeMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
                     name="applyTermRangeMax"
+                    required 
+                    message="必填"
                   >
                     <Input style={{ width: '95px' }} />
 
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="applyTermRangeMax" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>贷款比率(%)</label>
                   <IceFormBinder
                     name="applyLoanPercentageMin"
+                    required 
+                    message="必填"
                   >
                     <Input style={{ width: '95px' }} />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="applyLoanPercentageMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
                     name="applyLoanPercentageMax"
+                    required 
+                    message="必填"
                   >
                     <Input style={{ width: '95px' }} />
 
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="applyLoanPercentageMax" />
                 </Col>
               </Row>
               <div className="table-title">产品成数设置</div>
@@ -395,11 +559,11 @@ export default class AddOne extends Component {
                 className="table"
               >
                 {/* <Table.Column  title="产品成数设置" /> */}
-                <Table.Column title="最小期限(月)" />
-                <Table.Column title="最大成数(%)" />
-                <Table.Column title="最小成数(%)" />
-                <Table.Column title="最大期限(月)" />
-                <Table.Column title="操作" width={80}  />
+                <Table.Column title="最小期限(月)" dataIndex="applyTermRangeMin" />
+                <Table.Column title="最大成数(%)"  dataIndex="applyTermRangeMax"/>
+                <Table.Column title="最小成数(%)"  dataIndex="applyLoanPercentageMax"/>
+                <Table.Column title="最大期限(月)"  dataIndex="applyLoanPercentageMax"/>
+                <Table.Column title="操作" width={80}  dataIndex="quotaRemove"/>
               </Table>
               <div style={styles.addNew}>
                 <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
@@ -426,7 +590,10 @@ export default class AddOne extends Component {
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>定价利率规则</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                      name="interestRateRules"
+                      required 
+                       message="必填">
                     <Select
                       name="interestRateRules"
                       placeholder="请选择"
@@ -435,10 +602,15 @@ export default class AddOne extends Component {
                       <Option value="option1">产品定价</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="interestRateRules"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>利率模式</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="interestRateModel"
+                    required 
+                    message="必填"
+                  >
                     <Select
                       name="interestRateModel"
                       placeholder="请选择"
@@ -447,6 +619,7 @@ export default class AddOne extends Component {
                       <Option value="option1">固定利率</Option>
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="interestRateModel"/>
                 </Col>
               </Row>
               <Row wrap>
@@ -454,24 +627,33 @@ export default class AddOne extends Component {
                   <label style={styles.filterTitle}><label className="label-required">*</label>执行年利率范围(%)</label>
                   <IceFormBinder
                     name="interestRatesRangeMin"
+                    required 
+                    message="必填"
                   >
-                    <Input style={{ width: '95px' }} />
+                    <Input 
+                      
+                      style={{ width: '95px' }}
+                     />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="interestRatesRangeMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
                     name="interestRatesRangeMax"
+                    required 
+                    message="必填"
                   >
-                    <Input style={{ width: '95px' }} />
-
+                    <Input style={{ width: '95px' }} 
+                    />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="interestRatesRangeMax" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>利率基准日
                   </label>
                   <IceFormBinder
                     name="interestRateBaseDate"
+                    required 
+                    message="必填"
                   >
                     <Select
                       name="interestRateBaseDate"
@@ -483,21 +665,22 @@ export default class AddOne extends Component {
 
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="interestRateBaseDate" />
                 </Col>
               </Row>
               <div className="table-title">产品利率设置</div>
               <Table
-                dataSource={this.state.dataSource}
+              dataSource={this.state.dataSource2}
                 hasHeader
                 className="table"
               >
-                <Table.Column title="渠道" width={280} cell={this.renderText} />
-                <Table.Column title="最小执行年利率(%)" />
-                <Table.Column title="最大执行年利率(%)" />
-                <Table.Column title="操作" width={80} cell={this.renderOperation} />
+                <Table.Column title="渠道" width={280} dataIndex="channelTypes" />
+                <Table.Column title="最小执行年利率(%)" dataIndex="interestRatesRangeMin"/>
+                <Table.Column title="最大执行年利率(%)" dataIndex="interestRatesRangeMax"/>
+                <Table.Column title="操作" width={80} dataIndex="quotaRemove"/>
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewItem2} style={styles.addNewItem}>新增一行</Button>
               </div>
             </div>
 
@@ -568,23 +751,23 @@ export default class AddOne extends Component {
               </Row>
               <div className="table-title">还款方式设置</div>
               <Table
-                dataSource={this.state.dataSource}
+              dataSource={this.state.dataSource3}
                 hasHeader
                 className="table"
               >
-                <Table.Column title="还款方式" width={280} />
-                <Table.Column title="固定金额(元)" />
-                <Table.Column title="宽限期期限(天)" />
-                <Table.Column title="宽限期失效后还款方式" />
-                <Table.Column title="操作" width={80} cell={this.renderOperation} />
+                <Table.Column title="还款方式" width={280} dataIndex="repaymentMethods"/>
+                <Table.Column title="固定金额(元)"  dataIndex="fixedAmount"/>
+                <Table.Column title="宽限期期限(天)" dataIndex="gracePeriod"/>
+                <Table.Column title="宽限期失效后还款方式" dataIndex="repaymentExpirationGracePeriod"/>
+                <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewItem3} style={styles.addNewItem}>新增一行</Button>
               </div>
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>提前还款</label>
                 <Col style={styles.filterCol}>
-                  <RadioGroup dataSource={list} />
+                  <RadioGroup dataSource={list} defaultValue={"allow"}/>
                 </Col>
               </Row>
               <Row wrap>
@@ -592,25 +775,33 @@ export default class AddOne extends Component {
                   <label style={styles.filterTitle}><label className="label-required">*</label>最小提前还款金额</label>
                   <IceFormBinder
                     name="prepaymentAmountMin"
+                    required 
+                    message="必填"
                   >
                     <Input placeholder="最小提前还款金额" />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="prepaymentAmountMin" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>早提前还款期数</label>
                   <IceFormBinder
                     name="prepaymentPeriodsLimit"
+                    required 
+                    message="必填"
                   >
                     <Input placeholder="早提前还款期数" />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="prepaymentPeriodsLimit" />
                 </Col>
               </Row>
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>违约金计算基础</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                     name="penaltyBasicAmount"
+                     required 
+                     message="必填"
+                  >
                     <Select
                       name="penaltyBasicAmount"
                       placeholder="请选择"
@@ -624,7 +815,11 @@ export default class AddOne extends Component {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>违约金计算方式</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="penaltyCalculationType"
+                    required 
+                    message="必填"
+                  >
                     <Select
                       name="penaltyCalculationType"
                       placeholder="请选择"
@@ -637,21 +832,21 @@ export default class AddOne extends Component {
               </Row>
               <div className="table-title">提前还款方式设置</div>
               <Table
-                dataSource={this.state.dataSource}
+                dataSource={this.state.dataSource4}
                 hasHeader
                 className="table"
               >
-                <Table.Column title="最小期限" width={280} />
-                <Table.Column title="最大期限(元)" />
-                <Table.Column title="期限单位" />
-                <Table.Column title="违约金比例(%)" />
-                <Table.Column title="操作" width={80} cell={this.renderOperation} />
+                <Table.Column title="最小期限" width={280} dataIndex="loanTermMin"/>
+                <Table.Column title="最大期限(元)" dataIndex="loanTermMax"/>
+                <Table.Column title="期限单位" dataIndex="termUnit"/>
+                <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage"/>
+                <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewItem4} style={styles.addNewItem}>新增一行</Button>
               </div>
               <div className="next-btn-box">
-                <div className="next-btn-lx">下一步</div>
+                <div className="next-btn-lx" onClick={this.changeView}>下一步</div>
               </div>
             </div>
           </IceContainer>

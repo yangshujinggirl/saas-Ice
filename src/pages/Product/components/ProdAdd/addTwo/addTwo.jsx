@@ -26,7 +26,6 @@ const dataSource = (() => {
     dataSource.push({
       label: `content${i+1}`,
       value: `${i}`,
-      disabled: i % 4 === 0
     });
   }
 
@@ -69,7 +68,10 @@ export default class addTwo extends Component {
       
     };
   }
-
+  changeView = () =>  {
+    // this.props.changeView('addThree')
+    console.log("保存")
+  }
   render() {
     return (
       <IceFormBinderWrapper
@@ -88,7 +90,7 @@ export default class addTwo extends Component {
                 </Col>
               </Row>
               <Row wrap style={styles.formItem}>
-                <Col s="4" l="4">
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <IceFormBinder
                     name="car-brand"
                   >
@@ -96,29 +98,32 @@ export default class addTwo extends Component {
                   </IceFormBinder>
                   <IceFormError name="name" />
                 </Col>
-                <Col>
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <button style={styles.btns} type='submit' onClick={this.onSubmit}>
                     查询
                   </button>
                 </Col>
               </Row>
-              <Row wrap>
-                <Transfer  
-                defaultValue={["3"]}
-                dataSource={dataSource}
-                defaultLeftChecked={["1"]}/>
+              <Row wrap style={{marginBottom:"30px"}} >
+                <Transfer 
+                  titles={['测试',' ']}
+                  dataSource={dataSource}
+                  defaultLeftChecked={["0"]}
+                  listStyle={{width:"500px"}}
+                >
+                </Transfer>
               </Row>
           </div>
             <legend className="legend">
               <span className="legLine"></span>按集团/渠道/厅店
             </legend>
             <div className="f-box">
-             <Row wrap>
+             <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <RadioGroup dataSource={list[1]} defaultValue={"carGroup"} />
                 </Col>
               </Row>
-              <Row wrap >
+              <Row wrap style={styles.formItem}>
                 <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <IceFormBinder
                     name="car-group"
@@ -127,17 +132,18 @@ export default class addTwo extends Component {
                   </IceFormBinder>
                   <IceFormError name="name" />
                 </Col>
-                <Col>
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <button style={styles.btns} type='submit' onClick={this.onSubmit}>
                     查询
                   </button>
                 </Col>
               </Row>
-              <Row wrap>
+              <Row wrap style={{marginBottom:"30px"}} >
                 <Transfer  
-                  defaultValue={["3"]}
+                  titles={['测试',' ']}
                   dataSource={dataSource}
-                  defaultLeftChecked={["1"]}/>
+                  defaultLeftChecked={["0"]}
+                  listStyle={{width:"500px"}}/>
               </Row>
             </div>
            
@@ -146,7 +152,7 @@ export default class addTwo extends Component {
             </legend>
             <div className="f-box">
               <Row wrap style={styles.formItem}>
-                <Col s="4" l="4">
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <IceFormBinder
                     name="SP"
                   >
@@ -154,17 +160,18 @@ export default class addTwo extends Component {
                   </IceFormBinder>
                   <IceFormError name="name" />
                 </Col>
-                <Col>
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <button style={styles.btns} type='submit' onClick={this.onSubmit}>
                     查询
                   </button>
                 </Col>
               </Row>
-              <Row wrap>
+              <Row wrap style={{marginBottom:"30px"}} >
                 <Transfer  
-                  defaultValue={["3"]}
+                  titles={['测试',' ']}
                   dataSource={dataSource}
-                  defaultLeftChecked={["1"]}/>
+                  defaultLeftChecked={["0"]}
+                  listStyle={{width:"500px"}}/>
               </Row>
             </div>
 
@@ -173,7 +180,7 @@ export default class addTwo extends Component {
             </legend>
             <div className="f-box">
               <Row wrap style={styles.formItem}>
-                <Col s="4" l="4">
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <IceFormBinder
                     name="mechanism"
                   >
@@ -181,21 +188,22 @@ export default class addTwo extends Component {
                   </IceFormBinder>
                   <IceFormError name="name" />
                 </Col>
-                <Col>
+                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <button style={styles.btns} type='submit' onClick={this.onSubmit}>
                     查询
                   </button>
                 </Col>
               </Row>
-              <Row wrap>
+              <Row wrap style={{marginBottom:"30px"}} >
                 <Transfer  
-                  defaultValue={["3"]}
+                  titles={['测试',' ']}
                   dataSource={dataSource}
-                  defaultLeftChecked={["1"]}/>
+                  defaultLeftChecked={["0"]}
+                  listStyle={{width:"500px"}}/>
               </Row>
             </div>
             <div className="next-btn-box">
-              <div className="next-btn-lx">提交</div>
+              <div className="next-btn-lx" onClick={this.changeView}>保存</div>
             </div>
           </IceContainer>
         </div>

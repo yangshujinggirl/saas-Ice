@@ -12,6 +12,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
+import a from ''
 
 import './searchEditer.scss';
 const { Row, Col } = Grid;
@@ -107,17 +108,18 @@ export default class searchEditer extends Component {
               <Row wrap style={styles.formItem} >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}></label>
-                  <Button>返回</Button>
+                  <a  className="back-btn" href="javascript:history.back(-1);" >返回</a>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                  <label style={styles.filterTitle}></label>
-                 <Button>确定</Button>
+                 <a className="dete-btn" >确定</a>
                 </Col>
               </Row>
               <Row wrap >
                 <Table
                   dataSource={this.state.dataSource}
                   isLoading={this.state.isLoading}
+                  
                 >
                   <Table.Column title="版本" dataIndex="id" width={120} />
                   <Table.Column title="生效日期" dataIndex="title.name" width={250} />

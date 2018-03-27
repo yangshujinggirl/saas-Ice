@@ -1,31 +1,38 @@
 import Demo from './Demo'
-import DemoAdd from './DemoAdd'
+import DemoForm from './DemoForm'
+import DemoDetail from './DemoDetail'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as DemoActions from './actions/DemoAction.js'
 
 const mapStateToProps = (state, ownProps) => {
-  const data = state.DemoReducer;
-  return data;
+    const data = state.DemoReducer;
+    return data;
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    actions: bindActionCreators(DemoActions, dispatch)
-  }
+    return {
+        actions: bindActionCreators(DemoActions, dispatch)
+    }
 }
 
-let demo1 = connect(
-  mapStateToProps,
-  mapDispatchToProps
+let DemoObj = connect(
+    mapStateToProps,
+    mapDispatchToProps
 )(Demo);
 
-let demo2 = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DemoAdd);
+let DemoFormObj = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DemoForm);
+
+let DemoDetailObj = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DemoDetail);
 
 export default {
-  Demo: demo1,
-  DemoAdd: demo2
+	Demo: DemoObj,
+	DemoForm: DemoFormObj,
+	DemoDetail: DemoDetailObj
 }

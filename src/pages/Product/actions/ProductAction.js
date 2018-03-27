@@ -53,7 +53,7 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res.data }))
+      dispatch(fetchSuccess({ pageData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -81,13 +81,24 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ formData: res, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
+// export const getDetail = (id,task) => {
+//   return (dispatch) => {
 
+//     dispatch(fetchStart())
+
+//     Req.getDetail(id, task).then((res) => {
+//       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+//     }).catch((ex) => {
+//       dispatch(fetchFailed(ex))
+//     })
+//   }
+// }
 // 删除一条记录
 export const remove = (id) => {
   return (dispatch) => {
@@ -110,6 +121,8 @@ export function changeViewToList() {
   return dispatch({ view: 'list' });
 }
 
-export function changeViewToView() {
-  return dispatch({ view: 'view' });
+export function changeViewToFileList() {
+  return dispatch({ view: 'filelist' });
 }
+
+

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Router, Route, Link } from 'react-router'
-
+import { Router, Route, Link ,hashHistory} from 'react-router';
+import axios from 'axios';
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 
-import './ProdSearch.scss';
+import './ProdSeachList.scss';
 
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
@@ -32,26 +32,9 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 //组件引入
-import SearchEditer from './searchEditer/searchEditer'
+// import SearchEditer from './searchEditer/searchEditer';
 
-const getMockData = () => {
-  const result = [];
-  for (let i = 0; i < 10; i++) {
-    result.push({
-      id: 100 + i,
-      title: {
-        name: `宝马 ${3 + i}.0`,
-      },
-      type: 'demo示例',
-      template: '是',
-      status: '已发布',
-      publisher: '小马',
-      rate: '5',
-      time: 2000 + i,
-    });
-  }
-  return result;
-};
+
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
   const checked = props.checked === undefined ? props.value : props.checked;
@@ -67,7 +50,7 @@ const SwitchForForm = (props) => {
   );
 };
 
-export default class ProdSearch extends Component {
+export default class ProdSeachList extends Component {
   static displayName = 'ProdSearch';
 
   static defaultProps = {};
@@ -75,53 +58,58 @@ export default class ProdSearch extends Component {
   constructor(props) {
     super(props);
 
+    // 请求参数缓存
+    this.queryCache = {};
     this.state = {
-      selectedRowKeys: [],
-      dataSource: getMockData(),
+      filterFormValue: {},
     };
+
   }
-
-  clearSelectedKeys = () => {
-    this.setState({
-      selectedRowKeys: [],
-    });
+  componentDidMount(){
+    this.props.actions.getDetail();
+    console.log(this.props.formData)
+  }
+  //查看
+  searchItem = (record) => {
+    //hashHistory.push("/proddetail/1")//+ record.id);
   };
 
-  deleteSelectedKeys = () => {
-    const { selectedRowKeys } = this.state;
-    console.log('delete keys', selectedRowKeys);
-  };
-  //删除
-  deleteItem = (record) => {
-    const { id } = record;
-    console.log('delete item', id);
-  };
   //编辑
   editItem = (record) => {
-    const { id } = record;
     let {actions} = this.props;
-    actions.getDetail(record.id);
+
   }
   renderOperator = (value, index, record) => {
     return (
       <div>
-        <button 
+        <button
           className="editbtn"
-          onClick={this.editItem.bind(this, record)}
+          onClick = {this.editItem.bind(this, record)}
         >
           编辑</button>
         <button
-          className="deletbtn"
-          onClick={this.deleteItem.bind(this, record)}
+          className="searchbtn"
+          onClick={this.searchItem.bind(this, record)}
         >
-          删除
+          查看
         </button>
       </div>
     );
   };
+  
+
+  componentWillMount(){ 
+    
+  }
+  componentDidMount() {
+  
+  }
 
   render() {
+    let dataSource = this.props.pageData || {};
+    console.log(dataSource)
     return (
+
       <div className="create-activity-form" style={styles.container}>
         {/* <SearchEditer /> */}
         <IceContainer title="" >
@@ -141,14 +129,14 @@ export default class ProdSearch extends Component {
                     >
                       <Input style={{ width: '175px' }} placeholder="产品编号" />
                     </IceFormBinder>
-                    <IceFormError name="name" />
+                    <IceFormError name="productCode" />
                   </Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                     产品名称：
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="prodName"
+                      name="name	"
                     >
                       <Input style={{ width: '175px' }} placeholder="产品名称" />
                     </IceFormBinder>
@@ -159,16 +147,22 @@ export default class ProdSearch extends Component {
                     产品类型：
                   </Col>
                   <Col s="4" l="4">
-                    <Select
-                      placeholder="请选择"
-                      style={{ width: '175px' }}
-                    >
-                      <Option value="option1">新车贷款</Option>
-                      <Option value="option2">二手车贷款</Option>
-                      <Option value="option3">车抵贷贷款</Option>
-                      <Option value="option4">附加费贷款</Option>
-                      <Option value="option5">保费贷</Option>
-                    </Select>
+                    <IceFormBinder
+                        name="productType"
+                      >
+                       <Select
+                          placeholder="请选择"
+                          style={{ width: '175px' }}
+                        >
+                          <Option value="option1">新车贷款</Option>
+                          <Option value="option2">二手车贷款</Option>
+                          <Option value="option3">车抵贷贷款</Option>
+                          <Option value="option4">附加费贷款</Option>
+                          <Option value="option5">保费贷</Option>
+                        </Select>
+                      </IceFormBinder>
+                    <IceFormError name="productType" />
+                    
                   </Col>
                 </Row>
                 <Row wrap style={styles.formItem}>
@@ -176,13 +170,19 @@ export default class ProdSearch extends Component {
                       状态：
                   </Col>
                   <Col s="4" l="4">
-                    <Select
-                      placeholder="请选择"
-                      style={{ width: '175px' }}
-                    >
-                      <Option value="yes">生效</Option>
-                      <Option value="no">未生效</Option>
-                    </Select>
+                    <IceFormBinder
+                        name="status	"
+                      >
+                        <Select
+                          placeholder="请选择"
+                          style={{ width: '175px' }}
+                        >
+                          <Option value="yes">生效</Option>
+                          <Option value="no">未生效</Option>
+                        </Select>
+                      </IceFormBinder>
+                      <IceFormError name="status" />
+                   
                   </Col>
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
@@ -190,16 +190,16 @@ export default class ProdSearch extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="contractName"
+                      name="contractDisplayName"
                     >
                       <Input style={{ width: '175px' }} placeholder="合同名称" />
                     </IceFormBinder>
-                    <IceFormError name="name" />
+                    <IceFormError name="contractDisplayName" />
                   </Col>
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    <button style={styles.btns} type='submit' onClick={this.onSubmit}>
+                    <button style={styles.btns} type='submit' onClick={this.resetFilter}>
                       查询
                     </button>
                   </Col>
@@ -208,22 +208,22 @@ export default class ProdSearch extends Component {
             </div>
           </IceFormBinderWrapper>
           <Table
-              dataSource={this.state.dataSource}
+              dataSource={dataSource.list}
               isLoading={this.state.isLoading}
               isZebra={true}
             >
-              <Table.Column title="产品编号" dataIndex="id" width={120} />
-              <Table.Column title="产品名称" dataIndex="title.name" width={250} />
-              <Table.Column title="合同显示名称" dataIndex="type" width={160} />
-              <Table.Column title="状态" dataIndex="template" width={100} />
-              <Table.Column title="产品类型" dataIndex="status" width={120} />
-              <Table.Column title="生效期限" dataIndex="rate" width={120} />
-              <Table.Column title="尾款产品" dataIndex="publisher" width={120} />
-              <Table.Column title="资金方" dataIndex="time" width={120} />
-              <Table.Column title="金额范围(元)" dataIndex="time" width={120} />
-              <Table.Column title="期限范围(月)" dataIndex="time" width={120} />
-              <Table.Column title="贷款比率(%)" dataIndex="time" width={120} />
-              <Table.Column title="执行年利率范围(%)" dataIndex="time" width={160} />
+              <Table.Column title="产品编号" dataIndex="productCode" width={160} />
+              <Table.Column title="产品名称" dataIndex="name" width={200} />
+              <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
+              <Table.Column title="状态" dataIndex="status" width={100} />
+              <Table.Column title="产品类型" dataIndex="productType" width={160} />
+              <Table.Column title="生效期限" dataIndex="effectiveDate" width={250} />
+              <Table.Column title="尾款产品" dataIndex="areaId" width={120} />
+              <Table.Column title="资金方" dataIndex="createdUser" width={120} />
+              <Table.Column title="金额范围(元)" dataIndex="provinceId" width={120} />
+              <Table.Column title="期限范围(月)" dataIndex="" width={120} />
+              <Table.Column title="贷款比率(%)" dataIndex="" width={120} />
+              <Table.Column title="执行年利率范围(%)" dataIndex="" width={160} />
               <Table.Column
                 title="操作"
                 cell={this.renderOperator}
@@ -232,7 +232,13 @@ export default class ProdSearch extends Component {
               />
             </Table>
             <div style={styles.pagination}>
-              <Pagination shape="arrow-only" onChange={this.change} />
+              <Pagination 
+                shape="arrow-only" 
+                // current={tableData.currentPage}
+                // pageSize={tableData.pageSize}
+                // total={tableData.total}
+                onChange={this.changePage}
+              />
             </div>
         </IceContainer>    
       </div>

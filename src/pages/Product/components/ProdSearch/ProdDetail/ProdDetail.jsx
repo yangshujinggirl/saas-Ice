@@ -22,17 +22,17 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import './ProdAddDetail.scss';
+import './ProdDetail.scss';
 const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
 
 
-const dataSource ={
+const dataSource1 ={
   title: '产品各种详情'
 }
-export default class ProdAddDetail extends Component {
-  static displayName = 'ProdAddDetail';
+export default class ProdDetail extends Component {
+  static displayName = 'ProdDetail';
 
   constructor(props) {
     super(props);
@@ -53,23 +53,13 @@ export default class ProdAddDetail extends Component {
   };
 
   render() {
+    let dataSource = this.props.formData;
     return (
       <IceFormBinderWrapper
         value={this.props.value}
         onChange={this.props.onChange}
       >
         <div>
-          <div className="pch-breadcrumb">
-            <span className="layui-breadcrumb">
-              <a>平常金服</a>
-              <span className="lay-separator">/</span>
-              <a>产品管理</a>
-              <span className="lay-separator">/</span>
-              <a>
-                <cite>产品新增</cite>
-              </a>
-            </span>
-          </div>
           <IceContainer>
             <legend className="legend">
               <span className="legLine"></span>基本信息
@@ -77,7 +67,7 @@ export default class ProdAddDetail extends Component {
             <div className="f-box">
               <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}>产品编号：</label>
+                <label style={styles.filterTitle}>资金方：</label>
                   <span >{dataSource.title}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
@@ -105,7 +95,7 @@ export default class ProdAddDetail extends Component {
             </Row>
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}><span className="label-required">*</span>生效日期：</label>
+                <label style={styles.filterTitle}>生效日期：</label>
                 <span >{dataSource.title}</span>
               </Col>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>

@@ -1,7 +1,6 @@
 import T from '../constants/DemoConstant'
 
 const index = (state = {
-  title: 'task',
   isFetching: false,
   pageData: {}, //列表分页数据
   formData: { //表单数据

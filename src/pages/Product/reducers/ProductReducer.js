@@ -2,7 +2,12 @@ import T from '../constants/ProductConstant'
 
 const index = (state = {
   isFetching: false,
-  pageData: {}, //列表分页数据
+  pageData: {
+    total: 0,
+    page: 1,
+    limit: 10,
+    list: []
+  }, //列表分页数据
   formData: { //表单数据
     title: '',
     area: 'location1',
@@ -12,7 +17,7 @@ const index = (state = {
     resource: '线下场地免费',
     extra: '',
   },
-  view: 'list' //展示界面类型，list列表、form表单、view详情等
+  view: '' //展示界面类型，list列表、form表单、view详情等
 }, action) => {
   switch (action.type) {
     case T.FETCH_START:

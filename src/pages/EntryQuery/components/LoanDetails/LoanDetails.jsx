@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select } from '@icedesign/base';
+import { Input, Grid, Form, Button, Loading } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
 } from '@icedesign/form-binder';
 import DataBinder from '@icedesign/data-binder/lib/index';
-
+import  Detail from './Detail/index'
+import  './LoanDetails.scss'
+const { Row, Col } = Grid;
 
 
 @DataBinder({
@@ -20,6 +22,7 @@ import DataBinder from '@icedesign/data-binder/lib/index';
     },
   },
 })
+
 
 export default class LoanDetails extends Component {
   static displayName = 'LoanDetails';
@@ -37,51 +40,19 @@ export default class LoanDetails extends Component {
     // 请求参数缓存
     this.queryCache = {};
   }
-  toggleComponent(){
-    this.props.toggleComponent('ConfigInformation');
-  }
-
-  details = () =>{
-
-  }
-
   componentDidMount() {
+    this.queryCache.code = this.props.code;
     this.fetchData();
-  }
 
+  }
   fetchData = () => {
     this.props.updateBindingData('details', {
       data:this.queryCache ,
     });
   };
-
-
-  formChange = (value) => {
-    console.log('value', value);
-    this.setState({
-      value,
-    });
-  };
-
-
-  //下一步
-  next = (event) =>{
-    event.preventDefault()
-  }
-
-  handleSubmit = () => {
-    this.postForm.validateAll((errors, values) => {
-      console.log('errors', errors, 'values', values);
-      if (errors) {
-        return false;
-      }
-
-      // ajax values
-    });
-  };
-
-
   render() {
+    const details = this.props.bindingData.details;
+    console.log(details)
     return (
       <div className="rcontent-edito">
         <IceFormBinderWrapper
@@ -91,27 +62,29 @@ export default class LoanDetails extends Component {
           value={this.state.value}
           onChange={this.formChange}
         >
-          <IceContainer title="车贷申请" className='subtitle'>
-
-
-          </IceContainer>
+            <Detail dataSource={details.fields}></Detail>
         </IceFormBinderWrapper>
+        <div className='botton-box'>
+          <Button className='botton' onClick={this.props.toggleComponent.bind(this,'FilterTable')}>返回</Button>
+        </div>
+
       </div>
     );
   }
 }
 
 const styles = {
-  form: {
-    marginTop: 30,
-  },
-  cats: {
-    width: '100%',
+  bottonBox:{
+    width:'100%',
+    height:'300px',
+    backgroundColor:"#fff",
+    textAlign:'center',
   },
   botton:{
-    backgroundColor :'#FC9E25'
+    backgroundColor :'#FC9E25',
+    width:'100px',
+    hegiht:'80px',
+    maginTop:'50px'
   },
-  select:{
-    width:'200px'
-  }
+
 };

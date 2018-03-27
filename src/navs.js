@@ -45,14 +45,17 @@ const customAsideNavs = [
       {
         text: '产品查询',
         to: '/product/search',
+        children:[]
       },
       {
         text: '新增产品',
         to: '/product/add',
-      },,
+        children:[]
+      },
       {
         text: '资料清单',
-        to: '/product/filelist',
+        to: '/filelist',
+        children:[]
       },
     ],
   },
