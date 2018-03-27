@@ -85,7 +85,9 @@ export default class EnhanceTable extends Component {
           修改
         </a>
         <a
-           className='operate-btn'
+          href="#"
+          target="_blank"
+          className='operate-btn'
            onClick={this.detal.bind(this, record)}
         >
           详情
