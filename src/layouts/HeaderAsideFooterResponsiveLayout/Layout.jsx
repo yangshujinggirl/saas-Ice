@@ -140,7 +140,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   };
 
   render() {
-    const { location = {} } = this.props;
+    const { location = {}, routes } = this.props;
     // console.log(this.props)
     const { pathname } = location;
 
@@ -259,6 +259,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           theme={theme}
           menus={asideNavs}
           pathname={pathname}
+          routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
         />
           

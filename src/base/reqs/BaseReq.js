@@ -3,6 +3,9 @@ import BaseConfig from '../../config/BaseConfig'
 import Cookie from '../utils/Cookie'
 import Storage from '../utils/Storage'
 import Tools from '../utils/Tools'
+import {hashHistory} from 'react-router'
+
+import { Feedback } from "@icedesign/base";
 
 class BaseReq {
 
@@ -13,16 +16,6 @@ class BaseReq {
 
   fetchData(options) {
     var header = {};
-
-    if (Cookie.get('SID')) {
-      // header['userToken'] = Cookie.get('SID');
-    } else {
-      let token = Tools._GET('SID');
-      if (token) {
-        // header['userToken'] = token.SID;
-        Cookie.set('SID', token.SID);
-      }
-    }
 
     if (typeof options.processData == 'undefined') {
       options.processData = true;
@@ -36,7 +29,7 @@ class BaseReq {
       header['Content-type'] = 'application/json';
     }
 
-    if (options.contentType = 'application/json') {
+    if (header['Content-type'] == 'application/json') {
       options.data = JSON.stringify(options.data);
     }
 
@@ -47,8 +40,8 @@ class BaseReq {
         data: options.data,
         params: options.params,
       })
-      .then(this._processResponse)
-      .catch(this._processError)
+      .then(this._processResponse.bind(this))
+      .catch(this._processError.bind(this))
   }
 
   _processHost(url, isJava) {
@@ -122,13 +115,7 @@ class BaseReq {
       return res.data;
     } else {
       // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
-      // Message({
-      //   message: res.data.msg || '未知错误',
-      //   type: 'error',
-      //   duration: 5 * 1000
-      // });
-      // alert(res.data.msg || res.data.message || '未知错误');
-      console.error(res.data.msg || res.data.message || '未知错误');
+      this._showMsg('error', res.data.msg || res.data.message || '未知错误');
       return res.data;
     }
 
@@ -137,16 +124,11 @@ class BaseReq {
   _processError(error) {
     console.log('_processError', error);
 
-    let res = error.response;
+    let res = error.response || error.request;
 
     if (res.status == 401) {
-      // TODO 跳转到登录页
-      Message({
-        message: 'Unauthorized未登录',
-        type: 'error',
-        duration: 5 * 1000
-      });
-      location.href = '/account';
+      this._showMsg('error', 'Unauthorized未登录');
+      hashHistory.push('/account');
       return { status: 401, msg: 'Unauthorized未登录', data: { code: 401 } };
     }
 
@@ -170,11 +152,21 @@ class BaseReq {
       msg = '请求超时，请重试';
     }
 
+    this._showMsg('error', msg);
+
     // 异常状态下，把错误信息返回去
     return {
       code: -404,
       msg: msg
     }
+  }
+
+  _showMsg(type, msg, tick) {
+    // 'success', 'error', 'prompt', 'help', 'loading'  
+    Feedback.toast.show({
+      type: type,
+      content: msg,
+    });
   }
 }
 

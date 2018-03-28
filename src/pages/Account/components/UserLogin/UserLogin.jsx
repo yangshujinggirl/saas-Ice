@@ -31,11 +31,18 @@ export default class UserLogin extends Component {
     super(props);
     this.state = {
       value: {
-        userName: '13800138000',
-        password: '6666',
+        userName: undefined,
+        password: undefined,
         checkbox: false,
       },
     };
+  }
+
+  componentDidMount(){
+    let remember = Storage.get('REMEMBER');
+    if(remember){
+      this.setState({value:{...remember}});
+    }
   }
 
   formChange = (value) => {
@@ -51,9 +58,17 @@ export default class UserLogin extends Component {
         console.log('errors', errors);
         return;
       }
+
       AccountReq.login(values).then((res) => {
         if(!res || res.code != 200) return;
         Feedback.toast.success('登录成功');
+
+        if(values.checkbox){
+          //记住账号
+          Storage.set('REMEMBER', values);
+        }else{
+          Storage.remove('REMEMBER');
+        }
 
         Storage.set('MENUS', (res.data.leaf));
         hashHistory.push('/') //跳转首页
@@ -72,7 +87,7 @@ export default class UserLogin extends Component {
         />
         <div style={styles.contentWrapper} className="content-wrapper">
           <h2 style={styles.slogan} className="slogan">
-            欢迎使用 <br /> 平常金服SASS系统
+            欢迎使用 <br /> 平常金服SAAS系统
           </h2>
           <div style={styles.formContainer}>
             <h4 style={styles.formTitle}>登录</h4>
@@ -118,7 +133,7 @@ export default class UserLogin extends Component {
                 <Row style={styles.formItem}>
                   <Col>
                     <IceFormBinder name="checkbox">
-                      <Checkbox style={styles.checkbox}>记住账号</Checkbox>
+                      <Checkbox style={styles.checkbox} checked={this.state.value.checkbox}>记住账号</Checkbox>
                     </IceFormBinder>
                   </Col>
                 </Row>
