@@ -66,7 +66,7 @@ export default class Filter extends Component {
             </Col>
             <Col xxs={24} xs={12} l={4} style={styles.filterCol}>
               <div>
-                <Button onClick={this.props.toggleCompont} type="normal" className='next-btn-search'>
+                <Button  type="normal" className='next-btn-search'>
                   查询
                 </Button>
                 <Button

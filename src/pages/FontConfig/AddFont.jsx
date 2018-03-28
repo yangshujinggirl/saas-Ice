@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import FilterTable from './components/FilterTable';
+import AddFont from './components/AddFont';
 
 export default class Font extends Component {
-  static displayName = 'FilterTable';
+  static displayName = 'AddFont';
 
   constructor(props) {
     super(props)
   }
-
+  
   render() {
     return (
       <div className="font-config-page">
-        <FilterTable {...this.props}/>
+        <AddFont {...this.props}/>
       </div>
     );
   }
