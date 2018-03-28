@@ -18,6 +18,7 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# code
+# generate code
 src/_routes.js
 src/_reducers.js
+src/_navs.js
