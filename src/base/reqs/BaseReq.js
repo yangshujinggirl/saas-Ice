@@ -40,10 +40,9 @@ class BaseReq {
       options.data = JSON.stringify(options.data);
     }
 
-    console.log(options)
-
-    return axios(options.url, {
-        method: options.method || 'GET',
+    return axios({
+        url: options.url,
+        method: options.method || 'get',
         headers: header,
         data: options.data,
         params: options.params,
