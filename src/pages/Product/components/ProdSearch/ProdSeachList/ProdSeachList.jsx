@@ -76,7 +76,7 @@ export default class ProdSeachList extends Component {
   //编辑
   editItem = (record) => {
     // let {actions} = this.props;
-    hashHistory.push('product/searchedit')
+    hashHistory.push(`product/searchedit/${record.id}`)
   }
   renderOperator = (value, index, record) => {
     return (
@@ -103,7 +103,9 @@ export default class ProdSeachList extends Component {
   componentDidMount() {
   
   }
+  searchBtn(){
 
+  }
   render() {
     let dataSource = this.props.pageData || {};
     console.log(dataSource)
@@ -114,7 +116,7 @@ export default class ProdSeachList extends Component {
         <IceContainer title="" >
           <IceFormBinderWrapper>
             <div>
-              <legend style={styles.legend}>
+              <legend style={styles.legend} onClick={this.searchBtn} >
                 <span style={styles.legLine}></span>查询
               </legend>
               <div style={styles.fieldBox}>

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import IceContainer from '@icedesign/container';
+import { Router, Route, Link ,hashHistory} from 'react-router';
+
 import {
-  FormBinderWrapper as IceFormBinderWrapper,
-  FormBinder as IceFormBinder,
-  FormError as IceFormError,
-} from '@icedesign/form-binder';
-import {
+  Form,
   Input,
   Button,
   Checkbox,
@@ -14,15 +11,61 @@ import {
   Switch,
   Radio,
   Grid,
+  Field,
   Table,
 } from '@icedesign/base';
+import DataBinder from '@icedesign/data-binder';
+import IceContainer from '@icedesign/container';
+// import CellEditor from './CellEditor';
+// form binder 详细用法请参见官方文档
+import {
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
+import './addOne.scss';
 
 const { Row, Col } = Grid;
+const { Option } = Select;
+const { Group: RadioGroup } = Radio;
+const { Group:CheckboxGroup} = Checkbox;
+const { MonthPicker, YearPicker, RangePicker } = DatePicker;
 
-// FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
-const CheckboxGroup = Checkbox.Group;
-const RadioGroup = Radio.Group;
-const { RangePicker } = DatePicker;
+const generatorData = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
+    };
+  });
+};
+const generatorData2 = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
+    };
+  });
+};
+const generatorData3 = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
+    };
+  });
+};
+const generatorData4 = () => {
+  return Array.from({ length: 0 }).map((item, index) => {
+    return {
+    };
+  });
+};
+const list = [
+  {
+    value: "allow",
+    label: "允许",
+    disabled: false
+  },
+  {
+    value: "noallow",
+    label: "不允许"
+  }
+];
 
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
@@ -38,101 +81,191 @@ const SwitchForForm = (props) => {
     />
   );
 };
-
-export default class CreateActivityForm extends Component {
-  static displayName = 'CreateActivityForm';
-
-  static defaultProps = {};
+export default class AddOne extends Component {
+  static displayName = 'AddOne';
 
   constructor(props) {
     super(props);
     this.state = {
+      dataSource: generatorData(),
+      dataSource2: generatorData2(),
+      dataSource3: generatorData3(),
+      dataSource4: generatorData4(),
       value:{
-        tenantId:'',
+        fundParty:'',
         name:'',
         contractDisplayName:'',
         prodType:'',
-        serviceFormType:'',
-        collectionDetailListId:'',
-        effectiveDate:[],
-        isPermittedDiscount:'',
-        status:'',
-        isRetainage:'',
-        purposeOfLoan:[],
-        guaranteeMethodType:[],
-        paymentOfLoan:'',
-        description:'',
-        loanTermChange:[],
-        principalAmountMin:'',
-        principalAmountMax:'',
-        loanTermRangeMin:'',
-        loanTermRangeMax:'',
-        loanPercentageMin:'',
-        loanPercentageMax:'',
-        interestLoanRateChange:[],
-        interestRateRules:'',
-        interestRateModel:'',
-        interestRatesRangeMin:'',
-        interestRatesRangeMax:'',
-        interestRateBaseDate:'',
-        repaymentAccountChange:['Allow_Change'],
-        repaymentPeriodFrequency:['MONTH'],
-        repaymentDateChange:'allow',
-        gancePeriodChange:'allow',
-        repaymentMethodChange:'allow',
-        isEarlyRepaymentAllowed:'allow',
-        prepaymentAmountMin:'',
-        prepaymentPeriodsLimit:'',
-        penaltyBasicAmount:'',
-        penaltyCalculationType:'',
       }
     };
   }
-
-  onFormChange = (value) => {
+  //列表编辑删除
+  renderOperator = (value, index, record) => {
+    return (
+      <div>
+        <button
+          style={styles.removeBtn}
+        >
+          编辑
+        </button>
+        <button
+          style={styles.removeBtn}
+          onClick={this.deleteItem.bind(this, record)}
+        >
+          删除
+        </button>
+      </div>
+    );
+  };
+  // 删除一列
+  deleteItem = (index) => {
+    this.state.dataSource.splice(index, 1);
     this.setState({
-      value,
+      dataSource: this.state.dataSource,
     });
   };
 
-  // reset = () => {
-  //   this.setState({
-  //     value: {
-  //       name: '',
-  //       area: 'location1',
-  //       time: [],
-  //       delivery: false,
-  //       type: ['地推活动'],
-  //       resource: '线下场地免费',
-  //       extra: '',
-  //     },
-  //   });
-  // };
+  // 额度期限设置表格操作内容
+  renderOperation = (value, index) => {
+    return (
+      <button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn">
+        删除
+      </button>
+    );
+  };
+  // 利率设置 表格内容
+  renderText = () => {
+    return (
+      <Select
+        name="size"
+        placeholder="请选择"
+        style={styles.filterTool}
+      >
+        <Option value="option1">集团A/经销商A/展厅A</Option>
+        <Option value="option2">集团B/经销商B</Option>
+        <Option value="option3">集团A/经销商A</Option>
+      </Select>
+    )
+  };
 
-  submit = () => {
-    this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
-      if (error) {
-        // 处理表单报错
-        return;
-      }
-      // 提交当前填写的数据
-      this.props.actions.save(value);
+  changeDataSource = (index, valueKey, value) => {
+    this.state.dataSource[index][valueKey] = value;
+    this.setState({
+      dataSource: this.state.dataSource,
     });
   };
 
+  addNewItem = (index) => {
+    this.state.dataSource.push({
+      applyTermRangeMin:<Input placeholder="最小期限(必填)" />,
+      applyTermRangeMax:<Input placeholder="最大期限(必填)" />,
+      applyLoanPercentageMax:<Input placeholder="最小成数(必填)" />,
+      applyLoanPercentageMax:<Input placeholder="最大成数(必填)" />,
+      quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn" type="button">删除</button>,
+    });
+    this.setState({
+      dataSource: this.state.dataSource,
+    });
+  };
+  addNewItem2 = (index) =>{
+    this.state.dataSource2.push({
+      channelTypes:<Input placeholder="渠道(必填)" />,
+      interestRatesRangeMin:<Input placeholder="最小执行年利率(必填)" />,
+      interestRatesRangeMax:<Input placeholder="最大执行年利率(必填)" />,
+      quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn" type="button">删除</button>,
+     
+    })
+    this.setState({
+      dataSource2: this.state.dataSource2,
+    });
+  }
+  addNewItem3 = (index) =>{
+    this.state.dataSource3.push({
+      repaymentMethods:<Select style={styles.filterTool}> 
+                        <option value="Equal_Quota">等额还款</option> 
+                        <option value="Equal_Principal">等本还款</option> 
+                        <option value="With_Interest">利随本清</option> 
+                        <option value="Net_Interest">净息还款</option> 
+                        <option value="With_Interest_Extend">利随本清(宽限期)</option> 
+                        <option value="Net_Interest_Extend">净息还款(宽限期)</option> 
+                        <option value="Fixed_Quota">固定额还款</option> 
+                        <option value="Section_End">分段式还款(固定末段外的每段还款额)</option> 
+                        <option value="Section_Each">分段式还款(固定各阶段本金偿还比例)</option> 
+                        <option value="Ladder">阶梯还款</option> 
+                      </Select>,
+      fixedAmount:<Input placeholder="固定金额(必填)" />,
+      gracePeriod:<Input placeholder="宽限期期限(必填)" />,
+      repaymentExpirationGracePeriod:<Select style={styles.filterTool}> 
+                      <option value="Equal_Quota">等额还款</option> 
+                      <option value="Equal_Principal">等本还款</option> 
+                      <option value="With_Interest">利随本清</option> 
+                      <option value="Net_Interest">净息还款</option> 
+                      <option value="With_Interest_Extend">利随本清(宽限期)</option> 
+                      <option value="Net_Interest_Extend">净息还款(宽限期)</option> 
+                      <option value="Fixed_Quota">固定额还款</option> 
+                      <option value="Section_End">分段式还款(固定末段外的每段还款额)</option> 
+                      <option value="Section_Each">分段式还款(固定各阶段本金偿还比例)</option> 
+                      <option value="Ladder">阶梯还款</option> 
+                  </Select>,
+        quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn"type="button">删除</button>,
+     
+    })
+    this.setState({
+      dataSource3: this.state.dataSource3,
+    });
+  }
+addNewItem4 = (index) =>{
+  this.state.dataSource4.push({
+       loanTermMin:<Input placeholder="最小期限(必填)" />,
+      loanTermMax:<Input placeholder="最大期限(必填)" />,
+      termUnit:<Input placeholder="期限单位(必填)" />,
+      penaltyPercentage:<Input placeholder="违约金比例(必填)" />,
+      quotaRemove:<button onClick={this.deleteItem.bind(this, index)} shape="text" className="deleteBtn"type="button">删除</button>,
+   
+  })
+  this.setState({
+    dataSource4: this.state.dataSource4,
+  });
+}
+
+
+formChange = (value) => {
+  this.setState({
+    value,
+  });
+};
+
+  changeView = (e) => {
+    // this.refs.form.validateAll((errors, values) => {
+    //   console.log('values', values);
+    // });
+    // this.props.changeView('addTwo');
+  }
+  //下一步
+  NextClick = ()=>{
+    hashHistory.push('product/addtwo')
+  }
+  checkRes = (rule, values, callback) => {
+    if (!values) {
+      callback('请输入...');
+    } else if (values < '0'||0) {
+      callback('必须大于0');
+    } else if (values.length > 16) {
+      callback('金额上');
+    } else {
+      callback();
+    }
+  };
   render() {
     return (
-      <div className="create-activity-form">
-        <IceContainer >
-          <IceFormBinderWrapper
-            ref={(formRef) => {
-              this.formRef = formRef;
-            }}
-            value={this.state.value}
-            onChange={this.onFormChange}
-          >
-            <div>
+      <IceFormBinderWrapper
+        ref='form'
+        value={this.state.value}
+        onChange={this.formChange}
+
+        >
+        <div>
+          <IceContainer>
             <legend className="legend">
               <span className="legLine"></span>基本信息
             </legend>
@@ -141,12 +274,13 @@ export default class CreateActivityForm extends Component {
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>资金方</label>
                   <IceFormBinder
-                    name="tenantId"
+                    name="fundParty"
                     required
                     message="必填"
                     validator={this.check}
                   >
                    <Select
+                      name="fundParty"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -155,7 +289,7 @@ export default class CreateActivityForm extends Component {
                       
                     </Select>
                   </IceFormBinder>
-                  <IceFormError name="tenantId" />
+                  <IceFormError name="fundParty" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>产品名称</label>
@@ -251,12 +385,11 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}><span className="label-required">*</span>生效日期</label>
                   <IceFormBinder
                     name="effectiveDate"
-                    // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
-                    valueFormatter={(date, dateStr) => dateStr}
                   >
-                    <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
+                     <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
                   </IceFormBinder>
-                  
+                  <IceFormError name="effectiveDate" />
+                 
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>允许贴息</label>
@@ -403,7 +536,6 @@ export default class CreateActivityForm extends Component {
                     <div>
                       <IceFormError name="loanTermChange" />
                     </div>
-                    
                 </Col>
               </Row>
               <Row wrap>
@@ -474,7 +606,7 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">产品成数设置</div>
               <Table
-              dataSource={dataSource}
+                dataSource={this.state.dataSource}
                 hasHeader
                 className="table"
               >
@@ -489,7 +621,7 @@ export default class CreateActivityForm extends Component {
                 <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
               </div>
             </div>
-            
+
             <legend className="legend">
               <span className="legLine"></span>利率设置
             </legend>
@@ -597,7 +729,7 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">产品利率设置</div>
               <Table
-              
+              dataSource={this.state.dataSource2}
                 hasHeader
                 className="table"
               >
@@ -610,6 +742,7 @@ export default class CreateActivityForm extends Component {
                 <Button onClick={this.addNewItem2} style={styles.addNewItem}>新增一行</Button>
               </div>
             </div>
+
             <legend className="legend">
               <span className="legLine"></span>还款设置
             </legend>
@@ -648,7 +781,7 @@ export default class CreateActivityForm extends Component {
                           { label: '按两周', value: 'TWO_WEEK' },
                           { label: '按半年', value: 'HALF_YEAR' },
                         ]}
-                        
+                        defaultValue={['MONTH']}
                       />
                     </IceFormBinder>
                     <div>
@@ -662,13 +795,7 @@ export default class CreateActivityForm extends Component {
                 <label style={styles.filterTitle}> <span className="label-required">*</span>还款日变更</label>
                 <Col style={styles.filterCol}>
                 <IceFormBinder name="repaymentDateChange" >
-                  <RadioGroup
-                      className="next-form-text-align"
-                      dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
-                      ]}
-                    />
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="repaymentDateChange"/> 
                 </IceFormBinder>
                     <div>
                       <IceFormError name="repaymentDateChange" />
@@ -680,13 +807,7 @@ export default class CreateActivityForm extends Component {
                 <label style={styles.filterTitle}> <span className="label-required">*</span>宽限期变更</label>
                 <Col style={styles.filterCol}>
                 <IceFormBinder name="gancePeriodChange" >
-                <RadioGroup
-                      className="next-form-text-align"
-                      dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
-                      ]}
-                    />
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="gancePeriodChange"/>
                 </IceFormBinder>
                     <div>
                       <IceFormError name="gancePeriodChange" />
@@ -698,13 +819,7 @@ export default class CreateActivityForm extends Component {
                 <label style={styles.filterTitle}> <span className="label-required">*</span>还款方式变更</label>
                 <Col style={styles.filterCol}>
                 <IceFormBinder name="repaymentMethodChange" >
-                <RadioGroup
-                      className="next-form-text-align"
-                      dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
-                      ]}
-                    />
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="repaymentMethodChange"/> 
                 </IceFormBinder>
                     <div>
                       <IceFormError name="repaymentMethodChange" />
@@ -714,7 +829,7 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">还款方式设置</div>
               <Table
-              
+              dataSource={this.state.dataSource3}
                 hasHeader
                 className="table"
               >
@@ -730,17 +845,11 @@ export default class CreateActivityForm extends Component {
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>提前还款</label>
                 <Col style={styles.filterCol}>
-                <IceFormBinder name="isEarlyRepaymentAllowed" >
-                <RadioGroup
-                      className="next-form-text-align"
-                      dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
-                      ]}
-                    />
+                <IceFormBinder name="repaymentMethodChange" >
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="repaymentMethodChange"/> 
                 </IceFormBinder>
                     <div>
-                      <IceFormError name="isEarlyRepaymentAllowed" />
+                      <IceFormError name="repaymentMethodChange" />
                     </div>
                   
                 </Col>
@@ -807,7 +916,7 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">提前还款方式设置</div>
               <Table
-                
+                dataSource={this.state.dataSource4}
                 hasHeader
                 className="table"
                 primaryKey="id"
@@ -822,35 +931,18 @@ export default class CreateActivityForm extends Component {
                 <Button onClick={this.addNewItem4} style={styles.addNewItem}>新增一行</Button>
               </div>
               <div className="next-btn-box">
-                <div className="next-btn-lx" onClick={this.submit}>下一步</div>
+                <div className="next-btn-lx" onClick={this.NextClick}>下一步</div>
               </div>
             </div>
-            </div>
-          </IceFormBinderWrapper>
-        </IceContainer>
-      </div>
+          </IceContainer>
+        </div>
+      </IceFormBinderWrapper>
     );
   }
 }
 
 const styles = {
-  container: {
-    paddingBottom: 0,
-  },
-  formItem: {
-    height: '28px',
-    lineHeight: '28px',
-    marginBottom: '25px',
-  },
-  formLabel: {
-    textAlign: 'right',
-  },
-  btns: {
-    margin: '25px 0',
-  },
-  resetBtn: {
-    marginLeft: '20px',
-  },filterCol: {
+  filterCol: {
     display: 'flex',
     alignItems: 'center',
     marginBottom: '20px',

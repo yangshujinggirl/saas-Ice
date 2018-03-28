@@ -8,10 +8,10 @@ export default {
       path: 'search',
       component: Product.ProductSearch
     },{
-      path: 'edit/:id',
+      path: 'searchedit/:id',
       component: Product.SearchEdit
     },{
-      path: 'detail/:id',
+      path: 'proddetail/:id',
       component: Product.ProductDetail
     },{
       path: 'add',
@@ -20,7 +20,7 @@ export default {
       path: 'addone',
       component: Product.AddOne
     },{
-      path: 'addtwo',
+      path: 'addtwo/:id',
       component: Product.AddTwo
     },{
       path: 'filelist',
