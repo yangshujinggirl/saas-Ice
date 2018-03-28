@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import UserLogin from './components/UserLogin';
+// import LoanApplicationDetail from './components/LoanApplicationDetail';
 
 export default class Demo extends Component {
 
   constructor(props) {
     super(props);
-    
+
   }
 
   /**
-   * <Account {...this.props} />
+   * <LoanApplicationDetail {...this.props} />
    * @return {[type]} [description]
    */
   render() {
     return (
-      <div className="account-page">
-        <UserLogin {...this.props} />
+      <div className="loanapplication-page">
+        这是详情
       </div>
     );
   }

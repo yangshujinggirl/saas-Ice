@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {hashHistory} from 'react-router';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select, Field } from '@icedesign/base';
 import {
@@ -7,8 +8,8 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
+import Req from '../../reqs/LoanApplicationReq'
 
-// import RichEditor from './RichEditor';
 import  './basicInfo.scss'
 
 const { Options } = Select;
@@ -693,32 +694,21 @@ const dataList = {
 }
 
 class BasicInformation extends Component {
-  static displayName = 'BasicInformation';
   constructor(props) {
     super(props);
-
     this.state = {
-      value: {},
       fixedInfoList:(dataList.fields)[1],
-      parmas:{}
+      productId:this.props.params.id
     };
-
+    this.field = new Field(this)
   }
-  field = new Field(this)
-  formChange = (value) => {
-    console.log('value', value);
-    this.setState({
-      value,
-    });
-  };
+
   //提交表单
   handleSubmit(e) {
     e.preventDefault();
     this.field.validate((errors, values) => {
-      console.log(this.field.getValues())
       let parmas = this.field.getValues();
       if (errors) {
-        console.log("Errors in form!!!");
         return;
       }
       this.addLoanApi(parmas)
@@ -726,12 +716,20 @@ class BasicInformation extends Component {
   }
   //增加进件
   addLoanApi(parmas) {
-    console.log(parmas)
-    this.props.toggleComponent('Config')
+    const { productId } = this.state;
+    Req.addLoanApi(parmas)
+    .then((data) => {
+      hashHistory.push(`/loanapplication/config/${productId}`)
+    },(error)=> {
+      console.log(error)
+    })
+    hashHistory.push(`/loanapplication/config/${productId}`)
   }
+
   render() {
     const { fixedInfoList } = this.state;
-    const { init, getError, getState } = this.field;
+    const { init } = this.field;
+
     return (
       <div className="content-editor">
         <IceFormBinderWrapper>

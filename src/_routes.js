@@ -5,9 +5,11 @@
 import AccountRoute from "./pages/Account/AccountRoute.js"
 import DemoRoute from "./pages/Demo/DemoRoute.js"
 import EnterQueryRoute from "./pages/EntryQuery/EnterQueryRoute.js"
+import LoanApplicationRoute from "./pages/LoanApplication/LoanApplicationRoute.js"
 
 export default [
     AccountRoute,
     DemoRoute,
-    EnterQueryRoute
+    EnterQueryRoute,
+    LoanApplicationRoute
 ];

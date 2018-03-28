@@ -30,7 +30,7 @@ export default class UserLogin extends Component {
     super(props);
     this.state = {
       value: {
-        username: undefined,
+        account: undefined,
         password: undefined,
         checkbox: false,
       },
@@ -88,12 +88,12 @@ export default class UserLogin extends Component {
                       size="small"
                       style={styles.inputIcon}
                     />
-                    <IceFormBinder name="username" required message="必填">
+                    <IceFormBinder name="account" required message="必填">
                       <Input maxLength={20} placeholder="会员名/手机号" />
                     </IceFormBinder>
                   </Col>
                   <Col>
-                    <IceFormError name="username" />
+                    <IceFormError name="account" />
                   </Col>
                 </Row>
 
