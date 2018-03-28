@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ProdSearchList from './components/ProdSearch/ProdSeachList';
-import ProductDetail from './components/ProdSearch/ProdDetail';
 
 
 export default class Product extends Component {
@@ -10,9 +9,12 @@ export default class Product extends Component {
     this.state = {};
   };
 
+  componentWillMount (){
+    // this.props.actions.search();
+  }
   componentDidMount(){
     console.log('productDetail componentDidMount')
-    this.props.actions.getDetail();
+    this.props.actions.search();
   }
 
   render() {
@@ -20,8 +22,7 @@ export default class Product extends Component {
     
     return (
       <div className="product-page">
-        {/* <ProdSearchList {...this.props} /> */}
-        <ProductDetail {...this.props} />
+        <ProdSearchList {...this.props} />
       </div>
     );
   }

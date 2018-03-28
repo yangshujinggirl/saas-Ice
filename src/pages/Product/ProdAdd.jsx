@@ -10,7 +10,7 @@ export default class Product extends Component {
 
   componentDidMount(){
     console.log('productDetail componentDidMount')
-    this.props.actions.getDetail(1,2);
+    
   }
 
   render() {

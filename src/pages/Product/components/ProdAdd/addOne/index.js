@@ -1,3 +1,3 @@
-import ProdOne from './addOne';
+import AddOne from './addOne';
 
-export default ProdOne;
+export default AddOne;

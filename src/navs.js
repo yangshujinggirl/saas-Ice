@@ -54,7 +54,7 @@ const customAsideNavs = [
       },
       {
         text: '资料清单',
-        to: '/filelist',
+        to: '/product/filelist',
         children:[]
       },
     ],

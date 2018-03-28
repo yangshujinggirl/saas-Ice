@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Router, Route, Link ,hashHistory} from 'react-router';
+
 import {
   Form,
   Input,
@@ -26,6 +28,7 @@ import './addOne.scss';
 const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
+const { Group:CheckboxGroup} = Checkbox;
 const { MonthPicker, YearPicker, RangePicker } = DatePicker;
 
 const generatorData = () => {
@@ -215,7 +218,11 @@ formChange = (value) => {
     // this.refs.form.validateAll((errors, values) => {
     //   console.log('values', values);
     // });
-    this.props.changeView('addTwo');
+    // this.props.changeView('addTwo');
+  }
+  //下一步
+  NextClick = ()=>{
+    hashHistory.push('product/addtwo')
   }
   checkRes = (rule, values, callback) => {
     if (!values) {
@@ -228,12 +235,9 @@ formChange = (value) => {
       callback();
     }
   };
-  // value={this.props.value}
-  //onChange={this.props.onChange}
   render() {
     return (
       <IceFormBinderWrapper
-       
         ref='form'
         value={this.state.value}
         onChange={this.formChange}
@@ -249,13 +253,13 @@ formChange = (value) => {
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>资金方</label>
                   <IceFormBinder
-                    name="productCode"
+                    name="fundParty"
                     required
                     message="必填"
                     validator={this.check}
                   >
                    <Select
-                      name="productCode"
+                      name="fundParty"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
@@ -269,32 +273,34 @@ formChange = (value) => {
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>产品名称</label>
                   <IceFormBinder
-                    name="prodName"
+                    name="name"
                   >
                     <Input placeholder="产品编号" 
                        required 
                        message="必填"
                     />
                   </IceFormBinder>
-                  <IceFormError name="prodName" />
+                  <IceFormError name="name" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>合同显示名称</label>
                   <IceFormBinder
-                    name="pritName"
+                    name="contractDisplayName"
                   >
                     <Input placeholder="合同显示名称"
                       required 
                       message="必填"
                     />
                   </IceFormBinder>
-                  <IceFormError name="pritName" />
+                  <IceFormError name="contractDisplayName" />
                 </Col>
               </Row>
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>产品类型</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="prodType"
+                  >
                     <Select
                       name="prodType"
                       required 
@@ -302,38 +308,45 @@ formChange = (value) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">新车贷款</Option>
-                      <Option value="option2">二手车贷款</Option>
-                      <Option value="option3">车抵贷贷款</Option>
-                      <Option value="option4">附加费贷款</Option>
-                      <Option value="option5">保费贷</Option>
+                      <Option value="NEW_CAR_LOAN">新车贷款</Option>
+                      <Option value="NEW_CAR_RENTAL">新车租赁</Option>
+                      <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
+                      <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
+                      <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
+                      <Option value="CONSUMER_LOAN">消费贷款</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="prodType"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>业务表单</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="serviceFormType"
+                  >
                     <Select
-                      name="busList"
+                      name="serviceFormType"
                       required 
                        message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">新车贷款表单</Option>
-                      <Option value="option2">二手车贷款表单</Option>
-                      <Option value="option3">车抵贷贷款表单</Option>
-                      <Option value="option4">通用表单</Option>
+                      <Option value="NEW_CAR_LOAN">新车贷款</Option>
+                      <Option value="NEW_CAR_RENTAL">新车租赁</Option>
+                      <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
+                      <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
+                      <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
+                      <Option value="CONSUMER_LOAN">消费贷款</Option>
                     </Select>
                   </IceFormBinder>
-                  <IceFormError name="busList"/>
+                  <IceFormError name="serviceFormType"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>资料收取清单</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="collectionDetailListId"
+                  >
                     <Select
-                      name="dataList"
+                      name="collectionDetailListId"
                       required 
                       message="必填"
                       placeholder="请选择"
@@ -343,7 +356,7 @@ formChange = (value) => {
                       <Option value="option2">新车贷</Option>
                     </Select>
                   </IceFormBinder>
-                  <IceFormError name="dataList"/>
+                  <IceFormError name="collectionDetailListId"/>
                 </Col>
               </Row>
               <Row wrap>
@@ -359,7 +372,9 @@ formChange = (value) => {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>允许贴息</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="isPermittedDiscount"
+                  >
                     <Select
                       name="isPermittedDiscount"
                       required 
@@ -375,7 +390,9 @@ formChange = (value) => {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>状态</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="status"
+                  >
                     <Select
                       name="status"
                       required 
@@ -393,9 +410,10 @@ formChange = (value) => {
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>尾款产品</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="isRetainage"
+                  >
                     <Select
-                      name="isRetainage"
                       required 
                       message="必填"
                       placeholder="请选择"
@@ -411,41 +429,47 @@ formChange = (value) => {
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
-                  <Checkbox id="buyCar" defaultChecked={true} />
-                  <label htmlFor="buyCar" className="next-checkbox-label">
-                    自用购车
-                    </label>
-                  <Checkbox id="Consume" />
-                  <label htmlFor="Consume" className="next-checkbox-label">
-                    消费性
-                    </label>
-                  <label>
-                    <Checkbox id="Operate" />
-                    <span className="next-checkbox-label">经营性</span>
-                  </label>
+                  <IceFormBinder name="purposeOfLoan" >
+                      <CheckboxGroup
+                        className="next-form-text-align"
+                        dataSource={[
+                          { label: '自用购车', value: 'buyCar' },
+                          { label: '消费性', value: 'Consume' },
+                          { label: '经营性', value: 'Operate' },
+                        ]}
+                        defaultValue={['buyCar']}
+                      />
+                    </IceFormBinder>
+                    <div>
+                      <IceFormError name="purposeOfLoan" />
+                    </div>
                 </Col>
               </Row>
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>担保方式</label>
-                  <Checkbox id="Credit" defaultChecked={true} />
-                  <label htmlFor="Credit" className="next-checkbox-label">
-                    信用
-                    </label>
-                  <Checkbox id="Mortgage" />
-                  <label htmlFor="Mortgage" className="next-checkbox-label">
-                    抵押
-                    </label>
-                  <label>
-                    <Checkbox id="Pledge" />
-                    <span htmlFor="Pledge" className="next-checkbox-label">质押</span>
-                  </label>
+                  <IceFormBinder name="guaranteeMethodType" >
+                      <CheckboxGroup
+                        className="next-form-text-align"
+                        dataSource={[
+                          { label: '信用', value: 'CREDIT' },
+                          { label: '抵押', value: 'MORTGAGE' },
+                          { label: '质押', value: 'PLEDGE' },
+                        ]}
+                        defaultValue={['CREDIT']}
+                      />
+                    </IceFormBinder>
+                    <div>
+                      <IceFormError name="guaranteeMethodType" />
+                    </div>
                 </Col>
               </Row>
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>支付方式</label>
-                  <IceFormBinder>
+                  <IceFormBinder
+                    name="paymentOfLoan"
+                    >
                     <Select
                       name="paymentOfLoan"
                       required 
@@ -462,7 +486,12 @@ formChange = (value) => {
               </Row>
               <Row wrap>
                 <label style={styles.filterTitle}>产品描述</label>
-                <Input multiple style={{ width: '50%' }} />
+                <IceFormBinder
+                  name="description"
+                  >
+                    <Input multiple style={{ width: '50%' }} />
+                </IceFormBinder>
+                <IceFormError name="description"/>
               </Row>
             </div>
             <legend className="legend">
@@ -472,84 +501,86 @@ formChange = (value) => {
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款期限变更</label>
-                  <Checkbox id="Allow_Delay" defaultChecked={true} />
-                  <label htmlFor="Allow_Delay" className="next-checkbox-label">
-                    允许延长
-                    </label>
-                  <Checkbox id="Allow_Press" />
-                  <label htmlFor="Allow_Press" className="next-checkbox-label">
-                    允许压缩
-                    </label>
-                  <label>
-                    <Checkbox id="Not_Allow_Change" />
-                    <span htmlFor="Not_Allow_Change" className="next-checkbox-label">不允许变更</span>
-                  </label>
+                  <IceFormBinder name="loanTermChange" >
+                      <CheckboxGroup
+                        className="next-form-text-align"
+                        dataSource={[
+                          { label: '允许延长', value: 'ALLOW_DELAY' },
+                          { label: '允许压缩', value: 'ALLOW_PRESS' },
+                          { label: '不允许变更', value: 'NOT_ALLOW_CHANGE' },
+                        ]}
+                        defaultValue={['ALLOW_DELAY']}
+                      />
+                    </IceFormBinder>
+                    <div>
+                      <IceFormError name="loanTermChange" />
+                    </div>
                 </Col>
               </Row>
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>申请金额范围(元)</label>
                   <IceFormBinder
-                    name="applyAmountMin"
+                    name="principalAmountMin"
                     required 
                     message="必填"
                     validator={this.checkRes}
                   >
                     <Input style={{ width: '95px' }} />
                   </IceFormBinder>
-                  <IceFormError name="applyAmountMin" />
+                  <IceFormError name="principalAmountMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
-                    name="applyAmountMax"
+                    name="principalAmountMax"
                     required 
                     message="必填"
                   >
                     <Input style={{ width: '95px' }} />
 
                   </IceFormBinder>
-                  <IceFormError name="applyAmountMax" />
+                  <IceFormError name="principalAmountMax" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>期限范围(月)</label>
                   <IceFormBinder
-                    name="applyTermRangeMin"
+                    name="loanTermRangeMin"
                     required 
                     message="必填"
                   >
                     <Input style={{ width: '95px' }} />
                   </IceFormBinder>
-                  <IceFormError name="applyTermRangeMin" />
+                  <IceFormError name="loanTermRangeMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
-                    name="applyTermRangeMax"
+                    name="loanTermRangeMax"
                     required 
                     message="必填"
                   >
                     <Input style={{ width: '95px' }} />
 
                   </IceFormBinder>
-                  <IceFormError name="applyTermRangeMax" />
+                  <IceFormError name="loanTermRangeMax" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>贷款比率(%)</label>
                   <IceFormBinder
-                    name="applyLoanPercentageMin"
+                    name="loanPercentageMin"
                     required 
                     message="必填"
                   >
                     <Input style={{ width: '95px' }} />
                   </IceFormBinder>
-                  <IceFormError name="applyLoanPercentageMin" />
+                  <IceFormError name="loanPercentageMin" />
                   <div className="lx-mid-line">—</div>
                   <IceFormBinder
-                    name="applyLoanPercentageMax"
+                    name="loanPercentageMax"
                     required 
                     message="必填"
                   >
                     <Input style={{ width: '95px' }} />
 
                   </IceFormBinder>
-                  <IceFormError name="applyLoanPercentageMax" />
+                  <IceFormError name="loanPercentageMax" />
                 </Col>
               </Row>
               <div className="table-title">产品成数设置</div>
@@ -577,14 +608,21 @@ formChange = (value) => {
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款利率变更</label>
-                  <Checkbox id="Allow_Change_Rate_Adjust" defaultChecked={true} />
-                  <label htmlFor="Allow_Change_Rate_Adjust" className="next-checkbox-label">允许变更利率调整方式</label>
-                  <Checkbox id="Allow_Change_Rate_float" />
-                  <label htmlFor="Allow_Change_Rate_float" className="next-checkbox-label">允许变更利率浮动率 </label>
-                  <label>
-                    <Checkbox id="Not_Allow_Change_Account" />
-                    <span htmlFor="Not_Allow_Change_Account" className="next-checkbox-label">不允许贷款利率变更</span>
-                  </label>
+                    <IceFormBinder name="interestLoanRateChange" >
+                      <CheckboxGroup
+                        className="next-form-text-align"
+                        dataSource={[
+                          { label: '允许变更利率调整方式', value: 'Allow_Change_Rate_Adjust' },
+                          { label: '允许变更利率浮动率', value: 'Allow_Change_Rate_float' },
+                          { label: '不允许贷款利率变更', value: 'Not_Allow_Change_Account' },
+                        ]}
+                        defaultValue={['Allow_Change_Rate_Adjust']}
+                      />
+                    </IceFormBinder>
+                    <div>
+                      <IceFormError name="interestLoanRateChange" />
+                    </div>
+                 
                 </Col>
               </Row>
               <Row wrap>
@@ -599,7 +637,7 @@ formChange = (value) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">产品定价</Option>
+                      <Option value="PRODUCT_PRICE">产品定价</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="interestRateRules"/>
@@ -616,7 +654,7 @@ formChange = (value) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">固定利率</Option>
+                      <Option value="FIXED_RATE">固定利率</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="interestRateModel"/>
@@ -660,8 +698,8 @@ formChange = (value) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">出账日</Option>
-                      <Option value="option2">合同签订日</Option>
+                      <Option value="ACCOUNT_DATE">出账日</Option>
+                      <Option value="CONTRACT_SIGNING_DATE">合同签订日</Option>
 
                     </Select>
                   </IceFormBinder>
@@ -691,62 +729,63 @@ formChange = (value) => {
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>还款账户变更</label>
-                  <Checkbox id="Allow_Change_Account" defaultChecked={true} />
-                  <label htmlFor="Allow_Change_Account" className="next-checkbox-label">允许变更贷款还款账户</label>
-                  <Checkbox id="Allow_Change_Rate_float" />
-                  <label htmlFor="Allow_Change_Rate_float" className="next-checkbox-label">允许变更授信还款账户 </label>
-                  <label>
-                    <Checkbox id="Not_Allow_Change_Account" />
-                    <span htmlFor="Not_Allow_Change_Account" className="next-checkbox-label">不允许还款账户变更</span>
-                  </label>
+                  <IceFormBinder name="repaymentAccountChange" type="array">
+                      <CheckboxGroup
+                        className="next-form-text-align"
+                        dataSource={[
+                          { label: '允许变更贷款还款账户', value: 'Allow_Change' },
+                          { label: '允许变更授信还款账户', value: 'Allow_Change_Rate' },
+                          { label: '不允许还款账户变更', value: 'Not_Allow_Change' },
+                        ]}
+                        defaultValue={['Allow_Change']}
+                      />
+                    </IceFormBinder>
+                    <div>
+                      <IceFormError name="repaymentAccountChange" />
+                    </div>
                 </Col>
               </Row>
               <Row wrap>
-                <Col style={styles.filterCol}>
+                <Col style={styles.filterCol}> 
                   <label style={styles.filterTitle}> <span className="label-required">*</span>还款周期</label>
-                  <Checkbox id="Allow_Change_Account" />
-                  <label htmlFor="Allow_Change_Account" className="next-checkbox-label">全选</label>
-                  <Checkbox id="Month" defaultChecked={true} />
-                  <label htmlFor="Month" className="next-checkbox-label">按月</label>
-                  <label>
-                    <Checkbox id="Season" />
-                    <span htmlFor="Season" className="next-checkbox-label">按季</span>
-                  </label>
-                  <label>
-                    <Checkbox id="Year" />
-                    <span htmlFor="Year" className="next-checkbox-label">按年</span>
-                  </label>
-                  <label>
-                    <Checkbox id="Once" />
-                    <span htmlFor="Once" className="next-checkbox-label">一次</span>
-                  </label>
-                  <label>
-                    <Checkbox id="Double_Week" />
-                    <span htmlFor="Double_Week" className="next-checkbox-label">按两周</span>
-                  </label>
-                  <label>
-                    <Checkbox id="Half_Year" />
-                    <span htmlFor="Half_Year" className="next-checkbox-label">按半年</span>
-                  </label>
+                  <IceFormBinder name="repaymentPeriodFrequency" >
+                      <CheckboxGroup
+                        className="next-form-text-align"
+                        dataSource={[
+                          { label: '全选', value: 'Allow_ONCLIK' },
+                          { label: '按月', value: 'MONTH'},
+                          { label: '按季', value: 'YEAR' },
+                          { label: '按年', value: 'DISPOSABLE' },
+                          { label: '一次', value: 'DISPOSABLE' },
+                          { label: '按两周', value: 'TWO_WEEK' },
+                          { label: '按半年', value: 'HALF_YEAR' },
+                        ]}
+                        defaultValue={['MONTH']}
+                      />
+                    </IceFormBinder>
+                    <div>
+                      <IceFormError name="repaymentPeriodFrequency" />
+                    </div>
                 </Col>
+               
               </Row>
 
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>还款日变更</label>
                 <Col style={styles.filterCol}>
-                  <RadioGroup dataSource={list} defaultValue={"allow"} /> 
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="repaymentDateChange"/> 
                 </Col>
               </Row>
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>宽限期变更</label>
                 <Col style={styles.filterCol}>
-                  <RadioGroup dataSource={list} defaultValue={"allow"} />
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="gancePeriodChange"/>
                 </Col>
               </Row>
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>还款方式变更</label>
                 <Col style={styles.filterCol}>
-                  <RadioGroup dataSource={list} defaultValue={"allow"} /> 
+                  <RadioGroup dataSource={list} defaultValue={"allow"} name="repaymentMethodChange"/> 
                 </Col>
               </Row>
               <div className="table-title">还款方式设置</div>
@@ -807,9 +846,9 @@ formChange = (value) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">按贷款总额</Option>
-                      <Option value="option2">按提前还款金额</Option>
-                      <Option value="option3">按照剩余本金</Option>
+                      <Option value="LOAN_AMOUNT">按贷款总额</Option>
+                      <Option value="PREPAYMENT">按提前还款金额</Option>
+                      <Option value="SURPLUS_PRINCIPAL">按照剩余本金</Option>
                     </Select>
                   </IceFormBinder>
                 </Col>
@@ -825,7 +864,7 @@ formChange = (value) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">按比例</Option>
+                      <Option value="PERCENT">按比例</Option>
                     </Select>
                   </IceFormBinder>
                 </Col>
@@ -835,6 +874,7 @@ formChange = (value) => {
                 dataSource={this.state.dataSource4}
                 hasHeader
                 className="table"
+                primaryKey="id"
               >
                 <Table.Column title="最小期限" width={280} dataIndex="loanTermMin"/>
                 <Table.Column title="最大期限(元)" dataIndex="loanTermMax"/>
@@ -846,7 +886,7 @@ formChange = (value) => {
                 <Button onClick={this.addNewItem4} style={styles.addNewItem}>新增一行</Button>
               </div>
               <div className="next-btn-box">
-                <div className="next-btn-lx" onClick={this.changeView}>下一步</div>
+                <div className="next-btn-lx" onClick={this.NextClick}>下一步</div>
               </div>
             </div>
           </IceContainer>

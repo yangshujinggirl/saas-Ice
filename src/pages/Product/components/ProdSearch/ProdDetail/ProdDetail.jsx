@@ -33,12 +33,16 @@ const dataSource1 ={
 }
 export default class ProdDetail extends Component {
   static displayName = 'ProdDetail';
-
+  
   constructor(props) {
     super(props);
     this.state = {
      
     };
+    console.log(this.props.location.params)//id
+    // let code = this.props.location.params.id
+    // this.actions.getDetail()
+
   }
 
   addNewItem = () => {
@@ -51,9 +55,14 @@ export default class ProdDetail extends Component {
       dataSource: this.state.dataSource,
     });
   };
-
+//组件加载后
+  componentDidMount(){
+    console.log(this.props.location);
+    let {actions,pageData} = this.props;
+    this.props.actions.getDetail();//传参数，eg:ID
+  }
   render() {
-    let dataSource = this.props.formData;
+    let dataSource = this.props.pageData.list;
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -149,7 +158,7 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>申请金额范围(元)：</label>
-                <span >{dataSource.title}</span>
+                <span >{dataSource.id}</span>
                 <div className="lx-mid-line">—</div>
                 <span >{dataSource.title}</span>
               </Col>
