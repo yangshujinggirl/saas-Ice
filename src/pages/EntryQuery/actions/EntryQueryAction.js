@@ -81,7 +81,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ detail: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

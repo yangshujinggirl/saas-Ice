@@ -11,7 +11,7 @@ class EntryQueryReq extends CurdReq{
             update: this._host + '/filter-table-list.json',
             retrieve: this._host + '/loans',
             delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
+            detail: this._host + '/loans/:id/screen'
         }
 	}
 

@@ -42,7 +42,7 @@ export default class LoanDetails extends Component {
     this.queryCache = {};
   }
   componentDidMount() {
-    this.queryCache.code = this.props.code;
+    // this.queryCache.id = this.props.params.id;
     this.fetchData();
 
   }
@@ -53,15 +53,17 @@ export default class LoanDetails extends Component {
   }
   //请求数据
   fetchData = () => {
-    this.props.updateBindingData('details', {
-      data:this.queryCache ,
-    });
+    let {actions} = this.props;
+    actions.getDetail(this.props.params.id);
+    // this.props.updateBindingData('details', {
+    //   data:this.queryCache ,
+    // });
   };
   render() {
-    const details = this.props.bindingData.details;
+    // const details = this.props.bindingData.details;
+    const details = this.props.detail || {};
     console.log(details)
     console.log(this.props.params);
-
     return (
       <div className="rcontent-edito">
         <IceFormBinderWrapper
@@ -71,12 +73,12 @@ export default class LoanDetails extends Component {
           value={this.state.value}
           onChange={this.formChange}
         >
-          <Detail dataSource={details.data}></Detail>
+          <Detail dataSource={details}></Detail>
 
         </IceFormBinderWrapper>
         <div className='botton-box'>
-          <Button className='botton' onClick={this.back}>返回</Button>
-        </div>
+        <Button className='botton' onClick={this.back}>返回</Button>
+      </div>
 
       </div>
     );

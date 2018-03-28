@@ -3,10 +3,16 @@ import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterRe
 
 export default {
   path: "/entryQuery",
-  childRoutes: [{
-    path: 'detail/:id',
-    component: Index.LoanDetails
-  }],
+  childRoutes: [
+    {
+      path: 'detail/:id',
+      component: Index.LoanDetails
+    },
+    {
+      path: 'update/:id',
+      component: Index.LoanModify
+    }
+  ],
   component: HeaderAsideFooterResponsiveLayout,
   indexRoute: {
     component: Index.EntryQuery

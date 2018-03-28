@@ -18,17 +18,18 @@ export default class Details extends Component {
   }
   render() {
     console.log(this.props.dataSource);
-    if(this.props.dataSource){
-      this.props.dataSource.forEach((item,index)=>{
+    this.state.Component = [];
+    if(this.props.dataSource.length){
+      this.props.dataSource.forEach((item,i)=>{
         this.state.Component.push(
-          <IceContainer title={item.name} className='subtitle' key={index}>
+          <IceContainer title={item.name} className='subtitle' key={i}>
             <div className='config-font-box'>
-              {item.fields.map((i,index1)=>{
+              {item.fields.map((el,ind)=>{
                 return(
-                  <div className='config-font' key={index1}>
-                    <div>{i.label}</div>
+                  <div className='config-font' key={el.id}>
+                    <div>{el.label}</div>
                     <span>:</span>
-                    <div>{i.value}</div>
+                    <div>{el.value}</div>
                   </div>
                 )
               })
