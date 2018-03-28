@@ -5,6 +5,7 @@ import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
+import {browserHistory, hashHistory} from 'react-router';
 
 @DataBinder({
   tableData: {
@@ -49,7 +50,9 @@ export default class EnhanceTable extends Component {
   fetchData = () => {
     let {actions} = this.props;
     actions.search(this.queryCache);
-
+    // this.props.updateBindingData('tableData', {
+    //   data: this.queryCache,
+    // });
   };
 
   renderTitle = (value, index, record) => {
@@ -69,8 +72,8 @@ export default class EnhanceTable extends Component {
   };
   detal = (record, e)=>{
     e.preventDefault();
-    this.props.code(record);
-    this.props.toggleComponent('LoanDetails');
+    hashHistory.push('/entryQuery/detail/'+record.id);
+
   }
   //修改和详情按钮
   renderOperations = (value, index, record) => {
@@ -137,6 +140,7 @@ export default class EnhanceTable extends Component {
   };
 
   render() {
+    // const tableData = this.props.bindingData.tableData;
     const tableData = this.props.pageData || {};
     const { filterFormValue } = this.state;
     return (

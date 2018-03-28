@@ -26,7 +26,7 @@ export default class Details extends Component {
               {item.fields.map((i,index1)=>{
                 return(
                   <div className='config-font' key={index1}>
-                    <div>{i.name}</div>
+                    <div>{i.label}</div>
                     <span>:</span>
                     <div>{i.value}</div>
                   </div>
