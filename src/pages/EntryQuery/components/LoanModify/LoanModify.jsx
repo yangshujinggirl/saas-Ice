@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
+import  classNames from  'classnames'
 import { Input, Grid, Form, Button, Select ,Field} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
@@ -7,12 +8,13 @@ import {
 import DataBinder from '@icedesign/data-binder/lib/index';
 import {browserHistory, hashHistory} from 'react-router';
 import  './LoanModify.scss'
-import  classNames from  'classnames'
+import FormRender from  './FormRender'
+
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 8 },
+  labelCol: { span: 9 },
   wrapperCol: { span: 12 }
 };
 
@@ -59,26 +61,106 @@ export default class LoanModify extends Component {
     // });
   };
   //标题点击
-  titleClick = (e,index,)=>{
-    e.preventDefault();
-    this.state.index = index;
-    console.log(index)
+  titleClick = (index)=>{
+    // e.preventDefault();
+    this.setState({
+      index:index
+    })
+    console.log(index);
   }
-
+  //渲染标题
   renderTitle = (data) =>{
-    console.log(data)
     const  list = [];
     if(data.length){
-      data.forEach((item,index)=>{
+      data.map((item,index)=>{
         var btnClass = classNames({
           'active': this.state.index == index,
         });
         list.push(
-          <li key={index} className={btnClass}  onClick={this.titleClick(event,index)}>{item.name}</li>
+          <li key={index} className={btnClass}  onClick={this.titleClick.bind(this,index)}>{item.name}</li>
         )
       })
     }
     return list;
+  }
+  //渲染表单
+  renderForm = (data)=>{
+    console.log(data)
+    const  formList = [];
+    if(data.length){
+      data.map((item,index)=>{
+        formList.push(
+          <div className='info' key={index}>
+            <h4>{item.name}</h4>
+            <div className='info-row'>
+            {
+              item.fields.map((el,i)=>{
+                return(
+                    this.FromRender(el,i)
+                )
+              })
+            }
+            </div>
+          </div>
+        )
+      })
+    }
+    return formList;
+  }
+  //
+  FromRender = (el,i)=>{
+    const init = this.field.init;
+    const arr = [];
+    // console.log(el)
+    if(el.type == "STRING"){
+      return(
+        <FormItem key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+          <Input
+            {...init(el.name)}
+            placeholder={"请输入"+el.label}
+          />
+        </FormItem>
+      )
+    }else if(el.type == "SELECT"){
+      return(
+        <FormItem  key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+          <Select
+            placeholder={"请选择"+el.label}
+            style={{ width: 180 }}
+            {...init(el.name, {
+              rules: [{ required: true, message: "请选择"+el.label }]
+            })}
+          >
+            {
+              el.options ? el.options.map((item,i)=>{
+                  return <li value={item.value} key={i}>{item.label}</li>
+                })
+                : ''
+            }
+          </Select>
+        </FormItem>
+      );
+    }
+    else if(el.type == 'DECIMAL'){
+      return(
+        <FormItem key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+          <Input
+            {...init(el.name)}
+            placeholder={"请输入"+el.label}
+          />
+        </FormItem>
+      )
+    }
+    else if(el.type == 'INT'){
+      return(
+        <FormItem key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+          <Input
+            {...init(el.name)}
+            placeholder={"请输入"+el.label}
+          />
+        </FormItem>
+      )
+    }
   }
   render() {
     // const details = this.props.bindingData.details;
@@ -108,6 +190,8 @@ export default class LoanModify extends Component {
                   labelAlign= "left"
                   field={this.field}
                 >
+                  {this.renderForm(details)}
+
                 <div className='info'>
                   <h4>基本信息</h4>
                   <div className='info-row'>
