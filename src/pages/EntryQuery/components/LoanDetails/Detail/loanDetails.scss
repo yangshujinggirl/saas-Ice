@@ -10,11 +10,17 @@
     height: 40px;
     line-height: 40px;
     div{
-      width: 100px;
-      height: 35px;
+      width: 130px;
+      height: 40px;
+      line-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      white-space: nowrap;
     }
     div:first-child{
       text-align: right;
+      font-weight: 600;
     }
     span{
       text-align:center;
