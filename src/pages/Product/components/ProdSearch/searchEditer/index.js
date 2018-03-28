@@ -1,3 +1,3 @@
-import SearchEdit from './searchEditer';
+import SearchEdit from './SearchEditer';
 
 export default SearchEdit;
