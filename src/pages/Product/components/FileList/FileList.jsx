@@ -7,12 +7,12 @@ import DataBinder from '@icedesign/data-binder';
 import './FileList.scss';
 
 import {
-  FormBinderWrapper as  IceFormBinderWrapper,
+  FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import {Form, Field,Input,Button,Checkbox,Select,DatePicker,Switch,Radio,Grid,Table,Dialog,} from '@icedesign/base';
+import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog, } from '@icedesign/base';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -31,7 +31,7 @@ const dataSource = [{
 }];
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
-const checked = props.checked === undefined ? props.value : props.checked;
+  const checked = props.checked === undefined ? props.value : props.checked;
 
   return (
     <Switch
@@ -61,7 +61,7 @@ export default class FileList extends Component {
       }
     };
   }
-  componentDidMount(){
+  componentDidMount() {
   };
   onFormChange = (value) => {
     this.setState({
@@ -78,9 +78,9 @@ export default class FileList extends Component {
 
   renderTest = () => {
     return <div>
-            <button className="edithbtn" onClick={this.open.bind(this)}>编辑</button>  
-            <button className="deletbtn">删除</button>
-          </div>
+      <button className="edithbtn" onClick={this.open.bind(this)}>编辑</button>
+      <button className="deletbtn">删除</button>
+    </div>
   };
   onClose() {
     this.setState({
@@ -99,7 +99,7 @@ export default class FileList extends Component {
         top: "10px"
       }
     });
-    
+
   }
   render() {
     return (
@@ -118,12 +118,12 @@ export default class FileList extends Component {
                       name="listType"
                     >
                       <Select
-                      name="size"
-                      placeholder="请选择"
-                      style={styles.filterTool}
-                    >
-                      <Option value="option1">产品进件</Option>
-                    </Select>
+                        name="size"
+                        placeholder="请选择"
+                        style={styles.filterTool}
+                      >
+                        <Option value="option1">产品进件</Option>
+                      </Select>
                     </IceFormBinder>
                     <IceFormError name="name" />
                   </Col>
@@ -152,10 +152,10 @@ export default class FileList extends Component {
               maxBodyHeight={800}
             >
               <Table.Column title="产品编号" dataIndex="id" />
-              <Table.Column title="产品名称" dataIndex="productCode"  />
+              <Table.Column title="产品名称" dataIndex="productCode" />
               <Table.Column title="合同显示名称" dataIndex="productName" />
-              <Table.Column title="状态" dataIndex="time"  />
-              <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right"/>              
+              <Table.Column title="状态" dataIndex="time" />
+              <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
             </Table>
             <Dialog
               visible={this.state.visible}
@@ -169,70 +169,70 @@ export default class FileList extends Component {
               <Form className="dialog-form">
                 <ul className="dialog-form-ul">
                   <li className="liColor">资料名称</li>
-                  <li  className="liTow liColor">文件类型</li>
+                  <li className="liTow liColor">文件类型</li>
                   <li className="liColor">限制大小</li>
                   <li className="liColor">操作</li>
-            
+
                   <li className="liType">
 
-                      <Input placeholder="清单名称" style={{width:"150px"}}/>
+                    <Input placeholder="清单名称" style={{ width: "150px" }} />
                   </li>
                   <li className="liTow liType">
-                      <Col>
+                    <Col>
                       <label style={styles.filterTitle}>文档</label>
-                        <Checkbox id="All_pdf" />
-                        <label htmlFor="All_pdf" className="next-checkbox-label">全部</label>
-                        <Checkbox id="pdf" defaultChecked={true} />
-                        <label htmlFor="pdf" className="next-checkbox-label">pdf</label>
-                        <Checkbox id="xls" />
-                        <label htmlFor="xls" className="next-checkbox-label">xls </label>
-                        <Checkbox id="doc" />
-                        <span htmlFor="doc" className="next-checkbox-label">doc</span>
-                        <Checkbox id="txt" />
-                        <span htmlFor="txt" className="next-checkbox-label">txt</span>
-                      </Col>
-                      <Col>
-                        <label style={styles.filterTitle}>图形</label>
-                        <Checkbox id="All_png" />
-                        <label htmlFor="All_png" className="next-checkbox-label">全部</label>
-                        <Checkbox id="jpg" defaultChecked={true} />
-                        <label htmlFor="jpg" className="next-checkbox-label">jpg</label>
-                        <Checkbox id="png" />
-                        <label htmlFor="png" className="next-checkbox-label">png</label>
-                        <Checkbox id="bmp" />
-                        <span htmlFor="bmp" className="next-checkbox-label">bmp</span>
-                        <Checkbox id="gif" />
-                        <span htmlFor="gif" className="next-checkbox-label">gif</span>
-                      </Col>
-                      <Col>
+                      <Checkbox id="All_pdf" />
+                      <label htmlFor="All_pdf" className="next-checkbox-label">全部</label>
+                      <Checkbox id="pdf" defaultChecked={true} />
+                      <label htmlFor="pdf" className="next-checkbox-label">pdf</label>
+                      <Checkbox id="xls" />
+                      <label htmlFor="xls" className="next-checkbox-label">xls </label>
+                      <Checkbox id="doc" />
+                      <span htmlFor="doc" className="next-checkbox-label">doc</span>
+                      <Checkbox id="txt" />
+                      <span htmlFor="txt" className="next-checkbox-label">txt</span>
+                    </Col>
+                    <Col>
+                      <label style={styles.filterTitle}>图形</label>
+                      <Checkbox id="All_png" />
+                      <label htmlFor="All_png" className="next-checkbox-label">全部</label>
+                      <Checkbox id="jpg" defaultChecked={true} />
+                      <label htmlFor="jpg" className="next-checkbox-label">jpg</label>
+                      <Checkbox id="png" />
+                      <label htmlFor="png" className="next-checkbox-label">png</label>
+                      <Checkbox id="bmp" />
+                      <span htmlFor="bmp" className="next-checkbox-label">bmp</span>
+                      <Checkbox id="gif" />
+                      <span htmlFor="gif" className="next-checkbox-label">gif</span>
+                    </Col>
+                    <Col>
                       <label style={styles.filterTitle}>压缩</label>
-                        <Checkbox id="All_png" />
-                        <label htmlFor="All_png" className="next-checkbox-label">全部</label>
-                        <Checkbox id="rar" defaultChecked={true} />
-                        <label htmlFor="rar" className="next-checkbox-label">rar</label>
-                        <Checkbox id="zip" />
-                        <label htmlFor="zip" className="next-checkbox-label">zip</label>
-                        <Checkbox id="7z" />
-                        <span htmlFor="7z" className="next-checkbox-label">7z</span>
-                        <Checkbox id="tar" />
-                        <span htmlFor="tar" className="next-checkbox-label">tar</span>
-                      </Col>
+                      <Checkbox id="All_png" />
+                      <label htmlFor="All_png" className="next-checkbox-label">全部</label>
+                      <Checkbox id="rar" defaultChecked={true} />
+                      <label htmlFor="rar" className="next-checkbox-label">rar</label>
+                      <Checkbox id="zip" />
+                      <label htmlFor="zip" className="next-checkbox-label">zip</label>
+                      <Checkbox id="7z" />
+                      <span htmlFor="7z" className="next-checkbox-label">7z</span>
+                      <Checkbox id="tar" />
+                      <span htmlFor="tar" className="next-checkbox-label">tar</span>
+                    </Col>
                   </li>
                   <li className="liType">
-                      <Input placeholder="清单名称" style={{width:"90px"}}/>M
+                    <Input placeholder="清单名称" style={{ width: "90px" }} />M
                   </li>
                   <li className="liType">
-                      <Button>删除</Button>
+                    <Button>删除</Button>
                   </li>
                 </ul>
-              <Button onClick={this.setPosition.bind(this)} style={styles.newCol}>新增一行</Button>
+                <Button onClick={this.setPosition.bind(this)} style={styles.newCol}>新增一行</Button>
               </Form>
             </Dialog>
           </div>
           <div style={styles.addNew}>
             <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
           </div>
-        </IceContainer>    
+        </IceContainer>
       </div>
     );
   }
@@ -295,11 +295,11 @@ const styles = {
     background: '#ec9d00',
     color: '#fff',
   },
-  newCol :{
+  newCol: {
     hiegth: '30px',
     borderRadius: 0,
     border: 'none',
-    marginTop:'20px',
+    marginTop: '20px',
     background: '#1AA8F0',
     color: '#fff',
   },

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ProdDetail from './components/ProdSearch/ProdDetail'
+import FileList from './components/FileList/FileList'
 
 export default class Product extends Component {
 
@@ -10,7 +10,7 @@ export default class Product extends Component {
 
   componentDidMount(){
     console.log('productDetail componentDidMount')
-    this.props.actions.getDetail(1);
+    
   }
 
   render() {
@@ -18,7 +18,7 @@ export default class Product extends Component {
     
     return (
       <div className="product-page">
-        <ProdDetail {...this.props} />
+        <FileList {...this.props} />
       </div>
     );
   }

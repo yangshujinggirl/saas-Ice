@@ -66,30 +66,29 @@ export default class ProdSeachList extends Component {
 
   }
   componentDidMount(){
-    this.props.actions.getDetail();
-    console.log(this.props.formData)
+    // console.log(this.props.formData)
   }
   //查看
   searchItem = (record) => {
-    //hashHistory.push("/proddetail/1")//+ record.id);
+    hashHistory.push(`product/proddetail/${record.id}`)//+ record.id);
   };
 
   //编辑
   editItem = (record) => {
-    let {actions} = this.props;
-
+    // let {actions} = this.props;
+    hashHistory.push('product/searchedit')
   }
   renderOperator = (value, index, record) => {
     return (
       <div>
         <button
           className="editbtn"
-          onClick = {this.editItem.bind(this, record)}
+          onClick = {()=>this.editItem(record)}
         >
           编辑</button>
         <button
           className="searchbtn"
-          onClick={this.searchItem.bind(this, record)}
+          onClick={()=>this.searchItem(record)}
         >
           查看
         </button>
