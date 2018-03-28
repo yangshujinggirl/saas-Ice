@@ -7,10 +7,10 @@ class ProductReq extends CurdReq{
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
+            create: this._host + '/product',
+            update: this._host + '/product/:id',
             retrieve: this._host + '/product/',
-            delete: this._host + '/filter-table-list.json',
+            delete: this._host + '/product/:id',
             detail: this._host + '/product/:id'
         }
 	}
