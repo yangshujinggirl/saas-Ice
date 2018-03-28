@@ -39,6 +39,7 @@ class BaseReq {
         headers: header,
         data: options.data,
         params: options.params,
+        timeout: 5000
       })
       .then(this._processResponse.bind(this))
       .catch(this._processError.bind(this))

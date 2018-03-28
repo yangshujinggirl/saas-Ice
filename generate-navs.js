@@ -101,7 +101,7 @@ function getRouteFromFile(filePath) {
       }
       if (i == 0) {
         prefix = item;
-        d.value.value = item + '/abc';
+        d.value.value = item + '';
         d.value.name = name || item
         leafs.push({
           value: {
