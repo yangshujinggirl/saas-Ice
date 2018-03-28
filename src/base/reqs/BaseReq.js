@@ -15,11 +15,11 @@ class BaseReq {
     var header = {};
 
     if (Cookie.get('SID')) {
-      header['userToken'] = Cookie.get('SID');
+      // header['userToken'] = Cookie.get('SID');
     } else {
       let token = Tools._GET('SID');
       if (token) {
-        header['userToken'] = token.SID;
+        // header['userToken'] = token.SID;
         Cookie.set('SID', token.SID);
       }
     }
@@ -34,6 +34,10 @@ class BaseReq {
       }
     } else {
       header['Content-type'] = 'application/json';
+    }
+
+    if (options.contentType = 'application/json') {
+      options.data = JSON.stringify(options.data);
     }
 
     return axios(options.url, {
@@ -123,7 +127,8 @@ class BaseReq {
       //   type: 'error',
       //   duration: 5 * 1000
       // });
-      alert(res.data.msg || res.data.message || '未知错误');
+      // alert(res.data.msg || res.data.message || '未知错误');
+      console.error(res.data.msg || res.data.message || '未知错误');
       return res.data;
     }
 
