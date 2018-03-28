@@ -13,17 +13,10 @@ module.exports = {
                     res.set('X-ICE-PROXY-BY', LOAN_HOST);
                 },
             },
-<<<<<<< HEAD
             '/crm': {
                 target: CRM_HOST,
                 changeOrigin: true,
             },
-=======
-          'test': {
-              target: proxyTarget,
-            changeOrigin: true
-          }
->>>>>>> 2df1ec47c8262e620227a249aa3bc0c9c06ce595
         },
     },
 

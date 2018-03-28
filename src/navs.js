@@ -85,7 +85,7 @@ const customAsideNavs = [
       },
       {
         text: '车贷查询',
-        to: '/entryQuery',
+        to: '/loanManagement/entryQuery',
       },
     ],
   },

@@ -52,7 +52,6 @@ export default class UserLogin extends Component {
         return;
       }
       AccountReq.login(values).then((res) => {
-        console.log('AccountReq login',res)
         if(!res || res.code != 200) return;
         Feedback.toast.success('登录成功');
 

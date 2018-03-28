@@ -47,7 +47,6 @@ class BaseReq {
         params: options.params,
       })
       .then(this._processResponse)
-      // .then(this._processData)
       .catch(this._processError)
   }
 

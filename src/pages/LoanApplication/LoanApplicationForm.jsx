@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserLogin from './components/UserLogin';
+//import LoanApplicationForm from './components/LoanApplicationForm';
 
 export default class Demo extends Component {
 
@@ -9,13 +9,13 @@ export default class Demo extends Component {
   }
 
   /**
-   * <Account {...this.props} />
+   * <LoanApplicationForm {...this.props} />
    * @return {[type]} [description]
    */
   render() {
     return (
-      <div className="account-page">
-        <UserLogin {...this.props} />
+      <div className="loanapplication-page">
+        这是表单
       </div>
     );
   }

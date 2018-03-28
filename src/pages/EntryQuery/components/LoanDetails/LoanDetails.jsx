@@ -7,7 +7,6 @@ import {
 import DataBinder from '@icedesign/data-binder/lib/index';
 import  Detail from './Detail/index'
 import  './LoanDetails.scss'
-import {browserHistory, hashHistory} from 'react-router';
 const { Row, Col } = Grid;
 
 
@@ -46,12 +45,6 @@ export default class LoanDetails extends Component {
     this.fetchData();
 
   }
-  //返回
-  back = (e)=>{
-    e.preventDefault();
-    hashHistory.push('/entryQuery');
-  }
-  //请求数据
   fetchData = () => {
     this.props.updateBindingData('details', {
       data:this.queryCache ,
@@ -59,7 +52,7 @@ export default class LoanDetails extends Component {
   };
   render() {
     const details = this.props.bindingData.details;
-    console.log(this.props.params);
+    console.log(details)
     return (
       <div className="rcontent-edito">
         <IceFormBinderWrapper
@@ -69,13 +62,29 @@ export default class LoanDetails extends Component {
           value={this.state.value}
           onChange={this.formChange}
         >
-            <Detail dataSource={details.data}></Detail>
+            <Detail dataSource={details.fields}></Detail>
         </IceFormBinderWrapper>
         <div className='botton-box'>
-          <Button className='botton' onClick={this.back}>返回</Button>
+          <Button className='botton' onClick={this.props.toggleComponent.bind(this,'FilterTable')}>返回</Button>
         </div>
+
       </div>
     );
   }
 }
 
+const styles = {
+  bottonBox:{
+    width:'100%',
+    height:'300px',
+    backgroundColor:"#fff",
+    textAlign:'center',
+  },
+  botton:{
+    backgroundColor :'#FC9E25',
+    width:'100px',
+    hegiht:'80px',
+    maginTop:'50px'
+  },
+
+};
