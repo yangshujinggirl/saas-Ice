@@ -1,4 +1,4 @@
-@import '~@icedesign/skin/variables.scss';
+@import "~@icedesign/skin/variables.scss";
 
 // Basic color variables
 $custom-layout-bg: #fafafa;
@@ -6,6 +6,7 @@ $color-text1-3: #666;
 $custom-layout-bg: #F9F9F8;
 $color-brand1-9: #FC9E25;
 $color-brand1-5: #FC9E25;
+
 // Layout light styles
 $ice-body-bg: $color-white !default;
 $ice-layout-bg: $custom-layout-bg !default;
@@ -34,10 +35,6 @@ $ice-aside-collapse-menu-text-color: $color-text1-3 !default;
 $ice-copyright-text-color: $color-text1-3 !default;
 $ice-copyright-text-hover-color: $color-brand1-5 !default;
 
-.ice-design-header-aside-footer-responsive-layout-light.ice-design-layout {
-  background-color:#F9F9F8;
-}
+$theme: "light";
 
-$theme: 'light';
-
-@import './base.scss';
+@import "./base.scss";
