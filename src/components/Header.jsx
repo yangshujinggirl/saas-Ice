@@ -15,9 +15,15 @@ export default class Header extends PureComponent {
     return result;
   }
   render() {
-    const { width, theme, isMobile, menus, pathname } = this.props;
-    let data = this.getBreadCrumb(menus, pathname);
-    let result = data ? [data.parentNode, data.node] : ['未知页面'];
+    let { width, theme, isMobile, menus, pathname, routes } = this.props;
+    // let data = this.getBreadCrumb(menus, pathname);
+    // let result = data ? [data.parentNode, data.node] : [{name: '未知页面'}];
+
+    if(routes && routes.length > 0 && routes[0].path == '/'){
+      // 特殊处理默认首页的路由名称
+        routes[0].name = 'DASHBOARD';
+        routes = [routes[0]];
+    }
 
     return (
       <Layout.Header
@@ -27,8 +33,8 @@ export default class Header extends PureComponent {
       >
         
         <Breadcrumb className='all-breadcrumb'>
-          {result && result.map((item, i) => {
-            return <Breadcrumb.Item link="javascript:void(0);" key={i}>{item.name}</Breadcrumb.Item>
+          {routes && routes.map((item, i) => {
+            return <Breadcrumb.Item link="javascript:void(0);" key={i}>{item.name || '未知'}</Breadcrumb.Item>
           })}
         </Breadcrumb>
         <div
