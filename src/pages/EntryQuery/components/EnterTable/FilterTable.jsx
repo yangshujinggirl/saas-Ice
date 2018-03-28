@@ -69,11 +69,11 @@ export default class EnhanceTable extends Component {
     console.log(record);
     console.log(this.props)
     // this.props.code(record);
+    hashHistory.push('/entryQuery/update/'+record.id);
   };
   detal = (record, e)=>{
     e.preventDefault();
     hashHistory.push('/entryQuery/detail/'+record.id);
-
   }
   //修改和详情按钮
   renderOperations = (value, index, record) => {

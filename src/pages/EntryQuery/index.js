@@ -1,11 +1,9 @@
 import EntryQuery from './EntryQuery'
 import  LoanDetails  from './LoanDetails'
+import  LoanModify  from './LoanModify'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as EntryQueryActions from './actions/EntryQueryAction.js'
-import Demo from '../Demo/Demo';
-import DemoForm from '../Demo/DemoForm';
-import DemoDetail from '../Demo/DemoDetail';
 
 const mapStateToProps = (state, ownProps) => {
     const data = state.EntryQueryReducer;
@@ -28,8 +26,13 @@ let EntryQueryObj = connect(
   mapDispatchToProps
 )(EntryQuery);
 
+let LoanModifyObj = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoanModify);
 
 export default {
   LoanDetails: LoanDetailsObj,
-  EntryQuery: EntryQueryObj
+  EntryQuery: EntryQueryObj,
+  LoanModify: LoanModifyObj
 }

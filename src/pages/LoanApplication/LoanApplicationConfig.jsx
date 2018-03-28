@@ -9,12 +9,15 @@ class LoanApplication extends Component {
     super(props);
     console.log(this.props)
   }
+  componentWillMount() {
+    this.props.actions.search({isFixed:true})
+  }
 
   render() {
 
     return (
       <div className="loan-application-page">
-        <ConfigInformation />
+        <ConfigInformation {...this.props}/>
       </div>
     );
   }
