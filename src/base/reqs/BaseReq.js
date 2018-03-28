@@ -15,11 +15,11 @@ class BaseReq {
     var header = {};
 
     if (Cookie.get('SID')) {
-      header['userToken'] = Cookie.get('SID');
+      // header['userToken'] = Cookie.get('SID');
     } else {
       let token = Tools._GET('SID');
       if (token) {
-        header['userToken'] = token.SID;
+        // header['userToken'] = token.SID;
         Cookie.set('SID', token.SID);
       }
     }
@@ -36,6 +36,12 @@ class BaseReq {
       header['Content-type'] = 'application/json';
     }
 
+    if (options.contentType = 'application/json') {
+      options.data = JSON.stringify(options.data);
+    }
+
+    console.log(options)
+
     return axios(options.url, {
         method: options.method || 'GET',
         headers: header,
@@ -43,11 +49,7 @@ class BaseReq {
         params: options.params,
       })
       .then(this._processResponse)
-      // .then(this._processData)
-      .catch((error) => {
-        console.error('request failed', error)
-        this._processError(error);
-      })
+      .catch(this._processError)
   }
 
   _processHost(url, isJava) {
@@ -126,7 +128,8 @@ class BaseReq {
       //   type: 'error',
       //   duration: 5 * 1000
       // });
-      alert(res.data.msg || res.data.message || '未知错误');
+      // alert(res.data.msg || res.data.message || '未知错误');
+      console.error(res.data.msg || res.data.message || '未知错误');
       return res.data;
     }
 

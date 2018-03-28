@@ -64,7 +64,6 @@ class CurdReq extends BaseReq {
     let options = {
       url: url,
       method: 'POST',
-      method: 'GET',
       data: data,
       contentType: 'application/json'
     }
@@ -79,7 +78,7 @@ class CurdReq extends BaseReq {
     data[this.key] = id;
 
     let options = {
-      url: this.curd.detail,
+      url: this.formatUrl(this.curd.detail, id),
       params: data
     }
     return super.fetchData(options);

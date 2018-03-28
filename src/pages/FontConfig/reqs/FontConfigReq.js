@@ -1,9 +1,8 @@
 import CurdReq from '../../../base/reqs/CurdReq'
 
-class AccountReq extends CurdReq{
+class FontConfigReq extends CurdReq{
 	constructor(){
 		super();
-
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
@@ -11,9 +10,23 @@ class AccountReq extends CurdReq{
             update: this._host + '/filter-table-list.json',
             retrieve: this._host + '/filter-table-list.json',
             delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
+            detail: this._host + '/fields'
         }
 	}
+
+	/**
+   * 获取详情
+   */
+  getDetail(id, callback, callbackError) {
+    let data = {};
+
+
+    let options = {
+      url: this.curd.detail,
+
+    }
+    return this.fetchData(options);
+  }
 
 	/**
 	 * 自定义请求
@@ -28,20 +41,6 @@ class AccountReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-
-	/**
-	 * 登录
-	 * @return {[type]} [description]
-	 */
-	login(data){
-		let options = {
-			url: '/crm/saas/login',
-			method: 'POST',
-			contentType: 'application/json',
-			data: data
-		}
-		return super.fetchData(options);
-	}
 }
 
-export default new AccountReq();
+export default new FontConfigReq();

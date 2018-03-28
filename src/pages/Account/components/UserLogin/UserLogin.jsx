@@ -18,6 +18,7 @@ const backgroundImage = require('./admin-login-bg.png');
 
 import {hashHistory} from 'react-router';
 import {Storage} from '../../../../base/utils';
+import AccountReq from '../../reqs/AccountReq';
 
 export default class UserLogin extends Component {
   static displayName = 'UserLogin';
@@ -30,8 +31,8 @@ export default class UserLogin extends Component {
     super(props);
     this.state = {
       value: {
-        username: undefined,
-        password: undefined,
+        userName: '13800138000',
+        password: '6666',
         checkbox: false,
       },
     };
@@ -50,7 +51,8 @@ export default class UserLogin extends Component {
         console.log('errors', errors);
         return;
       }
-      this.props.actions.login(values).then((res) => {
+      AccountReq.login(values).then((res) => {
+        if(!res || res.code != 200) return;
         Feedback.toast.success('登录成功');
 
         Storage.set('MENUS', (res.data.leaf));
@@ -88,12 +90,12 @@ export default class UserLogin extends Component {
                       size="small"
                       style={styles.inputIcon}
                     />
-                    <IceFormBinder name="username" required message="必填">
+                    <IceFormBinder name="userName" required message="必填">
                       <Input maxLength={20} placeholder="会员名/手机号" />
                     </IceFormBinder>
                   </Col>
                   <Col>
-                    <IceFormError name="username" />
+                    <IceFormError name="userName" />
                   </Col>
                 </Row>
 

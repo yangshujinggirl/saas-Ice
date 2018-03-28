@@ -16,3 +16,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# code
+src/_routes.js
+src/_reducers.js

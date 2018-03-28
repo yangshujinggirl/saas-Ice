@@ -2,12 +2,14 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Button } from '@icedesign/base';
+import axios from 'axios';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 import "./addFont.scss"
+import FontConfigReq from './../../reqs/FontConfigReq.js'
 
 
 export default class AddFont extends Component {
@@ -22,9 +24,13 @@ export default class AddFont extends Component {
     };
   }
   toggleCompont = () => { 
-    this.props.toggleCompont('SetFont')
+    this.props.router.push('/font/set')
   }
-  componentDidMount() {
+    componentDidMount() {
+      console.log(FontConfigReq.getDetail())
+        // axios.get('http://172.16.0.218:8080/loan-ft1/fields').then((data) => {
+        //     console.log(data)
+        // })
   }
   render() {
     return (
