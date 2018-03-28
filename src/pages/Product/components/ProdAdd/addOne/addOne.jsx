@@ -66,6 +66,21 @@ const list = [
     label: "不允许"
   }
 ];
+
+// Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
+const SwitchForForm = (props) => {
+  const checked = props.checked === undefined ? props.value : props.checked;
+
+  return (
+    <Switch
+      {...props}
+      checked={checked}
+      onChange={(currentChecked) => {
+        if (props.onChange) props.onChange(currentChecked);
+      }}
+    />
+  );
+};
 export default class AddOne extends Component {
   static displayName = 'AddOne';
 
@@ -76,6 +91,10 @@ export default class AddOne extends Component {
       dataSource2: generatorData2(),
       dataSource3: generatorData3(),
       dataSource4: generatorData4(),
+      value:{
+        fundParty:'',
+
+      }
     };
   }
   //列表编辑删除
@@ -268,7 +287,7 @@ formChange = (value) => {
                       
                     </Select>
                   </IceFormBinder>
-                  <IceFormError name="productCode" />
+                  <IceFormError name="fundParty" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>产品名称</label>
