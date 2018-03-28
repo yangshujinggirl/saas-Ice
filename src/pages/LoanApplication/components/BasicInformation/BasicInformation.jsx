@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {hashHistory} from 'react-router';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select, Field } from '@icedesign/base';
+import { Input, Grid, Form, Button, Select, Field, NumberPicker } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -17,8 +17,7 @@ const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
+  labelCol: { span: 12 },
 };
 
 const dataList = {
@@ -697,8 +696,9 @@ class BasicInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fixedInfoList:(dataList.fields)[1],
-      productId:this.props.params.id
+      optionList:[],
+      productId:this.props.params.id,
+      dataSource:[]
     };
     this.field = new Field(this)
   }
@@ -707,12 +707,23 @@ class BasicInformation extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.field.validate((errors, values) => {
+
       let parmas = this.field.getValues();
+      console.log(parmas)
       if (errors) {
         return;
       }
       this.addLoanApi(parmas)
     });
+  }
+  //请求options接口
+  getOptions(id) {
+    this.setState({
+      dataSource: [
+        {label:'option1', value:'option1'},
+        {label:'option2', value:'option2'}
+      ]
+    })
   }
   //增加进件
   addLoanApi(parmas) {
@@ -723,13 +734,57 @@ class BasicInformation extends Component {
     },(error)=> {
       console.log(error)
     })
-    hashHistory.push(`/loanapplication/config/${productId}`)
+    // hashHistory.push(`/loanapplication/config/${productId}`)
   }
 
   render() {
-    const { fixedInfoList } = this.state;
+    const { pageData } = this.props;
     const { init } = this.field;
 
+    let Mod;
+    let InputMod = (ele) => {
+      switch(ele.type) {
+        case 'SELECT':
+          return <Select
+                    style={styles.select}
+                    dataSource={this.state.dataSource}
+                    {...init(ele.name,
+                      {
+                        rules:[{ required: true, message: "请填写信息" }],
+                        props:{
+                          onOpen:()=> {
+                            this.getOptions(ele.id)
+                          }
+                        }
+                      }
+                    )}>
+                    {
+                      ele.options && ele.options.map((opt,ide) => (
+                        <div value={opt.label} key={ide}>{opt.label}</div>
+                      ))
+                    }
+                  </Select>
+        case 'STRING':
+        case 'DECIMAL':
+          return <Input
+                  trim
+                  style={styles.select}
+                  maxLength={5}
+                  placeholder={ele.type}
+                  {...init(ele.name,
+                    { rules:[{ required: true, message: "请填写信息" }] }
+                  )}
+                />
+              case 'INT':
+              return <NumberPicker
+                      value={1}
+                      type="inline"
+                      step={2}
+                      min={1}
+                      max={12}
+                    />
+      }
+    }
     return (
       <div className="content-editor">
         <IceFormBinderWrapper>
@@ -740,20 +795,13 @@ class BasicInformation extends Component {
               field={this.field}>
               <Row  align="top" wrap>
                 {
-                  fixedInfoList.fields.map((ele,index) => (
+                  pageData.length>0 && pageData[0].fields.map((ele,index) => (
                     <Col span={6} key={index}>
                       <FormItem {...formItemLayout} label={ele.label}>
-                        <Select
-                          style={styles.select}
-                          {...init(ele.name,
-                            { rules:[{ required: true, message: "请填写信息" }] }
-                          )}>
-                          {
-                            ele.options.map((opt,ide) => (
-                              <div value={opt.label} key={ide}>{opt.label}</div>
-                            ))
-                          }
-                        </Select>
+                        {
+                          InputMod(ele)
+                        }
+
                       </FormItem>
                     </Col>
                     ))
