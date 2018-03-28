@@ -8,6 +8,10 @@ export default class Demo extends Component {
     
   }
 
+  componentDidMount(){
+    this.props.actions.search();
+  }
+
   /**
    * <Account {...this.props} />
    * @return {[type]} [description]

@@ -25,7 +25,7 @@ class FontConfigReq extends CurdReq{
       url: this.curd.detail,
 
     }
-    return super.fetchData(options);
+    return this.fetchData(options);
   }
 
 	/**
