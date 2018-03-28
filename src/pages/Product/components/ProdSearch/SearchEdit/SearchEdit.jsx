@@ -4,7 +4,7 @@ import axios from 'axios';
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 
-import './SearchEditer.scss';
+import './SearchEdit.scss';
 
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
@@ -50,8 +50,8 @@ const SwitchForForm = (props) => {
   );
 };
 
-export default class SearchEditer extends Component {
-  static displayName = 'SearchEditer';
+export default class SearchEdit extends Component {
+  static displayName = 'SearchEdit';
 
   static defaultProps = {};
 

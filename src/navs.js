@@ -50,8 +50,8 @@ const customAsideNavs = [{
           value: "/product/filelist"
         },
         leaf: []
-      },
-    ],
+      }
+    ]
   },
   {
     value: {
@@ -84,7 +84,7 @@ const customAsideNavs = [{
 
 import { Storage } from './base/utils';
 
-let leafs = Storage.get('MENUS');
+let leafs = Storage.get('MENUS') || [];
 
 function transform(navs) {
   // custom logical
