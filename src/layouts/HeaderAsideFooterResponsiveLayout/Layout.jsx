@@ -14,6 +14,8 @@ import { asideNavs } from './../../navs';
 import './scss/light.scss';
 // import './scss/dark.scss';
 
+const logoImg = require('./img/logo.svg');
+
 // 设置默认的皮肤配置，支持 dark 和 light 两套皮肤配置
 // const theme = typeof THEME === 'undefined' ? 'dark' : THEME;
 const theme = 'light';
@@ -129,7 +131,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     asideNavs &&
       asideNavs.length > 0 &&
       asideNavs.map((item, index) => {
-        if (item.to === matched) {
+        if (item.value && item.value.value === matched) {
           openKeys = [`${index}`];
         }
       });
@@ -152,14 +154,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           }
         )}
       >
-        {/* {this.state.isScreen === 'isMobile' && (
+         {this.state.isScreen === 'isMobile' && (
             <a className="menu-btn" onClick={this.toggleMenu}>
               <Icon type="category" size="small" />
             </a>
           )}
           {this.state.openDrawer && (
             <div className="open-drawer-bg" onClick={this.toggleMenu} />
-          )} */}
+          )} 
         <Layout.Aside
             theme={theme}
             className={cx('ice-design-layout-aside', {
@@ -167,15 +169,15 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
             })}
           >
             {/* 侧边菜单项 begin */}
-            {/* {this.state.isScreen !== 'isMobile' && (
+             {/*{this.state.isScreen !== 'isMobile' && (
               <a className="collapse-btn" onClick={this.toggleCollapse}>
                 <Icon
                   type={this.state.collapse ? 'arrow-right' : 'arrow-left'}
                   size="small"
                 />
               </a>
-            )} */}
-            <img id='logo' src="src/layouts/HeaderAsideFooterResponsiveLayout/img/logo.svg" alt=""/>
+            )}*/}
+            <img id='logo' src={logoImg} alt=""/>
             <Menu
               inlineCollapsed={this.state.collapse}
               mode="inline"
@@ -189,34 +191,36 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               {asideNavs &&
                 asideNavs.length > 0 &&
                 asideNavs.map((nav, index) => {
-                  if (nav.children && nav.children.length > 0) {
+                  let navData = nav.value;
+                  if (nav.leaf && nav.leaf.length > 0) {
                     return (
                       <SubMenu
                         key={index}
                         title={
                           <span>
-                            {nav.icon ? (
-                              <FoundationSymbol size="small" type={nav.icon} />
+                            {navData.icon ? (
+                              <FoundationSymbol size="small" type={navData.icon} />
                             ) : null}
                             <span className="ice-menu-collapse-hide">
-                              {nav.text}
+                              {navData.name}
                             </span>
                           </span>
                         }
                       >
-                        {nav.children.map((item) => {
+                        {nav.leaf.map((item) => {
                           const linkProps = {};
-                          if (item.newWindow) {
-                            linkProps.href = item.to;
+                          let itemData = item.value || {};
+                          if (itemData.newWindow) {
+                            linkProps.href = itemData.value;
                             linkProps.target = '_blank';
-                          } else if (item.external) {
-                            linkProps.href = item.to;
+                          } else if (itemData.external) {
+                            linkProps.href = itemData.value;
                           } else {
-                            linkProps.to = item.to;
+                            linkProps.to = itemData.value;
                           }
                           return (
-                            <MenuItem key={item.to}>
-                              <Link {...linkProps}>{item.text}</Link>
+                            <MenuItem key={itemData.value}>
+                              <Link {...linkProps}>{itemData.name}</Link>
                             </MenuItem>
                           );
                         })}
@@ -224,23 +228,23 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     );
                   }
                   const linkProps = {};
-                  if (nav.newWindow) {
-                    linkProps.href = nav.to;
+                  if (navData.newWindow) {
+                    linkProps.href = navData.to;
                     linkProps.target = '_blank';
-                  } else if (nav.external) {
-                    linkProps.href = nav.to;
+                  } else if (navData.external) {
+                    linkProps.href = navData.value;
                   } else {
-                    linkProps.to = nav.to;
+                    linkProps.to = navData.value;
                   }
                   return (
-                    <MenuItem key={nav.to}>
+                    <MenuItem key={navData.value}>
                       <Link {...linkProps}>
                         <span>
-                          {nav.icon ? (
-                            <FoundationSymbol size="small" type={nav.icon} />
+                          {navData.icon ? (
+                            <FoundationSymbol size="small" type={navData.icon} />
                           ) : null}
                           <span className="ice-menu-collapse-hide">
-                            {nav.text}
+                            {navData.name}
                           </span>
                         </span>
                       </Link>
@@ -253,6 +257,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         <Layout.Section>
         <Header
           theme={theme}
+          menus={asideNavs}
+          pathname={pathname}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
         />
           
