@@ -15,36 +15,26 @@ class LoanApplicationReq extends CurdReq{
         }
 	}
 
-	getFields(){
-
-			let options = {
-				url: this._host + '/member/loginMobile',
-				method: 'POST',
-				contentType: 'application/x-www-form-urlencoded',
-				params: 'mobile=13917538027&card=211224198612285536'
-			}
-			return super.fetchData(options);
-	}
 
 	/**
 	 * 自定义请求
 	 * @return {[type]} [description]
 	 */
-	postDemo(){
-		let options = {
-			url: this._host + '/member/loginMobile',
-			method: 'POST',
-			contentType: 'application/x-www-form-urlencoded',
-			params: 'mobile=13917538027&card=211224198612285536'
-		}
-		return super.fetchData(options);
-	}
+	//新增进件
 	addLoanApi(params) {
 		let options = {
 			url: this._host + '/loans/',
 			method: 'POST',
 			contentType: 'application/json',
-			params
+			data:params
+		}
+		return super.fetchData(options);
+	}
+	getLoanDetailApi(id) {
+		let options = {
+			url: this._host + `/loans/${id}/screen`,
+			method: 'Get',
+			contentType: 'application/json'
 		}
 		return super.fetchData(options);
 	}
