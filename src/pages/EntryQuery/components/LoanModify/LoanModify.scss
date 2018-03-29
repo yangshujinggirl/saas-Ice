@@ -37,6 +37,7 @@
 }
 .modify-form{
   height: 100%;
+  overflow-y: scroll;
   .info{
     height: auto;
     h4{
@@ -53,6 +54,11 @@
       .item{
         width: 25%;
         margin: 10px 0px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        -webkit-text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
     .upload{
@@ -61,4 +67,14 @@
   }
 
 
+}
+.modify-form::-webkit-scrollbar {
+  display: none;
+}
+
+.next-form-left.next-form-medium .next-form-item-label {
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
