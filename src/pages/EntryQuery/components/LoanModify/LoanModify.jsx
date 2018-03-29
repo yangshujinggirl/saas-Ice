@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import  classNames from  'classnames'
-import { Input, Grid, Form, Button, Select ,Field} from '@icedesign/base';
+import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
 } from '@icedesign/form-binder';
@@ -12,10 +12,11 @@ import FormRender from  './FormRender'
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 const formItemLayout = {
-  labelCol: { span: 9 },
-  wrapperCol: { span: 12 }
+  labelCol: { span: 11 },
+  wrapperCol: { span: 13 }
 };
 
 @DataBinder({
@@ -114,19 +115,23 @@ export default class LoanModify extends Component {
     // console.log(el)
     if(el.type == "STRING"){
       return(
-        <FormItem key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
+                  hasFeedback {...formItemLayout}>
           <Input
-            {...init(el.name)}
+            {...init(el.name,{
+              rules: [{ required: true, message: "请填写"+el.label }]
+            })}
             placeholder={"请输入"+el.label}
           />
         </FormItem>
       )
     }else if(el.type == "SELECT"){
       return(
-        <FormItem  key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+        <FormItem  key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}>
           <Select
             placeholder={"请选择"+el.label}
-            style={{ width: 180 }}
+            style={{width:"100%"}}
             {...init(el.name, {
               rules: [{ required: true, message: "请选择"+el.label }]
             })}
@@ -143,9 +148,14 @@ export default class LoanModify extends Component {
     }
     else if(el.type == 'DECIMAL'){
       return(
-        <FormItem key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
+                   {...formItemLayout}>
           <Input
-            {...init(el.name)}
+            htmlType="number"
+            {...init(el.name,{
+              rules: [{ required: true, message: "请填写"+el.label},
+                      { validator: this.check }]
+            })}
             placeholder={"请输入"+el.label}
           />
         </FormItem>
@@ -153,14 +163,55 @@ export default class LoanModify extends Component {
     }
     else if(el.type == 'INT'){
       return(
-        <FormItem key={el.id} className='item' label={el.label+':'}  required {...formItemLayout}>
-          <Input
-            {...init(el.name)}
-            placeholder={"请输入"+el.label}
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
+                   {...formItemLayout}>
+          <NumberPicker
+            value={el.value}
+            min={0}
+            max={el.maxValue}
+            type="inline"
+            {...init(el.name, {
+              rules: [
+                { required: true,message: "请填写"+el.label}
+              ]
+            })}
           />
         </FormItem>
       )
     }
+    else if(el.type == 'RADIO'){
+      return(
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
+                   {...formItemLayout}>
+            <RadioGroup
+              {...init(el.name, {
+                rules: [{ required: true, message: "请选择"+el.label }]
+              })}
+            >
+              {
+                el.options ? el.options.map((item,i)=>{
+                    return <Radio value={item.value} key={i}>{item.label}</Radio>
+                  })
+                  : ''
+              }
+            </RadioGroup>
+        </FormItem>
+      )
+    }
+  }
+  //
+  label = (label) =>{
+
+    var  labelName= <span> {label}:</span>
+    return(
+     <Balloon
+            type="primary"
+            trigger={labelName}
+            closable={false}
+          >
+       {label}
+     </Balloon>
+    )
   }
   render() {
     // const details = this.props.bindingData.details;
@@ -192,46 +243,6 @@ export default class LoanModify extends Component {
                 >
                   {this.renderForm(details)}
 
-                <div className='info'>
-                  <h4>基本信息</h4>
-                  <div className='info-row'>
-                    <FormItem className='item' label="密码：" required {...formItemLayout}>
-                      <Input
-                        htmlType="password"
-                        {...init("1")}
-                        placeholder="请输入密码"
-                      />
-                    </FormItem>
-                    <FormItem className='item' label="密码：" required {...formItemLayout}>
-                      <Input
-                        htmlType="password"
-                        {...init("2")}
-                        placeholder="请输入密码"
-                      />
-                    </FormItem>
-                    <FormItem  className='item' label="密码：" required {...formItemLayout}>
-                      <Input
-                        htmlType="password"
-                        {...init("3")}
-                        placeholder="请输入密码"
-                      />
-                    </FormItem>
-                    <FormItem className='item' label="密码：" required {...formItemLayout}>
-                      <Input
-                        htmlType="password"
-                        {...init("pass")}
-                        placeholder="请输入密码"
-                      />
-                    </FormItem>
-                    <FormItem className='item' label="密码：" required {...formItemLayout}>
-                      <Input
-                        htmlType="password"
-                        {...init("pasws")}
-                        placeholder="请输入密码"
-                      />
-                    </FormItem>
-                  </div>
-                </div>
                 </Form>
               </Col>
             </Row>
