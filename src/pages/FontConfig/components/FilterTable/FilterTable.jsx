@@ -5,6 +5,7 @@ import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
+import FontConfigReq from './../../reqs/FontConfigReq.js'
 
 @DataBinder({
   tableData: {
