@@ -513,6 +513,7 @@ body {
             .ice-menu.ice-menu-collapse > .ice-menu-submenu-selected > .ice-menu-submenu-title {
                 background-image: linear-gradient(90deg, $ice-aside-menu-item-selected-gradient-left-bg 0%, $ice-aside-menu-item-selected-gradient-right-bg 100%);
                 color: $ice-aside-menu-item-selected-text-color;
+                border-radius: 0;
 
                 &:before {
                     width: 0;

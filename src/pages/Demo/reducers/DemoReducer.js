@@ -2,7 +2,9 @@ import T from '../constants/DemoConstant'
 
 const index = (state = {
   isFetching: false,
-  pageData: {}, //列表分页数据
+  pageData: {
+    total: 0
+  }, //列表分页数据
   formData: { //表单数据
     title: '',
     area: 'location1',
