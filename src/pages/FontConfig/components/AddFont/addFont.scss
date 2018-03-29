@@ -23,7 +23,7 @@
         border: 1px solid #ECECEC;
         border-radius: 4px;
         color: #333;
-        width: 150px;
+        width: 165px;
         height: 45px;
         line-height: 45px;
         font-size: 14px;
@@ -33,7 +33,9 @@
         position: relative;
         display: inline-block;
         cursor: pointer;
-        
+        &.isFixed {
+            cursor: auto;
+        }
         .icon {
             display: none;
             position: absolute;
