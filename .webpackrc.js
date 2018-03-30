@@ -13,6 +13,16 @@ module.exports = {
                     res.set('X-ICE-PROXY-BY', LOAN_HOST);
                 },
             },
+            '/loanApi': {
+                target: LOAN_HOST,
+                changeOrigin: true,
+                pathRewrite:{"^/loanApi" : ""},
+                bypass: function(req, res, proxyOpt) {
+                    // 添加 HTTP Header 标识 proxy 开启
+                    res.set('X-ICE-PROXY', 'on');
+                    res.set('X-ICE-PROXY-BY', LOAN_HOST);
+                },
+            },
             '/crm': {
                 target: CRM_HOST,
                 changeOrigin: true,

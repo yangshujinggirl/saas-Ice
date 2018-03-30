@@ -10,7 +10,6 @@ class LoanApplication extends Component {
     console.log(this.props)
   }
   componentWillMount() {
-    this.props.actions.search({isFixed:true})
   }
 
   render() {
