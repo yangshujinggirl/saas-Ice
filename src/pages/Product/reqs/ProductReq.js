@@ -32,7 +32,16 @@ class ProductReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-
+//产品初始数据
+prodActions (condition){
+	let options = {
+		url: this._host + '/product/data',
+		method: 'get',
+		contentType: 'application/x-www-form-urlencoded',
+		params: condition
+	}
+	return super.fetchData(options);
+}
 	//产品编辑
 	prodedit(id){
 		let options = {
@@ -99,24 +108,14 @@ fileremove(id, callback, callbackError) {
 
 
 	//材料编辑修改后确定
-	fileEditSave(id) {
-		console.log(data);
-		
-		var url = this._host + '/product/collect/'+data
+	fileEditSave(data,id) {
+		var url = this._host + '/product/collect/'+id
 		if (data) {
 		
 			let options = {
 				url: url,
 				method: 'put',
-				data: {
-					 "collectionDetails": [{
-					  "name": "????",
-					  "dataName": "?????",
-					  "fileType": "",
-					  "fileSize": 1234,
-					  "orderId": 1
-					 }]
-					},
+				data: data,
 				contentType: 'application/json'
 			}
 			return super.fetchData(options);

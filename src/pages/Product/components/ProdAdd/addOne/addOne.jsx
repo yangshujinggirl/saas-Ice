@@ -85,7 +85,8 @@ export default class CreateActivityForm extends Component {
         prepaymentPeriodsLimit:'',
         penaltyBasicAmount:'',
         penaltyCalculationType:'',
-      }
+      },
+      data:{}
     };
   }
 
@@ -106,8 +107,16 @@ export default class CreateActivityForm extends Component {
       this.props.actions.save(value);
     });
   };
+  componentWillMount(){
+    this.props.actions.prodActions();
+    console.log(this.props.prodActions)
+  }
 
   render() {
+    let data = this.props.prodActions|| {}
+    data = data.data;
+    console.log(data)
+    let map = new Map();
     return (
       <div className="create-activity-form">
         <IceContainer >
@@ -135,6 +144,7 @@ export default class CreateActivityForm extends Component {
                    <Select
                       style={styles.filterTool}
                     >
+                    
                       <Option value="option1">中国</Option>
                       <Option value="option2">美国</Option>
                       
@@ -180,12 +190,12 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="NEW_CAR_LOAN">新车贷款</Option>
+                      {/* <Option value="NEW_CAR_LOAN">新车贷款</Option>
                       <Option value="NEW_CAR_RENTAL">新车租赁</Option>
                       <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
                       <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
                       <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
-                      <Option value="CONSUMER_LOAN">消费贷款</Option>
+                      <Option value="CONSUMER_LOAN">消费贷款</Option> */}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="prodType"/>

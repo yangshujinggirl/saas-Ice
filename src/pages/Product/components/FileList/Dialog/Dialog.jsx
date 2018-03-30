@@ -29,7 +29,6 @@ export default class DiaLog extends Component {
 
   constructor(props) {
     super(props);
-    this.props.actions.fileDetail(this.props.params.id)
     this.state = {
       value:{
         fileList:{},
@@ -128,7 +127,7 @@ export default class DiaLog extends Component {
         return;
       }
       // 提交当前填写的数据
-      this.props.actions.prodrevise(value,id);//
+      this.props.actions.fileEditSave(value,id);//
       // hashHistory.push('/product/search')
     });
 

@@ -45,7 +45,19 @@ function dispatch(data) {
   }
 }
 
+//产品初始
+export const prodActions = (condition)=>{
+  return (dispatch) => {
 
+    dispatch(fetchStart())
+
+    Req.prodActions(condition).then((res) => {
+      dispatch(fetchSuccess({ prodActions: res }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
 // 获取列表
 export const search = (condition) => {
   return (dispatch) => {
@@ -147,6 +159,7 @@ export const fileDetail = (id) =>{
   return (dispatch) => {
 
     dispatch(fetchStart())
+    console.log('fileDetail')
 
     Req.fileDetail(id).then((res) => {
       dispatch(fetchSuccess({editData: res}))
@@ -198,7 +211,6 @@ export const fileEditSave = (value,id)=>{
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
-    Req.fileEditSave(id)
   }
 }
 
