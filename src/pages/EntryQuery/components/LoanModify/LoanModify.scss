@@ -18,9 +18,14 @@
     color: #000000;
     letter-spacing: 0.92px;
     line-height: 30px;
-    li.active {
+    a{
+      display: block;
+      color: #000000;
+    }
+    a.active {
       position: relative;
       color: #FC9E25;
+      text-decoration: none;
       &::after {
         content: '*';
         display: block;
@@ -59,6 +64,9 @@
         -o-text-overflow: ellipsis;
         -webkit-text-overflow: ellipsis;
         white-space: nowrap;
+      }
+      .single-line{
+        width: 100%;
       }
     }
     .upload{
