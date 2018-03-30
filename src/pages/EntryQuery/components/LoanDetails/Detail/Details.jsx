@@ -51,7 +51,7 @@ export default class Details extends Component {
   render() {
     console.log(this.props.dataSource);
     this.state.Component = [];
-    if(this.props.dataSource.length){
+    if(this.props.dataSource){
       this.props.dataSource.forEach((item,i)=>{
         this.state.Component.push(
           <IceContainer title={item.name} className='subtitle'  key={i}>

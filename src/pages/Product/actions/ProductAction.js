@@ -103,6 +103,104 @@ export const remove = (id) => {
     })
   }
 }
+//产品编辑
+export const edit = (id) =>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.prodedit(id).then((res) => {
+      dispatch(fetchSuccess({prodInfo: res}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+
+//产品修改
+export const prodrevise = (condition)=>{
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.prodrevise(condition).then((res) => {
+      dispatch(fetchSuccess({ testData: res }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+// 获取材料列表
+export const filesearch = (condition) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.filesearch(condition).then((res) => {
+      dispatch(fetchSuccess({ fileData: res }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//材料清单明细
+export const fileDetail = (id) =>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.fileDetail(id).then((res) => {
+      dispatch(fetchSuccess({editData: res}))
+      // hashHistory.push('/product/fileedit/' + res.data.id);
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//删除材料资料清单
+export const fileremove = (id) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.fileremove(id).then((res) => {
+      dispatch(fetchSuccess({delete: true}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+// 删除材料明细一条记录
+export const fileRemoveDes = (id) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.fileRemoveDes(id).then((res) => {
+      Req.fileDetail(id).then((res) => {
+        dispatch(fetchSuccess({editData: res}))
+      }).catch((ex) => {
+        dispatch(fetchFailed(ex))
+      })
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+//材料 编辑后确定
+export const fileEditSave = (value,id)=>{
+  return (dispatch) => {
+    dispatch(fetchStart())
+    console.log(id)
+    Req.fileEditSave(value,id).then((res) => {
+      // console.log(Req)
+      // dispatch(fetchSuccess({delete: true}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+    Req.fileEditSave(id)
+  }
+}
 
 export function changeViewToForm() {
   return dispatch({ view: 'form' });

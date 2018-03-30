@@ -42,6 +42,7 @@
 }
 .modify-form{
   height: 100%;
+  background: #FFFEFB;
   overflow-y: scroll;
   .info{
     height: auto;
@@ -67,6 +68,37 @@
       }
       .single-line{
         width: 100%;
+      }
+      .subsidiary-field{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+      }
+    }
+    .button-box{
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      margin-bottom: 260px;
+      button{
+        border-radius: 3px;
+        height: 34px;
+        width: 70px;
+        margin-right: 10px;
+        color: #ffffff;
+      }
+      button:nth-child(1){
+        background: #FC9E25;
+      }
+      button:nth-child(2){
+        background: #1AA8F0;
+      }
+      button:nth-child(3){
+        background: #FBFAFA;
+        border: 1px solid #DADADA;
+        color: #000000;
       }
     }
     .upload{

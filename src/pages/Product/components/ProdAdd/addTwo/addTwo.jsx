@@ -147,61 +147,7 @@ export default class addTwo extends Component {
               </Row>
             </div>
            
-            <legend className="legend">
-              <span className="legLine"></span>SP设置
-            </legend>
-            <div className="f-box">
-              <Row wrap style={styles.formItem}>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <IceFormBinder
-                    name="SP"
-                  >
-                    <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
-                  </IceFormBinder>
-                  <IceFormError name="name" />
-                </Col>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <button style={styles.btns} type='submit' onClick={this.onSubmit}>
-                    查询
-                  </button>
-                </Col>
-              </Row>
-              <Row wrap style={{marginBottom:"30px"}} >
-                <Transfer  
-                  titles={['测试',' ']}
-                  dataSource={dataSource}
-                  defaultLeftChecked={["0"]}
-                  listStyle={{width:"500px"}}/>
-              </Row>
-            </div>
-
-             <legend className="legend">
-              <span className="legLine"></span>机构设置
-            </legend>
-            <div className="f-box">
-              <Row wrap style={styles.formItem}>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <IceFormBinder
-                    name="mechanism"
-                  >
-                    <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
-                  </IceFormBinder>
-                  <IceFormError name="name" />
-                </Col>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <button style={styles.btns} type='submit' onClick={this.onSubmit}>
-                    查询
-                  </button>
-                </Col>
-              </Row>
-              <Row wrap style={{marginBottom:"30px"}} >
-                <Transfer  
-                  titles={['测试',' ']}
-                  dataSource={dataSource}
-                  defaultLeftChecked={["0"]}
-                  listStyle={{width:"500px"}}/>
-              </Row>
-            </div>
+           
             <div className="next-btn-box">
               <div className="next-btn-lx" onClick={this.changeView}>保存</div>
             </div>
