@@ -57,17 +57,21 @@ export default class ProdSeachList extends Component {
 
   constructor(props) {
     super(props);
-
-    // 请求参数缓存
-    this.queryCache = {};
     this.state = {
       filterFormValue: {},
+      value:{
+        productCode	:'',	 
+        name	:'', 
+        productType	:'',
+        status	:'',
+        contractDisplayName:''
+      },
+      dataSource:'',
     };
-
+     // 请求参数缓存
+    
   }
-  componentDidMount(){
-    // console.log(this.props.formData)
-  }
+ 
   //查看
   searchItem = (record) => {
     hashHistory.push(`product/proddetail/${record.id}`)//+ record.id);
@@ -76,6 +80,7 @@ export default class ProdSeachList extends Component {
   //编辑
   editItem = (record) => {
     // let {actions} = this.props;
+    // this.props.actions.edit(this.props.params.id)
     hashHistory.push(`product/searchedit/${record.id}`)
   }
   renderOperator = (value, index, record) => {
@@ -101,22 +106,60 @@ export default class ProdSeachList extends Component {
     
   }
   componentDidMount() {
-  
+    console.log(this.props)
+    this.fech();
   }
-  searchBtn(){
+  fech = () =>{
+    this.props.actions.search();
+  }
+  //查询
+  submit = () =>{
+    let {actions,pageData} = this.props;
+    this.formRef.validateAll((error, value) => {
+      console.log('error', error, 'value', value);
+      if (error) {
+        // 处理表单报错
+        return;
+      }
+      // 提交当前填写的数据
+      this.props.actions.search(value);//返回符合条件的数据
+      // this.setState({
+      //   this.state.dataSource
+      // })
+    });
+  };
+  //页数变化
+  changePage = (currentPage) => {
+    console.log(currentPage);
+  };
 
-  }
+
   render() {
-    let dataSource = this.props.pageData || {};
-    console.log(dataSource)
+    this.state.dataSource = this.props.pageData.data || {};
+    this.state.dataSource = this.state.dataSource.list ||[] //data.data
+    console.log( this.state.dataSource.times)
+    this.state.dataSource &&  this.state.dataSource.map((item) => {
+      let temp = [];
+      item.times && item.times.map((ditem, j) => {
+        temp.push(ditem);
+      })
+      item.times = temp.join('~')
+      })
+    let map = new Map()
     return (
 
       <div className="create-activity-form" style={styles.container}>
         {/* <SearchEditer /> */}
         <IceContainer title="" >
-          <IceFormBinderWrapper>
+          <IceFormBinderWrapper
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
+            value={this.state.value}
+            onChange={this.onFormChange}
+          >
             <div>
-              <legend style={styles.legend} onClick={this.searchBtn} >
+              <legend style={styles.legend}  >
                 <span style={styles.legLine}></span>查询
               </legend>
               <div style={styles.fieldBox}>
@@ -155,11 +198,12 @@ export default class ProdSeachList extends Component {
                           placeholder="请选择"
                           style={{ width: '175px' }}
                         >
-                          <Option value="option1">新车贷款</Option>
-                          <Option value="option2">二手车贷款</Option>
-                          <Option value="option3">车抵贷贷款</Option>
-                          <Option value="option4">附加费贷款</Option>
-                          <Option value="option5">保费贷</Option>
+                          <Option value="NEW_CAR_LOAN">新车贷款</Option>
+                          <Option value="NEW_CAR_RENTAL">新车租赁</Option>
+                          <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
+                          <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
+                          <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
+                          <Option value="CONSUMER_LOAN">消费贷款</Option>
                         </Select>
                       </IceFormBinder>
                     <IceFormError name="productType" />
@@ -200,7 +244,7 @@ export default class ProdSeachList extends Component {
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    <button style={styles.btns} type='submit' onClick={this.resetFilter}>
+                    <button style={styles.btns} type='submit' onClick={this.submit}>
                       查询
                     </button>
                   </Col>
@@ -209,7 +253,7 @@ export default class ProdSeachList extends Component {
             </div>
           </IceFormBinderWrapper>
           <Table
-              dataSource={dataSource.list}
+              dataSource={this.state.dataSource}
               isLoading={this.state.isLoading}
               isZebra={true}
             >
@@ -218,7 +262,7 @@ export default class ProdSeachList extends Component {
               <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
               <Table.Column title="状态" dataIndex="status" width={100} />
               <Table.Column title="产品类型" dataIndex="productType" width={160} />
-              <Table.Column title="生效期限" dataIndex="effectiveDate" width={250} />
+              <Table.Column title="生效期限" dataIndex="times" width={250} />
               <Table.Column title="尾款产品" dataIndex="areaId" width={120} />
               <Table.Column title="资金方" dataIndex="createdUser" width={120} />
               <Table.Column title="金额范围(元)" dataIndex="provinceId" width={120} />
@@ -235,9 +279,9 @@ export default class ProdSeachList extends Component {
             <div style={styles.pagination}>
               <Pagination 
                 shape="arrow-only" 
-                // current={tableData.currentPage}
-                // pageSize={tableData.pageSize}
-                // total={tableData.total}
+                current={this.state.dataSource.page}
+                pageSize={this.state.dataSource.limt}
+                total={this.state.dataSource.total}
                 onChange={this.changePage}
               />
             </div>

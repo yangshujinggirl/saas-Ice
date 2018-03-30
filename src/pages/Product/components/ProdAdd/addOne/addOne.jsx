@@ -58,18 +58,18 @@ export default class CreateActivityForm extends Component {
         isPermittedDiscount:'',
         status:'',
         isRetainage:'',
-        purposeOfLoan:[],
-        guaranteeMethodType:[],
+        purposeOfLoan:['buyCar'],
+        guaranteeMethodType:['CREDIT'],
         paymentOfLoan:'',
         description:'',
-        loanTermChange:[],
+        loanTermChange:['ALLOW_DELAY'],
         principalAmountMin:'',
         principalAmountMax:'',
         loanTermRangeMin:'',
         loanTermRangeMax:'',
         loanPercentageMin:'',
         loanPercentageMax:'',
-        interestLoanRateChange:[],
+        interestLoanRateChange:['Allow_Change_Rate_Adjust'],
         interestRateRules:'',
         interestRateModel:'',
         interestRatesRangeMin:'',
@@ -94,20 +94,6 @@ export default class CreateActivityForm extends Component {
       value,
     });
   };
-
-  // reset = () => {
-  //   this.setState({
-  //     value: {
-  //       name: '',
-  //       area: 'location1',
-  //       time: [],
-  //       delivery: false,
-  //       type: ['地推活动'],
-  //       resource: '线下场地免费',
-  //       extra: '',
-  //     },
-  //   });
-  // };
 
   submit = () => {
     this.formRef.validateAll((error, value) => {
@@ -147,7 +133,6 @@ export default class CreateActivityForm extends Component {
                     validator={this.check}
                   >
                    <Select
-                      placeholder="请选择"
                       style={styles.filterTool}
                     >
                       <Option value="option1">中国</Option>
@@ -205,28 +190,7 @@ export default class CreateActivityForm extends Component {
                   </IceFormBinder>
                   <IceFormError name="prodType"/>
                 </Col>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}> <span className="label-required">*</span>业务表单</label>
-                  <IceFormBinder
-                    name="serviceFormType"
-                  >
-                    <Select
-                      name="serviceFormType"
-                      required 
-                       message="必填"
-                      placeholder="请选择"
-                      style={styles.filterTool}
-                    >
-                      <Option value="NEW_CAR_LOAN">新车贷款</Option>
-                      <Option value="NEW_CAR_RENTAL">新车租赁</Option>
-                      <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
-                      <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
-                      <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
-                      <Option value="CONSUMER_LOAN">消费贷款</Option>
-                    </Select>
-                  </IceFormBinder>
-                  <IceFormError name="serviceFormType"/>
-                </Col>
+                
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>资料收取清单</label>
                   <IceFormBinder
@@ -245,8 +209,6 @@ export default class CreateActivityForm extends Component {
                   </IceFormBinder>
                   <IceFormError name="collectionDetailListId"/>
                 </Col>
-              </Row>
-              <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><span className="label-required">*</span>生效日期</label>
                   <IceFormBinder
@@ -258,6 +220,9 @@ export default class CreateActivityForm extends Component {
                   </IceFormBinder>
                   
                 </Col>
+              </Row>
+              <Row wrap>
+                
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>允许贴息</label>
                   <IceFormBinder
@@ -294,8 +259,6 @@ export default class CreateActivityForm extends Component {
                   </IceFormBinder>
                   <IceFormError name="status"/>
                 </Col>
-              </Row>
-              <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>尾款产品</label>
                   <IceFormBinder
@@ -314,6 +277,7 @@ export default class CreateActivityForm extends Component {
                   <IceFormError name="isRetainage"/>
                 </Col>
               </Row>
+              
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
@@ -325,7 +289,6 @@ export default class CreateActivityForm extends Component {
                           { label: '消费性', value: 'Consume' },
                           { label: '经营性', value: 'Operate' },
                         ]}
-                        defaultValue={['buyCar']}
                       />
                     </IceFormBinder>
                     <div>
@@ -344,7 +307,6 @@ export default class CreateActivityForm extends Component {
                           { label: '抵押', value: 'MORTGAGE' },
                           { label: '质押', value: 'PLEDGE' },
                         ]}
-                        defaultValue={['CREDIT']}
                       />
                     </IceFormBinder>
                     <div>
@@ -397,7 +359,6 @@ export default class CreateActivityForm extends Component {
                           { label: '允许压缩', value: 'ALLOW_PRESS' },
                           { label: '不允许变更', value: 'NOT_ALLOW_CHANGE' },
                         ]}
-                        defaultValue={['ALLOW_DELAY']}
                       />
                     </IceFormBinder>
                     <div>
@@ -474,7 +435,6 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">产品成数设置</div>
               <Table
-              dataSource={dataSource}
                 hasHeader
                 className="table"
               >
@@ -505,7 +465,6 @@ export default class CreateActivityForm extends Component {
                           { label: '允许变更利率浮动率', value: 'Allow_Change_Rate_float' },
                           { label: '不允许贷款利率变更', value: 'Not_Allow_Change_Account' },
                         ]}
-                        defaultValue={['Allow_Change_Rate_Adjust']}
                       />
                     </IceFormBinder>
                     <div>
