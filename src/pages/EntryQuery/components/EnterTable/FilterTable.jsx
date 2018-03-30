@@ -143,6 +143,7 @@ export default class EnhanceTable extends Component {
     // const tableData = this.props.bindingData.tableData;
     const tableData = this.props.pageData || {};
     const { filterFormValue } = this.state;
+    console.log(tableData)
     return (
       <div className="filter-table">
         <IceContainer title="查询" className='subtitle'>

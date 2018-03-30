@@ -73,7 +73,7 @@ export default class LoanDetails extends Component {
           value={this.state.value}
           onChange={this.formChange}
         >
-          <Detail dataSource={details}></Detail>
+          <Detail dataSource={details.list}></Detail>
 
         </IceFormBinderWrapper>
         <div className='botton-box'>

@@ -8,7 +8,7 @@ class EntryQueryReq extends CurdReq{
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
             create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
+            update: this._host + '/loans/:id',
             retrieve: this._host + '/loans',
             delete: this._host + '/detail.json',
             detail: this._host + '/loans/:id/screen'
@@ -28,6 +28,15 @@ class EntryQueryReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+
+  saveFrom(data){
+    let options = {
+      url: this._host + '/loans/'+data.id,
+      method: 'PUT',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new EntryQueryReq();
