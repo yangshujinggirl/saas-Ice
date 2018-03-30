@@ -1,18 +1,6 @@
-<p align="center">
-  <a href="https://alibaba.github.io/ice">
-    <img alt="ICE" src="https://gw.alicdn.com/tfs/TB1FEW2nfDH8KJjy1XcXXcpdXXa-487-132.svg" width="200">
-  </a>
-</p>
-<p align="center">赋能企业中后台建设</p>
-<p align="center">
-  <a href="https://github.com/alibaba/ice/blob/master/LICENSE"><img src="https://img.shields.io/badge/lisense-MIT-brightgreen.svg"></a>
-</p>
+# 平常金服SAAS系统（贷前）
 
-## 简介
-
-基于海量高质量可复用区块，通过 GUI 工具快速搭建的一套中后台模板。
-
-![ice-design-pro](https://img.alicdn.com/tfs/TB1Ry02duuSBuNjy1XcXXcYjFXa-2840-1596.png)
+产品、进件页面字段配置
 
 ## 特性
 
@@ -20,36 +8,6 @@
 * 成熟的基础组件: [ICE Component](https://alibaba.github.io/ice/#/component/button)
 * 丰富的业务模块: [ICE Block](https://alibaba.github.io/ice/#/block)
 * 完善的开发工具: [iceworks](https://alibaba.github.io/ice/#/iceworks)
-
-## 功能
-
-> 按照 Dashboard 综合页和 Block 分类进行展示
-
-```
-- Dashboard
-- 图表页
-  - 图表列表
-- 表格页
-  - 基础表格
-  - 展示型表格
-  - 表格列表
-- 列表页
-  - 文章列表
-  - 卡片列表
-  - 图文列表
-- 内容页
-  - 基础详情页
-  - 条款协议页
-  - 进度展示页
-- 结果页
-  - 成功
-  - 失败
-- 异常
-  - 403 无权限
-  - 404 找不到
-  - 500 服务器出错
-  - 内容为空
-```
 
 ## 目录结构
 
@@ -84,4 +42,6 @@ ice-design-pro
 ```bash
 $ npm start      // 启动预览服务器
 $ npm run build  // 构建 dist
+$ node generate  // 生成代码相关的文件
+$ node create-module xx // 添加一个新的模块
 ```

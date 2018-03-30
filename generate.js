@@ -10,6 +10,7 @@ const child_process = require('child_process');
 try {
     child_process.execSync('node generate-reducer.js');
     child_process.execSync('node generate-router.js');
+    child_process.execSync('node generate-navs.js');
 } catch (e) {
     console.log(e)
 }

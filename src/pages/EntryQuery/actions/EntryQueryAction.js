@@ -53,7 +53,7 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res }))
+      dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -102,6 +102,20 @@ export const remove = (id) => {
   }
 }
 
+
+//
+export const saveFrom = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.saveFrom(data).then((res) => {
+      dispatch(fetchSuccess({data: res.data}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
 export function changeViewToForm() {
   return dispatch({ view: 'form' });
 }

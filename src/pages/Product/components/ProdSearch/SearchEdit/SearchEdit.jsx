@@ -61,61 +61,69 @@ export default class SearchEdit extends Component {
     // 请求参数缓存
     this.queryCache = {};
     this.state = {
-      filterFormValue: {},
+      values:{
+        // name:'',
+        // effectiveDate	:''	 ,
+        // expirationDate:'', 
+        // status:''
+      }
     };
 
   }
-  componentDidMount(){
-    // console.log(this.props.formData)
-  }
-  //查看
-  searchItem = (record) => {
-    hashHistory.push(`product/proddetail/${record.productCode}`)//+ record.id);
-  };
-
-  //编辑
-  editItem = (record) => {
-    let {actions} = this.props;
-    // hashHistory.push(`product/proddetail/${record}`)
-  }
-  renderOperator = (value, index, record) => {
-    return (
-      <div>
-        <button
-          className="editbtn"
-          onClick = {()=>this.editItem(record)}
-        >
-          编辑</button>
-        <button
-          className="searchbtn"
-          onClick={()=>this.searchItem(record)}
-        >
-          查看
-        </button>
-      </div>
-    );
-  };
-  
-
   componentWillMount(){ 
-    console.log(this.props)
-    console.log(this.props.pageData)
-   console.log( this.props.actions.search())
-    
+  
   }
   componentDidMount() {
-  
+    let {actions,prodInfo, params} = this.props;
+    this.props.actions.edit(params.id);
+    actions.getDetail(params.id);
+    console.log(this.props)
+    
   }
-
+  upData=()=>{
+    let {actions,pageData} = this.props;
+    console.log(this.props)
+    this.formRef.validateAll((error, value) => {
+      console.log('error', error, 'value', value);
+      if (error) {
+        // 处理表单报错
+        return;
+      }
+      // 提交当前填写的数据
+      value.effectiveDate=value.time[0]
+      value.expirationDate=value.time[1]
+      this.props.actions.prodrevise(value);//
+      // hashHistory.push('/product/search')
+    });
+  }
   render() {
-    let dataSource = this.props.pageData || {};
-    console.log(dataSource)
-    return (
+    // console.log(this.props.prodInfo)
+    let prodInfo = this.props.prodInfo;
+    let dataSource = [];
+    if(prodInfo){
+      // dataSource = prodInfo.data;
+      dataSource = prodInfo.data;
+    }
+    dataSource && dataSource.map((item) => {
+      let temptime = [];
+      if (item.times){
+        console.log(item.times)
+        item.temptime = item.times.join('~')
+      }
+    })
 
+    return (
       <div className="create-activity-form" style={styles.container}>
         {/* <SearchEditer /> */}
         <IceContainer title="" >
-          <IceFormBinderWrapper>
+          <IceFormBinderWrapper
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
+            value={{
+                    id:this.props.params.id,
+                    status:''}}
+          >
             <div>
               <legend style={styles.legend}>
                 <span style={styles.legLine}></span>产品编辑
@@ -127,22 +135,27 @@ export default class SearchEdit extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="name	"
+                      name="name"
+                      required
+                      message="必填"
                     >
                       <Input placeholder="产品名称" />
                     </IceFormBinder>
                     <IceFormError name="name" />
                   </Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    生效日期：
+                    生效期限：
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="effectiveDate"
+                      name="time"
+                      required
+                      message="必填"
+                      valueFormatter={(date, dateStr) => dateStr}
                     >
-                      <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
+                      <RangePicker format={"YYYY-MM-DD"} style={{width:"200px"}} /> 
                     </IceFormBinder>
-                    <IceFormError name="effectiveDate" />
+                   
                   </Col>
                 </Row>
 
@@ -153,13 +166,15 @@ export default class SearchEdit extends Component {
                   <Col s="4" l="4">
                     <IceFormBinder
                         name="lineName"
+                        required
+                        message="必填"
                       >
                         <Select
                           placeholder="请选择"
                           style={{ width: '200px' }}
                         >
-                          <Option value="yes">为该资方下所有已定义流程名称</Option>
-                          <Option value="no">为该资方下所有已定义流程名称</Option>
+                          <Option value="ONE">1</Option>
+                          <Option value="TWO">2</Option>
                         </Select>
                       </IceFormBinder>
                       <IceFormError name="lineName" />
@@ -169,17 +184,19 @@ export default class SearchEdit extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                        name="status	"
+                        name="status"
+                        required
+                        message="必填"
                       >
                         <Select
-                          placeholder="请选择"
                           style={{ width: '200px' }}
                         >
-                          <Option value="yes">生效</Option>
-                          <Option value="no">未生效</Option>
-                        </Select>
-                      </IceFormBinder>
-                      <IceFormError name="status" />
+                        <Option value="0">生效</Option>
+                        <Option value="1">未生效</Option>
+                        <Option value="2">失效</Option>
+                      </Select>
+                    </IceFormBinder>
+                    <IceFormError name="lineName" />
                   </Col>
                 </Row>
                 <Row wrap style={styles.formItem} >
@@ -191,21 +208,22 @@ export default class SearchEdit extends Component {
                   </Col>
 
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <a className="dete-btn" >确定</a>
+                  <button className="dete-btn" onClick ={this.upData}>确定</button>
                   </Col>
                 </Row>
                 <Row wrap >
                 <Table
-                  dataSource={this.state.dataSource}
+                  dataSource={dataSource}
                   isLoading={this.state.isLoading}
                   style={{width:"80%"}}
+                  sort={{id :'=desc'}}
                 >
                   <Table.Column title="版本" dataIndex="id" width={120} />
-                  <Table.Column title="生效日期" dataIndex="title.name" width={250} />
-                  <Table.Column title="状态" dataIndex="type" width={160} />
+                  <Table.Column title="生效期限" dataIndex="temptime" width={250} />
+                  <Table.Column title="状态" dataIndex="status" width={160} />
                   <Table.Column title="流程" dataIndex="template" width={100} />
-                  <Table.Column title="时间" dataIndex="status" width={120} />
-                  <Table.Column title="操作人" dataIndex="rate" width={120} />
+                  <Table.Column title="时间" dataIndex="operateAt" width={120} />
+                  <Table.Column title="操作人" dataIndex="operateName" width={120} />
               </Table>
               </Row>
               </div>

@@ -6,26 +6,47 @@ class FontConfigReq extends CurdReq{
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
+            create: this._host + '/screen-schemes',
+            update: this._host + '/screen-schemes',
             retrieve: this._host + '/filter-table-list.json',
             delete: this._host + '/detail.json',
-            detail: this._host + '/fields'
         }
 	}
 
 	/**
-   * 获取详情
+   * 获取字段
    */
-  getDetail(id, callback, callbackError) {
+  getDetail(query='') {
     let data = {};
 
-
     let options = {
-      url: this.curd.detail,
-
+      url: this._host + '/fields?' + query,
     }
-    return this.fetchData(options);
+    return super.fetchData(options);
+  }
+
+	/**
+   * 提交选中字段
+   */
+  fontCode(data, callback, callbackError) {
+    let options = {
+			url: this._host + '/screen-schemes',
+			data: data,
+			method: 'post',
+			contentType: 'application/json'
+    }
+    return super.fetchData(options);
+	}
+	
+		/**
+   * 获取选中字段
+   */
+  getCode(id) {
+    let options = {
+			url: this._host + '/screen-schemes/'+ id,
+			contentType: 'application/json'
+    }
+    return super.fetchData(options);
   }
 
 	/**

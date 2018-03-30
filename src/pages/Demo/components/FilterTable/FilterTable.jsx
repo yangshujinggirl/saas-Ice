@@ -16,7 +16,7 @@ import {browserHistory, hashHistory} from 'react-router';
     },
     defaultBindingData: {
       list: [],
-      total: 100,
+      total: 0,
       pageSize: 10,
       currentPage: 1,
     },
@@ -130,6 +130,7 @@ export default class EnhanceTable extends Component {
     // const tableData = this.props.bindingData.tableData;
     const { filterFormValue } = this.state;
     const tableData = this.props.pageData || {};
+    console.log(tableData)
 
     return (
       <div className="filter-table">
@@ -181,6 +182,7 @@ export default class EnhanceTable extends Component {
               pageSize={tableData.pageSize}
               total={tableData.total}
               onChange={this.changePage}
+              hideOnlyOnePage={true}
             />
           </div>
         </IceContainer>
