@@ -6,13 +6,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
 
 module.exports = {
-    output: {
-        path: resolve("build/assets"),
-        filename: '[name].[hash].js',
-        publicPath: "/assets/",
-        chunkFilename: "[id].[hash].js",
-        pathinfo: true
-    },
+    // output: {
+    //     path: resolve("build/assets"),
+    //     filename: '[name].[hash].js',
+    //     publicPath: "/assets/",
+    //     chunkFilename: "[id].[hash].js",
+    //     pathinfo: true
+    // },
     devServer: {
         proxy: {
             '/loan-ft1': {
