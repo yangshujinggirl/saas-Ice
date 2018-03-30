@@ -11,6 +11,7 @@ import {
 } from '@icedesign/form-binder';
 import "./addFont.scss"
 import FontConfigReq from './../../reqs/FontConfigReq.js'
+import DragFields from '../DragFields';
 
 
 export default class AdFont extends Component {
@@ -118,17 +119,29 @@ export default class AdFont extends Component {
     }
     componentDidMount() {
         FontConfigReq.getDetail('isFixed=true').then((data) => {
-            let res = data.data;
+            let res = data.data.list;
             this.setState({
                 isFixed: res,
             })
         })
         FontConfigReq.getDetail('isFixed=false').then((data) => {
-            let res = data.data;
+            let res = data.data.list;
             this.setState({
                 resDate: res,
             })
         })
+    }
+    changeFieldsSort(dragParent, hoverParent, dragIndex, hoverIndex){
+        let resDate = this.state.resDate;
+        let temp = resDate[dragParent].fields.splice(dragIndex,1)
+        resDate[hoverParent].fields.splice(hoverIndex, 0, ...temp);
+        this.setState({resDate});
+    }
+    changeFixedFieldsSort(dragParent, hoverParent, dragIndex, hoverIndex){
+        let isFixed = this.state.isFixed;
+        let temp = isFixed[dragParent].fields.splice(dragIndex,1)
+        isFixed[hoverParent].fields.splice(hoverIndex, 0, ...temp);
+        this.setState({isFixed});
     }
     render() {
         // console.log(this.state.isFixed);
@@ -145,6 +158,11 @@ export default class AdFont extends Component {
                     {
                         <div>
                             <div className="diffence">字段（必选）</div>
+                            <DragFields
+                                isFixed={true}
+                                data={this.state.isFixed}
+                                onChange={this.changeFixedFieldsSort.bind(this)}
+                            />
                             {this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
                                 return (
                                     <div className="listCode selectCode isFixed" key={index}>
@@ -154,6 +172,10 @@ export default class AdFont extends Component {
                                 )
                             })}
                             <div className="diffence">字段（可选字段）</div>
+                            <DragFields
+                                data={this.state.resDate}
+                                onChange={this.changeFieldsSort.bind(this)}
+                            />{/*
                             {this.state.resDate.map((item, index) => {
                                 return (
                                     <div className='subDif' key={index}>
@@ -174,7 +196,7 @@ export default class AdFont extends Component {
                                     </div>
 
                                 )
-                            })}
+                            })}*/}
                         </div>
                     }
 
