@@ -10,21 +10,21 @@ class Fields extends Component {
     constructor(props) {
         super(props);
     }
-    render() {
-        let {data} = this.props;
-        
+    render() {        
         const {
+            data,
             text,
             isDragging,
             connectDragSource,
             connectDropTarget,
-            isFixed
+            isFixed,
+            onClick
         } = this.props
         const opacity = isDragging ? 0.1 : 1
 
         return connectDragSource(
             connectDropTarget(
-                <div className={cx('listCode',{'selectCode': data.checked, 'isFixed': isFixed})} style={{opacity}}>
+                <div className={cx('listCode',{'selectCode': data.checked || isFixed, 'isFixed': isFixed})} style={{opacity}} onClick={onClick}>
                     {data.label}
                     <span className="icon">&#xe62c;</span>
                 </div>

@@ -163,18 +163,20 @@ export default class AdFont extends Component {
                                 data={this.state.isFixed}
                                 onChange={this.changeFixedFieldsSort.bind(this)}
                             />
-                            {this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
+                            {/*{this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
                                 return (
                                     <div className="listCode selectCode isFixed" key={index}>
                                         {item.label}
                                         <span className="icon">&#xe62c;</span>
                                     </div>
                                 )
-                            })}
+                            })}*/}
                             <div className="diffence">字段（可选字段）</div>
                             <DragFields
                                 data={this.state.resDate}
                                 onChange={this.changeFieldsSort.bind(this)}
+                                onFieldClick={this.addClass.bind(this)}
+                                onOperateClick={this.selected.bind(this)}
                             />{/*
                             {this.state.resDate.map((item, index) => {
                                 return (

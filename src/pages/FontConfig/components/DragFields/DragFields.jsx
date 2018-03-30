@@ -39,6 +39,12 @@ class DragFields extends Component {
         //   }),
         // )
     }
+    handleClick(index, subindex){
+        this.props.onFieldClick && this.props.onFieldClick(index, subindex);
+    }
+    handleOperateClick(index, isAllChecked){
+        this.props.onOperateClick && this.props.onOperateClick(index, isAllChecked)
+    }
     render() {
         let {data = [], isFixed} = this.props;
         
@@ -48,8 +54,8 @@ class DragFields extends Component {
                 return <div className='subDif' key={index}>
                         <div>{item.name}</div>
                         <div className="select">
-                            <span onClick={this.selected.bind(this,index,true)}> 全选</span>
-                            <span onClick={this.selected.bind(this,index,false)}>反选</span>
+                            <span onClick={this.handleOperateClick.bind(this,index,true)}> 全选</span>
+                            <span onClick={this.handleOperateClick.bind(this,index,false)}>反选</span>
                         </div>
                         {item.fields.map((item, i) => {
                             return (
@@ -62,6 +68,7 @@ class DragFields extends Component {
                                     text={item.text}
                                     moveCard={this.moveCard}
                                     isFixed={isFixed}
+                                    onClick={this.handleClick.bind(this,index, i)}
                                   />
                             )
                         })}
