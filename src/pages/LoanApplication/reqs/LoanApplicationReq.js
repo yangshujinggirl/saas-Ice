@@ -30,9 +30,19 @@ class LoanApplicationReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//获取进件详情
 	getLoanDetailApi(id) {
 		let options = {
 			url: this._host + `/loans/${id}/screen`,
+			method: 'Get',
+			contentType: 'application/json'
+		}
+		return super.fetchData(options);
+	}
+	//获取进件详情
+	getLoanUploadApi(id) {
+		let options = {
+			url: this._host + `/loans/${id}/collect`,
 			method: 'Get',
 			contentType: 'application/json'
 		}
