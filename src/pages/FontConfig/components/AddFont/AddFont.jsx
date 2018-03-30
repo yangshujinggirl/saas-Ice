@@ -28,15 +28,22 @@ export default class AdFont extends Component {
     }
     submit = () => {
         let reqDate = {
-            'name': this.state.pageName,
-            'businessType': '货款业务',
-            'functionType': '进件',
-            'fields': this.state.isFixed[0].fields
+            "name": this.state.pageName,
+            "businessType": "货款业务",
+            "functionType": "进件",
+            "fields": []
         }
-        // if(!reqDate.name.length) {
-        //     // Dialog.al
-        //     return 
-        // }
+        if(!reqDate.name.length) {
+            Dialog.alert({
+                content: "页面名称不能为空",
+                closable: false,
+                title: "提示",
+            });
+            return 
+        }
+        // console.log(this.state.isFixed[0].fields);
+        
+        reqDate.fields = this.state.isFixed[0].fields;
         let tempData = this.state.resDate;
             for (const index in tempData) {
                 for (const key in tempData[index].fields) {
@@ -46,10 +53,23 @@ export default class AdFont extends Component {
                 }
                 
             }
+        reqDate.fields.map((item) => {
+            let fieldId = item.id;
+            delete item.id;
+            item.fieldId = fieldId;
+            })
+        
         FontConfigReq.save(reqDate).then((data) => {
-            console.log(data);
-            
-            // this.props.router.push('/font/set')
+            let res = data.data;
+            if (res.msg) {
+                Dialog.alert({
+                    content: "页面名称重复",
+                    closable: false,
+                    title: "提示",
+                });
+                return 
+            }
+            this.props.router.push(`/font/set?id=${res.id}`)
         })
 
     }
@@ -111,7 +131,7 @@ export default class AdFont extends Component {
         })
     }
     render() {
-        console.log(this.state.isFixed);
+        // console.log(this.state.isFixed);
         
         return (
             <div className="addFont">

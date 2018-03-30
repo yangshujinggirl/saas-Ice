@@ -7,6 +7,7 @@ export default class Product extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+   
   };
 
   componentWillMount (){
@@ -14,9 +15,7 @@ export default class Product extends Component {
   }
   componentDidMount(){
     console.log('productDetail componentDidMount')
-    this.props.actions.search();
   }
-
   render() {
     let {view, actions, formData,pageData} = this.props;
     

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Router, Route, Link } from 'react-router'
+import { Router, Route, Link, hashHistory} from 'react-router'
 
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 
 import './FileList.scss';
-
+import DiaLog from './Dialog'
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -21,14 +21,6 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
-
-const dataSource = [{
-  id: 1,
-  productCode: 'XCD0000000058',
-  productName: 'chanp',
-  time: '暂无',
-
-}];
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
   const checked = props.checked === undefined ? props.value : props.checked;
@@ -58,54 +50,110 @@ export default class FileList extends Component {
       align: "cc cc",
       style: {
         width: "70%"
-      }
-    };
+      },
+      value:{
+        name	:'',	 
+        dataType:'',
+        fileList:[{
+          id: 1,
+          name: '文档',
+          exts: [{
+            name: 'pdf',
+            checked: false
+          }, {
+            name: 'xls',
+            checked: false
+          }]
+        }, {
+          id: 2,
+          name: '图形',
+          exts: [{
+            name: 'jpg',
+            checked: false
+          }, {
+            name: 'png',
+            checked: false
+          }]
+        }],
+      },
+      fileList:[{
+        dataType:"",
+        dataname:'',
+        fileTypeL:'',
+      }],
+      dataSource:'',
+    }
   }
   componentDidMount() {
+    let {actions} = this.props;
+      actions.filesearch();
+      console.log(this.props)
   };
-  onFormChange = (value) => {
-    this.setState({
-      value,
-    });
-  };
+  componentDidUpdate(dataSource){
+    // this.setState({
+    //   dataSource
+    // })
+  }
+
+  //查询
   onSubmit = (data) => {
-    console.log("ok");
+    let {actions,pageData} = this.props;
+    this.formRef.validateAll((error, value) => {
+      console.log('error', error, 'value', value);
+      if (error) {
+        // 处理表单报错
+        return;
+      }
+      // 提交当前填写的数据
+      this.props.actions.filesearch(value);//返回符合条件的数据
+    });
   };
   onRowClick = (record, index, e) => {
     console.log(record, index, e);
   };
 
-
-  renderTest = () => {
+//操作
+  renderTest = (value, index, record) => {
     return <div>
-      <button className="edithbtn" onClick={this.open.bind(this)}>编辑</button>
-      <button className="deletbtn">删除</button>
+      <button className="edithbtn" onClick={()=>this.open(record)}>编辑</button>
+      <button className="deletbtn" onClick={()=>this.deleteRow(record.id)}>删除</button>
     </div>
   };
-  onClose() {
-    this.setState({
-      visible: false
-    });
+  
+  open =(record) =>{
+  
+    hashHistory.push(`/product/fileedit/${record.id}`)
   }
-  open() {//打开弹框
-    this.setState({
-      visible: true
-    });
-  }
-  setPosition() {
-    this.setState({
-      align: false,
-      style: {
-        top: "10px"
-      }
-    });
-
+  deleteRow =(idx)=>{
+    let {actions} = this.props;
+    actions.fileremove(idx);
+    actions.filesearch()
+    // location.reload()
   }
   render() {
+        let dataSource=this.state.dataSource
+        dataSource = this.props.fileData || {}//data
+        console.log(dataSource)
+        dataSource = dataSource.data||{}
+        dataSource = dataSource.list
+        dataSource && dataSource.map((item) => {
+          let temp = [];
+          item.collectionDetails && item.collectionDetails.map((ditem, j) => {
+            temp.push(ditem.fileName);
+          })
+          item.fileNamestr = temp.join(',')
+        })
+        let map = new Map()
     return (
       <div className="create-activity-form" style={styles.container}>
         <IceContainer title="" >
-          <IceFormBinderWrapper>
+          <IceFormBinderWrapper
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
+            value={this.state.value}
+            onChange={this.onFormChange}
+          >
             <div>
               <legend style={styles.legend}>
                 <span style={styles.legLine}></span>资料清单
@@ -115,22 +163,22 @@ export default class FileList extends Component {
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <label style={styles.filterTitle}>清单类型：</label>
                     <IceFormBinder
-                      name="listType"
+                      name="dataType"
                     >
                       <Select
-                        name="size"
+                        name="dataType"
                         placeholder="请选择"
                         style={styles.filterTool}
                       >
                         <Option value="option1">产品进件</Option>
                       </Select>
                     </IceFormBinder>
-                    <IceFormError name="name" />
+                    <IceFormError name="dataType" />
                   </Col>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <label style={styles.filterTitle}>清单名称：</label>
                     <IceFormBinder
-                      name="listName"
+                      name="name"
                     >
                       <Input placeholder="清单名称" />
                     </IceFormBinder>
@@ -151,86 +199,104 @@ export default class FileList extends Component {
               dataSource={dataSource}
               maxBodyHeight={800}
             >
-              <Table.Column title="产品编号" dataIndex="id" />
-              <Table.Column title="产品名称" dataIndex="productCode" />
-              <Table.Column title="合同显示名称" dataIndex="productName" />
-              <Table.Column title="状态" dataIndex="time" />
+              <Table.Column title="清单类型" dataIndex="dataType" />
+              <Table.Column title="清单名称" dataIndex="name" />
+              <Table.Column title="材料名称" dataIndex="fileNamestr"/>
               <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
             </Table>
-            <Dialog
+            {/* <Dialog
               visible={this.state.visible}
-              onOk={this.onClose.bind(this)}
+              onOk={this.onOK}
               onCancel={this.onClose.bind(this)}
               onClose={this.onClose.bind(this)}
               title=""
               style={this.state.style}
               align={this.state.align}
-            >
-              <Form className="dialog-form">
-                <ul className="dialog-form-ul">
-                  <li className="liColor">资料名称</li>
-                  <li className="liTow liColor">文件类型</li>
-                  <li className="liColor">限制大小</li>
-                  <li className="liColor">操作</li>
+              >
+              <IceFormBinderWrapper
+                 ref={(formRef) => {
+                  this.formRef = formRef;
+                }}
+                value={{
 
-                  <li className="liType">
-
-                    <Input placeholder="清单名称" style={{ width: "150px" }} />
-                  </li>
-                  <li className="liTow liType">
-                    <Col>
-                      <label style={styles.filterTitle}>文档</label>
-                      <Checkbox id="All_pdf" />
+                    dataType:'',
+                    }}
+              >
+                <Form className="dialog-form">
+                <Row wrap>
+                    <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                      <label style={styles.filterTitle}>清单类型：</label>
+                      <IceFormBinder
+                      name="dataType"
+                    >
+                      <Select
+                        name="dataType"
+                        placeholder="请选择"
+                        style={styles.filterTool}
+                      >
+                        <Option value="option1">产品进件</Option>
+                      </Select>
+                    </IceFormBinder>
+                    <IceFormError name="dataType" />
+                    </Col>
+                    <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                      <label style={styles.filterTitle}>清单名称：</label>
+                      <IceFormBinder
+                          name="name"
+                        >
+                          <Input placeholder="清单名称" />
+                      </IceFormBinder>
+                      <IceFormError name="name" />
+                    </Col>
+                  </Row>
+                  <ul className="dialog-form-ul">
+                    <li className="liColor">资料名称</li>
+                    <li className="liTow liColor">文件类型</li>
+                    <li className="liColor">限制大小</li>
+                    <li className="liColor">操作</li>
+                    {this.state.value.fileList&& this.state.value.fileList.map((item, i) => {                    
+                    return <ul><li className="liType">
+                      <Input placeholder="清单名称" style={{ width: "150px" }} />
+                    </li>
+                    <li className="liTow liType">
+                    {item.filetype && item.filetype.map((typeItem, j) => {
+                      return <Col>
+                      <label style={styles.filterTitle}>{typeItem.name}</label>
+                      <IceFormBinder
+                        name="All_pdf"
+                      >
+                       <Checkbox id="All_pdf" />
+                      </IceFormBinder>
                       <label htmlFor="All_pdf" className="next-checkbox-label">全部</label>
-                      <Checkbox id="pdf" defaultChecked={true} />
-                      <label htmlFor="pdf" className="next-checkbox-label">pdf</label>
-                      <Checkbox id="xls" />
-                      <label htmlFor="xls" className="next-checkbox-label">xls </label>
-                      <Checkbox id="doc" />
-                      <span htmlFor="doc" className="next-checkbox-label">doc</span>
-                      <Checkbox id="txt" />
-                      <span htmlFor="txt" className="next-checkbox-label">txt</span>
+                      {typeItem.exts && typeItem.exts.map((extItem, k) => {
+                        return <span>
+                        <IceFormBinder
+                        name="pdf"
+                        >
+                        <Checkbox id="pdf" defaultChecked={extItem.checked} />
+                        </IceFormBinder>
+                        <label htmlFor="pdf" className="next-checkbox-label">{extItem.name}</label>
+                        </span>
+                      })}
                     </Col>
-                    <Col>
-                      <label style={styles.filterTitle}>图形</label>
-                      <Checkbox id="All_png" />
-                      <label htmlFor="All_png" className="next-checkbox-label">全部</label>
-                      <Checkbox id="jpg" defaultChecked={true} />
-                      <label htmlFor="jpg" className="next-checkbox-label">jpg</label>
-                      <Checkbox id="png" />
-                      <label htmlFor="png" className="next-checkbox-label">png</label>
-                      <Checkbox id="bmp" />
-                      <span htmlFor="bmp" className="next-checkbox-label">bmp</span>
-                      <Checkbox id="gif" />
-                      <span htmlFor="gif" className="next-checkbox-label">gif</span>
-                    </Col>
-                    <Col>
-                      <label style={styles.filterTitle}>压缩</label>
-                      <Checkbox id="All_png" />
-                      <label htmlFor="All_png" className="next-checkbox-label">全部</label>
-                      <Checkbox id="rar" defaultChecked={true} />
-                      <label htmlFor="rar" className="next-checkbox-label">rar</label>
-                      <Checkbox id="zip" />
-                      <label htmlFor="zip" className="next-checkbox-label">zip</label>
-                      <Checkbox id="7z" />
-                      <span htmlFor="7z" className="next-checkbox-label">7z</span>
-                      <Checkbox id="tar" />
-                      <span htmlFor="tar" className="next-checkbox-label">tar</span>
-                    </Col>
-                  </li>
-                  <li className="liType">
-                    <Input placeholder="清单名称" style={{ width: "90px" }} />M
-                  </li>
-                  <li className="liType">
-                    <Button>删除</Button>
-                  </li>
-                </ul>
-                <Button onClick={this.setPosition.bind(this)} style={styles.newCol}>新增一行</Button>
-              </Form>
-            </Dialog>
+                    })}
+                    </li>
+                    <li className="liType">
+                      <Input style={{ width: "90px" }} />M
+                    </li>
+                    <li className="liType">
+                      <Button onClick={this.removeRow.bind(this,i)}>删除</Button>
+                    </li>
+                    </ul>
+                    })}
+                  </ul>
+                  <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
+                </Form>
+              </IceFormBinderWrapper>
+            </Dialog> */}
           </div>
           <div style={styles.addNew}>
-            <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
+            <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
           </div>
         </IceContainer>
       </div>
