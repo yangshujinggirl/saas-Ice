@@ -31,9 +31,18 @@
             border-right:1px solid #F6DCA9;
             padding: 15px 0 15px 20px;
             height: 100%;
+            a {
+                color: #666;
+            }
+            a:focus {
+                text-decoration: none;
+            }
             li.active {
                 position: relative;
-                color: #FC9E25;
+                
+                >a {
+                    color: #FC9E25;  
+                }
                 &::after {
                     content: '*';
                     display: block;
@@ -65,7 +74,7 @@
                         }
                         
                     }
-                    >span:first-child {
+                    span:first-child {
                         
                         &.active {
                             color: #FC9E25;
@@ -76,7 +85,7 @@
                             font-weight: bold;
                         }
                     }
-                    >span.addStr {
+                    span.addStr {
                         background: #FC9E25;
                         border-radius: 4px;
                         height:30px;

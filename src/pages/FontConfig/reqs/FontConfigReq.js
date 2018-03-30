@@ -36,6 +36,17 @@ class FontConfigReq extends CurdReq{
 			contentType: 'application/json'
     }
     return super.fetchData(options);
+	}
+	
+		/**
+   * 获取选中字段
+   */
+  getCode(id) {
+    let options = {
+			url: this._host + '/screen-schemes/'+ id,
+			contentType: 'application/json'
+    }
+    return super.fetchData(options);
   }
 
 	/**

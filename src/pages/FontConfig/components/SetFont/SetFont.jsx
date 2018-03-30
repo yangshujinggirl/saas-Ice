@@ -5,6 +5,10 @@ import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Rad
 import Sortable, { SortableContainer } from 'react-anything-sortable';
 import "./SetFont.scss"
 import 'react-anything-sortable/sortable.css';
+import cx from 'classnames';
+import FontConfigReq from './../../reqs/FontConfigReq.js'
+import Tools from './../../../../base/utils/Tools'
+
 const { Group: CheckboxGroup } = Checkbox;
 const { Group: RadioGroup } = Radio;
 
@@ -17,6 +21,10 @@ export default class setFont extends Component {
 
         // 请求参数缓存
         this.state = {
+            resData: [],
+            pageValue: '',
+            leftActive: 0,
+            subTitle: '',
             arraList: [5, 6, 7, 8, 9],
             visible: true,
             value: ["orange"]
@@ -26,10 +34,10 @@ export default class setFont extends Component {
         parseName: true,
         scrollToFirstError: true
     })
-    toggleCompont = () => { 
+    toggleCompont = () => {
         console.log(324)
         this.props.router.push('/font/view')
-      }
+    }
     handleSort = (sortedArray) => {
         this.setState({
             arraList: sortedArray
@@ -45,7 +53,6 @@ export default class setFont extends Component {
     handleRemoveElement = (index) => {
         const newArr = this.state.arraList.slice();
         newArr.splice(index, 1);
-
         this.setState({
             arraList: newArr
         });
@@ -53,8 +60,64 @@ export default class setFont extends Component {
     upPage = () => {
         this.props.router.go(-1)
     }
+    menuNav = (index) => {
+        this.setState({
+            leftActive: index,
+        })
+    }
+    titleState = (index) => {     
+        if (index) {
+            this.setState({
+                subTitle: index
+            })
+        } else {
+            this.setState({
+                subTitle: ''
+            })
+        }
+    }
+    handleGroupTitle = (index, view) => {
+        let copyDate = this.state.resData;
+        copyDate.fieldset[index].name=view
+        this.setState( {
+            resData: copyDate
+        })
+        
+    }
+    validEmpty = (view) => {
+        console.log(view);
+        
+        if (view.target.value.length) {
+            Dialog.alert({
+                content: "区块名称不能为空",
+            })
+        }
+    }
+    componentDidMount() {
+        let id = this.props.router.location.query.id
 
+        FontConfigReq.getCode(id).then((data) => {
+            let res = data.data
+            this.setState({
+                resData: res,
+                pageValue: res.name
+            })
+            for (const key in this.state.resData.fieldset) {
+                
+                if (this.state.resData.fieldset[key].name == '基本信息') { 
+                    let allDate = this.state.resData
+                    let first = allDate.fieldset.splice(key, 1)
+                    allDate.fieldset.unshift(...first)
+                    this.setState({
+                        resData: allDate
+                    })
+                }
+            }
+        })
+    }
+    
     render() {
+        console.log(this.state.resData);
         const { init, setValue, getValue } = this.field;
         const list = [
             {
@@ -103,37 +166,62 @@ export default class setFont extends Component {
                 </SortableContainer>
             );
         }
+
         return (
             <div className="setFont">
                 <IceContainer className='subtitle'>
                     <div className="pageName">
                         <label>页面名称</label>
-                        <input type="text" name='' />
+                        <input type="text" name='' value={this.state.pageValue} />
                     </div>
                 </IceContainer>
                 <div className="container">
                     <div className="container-left">
                         <ul>
-                            <li className="active">
-                                客户申请信息
-                            </li>
-                            <li>材料提交</li>
+                            {
+                                this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
+                                    return (
+                                        <li className={cx({ 'active': this.state.leftActive === index })} key={index}>
+                                            <a href={`#${item.name}`} onClick={this.menuNav.bind(this, index)}>{item.name}</a>
+                                        </li>
+                                    )
+                                })}
+
                         </ul>
                     </div>
                     <div className="container-right">
                         <div className="dynamic-demo">
-                            <div className='baseDetail customer'>
-                                <span className='active'>
-                                    <Input placeholder="" value='基本信息' readOnly className='moduleStr' readOnly />
-                                </span>
-                                <span className="addStr">自定义字段</span>
-                                <span className='icon down'>&#xe629;</span>
-                                <span className='icon up'>&#xe62b;</span>
-                                <span className='icon delete'>&#xe625;</span>
-                            </div>
-                            <Sortable onSort={this.handleSort} containment>
-                                {this.state.arraList.map(renderItem, this)}
-                            </Sortable>
+                            {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
+                                return (
+                                    <div key={index}>
+                                        <div className='baseDetail customer'>
+                                            <span className='active' onClick={this.titleState.bind(this,index+1)}>
+                                                {
+                                                    this.state.subTitle == index +1 ?
+                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={this.validEmpty} className='moduleStr' />
+                                                        :
+                                                        <Input placeholder="" value={item.name} className='moduleStr' readOnly />
+                                            }    
+                                                
+                                            </span>
+                                            {
+                                            
+                                                index == 0 ? <span className="addStr">自定义字段</span> :
+                                                <span>    
+                                                    <span className="addStr">自定义字段</span>
+                                                    <span className='icon down'>&#xe629;</span>
+                                                    <span className='icon up'>&#xe62b;</span>
+                                                    <span className='icon delete'>&#xe625;</span>
+                                                </span>
+                                             }
+                                            
+                                        </div>
+                                        <Sortable onSort={this.handleSort} containment>
+                                            {this.state.arraList.map(renderItem, this)}
+                                        </Sortable>
+                                    </div>
+                                )
+                            })}
                         </div>
                         <div className='addModule'> <span className='icon'>&#xe626;</span>添加区域</div>
                         <div className="dynamic-demo">
@@ -293,7 +381,7 @@ export default class setFont extends Component {
                             <label htmlFor="">
                                 <span>字段名称</span>
                             </label>
-                            <Input placeholder="" {...init("input")}/>
+                            <Input placeholder="" {...init("input")} />
                         </div>
                     </div>
                     <div className='beautify'>
