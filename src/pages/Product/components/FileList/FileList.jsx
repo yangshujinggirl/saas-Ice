@@ -53,28 +53,7 @@ export default class FileList extends Component {
       },
       value:{
         name	:'',	 
-        dataType:'',
-        fileList:[{
-          id: 1,
-          name: '文档',
-          exts: [{
-            name: 'pdf',
-            checked: false
-          }, {
-            name: 'xls',
-            checked: false
-          }]
-        }, {
-          id: 2,
-          name: '图形',
-          exts: [{
-            name: 'jpg',
-            checked: false
-          }, {
-            name: 'png',
-            checked: false
-          }]
-        }],
+        dataType:''
       },
       fileList:[{
         dataType:"",
