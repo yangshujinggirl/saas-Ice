@@ -143,7 +143,7 @@ export default class LoanModify extends Component {
             placeholder={"请选择"+el.label}
             style={{width:"100%"}}
             {...init(el.name, {
-              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required:  false, message: "请选择"+el.label }]
             })}
             dataSource={el.options}
           >
@@ -202,20 +202,20 @@ export default class LoanModify extends Component {
       if(el.hasAttachedFields){
         Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
                               {...formItemLayoutR}>
-          <RadioGroup
-            defaultValue ={value}
-            {...init(el.name, {
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }],
-              props:{
-                onChange:()=> {
-                  this.isChange(outIndex,inIndex);
+            <RadioGroup
+              defaultValue ={value}
+              {...init(el.name, {
+                rules: [{ required: el.isRequired, message: "请选择"+el.label }],
+                props:{
+                  onChange:()=> {
+                    this.isChange(outIndex,inIndex);
+                  }
                 }
-              }
-            })}
+              })}
 
-            dataSource={el.options}
-          >
-          </RadioGroup>
+              dataSource={el.options}
+            >
+            </RadioGroup>
         </FormItem>)
         if( el.attached[value]) {
           el.attached[value].map((item,index)=>{
@@ -300,7 +300,7 @@ export default class LoanModify extends Component {
   submit = (e)=>{
 
   }
-  //save 提交
+  //save
   save = (e)=>{
     e.preventDefault();
     this.field.validate((errors, values) => {
@@ -325,6 +325,12 @@ export default class LoanModify extends Component {
   cancel = (e)=>{
     e.preventDefault();
     hashHistory.push('/entryQuery');
+  }
+  //调用秒拒功能
+  refuse = ()=>{
+    const  coBorrowerName = this.field.getValue('coBorrower.name');
+    const  coBorrowerIdNo = this.field.getValue('coBorrower.idNo');
+    const  coBorrowerMobile = this.field.getValue('coBorrower.mobile');
   }
   render() {
     // const details = this.props.bindingData.details;
