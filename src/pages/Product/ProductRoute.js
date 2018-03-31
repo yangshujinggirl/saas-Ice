@@ -14,15 +14,13 @@ export default {
       component: Product.SearchEdit
     }, {
       path: 'proddetail/:id',
+      name: '产品详情',
       component: Product.ProductDetail
     }, {
       path: 'add',
       name: '产品新增',
       component: Product.ProductAdd
-    }, {
-      path: 'addone',
-      component: Product.AddOne
-    }, {
+    },  {
       path: 'addtwo/:id',
       component: Product.AddTwo
     }, {

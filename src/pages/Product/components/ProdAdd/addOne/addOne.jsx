@@ -218,7 +218,6 @@ deleteItem4 = (index) => {
         return;
       }
       // 提交当前填写的数据
-      console.log(value.time)
       value.effectiveDate= value.time;
       this.props.actions.save(value);
     });
