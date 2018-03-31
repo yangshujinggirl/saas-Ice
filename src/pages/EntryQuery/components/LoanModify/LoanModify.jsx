@@ -41,16 +41,12 @@ export default class LoanModify extends Component {
   }
   componentDidMount() {
     this.queryCache.id = this.props.params.id;
-    this.fetchData(true);
+    this.fetchData();
   }
   //请求数据
   fetchData = (flag) => {
     let {actions} = this.props;
-    if(flag){
-      actions.getDetail(this.props.params.id);
-    }else{
-      actions.saveFrom(this.queryCache);
-    }
+    actions.getDetail(this.props.params.id);
   };
   //标题点击
   titleClick = (index)=>{
@@ -125,7 +121,7 @@ export default class LoanModify extends Component {
           <Input
             defaultValue={el.value}
             {...init(el.name,{
-              rules: [{ required:  false, message: "请填写"+el.label }]
+              rules: [{ required:  el.isRequired, message: "请填写"+el.label }]
             })}
             placeholder={"请输入"+el.label}
             disabled={disabled}
@@ -147,7 +143,7 @@ export default class LoanModify extends Component {
             placeholder={"请选择"+el.label}
             style={{width:"100%"}}
             {...init(el.name, {
-              rules: [{ required: false, message: "请选择"+el.label }]
+              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
             })}
             dataSource={el.options}
           >
@@ -322,12 +318,13 @@ export default class LoanModify extends Component {
         }
       }
       console.log(this.queryCache)
-      this.fetchData(false);
+      this.props.actions.saveFrom(this.queryCache);
     });
   }
   //cancel 提交
-  cancel = ()=>{
-
+  cancel = (e)=>{
+    e.preventDefault();
+    hashHistory.push('/entryQuery');
   }
   render() {
     // const details = this.props.bindingData.details;

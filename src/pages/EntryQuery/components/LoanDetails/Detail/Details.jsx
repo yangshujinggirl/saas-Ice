@@ -32,20 +32,27 @@ export default class Details extends Component {
     )
   }
   //内容value
-  value = (value)=>{
-    if(value){
-      const valueTips =  <div>{value}</div>;
-      return(
-        <Balloon
-          type="primary"
-          trigger={valueTips}
-          closable={false}
-          align='t'
-        >
-          {value}
-        </Balloon>
-      )
+  value = (el)=>{
+    if(el.type == 'INT' && el.value == 0){
+      el.value = 0;
+    }else {
+      if(el.value == 0){
+        el.value = '否'
+      }else if(el.value == 1){
+        el.value = '是'
+      }
     }
+    const valueTips =  <div>{el.value}</div>;
+    return(
+      <Balloon
+        type="primary"
+        trigger={valueTips}
+        closable={false}
+        align='t'
+      >
+        {el.value}
+      </Balloon>
+    )
   }
 
   render() {
@@ -62,28 +69,29 @@ export default class Details extends Component {
                   list.push( <div className='config-font colspan' key={el.id}>
                                       {this.label(el.label)}
                                       <span>:</span>
-                                      {this.value(el.value)}
+                                      {this.value(el)}
                                     </div>
                             )
                   if(el.attached[el.value]){
+                    console.log(el.attached[el.value])
                     el.attached[el.value].map((ite,ind)=>{
                       list.push(
                         <div className='config-font' key={item.id}>
-                          {this.label(item.label)}
+                          {this.label(ite.label)}
                           <span>:</span>
-                          {this.value(item.value)}
+                          {this.value(ite)}
                         </div>
                       )
                     })
                   }
                   return list;
                 }else{
-                  list.push( <div className='config-font ' key={el.id}>
-                      {this.label(el.label)}
-                      <span>:</span>
-                      {this.value(el.value)}
-                    </div>
-                  )
+                    list.push( <div className='config-font ' key={el.id}>
+                        {this.label(el.label)}
+                        <span>:</span>
+                        {this.value(el)}
+                      </div>
+                    )
                   return list;
                 }
               })
