@@ -89,6 +89,11 @@ export default class DiaLog extends Component {
         return;
       }
 
+      value.collectionDetails && value.collectionDetails.map((item, i) => {
+        item.orderId = i;
+        // delete item.fileTypeArr;
+      });
+
       // 提交当前填写的数据
       actions.fileEditSave(value,id);
     });
@@ -152,11 +157,12 @@ export default class DiaLog extends Component {
         //勾选了全部
         checkedValueStr = curFileTypeExtArr.join(',');
         checkedValueStr = checkedValueStr.replace('全部,', '');
-        let tempArr1 = [tempFileType,checkedValueStr].join(',');
+        let tempArr1 = tempFileType ? [tempFileType,checkedValueStr].join(',') : checkedValueStr;
         tempArr = tempArr1.split(',');
       }else{
         //取消勾选全部
         tempFileType.split(',').map((item, i) => {
+          if(!item) return;
           let shouldRemove = false;
           curFileTypeExtArr.map((sitem, j) => {
             if(item == sitem){
@@ -173,6 +179,7 @@ export default class DiaLog extends Component {
     }else{
       //点击其它选项
       tempFileType.split(',').map((item, i) => {
+        if(!item) return;
         let shouldRemove = false;
         curFileTypeExtArr.map((sitem, j) => {
           if(item == sitem){
