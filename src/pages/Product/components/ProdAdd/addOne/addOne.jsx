@@ -18,6 +18,11 @@ import {
   Dialog
 } from '@icedesign/base';
 
+import Chanpinchengshu from './Chanpinchengshu';
+import Chanpinlilv from './Chanpinlilv';
+import Huankuanfangshi from './Huankuanfangshi';
+import Tiqianhuankuanfangshi from './Tiqianhuankuanfangshi';
+
 const { Row, Col } = Grid;
 
 // FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
@@ -25,20 +30,6 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
-// Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
-const SwitchForForm = (props) => {
-  const checked = props.checked === undefined ? props.value : props.checked;
-
-  return (
-    <Switch
-      {...props}
-      checked={checked}
-      onChange={(currentChecked) => {
-        if (props.onChange) props.onChange(currentChecked);
-      }}
-    />
-  );
-};
 
 export default class CreateActivityForm extends Component {
   static displayName = 'CreateActivityForm';
@@ -47,37 +38,7 @@ export default class CreateActivityForm extends Component {
 
   constructor(props) {
     super(props);
-    this.quotaperiodset=[//额度期限设置
-                {
-                    loanTermRangeMin:{value:<Input />,des:'123456'},
-                    loanPercentageMax:{value:<Input />,des:'123456'},
-                    loanPercentageMin:{value:<Input />,des:'123456'},
-                    loanTermRangeMax:{value:<Input />,des:'123456'},
-                    quotaRemove:<button onClick={this.deleteItem} shape="text" className="deleteBtn" type="button">删除</button>
-                  },
-                ];
-      this.interestSet=[//利率设置
-        {
-          channelTypes:{value:<Input />,des:'123456'},
-          interestRatesRangeMin:{value:<Input />,des:'123456'},
-          interestRatesRangeMax:{value:<Input />,des:'123456'},
-          quotaRemove:<button onClick={this.deleteItem2} shape="text" className="deleteBtn" type="button">删除</button>
-        }
-      ];
-      this.repaymentSet=[{//还款设置
-        repaymentMethods:{value:<Input />,des:'123456'},
-        fixedAmount:{value:<Input />,des:'123456'},
-        gracePeriod:{value:<Input />,des:'123456'},
-        repaymentExpirationGracePeriod:{value:<Input />,des:'123456'},
-        quotaRemove:<button onClick={this.deleteItem3} shape="text" className="deleteBtn" type="button">删除</button>
-      }];
-      this.advancerepaymentSet=[{//提前还款         
-        loanTermMin:{value:<Input />,des:'123456'},
-        loanTermMax:{value:<Input />,des:'123456'},
-        termUnit:{value:<Input />,des:'123456'},
-        penaltyPercentage:{value:<Input />,des:'123456'},
-        quotaRemove:<button onClick={this.deleteItem4} shape="text" className="deleteBtn" type="button">删除</button>
-      }];
+
     this.state = {
       value:{
         tenantId:'',
@@ -117,99 +78,19 @@ export default class CreateActivityForm extends Component {
         prepaymentPeriodsLimit:'',
         penaltyBasicAmount:'',
         penaltyCalculationType:'',
-        quotaperiodset:this.quotaperiodset,
-        interestSet:this.interestSet,
-        repaymentSet:this.repaymentSet,
-        advancerepaymentSet:this.advancerepaymentSet
+        percentageSetting: [{}],
+        ratesSetting: [{}],
+        repaymentMethodsSetting: [{}],
+        prepaymentSetting: [{}]
       },
      
     };
-    
-
   }
   onFormChange = (value) => {
     this.setState({
       value,
     });
   };
-//新增一行额度设置
-addNewList=(data)=>{
-  let newData = this.state.value.quotaperiodset;
-  newData=this.quotaperiodset.push(this.quotaperiodset[0])
-  this.setState({
-    newData
-  })
-}
-//利率设置
-addNewItem2=(data)=>{
-  let newData = this.state.value.interestSet;
-  newData=this.interestSet.push(this.interestSet[0])
-  this.setState({
-    newData
-  })
-}
-//还款设置
-addNewItem3=(data)=>{
-  let newData = this.state.value.repaymentSet;
-  newData=this.repaymentSet.push(this.repaymentSet[0])
-  this.setState({
-    newData
-  })
-}
-//提前还款方式
-addNewItem4=(data)=>{
-  let newData = this.state.value.advancerepaymentSet;
-  newData=this.advancerepaymentSet.push(this.advancerepaymentSet[0])
-  this.setState({
-    newData
-  })
-}
-//删除一行
-deleteItem = (index) => {
-  let oldData = this.state.value.quotaperiodset
-     if(oldData.length==1){
-        return false
-     }else{
-      oldData.splice(index, 1);
-      this.setState({
-          oldData
-      });
-     }
-};
-deleteItem2 = (index) => {
-  let oldData = this.state.value.interestSet
-  if(oldData.length==1){
-    return false
- }else{
-  oldData.splice(index, 1);
-  this.setState({
-      oldData
-  });
- }
-};
-deleteItem3 = (index) => {
-  let oldData = this.state.value.repaymentSet
-    if(oldData.length==1){
-      return false
-  }else{
-    oldData.splice(index, 1);
-    this.setState({
-        oldData
-    });
-  }
-};
-//
-deleteItem4 = (index) => {
-  let oldData = this.state.value.advancerepaymentSet
-    if(oldData.length==1){
-      return false
-  }else{
-    oldData.splice(index, 1);
-    this.setState({
-        oldData
-    });
-  }
-};
   submit = () => {
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
@@ -224,6 +105,25 @@ deleteItem4 = (index) => {
   };
   componentWillMount(){
     this.props.actions.prodActions();
+  }
+  addNewItem(key){
+    let newData = this.state.value[key];
+    newData.push({})
+    this.setState({
+      newData
+    })
+  }
+
+  removeItem(key, index){
+    let oldData = this.state.value[key]
+    if (oldData.length == 1) {
+      return false
+    } else {
+      oldData.splice(index, 1);
+      this.setState({
+        oldData
+      });
+    }
   }
   render() {
     let data = this.props.prodActions|| {}
@@ -292,7 +192,7 @@ deleteItem4 = (index) => {
                       style={styles.filterTool}
                       
                     >
-                      {data.productType&&data.productType.map((val,i)=>{
+                      {data.productType&&data.productType.map((val,i) => {
                         return(
                           <Option value={val.value} key={i}>{val.desc}</Option>
                         )
@@ -314,7 +214,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      {data.serviceFormType&&data.serviceFormType.map((val,i)=>{
+                      {data.serviceFormType&&data.serviceFormType.map((val,i) =>{
                         return(
                           <Option value={val.value} key={i}>{val.desc}</Option>
                         )
@@ -401,7 +301,7 @@ deleteItem4 = (index) => {
                   <IceFormBinder name="purposeOfLoan" >
                       <CheckboxGroup
                         className="next-form-text-align" >
-                        {data.purposeOfLoan&&data.purposeOfLoan.map((val,i)=>{
+                        {data.purposeOfLoan&&data.purposeOfLoan.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -419,7 +319,7 @@ deleteItem4 = (index) => {
                   <IceFormBinder name="guaranteeMethodType" >
                       <CheckboxGroup
                         className="next-form-text-align" >
-                        {data.guaranteeMethodType&&data.guaranteeMethodType.map((val,i)=>{
+                        {data.guaranteeMethodType&&data.guaranteeMethodType.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -444,7 +344,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                    {data.paymentOfLoan&&data.paymentOfLoan.map((val,i)=>{
+                    {data.paymentOfLoan&&data.paymentOfLoan.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -474,7 +374,7 @@ deleteItem4 = (index) => {
                   <IceFormBinder name="loanTermChange" >
                       <CheckboxGroup
                         className="next-form-text-align">
-                        {data.loanTermChange&&data.loanTermChange.map((val,i)=>{
+                        {data.loanTermChange&&data.loanTermChange.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -553,22 +453,12 @@ deleteItem4 = (index) => {
                   <IceFormError name="loanPercentageMax" />
                 </Col>
               </Row>
-              <div className="table-title">产品成数设置</div>
-              <Table
-                dataSource={this.state.value.quotaperiodset}
-                hasHeader
-                className="table"
-              >
-                {/* <Table.Column  title="产品成数设置" /> */}
-                <Table.Column title="最小期限(月)" dataIndex="loanTermRangeMin.value" />
-                <Table.Column title="最大成数(%)"  dataIndex="loanPercentageMax.value"/>
-                <Table.Column title="最小成数(%)"  dataIndex="loanPercentageMin.value"/>
-                <Table.Column title="最大期限(月)"  dataIndex="loanTermRangeMax.value"/>
-                <Table.Column title="操作" width={80}  dataIndex="quotaRemove"/>
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewList.bind(this.state.value.quotaperiodset)} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Chanpinchengshu 
+                styles={styles}
+                items={this.state.value.percentageSetting}
+                addItem={this.addNewItem.bind(this, 'percentageSetting')}
+                removeItem={this.removeItem.bind(this, 'percentageSetting')}
+              />
             </div>
             
             <legend className="legend">
@@ -581,7 +471,7 @@ deleteItem4 = (index) => {
                     <IceFormBinder name="interestLoanRateChange" >
                     <CheckboxGroup
                         className="next-form-text-align">
-                        {data.interestLoanRateChange&&data.interestLoanRateChange.map((val,i)=>{
+                        {data.interestLoanRateChange&&data.interestLoanRateChange.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -606,7 +496,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                        {data.interestRateRules&&data.interestRateRules.map((val,i)=>{
+                        {data.interestRateRules&&data.interestRateRules.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -627,7 +517,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.interestRateModel&&data.interestRateModel.map((val,i)=>{
+                     {data.interestRateModel&&data.interestRateModel.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -675,7 +565,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.interestRateBaseDate&&data.interestRateBaseDate.map((val,i)=>{
+                     {data.interestRateBaseDate&&data.interestRateBaseDate.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -685,20 +575,12 @@ deleteItem4 = (index) => {
                   <IceFormError name="interestRateBaseDate" />
                 </Col>
               </Row>
-              <div className="table-title">产品利率设置</div>
-              <Table
-              dataSource={this.state.value.interestSet}
-                hasHeader
-                className="table"
-              >
-                <Table.Column title="渠道" width={280} dataIndex="channelTypes.value" />
-                <Table.Column title="最小执行年利率(%)" dataIndex="interestRatesRangeMin.value"/>
-                <Table.Column title="最大执行年利率(%)" dataIndex="interestRatesRangeMax.value"/>
-                <Table.Column title="操作" width={80} dataIndex="quotaRemove"/>
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem2.bind(this.state.value.interestSet)} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Chanpinlilv
+                styles={styles}
+                items={this.state.value.ratesSetting}
+                addItem={this.addNewItem.bind(this, 'ratesSetting')}
+                removeItem={this.removeItem.bind(this, 'ratesSetting')}
+              />
             </div>
             <legend className="legend">
               <span className="legLine"></span>还款设置
@@ -711,7 +593,7 @@ deleteItem4 = (index) => {
                       <CheckboxGroup
                         className="next-form-text-align"
                       >
-                        {data.repaymentAccountChange&&data.repaymentAccountChange.map((val,i)=>{
+                        {data.repaymentAccountChange&&data.repaymentAccountChange.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -730,7 +612,7 @@ deleteItem4 = (index) => {
                   <CheckboxGroup
                         className="next-form-text-align"
                       >
-                        {data.repaymentPeriodFrequency&&data.repaymentPeriodFrequency.map((val,i)=>{
+                        {data.repaymentPeriodFrequency&&data.repaymentPeriodFrequency.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -798,21 +680,12 @@ deleteItem4 = (index) => {
                   
                 </Col>
               </Row>
-              <div className="table-title">还款方式设置</div>
-              <Table
-                dataSource={this.state.value.repaymentSet}
-                hasHeader
-                className="table"
-              >
-                <Table.Column title="还款方式" width={280} dataIndex="repaymentMethods.value"/>
-                <Table.Column title="固定金额(元)"  dataIndex="fixedAmount.value"/>
-                <Table.Column title="宽限期期限(天)" dataIndex="gracePeriod.value"/>
-                <Table.Column title="宽限期失效后还款方式" dataIndex="repaymentExpirationGracePeriod.value"/>
-                <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem3.bind(this.state.value.repaymentSet)} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Huankuanfangshi
+                styles={styles}
+                items={this.state.value.repaymentMethodsSetting}
+                addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
+                removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
+              />
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>提前还款</label>
                 <Col style={styles.filterCol}>
@@ -868,7 +741,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.penaltyBasicAmount&&data.penaltyBasicAmount.map((val,i)=>{
+                     {data.penaltyBasicAmount&&data.penaltyBasicAmount.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -889,7 +762,7 @@ deleteItem4 = (index) => {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.penaltyCalculationType&&data.penaltyCalculationType.map((val,i)=>{
+                     {data.penaltyCalculationType&&data.penaltyCalculationType.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -899,22 +772,12 @@ deleteItem4 = (index) => {
                   <IceFormError name="penaltyCalculationType" />
                 </Col>
               </Row>
-              <div className="table-title">提前还款方式设置</div>
-              <Table
-                dataSource={this.state.value.advancerepaymentSet}
-                hasHeader
-                className="table"
-                primaryKey="id" 
-              >
-                <Table.Column title="最小期限" width={280} dataIndex="loanTermMin.value"/>
-                <Table.Column title="最大期限(元)" dataIndex="loanTermMax.value"/>
-                <Table.Column title="期限单位" dataIndex="termUnit.value"/>
-                <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage.value"/>
-                <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem4.bind(this.state.value.advancerepaymentSet)} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Tiqianhuankuanfangshi
+                styles={styles}
+                items={this.state.value.prepaymentSetting}
+                addItem={this.addNewItem.bind(this, 'prepaymentSetting')}
+                removeItem={this.removeItem.bind(this, 'prepaymentSetting')}
+              />
               <div className="next-btn-box">
                 <div className="next-btn-lx" onClick={this.submit}>下一步</div>
               </div>
