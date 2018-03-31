@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import  classNames from  'classnames'
-import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio,Checkbox} from '@icedesign/base';
+import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
 } from '@icedesign/form-binder';
@@ -121,11 +121,11 @@ export default class LoanModify extends Component {
       }
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
-                  hasFeedback {...formItemLayout}>
+                   {...formItemLayout}>
           <Input
             defaultValue={el.value}
             {...init(el.name,{
-              rules: [{ required: false, message: "请填写"+el.label }]
+              rules: [{ required:  false, message: "请填写"+el.label }]
             })}
             placeholder={"请输入"+el.label}
             disabled={disabled}
@@ -140,7 +140,7 @@ export default class LoanModify extends Component {
       }
       return(
         <FormItem  key={el.id} className='item' label={this.label(el.label)}
-                   hasFeedback  {...formItemLayout}>
+                     {...formItemLayout}>
           <Select
             defaultValue={el.value}
             disabled={disabled}
@@ -163,7 +163,7 @@ export default class LoanModify extends Component {
       }
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
-                  hasFeedback  {...formItemLayout}>
+                    {...formItemLayout}>
           <Input
             defaultValue={el.value}
             disabled={disabled}
@@ -201,7 +201,7 @@ export default class LoanModify extends Component {
       )
     }
     else if(el.type == 'RADIO'){
-      var value = el.value ;
+      var value = el.value +'' ;
       var Fields  =[];
       if(el.hasAttachedFields){
         Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
@@ -209,7 +209,7 @@ export default class LoanModify extends Component {
           <RadioGroup
             defaultValue ={value}
             {...init(el.name, {
-              rules: [{ required: true, message: "请选择"+el.label }],
+              rules: [{ required: el.isRequired, message: "请选择"+el.label }],
               props:{
                 onChange:()=> {
                   this.isChange(outIndex,inIndex);
@@ -257,6 +257,30 @@ export default class LoanModify extends Component {
         </FormItem>
       )
     }
+    else if(el.type == 'DATE'){
+      return(
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
+                  {...formItemLayout}>
+          <DatePicker
+            defaultValue={el.value}
+            format={"YYYY-MM-DD"}
+            // formater={["YYYY-MM-DD"]}
+            style={{width:"100%"}}
+            {...init(el.name, {
+              getValueFromEvent: this.formater
+            },{
+              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+            })}
+          />
+        </FormItem>
+      )
+    }
+  }
+  //formater
+  formater = (date, dateStr)=>{
+    console.log("normDate:", date, dateStr);
+    console.log(date.getFullYear()+"-"+date.getMonth()+1+"-"+date.getDate());
+    return dateStr;
   }
   //label的提示
   label = (label) =>{
@@ -278,6 +302,10 @@ export default class LoanModify extends Component {
   }
   //submit 提交
   submit = (e)=>{
+
+  }
+  //save 提交
+  save = (e)=>{
     e.preventDefault();
     this.field.validate((errors, values) => {
       if (errors) {
@@ -285,26 +313,17 @@ export default class LoanModify extends Component {
         return;
       }
       console.log("Submit!!!");
-      console.log(values);
+      // console.log(values);
       for(var key in values){
         if(values[key] != undefined){
-          this.queryCache[key] = values[key];
+          if(values[key] != 'undefined'){
+            this.queryCache[key] = values[key];
+          }
         }
       }
       console.log(this.queryCache)
       this.fetchData(false);
     });
-  }
-  //save 提交
-  save = ()=>{
-    var a = {guaranteeMethod: undefined, loanPercentage: "13", purposeOfLoan: "13", distributor: undefined, retainage: "123"}
-    console.log(a)
-    for(var key in a){
-      if(a[key] == undefined){
-        a[key] =''
-      }
-    }
-    console.log(a)
   }
   //cancel 提交
   cancel = ()=>{
@@ -313,7 +332,7 @@ export default class LoanModify extends Component {
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    console.log(details)
+    // console.log(details)
     // console.log(this.props.params);
     const init = this.field.init;
 
