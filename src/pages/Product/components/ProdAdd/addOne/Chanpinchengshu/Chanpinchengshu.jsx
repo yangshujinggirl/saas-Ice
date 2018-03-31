@@ -110,8 +110,7 @@ export default class Chanpinchengshu extends Component {
     		<Button
     			onClick={this.props.removeItem.bind(this, index)} 
     			shape="text"
-    			className="deleteBtn"
-    			type="button">删除</Button>
+    			className="deleteBtn">删除</Button>
 	    </div>
 	);
   }

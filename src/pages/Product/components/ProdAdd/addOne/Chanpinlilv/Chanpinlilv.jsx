@@ -97,8 +97,7 @@ export default class Chanpinlilv extends Component {
     		<Button
     			onClick={this.deleteItem.bind(this, index)} 
     			shape="text"
-    			className="deleteBtn"
-    			type="button">删除</Button>
+    			className="deleteBtn">删除</Button>
 	    </div>
 	);
   }
