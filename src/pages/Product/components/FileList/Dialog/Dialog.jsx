@@ -21,6 +21,8 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
+import FileListDetail from './FileListDetail';
+
 
 export default class DiaLog extends Component {
   static displayName = 'Dialog';
@@ -38,225 +40,208 @@ export default class DiaLog extends Component {
 
     this.defaultFileTypes = [
       {
-        id: 1,
         name: '文档',
-        exts: [{
-          name: 'pdf',
-          checked: false
-        }, {
-          name: 'xls',
-          checked: false
-        }, {
-          name: 'doc',
-          checked: false
-        }, {
-          name: 'txt',
-          checked: false
-        }]
+        exts: ['全部', 'pdf','xls','doc','txt']
       }, {
-        id: 2,
         name: '图形',
-        exts: [{
-          name: 'jpg',
-          checked: false
-        }, {
-          name: 'png',
-          checked: false
-        }, {
-          name: 'bmp',
-          checked: false
-        }, {
-          name: 'gif',
-          checked: false
-        }]
+        exts: ['全部', 'jpg','png','bmp','gif']
       }, {
-        id: 3,
         name: '压缩',
-        exts: [{
-          name: 'rar',
-          checked: false
-        }, {
-          name: 'zip',
-          checked: false
-        }, {
-          name: '7z',
-          checked: false
-        }
-          , {
-          name: 'tar',
-          checked: false
-        }]
+        exts: ['全部', 'rar','zip','7z','tar']
       }
     ];
   }
 
+  componentDidMount() {
+    this.props.actions.fileDetail(this.props.params.id);
+  }
+
   addNewRow() {
-    let fileList = this.state.value.fileList;
-    fileList.push({
-      id: 1,
-      fileName: '',
-      fileTypeArr: this.defaultFileTypes,
-      fileSize: 0,
+    let tempData = this.props.editData;
+    tempData.collectionDetails.push({
+      dataName: '',
+      fileSize: undefined,
       fileType: ''
     })
-    this.setState({
-      fileList
-    })
-  }
-  removeRow(idx) {
-    console.log(this.props)
-    // this.props.actions.fileRemoveDes(idx,this.props.params.id);
-    ProductReq.fileRemoveDes(idx).then((res) => {
-      if(!res || res.code != 200) return;
-      this.setState({ fileList });
-    })
+    this.props.actions.changeFileDetail(tempData);
   }
 
-
-  All_Chekcd = (e) => {
-    console.log(e.taget)
-
+  removeRow(id, idx) {
+    if(!id){
+      // 不存在id即为新增加的行，不调用接口直接删除
+      let tempData = this.props.editData;
+      tempData.collectionDetails.splice(idx, 1);
+      this.props.actions.changeFileDetail(tempData);
+    }else {
+      ProductReq.fileRemoveDes(id).then((res) => {
+        if(!res || res.code != 200) return;
+        this.setState({ fileList });
+      })
+    }
   }
 
   onOk(id) {//确定按钮
-    let {actions,pageData} = this.props;
+    let {actions} = this.props;
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
       if (error) {
         // 处理表单报错
         return;
       }
+
       // 提交当前填写的数据
-      this.props.actions.fileEditSave(value,id);//
-      // hashHistory.push('/product/search')
+      actions.fileEditSave(value,id);
     });
 
   }
 
-  setFileTypeChecked(fileTypes, fileTypeValueArr){
-    fileTypes.map((item, i) => {
+  setFileTypeChecked(fileTypeValueArr){
+    let newFileTypes = [
+      {
+        name: '文档',
+        exts: ['全部', 'pdf','xls','doc','txt']
+      }, {
+        name: '图形',
+        exts: ['全部', 'jpg','png','bmp','gif']
+      }, {
+        name: '压缩',
+        exts: ['全部', 'rar','zip','7z','tar']
+      }
+    ];
+
+    newFileTypes.map((item, i) => {
+      let value = [];
+      let hasAllChecked = true;
       item.exts.map((eitem, j) => {
-        fileTypeValueArr.map((vitem, k) => {
-          if(eitem.name == vitem){
-            eitem.checked = true;
+        if(eitem != '全部'){
+          let flag = false;
+          fileTypeValueArr.map((vitem, k) => {
+            if(eitem == vitem){
+              flag = true;
+              value.push(vitem);
+            }
+          })
+
+          if(!flag){
+            hasAllChecked = false;
+          }
+        }
+      })
+
+      if(hasAllChecked){
+        value.splice(0, 0, '全部');
+      }
+
+      item.value = value;
+    })
+
+    return newFileTypes;
+  }
+
+  handleChangeType(idx, j, checkedValues, e){
+    let tempData = this.props.editData;
+    let tempFileTypeArr = tempData.collectionDetails[idx].fileTypeArr;
+    let curFileTypeExtArr = tempFileTypeArr[j].exts;
+    let tempFileType = tempData.collectionDetails[idx].fileType;
+    let checkedValueStr = checkedValues.join(',');
+    let tempArr = [];//当前选中的选项
+
+    if(e.target.value == '全部'){
+      //点击了全部选项
+      if(checkedValueStr.indexOf('全部') != -1){
+        //勾选了全部
+        checkedValueStr = curFileTypeExtArr.join(',');
+        checkedValueStr = checkedValueStr.replace('全部,', '');
+        let tempArr1 = [tempFileType,checkedValueStr].join(',');
+        tempArr = tempArr1.split(',');
+      }else{
+        //取消勾选全部
+        tempFileType.split(',').map((item, i) => {
+          let shouldRemove = false;
+          curFileTypeExtArr.map((sitem, j) => {
+            if(item == sitem){
+              shouldRemove = true;
+              return;
+            }
+          })
+
+          if(!shouldRemove){
+            tempArr.push(item);
           }
         })
+      }
+    }else{
+      //点击其它选项
+      tempFileType.split(',').map((item, i) => {
+        let shouldRemove = false;
+        curFileTypeExtArr.map((sitem, j) => {
+          if(item == sitem){
+            shouldRemove = true;
+            return;
+          }
+        })
+
+        if(!shouldRemove){
+          tempArr.push(item);
+        }
       })
-    })
+
+      checkedValueStr = checkedValueStr.replace('全部,', '');
+      tempArr = tempArr.concat(checkedValueStr.split(','));
+    }
+
+    tempArr = this.reduceArr(tempArr);
+    tempData.collectionDetails[idx].fileType = tempArr.join(',');
+    this.props.actions.changeFileDetail(tempData);
   }
-  componentDidMount() {
-    console.log(this.props);
-    this.props.actions.fileDetail(this.props.params.id);
-    let editData = this.props.editData ||{};
-        editData = editData.data || {};
-    let collects = editData.collectionDetails || [];
-    let fileName= [];
-    let fileType = '';
-    let fileSize = '';
+
+  reduceArr(arr){
+      let tempObj = {}
+      arr.map((item) => {
+        tempObj[item] = 1;
+      })
+      arr = [];
+      for(var x in tempObj){
+        arr.push(x);
+      }
+
+      return arr;
   }
   
-  /**
-   * {
-   * name: '',
-   * fileType: ''
-   * }
-   */
-  renderRow(data){
-    return 
-  }
   render() {
     let data = this.props.editData || {}
-    data = data.data || {}//data.data
-    let dataType = data.dataType || ''
-    let names = data.name || {}
 
-    let collects = data.collectionDetails || [];
-      collects.map((item, i) => {
-      let fileTypeValueArr = item.fileType.split(',')
-      item.fileTypeArr = this.defaultFileTypes;
-      this.setFileTypeChecked(item.fileTypeArr, fileTypeValueArr);
+    data.collectionDetails && data.collectionDetails.map((item, i) => {
+      let fileTypeValueArr = item.fileType.split(',');
+      item.fileTypeArr = this.setFileTypeChecked(fileTypeValueArr);
     })
-    this.state.value.fileList=collects;
-    console.log(this.state.value.fileList)
+
+    console.log('render', data)
+
     return (
       <IceContainer>
         <IceFormBinderWrapper
           ref={(formRef) => {
             this.formRef = formRef;
           }}
-          value={this.state.value.dd}
+          value={data}
           >
           <Form className="dialog-form">
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>清单类型：</label>
-                <IceFormBinder
-                  name="dataType"
-                >
-                  <label>{`${dataType}`}</label>
-                </IceFormBinder>
-                <IceFormError name="dataType" />
+                <label>{data.dataType}</label>
               </Col>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>清单名称：</label>
-                <IceFormBinder
-                  name="name"
-                >
-                  <Input placeholder="清单名称" value={`${names}`}/>
-                </IceFormBinder>
-                <IceFormError name="name" />
+                <label>{data.name}</label>
               </Col>
             </Row>
-            <ul className="dialog-form-ul">
-              <li className="liColor">资料名称</li>
-              <li className="liTow liColor">文件类型</li>
-              <li className="liColor">限制大小</li>
-              <li className="liColor">操作</li>
-
-              {this.state.value.fileList&& this.state.value.fileList.map((item, i) => {
-                return (<ul key={i}>
-                      <li className="liType">
-                      <IceFormBinder
-                          name="fileName"
-                        >
-                         <Input placeholder="清单名称" style={{ width: "150px" }} />
-                        </IceFormBinder>
-                        <IceFormError name="fileName" />
-                      </li>
-                  <li className="liTow liType">
-                    {item.fileTypeArr && item.fileTypeArr.map((typeItem, j) => {
-                      return (
-                      <Col key={j}>
-                        <label style={styles.filterTitle}>{typeItem.name}</label>
-                        <IceFormBinder
-                          name="All_pdf"
-                        >
-                          <Checkbox id="All_pdf" onChange={this.All_Chekcd} />
-                        </IceFormBinder>
-                        <label htmlFor="All_pdf" className="next-checkbox-label">全部</label>
-                        {typeItem.exts && typeItem.exts.map((extItem, k) => {
-                          return <span>
-                            <IceFormBinder
-                              name="pdf"
-                            >
-                              <Checkbox id="" defaultChecked={extItem.checked} />
-                            </IceFormBinder>
-                            <label htmlFor="pdf" className="next-checkbox-label">{extItem.name}</label>
-                          </span>
-                        })}
-                      </Col>)
-                    })}
-                  </li>
-                  <li className="liType">
-                    <Input style={{ width: "90px" }} value={`${item.fileSize}`}/>M
-                  </li>
-                  <li className="liType">
-                    <Button onClick={this.removeRow.bind(this,item.id)} style={styles.newCol}>删除</Button>
-                  </li>
-                </ul>)
-              })}
-
-            </ul>
+            <FileListDetail
+              data={data.collectionDetails}
+              onRemove={this.removeRow.bind(this)}
+              onChangeType={this.handleChangeType.bind(this)}
+            />
             <div style={styles.btn}>
               <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
               <Button onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>

@@ -38,10 +38,11 @@ function fetchFailed(error) {
   }
 }
 
-function dispatch(data) {
+function change(data) {
   return {
     type: T.CHANGE,
-    ...data
+    ...data,
+    time: Date.now()
   }
 }
 
@@ -159,14 +160,19 @@ export const fileDetail = (id) =>{
   return (dispatch) => {
 
     dispatch(fetchStart())
-    console.log('fileDetail')
 
     Req.fileDetail(id).then((res) => {
-      dispatch(fetchSuccess({editData: res}))
-      // hashHistory.push('/product/fileedit/' + res.data.id);
+      if(!res || res.code != 200) dispatch(fetchFailed(res));
+      dispatch(fetchSuccess({editData: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
+  }
+}
+
+export const changeFileDetail = (data) => {
+  return (dispatch) => {
+    dispatch(change({editData: data}))
   }
 }
 
@@ -204,7 +210,6 @@ export const fileRemoveDes = (id) => {
 export const fileEditSave = (value,id)=>{
   return (dispatch) => {
     dispatch(fetchStart())
-    console.log(id)
     Req.fileEditSave(value,id).then((res) => {
       // console.log(Req)
       // dispatch(fetchSuccess({delete: true}))
@@ -215,13 +220,13 @@ export const fileEditSave = (value,id)=>{
 }
 
 export function changeViewToForm() {
-  return dispatch({ view: 'form' });
+  return change({ view: 'form' });
 }
 
 export function changeViewToList() {
-  return dispatch({ view: 'list' });
+  return change({ view: 'list' });
 }
 
 export function changeViewToView() {
-  return dispatch({ view: 'view' });
+  return change({ view: 'view' });
 }
