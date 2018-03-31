@@ -109,14 +109,10 @@ export default class CreateActivityForm extends Component {
   };
   componentWillMount(){
     this.props.actions.prodActions();
-    console.log(this.props.prodActions)
   }
-
   render() {
     let data = this.props.prodActions|| {}
-    data = data.data;
     console.log(data)
-    let map = new Map();
     return (
       <div className="create-activity-form">
         <IceContainer >
@@ -141,14 +137,7 @@ export default class CreateActivityForm extends Component {
                     message="必填"
                     validator={this.check}
                   >
-                   <Select
-                      style={styles.filterTool}
-                    >
-                    
-                      <Option value="option1">中国</Option>
-                      <Option value="option2">美国</Option>
-                      
-                    </Select>
+                   <Input value="资金方" disabled/>
                   </IceFormBinder>
                   <IceFormError name="tenantId" />
                 </Col>
@@ -189,14 +178,14 @@ export default class CreateActivityForm extends Component {
                        message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
+                      
                     >
-                      {/* <Option value="NEW_CAR_LOAN">新车贷款</Option>
-                      <Option value="NEW_CAR_RENTAL">新车租赁</Option>
-                      <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
-                      <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
-                      <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
-                      <Option value="CONSUMER_LOAN">消费贷款</Option> */}
-                    </Select>
+                      {data.productType&&data.productType.map((val,i)=>{
+                        return(
+                          <Option value={val.value} key={i}>{val.desc}</Option>
+                        )
+                    })}
+                    </Select> 
                   </IceFormBinder>
                   <IceFormError name="prodType"/>
                 </Col>
@@ -213,8 +202,13 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">车抵贷</Option>
-                      <Option value="option2">新车贷</Option>
+                      {data.serviceFormType&&data.serviceFormType.map((val,i)=>{
+                        return(
+                          <Option value={val.value} key={i}>{val.desc}</Option>
+                        )
+                    })}
+                      {/* <Option value="option1">车抵贷</Option>
+                      <Option value="option2">新车贷</Option> */}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="collectionDetailListId"/>
@@ -245,8 +239,8 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">是</Option>
-                      <Option value="option2">否</Option>
+                      <Option value="0">是</Option>
+                      <Option value="1">否</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="isPermittedDiscount"/>
@@ -263,8 +257,9 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">生效</Option>
-                      <Option value="option2">未生效</Option>
+                      <Option value="0">生效</Option>
+                      <Option value="1">未生效</Option>
+                      <Option value="2">实效</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="status"/>
@@ -280,8 +275,8 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">是</Option>
-                      <Option value="option2">否</Option>
+                      <Option value="0">是</Option>
+                      <Option value="1">否</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="isRetainage"/>
@@ -293,13 +288,14 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
                   <IceFormBinder name="purposeOfLoan" >
                       <CheckboxGroup
-                        className="next-form-text-align"
-                        dataSource={[
-                          { label: '自用购车', value: 'buyCar' },
-                          { label: '消费性', value: 'Consume' },
-                          { label: '经营性', value: 'Operate' },
-                        ]}
-                      />
+                        className="next-form-text-align">
+                        {data.purposeOfLoan&&data.purposeOfLoan.map((val,i)=>{
+                          return(
+                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                          )
+                        })}
+                       
+                        </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="purposeOfLoan" />
@@ -311,13 +307,13 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>担保方式</label>
                   <IceFormBinder name="guaranteeMethodType" >
                       <CheckboxGroup
-                        className="next-form-text-align"
-                        dataSource={[
-                          { label: '信用', value: 'CREDIT' },
-                          { label: '抵押', value: 'MORTGAGE' },
-                          { label: '质押', value: 'PLEDGE' },
-                        ]}
-                      />
+                        className="next-form-text-align" >
+                        {data.guaranteeMethodType&&data.guaranteeMethodType.map((val,i)=>{
+                          return(
+                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                          )
+                        })}
+                      </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="guaranteeMethodType" />
@@ -337,8 +333,11 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="option1">受托支付</Option>
-                      <Option value="option2">自助支付</Option>
+                    {data.paymentOfLoan&&data.paymentOfLoan.map((val,i)=>{
+                          return(
+                            <Option value={val.value} key={i}>{val.desc}</Option>
+                          )
+                        })}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="paymentOfLoan"/>
@@ -363,13 +362,13 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款期限变更</label>
                   <IceFormBinder name="loanTermChange" >
                       <CheckboxGroup
-                        className="next-form-text-align"
-                        dataSource={[
-                          { label: '允许延长', value: 'ALLOW_DELAY' },
-                          { label: '允许压缩', value: 'ALLOW_PRESS' },
-                          { label: '不允许变更', value: 'NOT_ALLOW_CHANGE' },
-                        ]}
-                      />
+                        className="next-form-text-align">
+                        {data.loanTermChange&&data.loanTermChange.map((val,i)=>{
+                          return(
+                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                          )
+                        })}
+                        </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="loanTermChange" />
@@ -468,14 +467,14 @@ export default class CreateActivityForm extends Component {
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款利率变更</label>
                     <IceFormBinder name="interestLoanRateChange" >
-                      <CheckboxGroup
-                        className="next-form-text-align"
-                        dataSource={[
-                          { label: '允许变更利率调整方式', value: 'Allow_Change_Rate_Adjust' },
-                          { label: '允许变更利率浮动率', value: 'Allow_Change_Rate_float' },
-                          { label: '不允许贷款利率变更', value: 'Not_Allow_Change_Account' },
-                        ]}
-                      />
+                    <CheckboxGroup
+                        className="next-form-text-align">
+                        {data.interestLoanRateChange&&data.interestLoanRateChange.map((val,i)=>{
+                          return(
+                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                          )
+                        })}
+                    </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="interestLoanRateChange" />
@@ -495,7 +494,11 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="PRODUCT_PRICE">产品定价</Option>
+                        {data.interestRateRules&&data.interestRateRules.map((val,i)=>{
+                          return(
+                            <Option value={val.value} key={i}>{val.desc}</Option>
+                          )
+                        })}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="interestRateRules"/>
@@ -512,7 +515,11 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="FIXED_RATE">固定利率</Option>
+                     {data.interestRateModel&&data.interestRateModel.map((val,i)=>{
+                          return(
+                            <Option value={val.value} key={i}>{val.desc}</Option>
+                          )
+                        })}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="interestRateModel"/>
@@ -556,9 +563,11 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="ACCOUNT_DATE">出账日</Option>
-                      <Option value="CONTRACT_SIGNING_DATE">合同签订日</Option>
-
+                     {data.interestRateBaseDate&&data.interestRateBaseDate.map((val,i)=>{
+                          return(
+                            <Option value={val.value} key={i}>{val.desc}</Option>
+                          )
+                        })}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="interestRateBaseDate" />
@@ -589,13 +598,13 @@ export default class CreateActivityForm extends Component {
                   <IceFormBinder name="repaymentAccountChange" type="array">
                       <CheckboxGroup
                         className="next-form-text-align"
-                        dataSource={[
-                          { label: '允许变更贷款还款账户', value: 'Allow_Change' },
-                          { label: '允许变更授信还款账户', value: 'Allow_Change_Rate' },
-                          { label: '不允许还款账户变更', value: 'Not_Allow_Change' },
-                        ]}
-                        defaultValue={['Allow_Change']}
-                      />
+                      >
+                        {data.repaymentAccountChange&&data.repaymentAccountChange.map((val,i)=>{
+                          return(
+                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                          )
+                        })}
+                      </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="repaymentAccountChange" />
@@ -606,19 +615,15 @@ export default class CreateActivityForm extends Component {
                 <Col style={styles.filterCol}> 
                   <label style={styles.filterTitle}> <span className="label-required">*</span>还款周期</label>
                   <IceFormBinder name="repaymentPeriodFrequency" >
-                      <CheckboxGroup
+                  <CheckboxGroup
                         className="next-form-text-align"
-                        dataSource={[
-                          { label: '全选', value: 'Allow_ONCLIK' },
-                          { label: '按月', value: 'MONTH'},
-                          { label: '按季', value: 'YEAR' },
-                          { label: '按年', value: 'DISPOSABLE' },
-                          { label: '一次', value: 'DISPOSABLE' },
-                          { label: '按两周', value: 'TWO_WEEK' },
-                          { label: '按半年', value: 'HALF_YEAR' },
-                        ]}
-                        
-                      />
+                      >
+                        {data.repaymentPeriodFrequency&&data.repaymentPeriodFrequency.map((val,i)=>{
+                          return(
+                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                          )
+                        })}
+                        </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="repaymentPeriodFrequency" />
@@ -751,9 +756,11 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="LOAN_AMOUNT">按贷款总额</Option>
-                      <Option value="PREPAYMENT">按提前还款金额</Option>
-                      <Option value="SURPLUS_PRINCIPAL">按照剩余本金</Option>
+                     {data.penaltyBasicAmount&&data.penaltyBasicAmount.map((val,i)=>{
+                          return(
+                            <Option value={val.value} key={i}>{val.desc}</Option>
+                          )
+                        })}
                     </Select>
                   </IceFormBinder>
                 </Col>
@@ -769,7 +776,11 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="PERCENT">按比例</Option>
+                     {data.penaltyCalculationType&&data.penaltyCalculationType.map((val,i)=>{
+                          return(
+                            <Option value={val.value} key={i}>{val.desc}</Option>
+                          )
+                        })}
                     </Select>
                   </IceFormBinder>
                 </Col>

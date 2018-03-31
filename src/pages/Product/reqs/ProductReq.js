@@ -35,7 +35,8 @@ class ProductReq extends CurdReq{
 //产品初始数据
 prodActions (condition){
 	let options = {
-		url: this._host + '/product/data',
+		// url: this._host + '/product/data
+		url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
 		method: 'get',
 		contentType: 'application/x-www-form-urlencoded',
 		params: condition

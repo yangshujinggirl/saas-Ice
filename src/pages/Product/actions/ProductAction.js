@@ -53,7 +53,8 @@ export const prodActions = (condition)=>{
     dispatch(fetchStart())
 
     Req.prodActions(condition).then((res) => {
-      dispatch(fetchSuccess({ prodActions: res }))
+      // res.data
+      dispatch(fetchSuccess({ prodActions: res}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

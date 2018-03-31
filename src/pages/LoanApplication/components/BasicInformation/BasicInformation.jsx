@@ -32,6 +32,13 @@ class BasicInformation extends Component {
     this.field = new Field(this)
   }
 
+  checkNum(rule, value, callback) {
+    if(value && value.length>6) {
+      callback("请输入合适的金额")
+    }else {
+      callback();
+    }
+  }
   //提交表单
   handleSubmit(e) {
     e.preventDefault();
@@ -73,7 +80,21 @@ class BasicInformation extends Component {
       console.log(error)
     })
   }
-
+  //秒拒提示
+  warnTips() {
+    const { borrowerName, borrowerIdNo, borrowerMobile } = this.field.getValues();
+    if(borrowerName && borrowerIdNo && borrowerMobile) {
+      this.secondsfrom()
+    }
+  }
+  secondsfrom() {
+    Dialog.confirm({
+      content: '秒拒功能',
+      locale: {
+        ok: "确认"
+      }
+    });
+  }
   render() {
     const { pageData } = this.props;
     const { init } = this.field;
@@ -87,7 +108,7 @@ class BasicInformation extends Component {
                     dataSource={this.state.dataSource}
                     {...init(ele.name,
                       {
-                        rules:[{ required: true, message: "请填写信息" }],
+                        rules:[{ required: true, message: `${ele.label}不能为空` }],
                         props:{
                           onOpen:()=> {
                             this.getOptions(ele.id)
@@ -97,31 +118,50 @@ class BasicInformation extends Component {
                     )}>
                     {
                       ele.options && ele.options.map((opt,ide) => (
-                        <div value={opt.label} key={ide}>{opt.label}</div>
+                        <div value={opt.value} key={ide}>{opt.label}</div>
                       ))
                     }
                   </Select>
         case 'STRING':
-        case 'DECIMAL':
           return <Input
                   trim
                   style={styles.select}
                   placeholder={ele.type}
+                  htmlType='text'
                   {...init(ele.name,
-                    { rules:[{ required: true, message: "请填写信息" }] }
+                    {
+                      rules:[{ required: true, message:`${ele.label}不能为空` }],
+                      props:{ onBlur:()=> this.warnTips() }
+                    }
                   )}
                 />
-              case 'INT':
-              return <NumberPicker
-                      value={this.state.month}
-                      type="inline"
-                      step={2}
-                      min={1}
-                      max={12}
-                      {...init(ele.name,
-                        { rules:[{ required: true, message: "请填写信息" }] }
-                      )}
-                    />
+        case 'DECIMAL':
+          return <Input
+                  trim
+                  style={styles.select}
+                  hasLimitHint={true}
+                  placeholder={ele.type}
+                  htmlType='number'
+                  {...init(ele.name,
+                    {
+                      rules:[
+                        { required: true, message:`${ele.label}不能为空` ,min:2},
+                        { validator: this.checkNum }
+                      ]
+                    }
+                  )}
+                />
+        case 'INT':
+          return <NumberPicker
+                  value={this.state.month}
+                  type="inline"
+                  step={2}
+                  min={1}
+                  max={12}
+                  {...init(ele.name,
+                    { rules:[{ required: true, message: `${ele.label}不能为空` }] }
+                  )}
+                />
       }
     }
     return (

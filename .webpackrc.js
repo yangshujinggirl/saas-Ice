@@ -6,18 +6,28 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
 
 module.exports = {
-    output: {
-        path: resolve("build/assets"),
-        filename: '[name].[hash].js',
-        publicPath: "/assets/",
-        chunkFilename: "[id].[hash].js",
-        pathinfo: true
-    },
+    // output: {
+    //     path: resolve("build/assets"),
+    //     filename: '[name].[hash].js',
+    //     publicPath: "/assets/",
+    //     chunkFilename: "[id].[hash].js",
+    //     pathinfo: true
+    // },
     devServer: {
         proxy: {
             '/loan-ft1': {
                 target: LOAN_HOST,
                 changeOrigin: true,
+                bypass: function(req, res, proxyOpt) {
+                    // 添加 HTTP Header 标识 proxy 开启
+                    res.set('X-ICE-PROXY', 'on');
+                    res.set('X-ICE-PROXY-BY', LOAN_HOST);
+                },
+            },
+            '/loanApi': {
+                target: LOAN_HOST,
+                changeOrigin: true,
+                pathRewrite:{"^/loanApi" : ""},
                 bypass: function(req, res, proxyOpt) {
                     // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');
@@ -32,17 +42,18 @@ module.exports = {
     },
     plugins: [
 
-        new HtmlWebpackPlugin({
-            title: '平常金服SAAS ' + package.version,
-            template: './public/index.ejs',
-            filename: '../index.html',
-            name: package.name,
-            description: package.description,
-            version: package.version,
-            // hash: hash,
-            author: package.author,
-            time: getDate()
-        })]
+        // new HtmlWebpackPlugin({
+        //     title: '平常金服SAAS ' + package.version,
+        //     template: './public/index.ejs',
+        //     filename: '../index.html',
+        //     name: package.name,
+        //     description: package.description,
+        //     version: package.version,
+        //     // hash: hash,
+        //     author: package.author,
+        //     time: getDate()
+        // })
+    ]
 };
 
 

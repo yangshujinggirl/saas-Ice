@@ -53,7 +53,7 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res.data }))
+      dispatch(fetchSuccess({ pageData: res.data.list }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

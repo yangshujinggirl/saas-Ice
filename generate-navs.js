@@ -98,7 +98,10 @@ function getRouteFromFile(filePath) {
       let name;
       if (namearr && namearr.length > 0) {
         name = namearr[i];
-        name = name.replace(/name:\s*(\"|\')+/, '').replace(/(\"|\')+,/, '');
+        if(name) {
+          name = name.replace(/name:\s*(\"|\')+/, '').replace(/(\"|\')+,/, '');
+        }
+
       }
       if (i == 0) {
         prefix = item;
