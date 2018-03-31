@@ -42,17 +42,18 @@ module.exports = {
     },
     plugins: [
 
-        new HtmlWebpackPlugin({
-            title: '平常金服SAAS ' + package.version,
-            template: './public/index.ejs',
-            filename: '../index.html',
-            name: package.name,
-            description: package.description,
-            version: package.version,
-            // hash: hash,
-            author: package.author,
-            time: getDate()
-        })]
+        // new HtmlWebpackPlugin({
+        //     title: '平常金服SAAS ' + package.version,
+        //     template: './public/index.ejs',
+        //     filename: '../index.html',
+        //     name: package.name,
+        //     description: package.description,
+        //     version: package.version,
+        //     // hash: hash,
+        //     author: package.author,
+        //     time: getDate()
+        // })
+    ]
 };
 
 
