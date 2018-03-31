@@ -81,8 +81,9 @@ export const save = (data) => {
 
     Req.save(data).then((res) => {
       if(!res || res.code != 200) return;
+      console.log("234567");
       // dispatch(fetchSuccess({ formData: {}, view: 'list' }))
-      hashHistory.push('/product/addtwo/' + res.data.id);
+      // hashHistory.push('/product/addtwo/' + res.data.id);
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

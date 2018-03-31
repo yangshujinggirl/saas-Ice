@@ -15,6 +15,7 @@ import {
   Radio,
   Grid,
   Table,
+  Dialog
 } from '@icedesign/base';
 
 const { Row, Col } = Grid;
@@ -46,6 +47,37 @@ export default class CreateActivityForm extends Component {
 
   constructor(props) {
     super(props);
+    this.quotaperiodset=[//额度期限设置
+                {
+                    loanTermRangeMin:{value:<Input />,des:'123456'},
+                    loanPercentageMax:{value:<Input />,des:'123456'},
+                    loanPercentageMin:{value:<Input />,des:'123456'},
+                    loanTermRangeMax:{value:<Input />,des:'123456'},
+                    quotaRemove:<button onClick={this.deleteItem} shape="text" className="deleteBtn" type="button">删除</button>
+                  },
+                ];
+      this.interestSet=[//利率设置
+        {
+          channelTypes:{value:<Input />,des:'123456'},
+          interestRatesRangeMin:{value:<Input />,des:'123456'},
+          interestRatesRangeMax:{value:<Input />,des:'123456'},
+          quotaRemove:<button onClick={this.deleteItem2} shape="text" className="deleteBtn" type="button">删除</button>
+        }
+      ];
+      this.repaymentSet=[{//还款设置
+        repaymentMethods:{value:<Input />,des:'123456'},
+        fixedAmount:{value:<Input />,des:'123456'},
+        gracePeriod:{value:<Input />,des:'123456'},
+        repaymentExpirationGracePeriod:{value:<Input />,des:'123456'},
+        quotaRemove:<button onClick={this.deleteItem3} shape="text" className="deleteBtn" type="button">删除</button>
+      }];
+      this.advancerepaymentSet=[{//提前还款         
+        loanTermMin:{value:<Input />,des:'123456'},
+        loanTermMax:{value:<Input />,des:'123456'},
+        termUnit:{value:<Input />,des:'123456'},
+        penaltyPercentage:{value:<Input />,des:'123456'},
+        quotaRemove:<button onClick={this.deleteItem4} shape="text" className="deleteBtn" type="button">删除</button>
+      }];
     this.state = {
       value:{
         tenantId:'',
@@ -85,17 +117,99 @@ export default class CreateActivityForm extends Component {
         prepaymentPeriodsLimit:'',
         penaltyBasicAmount:'',
         penaltyCalculationType:'',
+        quotaperiodset:this.quotaperiodset,
+        interestSet:this.interestSet,
+        repaymentSet:this.repaymentSet,
+        advancerepaymentSet:this.advancerepaymentSet
       },
-      data:{}
+     
     };
-  }
+    
 
+  }
   onFormChange = (value) => {
     this.setState({
       value,
     });
   };
-
+//新增一行额度设置
+addNewList=(data)=>{
+  let newData = this.state.value.quotaperiodset;
+  newData=this.quotaperiodset.push(this.quotaperiodset[0])
+  this.setState({
+    newData
+  })
+}
+//利率设置
+addNewItem2=(data)=>{
+  let newData = this.state.value.interestSet;
+  newData=this.interestSet.push(this.interestSet[0])
+  this.setState({
+    newData
+  })
+}
+//还款设置
+addNewItem3=(data)=>{
+  let newData = this.state.value.repaymentSet;
+  newData=this.repaymentSet.push(this.repaymentSet[0])
+  this.setState({
+    newData
+  })
+}
+//提前还款方式
+addNewItem4=(data)=>{
+  let newData = this.state.value.advancerepaymentSet;
+  newData=this.advancerepaymentSet.push(this.advancerepaymentSet[0])
+  this.setState({
+    newData
+  })
+}
+//删除一行
+deleteItem = (index) => {
+  let oldData = this.state.value.quotaperiodset
+     if(oldData.length==1){
+        return false
+     }else{
+      oldData.splice(index, 1);
+      this.setState({
+          oldData
+      });
+     }
+};
+deleteItem2 = (index) => {
+  let oldData = this.state.value.interestSet
+  if(oldData.length==1){
+    return false
+ }else{
+  oldData.splice(index, 1);
+  this.setState({
+      oldData
+  });
+ }
+};
+deleteItem3 = (index) => {
+  let oldData = this.state.value.repaymentSet
+    if(oldData.length==1){
+      return false
+  }else{
+    oldData.splice(index, 1);
+    this.setState({
+        oldData
+    });
+  }
+};
+//
+deleteItem4 = (index) => {
+  let oldData = this.state.value.advancerepaymentSet
+    if(oldData.length==1){
+      return false
+  }else{
+    oldData.splice(index, 1);
+    this.setState({
+        oldData
+    });
+  }
+};
   submit = () => {
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
@@ -104,6 +218,8 @@ export default class CreateActivityForm extends Component {
         return;
       }
       // 提交当前填写的数据
+      console.log(value.time)
+      value.effectiveDate= value.time;
       this.props.actions.save(value);
     });
   };
@@ -112,7 +228,6 @@ export default class CreateActivityForm extends Component {
   }
   render() {
     let data = this.props.prodActions|| {}
-    console.log(data)
     return (
       <div className="create-activity-form">
         <IceContainer >
@@ -133,8 +248,6 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}><label className="label-required">*</label>资金方</label>
                   <IceFormBinder
                     name="tenantId"
-                    required
-                    message="必填"
                     validator={this.check}
                   >
                    <Input value="资金方" disabled/>
@@ -214,15 +327,15 @@ export default class CreateActivityForm extends Component {
                   <IceFormError name="collectionDetailListId"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}><span className="label-required">*</span>生效日期</label>
+                  <label style={styles.filterTitle}><span className="label-required">*</span>生效期限</label>
                   <IceFormBinder
-                    name="effectiveDate"
+                    name="time"
                     // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
                     valueFormatter={(date, dateStr) => dateStr}
                   >
-                    <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
+                    <RangePicker format={"YYYY-MM-DD"} style={{width:"200px"}}/> 
                   </IceFormBinder>
-                  
+                  <IceFormError name="time"/>
                 </Col>
               </Row>
               <Row wrap>
@@ -288,14 +401,13 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
                   <IceFormBinder name="purposeOfLoan" >
                       <CheckboxGroup
-                        className="next-form-text-align">
+                        className="next-form-text-align" >
                         {data.purposeOfLoan&&data.purposeOfLoan.map((val,i)=>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
                         })}
-                       
-                        </CheckboxGroup>
+                      </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="purposeOfLoan" />
@@ -444,18 +556,19 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">产品成数设置</div>
               <Table
+                dataSource={this.state.value.quotaperiodset}
                 hasHeader
                 className="table"
               >
                 {/* <Table.Column  title="产品成数设置" /> */}
-                <Table.Column title="最小期限(月)" dataIndex="applyTermRangeMin" />
-                <Table.Column title="最大成数(%)"  dataIndex="applyTermRangeMax"/>
-                <Table.Column title="最小成数(%)"  dataIndex="applyLoanPercentageMax"/>
-                <Table.Column title="最大期限(月)"  dataIndex="applyLoanPercentageMax"/>
+                <Table.Column title="最小期限(月)" dataIndex="loanTermRangeMin.value" />
+                <Table.Column title="最大成数(%)"  dataIndex="loanPercentageMax.value"/>
+                <Table.Column title="最小成数(%)"  dataIndex="loanPercentageMin.value"/>
+                <Table.Column title="最大期限(月)"  dataIndex="loanTermRangeMax.value"/>
                 <Table.Column title="操作" width={80}  dataIndex="quotaRemove"/>
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewList.bind(this.state.value.quotaperiodset)} style={styles.addNewItem}>新增一行</Button>
               </div>
             </div>
             
@@ -575,17 +688,17 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">产品利率设置</div>
               <Table
-              
+              dataSource={this.state.value.interestSet}
                 hasHeader
                 className="table"
               >
-                <Table.Column title="渠道" width={280} dataIndex="channelTypes" />
-                <Table.Column title="最小执行年利率(%)" dataIndex="interestRatesRangeMin"/>
-                <Table.Column title="最大执行年利率(%)" dataIndex="interestRatesRangeMax"/>
+                <Table.Column title="渠道" width={280} dataIndex="channelTypes.value" />
+                <Table.Column title="最小执行年利率(%)" dataIndex="interestRatesRangeMin.value"/>
+                <Table.Column title="最大执行年利率(%)" dataIndex="interestRatesRangeMax.value"/>
                 <Table.Column title="操作" width={80} dataIndex="quotaRemove"/>
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem2} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewItem2.bind(this.state.value.interestSet)} style={styles.addNewItem}>新增一行</Button>
               </div>
             </div>
             <legend className="legend">
@@ -688,18 +801,18 @@ export default class CreateActivityForm extends Component {
               </Row>
               <div className="table-title">还款方式设置</div>
               <Table
-              
+                dataSource={this.state.value.repaymentSet}
                 hasHeader
                 className="table"
               >
-                <Table.Column title="还款方式" width={280} dataIndex="repaymentMethods"/>
-                <Table.Column title="固定金额(元)"  dataIndex="fixedAmount"/>
-                <Table.Column title="宽限期期限(天)" dataIndex="gracePeriod"/>
-                <Table.Column title="宽限期失效后还款方式" dataIndex="repaymentExpirationGracePeriod"/>
+                <Table.Column title="还款方式" width={280} dataIndex="repaymentMethods.value"/>
+                <Table.Column title="固定金额(元)"  dataIndex="fixedAmount.value"/>
+                <Table.Column title="宽限期期限(天)" dataIndex="gracePeriod.value"/>
+                <Table.Column title="宽限期失效后还款方式" dataIndex="repaymentExpirationGracePeriod.value"/>
                 <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem3} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewItem3.bind(this.state.value.repaymentSet)} style={styles.addNewItem}>新增一行</Button>
               </div>
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>提前还款</label>
@@ -763,6 +876,7 @@ export default class CreateActivityForm extends Component {
                         })}
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="penaltyBasicAmount" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>违约金计算方式</label>
@@ -783,29 +897,30 @@ export default class CreateActivityForm extends Component {
                         })}
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="penaltyCalculationType" />
                 </Col>
               </Row>
               <div className="table-title">提前还款方式设置</div>
               <Table
-                
+                dataSource={this.state.value.advancerepaymentSet}
                 hasHeader
                 className="table"
-                primaryKey="id"
+                primaryKey="id" 
               >
-                <Table.Column title="最小期限" width={280} dataIndex="loanTermMin"/>
-                <Table.Column title="最大期限(元)" dataIndex="loanTermMax"/>
-                <Table.Column title="期限单位" dataIndex="termUnit"/>
-                <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage"/>
+                <Table.Column title="最小期限" width={280} dataIndex="loanTermMin.value"/>
+                <Table.Column title="最大期限(元)" dataIndex="loanTermMax.value"/>
+                <Table.Column title="期限单位" dataIndex="termUnit.value"/>
+                <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage.value"/>
                 <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
               </Table>
               <div style={styles.addNew}>
-                <Button onClick={this.addNewItem4} style={styles.addNewItem}>新增一行</Button>
+                <Button onClick={this.addNewItem4.bind(this.state.value.advancerepaymentSet)} style={styles.addNewItem}>新增一行</Button>
               </div>
               <div className="next-btn-box">
                 <div className="next-btn-lx" onClick={this.submit}>下一步</div>
               </div>
             </div>
-            </div>
+          </div>
           </IceFormBinderWrapper>
         </IceContainer>
       </div>
