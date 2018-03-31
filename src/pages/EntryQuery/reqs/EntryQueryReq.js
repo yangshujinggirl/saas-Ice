@@ -33,7 +33,7 @@ class EntryQueryReq extends CurdReq{
     let options = {
       url: this._host + '/loans/'+data.id,
       method: 'PUT',
-      contentType: 'application/x-www-form-urlencoded',
+      data:data
     }
     return super.fetchData(options);
   }
