@@ -50,6 +50,18 @@ class FontConfigReq extends CurdReq{
   }
 
 	/**
+   * 获取选中字段
+   */
+  modifyCode(id) {
+    let options = {
+			url: this._host + '/screen-schemes/'+ id,
+			method: 'put',
+			contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
+	/**
 	 * 自定义请求
 	 * @return {[type]} [description]
 	 */

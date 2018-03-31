@@ -44,8 +44,9 @@ export default class AdFont extends Component {
         }
         // console.log(this.state.isFixed[0].fields);
         
-        reqDate.fields = this.state.isFixed[0].fields;
-        let tempData = this.state.resDate;
+        reqDate.fields = this.state.isFixed.list[0].fields;
+        let data = this.state.resDate;
+        let tempData = data.list
             for (const index in tempData) {
                 for (const key in tempData[index].fields) {
                     if (tempData[index].fields[key].checked) {
@@ -75,32 +76,36 @@ export default class AdFont extends Component {
 
     }
     reset = () => {
-        let tempData = this.state.resDate;
+        let data = this.state.resDate;
+        let tempData = data.list
+        
         for (const index in tempData) {
             for (const key in tempData[index].fields) {
                 tempData[index].fields[key].checked = false
             }
             this.setState({
-                resDate: tempData
+                resDate: data
             })
         }    
     }
     selected = (index,all) => {
         if (!all) {
-            let tempData = this.state.resDate;
+            let data = this.state.resDate;
+            let tempData = data.list
             for (const key in tempData[index].fields) {
                 tempData[index].fields[key].checked = !tempData[index].fields[key].checked;
             }
             this.setState({
-                resDate: tempData
+                resDate: data
             })
         } else {
-            let tempData = this.state.resDate;
+            let data = this.state.resDate;
+            let tempData = data.list
             for (const key in tempData[index].fields) {
                 tempData[index].fields[key].checked = true;
             }
             this.setState({
-                resDate: tempData
+                resDate: data
             })
         }   
     }
@@ -110,10 +115,11 @@ export default class AdFont extends Component {
         })
     }
     addClass = (index, subindex) => {
-        let tempData = this.state.resDate;
+        let data = this.state.resDate;
+        let tempData = data.list
         tempData[index].fields[subindex].checked = !tempData[index].fields[subindex].checked;
         this.setState({
-            resDate:tempData
+            resDate:data
         })
         
     }
@@ -144,7 +150,7 @@ export default class AdFont extends Component {
         this.setState({isFixed});
     }
     render() {
-        // console.log(this.state.isFixed);
+        console.log(this.state.resDate);
         
         return (
             <div className="addFont">
