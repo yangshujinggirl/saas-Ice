@@ -53,28 +53,7 @@ export default class FileList extends Component {
       },
       value:{
         name	:'',	 
-        dataType:'',
-        fileList:[{
-          id: 1,
-          name: '文档',
-          exts: [{
-            name: 'pdf',
-            checked: false
-          }, {
-            name: 'xls',
-            checked: false
-          }]
-        }, {
-          id: 2,
-          name: '图形',
-          exts: [{
-            name: 'jpg',
-            checked: false
-          }, {
-            name: 'png',
-            checked: false
-          }]
-        }],
+        dataType:''
       },
       fileList:[{
         dataType:"",
@@ -115,8 +94,8 @@ export default class FileList extends Component {
 //操作
   renderTest = (value, index, record) => {
     return <div>
-      <button className="edithbtn" onClick={()=>this.open(record)}>编辑</button>
-      <button className="deletbtn" onClick={()=>this.deleteRow(record.id)}>删除</button>
+      <button className="edithbtn" onClick={() => this.open(record)}>编辑</button>
+      <button className="deletbtn" onClick={() => this.deleteRow(record.id)}>删除</button>
     </div>
   };
   
@@ -124,7 +103,7 @@ export default class FileList extends Component {
   
     hashHistory.push(`/product/fileedit/${record.id}`)
   }
-  deleteRow =(idx)=>{
+  deleteRow =(idx) => {
     let {actions} = this.props;
     actions.fileremove(idx);
     actions.filesearch()
@@ -204,96 +183,6 @@ export default class FileList extends Component {
               <Table.Column title="材料名称" dataIndex="fileNamestr"/>
               <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
             </Table>
-            {/* <Dialog
-              visible={this.state.visible}
-              onOk={this.onOK}
-              onCancel={this.onClose.bind(this)}
-              onClose={this.onClose.bind(this)}
-              title=""
-              style={this.state.style}
-              align={this.state.align}
-              >
-              <IceFormBinderWrapper
-                 ref={(formRef) => {
-                  this.formRef = formRef;
-                }}
-                value={{
-
-                    dataType:'',
-                    }}
-              >
-                <Form className="dialog-form">
-                <Row wrap>
-                    <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                      <label style={styles.filterTitle}>清单类型：</label>
-                      <IceFormBinder
-                      name="dataType"
-                    >
-                      <Select
-                        name="dataType"
-                        placeholder="请选择"
-                        style={styles.filterTool}
-                      >
-                        <Option value="option1">产品进件</Option>
-                      </Select>
-                    </IceFormBinder>
-                    <IceFormError name="dataType" />
-                    </Col>
-                    <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                      <label style={styles.filterTitle}>清单名称：</label>
-                      <IceFormBinder
-                          name="name"
-                        >
-                          <Input placeholder="清单名称" />
-                      </IceFormBinder>
-                      <IceFormError name="name" />
-                    </Col>
-                  </Row>
-                  <ul className="dialog-form-ul">
-                    <li className="liColor">资料名称</li>
-                    <li className="liTow liColor">文件类型</li>
-                    <li className="liColor">限制大小</li>
-                    <li className="liColor">操作</li>
-                    {this.state.value.fileList&& this.state.value.fileList.map((item, i) => {                    
-                    return <ul><li className="liType">
-                      <Input placeholder="清单名称" style={{ width: "150px" }} />
-                    </li>
-                    <li className="liTow liType">
-                    {item.filetype && item.filetype.map((typeItem, j) => {
-                      return <Col>
-                      <label style={styles.filterTitle}>{typeItem.name}</label>
-                      <IceFormBinder
-                        name="All_pdf"
-                      >
-                       <Checkbox id="All_pdf" />
-                      </IceFormBinder>
-                      <label htmlFor="All_pdf" className="next-checkbox-label">全部</label>
-                      {typeItem.exts && typeItem.exts.map((extItem, k) => {
-                        return <span>
-                        <IceFormBinder
-                        name="pdf"
-                        >
-                        <Checkbox id="pdf" defaultChecked={extItem.checked} />
-                        </IceFormBinder>
-                        <label htmlFor="pdf" className="next-checkbox-label">{extItem.name}</label>
-                        </span>
-                      })}
-                    </Col>
-                    })}
-                    </li>
-                    <li className="liType">
-                      <Input style={{ width: "90px" }} />M
-                    </li>
-                    <li className="liType">
-                      <Button onClick={this.removeRow.bind(this,i)}>删除</Button>
-                    </li>
-                    </ul>
-                    })}
-                  </ul>
-                  <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
-                </Form>
-              </IceFormBinderWrapper>
-            </Dialog> */}
           </div>
           <div style={styles.addNew}>
             <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>

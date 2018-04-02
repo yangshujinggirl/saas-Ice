@@ -678,7 +678,12 @@ img#logo {
 .input:focus {
     border-color: #EAA824 !important;
 }
-
+.ellips {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:nowrap;
+    width: 100%;
+}
 .btn-list {
     background: #fff;
     text-align: center;
@@ -692,4 +697,9 @@ img#logo {
             margin-right: 10px;
         }
     }
+}
+.clearfix::after {
+    display: block;
+    clear: both;
+    content: ''
 }

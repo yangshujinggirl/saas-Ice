@@ -1,16 +1,15 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio } from '@icedesign/base';
-import Sortable, { SortableContainer } from 'react-anything-sortable';
+import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
 import "./SetFont.scss"
-import 'react-anything-sortable/sortable.css';
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
 import Tools from './../../../../base/utils/Tools'
 
 const { Group: CheckboxGroup } = Checkbox;
 const { Group: RadioGroup } = Radio;
+const { MonthPicker, YearPicker, RangePicker } = DatePicker;
 
 
 export default class setFont extends Component {
@@ -24,9 +23,11 @@ export default class setFont extends Component {
             resData: [],
             pageValue: '',
             leftActive: 0,
+            rightActive: '',
             subTitle: '',
             arraList: [5, 6, 7, 8, 9],
-            visible: true,
+            dialogOne: false,
+            dialogTwo: false,
             value: ["orange"]
         };
     }
@@ -50,11 +51,11 @@ export default class setFont extends Component {
         });
     }
 
-    handleRemoveElement = (index) => {
-        const newArr = this.state.arraList.slice();
-        newArr.splice(index, 1);
+    handleRemoveElement = (index, inj) => {
+        const newArr = this.state.resData;
+        newArr.fieldset[index].fields.splice(inj,1);
         this.setState({
-            arraList: newArr
+            resData: newArr
         });
     }
     upPage = () => {
@@ -65,7 +66,10 @@ export default class setFont extends Component {
             leftActive: index,
         })
     }
-    titleState = (index) => {     
+    titleState = (index) => {
+        if (index == 1) {
+            return
+        }
         if (index) {
             this.setState({
                 subTitle: index
@@ -84,15 +88,7 @@ export default class setFont extends Component {
         })
         
     }
-    validEmpty = (view) => {
-        console.log(view);
-        
-        if (view.target.value.length) {
-            Dialog.alert({
-                content: "区块名称不能为空",
-            })
-        }
-    }
+   
     componentDidMount() {
         let id = this.props.router.location.query.id
 
@@ -130,15 +126,16 @@ export default class setFont extends Component {
             },
             {
                 value: "orange",
-                label: "只读"
+                label: "只写"
             },
             {
                 value: "orange",
                 label: "独占一行"
             }
         ];
+        
         const footer = (
-            <div>
+            <div key='1'>
                 <Button type="primary" style={{ marginLeft: '10px' }}>
                     提交
                 </Button>
@@ -147,24 +144,169 @@ export default class setFont extends Component {
                 </Button>
             </div>
         );
+        const hover = (bool,item) => {
+            
+            if (bool) {
+                this.setState({
+                    rightActive: item
+                })
+            } else {
+                this.setState({
+                    rightActive: ''
+                })
+            }
+        }
+        const validEmpty = (e) => {
+            if (!e.target.value.length) {
+                Dialog.alert({
+                    content: "区块名称不能为空",
+                })
+            }
+            this.setState({
+                subTitle: ''
+            })
+        }
 
-        function renderItem(num, index) {
-            return (
-                <SortableContainer key={num} className="dynamic-item active firstModle" sortData={num}>
-                    <div>
-                        <label htmlFor="">
-                            <span className='required'>*</span>
-                            <span>资方名称{num}</span>
-                        </label>
-                        <Input placeholder="" {...init("input")} />
-                        <span className='edite icon'>&#xe62a;</span>
-                    </div>
-                    <span className="delete"
-                        onClick={this.handleRemoveElement.bind(this, index)}>
-                        &times;
-                    </span>
-                </SortableContainer>
-            );
+        const validaRequire = (index,inj) => {
+            const newArr = this.state.resData;
+            newArr.fieldset[index].fields[inj].isRequired = !newArr.fieldset[index].fields[inj].isRequired
+            this.setState({
+                resData: newArr
+            });
+        }
+
+        const deleteData = (index) => {
+            const newArr = this.state.resData;
+            newArr.fieldset.splice(index,1)
+            this.setState({
+                resData: newArr
+            });
+        }
+
+        const moveDown = (index) => {
+            const newArr = this.state.resData;            
+            if ((newArr.fieldset.length - 1) == index) {
+                return
+            }
+            [newArr.fieldset[index+1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index+1]]
+            this.setState({
+                resData: newArr
+            });
+        }
+
+        const moveUp = (index) => {
+            const newArr = this.state.resData;            
+            if (index==1) {
+                return
+            }
+            [newArr.fieldset[index-1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index-1]]
+            this.setState({
+                resData: newArr
+            });
+        }
+        const handleAddModule = () => {
+            const newArr = this.state.resData;            
+            let add = {
+                name: '请输入标题',
+                fields:[]
+            }
+            newArr.fieldset.push(add)
+            this.setState({
+                resData: newArr
+            });
+        }
+        const dataSource = [
+            {
+              value: "2973",
+              label: "陕西",
+              children: [
+                {
+                  value: "2974",
+                  label: "西安",
+                  children: [
+                    { value: "2975", label: "西安市" },
+                    { value: "2976", label: "高陵县" }
+                  ]
+                },
+                {
+                  value: "2980",
+                  label: "铜川",
+                  children: [
+                    { value: "2981", label: "铜川市" },
+                    { value: "2982", label: "宜君县" }
+                  ]
+                }
+              ]
+            },
+            {
+              value: "3371",
+              label: "新疆",
+              children: [
+                {
+                  value: "3430",
+                  label: "巴音郭楞蒙古自治州",
+                  children: [
+                    { value: "3431", label: "库尔勒市" },
+                    { value: "3432", label: "和静县" }
+                  ]
+                }
+              ]
+            }
+        ];
+        const handleFixed = (item) => {
+            let inputType = <Input placeholder="" />
+            switch (item.type) {
+                case 'STRING':
+                    inputType = <Input placeholder=""  />
+                    break;
+                case 'TEXT':
+                    inputType = <Input placeholder=""  />
+                // inputType = <Input placeholder=""  multiple/>
+                    break;
+                case 'INT':
+                    inputType = <Input placeholder=""  />
+                    break;
+                case 'DECIMAL':
+                    inputType = <Input placeholder=""  />                
+                    break;
+                case 'DATE':
+                    inputType = <RangePicker
+                        onChange={(val, str) => console.log(val, str)}
+                        onStartChange={(val, str) => console.log(val, str)}/>
+                    break;
+                case 'SELECT':
+                    inputType = <Select
+                        placeholder="选择尺寸"
+                    >
+                        {item.options && item.options.map((item, index) => {
+                            return (
+                                <Option value={item.value} key={index}>{item.label}</Option>
+                            )    
+                        })}
+                        
+                    </Select>
+                    break;
+                case 'CHECKBOX':
+                    inputType = <Checkbox />
+                    break;
+                case 'RADIO':
+                    inputType = <Radio />
+                    break;
+                case 'ADDRESS':
+                    inputType = <CascaderSelect
+                    dataSource= {dataSource}
+                  />
+                    break;
+                default:
+                    break;
+            }
+            return  inputType
+        }
+
+        const handleAddCode = (index) => {
+            this.setState({
+                dialogOne: true,
+            })
         }
 
         return (
@@ -198,7 +340,7 @@ export default class setFont extends Component {
                                             <span className='active' onClick={this.titleState.bind(this,index+1)}>
                                                 {
                                                     this.state.subTitle == index +1 ?
-                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={this.validEmpty} className='moduleStr' />
+                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={validEmpty} className='moduleStr' />
                                                         :
                                                         <Input placeholder="" value={item.name} className='moduleStr' readOnly />
                                             }    
@@ -206,24 +348,66 @@ export default class setFont extends Component {
                                             </span>
                                             {
                                             
-                                                index == 0 ? <span className="addStr">自定义字段</span> :
+                                                index == 0 ? <span className="addStr" onClick={handleAddCode.bind(this,index)}>自定义字段</span> :
                                                 <span>    
-                                                    <span className="addStr">自定义字段</span>
-                                                    <span className='icon down'>&#xe629;</span>
-                                                    <span className='icon up'>&#xe62b;</span>
-                                                    <span className='icon delete'>&#xe625;</span>
+                                                    <span className="addStr" onClick={handleAddCode.bind(this,index)}>自定义字段</span>
+                                                        <span className='icon down' onClick={moveDown.bind(this,index)}>&#xe629;</span>
+                                                        <span className='icon up' onClick={moveUp.bind(this,index)}>&#xe62b;</span>
+                                                        <span className='icon delete' onClick={deleteData.bind(this,index)}>&#xe625;</span>
                                                 </span>
                                              }
                                             
                                         </div>
-                                        <Sortable onSort={this.handleSort} containment>
-                                            {this.state.arraList.map(renderItem, this)}
-                                        </Sortable>
+                                        <div className='ui-sortable'>
+                                            {index == 0 ? item.fields.map((item, index) => {
+                                                return (
+                                                    <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
+                                                        'false', )} key={index}>
+                                                            <div className="clearfix">
+                                                                <label htmlFor="">
+                                                                <span className='ellips' title={item.label}>{item.label}</span>
+                                                                <span className='required'>*</span>
+                                                                </label>
+                                                                {handleFixed(item)}
+                                                                <span className='edite icon'>&#xe62a;</span>
+                                                            </div>
+                                                            <span className="delete"
+                                                                onClick={this.handleRemoveElement.bind(this, index)}>
+                                                                &times;
+                                                            </span>
+                                                    </div> 
+                                                )
+                                            }):''}    
+                                             
+                                            {index == 0 ? '' : item.fields.map((item, inj) => {
+                                                return (
+                                                    <div key={inj} onMouseLeave={hover.bind(this,0)} onMouseEnter={hover.bind(this,1,item.label)} className={cx('dynamic-item', 'firstModle',' ui-sortable-item',
+                                                        'false', {
+                                                        active: this.state.rightActive == item.label
+                                                    })} >
+                                                        <div className="clearfix">
+                                                            <label htmlFor="">
+                                                                <span className='ellips' title={item.label}>{item.label}</span>
+                                                                <span className='required' onClick={validaRequire.bind(this,index,inj)}>
+                                                                    {item.isRequired?<span>*</span>:''}    
+                                                                </span>
+                                                            </label>
+                                                            {handleFixed(item)}
+                                                            <span className='edite icon'>&#xe62a;</span>
+                                                        </div>
+                                                        <span className="delete"
+                                                            onClick={this.handleRemoveElement.bind(this, index,inj)}>
+                                                            &times;
+                                                        </span>
+                                                    </div>        
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 )
                             })}
                         </div>
-                        <div className='addModule'> <span className='icon'>&#xe626;</span>添加区域</div>
+                        <div className='addModule' onClick={handleAddModule}> <span className='icon'>&#xe626;</span>添加区域</div>
                         <div className="dynamic-demo">
                             <div className='baseDetail customer'>
                                 <span className='active'>
@@ -254,7 +438,7 @@ export default class setFont extends Component {
                 </div>
 
                 <Dialog
-                    visible={false}
+                    visible={this.state.dialogOne}
                     onOk={this.onClose}
                     closable="esc,mask,close"
                     onCancel={this.onClose}
@@ -301,7 +485,7 @@ export default class setFont extends Component {
                             onChange={this.onChange}
                         />
                     </div>
-                    <div className='beautify constraint'>
+                    {/* <div className='beautify constraint'>
                         <Checkbox />
                         <span className='marv5'>显示约束</span>
                         <Input className="marv5" placeholder="Medium" size='small' />
@@ -316,8 +500,8 @@ export default class setFont extends Component {
                             <Select.Option value="option2">option2</Select.Option>
                             <Select.Option disabled>disabled</Select.Option>
                         </Select>
-                    </div>
-                    <div className='beautify'>
+                    </div> */}
+                    {/* <div className='beautify'>
                         <label className='marr10'>值为计算所得</label>
                         <RadioGroup
                             dataSource={list}
@@ -334,21 +518,20 @@ export default class setFont extends Component {
                     </div>
                     <div className='beautify'>
                         <Input className="" placeholder="Medium" />
-                    </div>
+                    </div> */}
                     <div className='beautify constraint'>
                         <label htmlFor="" className='changSet'>选择设置</label>
                         <div className='dropDown'>
                             <div>
                                 <Checkbox />
-                                <Input className="" placeholder="Medium" />
+                                <Input className="" placeholder=" 请输入值" />
                                 <div className='addReduce'>
                                     <span>+</span>
-                                    <span>—</span>
                                 </div>
                             </div>
                             <div>
                                 <Checkbox />
-                                <Input className="" placeholder="Medium" />
+                                <Input className="" placeholder="请输入值" />
                                 <div className='addReduce'>
                                     <span>+</span>
                                     <span>—</span>

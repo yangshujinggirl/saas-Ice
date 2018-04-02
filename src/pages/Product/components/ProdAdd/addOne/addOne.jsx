@@ -15,7 +15,13 @@ import {
   Radio,
   Grid,
   Table,
+  Dialog
 } from '@icedesign/base';
+
+import Chanpinchengshu from './Chanpinchengshu';
+import Chanpinlilv from './Chanpinlilv';
+import Huankuanfangshi from './Huankuanfangshi';
+import Tiqianhuankuanfangshi from './Tiqianhuankuanfangshi';
 
 const { Row, Col } = Grid;
 
@@ -24,20 +30,6 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
-// Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
-const SwitchForForm = (props) => {
-  const checked = props.checked === undefined ? props.value : props.checked;
-
-  return (
-    <Switch
-      {...props}
-      checked={checked}
-      onChange={(currentChecked) => {
-        if (props.onChange) props.onChange(currentChecked);
-      }}
-    />
-  );
-};
 
 export default class CreateActivityForm extends Component {
   static displayName = 'CreateActivityForm';
@@ -46,6 +38,7 @@ export default class CreateActivityForm extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       value:{
         tenantId:'',
@@ -85,17 +78,19 @@ export default class CreateActivityForm extends Component {
         prepaymentPeriodsLimit:'',
         penaltyBasicAmount:'',
         penaltyCalculationType:'',
+        percentageSetting: [{}],
+        ratesSetting: [{}],
+        repaymentMethodsSetting: [{}],
+        prepaymentSetting: [{}]
       },
-      data:{}
+     
     };
   }
-
   onFormChange = (value) => {
     this.setState({
       value,
     });
   };
-
   submit = () => {
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
@@ -104,15 +99,34 @@ export default class CreateActivityForm extends Component {
         return;
       }
       // 提交当前填写的数据
+      value.effectiveDate= value.time;
       this.props.actions.save(value);
     });
   };
   componentWillMount(){
     this.props.actions.prodActions();
   }
+  addNewItem(key){
+    let newData = this.state.value[key];
+    newData.push({})
+    this.setState({
+      newData
+    })
+  }
+
+  removeItem(key, index){
+    let oldData = this.state.value[key]
+    if (oldData.length == 1) {
+      return false
+    } else {
+      oldData.splice(index, 1);
+      this.setState({
+        oldData
+      });
+    }
+  }
   render() {
     let data = this.props.prodActions|| {}
-    console.log(data)
     return (
       <div className="create-activity-form">
         <IceContainer >
@@ -133,8 +147,6 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}><label className="label-required">*</label>资金方</label>
                   <IceFormBinder
                     name="tenantId"
-                    required
-                    message="必填"
                     validator={this.check}
                   >
                    <Input value="资金方" disabled/>
@@ -180,7 +192,7 @@ export default class CreateActivityForm extends Component {
                       style={styles.filterTool}
                       
                     >
-                      {data.productType&&data.productType.map((val,i)=>{
+                      {data.productType&&data.productType.map((val,i) => {
                         return(
                           <Option value={val.value} key={i}>{val.desc}</Option>
                         )
@@ -202,7 +214,7 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      {data.serviceFormType&&data.serviceFormType.map((val,i)=>{
+                      {data.serviceFormType&&data.serviceFormType.map((val,i) =>{
                         return(
                           <Option value={val.value} key={i}>{val.desc}</Option>
                         )
@@ -214,15 +226,15 @@ export default class CreateActivityForm extends Component {
                   <IceFormError name="collectionDetailListId"/>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}><span className="label-required">*</span>生效日期</label>
+                  <label style={styles.filterTitle}><span className="label-required">*</span>生效期限</label>
                   <IceFormBinder
-                    name="effectiveDate"
+                    name="time"
                     // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
                     valueFormatter={(date, dateStr) => dateStr}
                   >
-                    <RangePicker format={"YYYY/MM/DD"} style={{width:"200px"}}/> 
+                    <RangePicker format={"YYYY-MM-DD"} style={{width:"200px"}}/> 
                   </IceFormBinder>
-                  
+                  <IceFormError name="time"/>
                 </Col>
               </Row>
               <Row wrap>
@@ -288,14 +300,13 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
                   <IceFormBinder name="purposeOfLoan" >
                       <CheckboxGroup
-                        className="next-form-text-align">
-                        {data.purposeOfLoan&&data.purposeOfLoan.map((val,i)=>{
+                        className="next-form-text-align" >
+                        {data.purposeOfLoan&&data.purposeOfLoan.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
                         })}
-                       
-                        </CheckboxGroup>
+                      </CheckboxGroup>
                     </IceFormBinder>
                     <div>
                       <IceFormError name="purposeOfLoan" />
@@ -308,7 +319,7 @@ export default class CreateActivityForm extends Component {
                   <IceFormBinder name="guaranteeMethodType" >
                       <CheckboxGroup
                         className="next-form-text-align" >
-                        {data.guaranteeMethodType&&data.guaranteeMethodType.map((val,i)=>{
+                        {data.guaranteeMethodType&&data.guaranteeMethodType.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -333,7 +344,7 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                    {data.paymentOfLoan&&data.paymentOfLoan.map((val,i)=>{
+                    {data.paymentOfLoan&&data.paymentOfLoan.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -363,7 +374,7 @@ export default class CreateActivityForm extends Component {
                   <IceFormBinder name="loanTermChange" >
                       <CheckboxGroup
                         className="next-form-text-align">
-                        {data.loanTermChange&&data.loanTermChange.map((val,i)=>{
+                        {data.loanTermChange&&data.loanTermChange.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -442,21 +453,12 @@ export default class CreateActivityForm extends Component {
                   <IceFormError name="loanPercentageMax" />
                 </Col>
               </Row>
-              <div className="table-title">产品成数设置</div>
-              <Table
-                hasHeader
-                className="table"
-              >
-                {/* <Table.Column  title="产品成数设置" /> */}
-                <Table.Column title="最小期限(月)" dataIndex="applyTermRangeMin" />
-                <Table.Column title="最大成数(%)"  dataIndex="applyTermRangeMax"/>
-                <Table.Column title="最小成数(%)"  dataIndex="applyLoanPercentageMax"/>
-                <Table.Column title="最大期限(月)"  dataIndex="applyLoanPercentageMax"/>
-                <Table.Column title="操作" width={80}  dataIndex="quotaRemove"/>
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Chanpinchengshu 
+                styles={styles}
+                items={this.state.value.percentageSetting}
+                addItem={this.addNewItem.bind(this, 'percentageSetting')}
+                removeItem={this.removeItem.bind(this, 'percentageSetting')}
+              />
             </div>
             
             <legend className="legend">
@@ -469,7 +471,7 @@ export default class CreateActivityForm extends Component {
                     <IceFormBinder name="interestLoanRateChange" >
                     <CheckboxGroup
                         className="next-form-text-align">
-                        {data.interestLoanRateChange&&data.interestLoanRateChange.map((val,i)=>{
+                        {data.interestLoanRateChange&&data.interestLoanRateChange.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -494,7 +496,7 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                        {data.interestRateRules&&data.interestRateRules.map((val,i)=>{
+                        {data.interestRateRules&&data.interestRateRules.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -515,7 +517,7 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.interestRateModel&&data.interestRateModel.map((val,i)=>{
+                     {data.interestRateModel&&data.interestRateModel.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -563,7 +565,7 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.interestRateBaseDate&&data.interestRateBaseDate.map((val,i)=>{
+                     {data.interestRateBaseDate&&data.interestRateBaseDate.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
@@ -573,20 +575,12 @@ export default class CreateActivityForm extends Component {
                   <IceFormError name="interestRateBaseDate" />
                 </Col>
               </Row>
-              <div className="table-title">产品利率设置</div>
-              <Table
-              
-                hasHeader
-                className="table"
-              >
-                <Table.Column title="渠道" width={280} dataIndex="channelTypes" />
-                <Table.Column title="最小执行年利率(%)" dataIndex="interestRatesRangeMin"/>
-                <Table.Column title="最大执行年利率(%)" dataIndex="interestRatesRangeMax"/>
-                <Table.Column title="操作" width={80} dataIndex="quotaRemove"/>
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem2} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Chanpinlilv
+                styles={styles}
+                items={this.state.value.ratesSetting}
+                addItem={this.addNewItem.bind(this, 'ratesSetting')}
+                removeItem={this.removeItem.bind(this, 'ratesSetting')}
+              />
             </div>
             <legend className="legend">
               <span className="legLine"></span>还款设置
@@ -599,7 +593,7 @@ export default class CreateActivityForm extends Component {
                       <CheckboxGroup
                         className="next-form-text-align"
                       >
-                        {data.repaymentAccountChange&&data.repaymentAccountChange.map((val,i)=>{
+                        {data.repaymentAccountChange&&data.repaymentAccountChange.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -618,7 +612,7 @@ export default class CreateActivityForm extends Component {
                   <CheckboxGroup
                         className="next-form-text-align"
                       >
-                        {data.repaymentPeriodFrequency&&data.repaymentPeriodFrequency.map((val,i)=>{
+                        {data.repaymentPeriodFrequency&&data.repaymentPeriodFrequency.map((val,i) =>{
                           return(
                             <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
                           )
@@ -686,21 +680,12 @@ export default class CreateActivityForm extends Component {
                   
                 </Col>
               </Row>
-              <div className="table-title">还款方式设置</div>
-              <Table
-              
-                hasHeader
-                className="table"
-              >
-                <Table.Column title="还款方式" width={280} dataIndex="repaymentMethods"/>
-                <Table.Column title="固定金额(元)"  dataIndex="fixedAmount"/>
-                <Table.Column title="宽限期期限(天)" dataIndex="gracePeriod"/>
-                <Table.Column title="宽限期失效后还款方式" dataIndex="repaymentExpirationGracePeriod"/>
-                <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem3} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Huankuanfangshi
+                styles={styles}
+                items={this.state.value.repaymentMethodsSetting}
+                addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
+                removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
+              />
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>提前还款</label>
                 <Col style={styles.filterCol}>
@@ -756,13 +741,14 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.penaltyBasicAmount&&data.penaltyBasicAmount.map((val,i)=>{
+                     {data.penaltyBasicAmount&&data.penaltyBasicAmount.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
                         })}
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="penaltyBasicAmount" />
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>违约金计算方式</label>
@@ -776,36 +762,27 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                     {data.penaltyCalculationType&&data.penaltyCalculationType.map((val,i)=>{
+                     {data.penaltyCalculationType&&data.penaltyCalculationType.map((val,i) =>{
                           return(
                             <Option value={val.value} key={i}>{val.desc}</Option>
                           )
                         })}
                     </Select>
                   </IceFormBinder>
+                  <IceFormError name="penaltyCalculationType" />
                 </Col>
               </Row>
-              <div className="table-title">提前还款方式设置</div>
-              <Table
-                
-                hasHeader
-                className="table"
-                primaryKey="id"
-              >
-                <Table.Column title="最小期限" width={280} dataIndex="loanTermMin"/>
-                <Table.Column title="最大期限(元)" dataIndex="loanTermMax"/>
-                <Table.Column title="期限单位" dataIndex="termUnit"/>
-                <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage"/>
-                <Table.Column title="操作" width={80} dataIndex="quotaRemove" />
-              </Table>
-              <div style={styles.addNew}>
-                <Button onClick={this.addNewItem4} style={styles.addNewItem}>新增一行</Button>
-              </div>
+              <Tiqianhuankuanfangshi
+                styles={styles}
+                items={this.state.value.prepaymentSetting}
+                addItem={this.addNewItem.bind(this, 'prepaymentSetting')}
+                removeItem={this.removeItem.bind(this, 'prepaymentSetting')}
+              />
               <div className="next-btn-box">
                 <div className="next-btn-lx" onClick={this.submit}>下一步</div>
               </div>
             </div>
-            </div>
+          </div>
           </IceFormBinderWrapper>
         </IceContainer>
       </div>

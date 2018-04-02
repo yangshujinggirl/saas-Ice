@@ -42,6 +42,20 @@ class AccountReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+
+	/**
+	 * 获取用户信息
+	 * @return {[type]} [description]
+	 * {"id":66582,"userName":"18811110001","realName":"","ownerId":66579}
+	 */
+	getUserInfo(data){
+		
+		let options = {
+			url: '/crm/ext/user/getUserInfo',
+			method: 'GET'
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new AccountReq();

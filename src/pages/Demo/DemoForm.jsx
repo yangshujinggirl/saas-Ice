@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import DemoForm from './components/DemoForm';
+import DemoForm from './components/CreateActivityForm';
 
 export default class Demo extends Component {
 
@@ -15,7 +15,7 @@ export default class Demo extends Component {
   render() {
     return (
       <div className="demo-page">
-        这是表单
+        <DemoForm {...this.props} />
       </div>
     );
   }
