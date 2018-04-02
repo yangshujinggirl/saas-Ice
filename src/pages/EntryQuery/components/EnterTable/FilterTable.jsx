@@ -207,8 +207,8 @@ export default class EnhanceTable extends Component {
           </Table>
           <div style={styles.paginationWrapper}>
             <Pagination
-              current={tableData.currentPage}
-              pageSize={tableData.pageSize}
+              current={tableData.page}
+              pageSize={tableData.limit}
               total={tableData.total}
               onChange={this.changePage}
             />

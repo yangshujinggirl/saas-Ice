@@ -110,7 +110,7 @@ export const saveFrom = (data) => {
     dispatch(fetchStart())
 
     Req.saveFrom(data).then((res) => {
-      dispatch(fetchSuccess({data: res.data}))
+      dispatch(fetchSuccess({data: res}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
