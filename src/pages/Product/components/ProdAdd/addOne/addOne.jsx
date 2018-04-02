@@ -41,47 +41,48 @@ export default class CreateActivityForm extends Component {
 
     this.state = {
       value:{
-        tenantId:'',
-        name:'',
-        contractDisplayName:'',
-        prodType:'',
-        serviceFormType:'',
-        collectionDetailListId:'',
-        effectiveDate:[],
-        isPermittedDiscount:'',
-        status:'',
-        isRetainage:'',
-        purposeOfLoan:['buyCar'],
-        guaranteeMethodType:['CREDIT'],
-        paymentOfLoan:'',
-        description:'',
-        loanTermChange:['ALLOW_DELAY'],
-        principalAmountMin:'',
-        principalAmountMax:'',
-        loanTermRangeMin:'',
-        loanTermRangeMax:'',
-        loanPercentageMin:'',
-        loanPercentageMax:'',
-        interestLoanRateChange:['Allow_Change_Rate_Adjust'],
-        interestRateRules:'',
-        interestRateModel:'',
-        interestRatesRangeMin:'',
-        interestRatesRangeMax:'',
-        interestRateBaseDate:'',
-        repaymentAccountChange:['Allow_Change'],
-        repaymentPeriodFrequency:['MONTH'],
-        repaymentDateChange:'allow',
-        gancePeriodChange:'allow',
-        repaymentMethodChange:'allow',
-        isEarlyRepaymentAllowed:'allow',
-        prepaymentAmountMin:'',
-        prepaymentPeriodsLimit:'',
-        penaltyBasicAmount:'',
-        penaltyCalculationType:'',
-        percentageSetting: [{}],
-        ratesSetting: [{}],
-        repaymentMethodsSetting: [{}],
-        prepaymentSetting: [{}]
+            tenantId:'12',
+            name:'',
+            contractDisplayName:'',
+            prodType:'',
+            serviceFormType:null,
+            collectionDetailListId:'',
+            effectiveDate:[],
+            isPermittedDiscount:'',
+            status:'',
+            isRetainage:'',
+            purposeOfLoan:['buyCar'],
+            guaranteeMethodType:['CREDIT'],
+            paymentOfLoan:'',
+            description:'',
+            loanTermChange:['ALLOW_DELAY'],
+            principalAmountMin:'',
+            principalAmountMax:'',
+            loanTermRangeMin:'',
+            loanTermRangeMax:'',
+            loanPercentageMin:'',
+            loanPercentageMax:'',
+            interestLoanRateChange:['Allow_Change_Rate_Adjust'],
+            interestRateRules:'',
+            interestRateModel:'',
+            interestRatesRangeMin:'',
+            interestRatesRangeMax:'',
+            interestRateBaseDate:'',
+            repaymentAccountChange:['Allow_Change'],
+            repaymentPeriodFrequency:['MONTH'],
+            repaymentDateChange:'true',
+            gancePeriodChange:'true',
+            repaymentMethodChange:'true',
+            isEarlyRepaymentAllowed:'true',
+            prepaymentAmountMin:'',
+            prepaymentPeriodsLimit:'',
+            penaltyBasicAmount:'',
+            penaltyCalculationType:'',
+            percentageSetting: [{}],
+            ratesSetting: [{}],
+            repaymentMethodsSetting: [{}],
+            prepaymentSetting: [{}],
+            productScope: []
       },
      
     };
@@ -91,6 +92,57 @@ export default class CreateActivityForm extends Component {
       value,
     });
   };
+  AllValue=(value)=>{
+    return(
+      {
+        product:{
+          tenantId:value.tenantId,
+          name:value.name,
+          contractDisplayName:value.contractDisplayName,
+          prodType:value.prodType,
+          serviceFormType:value.serviceFormType,
+          collectionDetailListId:value.collectionDetailListId,
+          effectiveDate:value.effectiveDate,
+          expirationDate:value.expirationDate,
+          isPermittedDiscount:value.isPermittedDiscount,
+          status:value.status,
+          isRetainage:value.isRetainage,
+          purposeOfLoan:value.purposeOfLoan,
+          guaranteeMethodType:value.guaranteeMethodType,
+          paymentOfLoan:value.paymentOfLoan,
+          description:value.description,
+          loanTermChange:value.loanTermChange,
+          principalAmountMin:value.principalAmountMin,
+          principalAmountMax:value.principalAmountMax,
+          loanTermRangeMin:value.loanTermRangeMin,
+          loanTermRangeMax:value.loanTermRangeMax,
+          loanPercentageMin:value.loanPercentageMin,
+          loanPercentageMax:value.loanPercentageMax,
+          interestLoanRateChange:value.interestLoanRateChange,
+          interestRateRules:value.interestRateRules,
+          interestRateModel:value.interestRateModel,
+          interestRatesRangeMin:value.interestRatesRangeMin,
+          interestRatesRangeMax:value.interestRatesRangeMax,
+          interestRateBaseDate:value.interestRateBaseDate,
+          repaymentAccountChange:value.repaymentAccountChange,
+          repaymentPeriodFrequency:value.repaymentPeriodFrequency,
+          repaymentDateChange:value.repaymentDateChange,
+          gancePeriodChange:value.gancePeriodChange,
+          repaymentMethodChange:value.repaymentMethodChange,
+          isEarlyRepaymentAllowed:value.isEarlyRepaymentAllowed,
+          prepaymentAmountMin:value.prepaymentAmountMin,
+          prepaymentPeriodsLimit:value.prepaymentPeriodsLimit,
+          penaltyBasicAmount:value.penaltyBasicAmount,
+          penaltyCalculationType:value.penaltyCalculationType,
+        },
+      percentageSetting: value.percentageSetting,
+      ratesSetting:value.ratesSetting,
+      repaymentMethodsSetting: value.repaymentMethodsSetting,
+      prepaymentSetting: value.prepaymentSetting,
+      productScope: value.productScope
+      }
+    )
+  }
   submit = () => {
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
@@ -99,12 +151,17 @@ export default class CreateActivityForm extends Component {
         return;
       }
       // 提交当前填写的数据
-      value.effectiveDate= value.time;
-      this.props.actions.save(value);
+      value.effectiveDate= value.time[0];
+      value.expirationDate = value.time[1]
+      let AllValue = this.AllValue(value);
+      console.log(AllValue)
+      this.props.actions.save(AllValue);
     });
   };
-  componentWillMount(){
+  componentDidMount(){
+    
     this.props.actions.prodActions();
+    this.props.actions.filesearch()
   }
   addNewItem(key){
     let newData = this.state.value[key];
@@ -125,8 +182,28 @@ export default class CreateActivityForm extends Component {
       });
     }
   }
+ Option=(data)=>{
+  let coll =[]
+  for(var i=0;i<data.length;i++){
+   let colltemp= data[i].collectionDetails
+    colltemp.map((val,j)=>{
+      coll.push({
+        cid:val.collectionId,
+        id:val.id,
+        name:val.name,
+      })
+    })
+  }
+  return coll  
+ }
   render() {
     let data = this.props.prodActions|| {}
+    data = data.data ||{}
+    
+    let data1 = this.props.fileData||{}
+        data1= data1.data||{}
+        data1= data1.list ||[]
+    let collData = this.Option(data1)
     return (
       <div className="create-activity-form">
         <IceContainer >
@@ -213,14 +290,12 @@ export default class CreateActivityForm extends Component {
                       message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
-                    >
-                      {data.serviceFormType&&data.serviceFormType.map((val,i) =>{
-                        return(
-                          <Option value={val.value} key={i}>{val.desc}</Option>
-                        )
+                    > 
+                    {collData.map((val,i) => {
+                      return(
+                        <Option value={val.id} key={i}>{val.name}</Option>
+                      )
                     })}
-                      {/* <Option value="option1">车抵贷</Option>
-                      <Option value="option2">新车贷</Option> */}
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="collectionDetailListId"/>
@@ -251,8 +326,8 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="0">是</Option>
-                      <Option value="1">否</Option>
+                      <Option value="true">是</Option>
+                      <Option value="false">否</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="isPermittedDiscount"/>
@@ -287,8 +362,8 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="0">是</Option>
-                      <Option value="1">否</Option>
+                      <Option value="true">是</Option>
+                      <Option value="false">否</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="isRetainage"/>
@@ -633,8 +708,8 @@ export default class CreateActivityForm extends Component {
                   <RadioGroup
                       className="next-form-text-align"
                       dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
+                        { label: '是', value: 'true' },
+                        { label: '否', value: 'false' },
                       ]}
                     />
                 </IceFormBinder>
@@ -651,8 +726,8 @@ export default class CreateActivityForm extends Component {
                 <RadioGroup
                       className="next-form-text-align"
                       dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
+                        { label: '是', value: 'true' },
+                        { label: '否', value: 'false' },
                       ]}
                     />
                 </IceFormBinder>
@@ -669,8 +744,8 @@ export default class CreateActivityForm extends Component {
                 <RadioGroup
                       className="next-form-text-align"
                       dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
+                        { label: '是', value: 'true' },
+                        { label: '否', value: 'false' },
                       ]}
                     />
                 </IceFormBinder>
@@ -693,8 +768,8 @@ export default class CreateActivityForm extends Component {
                 <RadioGroup
                       className="next-form-text-align"
                       dataSource={[
-                        { label: '是', value: 'allow' },
-                        { label: '否', value: 'not_allow' },
+                        { label: '是', value: 'true' },
+                        { label: '否', value: 'false' },
                       ]}
                     />
                 </IceFormBinder>

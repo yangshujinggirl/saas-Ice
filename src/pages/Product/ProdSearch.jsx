@@ -11,7 +11,7 @@ export default class Product extends Component {
   };
 
   componentWillMount (){
-    // this.props.actions.search();
+    this.props.actions.search();
   }
   componentDidMount(){
     console.log('productDetail componentDidMount')

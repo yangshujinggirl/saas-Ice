@@ -59,6 +59,7 @@ export default class ProdSeachList extends Component {
     super(props);
     this.state = {
       filterFormValue: {},
+      currentPage:0,
       value:{
         productCode	:'',	 
         name	:'', 
@@ -66,7 +67,7 @@ export default class ProdSeachList extends Component {
         status	:'',
         contractDisplayName:''
       },
-      dataSource:'',
+      dataSource:[],
     };
      // 请求参数缓存
     
@@ -103,11 +104,11 @@ export default class ProdSeachList extends Component {
   
 
   componentWillMount(){ 
-    
+    // this.fech();
   }
   componentDidMount() {
     console.log(this.props)
-    this.fech();
+    // this.fech();
   }
   fech = () =>{
     this.props.actions.search();
@@ -131,21 +132,26 @@ export default class ProdSeachList extends Component {
   //页数变化
   changePage = (currentPage) => {
     console.log(currentPage);
+    this.setState({
+      currentPage
+    })
+    this.props.actions.search({page:currentPage});
   };
 
 
   render() {
-    this.state.dataSource = this.props.pageData.data || {};
-    this.state.dataSource = this.state.dataSource.list ||[] //data.data
-    console.log( this.state.dataSource.times)
-    this.state.dataSource &&  this.state.dataSource.map((item) => {
-      let temp = [];
-      item.times && item.times.map((ditem, j) => {
-        temp.push(ditem);
-      })
-      item.times = temp.join('~')
-      })
-    let map = new Map()
+  const { pageData } = this.props;
+  const { data } = pageData;
+  console.log(pageData)
+  const { list,total,limit } = data !== undefined && data;
+  console.log(list)
+      list&&list.map((item,i) => {
+        let temp = [];
+        item.times && item.times.map((ditem, j) => {
+          temp.push(ditem);
+        })
+        item.times = temp.join('~')
+        })
     return (
 
       <div className="create-activity-form" style={styles.container}>
@@ -253,7 +259,7 @@ export default class ProdSeachList extends Component {
             </div>
           </IceFormBinderWrapper>
           <Table
-              dataSource={this.state.dataSource}
+              dataSource={list}
               isLoading={this.state.isLoading}
               isZebra={true}
             >
@@ -279,9 +285,9 @@ export default class ProdSeachList extends Component {
             <div style={styles.pagination}>
               <Pagination 
                 shape="arrow-only" 
-                current={this.state.dataSource.page}
-                pageSize={this.state.dataSource.limt}
-                total={this.state.dataSource.total}
+                current={this.state.currentPage}
+                pageSize={limit}
+                total={total}
                 onChange={this.changePage}
               />
             </div>

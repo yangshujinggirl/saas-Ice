@@ -11,7 +11,6 @@ import AddOne from './components/ProdAdd/addOne'
 import AddTwo from './components/ProdAdd/addTwo'
 import FileList from './components/FileList'
 import Fileedit from './components/FileList/Dialog'
-
 const mapStateToProps = (state, ownProps) => {
     const data = state.ProductReducer;
     return data;
@@ -83,5 +82,5 @@ export default {
     ProductDetail: productDetail,
     AddOne:addOne,
     AddTwo:addTwo,
-    FileEdit:fileedit
+    FileEdit:fileedit,
 }
