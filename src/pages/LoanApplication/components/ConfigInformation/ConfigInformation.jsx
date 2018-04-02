@@ -179,6 +179,7 @@ export default class ConfigInformation extends Component {
     }
     return (
       <div className="loan-config-content">
+        <IceFormBinderWrapper>
           <IceContainer title="车贷申请" className='subtitle'>
             <Row  className='config-page' align="stretch">
               <Col span="2">
@@ -249,6 +250,7 @@ export default class ConfigInformation extends Component {
             </Row>
 
           </IceContainer>
+        </IceFormBinderWrapper>
       </div>
     );
   }

@@ -1,27 +1,145 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
-import { Table, Pagination } from '@icedesign/base';
+import { Link } from 'react-router';
+import {
+  Table,
+  Pagination,
+  Field,
+  Form,
+  Grid,
+  Select,
+  Button,
+  Input
+ } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
-import DataBinder from '@icedesign/data-binder';
-import IceLabel from '@icedesign/label';
-import FilterForm from './Filter';
-import FontConfigReq from './../../reqs/FontConfigReq.js'
+import {
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
 
-@DataBinder({
-  tableData: {
-    // 详细请求配置请参见 https://github.com/axios/axios
-    url: '/mock/filter-table-list.json',
-    params: {
-      page: 1,
-    },
-    defaultBindingData: {
-      list: [],
-      total: 100,
-      pageSize: 10,
-      currentPage: 1,
-    },
-  },
-})
+import FontConfigReq from './../../reqs/FontConfigReq.js'
+import './FilterTable.scss';
+
+const { Row, Col } = Grid;
+const FormItem = Form.Item;
+const formItemLayout = {
+  labelCol: { span: 7 },
+};
+
+class  SearchForm extends Component {
+  constructor(props) {
+    super(props)
+    this.field = new Field(this)
+  }
+  //提交表单
+  handleSubmit(e) {
+    e.preventDefault();
+    this.field.validate((errors, values) => {
+      let parmas = this.field.getValues();
+      console.log(parmas)
+      if (errors) {
+        return;
+      }
+      // this.addLoanApi(parmas)
+    });
+  }
+  render() {
+    const { init } = this.field;
+    return(
+        <IceFormBinderWrapper>
+          <Form
+            labelAlign="left"
+            className="search-form"
+            field={this.field}>
+            <Row  align="top" justify="space-between">
+              <Col span={4} >
+                <FormItem {...formItemLayout} label='资方'>
+                  <Select
+                    name="size"
+                    placeholder="请选择"
+                    style={styles.filterTool}
+                    {...init('zifang',
+                      { rules:[{ required: true, message: `资方不能为空` }]}
+                    )}
+                  >
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={4}>
+                <FormItem {...formItemLayout} label='业务类型'>
+                  <Select
+                    name="size"
+                    defaultValue='贷款业务'
+                    style={styles.filterTool}
+                    {...init('yewu',
+                      { rules:[{ required: true, message: `业务类型不能为空` }]}
+                    )}
+                  >
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={4}>
+                <FormItem {...formItemLayout} label='功能模块'>
+                  <Select
+                    name="size"
+                    defaultValue='进件'
+                    style={styles.filterTool}
+                    {...init('gongneng',
+                      { rules:[{ required: true, message: `功能模块不能为空` }]}
+                    )}
+                  >
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={4}>
+                <FormItem {...formItemLayout} label='流程名称'>
+                  <Select
+                    name="size"
+                    defaultValue='全部'
+                    style={styles.filterTool}
+                    {...init('process',
+                      { rules:[{ required: true, message: `流程名称不能为空` }]}
+                    )}
+                  >
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={4}>
+                <FormItem {...formItemLayout} label='页面名称'>
+                  <Input
+                    placeholder='请输入'
+                    {...init('input',
+                      { rules:[{ required: true, message: `页面名称不能为空` }]}
+                    )}/>
+                </FormItem>
+              </Col>
+              <Col span={4}>
+                <div>
+                  <Button
+                    type="normal"
+                    className='next-btn-search'
+                    onClick={(e)=>this.handleSubmit(e)}
+                    >
+                    查询
+                  </Button>
+                  <Button
+                    type="primary"
+                    style={{ marginLeft: '10px' }}
+                  >
+                    新增
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        </IceFormBinderWrapper>
+    )
+  }
+
+}
+
+
 export default class EnhanceTable extends Component {
   static displayName = 'EnhanceTable';
 
@@ -29,37 +147,15 @@ export default class EnhanceTable extends Component {
 
   constructor(props) {
     super(props);
-
-    // 请求参数缓存
-    this.queryCache = {};
     this.state = {
       filterFormValue: {},
+      currentPage:1
     };
   }
 
-  componentDidMount() {
-    this.queryCache.page = 1;
-    this.fetchData();
+  componentWillMount() {
+    this.props.actions.search();
   }
-
-  fetchData = () => {
-    this.props.updateBindingData('tableData', {
-      data: this.queryCache,
-    });
-  };
-
-  renderTitle = (value, index, record) => {
-    return (
-      <div style={styles.titleWrapper}>
-        <span style={styles.title}>{record.title}</span>
-      </div>
-    );
-  };
-
-  editItem = (record, e) => {
-    e.preventDefault();
-    // TODO: record 为该行所对应的数据，可自定义操作行为
-  };
 
   renderOperations = (value, index, record) => {
     return (
@@ -67,14 +163,6 @@ export default class EnhanceTable extends Component {
         className="filter-table-operation"
         style={styles.filterTableOperation}
       >
-        <a
-          href="#"
-          target="_blank"
-          onClick={this.editItem.bind(this, record)}
-          className='operate-btn operate-btn-two'
-        >
-          修改
-        </a>
         <a href="#" target="_blank" className='operate-btn'>
           详情
         </a>
@@ -82,18 +170,12 @@ export default class EnhanceTable extends Component {
     );
   };
 
-  renderStatus = (value) => {
-    return (
-      <IceLabel inverse={false} status="default">
-        {value}
-      </IceLabel>
-    );
-  };
-
+  //分页
   changePage = (currentPage) => {
-    this.queryCache.page = currentPage;
-
-    this.fetchData();
+    this.setState({
+      currentPage
+    })
+    this.props.actions.search({page:currentPage});
   };
 
   filterFormChange = (value) => {
@@ -120,54 +202,41 @@ export default class EnhanceTable extends Component {
     this.props.router.push('/font/add')
   };
   render() {
-    const tableData = this.props.bindingData.tableData;
+    const { list, total, limit, page } = this.props.pageData;
     const { filterFormValue } = this.state;
-
     return (
       <div className="filter-table">
         <IceContainer title="字段配置" className='subtitle' style={styles.marb0}>
-          <FilterForm
-            value={filterFormValue}
-            onChange={this.filterFormChange}
-            onSubmit={this.filterTable}
-            onReset={this.resetFilter}
-            toggleCompont={this.toggleCompont}
-            toggleAddFont={this.toggleAddFont}
-          />
-        </IceContainer>
-        <IceContainer style={styles.marb0}>
+          <SearchForm />
           <Table
-            dataSource={tableData.list}
-            isLoading={tableData.__loading}
+            dataSource={list}
             className="basic-table"
             hasBorder={false}
           >
             <Table.Column
               title="业务类型"
-              cell={this.renderTitle}
+              dataIndex="name"
               width={320}
             />
             <Table.Column title="功能模块" dataIndex="type" width={85} />
             <Table.Column
               title="页面名称"
-              dataIndex="publishTime"
+              dataIndex="name"
               width={150}
             />
             <Table.Column
               title="流程"
-              dataIndex="publishStatus"
+              dataIndex="id"
               width={85}
               cell={this.renderStatus}
             />
             <Table.Column
               title="最后修改时间"
-              dataIndex="operation"
+              dataIndex="createdAt"
               width={150}
-              cell={this.renderOperations}
             />
             <Table.Column
               title="操作"
-              dataIndex="operation"
               width={150}
               cell={this.renderOperations}
               lock='right'
@@ -175,9 +244,9 @@ export default class EnhanceTable extends Component {
           </Table>
           <div style={styles.paginationWrapper}>
             <Pagination
-              current={tableData.currentPage}
-              pageSize={tableData.pageSize}
-              total={tableData.total}
+              current={this.state.currentPage}
+              pageSize={limit}
+              total={total}
               onChange={this.changePage}
             />
           </div>
@@ -191,19 +260,6 @@ const styles = {
   filterTableOperation: {
     lineHeight: '28px',
   },
-  operationItem: {
-    marginRight: '12px',
-    textDecoration: 'none',
-    color: '#5485F7',
-  },
-  titleWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  title: {
-    marginLeft: '10px',
-    lineHeight: '20px',
-  },
   paginationWrapper: {
     textAlign: 'right',
     paddingTop: '26px',
@@ -212,4 +268,7 @@ const styles = {
     marginBottom: '0',
     borderRadius: '0'
   },
+  filterTool: {
+    width: '160px',
+  }
 };

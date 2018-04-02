@@ -7,6 +7,9 @@ export default class Font extends Component {
   constructor(props) {
     super(props)
   }
+  componentWillMount() {
+
+  }
 
   render() {
     return (
