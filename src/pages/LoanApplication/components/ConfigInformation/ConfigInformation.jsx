@@ -22,8 +22,10 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
+
 import Req from '../../reqs/LoanApplicationReq';
 import addressDataSource from '../addressDataSource';
+
 import  './configInfo.scss'
 
 const { Row, Col } = Grid;
@@ -32,82 +34,17 @@ const { DragUpload } = Upload;
 const { Group: RadioGroup } = Radio;
 
 
-
-const formItemLayout = {
-  labelCol: { span: 10 },
-};
-
-const InputModss = (ele) => {
-  switch(ele.type) {
-    case 'SELECT':
-      return <Select
-                style={styles.select}
-                dataSource={this.state.dataSource}
-                {...init(ele.name,
-                  {
-                    rules:[{ required: true, message: `${ele.label}不能为空` }],
-                    props:{
-                      onOpen:()=> {
-                        this.getOptions(ele.id)
-                      }
-                    }
-                  }
-                )}>
-                {
-                  ele.options && ele.options.map((opt,ide) => (
-                    <div value={opt.value} key={ide}>{opt.label}</div>
-                  ))
-                }
-              </Select>
-    case 'STRING':
-      return <Input
-              trim
-              style={styles.select}
-              placeholder={ele.type}
-              htmlType='text'
-              {...init(ele.name,
-                { rules:[{ required: true, message:`${ele.label}不能为空` }]}
-              )}
-            />
-    case 'DECIMAL':
-      return <Input
-              trim
-              style={styles.select}
-              hasLimitHint={true}
-              placeholder={ele.type}
-              htmlType='number'
-              {...init(ele.name,
-                {
-                  rules:[
-                    { required: true, message:`${ele.label}不能为空` ,min:2},
-                    { validator: this.checkNum }
-                  ]
-                }
-              )}
-            />
-    case 'INT':
-      return <NumberPicker
-              value={this.state.month}
-              type="inline"
-              step={2}
-              min={1}
-              max={12}
-              {...init(ele.name,
-                { rules:[{ required: true, message: `${ele.label}不能为空` }] }
-              )}
-            />
-    case 'ADDRESS':
-      return <CascaderSelect
-                expandTrigger={this.state.trigger}
-                dataSource={addressDataSource}
-                onChange={this.handleChange}
-              />
-    case 'RADIO':
-      return <RadioGroup dataSource={ele.options} defaultValue={"apple"}/>
-    case 'DATE':
-      return <DatePicker onChange={(val, str) => console.log(val, str)} />
-  }
-}
+const labels =(name)=> (
+  <span>
+    <Balloon
+      type="primary"
+      trigger={<span>{name}</span>}
+      closable={false}
+      triggerType="hover">
+      {name}
+    </Balloon>
+  </span>
+);
 
 export default class ConfigInformation extends Component {
   constructor(props) {
@@ -149,43 +86,23 @@ export default class ConfigInformation extends Component {
       console.log(error)
     })
   }
-  //请求options接口
-  getOptions(id) {
-    this.setState({
-      dataSource: [
-        {label:'UT00000001', value:'UT00000001'},
-        {label:'option2', value:'option2'}
-      ]
-    })
-  }
 
   onChange(file) {
     console.log("onChange callback : ", file);
     console.log("onChange callback : ", file.fileList);
   }
 
-  handleSubmit = () => {
-    this.postForm.validateAll((errors, values) => {
-      console.log('errors', errors, 'values', values);
+  //提交表单
+  handleSubmit(e) {
+    e.preventDefault();
+    this.field.validate((errors, values) => {
+      let parmas = this.field.getValues();
       if (errors) {
-        return false;
+        return;
       }
-
+      // this.addLoanApi(parmas)
     });
-  };
-
-  labels =(name)=> (
-    <span>
-      <Balloon
-        type="primary"
-        trigger={<span>{name}</span>}
-        closable={false}
-        triggerType="hover">
-        {name}
-      </Balloon>
-    </span>
-  );
-
+  }
   render() {
     const { upLoadList, loadDetail } = this.state;
     const { init } = this.field;
@@ -198,14 +115,7 @@ export default class ConfigInformation extends Component {
                     disabled={ele.isFixed? true: false}
                     {...init(ele.name,
                       {'initValue':ele.isFixed? ele.value: ''},
-                      {
-                        rules:[{ required: true, message: `${ele.label}不能为空` }],
-                        props:{
-                          onOpen:()=> {
-                            this.getOptions(ele.id)
-                          }
-                        }
-                      }
+                      { rules:[{ required: true, message: `${ele.label}不能为空` }] }
                     )}>
                     {
                       ele.options && ele.options.map((opt,ide) => (
@@ -262,7 +172,7 @@ export default class ConfigInformation extends Component {
                     onChange={this.handleChange}
                   />
         case 'RADIO':
-          return <RadioGroup dataSource={ele.options} defaultValue={"apple"}/>
+          return <RadioGroup dataSource={ele.options} value={1}/>
         case 'DATE':
           return <DatePicker onChange={(val, str) => console.log(val, str)} />
       }
@@ -295,8 +205,8 @@ export default class ConfigInformation extends Component {
                         <Row  align="top" wrap>
                           {
                             e.fields && e.fields.map((ele,index) => (
-                              <Col span={6} key={index}>
-                                <FormItem {...formItemLayout} label={this.labels(ele.label)}>
+                              <Col span={ele.type == 'RADIO'?24:6} key={index}>
+                                <FormItem labelCol={{span:ele.type == 'RADIO'?2:8}} label={labels(ele.label)}>
                                   {
                                     InputMod(ele)
                                   }
@@ -319,12 +229,21 @@ export default class ConfigInformation extends Component {
                       onChange ={this.onChange}
                     />
                   </div>
+
                   <Table dataSource={upLoadList} className="upload-list">
                     <Table.Column title="序号" dataIndex="id" />
-                    <Table.Column title="资料名称" dataIndex="fileName" />
+                    <Table.Column title="资料名称" dataIndex="name" />
                     <Table.Column title="上传大小" dataIndex="fileType" />
                     <Table.Column title="上传大小" dataIndex='fileType' />
                   </Table>
+                  <Row style={{ marginTop: 24 }} >
+                    <Col offset="10" className ='botton-col'>
+                      <Button
+                        type="primary" onClick={this.handleSubmit.bind(this)}>
+                        下一步
+                      </Button>
+                    </Col>
+                  </Row>
                 </Form>
               </Col>
             </Row>

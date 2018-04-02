@@ -2,7 +2,7 @@ import LoanApplication from './';
 import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
-  path: "/loanapplication/fixed/:id",
+  path: "/loanapplication/fixed(/:id)",
   childRoutes: [{
     path: '/loanapplication/config/:id',
     component: LoanApplication.LoanApplicationConfig
