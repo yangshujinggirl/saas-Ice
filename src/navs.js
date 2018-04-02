@@ -84,7 +84,8 @@ const customHeaderNavs = [];
 const customAsideNavs = [];
 
 import { Storage } from './base/utils';
-import myCustomNavs from './_navs';
+// import myCustomNavs from './_navs';
+let myCustomNavs = [];
 
 let leafs = Storage.get('MENUS') || [];
 

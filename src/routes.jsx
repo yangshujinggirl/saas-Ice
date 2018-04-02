@@ -9,7 +9,7 @@ import {
 } from 'react-router';
 import { Provider } from 'react-redux'
 import store from './store'
-import myCustomRoutes from './_routes'
+import myCustomRoutes from './_routes1'
 
 // 路由配置规则参考： https://github.com/ReactTraining/react-router/blob/v3/docs/guides/RouteConfiguration.md#configuration-with-plain-routes
 // 一下部分是由 ICE 相关工具自动生成的路由，请勿随意改变，否则可能会出现一些异常情况
