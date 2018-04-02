@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import {hashHistory} from 'react-router';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select, Field, NumberPicker, Dialog } from '@icedesign/base';
+import {
+  Input,
+  Grid,
+  Form,
+  Button,
+  Select,
+  Field,
+  NumberPicker,
+  Dialog,
+  Balloon
+ } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -17,8 +27,19 @@ const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 12 },
+  labelCol: { span: 8 },
 };
+const labels =(name)=> (
+  <span>
+    <Balloon
+      type="primary"
+      trigger={<span>{name}</span>}
+      closable={false}
+      triggerType="hover">
+      {name}
+    </Balloon>
+  </span>
+);
 
 class BasicInformation extends Component {
   constructor(props) {
@@ -31,13 +52,34 @@ class BasicInformation extends Component {
     };
     this.field = new Field(this)
   }
-
+  componentWillMount() {
+    this.getProductNum()
+  }
   checkNum(rule, value, callback) {
     if(value && value.length>6) {
       callback("请输入合适的金额")
     }else {
       callback();
     }
+  }
+  getProductNum() {
+    Req.getProductNumApi()
+    .then((res) => {
+      console.log(res)
+      const { data } = res;
+      const { list } = data;
+      let dataSource = list.map((el) => {
+        return {
+          label:el.productCode,
+          value:el.productCode,
+        }
+      });
+      this.setState({
+        dataSource
+      })
+    },(error) => {
+
+    })
   }
   //提交表单
   handleSubmit(e) {
@@ -50,15 +92,7 @@ class BasicInformation extends Component {
       this.addLoanApi(parmas)
     });
   }
-  //请求options接口
-  getOptions(id) {
-    this.setState({
-      dataSource: [
-        {label:'UT00000001', value:'UT00000001'},
-        {label:'option2', value:'option2'}
-      ]
-    })
-  }
+
   //增加进件
   addLoanApi(parmas) {
     const { productId } = this.state;
@@ -81,11 +115,16 @@ class BasicInformation extends Component {
     })
   }
   //秒拒提示
-  warnTips() {
+  warnTips(name) {
     const { borrowerName, borrowerIdNo, borrowerMobile } = this.field.getValues();
-    if(borrowerName && borrowerIdNo && borrowerMobile) {
-      this.secondsfrom()
+    if(name== 'borrowerName' || name== 'borrowerIdNo' || name== 'borrowerMobile') {
+      if(borrowerName && borrowerIdNo && borrowerMobile) {
+        this.secondsfrom()
+      }
+    } else {
+      return
     }
+
   }
   secondsfrom() {
     Dialog.confirm({
@@ -107,14 +146,7 @@ class BasicInformation extends Component {
                     style={styles.select}
                     dataSource={this.state.dataSource}
                     {...init(ele.name,
-                      {
-                        rules:[{ required: true, message: `${ele.label}不能为空` }],
-                        props:{
-                          onOpen:()=> {
-                            this.getOptions(ele.id)
-                          }
-                        }
-                      }
+                      { rules:[{ required: true, message: `${ele.label}不能为空` }]}
                     )}>
                     {
                       ele.options && ele.options.map((opt,ide) => (
@@ -131,7 +163,7 @@ class BasicInformation extends Component {
                   {...init(ele.name,
                     {
                       rules:[{ required: true, message:`${ele.label}不能为空` }],
-                      props:{ onBlur:()=> this.warnTips() }
+                      props:{ onBlur:()=> this.warnTips(ele.name) }
                     }
                   )}
                 />
@@ -176,7 +208,7 @@ class BasicInformation extends Component {
                 {
                   pageData.length>0 && pageData[0].fields.map((ele,index) => (
                     <Col span={6} key={index}>
-                      <FormItem {...formItemLayout} label={ele.label}>
+                      <FormItem {...formItemLayout} label={labels(ele.label)}>
                         {
                           InputMod(ele)
                         }

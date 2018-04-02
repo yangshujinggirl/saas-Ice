@@ -48,6 +48,15 @@ class LoanApplicationReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//获取产品编号
+	getProductNumApi(id) {
+		let options = {
+			url: this._host + `/product/`,
+			method: 'Get',
+			contentType: 'application/json'
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new LoanApplicationReq();
