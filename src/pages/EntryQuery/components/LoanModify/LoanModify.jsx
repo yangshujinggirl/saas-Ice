@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import  classNames from  'classnames'
-import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker } from '@icedesign/base';
+import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
 } from '@icedesign/form-binder';
@@ -9,10 +9,12 @@ import DataBinder from '@icedesign/data-binder/lib/index';
 import {browserHistory, hashHistory} from 'react-router';
 import  './LoanModify.scss'
 import FormRender from  './FormRender'
+import MaterialSubmit from  './MaterialSubmit'
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const { DragUpload } = Upload;
 
 const formItemLayout = {
   labelCol: { span: 11 },
@@ -34,7 +36,8 @@ export default class LoanModify extends Component {
     super(props);
     this.field = new Field(this);
     this.state = {
-      index : 0
+      index : 0,
+      tableList:{id:'limitSize',title:'限制大小'}
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -49,11 +52,12 @@ export default class LoanModify extends Component {
     actions.getDetail(this.props.params.id);
   };
   //标题点击
-  titleClick = (index)=>{
+  titleClick = (index,name)=>{
     // e.preventDefault();
     this.setState({
       index:index
     })
+    this.scrollToAnchor(name)
   }
   //渲染标题
   renderTitle = (data) =>{
@@ -64,7 +68,7 @@ export default class LoanModify extends Component {
           'active': this.state.index == index,
         });
         list.push(
-          <a href={'#'+item.name} key={index} className={btnClass}  onClick={this.titleClick.bind(this,index)}>{item.name}</a>
+          <a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a>
         )
       })
     }
@@ -78,7 +82,7 @@ export default class LoanModify extends Component {
       data.map((item,index)=>{
         formList.push(
           <div className='info' key={index} id={item.name}>
-            <h4>{item.name}</h4>
+            <h4 >{item.name}</h4>
             <div className='info-row'>
             {
               item.fields.map((el,i)=>{
@@ -121,7 +125,8 @@ export default class LoanModify extends Component {
           <Input
             defaultValue={el.value}
             {...init(el.name,{
-              rules: [{ required:  el.isRequired, message: "请填写"+el.label }]
+              rules: [{ required:  el.isRequired, message: "请填写"+el.label }],
+              props:{ onBlur:()=> this.refuse() }
             })}
             placeholder={"请输入"+el.label}
             disabled={disabled}
@@ -197,7 +202,9 @@ export default class LoanModify extends Component {
       )
     }
     else if(el.type == 'RADIO'){
-      var value = el.value +'' ;
+      var value = el.value+'';
+      // console.log(typeof (value))
+      // console.log(value)
       var Fields  =[];
       if(el.hasAttachedFields){
         Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
@@ -272,6 +279,13 @@ export default class LoanModify extends Component {
       )
     }
   }
+  //跳转
+  scrollToAnchor = (anchorName) => {
+    if (anchorName) {
+      let anchorElement = document.getElementById(anchorName);
+      if(anchorElement) { anchorElement.scrollIntoView(); }
+    }
+  }
   //formater
   formater = (date, dateStr)=>{
     console.log("normDate:", date, dateStr);
@@ -331,6 +345,17 @@ export default class LoanModify extends Component {
     const  coBorrowerName = this.field.getValue('coBorrower.name');
     const  coBorrowerIdNo = this.field.getValue('coBorrower.idNo');
     const  coBorrowerMobile = this.field.getValue('coBorrower.mobile');
+
+    const  guarantorName = this.field.getValue('guarantor.name');
+    const  guarantorIdNo = this.field.getValue('guarantor.idNo');
+    const  guarantorMobile = this.field.getValue('guarantor.mobile');
+
+    if(coBorrowerName && coBorrowerIdNo && coBorrowerMobile){
+      alert('123')
+    }
+    if(guarantorName && guarantorIdNo && guarantorMobile){
+
+    }
   }
   render() {
     // const details = this.props.bindingData.details;
@@ -345,7 +370,7 @@ export default class LoanModify extends Component {
           onChange={this.formChange}
           style
         >
-          <IceContainer title="车贷申请" className='subtitle'>
+          <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
             <Row  className='modify-page'>
               <Col span="3">
                 <div className='title'>
@@ -361,13 +386,9 @@ export default class LoanModify extends Component {
                   field={this.field}
                 >
                   {this.renderForm(details.list)}
-                  <div className='info'>
+                  <div className='info' id='material'>
                     <h4>材料提交</h4>
-
-
-
-
-
+                    <MaterialSubmit data={this.state.tableList}></MaterialSubmit>
                     <div className='button-box'>
                       <Button onClick={this.submit}>提交</Button>
                       <Button onClick={this.save}>保存</Button>
@@ -383,4 +404,8 @@ export default class LoanModify extends Component {
     );
   }
 }
-
+const styles = {
+  bg:{
+    backgroundColor:'#fffffB'
+  }
+};
