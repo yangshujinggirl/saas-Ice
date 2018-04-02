@@ -116,6 +116,7 @@ export const saveFrom = (data) => {
     })
   }
 }
+
 export function changeViewToForm() {
   return dispatch({ view: 'form' });
 }
