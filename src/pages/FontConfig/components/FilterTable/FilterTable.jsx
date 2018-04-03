@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import {
   Table,
   Pagination,
@@ -23,6 +23,7 @@ import './FilterTable.scss';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
+
 const formItemLayout = {
   labelCol: { span: 7 },
 };
@@ -32,8 +33,12 @@ class  SearchForm extends Component {
     super(props)
     this.field = new Field(this)
   }
+  addPage() {
+    hashHistory.push('font/add')
+  }
   //提交表单
   handleSubmit(e) {
+    const { searchEvent } = this.props;
     e.preventDefault();
     this.field.validate((errors, values) => {
       let parmas = this.field.getValues();
@@ -41,11 +46,12 @@ class  SearchForm extends Component {
       if (errors) {
         return;
       }
-      // this.addLoanApi(parmas)
+      searchEvent(values)
     });
   }
   render() {
     const { init } = this.field;
+
     return(
         <IceFormBinderWrapper>
           <Form
@@ -59,9 +65,7 @@ class  SearchForm extends Component {
                     name="size"
                     placeholder="请选择"
                     style={styles.filterTool}
-                    {...init('zifang',
-                      { rules:[{ required: true, message: `资方不能为空` }]}
-                    )}
+                    {...init('tenantId')}
                   >
                   </Select>
                 </FormItem>
@@ -72,9 +76,7 @@ class  SearchForm extends Component {
                     name="size"
                     defaultValue='贷款业务'
                     style={styles.filterTool}
-                    {...init('yewu',
-                      { rules:[{ required: true, message: `业务类型不能为空` }]}
-                    )}
+                    {...init('businessType')}
                   >
                   </Select>
                 </FormItem>
@@ -85,9 +87,7 @@ class  SearchForm extends Component {
                     name="size"
                     defaultValue='进件'
                     style={styles.filterTool}
-                    {...init('gongneng',
-                      { rules:[{ required: true, message: `功能模块不能为空` }]}
-                    )}
+                    {...init('functionType')}
                   >
                   </Select>
                 </FormItem>
@@ -98,9 +98,7 @@ class  SearchForm extends Component {
                     name="size"
                     defaultValue='全部'
                     style={styles.filterTool}
-                    {...init('process',
-                      { rules:[{ required: true, message: `流程名称不能为空` }]}
-                    )}
+                    {...init('process')}
                   >
                   </Select>
                 </FormItem>
@@ -109,9 +107,7 @@ class  SearchForm extends Component {
                 <FormItem {...formItemLayout} label='页面名称'>
                   <Input
                     placeholder='请输入'
-                    {...init('input',
-                      { rules:[{ required: true, message: `页面名称不能为空` }]}
-                    )}/>
+                    {...init('name')}/>
                 </FormItem>
               </Col>
               <Col span={4}>
@@ -126,6 +122,7 @@ class  SearchForm extends Component {
                   <Button
                     type="primary"
                     style={{ marginLeft: '10px' }}
+                    onClick={()=>this.addPage()}
                   >
                     新增
                   </Button>
@@ -147,14 +144,19 @@ export default class EnhanceTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      filterFormValue: {},
-      currentPage:1
-    };
   }
 
   componentWillMount() {
     this.props.actions.search();
+  }
+
+  //分页
+  changePage = (currentPage) => {
+    this.props.actions.search({page:currentPage});
+  };
+
+  searchConditon(values) {
+    this.props.actions.search(values);
   }
 
   renderOperations = (value, index, record) => {
@@ -163,51 +165,20 @@ export default class EnhanceTable extends Component {
         className="filter-table-operation"
         style={styles.filterTableOperation}
       >
-        <a href="#" target="_blank" className='operate-btn'>
+        <Link to={`/font/view?id=${record.id}`} target="_blank" className='operate-btn'>
           详情
-        </a>
+        </Link>
       </div>
     );
   };
 
-  //分页
-  changePage = (currentPage) => {
-    this.setState({
-      currentPage
-    })
-    this.props.actions.search({page:currentPage});
-  };
 
-  filterFormChange = (value) => {
-    this.setState({
-      filterFormValue: value,
-    });
-  };
-
-  filterTable = () => {
-    // 合并参数，请求数据
-    this.queryCache = {
-      ...this.queryCache,
-      ...this.state.filterFormValue,
-    };
-    this.fetchData();
-  };
-
-  resetFilter = () => {
-    this.setState({
-      filterFormValue: {},
-    });
-  };
-  toggleAddFont = () => {
-    this.props.router.push('/font/add')
-  };
   render() {
-    const { list, total, limit, page } = this.props.pageData;
-    const { filterFormValue } = this.state;
+    const { list=[], total, limit, page } = this.props.pageData;
     return (
       <div className="filter-table">
         <IceContainer title="字段配置" className='subtitle' style={styles.marb0}>
-          <SearchForm />
+          <SearchForm searchEvent={(values)=>this.searchConditon(values)}/>
           <Table
             dataSource={list}
             className="basic-table"
@@ -242,14 +213,18 @@ export default class EnhanceTable extends Component {
               lock='right'
             />
           </Table>
-          <div style={styles.paginationWrapper}>
-            <Pagination
-              current={this.state.currentPage}
-              pageSize={limit}
-              total={total}
-              onChange={this.changePage}
-            />
-          </div>
+          {
+            list.length>0 && <div style={styles.paginationWrapper}>
+                                <Pagination
+                                  shape="arrow-only"
+                                  current={page}
+                                  pageSize={limit}
+                                  total={total}
+                                  onChange={this.changePage}
+                                />
+                              </div>
+          }
+
         </IceContainer>
       </div>
     );
@@ -261,7 +236,7 @@ const styles = {
     lineHeight: '28px',
   },
   paginationWrapper: {
-    textAlign: 'right',
+    textAlign: 'left',
     paddingTop: '26px',
   },
   marb0: {

@@ -52,26 +52,21 @@ const SwitchForForm = (props) => {
 
 export default class ProdSeachList extends Component {
   static displayName = 'ProdSearch';
-
-  static defaultProps = {};
-
   constructor(props) {
     super(props);
     this.state = {
-      filterFormValue: {},
       value:{
-        productCode	:'',	 
-        name	:'', 
+        productCode	:'',
+        name	:'',
         productType	:'',
         status	:'',
         contractDisplayName:''
       },
-      dataSource:'',
     };
-     // 请求参数缓存
-    
   }
- 
+  componentWillMount(){
+    this.props.actions.search();
+  }
   //查看
   searchItem = (record) => {
     hashHistory.push(`product/proddetail/${record.id}`)//+ record.id);
@@ -79,8 +74,6 @@ export default class ProdSeachList extends Component {
 
   //编辑
   editItem = (record) => {
-    // let {actions} = this.props;
-    // this.props.actions.edit(this.props.params.id)
     hashHistory.push(`product/searchedit/${record.id}`)
   }
   renderOperator = (value, index, record) => {
@@ -100,52 +93,28 @@ export default class ProdSeachList extends Component {
       </div>
     );
   };
-  
 
-  componentWillMount(){ 
-    
+  //
+  onFormChange(value) {
+    console.log(value)
   }
-  componentDidMount() {
-    console.log(this.props)
-    this.fech();
-  }
-  fech = () =>{
-    this.props.actions.search();
-  }
+
   //查询
   submit = () =>{
-    let {actions,pageData} = this.props;
     this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
       if (error) {
-        // 处理表单报错
         return;
       }
-      // 提交当前填写的数据
       this.props.actions.search(value);//返回符合条件的数据
-      // this.setState({
-      //   this.state.dataSource
-      // })
     });
   };
   //页数变化
   changePage = (currentPage) => {
-    console.log(currentPage);
+    this.props.actions.search({page:currentPage});//返回符合条件的数据
   };
 
-
   render() {
-    this.state.dataSource = this.props.pageData.data || {};
-    this.state.dataSource = this.state.dataSource.list ||[] //data.data
-    console.log( this.state.dataSource.times)
-    this.state.dataSource &&  this.state.dataSource.map((item) => {
-      let temp = [];
-      item.times && item.times.map((ditem, j) => {
-        temp.push(ditem);
-      })
-      item.times = temp.join('~')
-      })
-    let map = new Map()
+    const { list=[], total, limit, page} =this.props.pageData;
     return (
 
       <div className="create-activity-form" style={styles.container}>
@@ -180,7 +149,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="name	"
+                      name="name"
                     >
                       <Input style={{ width: '175px' }} placeholder="产品名称" />
                     </IceFormBinder>
@@ -207,7 +176,7 @@ export default class ProdSeachList extends Component {
                         </Select>
                       </IceFormBinder>
                     <IceFormError name="productType" />
-                    
+
                   </Col>
                 </Row>
                 <Row wrap style={styles.formItem}>
@@ -216,7 +185,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                        name="status	"
+                        name="status"
                       >
                         <Select
                           placeholder="请选择"
@@ -227,7 +196,7 @@ export default class ProdSeachList extends Component {
                         </Select>
                       </IceFormBinder>
                       <IceFormError name="status" />
-                   
+
                   </Col>
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
@@ -253,7 +222,7 @@ export default class ProdSeachList extends Component {
             </div>
           </IceFormBinderWrapper>
           <Table
-              dataSource={this.state.dataSource}
+              dataSource={list}
               isLoading={this.state.isLoading}
               isZebra={true}
             >
@@ -276,16 +245,19 @@ export default class ProdSeachList extends Component {
                 width={140}
               />
             </Table>
-            <div style={styles.pagination}>
-              <Pagination 
-                shape="arrow-only" 
-                current={this.state.dataSource.page}
-                pageSize={this.state.dataSource.limt}
-                total={this.state.dataSource.total}
-                onChange={this.changePage}
-              />
-            </div>
-        </IceContainer>    
+            {
+              list.length>0 && <div style={styles.pagination}>
+                                <Pagination
+                                  shape="arrow-only"
+                                  current={page}
+                                  pageSize={limit}
+                                  total={total}
+                                  onChange={this.changePage}
+                                />
+                              </div>
+            }
+
+        </IceContainer>
       </div>
     );
   }
