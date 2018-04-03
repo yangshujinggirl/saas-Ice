@@ -26,35 +26,31 @@ export default class Filter extends Component {
                 <Select
                   name="size"
                   placeholder="请选择"
+                  defaultValue='贷款业务'
                   style={styles.filterTool}
                 >
-                  <Option value="small">Small</Option>
-                  <Option value="medium">Medium</Option>
-                  <Option value="large">Large</Option>
                 </Select>
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
               <label style={styles.filterTitle}>功能模块</label>
               <IceFormBinder>
-                <Select name="status" style={styles.filterTool}  placeholder="请选择">
-                  <Option value="success">成功</Option>
-                  <Option value="failed">失败</Option>
+                <Select name="status"
+                  style={styles.filterTool}
+                  defaultValue='进件'
+                  >
                 </Select>
               </IceFormBinder>
             </Col>
-            
+
             <Col xxs={24} xs={12} l={5} style={styles.filterCol}>
               <label style={styles.filterTitle}>流程名称</label>
               <IceFormBinder>
                 <Select
                   name="isStick"
-                  placeholder="请选择"
                   style={styles.filterTool}
+                  defaultValue='全部'
                 >
-                  <Option value="all">不限</Option>
-                  <Option value="stick">置顶</Option>
-                  <Option value="not-stick">不置顶</Option>
                 </Select>
               </IceFormBinder>
             </Col>
@@ -79,7 +75,7 @@ export default class Filter extends Component {
               </div>
             </Col>
           </Row>
-         
+
         </div>
       </IceFormBinderWrapper>
     );

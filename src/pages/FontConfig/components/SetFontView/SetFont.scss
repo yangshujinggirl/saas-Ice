@@ -31,9 +31,20 @@
             border-right:1px solid #F6DCA9;
             padding: 15px 0 15px 20px;
             height: 100%;
+            a {
+                color: #666;
+                cursor: pointer;
+                
+            }
+            a:focus {
+                text-decoration: none;
+            }
             li.active {
                 position: relative;
-                color: #FC9E25;
+                
+                >a {
+                    color: #FC9E25;  
+                }
                 &::after {
                     content: '*';
                     display: block;
@@ -53,6 +64,7 @@
                 .baseDetail {
                     border-bottom: 2px solid #d8d8d8;
                     padding-bottom: 6px;
+                    margin-top: 15px !important;
                     .moduleStr {
                         border: 0;
                         input {
@@ -65,7 +77,7 @@
                         }
                         
                     }
-                    >span:first-child {
+                    span:first-child {
                         
                         &.active {
                             color: #FC9E25;
@@ -76,7 +88,7 @@
                             font-weight: bold;
                         }
                     }
-                    >span.addStr {
+                    span.addStr {
                         background: #FC9E25;
                         border-radius: 4px;
                         height:30px;
@@ -106,12 +118,21 @@
                     }
                 }
                 .ui-sortable {
+                    &::after {
+                        display: block;
+                        clear: both;
+                        content: ''
+                    }
                     margin: 15px 25px 0 25px;
                     .dynamic-item {
                         padding: 10px;
                         // position: relative;
                         font-size: 14px;
+                        padding-right: 30px !important;
+                        height: 50px;
+                        float: left;
                         &.active {
+                            padding-right: 10px !important;
                             box-shadow: 0 0 4px 0 #C1C1C1;
                             border-radius: 4px;
                             .delete {
@@ -122,14 +143,28 @@
                             }
 
                         }
-                        
+                        &::after {
+                            content: '';
+                            display: block;
+                            clear: both;
+                        }
+                        .next-select {
+                            margin-top: 0;
+                        }
                         label {
                             float: left;
                             margin-left: 2px;
                             margin-right: 5px;
                             margin-top: 7px;
-                            width: 84px;
+                            width: 175px !important;
                             text-align: right;
+                            position: relative;
+                            &:nth-child(2) {
+                                width: auto !important;
+                                .next-radio {
+                                    border: none;
+                                }
+                            }
                             &::after {
                                 content:'';
                                 display: block;
@@ -140,18 +175,31 @@
                             }
                             >span {
                                 float: left;
+                                
                             }
-                            .required {
-                                background: #FCFCFC;
-                                border: 1px solid #E1E1D8;
-                                border-radius: 2px;
-                                color: #FD5848;
-                                height: 15px;
-                                width: 15px;
+                            >span:last-child {
+                                color: #666;
                                 text-align: center;
                                 cursor: pointer;
-                                display: inline-block;
-                                margin-right: 3px;
+                                margin-right: 3px; 
+                                background: #FCFCFC;
+                                border: 1px solid #E1E1D8 ;
+                                border-radius: 2px;
+                                height: 15px;
+                                width: 15px;
+                                float: right;
+                                margin-top: 1px;           
+                            }
+                            .required {
+                                color: #FD5848 !important;
+                               
+                            }
+                            .ellips {
+                                width: auto;
+                                float: right;
+                            }
+                            .none {
+                                display: none;
                             }
                         }
                         .edite {
@@ -244,6 +292,12 @@
     }
     >* {
         float: left;
+    }
+    >.dropDown {
+        float: none;
+    }
+    >.changSet {
+        width: 100%;
     }
     .marv5 {
         margin: 0 10px;

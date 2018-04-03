@@ -9,7 +9,6 @@ import DropCell from './DropCell';
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
 
-
 const cardTarget = {
   drop() {},
 }
@@ -66,13 +65,31 @@ class MaterialSubmit extends Component {
         imgURL:
           "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/c5e98176055a3510a3714b6d8c7423c3.jpg"
       }
-    ]
+    ],
+      upLoadList:[]
     };
   }
   componentDidMount(){
     if(this.props.data){
       this.state.tableList.push(this.props.data)
     }
+    this.getLoanUpload(this.props.params.id);
+    console.log(this.props)
+  }
+  //获取上传资料列表
+  getLoanUpload(id) {
+    // Req.getLoanUploadApi(id)
+    //   .then((res) => {
+    //     const { data } = res;
+    //     const { list } = data;
+    //     let upLoadList;
+    //     list.map((el)=> upLoadList = el.collectionDetails)
+    //     this.setState({
+    //       upLoadList
+    //     })
+    //   },(error) => {
+    //     console.log(error)
+    //   })
   }
   handleFileChange(info){
     console.log(info)

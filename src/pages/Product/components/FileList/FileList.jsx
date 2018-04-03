@@ -109,6 +109,10 @@ export default class FileList extends Component {
     actions.filesearch()
     // location.reload()
   }
+
+  addNewItem=()=>{
+    hashHistory.push(`/product/filelistnew`)
+  }
   render() {
         let dataSource=this.state.dataSource
         dataSource = this.props.fileData || {}//data
@@ -118,7 +122,7 @@ export default class FileList extends Component {
         dataSource && dataSource.map((item) => {
           let temp = [];
           item.collectionDetails && item.collectionDetails.map((ditem, j) => {
-            temp.push(ditem.fileName);
+            temp.push(ditem.name);
           })
           item.fileNamestr = temp.join(',')
         })

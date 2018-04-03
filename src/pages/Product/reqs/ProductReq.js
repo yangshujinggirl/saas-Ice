@@ -7,13 +7,11 @@ class ProductReq extends CurdReq {
     //基本的curd接口
     //若有特殊定义的接口直接覆盖
     this.curd = {
-      create: this._host + '/product/',
+      create: this._host + '/product',
       update: this._host + '/product/:id',
       retrieve: this._host + '/product/',
       delete: this._host + '/product/:id', //删除
       detail: this._host + '/product/:id', //详情
-      // edit: this._host + '/product/:id/history'
-      filedelete: this._host + '/product/collect/:id',
       filedeletedes: this._host + '/product/collect/detail/:id',
       fileupdate: this._host + '/product/collect/:id'
     }
@@ -35,8 +33,7 @@ class ProductReq extends CurdReq {
   //产品初始数据
   prodActions(condition) {
     let options = {
-      // url: this._host + '/product/data
-      url: 'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
+      url: this._host + '/product/data',
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       params: condition
@@ -49,7 +46,6 @@ class ProductReq extends CurdReq {
     if (data && data.id) {
       url = this.formatUrl(this.curd.update, data.id);
     }
-
     let options = {
       url: url,
       method: 'POST',
@@ -58,55 +54,70 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-//产品编辑
-prodedit(id) {
-	let options = {
-		url: this._host + `/product/${id}/history`,
-		method: 'get',
-		contentType: 'application/x-www-form-urlencoded',
-	}
-	return super.fetchData(options);
-}
-//产品修改
-prodrevise(data) {
-	var url = this.formatUrl(this._host + `/product/${data.id}`);
-	let options = {
-		url: url,
-		method: 'put',
-		data: data,
-		contentType: 'application/json'
-	}
-	return super.fetchData(options);
-}
 
-//材料清单查询
-filesearch(value) {
-	let options = {
-		url: this._host + '/product/collect',
-		method: 'get',
-		contentType: 'application/x-www-form-urlencoded',
-		params: value
-	}
-	return super.fetchData(options);
-}
+  //产品提交保存
+  productsave(data,id) {
+    var url =this._host + `/product/${id}/scope`;
+    let options = {
+      url: url,
+      method: 'POST',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
+  //产品修改
+  prodedit(id) {
+    let options = {
+      url: this._host + `/product/${id}/history`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
+
+  //产品修改后保存
+  prodrevise(data) {
+    var url = this.formatUrl(this._host + `/product/${data.id}`);
+    let options = {
+      url: url,
+      method: 'put',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
+  //材料清单查询
+  filesearch(value) {
+    let options = {
+      url: this._host + '/product/collect',
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      params: value
+    }
+    return super.fetchData(options);
+  }
 
 
-//资料清单明细
-fileDetail(id) {
-	let options = {
-		url: this._host + `/product/collect/${id}`,
-		method: 'get',
-		contentType: 'application/x-www-form-urlencoded',
-	}
-	return super.fetchData(options);
-}
+  //资料清单明细
+  fileDetail(id) {
+    let options = {
+      url: this._host + `/product/collect/${id}`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
 
 
 //删除资料清单一条数据
 fileremove(id, callback, callbackError) {
 	let options = {
-		url: this.formatUrl(this.curd.filedelete, id),
-		method: 'delete',
+    // url: this.formatUrl(this.curd.filedelete, id),
+    url:this._host + `/product/collect/${id}`,
+		method: 'DELETE',
 		contentType: this.contentType || 'application/json'
 	}
 	return super.fetchData(options);
@@ -115,8 +126,9 @@ fileremove(id, callback, callbackError) {
 //删除资料清单明细
 fileRemoveDes(id, callback, callbackError) {
 	let options = {
-		url: this.formatUrl(this.curd.filedeletedes, id),
-		method: 'delete',
+    // url: this.formatUrl(this.curd.filedeletedes, id),
+    url:this._host + `/product/collect/detail/${id}`,
+		method: 'DELETE',
 		contentType: this.contentType || 'application/json'
 	}
 	return super.fetchData(options);
@@ -124,20 +136,64 @@ fileRemoveDes(id, callback, callbackError) {
 
 
 //材料编辑修改后确定
-fileEditSave(data, id) {
-	var url = this._host + '/product/collect/' + id
-	if (data) {
+  fileEditSave(data, id) {
+    var url = this._host + '/product/collect/' + id
+    if (data) {
 
-		let options = {
-			url: url,
-			method: 'put',
-			data: data,
-			contentType: 'application/json'
-		}
-		return super.fetchData(options);
-	}
+      let options = {
+        url: url,
+        method: 'put',
+        data: data,
+        contentType: 'application/json'
+      }
+      return super.fetchData(options);
+    }
+  }
+//资料保存
+  fileSave(data) {
+    var url = this._host + '/product/collect'
+    if (data) {
+      let options = {
+        url: url,
+        method: 'post',
+        data: data,
+        contentType: 'application/json'
+      }
+      return super.fetchData(options);
+    }
+  }
+
+  //addTwoList
+  addTwoList(type,formData) {
+    let condition = {
+      brandName:'',
+      seriesId:'',
+      seriesName:''
+    }
+    switch(type){
+      case 'carBrand':{
+        condition.brandName = formData.carbrand;
+      } break;
+      case 'Car':{
+        condition.seriesId = formData.carbrand;
+      }break;
+      case 'carType':{
+        condition.seriesName = formData.carbrand;
+      } break;
+    }
+    console.log(type, formData, condition)
+    let options = {
+      // url: this._host + '/product/data
+      url: this._host + `/cars`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      params: condition
+    }
+    return super.fetchData(options);
+  }
 }
-}
+
+
 // put :data delete :data params
 
 

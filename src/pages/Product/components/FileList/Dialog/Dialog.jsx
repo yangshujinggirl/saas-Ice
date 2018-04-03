@@ -53,11 +53,26 @@ export default class DiaLog extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.fileDetail(this.props.params.id);
+    let id = this.props.params.id;
+    if(id){
+      this.props.actions.fileDetail(this.props.params.id);
+    }else{
+      this.props.actions.changeFileDetail({
+        fileType: '',
+        fileName: '',
+        collectionDetails: [{
+          dataName: '',
+          fileSize: undefined,
+          fileType: ''
+        }]
+      })
+    }
+    //
   }
 
   addNewRow() {
     let tempData = this.props.editData;
+    console.log(tempData)
     tempData.collectionDetails.push({
       dataName: '',
       fileSize: undefined,
@@ -81,21 +96,21 @@ export default class DiaLog extends Component {
   }
 
   onOk(id) {//确定按钮
-    let {actions} = this.props;
+    let { actions } = this.props;
     this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
       if (error) {
-        // 处理表单报错
         return;
       }
-
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
-        // delete item.fileTypeArr;
       });
-
       // 提交当前填写的数据
-      actions.fileEditSave(value,id);
+      let id = this.props.params.id;
+      if(id){
+        actions.fileEditSave(value,id);
+      }else{
+        actions.fileSave(value)
+      }
     });
 
   }
@@ -214,7 +229,38 @@ export default class DiaLog extends Component {
 
       return arr;
   }
-  
+  testName=(id,data)=>{
+    if(id){
+      return(<label>{data.name}</label>)
+    }else{
+      return(
+        <span>
+          <IceFormBinder
+            name="name"
+          >
+            <Input />
+          </IceFormBinder>
+          <IceFormError name="name"/>
+        </span>
+      )
+    }
+  }
+  testType=(id,data)=>{
+    if(id){
+      return(<label>{data.dataType}</label>)
+    }else{
+      return(
+        <span>
+          <IceFormBinder
+            name="dataType"
+          >
+            <Input />
+          </IceFormBinder>
+          <IceFormError name="dataType"/>
+        </span>
+      )
+    }
+  }
   render() {
     let data = this.props.editData || {}
 
@@ -222,9 +268,7 @@ export default class DiaLog extends Component {
       let fileTypeValueArr = item.fileType.split(',');
       item.fileTypeArr = this.setFileTypeChecked(fileTypeValueArr);
     })
-
     console.log('render', data)
-
     return (
       <IceContainer>
         <IceFormBinderWrapper
@@ -237,11 +281,12 @@ export default class DiaLog extends Component {
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>清单类型：</label>
-                <label>{data.dataType}</label>
+                {this.testType(this.props.params.id,data)}
               </Col>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>清单名称：</label>
-                <label>{data.name}</label>
+                {this.testName(this.props.params.id,data)}
+
               </Col>
             </Row>
             <FileListDetail
@@ -267,49 +312,12 @@ const styles = {
     alignItems: 'center',
     marginBottom: '20px',
   },
-  legend: {
-    marginLeft: 0,
-    paddingLeft: '15px',
-    paddingTop: '12px',
-    paddingBottom: '12px',
-    backgroundColor: '#fff',
-    fontSize: '18px',
-    fontWeight: '500',
-    lineHeight: '25px',
-  },
-  legLine: {
-    display: 'inline-block',
-    zoom: 1,
-    verticalAlign: 'top',
-    marginRight: '12px',
-    width: '4px',
-    height: '25px',
-    backgroundColor: '#ec9d00',
-  },
 
   filterTitle: {
     width: '140px',
     textAlign: 'right',
     marginRight: '12px',
     fontSize: '14px',
-  },
-
-  filterTool: {
-    width: '200px',
-  },
-  btn: {
-    overFlow: 'hidden',
-  },
-  addNew: {
-    marginTop: '10px',
-    textAlign: 'right',
-  },
-  addNewItem: {
-    hiegth: '30px',
-    borderRadius: 0,
-    border: 'none',
-    background: '#ec9d00',
-    color: '#fff',
   },
   newCol: {
     hiegth: '30px',
@@ -327,9 +335,5 @@ const styles = {
     background: '#ec9d00',
     color: '#fff',
     float: 'right'
-  },
-  pagination: {
-    textAlign: 'right',
-    paddingTop: '26px',
   },
 };

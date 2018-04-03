@@ -31,9 +31,6 @@ const { Row, Col } = Grid;
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
-//组件引入
-// import SearchEditer from './searchEditer/searchEditer';
-
 
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
@@ -52,26 +49,21 @@ const SwitchForForm = (props) => {
 
 export default class ProdSeachList extends Component {
   static displayName = 'ProdSearch';
-
-  static defaultProps = {};
-
   constructor(props) {
     super(props);
     this.state = {
-      filterFormValue: {},
       value:{
-        productCode	:'',	 
-        name	:'', 
+        productCode	:'',
+        name:'',
         productType	:'',
-        status	:'',
+        status:'',
         contractDisplayName:''
       },
-      dataSource:'',
     };
-     // 请求参数缓存
-    
   }
- 
+  componentWillMount() {
+    this.props.actions.search();
+  }
   //查看
   searchItem = (record) => {
     hashHistory.push(`product/proddetail/${record.id}`)//+ record.id);
@@ -79,9 +71,36 @@ export default class ProdSeachList extends Component {
 
   //编辑
   editItem = (record) => {
-    // let {actions} = this.props;
-    // this.props.actions.edit(this.props.params.id)
     hashHistory.push(`product/searchedit/${record.id}`)
+  }
+  //状态
+  status(value, index, record){
+
+    return`${record.status=='0'?'生效':(record.status=='1'?'未生效':'失效')}`
+  }
+  //金额范围
+  moneyRange(value, index, record) {
+    return `${record.principalAmountMin}~${record.principalAmountMax}`
+  }
+  //生效期限
+  timeRange(value, index, record) {
+    return `${record.effectiveDate}~${record.expirationDate}`
+  }
+  //期限范围
+  monthRange(value, index, record) {
+    return `${record.loanTermRangeMin}~${record.loanTermRangeMax}`
+  }
+  //期限范围
+  loanNpiRange(value, index, record) {
+    return `${record.loanPercentageMin}~${record.loanPercentageMax}`
+  }
+  //期限范围
+  interestRateRange(value, index, record) {
+    return `${record.interestRatesRangeMin}~${record.interestRatesRangeMax}`
+  }
+  //是否尾品
+  isRetainage(value, index, record) {
+    return record.isRetainage? '是':'否'
   }
   renderOperator = (value, index, record) => {
     return (
@@ -100,56 +119,28 @@ export default class ProdSeachList extends Component {
       </div>
     );
   };
-  
-
-  componentWillMount(){ 
-    
-  }
-  componentDidMount() {
-    console.log(this.props)
-    this.fech();
-  }
-  fech = () =>{
-    this.props.actions.search();
-  }
   //查询
   submit = () =>{
     let {actions,pageData} = this.props;
     this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
       if (error) {
         // 处理表单报错
         return;
       }
       // 提交当前填写的数据
       this.props.actions.search(value);//返回符合条件的数据
-      // this.setState({
-      //   this.state.dataSource
-      // })
+
     });
   };
-  //页数变化
+  //分页
   changePage = (currentPage) => {
-    console.log(currentPage);
+    this.props.actions.search({page:currentPage});
   };
 
-
   render() {
-    this.state.dataSource = this.props.pageData.data || {};
-    this.state.dataSource = this.state.dataSource.list ||[] //data.data
-    console.log( this.state.dataSource.times)
-    this.state.dataSource &&  this.state.dataSource.map((item) => {
-      let temp = [];
-      item.times && item.times.map((ditem, j) => {
-        temp.push(ditem);
-      })
-      item.times = temp.join('~')
-      })
-    let map = new Map()
+    const { list=[], total, limit, page} =this.props.pageData;
     return (
-
       <div className="create-activity-form" style={styles.container}>
-        {/* <SearchEditer /> */}
         <IceContainer title="" >
           <IceFormBinderWrapper
             ref={(formRef) => {
@@ -180,7 +171,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="name	"
+                      name="name"
                     >
                       <Input style={{ width: '175px' }} placeholder="产品名称" />
                     </IceFormBinder>
@@ -207,7 +198,7 @@ export default class ProdSeachList extends Component {
                         </Select>
                       </IceFormBinder>
                     <IceFormError name="productType" />
-                    
+
                   </Col>
                 </Row>
                 <Row wrap style={styles.formItem}>
@@ -216,18 +207,20 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                        name="status	"
+                        name="status"
                       >
                         <Select
                           placeholder="请选择"
                           style={{ width: '175px' }}
                         >
-                          <Option value="yes">生效</Option>
-                          <Option value="no">未生效</Option>
+                          <Option value="1">生效</Option>
+                          <Option value="0">未生效</Option>
+                          <Option value="2">失效</Option>
+                          
                         </Select>
                       </IceFormBinder>
                       <IceFormError name="status" />
-                   
+
                   </Col>
 
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
@@ -253,22 +246,22 @@ export default class ProdSeachList extends Component {
             </div>
           </IceFormBinderWrapper>
           <Table
-              dataSource={this.state.dataSource}
+              dataSource={list}
               isLoading={this.state.isLoading}
               isZebra={true}
             >
               <Table.Column title="产品编号" dataIndex="productCode" width={160} />
               <Table.Column title="产品名称" dataIndex="name" width={200} />
               <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
-              <Table.Column title="状态" dataIndex="status" width={100} />
+              <Table.Column title="状态" cell={this.status} width={100} />
               <Table.Column title="产品类型" dataIndex="productType" width={160} />
-              <Table.Column title="生效期限" dataIndex="times" width={250} />
-              <Table.Column title="尾款产品" dataIndex="areaId" width={120} />
+              <Table.Column title="生效期限" cell={this.timeRange} width={250} />
+              <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
               <Table.Column title="资金方" dataIndex="createdUser" width={120} />
-              <Table.Column title="金额范围(元)" dataIndex="provinceId" width={120} />
-              <Table.Column title="期限范围(月)" dataIndex="" width={120} />
-              <Table.Column title="贷款比率(%)" dataIndex="" width={120} />
-              <Table.Column title="执行年利率范围(%)" dataIndex="" width={160} />
+              <Table.Column title="金额范围(元)" width={200} cell={this.moneyRange} />
+              <Table.Column title="期限范围(月)" cell={this.monthRange} width={120} />
+              <Table.Column title="贷款比率(%)" cell={this.loanNpiRange} width={120} />
+              <Table.Column title="执行年利率范围(%)" cell={this.interestRateRange} width={160} />
               <Table.Column
                 title="操作"
                 cell={this.renderOperator}
@@ -276,16 +269,19 @@ export default class ProdSeachList extends Component {
                 width={140}
               />
             </Table>
-            <div style={styles.pagination}>
-              <Pagination 
-                shape="arrow-only" 
-                current={this.state.dataSource.page}
-                pageSize={this.state.dataSource.limt}
-                total={this.state.dataSource.total}
-                onChange={this.changePage}
-              />
-            </div>
-        </IceContainer>    
+            {
+              list.length>0 && <div style={styles.pagination}>
+                                <Pagination
+                                  shape="arrow-only"
+                                  current={page}
+                                  pageSize={limit}
+                                  total={total}
+                                  onChange={this.changePage}
+                                />
+                              </div>
+            }
+
+        </IceContainer>
       </div>
     );
   }

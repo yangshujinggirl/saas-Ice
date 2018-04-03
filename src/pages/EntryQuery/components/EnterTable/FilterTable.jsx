@@ -69,7 +69,7 @@ export default class EnhanceTable extends Component {
     console.log(record);
     console.log(this.props)
     // this.props.code(record);
-    hashHistory.push('/entryQuery/update/'+record.id);
+    hashHistory.push('/loanapplication/fixed/'+record.id);
   };
   detal = (record, e)=>{
     e.preventDefault();
@@ -157,7 +157,7 @@ export default class EnhanceTable extends Component {
         <IceContainer>
           <Table
             dataSource={tableData.list}
-            isLoading={tableData.__loading}
+            isLoading={this.props.isFetching}
             className="basic-table"
             style={styles.basicTable}
             hasBorder={false}

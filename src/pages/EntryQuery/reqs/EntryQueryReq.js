@@ -28,12 +28,29 @@ class EntryQueryReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-
+	//保存表单
   saveFrom(data){
     let options = {
       url: this._host + '/loans/'+data.id,
       method: 'PUT',
       data:data
+    }
+    return super.fetchData(options);
+  }
+  //获取进件详情
+  getLoanUploadApi(id) {
+    let options = {
+      url: this._host + `/loans/${id}/collect`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //获取select下拉框的options
+  getSelectList(name) {
+    let options = {
+      url: this._host + '/cars?name='+name,
+      method: 'Get',
     }
     return super.fetchData(options);
   }

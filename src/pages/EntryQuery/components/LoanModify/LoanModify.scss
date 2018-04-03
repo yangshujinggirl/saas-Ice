@@ -1,6 +1,3 @@
-.bg{
-
-}
 .modify-page{
   height: 800px;
   width: 100%;
@@ -67,6 +64,9 @@
         -o-text-overflow: ellipsis;
         -webkit-text-overflow: ellipsis;
         white-space: nowrap;
+      }
+      .half{
+        width: 50%;
       }
       .single-line{
         width: 100%;

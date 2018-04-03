@@ -23,7 +23,7 @@ class LoanApplicationReq extends CurdReq{
 	//新增进件
 	addLoanApi(params) {
 		let options = {
-			url: this._host + '/loans/',
+			url: this._host + '/loans',
 			method: 'POST',
 			contentType: 'application/json',
 			data:params
