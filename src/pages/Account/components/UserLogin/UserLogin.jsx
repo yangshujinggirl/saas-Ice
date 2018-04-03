@@ -73,7 +73,7 @@ export default class UserLogin extends Component {
         AccountReq.getUserInfo().then((res) => {
           if(res || res.code == 200){
             Storage.set("USERINFO", res.data);
-            hashHistory.push('/') //跳转首页
+            hashHistory.push('/dashboard') //跳转首页
           }
         })
       });

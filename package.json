@@ -56,7 +56,8 @@
     "start": "ice dev",
     "build": "ice build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
-    "copy": "cp -R ./build/ ../saas-pro"
+    "copy": "cp -R ./build/ ../saas-pro",
+    "up": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.com",

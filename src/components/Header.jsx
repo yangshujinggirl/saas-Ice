@@ -27,7 +27,7 @@ export default class Header extends PureComponent {
     // let data = this.getBreadCrumb(menus, pathname);
     // let result = data ? [data.parentNode, data.node] : [{name: '未知页面'}];
 
-    if(routes && routes.length > 0 && routes[0].path == '/'){
+    if(routes && routes.length > 0 && routes[0].path == '/dashboard'){
       // 特殊处理默认首页的路由名称
         routes[0].name = 'DASHBOARD';
         routes = [routes[0]];
