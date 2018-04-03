@@ -99,16 +99,9 @@ class BasicInformation extends Component {
     Req.addLoanApi(parmas)
     .then((data) => {
       let { code, message } = data;
-      if(code == 200 ) {
+      if(data && code == 200 ) {
         let { id } = data.data;
         hashHistory.push(`/entryQuery/update/${id}`)
-      } else {
-        Dialog.confirm({
-          content: message,
-          locale: {
-            ok: "确认"
-          }
-        });
       }
     },(error)=> {
       console.log(error)
