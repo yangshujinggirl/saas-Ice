@@ -2,13 +2,15 @@ const LOAN_HOST = 'http://172.16.0.218:8080/';
 const CRM_HOST = 'http://172.16.0.211:8080/';
 
 const { resolve } = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
+var __DEV__ = process.env.NODE_ENV !== 'production';
 
 module.exports = {
     // output: {
     //     path: resolve("build/assets"),
-    //     filename: '[name].[hash].js',
+    //     filename: __DEV__ ? "[name].js" : "[name].[hash].js",
     //     publicPath: "/assets/",
     //     chunkFilename: "[id].[hash].js",
     //     pathinfo: true
@@ -42,6 +44,10 @@ module.exports = {
     },
     plugins: [
 
+        new ExtractTextPlugin({
+            filename: __DEV__ ? "[name].css" : "[name].[hash].css",
+            allChunks: true,
+        }),
         // new HtmlWebpackPlugin({
         //     title: '平常金服SAAS ' + package.version,
         //     template: './public/index.ejs',

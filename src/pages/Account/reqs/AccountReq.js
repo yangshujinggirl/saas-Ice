@@ -44,6 +44,19 @@ class AccountReq extends CurdReq{
 	}
 
 	/**
+	 * 退出
+	 * @return {[type]} [description]
+	 */
+	logout(){
+		let options = {
+			url: '/crm/saas/logout',
+			method: 'POST',
+			contentType: 'application/json',
+		}
+		return super.fetchData(options);
+	}
+
+	/**
 	 * 获取用户信息
 	 * @return {[type]} [description]
 	 * {"id":66582,"userName":"18811110001","realName":"","ownerId":66579}

@@ -55,7 +55,8 @@
   "scripts": {
     "start": "ice dev",
     "build": "ice build",
-    "lint": "eslint . --ext '.js,.jsx' --fix"
+    "lint": "eslint . --ext '.js,.jsx' --fix",
+    "copy": "cp -R ./build/ ../saas-pro"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.com",
