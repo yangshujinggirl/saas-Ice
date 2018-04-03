@@ -49,13 +49,53 @@ class FontConfigReq extends CurdReq{
     return super.fetchData(options);
   }
 
-	/**
-   * 获取选中字段
+		/**
+   * 批量修改字段
    */
-  modifyCode(id) {
+  changPageName(data,id) {
     let options = {
 			url: this._host + '/screen-schemes/'+ id,
+			contentType: 'application/json',
 			method: 'put',
+			data: data
+    }
+    return super.fetchData(options);
+  }
+
+	/**
+   * 删除字段
+   */
+ deleteCode(id, fieldId) {
+    let options = {
+			url: this._host + '/screen-schemes/'+ id +'/fields/' + fieldId,
+			method: 'delete',
+			contentType: 'application/json'
+    }
+    return super.fetchData(options);
+	}
+
+
+	/**
+   * 提交自定义字段
+   */
+  submitCustomeCode(data,id) {
+    let options = {
+			url: this._host + '/screen-schemes/'+ id + '/fields',
+			method: 'post',
+			data: data,
+			contentType: 'application/json'
+    }
+    return super.fetchData(options);
+	}
+	
+		/**
+   * 修改字段
+   */
+  submitModifyCode(data,id, fieldId) {
+    let options = {
+			url: this._host + '/screen-schemes/'+ id +'/fields/' + fieldId,
+			method: 'put',
+			data: data,
 			contentType: 'application/json'
     }
     return super.fetchData(options);
