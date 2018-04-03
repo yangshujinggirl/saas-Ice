@@ -76,6 +76,30 @@ export default class ProdSeachList extends Component {
   editItem = (record) => {
     hashHistory.push(`product/searchedit/${record.id}`)
   }
+  //金额范围
+  moneyRange(value, index, record) {
+    return `${record.principalAmountMin}~${record.principalAmountMax}`
+  }
+  //生效期限
+  timeRange(value, index, record) {
+    return `${record.effectiveDate}~${record.expirationDate}`
+  }
+  //期限范围
+  monthRange(value, index, record) {
+    return `${record.loanTermRangeMin}~${record.loanTermRangeMax}`
+  }
+  //期限范围
+  loanNpiRange(value, index, record) {
+    return `${record.loanPercentageMin}~${record.loanPercentageMax}`
+  }
+  //期限范围
+  interestRateRange(value, index, record) {
+    return `${record.interestRatesRangeMin}~${record.interestRatesRangeMax}`
+  }
+  //是否尾品
+  isRetainage(value, index, record) {
+    return record.isRetainage? '是':'否'
+  }
   renderOperator = (value, index, record) => {
     return (
       <div>
@@ -110,7 +134,7 @@ export default class ProdSeachList extends Component {
 
   render() {
     const { list=[], total, limit, page} =this.props.pageData;
-return (
+    return (
 
       <div className="create-activity-form" style={styles.container}>
         {/* <SearchEditer /> */}
@@ -226,13 +250,13 @@ return (
               <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
               <Table.Column title="状态" dataIndex="status" width={100} />
               <Table.Column title="产品类型" dataIndex="productType" width={160} />
-              <Table.Column title="生效期限" dataIndex="times" width={250} />
-              <Table.Column title="尾款产品" dataIndex="areaId" width={120} />
+              <Table.Column title="生效期限" cell={this.timeRange} width={250} />
+              <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
               <Table.Column title="资金方" dataIndex="createdUser" width={120} />
-              <Table.Column title="金额范围(元)" dataIndex="provinceId" width={120} />
-              <Table.Column title="期限范围(月)" dataIndex="" width={120} />
-              <Table.Column title="贷款比率(%)" dataIndex="" width={120} />
-              <Table.Column title="执行年利率范围(%)" dataIndex="" width={160} />
+              <Table.Column title="金额范围(元)" width={200} cell={this.moneyRange} />
+              <Table.Column title="期限范围(月)" cell={this.monthRange} width={120} />
+              <Table.Column title="贷款比率(%)" cell={this.loanNpiRange} width={120} />
+              <Table.Column title="执行年利率范围(%)" cell={this.interestRateRange} width={160} />
               <Table.Column
                 title="操作"
                 cell={this.renderOperator}

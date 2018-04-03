@@ -41,8 +41,6 @@ class  SearchForm extends Component {
     const { searchEvent } = this.props;
     e.preventDefault();
     this.field.validate((errors, values) => {
-      let parmas = this.field.getValues();
-      console.log(parmas)
       if (errors) {
         return;
       }
