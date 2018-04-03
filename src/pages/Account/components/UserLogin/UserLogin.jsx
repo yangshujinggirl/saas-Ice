@@ -71,7 +71,13 @@ export default class UserLogin extends Component {
         }
 
         Storage.set('MENUS', (res.data.leaf));
-        hashHistory.push('/') //跳转首页
+
+        AccountReq.getUserInfo().then((res) => {
+          if(res || res.code == 200){
+            Storage.set("USERINFO", res.data);
+            hashHistory.push('/') //跳转首页
+          }
+        })
       });
     });
   };

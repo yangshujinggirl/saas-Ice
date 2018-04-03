@@ -8,7 +8,7 @@ class FontConfigReq extends CurdReq{
 		this.curd = {
             create: this._host + '/screen-schemes',
             update: this._host + '/screen-schemes',
-            retrieve: this._host + '/filter-table-list.json',
+            retrieve: this._host + '/screen-schemes',
             delete: this._host + '/detail.json',
         }
 	}
@@ -37,7 +37,7 @@ class FontConfigReq extends CurdReq{
     }
     return super.fetchData(options);
 	}
-	
+
 		/**
    * 获取选中字段
    */

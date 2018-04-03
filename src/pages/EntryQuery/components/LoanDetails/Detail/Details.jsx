@@ -33,16 +33,17 @@ export default class Details extends Component {
   }
   //内容value
   value = (el)=>{
+    var value =el.value;
     if(el.type == 'INT' && el.value == 0){
-      el.value = 0;
+      value = 0;
     }else {
       if(el.value == 0){
-        el.value = '否'
+        value = '否'
       }else if(el.value == 1){
-        el.value = '是'
+        value = '是'
       }
     }
-    const valueTips =  <div>{el.value}</div>;
+    const valueTips =  <div >{value}</div>;
     return(
       <Balloon
         type="primary"
@@ -50,7 +51,7 @@ export default class Details extends Component {
         closable={false}
         align='t'
       >
-        {el.value}
+        {value}
       </Balloon>
     )
   }
@@ -72,11 +73,11 @@ export default class Details extends Component {
                                       {this.value(el)}
                                     </div>
                             )
+                  console.log(el)
                   if(el.attached[el.value]){
-                    console.log(el.attached[el.value])
                     el.attached[el.value].map((ite,ind)=>{
                       list.push(
-                        <div className='config-font' key={item.id}>
+                        <div className='config-font' key={ite.id}>
                           {this.label(ite.label)}
                           <span>:</span>
                           {this.value(ite)}

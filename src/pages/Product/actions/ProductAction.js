@@ -1,6 +1,6 @@
 import T from '../constants/ProductConstant'
 import Req from '../reqs/ProductReq'
-
+import {hashHistory} from 'react-router';
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
 /**
@@ -67,9 +67,12 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res }))
+      if(res.code == 200) {
+        dispatch(fetchSuccess({ pageData: res.data }))
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
+      console.log("234567");
     })
   }
 }
@@ -82,28 +85,43 @@ export const save = (data) => {
 
     Req.save(data).then((res) => {
       if(!res || res.code != 200) return;
-      console.log("234567");
-      // dispatch(fetchSuccess({ formData: {}, view: 'list' }))
-      // hashHistory.push('/product/addtwo/' + res.data.id);
+      // console.log(res)
+      hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
-
-// 获取详情
-export const getDetail = (id) => {
+//产品提交保存
+export const productsave = (data,id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+    Req.productsave(data,id).then((res) => {
+      if(!res || res.code != 200) return;
+      console.log('productsave sucess')
+      // console.log(res)
+      // hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
+
+// 获取产品详情
+export const getDetail = (id) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.getDetail(id).then((res) => {
+      dispatch(fetchSuccess({ formData: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+
 
 // 删除一条记录
 export const remove = (id) => {
@@ -118,12 +136,10 @@ export const remove = (id) => {
     })
   }
 }
-//产品编辑
+//产品编辑页的记录展示
 export const edit = (id) =>{
   return (dispatch) => {
-
     dispatch(fetchStart())
-
     Req.prodedit(id).then((res) => {
       dispatch(fetchSuccess({prodInfo: res}))
     }).catch((ex) => {
@@ -132,13 +148,12 @@ export const edit = (id) =>{
   }
 }
 
-
-//产品修改
+//产品修改后保存
 export const prodrevise = (condition)=>{
   return (dispatch) => {
     dispatch(fetchStart())
     Req.prodrevise(condition).then((res) => {
-      dispatch(fetchSuccess({ testData: res }))
+      if(!res || res.code != 200) return;
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -177,6 +192,18 @@ export const changeFileDetail = (data) => {
     dispatch(change({editData: data}))
   }
 }
+//保存资料清单信息
+  export const fileSave = (value)=>{
+    return (dispatch) => {
+      dispatch(fetchStart())
+      Req.fileSave(value).then((res) => {
+        if(!res || res.code != 200) return;
+        hashHistory.push('/product/filelist')
+      }).catch((ex) => {
+        dispatch(fetchFailed(ex))
+      })
+    }
+  }
 
 //删除材料资料清单
 export const fileremove = (id) => {
@@ -213,8 +240,19 @@ export const fileEditSave = (value,id)=>{
   return (dispatch) => {
     dispatch(fetchStart())
     Req.fileEditSave(value,id).then((res) => {
-      // console.log(Req)
-      // dispatch(fetchSuccess({delete: true}))
+      if(!res || res.code != 200) return;
+      hashHistory.push('/product/filelist')
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+export const addTwoList=(type,formData)=>{
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.addTwoList(type,formData).then((res) => {
+      dispatch(fetchSuccess({ addTwoData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

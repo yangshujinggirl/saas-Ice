@@ -11,6 +11,7 @@ import Header from './../../components/Header';
 import Footer from './../../components/Footer';
 import Logo from './../../components/Logo';
 import { asideNavs } from './../../navs';
+import { Storage } from '../../base/utils';
 import './scss/light.scss';
 // import './scss/dark.scss';
 
@@ -139,6 +140,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     return openKeys;
   };
 
+  processLinkWithOwnerId(link){
+    let userInfo = Storage.get('USERINFO');
+    if(userInfo && userInfo.ownerId){
+      link += (link.indexOf('?') >= 0 ? '&' : '?' )+ 'ownerId=' + userInfo.ownerId;
+    }
+    return link;
+  }
+
   render() {
     const { location = {}, routes } = this.props;
     // console.log(this.props)
@@ -210,8 +219,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         {nav.leaf.map((item) => {
                           const linkProps = {};
                           let itemData = item.value || {};
-                          if (itemData.newWindow) {
-                            linkProps.href = itemData.value;
+                          if (itemData.target == '_blank') {
+                            linkProps.href = this.processLinkWithOwnerId(itemData.value);
                             linkProps.target = '_blank';
                           } else if (itemData.external) {
                             linkProps.href = itemData.value;
@@ -228,7 +237,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     );
                   }
                   const linkProps = {};
-                  if (navData.newWindow) {
+                  if (itemData.target == '_blank') {
                     linkProps.href = navData.to;
                     linkProps.target = '_blank';
                   } else if (navData.external) {

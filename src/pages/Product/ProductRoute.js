@@ -22,6 +22,7 @@ export default {
       component: Product.ProductAdd
     },  {
       path: 'addtwo/:id',
+      name: '产品新增',
       component: Product.AddTwo
     }, {
       path: 'filelist',
@@ -30,6 +31,10 @@ export default {
     }, {
       path: 'fileedit/:id',
       name: '材料编辑',
+      component: Product.FileEdit
+    },{
+      path: 'fileListnew',
+      name: '材料新增',
       component: Product.FileEdit
     },
 
