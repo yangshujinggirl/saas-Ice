@@ -52,7 +52,7 @@ export default class FileList extends Component {
         width: "70%"
       },
       value:{
-        name	:'',	 
+        name	:'',
         dataType:''
       },
       fileList:[{
@@ -98,13 +98,13 @@ export default class FileList extends Component {
       <button className="deletbtn" onClick={() => this.deleteRow(record.id)}>删除</button>
     </div>
   };
-  
+
   open =(record) =>{
-  
+
     hashHistory.push(`/product/fileedit/${record.id}`)
   }
   deleteRow =(idx) => {
-    let {actions} = this.props;
+    let { actions } = this.props;
     actions.fileremove(idx);
     actions.filesearch()
     // location.reload()
