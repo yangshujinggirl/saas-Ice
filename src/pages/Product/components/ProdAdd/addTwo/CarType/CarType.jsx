@@ -28,6 +28,7 @@ export default class CarType extends Component {
     };
   }
   componentDidMount(){
+    console.log(this.props)
     let {actions,addTwoData} = this.props;
     actions.addTwoList()
   }
@@ -90,18 +91,24 @@ export default class CarType extends Component {
   }
 LeftData=(value,data)=>{
   let {CarData} = this.props;
-  let test = []
-  test =  test.push(data)
-
-  CarData.push(data)
-  console.log(test)
+  let val = this.props.data
+  data.map((item,i)=>{
+    CarData.productScopes.push({
+      productCode:'AA',
+      relatedId: item.value,
+      relatedName: val=='carBrand'?'品牌':(val=='Car'?'车系':'车型'),
+      relatedPath: "SP2",
+      relatedPathName: "SP1关联",
+      type:'CARS'
+    })
+  })
+  console.log(CarData)
 }
  //查询
  CarBtn = () =>{
   let {actions, data} = this.props;
   this.formRef.validateAll((error, value) => {
     console.log('error', error, 'value', value);
-
     if (error) {
       // 处理表单报错
       return;

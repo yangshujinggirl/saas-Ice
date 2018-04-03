@@ -12,8 +12,6 @@ class ProductReq extends CurdReq {
       retrieve: this._host + '/product/',
       delete: this._host + '/product/:id', //删除
       detail: this._host + '/product/:id', //详情
-      // edit: this._host + '/product/:id/history'
-      // filedelete: this._host + '/product/collect/:id',
       filedeletedes: this._host + '/product/collect/detail/:id',
       fileupdate: this._host + '/product/collect/:id'
     }
@@ -35,7 +33,6 @@ class ProductReq extends CurdReq {
   //产品初始数据
   prodActions(condition) {
     let options = {
-      // url: this._host + '/product/data
       url: this._host + '/product/data',
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
@@ -49,7 +46,6 @@ class ProductReq extends CurdReq {
     if (data && data.id) {
       url = this.formatUrl(this.curd.update, data.id);
     }
-
     let options = {
       url: url,
       method: 'POST',
@@ -58,48 +54,62 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-//产品编辑
-prodedit(id) {
-	let options = {
-		url: this._host + `/product/${id}/history`,
-		method: 'get',
-		contentType: 'application/x-www-form-urlencoded',
-	}
-	return super.fetchData(options);
-}
-//产品修改
-prodrevise(data) {
-	var url = this.formatUrl(this._host + `/product/${data.id}`);
-	let options = {
-		url: url,
-		method: 'put',
-		data: data,
-		contentType: 'application/json'
-	}
-	return super.fetchData(options);
-}
 
-//材料清单查询
-filesearch(value) {
-	let options = {
-		url: this._host + '/product/collect',
-		method: 'get',
-		contentType: 'application/x-www-form-urlencoded',
-		params: value
-	}
-	return super.fetchData(options);
-}
+  //产品提交保存
+  productsave(data,id) {
+    var url =this._host + `/product/${id}/scope`;
+    let options = {
+      url: url,
+      method: 'POST',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
+  //产品修改
+  prodedit(id) {
+    let options = {
+      url: this._host + `/product/${id}/history`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
+
+  //产品修改后保存
+  prodrevise(data) {
+    var url = this.formatUrl(this._host + `/product/${data.id}`);
+    let options = {
+      url: url,
+      method: 'put',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
+  //材料清单查询
+  filesearch(value) {
+    let options = {
+      url: this._host + '/product/collect',
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      params: value
+    }
+    return super.fetchData(options);
+  }
 
 
-//资料清单明细
-fileDetail(id) {
-	let options = {
-		url: this._host + `/product/collect/${id}`,
-		method: 'get',
-		contentType: 'application/x-www-form-urlencoded',
-	}
-	return super.fetchData(options);
-}
+  //资料清单明细
+  fileDetail(id) {
+    let options = {
+      url: this._host + `/product/collect/${id}`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
 
 
 //删除资料清单一条数据
@@ -112,8 +122,6 @@ fileremove(id, callback, callbackError) {
 	}
 	return super.fetchData(options);
 }
-//保存资料清单信息
-
 
 //删除资料清单明细
 fileRemoveDes(id, callback, callbackError) {

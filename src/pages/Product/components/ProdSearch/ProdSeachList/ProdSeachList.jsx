@@ -31,9 +31,6 @@ const { Row, Col } = Grid;
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
-//组件引入
-// import SearchEditer from './searchEditer/searchEditer';
-
 
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
@@ -57,14 +54,14 @@ export default class ProdSeachList extends Component {
     this.state = {
       value:{
         productCode	:'',
-        name:'',
+        name	:'',
         productType	:'',
-        status:'',
+        status	:'',
         contractDisplayName:''
       },
     };
   }
-  componentWillMount(){
+  componentWillMount() {
     this.props.actions.search();
   }
   //查看
@@ -117,27 +114,28 @@ export default class ProdSeachList extends Component {
       </div>
     );
   };
-
   //查询
   submit = () =>{
+    let {actions,pageData} = this.props;
     this.formRef.validateAll((error, value) => {
       if (error) {
+        // 处理表单报错
         return;
       }
+      // 提交当前填写的数据
       this.props.actions.search(value);//返回符合条件的数据
+
     });
   };
-  //页数变化
+  //分页
   changePage = (currentPage) => {
-    this.props.actions.search({page:currentPage});//返回符合条件的数据7b7ac9f02698749f6f086be752a78c8b30756155
+    this.props.actions.search({page:currentPage});
   };
 
   render() {
     const { list=[], total, limit, page} =this.props.pageData;
     return (
-
       <div className="create-activity-form" style={styles.container}>
-        {/* <SearchEditer /> */}
         <IceContainer title="" >
           <IceFormBinderWrapper
             ref={(formRef) => {
@@ -168,7 +166,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="name"
+                      name="name	"
                     >
                       <Input style={{ width: '175px' }} placeholder="产品名称" />
                     </IceFormBinder>
@@ -204,7 +202,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                        name="status"
+                        name="status	"
                       >
                         <Select
                           placeholder="请选择"

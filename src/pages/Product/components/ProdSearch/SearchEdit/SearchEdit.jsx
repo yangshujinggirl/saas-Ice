@@ -62,10 +62,7 @@ export default class SearchEdit extends Component {
     this.queryCache = {};
     this.state = {
       values:{
-        // name:'',
-        // effectiveDate	:''	 ,
-        // expirationDate:'', 
-        // status:''
+        
       }
     };
 
@@ -81,8 +78,7 @@ export default class SearchEdit extends Component {
     
   }
   upData=()=>{
-    let {actions,pageData} = this.props;
-    console.log(this.props)
+    let {actions,pageData,params} = this.props;
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
       if (error) {
@@ -93,21 +89,22 @@ export default class SearchEdit extends Component {
       value.effectiveDate=value.time[0]
       value.expirationDate=value.time[1]
       this.props.actions.prodrevise(value);//
-      // hashHistory.push('/product/search')
+      location.reload ()
     });
   }
   render() {
-    // console.log(this.props.prodInfo)
     let prodInfo = this.props.prodInfo;
+    let {formData} = this.props
+    let name = formData.product|| {}
+        name= name.name ||''
+    console.log(name)
     let dataSource = [];
     if(prodInfo){
-      // dataSource = prodInfo.data;
       dataSource = prodInfo.data;
     }
     dataSource && dataSource.map((item) => {
       let temptime = [];
       if (item.times){
-        console.log(item.times)
         item.temptime = item.times.join('~')
       }
     })
@@ -121,6 +118,7 @@ export default class SearchEdit extends Component {
               this.formRef = formRef;
             }}
             value={{
+                    name:name,
                     id:this.props.params.id,
                     status:''}}
           >
@@ -136,10 +134,9 @@ export default class SearchEdit extends Component {
                   <Col s="4" l="4">
                     <IceFormBinder
                       name="name"
-                      required
                       message="必填"
                     >
-                      <Input placeholder="产品名称" />
+                      <Input placeholder="产品名称" value={name}  />
                     </IceFormBinder>
                     <IceFormError name="name" />
                   </Col>
