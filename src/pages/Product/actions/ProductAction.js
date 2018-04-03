@@ -69,7 +69,7 @@ export const search = (condition) => {
     Req.search(condition).then((res) => {
       if(res.code == 200) {
         dispatch(fetchSuccess({ pageData: res.data }))
-      } 
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
       console.log("234567");
@@ -197,14 +197,14 @@ export const changeFileDetail = (data) => {
     return (dispatch) => {
       dispatch(fetchStart())
       Req.fileSave(value).then((res) => {
-        // console.log(Req)
-        // dispatch(fetchSuccess({delete: true}))
+        if(!res || res.code != 200) return;
+        hashHistory.push('/product/filelist')
       }).catch((ex) => {
         dispatch(fetchFailed(ex))
       })
     }
   }
- 
+
 //删除材料资料清单
 export const fileremove = (id) => {
   return (dispatch) => {
@@ -240,8 +240,8 @@ export const fileEditSave = (value,id)=>{
   return (dispatch) => {
     dispatch(fetchStart())
     Req.fileEditSave(value,id).then((res) => {
-      // console.log(Req)
-      // dispatch(fetchSuccess({delete: true}))
+      if(!res || res.code != 200) return;
+      hashHistory.push('/product/filelist')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

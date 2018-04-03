@@ -96,19 +96,14 @@ export default class DiaLog extends Component {
   }
 
   onOk(id) {//确定按钮
-    let {actions} = this.props;
+    let { actions } = this.props;
     this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
       if (error) {
-        // 处理表单报错
         return;
       }
-
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
-        // delete item.fileTypeArr;
       });
-
       // 提交当前填写的数据
       let id = this.props.params.id;
       if(id){
@@ -116,7 +111,6 @@ export default class DiaLog extends Component {
       }else{
         actions.fileSave(value)
       }
-      
     });
 
   }
@@ -249,7 +243,7 @@ export default class DiaLog extends Component {
           <IceFormError name="name"/>
         </span>
       )
-    } 
+    }
   }
   testType=(id,data)=>{
     if(id){
@@ -265,7 +259,7 @@ export default class DiaLog extends Component {
           <IceFormError name="dataType"/>
         </span>
       )
-    } 
+    }
   }
   render() {
     let data = this.props.editData || {}
@@ -292,7 +286,7 @@ export default class DiaLog extends Component {
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>清单名称：</label>
                 {this.testName(this.props.params.id,data)}
-                
+
               </Col>
             </Row>
             <FileListDetail

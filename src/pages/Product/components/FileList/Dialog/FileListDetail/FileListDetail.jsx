@@ -10,7 +10,20 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import { Form, Field, Input, NumberPicker, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table } from '@icedesign/base';
+import {
+  Form,
+  Field,
+  Input,
+  NumberPicker,
+  Button,
+  Checkbox,
+  Select,
+  DatePicker,
+  Switch,
+  Radio,
+  Grid,
+  Table
+ } from '@icedesign/base';
 
 const { Group: CheckboxGroup } = Checkbox;
 
