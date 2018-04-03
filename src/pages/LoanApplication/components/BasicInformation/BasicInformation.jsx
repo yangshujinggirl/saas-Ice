@@ -101,7 +101,7 @@ class BasicInformation extends Component {
       let { code, message } = data;
       if(code == 200 ) {
         let { id } = data.data;
-        hashHistory.push(`/loanapplication/config/${id}`)
+        hashHistory.push(`/entryQuery/update/${id}`)
       } else {
         Dialog.confirm({
           content: message,
