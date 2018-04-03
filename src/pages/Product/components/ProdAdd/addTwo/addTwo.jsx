@@ -15,22 +15,13 @@ import {
 
 
 import './addTwo.scss';
+import CarType from './CarType' ;
+import OrgType from './OrgType'
 const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
 
-const dataSource = (() => {
-  const dataSource = [];
 
-  for (let i = 0; i < 10; i++) {
-    dataSource.push({
-      label: `content${i+1}`,
-      value: `${i}`,
-    });
-  }
-
-  return dataSource;
-})();
 
 const list = [
   [{
@@ -65,18 +56,47 @@ export default class addTwo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      value:[],
+      value1:'carBrand',
+      value2:'carGroup'
     };
   }
-  changeView = () =>  {
-    // this.props.changeView('addThree')
-    console.log("保存")
+
+  componentDidMount(){
+   console.log(this.props)
   }
+  changeView = () =>  {
+  let {actions} = this.props
+    actions.save();
+    // this.props.changeView('addThree')
+    
+  }
+  onFormChange=()=>{
+    this.setState({
+      value
+    })
+  }
+  onTypeChange=(value)=> {
+    this.setState({
+      value1: value
+    });
+    console.log(value)
+  }
+  onNestChange=(value)=>{
+    this.setState({
+      value2: value
+    });
+    console.log(value)
+  }
+  
   render() {
     return (
       <IceFormBinderWrapper
-        value={this.props.value}
-        onChange={this.props.onChange}
+      ref={(formRef) => {
+        this.formRef = formRef;
+      }}
+      value={this.state.value}
+      onChange={this.onFormChange}
       >
         <div>
           <IceContainer>
@@ -86,32 +106,24 @@ export default class addTwo extends Component {
             <div className="f-box">
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <RadioGroup dataSource={list[0]} defaultValue={"carBrand"} />
+                  <RadioGroup 
+                    dataSource={list[0]} 
+                    defaultValue={"carBrand"}
+                    value={this.state.value1}                    
+                    onChange={this.onTypeChange}
+                    />
                 </Col>
               </Row>
-              <Row wrap style={styles.formItem}>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <IceFormBinder
-                    name="car-brand"
-                  >
-                    <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
-                  </IceFormBinder>
-                  <IceFormError name="name" />
-                </Col>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <button style={styles.btns} type='submit' onClick={this.onSubmit}>
-                    查询
-                  </button>
-                </Col>
-              </Row>
+             
               <Row wrap style={{marginBottom:"30px"}} >
-                <Transfer 
-                  titles={['测试',' ']}
-                  dataSource={dataSource}
-                  defaultLeftChecked={["0"]}
-                  listStyle={{width:"500px"}}
-                >
-                </Transfer>
+              <IceFormBinder
+                    name="CarTypeBrand"
+                  >
+                     <CarType {...this.props} data={this.state.value1} CarData={this.state.value}/>
+                  </IceFormBinder>
+                  <IceFormError name="CarTypeBrand" />
+               
+
               </Row>
           </div>
             <legend className="legend">
@@ -120,30 +132,17 @@ export default class addTwo extends Component {
             <div className="f-box">
              <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <RadioGroup dataSource={list[1]} defaultValue={"carGroup"} />
+                  <RadioGroup 
+                    dataSource={list[1]}
+                    defaultValue={"carGroup"} 
+                    value={this.state.value2}                    
+                    onChange={this.onNestChange}
+                    />
                 </Col>
               </Row>
-              <Row wrap style={styles.formItem}>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <IceFormBinder
-                    name="car-group"
-                  >
-                    <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
-                  </IceFormBinder>
-                  <IceFormError name="name" />
-                </Col>
-                <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <button style={styles.btns} type='submit' onClick={this.onSubmit}>
-                    查询
-                  </button>
-                </Col>
-              </Row>
+             
               <Row wrap style={{marginBottom:"30px"}} >
-                <Transfer  
-                  titles={['测试',' ']}
-                  dataSource={dataSource}
-                  defaultLeftChecked={["0"]}
-                  listStyle={{width:"500px"}}/>
+                {/* <OrgType {...this.props} data={this.state.value2}/> */}
               </Row>
             </div>
            
@@ -164,20 +163,10 @@ const styles = {
     alignItems: 'center',
     marginBottom: '20px',
   },
-
-  filterTitle: {
-    width: '140px',
-    textAlign: 'right',
-    marginRight: '12px',
-    fontSize: '14px',
-  },
   formItem: {
     height: '28px',
     lineHeight: '28px',
     marginBottom: '25px',
-  },
-  filterTool: {
-    width: '200px',
   },
   btns: {
     width: '90px',
@@ -190,10 +179,5 @@ const styles = {
     color: '#fff',
     marginLeft:'20px'
 
-  },
-  fieldBox: {
-    margin: '0 15px',
-    padding: '25px 0 0 0',
-    borderTop: '1px solid #d8d8d8',
   },
 };

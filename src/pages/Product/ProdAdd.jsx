@@ -15,7 +15,6 @@ export default class Product extends Component {
 
   render() {
     let {view, actions, formData} = this.props;
-    
     return (
       <div className="product-page">
         <ProdOne {...this.props} />

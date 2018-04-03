@@ -1,6 +1,8 @@
 import T from '../constants/EntryQueryConstant'
 import Req from '../reqs/EntryQueryReq'
+import { Feedback } from "@icedesign/base";
 
+const Toast = Feedback.toast;
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
 /**
@@ -103,19 +105,40 @@ export const remove = (id) => {
 }
 
 
-//
+//表单保存
 export const saveFrom = (data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
     Req.saveFrom(data).then((res) => {
+      if(res&& res.code == 200){
+        if(data.status == 'submit'){
+          Toast.success('提交成功');
+        }else {
+          Toast.success('保存成功');
+        }
+      }
       dispatch(fetchSuccess({data: res}))
+
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
+
+// 下拉列表options
+export const getSelectList = () => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.getSelectList(id).then((res) => {
+      dispatch(fetchSuccess({data: res.data}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 export function changeViewToForm() {
   return dispatch({ view: 'form' });
 }

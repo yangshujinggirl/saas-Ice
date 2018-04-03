@@ -85,9 +85,6 @@ export const save = (data) => {
 
     Req.save(data).then((res) => {
       if(!res || res.code != 200) return;
-      console.log("234567");
-      // dispatch(fetchSuccess({ formData: {}, view: 'list' }))
-      // hashHistory.push('/product/addtwo/' + res.data.id);
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -180,7 +177,19 @@ export const changeFileDetail = (data) => {
     dispatch(change({editData: data}))
   }
 }
-
+//保存资料清单信息
+  export const fileSave = (value)=>{
+    return (dispatch) => {
+      dispatch(fetchStart())
+      Req.fileSave(value).then((res) => {
+        // console.log(Req)
+        // dispatch(fetchSuccess({delete: true}))
+      }).catch((ex) => {
+        dispatch(fetchFailed(ex))
+      })
+    }
+  }
+ 
 //删除材料资料清单
 export const fileremove = (id) => {
   return (dispatch) => {
@@ -218,6 +227,17 @@ export const fileEditSave = (value,id)=>{
     Req.fileEditSave(value,id).then((res) => {
       // console.log(Req)
       // dispatch(fetchSuccess({delete: true}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+export const addTwoList=(type,formData)=>{
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.addTwoList(type,formData).then((res) => {
+      dispatch(fetchSuccess({ addTwoData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

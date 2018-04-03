@@ -57,9 +57,9 @@ export default class ProdSeachList extends Component {
     this.state = {
       value:{
         productCode	:'',
-        name	:'',
+        name:'',
         productType	:'',
-        status	:'',
+        status:'',
         contractDisplayName:''
       },
     };
@@ -94,11 +94,6 @@ export default class ProdSeachList extends Component {
     );
   };
 
-  //
-  onFormChange(value) {
-    console.log(value)
-  }
-
   //查询
   submit = () =>{
     this.formRef.validateAll((error, value) => {
@@ -110,12 +105,12 @@ export default class ProdSeachList extends Component {
   };
   //页数变化
   changePage = (currentPage) => {
-    this.props.actions.search({page:currentPage});//返回符合条件的数据
+    this.props.actions.search({page:currentPage});//返回符合条件的数据7b7ac9f02698749f6f086be752a78c8b30756155
   };
 
   render() {
     const { list=[], total, limit, page} =this.props.pageData;
-    return (
+return (
 
       <div className="create-activity-form" style={styles.container}>
         {/* <SearchEditer /> */}

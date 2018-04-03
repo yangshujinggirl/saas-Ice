@@ -26,7 +26,7 @@ export default class DiaLog extends Component {
     	<div>
     		<IceFormBinder
     		required
-	        name={`collectionDetails[${index}].dataName`}
+	        name={`collectionDetails[${index}].name`}
 	        >
 	        	<Input placeholder="清单名称" />
 	        </IceFormBinder>

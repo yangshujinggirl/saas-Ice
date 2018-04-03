@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
+import Req from '../../../../LoanApplication/reqs/LoanApplicationReq';
 
 const { DragUpload } = Upload;
 const dataSource = [{id: 1, fileName: '2016',limitSize:'2131'}];
-const tableList = [
+let   tableList = [
                     {id: 'id',title:'序号'},
-                    {id:'fileName',title: '材料名称'},
-                    {id:'limitSize',title:'限制大小'}];
+                    {id:'name',title: '材料名称'},
+                    {id:'fileSize',title:'限制大小'}];
 
 export default class MaterialSubmit extends Component {
   static displayName = 'MaterialSubmit';
@@ -21,12 +22,30 @@ export default class MaterialSubmit extends Component {
     this.state = {
       value: {},
       Component :[],
+      upLoadList:[]
     };
   }
   componentDidMount(){
     if(this.props.data){
-      tableList.push(this.props.data)
+      tableList = [...tableList,...this.props.data]
     }
+    this.getLoanUpload(this.props.params.id);
+    console.log(this.props)
+  }
+  //获取上传资料列表
+  getLoanUpload(id) {
+    Req.getLoanUploadApi(id)
+      .then((res) => {
+        const { data } = res;
+        const { list } = data;
+        let upLoadList;
+        list.map((el)=> upLoadList = el.collectionDetails)
+        this.setState({
+          upLoadList
+        })
+      },(error) => {
+        console.log(error)
+      })
   }
   //tableRender
   tableRender = ()=>{
@@ -39,6 +58,9 @@ export default class MaterialSubmit extends Component {
     return arr;
   }
   render() {
+    const { upLoadList } = this.state;
+    console.log(upLoadList)
+    console.log(tableList)
     return (
           <div>
             <DragUpload
@@ -48,7 +70,7 @@ export default class MaterialSubmit extends Component {
               formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
               accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
             />
-            <Table dataSource={dataSource} className="basic-table">
+            <Table dataSource={upLoadList} className="basic-table">
               {
                 this.tableRender()
               }
