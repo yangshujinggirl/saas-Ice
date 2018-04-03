@@ -7,7 +7,7 @@ import FoundationSymbol from 'foundation-symbol';
 import { Link, hashHistory } from 'react-router';
 import { headerNavs } from './../navs';
 import Logo from './Logo';
-import {Recrysuve} from '../base/utils';
+import {Recrysuve, Storage} from '../base/utils';
 import AccountReq from '../pages/Account/reqs/AccountReq';
 
 export default class Header extends PureComponent {
@@ -32,6 +32,8 @@ export default class Header extends PureComponent {
         routes[0].name = 'DASHBOARD';
         routes = [routes[0]];
     }
+
+    //获取登陆用户信息
 
     return (
       <Layout.Header
