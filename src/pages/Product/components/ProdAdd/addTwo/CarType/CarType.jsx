@@ -94,7 +94,6 @@ LeftData=(value,data)=>{
   let val = this.props.data
   data.map((item,i)=>{
     CarData.productScopes.push({
-      productCode:'AA',
       relatedId: item.value,
       relatedName: val=='carBrand'?'品牌':(val=='Car'?'车系':'车型'),
       relatedPath: "SP2",

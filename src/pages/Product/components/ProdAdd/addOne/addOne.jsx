@@ -346,8 +346,8 @@ export default class CreateActivityForm extends Component {
                       placeholder="请选择"
                       style={styles.filterTool}
                     >
-                      <Option value="0">生效</Option>
-                      <Option value="1">未生效</Option>
+                      <Option value="1">生效</Option>
+                      <Option value="0">未生效</Option>
                       <Option value="2">失效</Option>
                     </Select>
                   </IceFormBinder>
