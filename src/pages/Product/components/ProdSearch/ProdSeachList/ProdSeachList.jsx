@@ -53,10 +53,10 @@ export default class ProdSeachList extends Component {
     super(props);
     this.state = {
       value:{
-        productCode	:'',
-        name	:'',
+        productCode:'',
+        name:'',
         productType	:'',
-        status	:'',
+        status:'',
         contractDisplayName:''
       },
     };
@@ -166,7 +166,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                      name="name	"
+                      name="name"
                     >
                       <Input style={{ width: '175px' }} placeholder="产品名称" />
                     </IceFormBinder>
@@ -202,7 +202,7 @@ export default class ProdSeachList extends Component {
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
-                        name="status	"
+                        name="status"
                       >
                         <Select
                           placeholder="请选择"
