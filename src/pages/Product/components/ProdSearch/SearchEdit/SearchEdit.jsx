@@ -111,7 +111,6 @@ export default class SearchEdit extends Component {
 
     return (
       <div className="create-activity-form" style={styles.container}>
-        {/* <SearchEditer /> */}
         <IceContainer title="" >
           <IceFormBinderWrapper
             ref={(formRef) => {

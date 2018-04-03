@@ -11,6 +11,8 @@ import {
 } from '@icedesign/form-binder';
 import "./addFont.scss"
 import FontConfigReq from './../../reqs/FontConfigReq.js'
+import Storage from './../../../../base/utils/Storage.js'
+
 import DragFields from '../DragFields';
 
 
@@ -25,6 +27,7 @@ export default class AdFont extends Component {
             pageName: '',
             resDate: [],
             isFixed: [],
+            id: this.props.router.location.query.id
         };
     }
     submit = () => {
@@ -42,46 +45,61 @@ export default class AdFont extends Component {
             });
             return 
         }
-        // console.log(this.state.isFixed[0].fields);
-        
-        reqDate.fields = this.state.isFixed.list[0].fields;
+        console.log(reqDate.fields);
+        if(!this.state.id){
+            reqDate.fields = this.state.isFixed[0].fields;
+        }
         let data = this.state.resDate;
-        let tempData = data.list
-            for (const index in tempData) {
-                for (const key in tempData[index].fields) {
-                    if (tempData[index].fields[key].checked) {
-                        reqDate.fields.push(tempData[index].fields[key])
+            for (const index in data) {
+                for (const key in data[index].fields) {
+                    if (data[index].fields[key].checked) {
+                        reqDate.fields.push(data[index].fields[key])
                     }
                 }
                 
             }
+        // localStorage.setItem('configCode',data)
+        Storage.set('configCode',data)
         reqDate.fields.map((item) => {
             let fieldId = item.id;
             delete item.id;
             item.fieldId = fieldId;
             })
-        
-        FontConfigReq.save(reqDate).then((data) => {
-            let res = data.data;
-            if (res.msg) {
-                Dialog.alert({
-                    content: "页面名称重复",
-                    closable: false,
-                    title: "提示",
-                });
-                return 
-            }
-            this.props.router.push(`/font/set?id=${res.id}`)
-        })
-
+         // 如果id存在就更新字段
+        if (this.state.id) {
+            FontConfigReq.changPageName(reqDate,this.state.id).then((data) => {
+                let res = data.data;
+                if (res.code == '200') {
+                    this.props.router.push(`/font/set?id=${this.state.id}`)  
+                } else {
+                    Dialog.alert({
+                        content: res.msg,
+                        closable: false,
+                        title: "提示",
+                    });
+                }
+            })
+        } else {
+            // 提交字段
+            FontConfigReq.save(reqDate).then((data) => {
+                let res = data.data;
+                if (res.code == '200') {
+                    this.props.router.push(`/font/set?id=${res.id}`)
+                } else {
+                    Dialog.alert({
+                        content: res.msg,
+                        closable: false,
+                        title: "提示",
+                    });
+                }
+            })
+        }
     }
     reset = () => {
         let data = this.state.resDate;
-        let tempData = data.list
-        
-        for (const index in tempData) {
-            for (const key in tempData[index].fields) {
-                tempData[index].fields[key].checked = false
+        for (const index in data) {
+            for (const key in data[index].fields) {
+                data[index].fields[key].checked = false
             }
             this.setState({
                 resDate: data
@@ -91,18 +109,16 @@ export default class AdFont extends Component {
     selected = (index,all) => {
         if (!all) {
             let data = this.state.resDate;
-            let tempData = data.list
-            for (const key in tempData[index].fields) {
-                tempData[index].fields[key].checked = !tempData[index].fields[key].checked;
+            for (const key in data[index].fields) {
+                data[index].fields[key].checked = !data[index].fields[key].checked;
             }
             this.setState({
                 resDate: data
             })
         } else {
             let data = this.state.resDate;
-            let tempData = data.list
-            for (const key in tempData[index].fields) {
-                tempData[index].fields[key].checked = true;
+            for (const key in data[index].fields) {
+                data[index].fields[key].checked = true;
             }
             this.setState({
                 resDate: data
@@ -116,12 +132,20 @@ export default class AdFont extends Component {
     }
     addClass = (index, subindex) => {
         let data = this.state.resDate;
-        let tempData = data.list
-        tempData[index].fields[subindex].checked = !tempData[index].fields[subindex].checked;
+        data[index].fields[subindex].checked = !data[index].fields[subindex].checked;
         this.setState({
             resDate:data
         })
-        
+        // console.log(data[index].fields[subindex]);
+        // let fieldId = data[index].fields[subindex].id;
+        // data[index].fields[subindex].fieldId = fieldId;
+        // delete data[index].fields[subindex].id;
+        // if (this.state.id) {
+        //     FontConfigReq.submitCustomeCode(data[index].fields[subindex], fieldId).then((data) => {
+        //         console.log(data);
+                
+        //     })
+        // }
     }
     componentDidMount() {
         FontConfigReq.getDetail('isFixed=true').then((data) => {
@@ -130,12 +154,19 @@ export default class AdFont extends Component {
                 isFixed: res,
             })
         })
-        FontConfigReq.getDetail('isFixed=false').then((data) => {
-            let res = data.data.list;
+        if (this.state.id) {
+            let localRes = Storage.get('configCode')            
             this.setState({
-                resDate: res,
+                resDate: localRes,
             })
-        })
+        } else {
+            FontConfigReq.getDetail('isFixed=false').then((data) => {
+                let res = data.data.list;
+                this.setState({
+                    resDate: res,
+                })
+            })
+        }
     }
     changeFieldsSort(dragParent, hoverParent, dragIndex, hoverIndex){
         let resDate = this.state.resDate;
@@ -150,7 +181,7 @@ export default class AdFont extends Component {
         this.setState({isFixed});
     }
     render() {
-        console.log(this.state.resDate);
+        console.log(this.state.isFixed);
         
         return (
             <div className="addFont">
@@ -164,26 +195,27 @@ export default class AdFont extends Component {
                     {
                         <div>
                             <div className="diffence">字段（必选）</div>
-                            <DragFields
+                            {/* <DragFields
                                 isFixed={true}
                                 data={this.state.isFixed}
                                 onChange={this.changeFixedFieldsSort.bind(this)}
-                            />
-                            {/*{this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
+                            /> */}
+                            {this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
                                 return (
                                     <div className="listCode selectCode isFixed" key={index}>
                                         {item.label}
                                         <span className="icon">&#xe62c;</span>
                                     </div>
                                 )
-                            })}*/}
+                            })}
                             <div className="diffence">字段（可选字段）</div>
-                            <DragFields
+                            {/* <DragFields
                                 data={this.state.resDate}
                                 onChange={this.changeFieldsSort.bind(this)}
                                 onFieldClick={this.addClass.bind(this)}
                                 onOperateClick={this.selected.bind(this)}
-                            />{/*
+                            /> */}
+                            
                             {this.state.resDate.map((item, index) => {
                                 return (
                                     <div className='subDif' key={index}>
@@ -204,7 +236,7 @@ export default class AdFont extends Component {
                                     </div>
 
                                 )
-                            })}*/}
+                            })}
                         </div>
                     }
 

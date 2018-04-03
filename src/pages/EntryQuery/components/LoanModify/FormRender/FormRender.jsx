@@ -112,6 +112,10 @@ export default class FormRender extends Component {
                      dataSource={this.state.list}
                      onSearch ={this.onSearch}
                      onInputUpdate={this.onInputUpdate.bind(this)}
+                     {...init(el.name, {
+                       initValue: el.value,
+                       rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+                     })}
                    />
                </FormItem>
              )
@@ -126,7 +130,7 @@ export default class FormRender extends Component {
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required:  false, message: "请选择"+el.label }]
+              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
             })}
             dataSource={el.options}
           >
@@ -156,12 +160,7 @@ export default class FormRender extends Component {
         </FormItem>
       )
     }
-    else if(el.type == 'INT'){
-      if(el.isFixed){
-        disabled = true
-      }else{
-        disabled = false
-      }
+    else if(el.type == 'INT' || el.type ==  'LONG'){
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -170,7 +169,7 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             min={0}
             max={el.maxValue}
-            type="inline"
+            inputWidth={'100%'}
             {...init(el.name, {
               initValue: el.value,
               rules: [
@@ -182,18 +181,25 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'RADIO'){
-      var value = el.value+'';
-      // console.log(typeof (value))
-      // console.log(value)
       var Fields  =[];
+      var Default =''
+      if(el.options){
+        el.options.map((item,index)=>{
+          if(item.isDefault){
+            Default =item.value;
+          }
+        })
+      }
       if(el.hasAttachedFields){
+        var value = ''
+        value =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
         Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
                               {...formItemLayoutR}>
           <RadioGroup
             disabled={el.isReadonly}
-            defaultValue ={value}
+            defaultValue ={value+''}
             {...init(el.name, {
-              initValue: value,
+              initValue: value+'',
               rules: [{ required: el.isRequired, message: "请选择"+el.label }],
               props:{
                 onChange:()=> {
@@ -213,16 +219,19 @@ export default class FormRender extends Component {
         }
       }
       else{
+        var   setValue = '';
+        setValue =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
+        console.log(setValue)
         Fields.push(<FormItem key={el.id} className='item' label={this.label(el.label)}
                               {...formItemLayout}>
           <RadioGroup
-            defaultValue ={value}
+            defaultValue ={setValue+''}
             disabled={el.isReadonly}
+            dataSource={el.options}
             {...init(el.name, {
-              initValue:value,
+              initValue: setValue+'',
               rules: [{ required: el.isRequired, message: "请选择"+el.label }]
             })}
-            dataSource={el.options}
           >
           </RadioGroup>
         </FormItem>)

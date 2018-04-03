@@ -53,7 +53,7 @@ export default class ProdSeachList extends Component {
     super(props);
     this.state = {
       value:{
-        productCode:'',
+        productCode	:'',
         name:'',
         productType	:'',
         status:'',
@@ -72,6 +72,11 @@ export default class ProdSeachList extends Component {
   //编辑
   editItem = (record) => {
     hashHistory.push(`product/searchedit/${record.id}`)
+  }
+  //状态
+  status(value, index, record){
+
+    return`${record.status=='0'?'生效':(record.status=='1'?'未生效':'失效')}`
   }
   //金额范围
   moneyRange(value, index, record) {
@@ -208,8 +213,10 @@ export default class ProdSeachList extends Component {
                           placeholder="请选择"
                           style={{ width: '175px' }}
                         >
-                          <Option value="yes">生效</Option>
-                          <Option value="no">未生效</Option>
+                          <Option value="1">生效</Option>
+                          <Option value="0">未生效</Option>
+                          <Option value="2">失效</Option>
+                          
                         </Select>
                       </IceFormBinder>
                       <IceFormError name="status" />
@@ -246,7 +253,7 @@ export default class ProdSeachList extends Component {
               <Table.Column title="产品编号" dataIndex="productCode" width={160} />
               <Table.Column title="产品名称" dataIndex="name" width={200} />
               <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
-              <Table.Column title="状态" dataIndex="status" width={100} />
+              <Table.Column title="状态" cell={this.status} width={100} />
               <Table.Column title="产品类型" dataIndex="productType" width={160} />
               <Table.Column title="生效期限" cell={this.timeRange} width={250} />
               <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
