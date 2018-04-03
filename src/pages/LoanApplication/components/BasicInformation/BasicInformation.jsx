@@ -45,7 +45,6 @@ class BasicInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      optionList:[],
       productId:this.props.params.id,
       dataSource:[],
       month:1
@@ -53,19 +52,26 @@ class BasicInformation extends Component {
     this.field = new Field(this)
   }
   componentWillMount() {
+    this.actionType()
     this.getProductNum()
   }
-  checkNum(rule, value, callback) {
-    if(value && value.length>6) {
-      callback("请输入合适的金额")
-    }else {
-      callback();
+
+  actionType() {
+    const { productId } = this.state;
+    if(productId) {
+      this.changeInfomation(productId)
+    } else {
+      this.props.actions.search({isFixed:true});
     }
   }
+
+  changeInfomation(productId) {
+    alert(productId)
+  }
+
   getProductNum() {
     Req.getProductNumApi()
     .then((res) => {
-      console.log(res)
       const { data } = res;
       const { list } = data;
       let dataSource = list.map((el) => {
@@ -95,7 +101,6 @@ class BasicInformation extends Component {
 
   //增加进件
   addLoanApi(parmas) {
-    const { productId } = this.state;
     Req.addLoanApi(parmas)
     .then((data) => {
       let { code, message } = data;
@@ -128,7 +133,7 @@ class BasicInformation extends Component {
     });
   }
   render() {
-    const { pageData } = this.props;
+    const { list=[] } = this.props.pageData;
     const { init } = this.field;
 
     let Mod;
@@ -203,7 +208,7 @@ class BasicInformation extends Component {
               field={this.field}>
               <Row  align="top" wrap>
                 {
-                  pageData.length>0 && pageData[0].fields.map((ele,index) => (
+                  list.length>0 && list[0].fields.map((ele,index) => (
                     <Col span={6} key={index}>
                       <FormItem {...formItemLayout} label={labels(ele.label)}>
                         {
