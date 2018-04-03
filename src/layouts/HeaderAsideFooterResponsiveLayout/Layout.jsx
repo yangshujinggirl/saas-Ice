@@ -186,7 +186,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                 />
               </a>
             )}*/}
+            <div className="pc-menu">
             <img id='logo' src={logoImg} alt=""/>
+            </div>
             <Menu
               inlineCollapsed={this.state.collapse}
               mode="inline"
