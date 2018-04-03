@@ -12,8 +12,6 @@ import './UserLogin.scss';
 const { Row, Col } = Grid;
 
 // 寻找背景图片可以从 https://unsplash.com/ 寻找
-const backgroundImage1 =
-  'https://img.alicdn.com/tfs/TB1zsNhXTtYBeNjy1XdXXXXyVXa-2252-1500.png';
 const backgroundImage = require('./admin-login-bg.png');
 
 import {hashHistory} from 'react-router';

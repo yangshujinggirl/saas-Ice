@@ -16,71 +16,6 @@ const autoGenAsideNavs = [{
 // <!-- auto generated navs end -->
 
 const customHeaderNavs = [];
-// const customAsideNavs = [{
-//     value: {
-//       icon: "&#xe643;",
-//       id: 13,
-//       name: "产品管理",
-//       value: "/product"
-//     },
-//     leaf: [{
-
-//         value: {
-//           icon: "&#xe643;",
-//           id: 13,
-//           name: "产品查询",
-//           value: "/product/search"
-//         },
-//         leaf: []
-//       },
-//       {
-//         value: {
-//           icon: "&#xe643;",
-//           id: 13,
-//           name: "新增产品",
-//           value: "/product/add"
-//         },
-//         leaf: []
-//       },
-//       {
-//         value: {
-//           icon: "&#xe643;",
-//           id: 13,
-//           name: "资料清单",
-//           value: "/product/filelist"
-//         },
-//         leaf: []
-//       }
-//     ]
-//   },
-//   {
-//     value: {
-//       icon: "&#xe643;",
-//       id: 13,
-//       name: "业务配置",
-//       value: "/font"
-//     },
-//     leaf: [{
-//         value: {
-//           icon: "&#xe643;",
-//           id: 13,
-//           name: "字段配置",
-//           value: "/font/config"
-//         },
-//         leaf: []
-//       },
-//       {
-//         value: {
-//           icon: "&#xe643;",
-//           id: 13,
-//           name: "流程配置",
-//           value: "/font/config1"
-//         },
-//         leaf: []
-//       },
-//     ],
-//   }
-// ];
 const customAsideNavs = [];
 
 import { Storage } from './base/utils';
@@ -88,7 +23,7 @@ import myCustomNavs from './_navs';
 
 let leafs = Storage.get('MENUS') || [];
 
-// leafs = [];
+leafs = [];
 
 function transform(navs) {
   // custom logical

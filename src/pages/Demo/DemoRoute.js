@@ -3,7 +3,7 @@ import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterRe
 
 export default {
   path: "/demo",
-  name: 'DEMO模块',
+  name: 'DEMO',
   childRoutes: [{
     path: 'add',
     name: '新增',

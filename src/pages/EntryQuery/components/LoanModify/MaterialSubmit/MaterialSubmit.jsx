@@ -129,6 +129,10 @@ class MaterialSubmit extends Component {
       if(typeof lastTargetIndex != 'undefined'){
         dataSource[lastTargetIndex].value = undefined;
       }
+       if(typeof d.sourceId != 'undefined'){
+        let lastDragCard = this.findFile(d.sourceId);
+        // lastDragCard.file.isUsed = false;
+      }
       dragCard.file.isUsed = true;
       d.value = dragCard.file.imgURL;
       d.sourceIndex = dragCard.index;

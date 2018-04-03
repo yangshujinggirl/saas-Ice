@@ -4,15 +4,23 @@ import IceImg from '@icedesign/img';
 import Layout from '@icedesign/layout';
 import Menu from '@icedesign/styled-menu';
 import FoundationSymbol from 'foundation-symbol';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import { headerNavs } from './../navs';
 import Logo from './Logo';
-import {Recrysuve} from '../base/utils';
+import {Recrysuve, Storage} from '../base/utils';
+import AccountReq from '../pages/Account/reqs/AccountReq';
 
 export default class Header extends PureComponent {
   getBreadCrumb(data,pathname){
     let result = Recrysuve(data, pathname, 'value', 'leaf', 'breadcrumb')[0]
     return result;
+  }
+  logout(e){
+    e.preventDefault();
+    
+    AccountReq.logout().then((res) => {
+      hashHistory.push('/account');
+    })
   }
   render() {
     let { width, theme, isMobile, menus, pathname, routes } = this.props;
@@ -24,6 +32,8 @@ export default class Header extends PureComponent {
         routes[0].name = 'DASHBOARD';
         routes = [routes[0]];
     }
+
+    //获取登陆用户信息
 
     return (
       <Layout.Header
@@ -85,14 +95,14 @@ export default class Header extends PureComponent {
                       boxShadow: '0 0 2px #ccc'
                     }}
                   >
-                    <Menu.Item>
+                    {/*<Menu.Item>
                       <a href="/">信息中心</a>
                     </Menu.Item>
                     <Menu.Item>
                       <a href="/">设置</a>
-                    </Menu.Item>
+                    </Menu.Item>*/}
                     <Menu.Item>
-                      <a href="/">退出</a>
+                      <a href="#" onClick={this.logout}>退出</a>
                     </Menu.Item>
                   </Menu>
                 </div>
@@ -154,7 +164,7 @@ class UserPanel extends Component {
           cursor: hasChildren ? 'pointer' : 'default'
         }}
       >
-        <div className="avatar" style={{ float: 'left' }}>
+        <div className="avatar" style={{ float: 'left', display: 'none' }}>
           <IceImg
             height={size}
             width={size}
