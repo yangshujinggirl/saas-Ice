@@ -51,9 +51,10 @@ export const search = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
-
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res.data }))
+      if(res.code == 200) {
+        dispatch(fetchSuccess({ pageData: res.data }))
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

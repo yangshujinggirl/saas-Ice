@@ -163,7 +163,7 @@ class BaseReq {
   }
 
   _showMsg(type, msg, tick) {
-    // 'success', 'error', 'prompt', 'help', 'loading'  
+    // 'success', 'error', 'prompt', 'help', 'loading'
     Feedback.toast.show({
       type: type,
       content: msg,

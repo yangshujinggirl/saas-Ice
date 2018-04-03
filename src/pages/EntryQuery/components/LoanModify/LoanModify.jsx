@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import  classNames from  'classnames'
-import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
+import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload, Loading} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
 } from '@icedesign/form-binder';
@@ -32,7 +32,8 @@ export default class LoanModify extends Component {
     this.field = new Field(this);
     this.state = {
       index : 0,
-      tableList:[]
+      tableList:[],
+      visible:false
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -79,7 +80,25 @@ export default class LoanModify extends Component {
   }
   //submit 提交
   submit = (e)=>{
-
+    e.preventDefault();
+    this.field.validate((errors, values) => {
+      if (errors) {
+        console.log("Errors in form!!!");
+        return;
+      }
+      console.log("Submit!!!");
+      // console.log(values);
+      for(var key in values){
+        if(values[key] != undefined){
+          if(values[key] != 'undefined'){
+            this.queryCache[key] = values[key];
+          }
+        }
+      }
+      this.queryCache.status = 'submit'
+      console.log(this.queryCache)
+      this.props.actions.saveFrom(this.queryCache);
+    });
   }
   //save
   save = (e)=>{
@@ -99,33 +118,18 @@ export default class LoanModify extends Component {
         }
       }
       console.log(this.queryCache)
+      this.queryCache.status = 'save'
       this.props.actions.saveFrom(this.queryCache);
+
     });
   }
+
   //cancel 提交
   cancel = (e)=>{
     e.preventDefault();
     hashHistory.push('/entryQuery');
   }
-  //调用秒拒功能
-  refuse = (name)=>{
-    if(name == 'coBorrower.name' || name == 'coBorrower.idNo'|| name == 'coBorrower.mobile'){
-      const  coBorrowerName = this.field.getValue('coBorrower.name');
-      const  coBorrowerIdNo = this.field.getValue('coBorrower.idNo');
-      const  coBorrowerMobile = this.field.getValue('coBorrower.mobile');
-      if(coBorrowerName && coBorrowerIdNo && coBorrowerMobile){
-        alert('123')
-      }
-    }
-    if(name == 'guarantor.name' || name == 'guarantor.idNo'|| name == 'guarantor.mobile'){
-      const  guarantorName = this.field.getValue('guarantor.name');
-      const  guarantorIdNo = this.field.getValue('guarantor.idNo');
-      const  guarantorMobile = this.field.getValue('guarantor.mobile');
-      if(guarantorName && guarantorIdNo && guarantorMobile){
-        alert('123')
-      }
-    }
-  }
+
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
@@ -135,11 +139,7 @@ export default class LoanModify extends Component {
     const borrowerName = this.field.getValue('borrowerName');
     tableList.push({id:'borrowerName',title:12313})
     return (
-        <IceFormBinderWrapper
-          value={this.state}
-          onChange={this.formChange}
-          style
-        >
+        <Loading visible={this.state.visible} shape="flower">
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
             <Row  className='modify-page'>
               <Col span="3">
@@ -150,11 +150,12 @@ export default class LoanModify extends Component {
                 </div>
               </Col>
               <Col span="21" className='modify-form'>
+
                 <Form
                   labelAlign= "left"
                   field={this.field}
                 >
-                  <FormRender {...this.props} data={details.list}></FormRender>
+                  <FormRender {...this.props} data={details.list} init = {init} field={this.field}></FormRender>
                   <div className='info' id='material'>
                     <h4>材料提交</h4>
                     <MaterialSubmit {...this.props} data={tableList}></MaterialSubmit>
@@ -165,11 +166,12 @@ export default class LoanModify extends Component {
                     </div>
                   </div>
                 </Form>
+
               </Col>
             </Row>
           </IceContainer>
+        </Loading>
 
-        </IceFormBinderWrapper>
     );
   }
 }

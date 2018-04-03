@@ -99,16 +99,9 @@ class BasicInformation extends Component {
     Req.addLoanApi(parmas)
     .then((data) => {
       let { code, message } = data;
-      if(code == 200 ) {
+      if(data && code == 200 ) {
         let { id } = data.data;
-        hashHistory.push(`/loanapplication/config/${id}`)
-      } else {
-        Dialog.confirm({
-          content: message,
-          locale: {
-            ok: "确认"
-          }
-        });
+        hashHistory.push(`/entryQuery/update/${id}`)
       }
     },(error)=> {
       console.log(error)
@@ -145,8 +138,9 @@ class BasicInformation extends Component {
           return <Select
                     style={styles.select}
                     dataSource={this.state.dataSource}
+                    disabled={ele.isReadonly}
                     {...init(ele.name,
-                      { rules:[{ required: true, message: `${ele.label}不能为空` }]}
+                      { rules:[{ required: ele.isRequired, message: `${ele.label}不能为空` }]}
                     )}>
                     {
                       ele.options && ele.options.map((opt,ide) => (
@@ -160,9 +154,10 @@ class BasicInformation extends Component {
                   style={styles.select}
                   placeholder={ele.type}
                   htmlType='text'
+                  disabled={ele.isReadonly}
                   {...init(ele.name,
                     {
-                      rules:[{ required: true, message:`${ele.label}不能为空` }],
+                      rules:[{ required: ele.isRequired, message:`${ele.label}不能为空` }],
                       props:{ onBlur:()=> this.warnTips(ele.name) }
                     }
                   )}
@@ -170,6 +165,7 @@ class BasicInformation extends Component {
         case 'DECIMAL':
           return <Input
                   trim
+                  disabled={ele.isReadonly}
                   style={styles.select}
                   hasLimitHint={true}
                   placeholder={ele.type}
@@ -177,7 +173,7 @@ class BasicInformation extends Component {
                   {...init(ele.name,
                     {
                       rules:[
-                        { required: true, message:`${ele.label}不能为空` ,min:2},
+                        { required: ele.isRequired, message:`${ele.label}不能为空`},
                         { validator: this.checkNum }
                       ]
                     }
@@ -185,13 +181,14 @@ class BasicInformation extends Component {
                 />
         case 'INT':
           return <NumberPicker
+                  disabled={ele.isReadonly}
                   value={this.state.month}
                   type="inline"
                   step={2}
                   min={1}
                   max={12}
                   {...init(ele.name,
-                    { rules:[{ required: true, message: `${ele.label}不能为空` }] }
+                    { rules:[{ required: ele.isRequired, message: `${ele.label}不能为空` }] }
                   )}
                 />
       }

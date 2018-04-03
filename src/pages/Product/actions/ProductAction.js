@@ -67,9 +67,12 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      dispatch(fetchSuccess({ pageData: res }))
+      if(res.code == 200) {
+        dispatch(fetchSuccess({ pageData: res.data }))
+      } 
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
+      console.log("234567");
     })
   }
 }
