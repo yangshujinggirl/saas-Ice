@@ -69,7 +69,7 @@ export default class AdFont extends Component {
         if (this.state.id) {
             FontConfigReq.changPageName(reqDate,this.state.id).then((data) => {
                 let res = data.data;
-                if (res.code == '200') {
+                if (data.code == 200) {
                     this.props.router.push(`/font/set?id=${this.state.id}`)  
                 } else {
                     Dialog.alert({
@@ -83,7 +83,7 @@ export default class AdFont extends Component {
             // 提交字段
             FontConfigReq.save(reqDate).then((data) => {
                 let res = data.data;
-                if (res.code == '200') {
+                if (data.code == 200) {
                     this.props.router.push(`/font/set?id=${res.id}`)
                 } else {
                     Dialog.alert({
@@ -155,9 +155,10 @@ export default class AdFont extends Component {
             })
         })
         if (this.state.id) {
-            let localRes = Storage.get('configCode')            
+            let localRes = Storage.get('configCode')           
             this.setState({
                 resDate: localRes,
+                pageName: localRes.name
             })
         } else {
             FontConfigReq.getDetail('isFixed=false').then((data) => {
