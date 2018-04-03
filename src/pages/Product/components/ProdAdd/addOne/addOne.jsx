@@ -44,14 +44,15 @@ export default class CreateActivityForm extends Component {
             tenantId:'12',
             name:'',
             contractDisplayName:'',
-            prodType:'',
+            productType:'',
             serviceFormType:null,
             collectionDetailListId:'',
             effectiveDate:[],
             isPermittedDiscount:'',
             status:'',
+            enable:1,
             isRetainage:'',
-            purposeOfLoan:['buyCar'],
+            purposeOfLoan:['BUY_CAR'],
             guaranteeMethodType:['CREDIT'],
             paymentOfLoan:'',
             description:'',
@@ -62,16 +63,16 @@ export default class CreateActivityForm extends Component {
             loanTermRangeMax:'',
             loanPercentageMin:'',
             loanPercentageMax:'',
-            interestLoanRateChange:['Allow_Change_Rate_Adjust'],
+            interestLoanRateChange:['ALLOW_CHANGE_RATE_ADJUST'],
             interestRateRules:'',
             interestRateModel:'',
             interestRatesRangeMin:'',
             interestRatesRangeMax:'',
             interestRateBaseDate:'',
-            repaymentAccountChange:['Allow_Change'],
+            repaymentAccountChange:['ALLOW_CHANGE'],
             repaymentPeriodFrequency:['MONTH'],
             repaymentDateChange:'true',
-            gancePeriodChange:'true',
+            gracePeriodChange:'true',
             repaymentMethodChange:'true',
             isEarlyRepaymentAllowed:'true',
             prepaymentAmountMin:'',
@@ -99,13 +100,14 @@ export default class CreateActivityForm extends Component {
           tenantId:value.tenantId,
           name:value.name,
           contractDisplayName:value.contractDisplayName,
-          prodType:value.prodType,
+          productType:value.productType,
           serviceFormType:value.serviceFormType,
           collectionDetailListId:value.collectionDetailListId,
           effectiveDate:value.effectiveDate,
           expirationDate:value.expirationDate,
           isPermittedDiscount:value.isPermittedDiscount,
           status:value.status,
+          enable:value.enable,
           isRetainage:value.isRetainage,
           purposeOfLoan:value.purposeOfLoan,
           guaranteeMethodType:value.guaranteeMethodType,
@@ -127,7 +129,7 @@ export default class CreateActivityForm extends Component {
           repaymentAccountChange:value.repaymentAccountChange,
           repaymentPeriodFrequency:value.repaymentPeriodFrequency,
           repaymentDateChange:value.repaymentDateChange,
-          gancePeriodChange:value.gancePeriodChange,
+          gracePeriodChange:value.gracePeriodChange,
           repaymentMethodChange:value.repaymentMethodChange,
           isEarlyRepaymentAllowed:value.isEarlyRepaymentAllowed,
           prepaymentAmountMin:value.prepaymentAmountMin,
@@ -259,10 +261,10 @@ export default class CreateActivityForm extends Component {
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>产品类型</label>
                   <IceFormBinder
-                    name="prodType"
+                    name="productType"
                   >
                     <Select
-                      name="prodType"
+                      name="productType"
                       required 
                        message="必填"
                       placeholder="请选择"
@@ -276,7 +278,7 @@ export default class CreateActivityForm extends Component {
                     })}
                     </Select> 
                   </IceFormBinder>
-                  <IceFormError name="prodType"/>
+                  <IceFormError name="productType"/>
                 </Col>
                 
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
@@ -346,7 +348,7 @@ export default class CreateActivityForm extends Component {
                     >
                       <Option value="0">生效</Option>
                       <Option value="1">未生效</Option>
-                      <Option value="2">实效</Option>
+                      <Option value="2">失效</Option>
                     </Select>
                   </IceFormBinder>
                   <IceFormError name="status"/>
@@ -722,7 +724,7 @@ export default class CreateActivityForm extends Component {
               <Row wrap>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>宽限期变更</label>
                 <Col style={styles.filterCol}>
-                <IceFormBinder name="gancePeriodChange" >
+                <IceFormBinder name="gracePeriodChange" >
                 <RadioGroup
                       className="next-form-text-align"
                       dataSource={[
@@ -732,7 +734,7 @@ export default class CreateActivityForm extends Component {
                     />
                 </IceFormBinder>
                     <div>
-                      <IceFormError name="gancePeriodChange" />
+                      <IceFormError name="gracePeriodChange" />
                     </div>
                   
                 </Col>

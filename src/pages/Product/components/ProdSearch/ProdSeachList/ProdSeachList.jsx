@@ -31,9 +31,6 @@ const { Row, Col } = Grid;
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
-//组件引入
-// import SearchEditer from './searchEditer/searchEditer';
-
 
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
@@ -80,8 +77,6 @@ export default class ProdSeachList extends Component {
 
   //编辑
   editItem = (record) => {
-    // let {actions} = this.props;
-    // this.props.actions.edit(this.props.params.id)
     hashHistory.push(`product/searchedit/${record.id}`)
   }
   renderOperator = (value, index, record) => {
@@ -104,11 +99,9 @@ export default class ProdSeachList extends Component {
   
 
   componentWillMount(){ 
-    // this.fech();
   }
   componentDidMount() {
     console.log(this.props)
-    // this.fech();
   }
   fech = () =>{
     this.props.actions.search();
@@ -124,9 +117,7 @@ export default class ProdSeachList extends Component {
       }
       // 提交当前填写的数据
       this.props.actions.search(value);//返回符合条件的数据
-      // this.setState({
-      //   this.state.dataSource
-      // })
+      
     });
   };
   //页数变化
@@ -140,17 +131,23 @@ export default class ProdSeachList extends Component {
 
 
   render() {
-  const { pageData } = this.props;
-  const { data } = pageData;
-  console.log(pageData)
-  const { list,total,limit } = data !== undefined && data;
-  console.log(list)
+  let { pageData } = this.props;
+  let { data } = pageData;
+  let { list,total,limit } = data ||{};
       list&&list.map((item,i) => {
         let temp = [];
+        let principalAmounts = ''//金额范围
+        let loanTermRanges='' //期限范围
+        let loanPercentages = ''//贷款比率
+        let interestRatesRanges ='' //执行年利率
         item.times && item.times.map((ditem, j) => {
           temp.push(ditem);
         })
-        item.times = temp.join('~')
+        item.principalAmounts=item.principalAmountMin+'~'+item.principalAmountMax;
+        item.loanTermRanges=item.loanTermRangeMin+'~'+item.loanTermRangeMax;
+        item.loanPercentages=item.loanPercentageMin+'~'+item.loanPercentageMax;
+        item.interestRatesRanges=item.interestRatesRangeMin+'~'+item.interestRatesRangeMax;
+        item.timesStr = temp.join('~')
         })
     return (
 
@@ -268,13 +265,13 @@ export default class ProdSeachList extends Component {
               <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
               <Table.Column title="状态" dataIndex="status" width={100} />
               <Table.Column title="产品类型" dataIndex="productType" width={160} />
-              <Table.Column title="生效期限" dataIndex="times" width={250} />
-              <Table.Column title="尾款产品" dataIndex="areaId" width={120} />
-              <Table.Column title="资金方" dataIndex="createdUser" width={120} />
-              <Table.Column title="金额范围(元)" dataIndex="provinceId" width={120} />
-              <Table.Column title="期限范围(月)" dataIndex="" width={120} />
-              <Table.Column title="贷款比率(%)" dataIndex="" width={120} />
-              <Table.Column title="执行年利率范围(%)" dataIndex="" width={160} />
+              <Table.Column title="生效期限" dataIndex="timesStr" width={250} />
+              <Table.Column title="尾款产品" dataIndex="isRetainage" width={120} />
+              <Table.Column title="资金方" dataIndex="tenantId" width={120} />
+              <Table.Column title="金额范围(元)" dataIndex="principalAmounts" width={120} />
+              <Table.Column title="期限范围(月)" dataIndex="loanTermRanges" width={120} />
+              <Table.Column title="贷款比率(%)" dataIndex="loanPercentages" width={120} />
+              <Table.Column title="执行年利率范围(%)" dataIndex="interestRatesRanges" width={160} />
               <Table.Column
                 title="操作"
                 cell={this.renderOperator}

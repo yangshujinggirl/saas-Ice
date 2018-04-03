@@ -63,6 +63,7 @@ export default class ProdDetail extends Component {
     let ratesSetting = this.props.formData.ratesSetting || [];//利率设置    
     let repaymentMethodsSetting = this.props.formData.repaymentMethodsSetting ||[];//还款方式设置    
     let prepaymentSetting = this.props.formData.prepaymentSetting ||[];//提前还款设置
+    let productScopes =this.props.formData.productScopes ||[]
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -106,17 +107,17 @@ export default class ProdDetail extends Component {
                 
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>允许贴息：</label>
-                  <span >{product.isPermittedDiscount}</span>
+                  <span >{product.isPermittedDiscount==true?'是':'否'}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>状态：</label>
-                  <span >{product.status}</span>
+                  <span >{product.status=='0'?'生效':(product.status=='1'?'未生效':'失效')}</span>
                 </Col>
               </Row>
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>尾款产品：</label>
-                  <span >{product.isRetainage}</span>
+                  <span >{product.isRetainage==true?'是':'否'}</span>
                 </Col>
               </Row>
               <Row wrap>
@@ -149,7 +150,7 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款期限变更：</label>
-                <span >{product.loanTermChange}</span>
+                <span >{product.loanTermChange+''}</span>
               </Col>
             </Row>
             <Row wrap>
@@ -195,7 +196,7 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款利率变更：</label>
-                <span >{product.title}</span>
+                <span >{''+product.interestLoanRateChange}</span>
               </Col>
             </Row>
             <Row wrap>
@@ -239,32 +240,32 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款账户变更：</label>
-                <span >{product.repaymentAccountChange}</span>
+                <span >{product.repaymentAccountChange+''}</span>
               </Col>
             </Row>
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款周期：</label>
-                <span >{product.repaymentPeriodFrequency}</span>
+                <span >{product.repaymentPeriodFrequency+''}</span>
               </Col>
             </Row>
 
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款日变更：</label>
-                <span >{product.repaymentDateChange}</span>
+                <span >{product.repaymentDateChange==true?'是':'否'}</span>
               </Col>
             </Row>
             <Row wrap>
               <Col style={styles.filterCol}>
               <label style={styles.filterTitle}>宽限期变更：</label>              
-              <span >{product.gancePeriodChange}</span>
+              <span >{product.gracePeriodChange==true?'是':'否'}</span>
               </Col>
             </Row>
             <Row wrap>
               <Col style={styles.filterCol}>
               <label style={styles.filterTitle}>还款方式变更：</label>              
-              <span >{product.repaymentMethodChange}</span>
+              <span >{product.repaymentMethodChange==true?'是':'否'}</span>
               </Col>
             </Row>
             <div className="table-title">还款方式设置</div>
@@ -282,7 +283,7 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>提前还款：</label>
-                <span >{product.title}</span>
+                <span >{product.isEarlyRepaymentAllowed==true?'是':'否'}</span>
               </Col>
             </Row>
             <Row wrap>
@@ -324,12 +325,13 @@ export default class ProdDetail extends Component {
             <div className="f-box">
             <div className="table-title">品牌/车厂/车系/车型</div>
             <Table
+              dataSource={productScopes}
                 hasHeader
                 className="table"
                 primaryKey="id"
               >
-                <Table.Column title="类型" dataIndex=""/>
-                <Table.Column title="名称" dataIndex=""/>
+                <Table.Column title="类型" dataIndex="relatedName"/>
+                <Table.Column title="名称" dataIndex="relatedPath1"/>
               </Table>
             </div>
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import {hashHistory} from 'react-router';
+
 import {
-  Form,Input,Button,Checkbox,Select,DatePicker,Switch,Radio,Grid,Field,
+  Form,Input,Button,Checkbox,Select,DatePicker,Switch,Radio,Grid,Field,Dialog,
   Table,Transfer ,
 } from '@icedesign/base';
 
@@ -56,21 +58,27 @@ export default class addTwo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value:[],
+      value:{
+          productScopes: []
+          },
       value1:'carBrand',
-      value2:'carGroup'
+      value2:'carGroup',
+      visible: false
     };
   }
 
   componentDidMount(){
    console.log(this.props)
   }
-  changeView = () =>  {
-  let {actions} = this.props
-    actions.save();
-    // this.props.changeView('addThree')
+  onsubmit = () =>  {
+    let {actions,params} = this.props;
+    let id = params.id;
+    actions.productsave(this.state.value,id);
     
+    hashHistory.push('/product/search')
+  // this.popupConfirm
   }
+  
   onFormChange=()=>{
     this.setState({
       value
@@ -148,8 +156,14 @@ export default class addTwo extends Component {
            
            
             <div className="next-btn-box">
-              <div className="next-btn-lx" onClick={this.changeView}>保存</div>
+              <div className="next-btn-lx" onClick={this.onsubmit}>保存</div>
             </div>
+            <Dialog
+              visible={this.state.visible}
+              onOk={this.onOK}
+              onClose={this.onClose}
+              >
+              </Dialog>
           </IceContainer>
         </div>
       </IceFormBinderWrapper>
