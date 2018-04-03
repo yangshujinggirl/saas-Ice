@@ -157,7 +157,7 @@ export default class EnhanceTable extends Component {
         <IceContainer>
           <Table
             dataSource={tableData.list}
-            isLoading={tableData.__loading}
+            isLoading={this.props.isFetching}
             className="basic-table"
             style={styles.basicTable}
             hasBorder={false}
