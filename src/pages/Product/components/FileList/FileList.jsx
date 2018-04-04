@@ -76,7 +76,7 @@ export default class FileList extends Component {
 
   //查询
   onSubmit = (data) => {
-    let {actions,pageData} = this.props;
+    let {actions} = this.props;
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
       if (error) {
@@ -106,7 +106,8 @@ export default class FileList extends Component {
   deleteRow =(idx) => {
     let { actions } = this.props;
     actions.fileremove(idx);
-    // location.reload()
+    actions.filesearch();
+
   }
 
   addNewItem=()=>{

@@ -47,10 +47,15 @@
 
 .next-breadcrumb {
     display: block;
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 22px;
 }
 
 .next-breadcrumb .next-breadcrumb-item {
     display: inline-block;
+    
 }
 
 .next-breadcrumb .next-breadcrumb-item .next-breadcrumb-text {
@@ -60,6 +65,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     transition: all .2s ease-out;
+    font-size: 16px;
 }
 
 .next-breadcrumb .next-breadcrumb-item .next-breadcrumb-separator {
@@ -270,12 +276,13 @@
 
 html,
 body {
-    background-color: $ice-body-bg;
+    background-color:#f2f2f2; //$ice-body-bg;
     -webkit-font-smoothing: antialiased;
     font-family: "Microsoft YaHei", "微软雅黑", "Apple LiGothic Medium", "ST Heiti", "WenQuanYi Zen Hei Sharp", sans-serif !important;
 }
 
 .ice-design-header-aside-footer-responsive-layout-#{$theme} {
+    background: #f2f2f2 !important;
     .logo {
         max-width: 340px;
         height: 42px;
@@ -324,6 +331,7 @@ body {
             .ice-design-layout-header-menu .ice-menu {
                 background: $ice-header-menu-bg;
                 color: $ice-header-text-hover-color;
+                // box-shadow: 5px 0 0 5px #f8f8f8 outset;
 
                 a,
                 .user-profile {
@@ -336,7 +344,8 @@ body {
 
                 .ice-menu-item:hover,
                 .ice-menu-item > a:hover {
-                    color: $ice-header-text-hover-color;
+                    // color: $ice-header-text-hover-color;
+                    color: #f0f
                 }
             }
 
@@ -407,13 +416,19 @@ body {
                 color: #7A756B;
                 background-image: linear-gradient(90deg, $ice-aside-menu-item-selected-gradient-left-bg 0%, $ice-aside-menu-item-selected-gradient-right-bg 100%);
             }
-
-            .ice-menu .ice-menu-item > a:hover,
+            //菜单hover时 字体颜色
+            .ice-menu .ice-menu-item > a:hover{
+                color: #ec9d00
+            }
             .ice-menu.ice-menu-horizontal > .ice-menu-item:hover,
             .ice-menu.ice-menu-root > .ice-menu-item > a:hover {
                 color: $ice-aside-text-hover-color;
             }
-
+            //菜单hover时 背景颜色
+            .ice-menu .ice-menu-item-active {
+                background: #fff3e4 !important;
+                color: #ec9d00 !important;
+            }
             .ice-menu:not(.ice-menu-horizontal) .ice-menu-item-selected {
                 border-radius: 0;
                 background-image: linear-gradient(90deg, $ice-aside-menu-item-selected-gradient-left-bg 0%, $ice-aside-menu-item-selected-gradient-right-bg 100%);
@@ -470,7 +485,7 @@ body {
                     color: $ice-aside-menu-item-selected-text-color;
                     text-align: left;
                 }
-
+                
                 .ice-menu .ice-menu-item:hover,
                 .ice-menu.ice-menu-horizontal > .ice-menu-item:hover,
                 .ice-menu.ice-menu-root > .ice-menu-item:hover {
@@ -669,7 +684,16 @@ body {
 }
 
 .ice-menu {
-    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-size: 13px;
+    color: #1B2630;
+    letter-spacing: 0;
+    line-height: 14px;
+    .ice-menu-item{
+        color: #7A756B !important; 
+        background: #f8f8f8
+    }
+   
 }
 
 .ice-menu .ice-menu-submenu-inline > .ice-menu-submenu-title::after {
@@ -705,3 +729,108 @@ body {
     clear: both;
     content: ''
 }
+//菜单hover的颜色
+
+//导航标题
+.legend{
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    color: #1B2630;
+}
+//
+.next-row{
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #151515;
+    letter-spacing: 0;
+    line-height: 20px;
+}
+//多选框文字
+.next-checkbox-label{
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #151515;
+    letter-spacing: 0;
+    line-height: 20px;
+}
+//输入框的长度
+.next-input {
+    //width: 220px;
+    //height: 34px;
+color: #151515
+    
+}
+//下拉框的长度
+.next-select{
+//     width: 220px !important;
+//     height: 34px !important;
+color: #151515
+}
+//表格.next-table .next-table-inner .next-table-header 
+.next-table .next-table-inner .next-table-header .next-table-header-inner{
+    table{
+        border:1px solid #F6DCA9 ;
+        border-collapse: collapse;
+        border-spacing: 0;
+        th{
+            background:  #FDF4E3 !important;
+            border:1px solid #F6DCA9 ;
+            font-family: PingFangSC-Medium;
+            font-size: 14px;
+            color: #000000;
+             td{
+                border-color: #F6DCA9 ;
+                background: #fff !important
+            }
+        }
+    }
+   
+}
+.next-table .next-table-inner .next-table-body {
+    table{
+        border:1px solid #F6DCA9 ;
+        border-collapse: collapse;
+        border-spacing: 0;
+        tr {
+            td{
+            border:1px solid #F6DCA9 !important ;
+            background: #fff !important
+            }
+        }
+       
+       
+    }
+}
+//表格鼠标划过
+.next-table .next-table-inner .next-table-body .hovered:hover{
+    td{
+        background: #FFFAF1 !important ;
+    }
+}
+//表格内的操作按钮
+.next-table {
+    td {
+        .next-table-cell-wrapper{
+            button{
+                background: #fff;
+                color: #1AA8F0 !important;
+            }
+        }
+        .filter-table-operation{
+            a{
+                background: #fff;
+                color: #1AA8F0 !important;
+            }
+        }
+    }
+}
+//翻页按钮
+
+//菜单选中状态的hover
+.ice-design-header-aside-footer-responsive-layout-light.ice-design-layout .ice-design-layout-aside .ice-menu-item-selected:hover{
+    background: #ec9d00 !important
+}
+.ice-design-header-aside-footer-responsive-layout-light.ice-design-layout .ice-design-layout-aside .ice-menu-item-selected > a:hover{
+    color: #fff !important;
+}
+

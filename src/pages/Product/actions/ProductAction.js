@@ -19,7 +19,6 @@ function fetchStart() {
  * @param data 成功后的数据
  */
 function fetchSuccess(data) {
-  console.log(data)
   return {
     type: T.FETCH_SUCCESS,
     ...data,
@@ -100,7 +99,7 @@ export const productsave = (data,id) => {
 
     Req.productsave(data,id).then((res) => {
       if(!res || res.code != 200) return;
-      hashHistory.push(`/product/addthree/${id}`)
+      // hashHistory.push(`/product/addthree/${id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -223,6 +222,8 @@ export const fileremove = (id) => {
 
     Req.fileremove(id).then((res) => {
       dispatch(fetchSuccess({delete: true}))
+      //filesearch()
+      filesearch()
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

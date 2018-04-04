@@ -82,6 +82,7 @@ export default class DiaLog extends Component {
   }
 
   removeRow(id, idx) {
+    let fileList = this.state.value.fileList
     if(!id){
       // 不存在id即为新增加的行，不调用接口直接删除
       let tempData = this.props.editData;
@@ -90,7 +91,10 @@ export default class DiaLog extends Component {
     }else {
       ProductReq.fileRemoveDes(id).then((res) => {
         if(!res || res.code != 200) return;
-        this.setState({ fileList });
+        let tempData = this.props.editData;
+        tempData.collectionDetails.splice(idx, 1);
+        this.props.actions.changeFileDetail(tempData);
+        // this.setState({ fileList });
       })
     }
   }
