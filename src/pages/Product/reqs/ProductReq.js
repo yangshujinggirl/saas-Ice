@@ -77,7 +77,7 @@ class ProductReq extends CurdReq {
   }
   return super.fetchData(options);
 }
-//htmlName
+//页面名称
 htmlName(data) {
   var url =this._host + `/screen-schemes`;
   let options = {
