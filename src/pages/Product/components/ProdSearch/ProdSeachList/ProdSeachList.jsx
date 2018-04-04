@@ -154,7 +154,7 @@ Order=(dataIndex,order)=>{
             onChange={this.onFormChange}
           >
             <div>
-              <legend style={styles.legend}  >
+              <legend style={styles.legend}  className="legend" >
                 <span style={styles.legLine}></span>查询
               </legend>
               <div style={styles.fieldBox}>
@@ -166,7 +166,7 @@ Order=(dataIndex,order)=>{
                     <IceFormBinder
                       name="productCode"
                     >
-                      <Input style={{ width: '175px' }} placeholder="产品编号" />
+                      <Input style={{ width: '175px' }} placeholder="产品编号"  className="custom-input"/>
                     </IceFormBinder>
                     <IceFormError name="productCode" />
                   </Col>
@@ -177,7 +177,7 @@ Order=(dataIndex,order)=>{
                     <IceFormBinder
                       name="name"
                     >
-                      <Input style={{ width: '175px' }} placeholder="产品名称" />
+                      <Input style={{ width: '175px' }} placeholder="产品名称"  className="custom-input"/>
                     </IceFormBinder>
                     <IceFormError name="name" />
                   </Col>
@@ -192,6 +192,7 @@ Order=(dataIndex,order)=>{
                        <Select
                           placeholder="请选择"
                           style={{ width: '175px' }}
+                          className="custom-select"
                         >
                           <Option value="NEW_CAR_LOAN">新车贷款</Option>
                           <Option value="NEW_CAR_RENTAL">新车租赁</Option>
@@ -216,6 +217,7 @@ Order=(dataIndex,order)=>{
                         <Select
                           placeholder="请选择"
                           style={{ width: '175px' }}
+                          className="custom-select"
                         >
                           <Option value="1">生效</Option>
                           <Option value="0">未生效</Option>
@@ -234,7 +236,7 @@ Order=(dataIndex,order)=>{
                     <IceFormBinder
                       name="contractDisplayName"
                     >
-                      <Input style={{ width: '175px' }} placeholder="合同名称" />
+                      <Input style={{ width: '175px' }} placeholder="合同名称"  className="custom-input"/>
                     </IceFormBinder>
                     <IceFormError name="contractDisplayName" />
                   </Col>

@@ -1,12 +1,12 @@
 /* GLOBAL */
 @font-face {
-    font-family: 'iconfont';
-
-    /* project id 593133 */
-    src: url("//at.alicdn.com/t/font_593133_a4wqz98godcs1yvi.eot");
-    src: url("//at.alicdn.com/t/font_593133_a4wqz98godcs1yvi.eot?#iefix") format("embedded-opentype"), url("//at.alicdn.com/t/font_593133_a4wqz98godcs1yvi.woff") format("woff"), url("//at.alicdn.com/t/font_593133_a4wqz98godcs1yvi.ttf") format("truetype"), url("//at.alicdn.com/t/font_593133_a4wqz98godcs1yvi.svg#iconfont") format("svg");
-}
-
+    font-family: 'iconfont';  /* project id 593131 */
+    src: url('//at.alicdn.com/t/font_593131_stos8mqzmqntgldi.eot');
+    src: url('//at.alicdn.com/t/font_593131_stos8mqzmqntgldi.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_593131_stos8mqzmqntgldi.woff') format('woff'),
+    url('//at.alicdn.com/t/font_593131_stos8mqzmqntgldi.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_593131_stos8mqzmqntgldi.svg#iconfont') format('svg');
+  }
 .icon {
     font-family: 'iconfont';
 }
@@ -44,7 +44,10 @@
  */
 
 /* put your code here*/
-
+.container-block {
+    border-radius:0 !important;
+    padding-bottom: 50px !important;
+}
 .next-breadcrumb {
     display: block;
     font-family: PingFangSC-Medium;
@@ -372,7 +375,7 @@ body {
             background: $ice-aside-bg;
             position: fixed;
             z-index: 3;
-
+            
             // font-size: 14px;
             width: 10% !important;
             box-sizing: border-box;
@@ -392,7 +395,7 @@ body {
             .ice-menu {
                 background: $ice-aside-menu-bg;
                 transition: all 0.3s ease;
-
+                box-shadow: 2px 0 0 #ddd;  
                 &.ice-menu-inline .ice-icon-stable {
                     font-weight: normal;
                 }
@@ -736,6 +739,8 @@ body {
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #1B2630;
+    padding-top:0 !important;
+    padding-left: 0; 
 }
 //
 .next-row{
@@ -753,19 +758,19 @@ body {
     letter-spacing: 0;
     line-height: 20px;
 }
-//输入框的长度
-.next-input {
-    //width: 220px;
-    //height: 34px;
-color: #151515
+//输入框 下拉框
+.next-select,.next-input {
+    color: #151515
     
 }
-//下拉框的长度
-.next-select{
-//     width: 220px !important;
-//     height: 34px !important;
-color: #151515
+//长度，宽度
+.custom-input,.custom-select{
+    width:220px !important;
+    height: 33px !important;
+    font-size: 14px;
 }
+
+
 //表格.next-table .next-table-inner .next-table-header 
 .next-table .next-table-inner .next-table-header .next-table-header-inner{
     table{
@@ -795,6 +800,9 @@ color: #151515
             td{
             border:1px solid #F6DCA9 !important ;
             background: #fff !important
+            }
+            .last{
+                border:1px solid #F6DCA9 !important ;
             }
         }
        

@@ -135,7 +135,7 @@ export default class SearchEdit extends Component {
                       name="name"
                       message="必填"
                     >
-                      <Input placeholder="产品名称" value={name}  />
+                      <Input placeholder="产品名称" value={name}  className="custom-input" />
                     </IceFormBinder>
                     <IceFormError name="name" />
                   </Col>
@@ -149,7 +149,7 @@ export default class SearchEdit extends Component {
                       message="必填"
                       valueFormatter={(date, dateStr) => dateStr}
                     >
-                      <RangePicker format={"YYYY-MM-DD"} style={{width:"200px"}} /> 
+                      <RangePicker format={"YYYY-MM-DD"} style={{width:"200px"}}  className="custom-select"/> 
                     </IceFormBinder>
                    
                   </Col>
@@ -168,6 +168,7 @@ export default class SearchEdit extends Component {
                         <Select
                           placeholder="请选择"
                           style={{ width: '200px' }}
+                          className="custom-select"
                         >
                           <Option value="ONE">1</Option>
                           <Option value="TWO">2</Option>
@@ -186,6 +187,7 @@ export default class SearchEdit extends Component {
                       >
                         <Select
                           style={{ width: '200px' }}
+                          className="custom-select"
                         >
                         <Option value="0">生效</Option>
                         <Option value="1">未生效</Option>
