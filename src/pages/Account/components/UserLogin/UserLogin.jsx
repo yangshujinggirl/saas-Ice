@@ -78,7 +78,8 @@ export default class UserLogin extends Component {
           if(res || res.code == 200){
             Storage.set("USERINFO", res.data);
             setTimeout(function(){
-              hashHistory.push('/dashboard') //跳转首页
+              // hashHistory.push('/dashboard') //跳转首页
+              locaiton.href = '/#/dashboard';
             },500)
           }
         })
