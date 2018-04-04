@@ -187,24 +187,11 @@ fileRemoveDes(id, callback, callbackError) {
   }
 
   //addTwoList
-  addTwoList(type,formData) {
+  addTwoList(type,name) {
     let condition = {
-      brandName:'',
-      seriesId:'',
-      seriesName:''
+      name:name,
+      type:type
     }
-    switch(type){
-      case 'carBrand':{
-        condition.brandName = formData.carbrand;
-      } break;
-      case 'Car':{
-        condition.seriesId = formData.carbrand;
-      }break;
-      case 'carType':{
-        condition.seriesName = formData.carbrand;
-      } break;
-    }
-    console.log(type, formData, condition)
     let options = {
       // url: this._host + '/product/data
       url: this._host + `/cars`,

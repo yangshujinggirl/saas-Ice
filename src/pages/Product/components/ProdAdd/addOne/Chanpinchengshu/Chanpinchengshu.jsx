@@ -28,28 +28,24 @@ export default class Chanpinchengshu extends Component {
     super(props);
 
     this.state = {
-    	percentageSetting: [{}]
+    	percentageSetting: []
     }
   }
 
   addNewList(data){
-    let newData = this.state.percentageSetting;
-    newData = newData.push({})
+    let percentageSetting = this.state.percentageSetting;
+    percentageSetting.push({})
     this.setState({
-      newData
+      percentageSetting
     })
   }
 
   deleteItem(index){
-    let oldData = this.state.percentageSetting
-    if (oldData.length == 1) {
-      return false
-    } else {
-      oldData.splice(index, 1);
+    let percentageSetting = this.state.percentageSetting
+		percentageSetting.splice(index, 1);
       this.setState({
-        oldData
+        percentageSetting
       });
-    }
   }
 
   renderCell1 = (value, index, record, context) => {

@@ -153,6 +153,7 @@ export default class FileList extends Component {
                         placeholder="请选择"
                         style={styles.filterTool}
                         className="custom-select"
+                        hasClear={true}
                       >
                         <Option value="option1">产品进件</Option>
                       </Select>
