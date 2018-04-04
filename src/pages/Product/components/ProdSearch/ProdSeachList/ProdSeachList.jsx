@@ -55,8 +55,8 @@ export default class ProdSeachList extends Component {
       value:{
         productCode	:'',
         name:'',
-        productType	:'',
-        status:'',
+        productType	:undefined,
+        status:undefined,
         contractDisplayName:''
       },
     };
@@ -193,6 +193,7 @@ Order=(dataIndex,order)=>{
                           placeholder="请选择"
                           style={{ width: '175px' }}
                           className="custom-select"
+                          hasClear={true}
                         >
                           <Option value="NEW_CAR_LOAN">新车贷款</Option>
                           <Option value="NEW_CAR_RENTAL">新车租赁</Option>
@@ -218,6 +219,7 @@ Order=(dataIndex,order)=>{
                           placeholder="请选择"
                           style={{ width: '175px' }}
                           className="custom-select"
+                          hasClear={true}
                         >
                           <Option value="1">生效</Option>
                           <Option value="0">未生效</Option>

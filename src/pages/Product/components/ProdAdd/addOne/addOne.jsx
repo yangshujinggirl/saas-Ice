@@ -79,10 +79,10 @@ export default class CreateActivityForm extends Component {
             prepaymentPeriodsLimit:'',
             penaltyBasicAmount:'',
             penaltyCalculationType:'',
-            percentageSetting: [{}],
-            ratesSetting: [{}],
-            repaymentMethodsSetting: [{}],
-            prepaymentSetting: [{}],
+            percentageSetting: [],
+            ratesSetting: [],
+            repaymentMethodsSetting: [],
+            prepaymentSetting: [],
             productScope: []
       },
      
@@ -175,14 +175,10 @@ export default class CreateActivityForm extends Component {
 
   removeItem(key, index){
     let oldData = this.state.value[key]
-    if (oldData.length == 1) {
-      return false
-    } else {
       oldData.splice(index, 1);
       this.setState({
         oldData
       });
-    }
   }
  Option=(data)=>{
    console.log(data)
@@ -275,6 +271,7 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>产品类型</label>
                   <IceFormBinder
                     name="productType"
+                    placeholder="请选择"
                   >
                     <Select
                       name="productType"
@@ -773,6 +770,7 @@ export default class CreateActivityForm extends Component {
               <Huankuanfangshi
                 styles={styles}
                 items={this.state.value.repaymentMethodsSetting}
+                data={this.props.prodActions && this.props.prodActions.data}
                 addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
                 removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
               />
