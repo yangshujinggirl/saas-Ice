@@ -37,15 +37,15 @@ export default class AdFont extends Component {
             "functionType": "进件",
             "fields": []
         }
-        if(!reqDate.name.length) {
-            Dialog.alert({
-                content: "页面名称不能为空",
-                closable: false,
-                title: "提示",
-            });
-            return 
-        }
-        console.log(reqDate.fields);
+        // if(!reqDate.name.length) {
+        //     Dialog.alert({
+        //         content: "页面名称不能为空",
+        //         closable: false,
+        //         title: "提示",
+        //     });
+        //     return 
+        // }
+        // console.log(reqDate.fields);
         if(!this.state.id){
             reqDate.fields = this.state.isFixed[0].fields;
         }
@@ -186,12 +186,12 @@ export default class AdFont extends Component {
         
         return (
             <div className="addFont">
-                <IceContainer className='subtitle'>
+                {/* <IceContainer className='subtitle'>
                     <div className="pageName">
                         <label>页面成名</label>
                         <input type="text" name='' onChange={this.onChang.bind(this)} />
                     </div>
-                </IceContainer>
+                </IceContainer> */}
                 <IceContainer title="选择字段" className='subtitle'>
                     {
                         <div>

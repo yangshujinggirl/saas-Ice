@@ -452,10 +452,26 @@ export default class setFont extends Component {
                     </Select>
                     break;
                 case 'CHECKBOX':
-                    inputType = <Checkbox />
+                    inputType = <span className="addNewCheckbox">
+                        {
+                            <label>
+                                <CheckboxGroup
+                                dataSource={item.options}
+                                />
+                            </label>
+                        } 
+                    </span>
                     break;
                 case 'RADIO':
-                    inputType = <Radio />
+                    inputType = <span className="addNewRadio">
+                        {
+                            <label>
+                                <RadioGroup
+                                dataSource={item.options}
+                                />
+                            </label>
+                        }
+                    </span>
                     break;
                 case 'ADDRESS':
                     inputType = <CascaderSelect
