@@ -106,7 +106,6 @@ export default class FileList extends Component {
   deleteRow =(idx) => {
     let {actions} = this.props;
     actions.fileremove(idx);
-    actions.filesearch()
     // location.reload()
   }
 

@@ -9,6 +9,7 @@ import ProductDetail from './components/ProdSearch/ProdDetail'
 import ProductAdd from './ProdAdd'
 import AddOne from './components/ProdAdd/addOne'
 import AddTwo from './components/ProdAdd/addTwo'
+import AddThree from './components/ProdAdd/addThree'
 import FileList from './components/FileList'
 import Fileedit from './components/FileList/Dialog'
 const mapStateToProps = (state, ownProps) => {
@@ -61,7 +62,11 @@ let addTwo = connect(
     mapStateToProps,
     mapDispatchToProps
 )(AddTwo);
-
+//AddThree
+let addThree = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AddThree);
 //资料清单
 let fileList = connect(
     mapStateToProps,
@@ -82,5 +87,6 @@ export default {
     ProductDetail: productDetail,
     AddOne:addOne,
     AddTwo:addTwo,
+    AddThree:addThree,
     FileEdit:fileedit,
 }

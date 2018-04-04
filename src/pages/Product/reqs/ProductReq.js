@@ -55,7 +55,7 @@ class ProductReq extends CurdReq {
     return super.fetchData(options);
   }
 
-  //产品提交保存
+  //产品提交第二步保存
   productsave(data,id) {
     var url =this._host + `/product/${id}/scope`;
     let options = {
@@ -66,7 +66,28 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-
+ //产品提交第三步保存
+ prodHtmlSave(data,productId) {
+  var url =this._host + `/product/${productId}/screen`;
+  let options = {
+    url: url,
+    method: 'POST',
+    data: data,
+    contentType: 'application/json'
+  }
+  return super.fetchData(options);
+}
+//htmlName
+htmlName(data) {
+  var url =this._host + `/screen-schemes`;
+  let options = {
+    url: url,
+    method: 'get',
+    params: data,
+    contentType: 'application/json'
+  }
+  return super.fetchData(options);
+}
   //产品修改
   prodedit(id) {
     let options = {
@@ -88,6 +109,8 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
+
+  
 
   //材料清单查询
   filesearch(value) {

@@ -185,6 +185,7 @@ export default class CreateActivityForm extends Component {
     }
   }
  Option=(data)=>{
+   console.log(data)
   let coll =[]
   for(var i=0;i<data.length;i++){
    let colltemp= data[i].collectionDetails
@@ -196,12 +197,11 @@ export default class CreateActivityForm extends Component {
       })
     })
   }
-  return coll  
+  return coll;
  }
   render() {
     let data = this.props.prodActions|| {}
     data = data.data ||{}
-    
     let data1 = this.props.fileData||{}
         data1= data1.data||{}
         data1= data1.list ||[]

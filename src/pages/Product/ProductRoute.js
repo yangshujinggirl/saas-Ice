@@ -25,6 +25,10 @@ export default {
       name: '产品新增',
       component: Product.AddTwo
     }, {
+      path: 'addthree/:id',
+      name: '产品新增',
+      component: Product.AddThree
+    },{
       path: 'filelist',
       name: '材料清单',
       component: Product.FileList

@@ -19,6 +19,7 @@ function fetchStart() {
  * @param data 成功后的数据
  */
 function fetchSuccess(data) {
+  console.log(data)
   return {
     type: T.FETCH_SUCCESS,
     ...data,
@@ -72,7 +73,6 @@ export const search = (condition) => {
       }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
-      console.log("234567");
     })
   }
 }
@@ -92,7 +92,7 @@ export const save = (data) => {
     })
   }
 }
-//产品提交保存
+//产品提交第二步保存
 export const productsave = (data,id) => {
   return (dispatch) => {
 
@@ -100,9 +100,21 @@ export const productsave = (data,id) => {
 
     Req.productsave(data,id).then((res) => {
       if(!res || res.code != 200) return;
-      console.log('productsave sucess')
-      // console.log(res)
-      // hashHistory.push(`/product/addtwo/${res.data.id}`)
+      hashHistory.push(`/product/addthree/${id}`)
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+////产品提交第三步保存
+export const prodHtmlSave = (data,id) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.prodHtmlSave(data,id).then((res) => {
+      if(!res || res.code != 200) return;
+      hashHistory.push('/product/search')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -120,8 +132,6 @@ export const getDetail = (id) => {
     })
   }
 }
-
-
 
 // 删除一条记录
 export const remove = (id) => {

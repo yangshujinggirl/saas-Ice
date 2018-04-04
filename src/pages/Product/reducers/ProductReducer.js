@@ -17,7 +17,7 @@ const index = (state = {
   switch (action.type) {
     case T.FETCH_START:
       return { ...state, isFetching: true }
-    case T.FETCH_SUCCESS:
+    case T.FETCH_SUCCESS: 
       return { ...state, isFetching: false, ...action }
     case T.FETCH_FAILED:
       return { ...state, isFetching: false }
@@ -27,5 +27,4 @@ const index = (state = {
       return state
   }
 }
-
 export default index

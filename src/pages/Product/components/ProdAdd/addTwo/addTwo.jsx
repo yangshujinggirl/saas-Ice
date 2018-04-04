@@ -73,10 +73,8 @@ export default class addTwo extends Component {
   onsubmit = () =>  {
     let {actions,params} = this.props;
     let id = params.id;
+    console.log(id)
     actions.productsave(this.state.value,id);
-    
-    hashHistory.push('/product/search')
-  // this.popupConfirm
   }
   
   onFormChange=()=>{
@@ -100,12 +98,12 @@ export default class addTwo extends Component {
   render() {
     return (
       <IceFormBinderWrapper
-      ref={(formRef) => {
-        this.formRef = formRef;
-      }}
-      value={this.state.value}
-      onChange={this.onFormChange}
-      >
+        ref={(formRef) => {
+          this.formRef = formRef;
+        }}
+        value={this.state.value}
+        onChange={this.onFormChange}
+        >
         <div>
           <IceContainer>
             <legend className="legend">
@@ -134,7 +132,7 @@ export default class addTwo extends Component {
 
               </Row>
           </div>
-            <legend className="legend">
+              {/*<legend className="legend">
               <span className="legLine"></span>按集团/渠道/厅店
             </legend>
             <div className="f-box">
@@ -150,13 +148,13 @@ export default class addTwo extends Component {
               </Row>
              
               <Row wrap style={{marginBottom:"30px"}} >
-                {/* <OrgType {...this.props} data={this.state.value2}/> */}
+               <OrgType {...this.props} data={this.state.value2}/> 
               </Row>
-            </div>
+            </div>*/}
            
            
             <div className="next-btn-box">
-              <div className="next-btn-lx" onClick={this.onsubmit}>保存</div>
+              <div className="next-btn-lx" onClick={this.onsubmit}>下一步</div>
             </div>
             <Dialog
               visible={this.state.visible}
@@ -169,6 +167,8 @@ export default class addTwo extends Component {
       </IceFormBinderWrapper>
     );
   }
+
+
 }
 
 const styles = {

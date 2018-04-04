@@ -136,7 +136,11 @@ export default class ProdSeachList extends Component {
   changePage = (currentPage) => {
     this.props.actions.search({page:currentPage});
   };
-
+//排序
+Order=(dataIndex,order)=>{
+    dataIndex:{productCode}
+    order:{desc}
+}
   render() {
     const { list=[], total, limit, page} =this.props.pageData;
     return (
@@ -249,6 +253,7 @@ export default class ProdSeachList extends Component {
               dataSource={list}
               isLoading={this.state.isLoading}
               isZebra={true}
+              onSort={this.Order}
             >
               <Table.Column title="产品编号" dataIndex="productCode" width={160} />
               <Table.Column title="产品名称" dataIndex="name" width={200} />
