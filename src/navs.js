@@ -18,12 +18,17 @@ const autoGenAsideNavs = [{
 const customHeaderNavs = [];
 const customAsideNavs = [];
 
+import BaseConfig from './config/BaseConfig';
 import { Storage } from './base/utils';
 import myCustomNavs from './_navs';
 
 let leafs = Storage.get('MENUS') || [];
 
-// leafs = [];
+if('PC_ENV' in window && PC_ENV == 'development' && BaseConfig.IS_AUTO_MENU_USED){
+  //仅仅在开发环境且启用使用自动自动生成菜单
+  leafs = [...myCustomNavs, ...leafs];
+}
+
 
 function transform(navs) {
   // custom logical
@@ -35,4 +40,4 @@ export const headerNavs = transform([
   ...customHeaderNavs,
 ]);
 
-export const asideNavs = transform([...customAsideNavs, ...myCustomNavs, ...leafs]);
+export const asideNavs = transform([...customAsideNavs, ...leafs]);

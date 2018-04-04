@@ -6,7 +6,8 @@ const { resolve } = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
-var __DEV__ = process.env.NODE_ENV !== 'production';
+var NODE_ENV = process.env.NODE_ENV || 'development';
+var __DEV__ = NODE_ENV !== 'production';
 
 module.exports = {
     // output: {
@@ -49,17 +50,18 @@ module.exports = {
             filename: __DEV__ ? "[name].css" : "[name].[hash].css",
             allChunks: true,
         }),
-        // new HtmlWebpackPlugin({
-        //     title: '平常金服SAAS ' + package.version,
-        //     template: './public/index.ejs',
-        //     filename: '../index.html',
-        //     name: package.name,
-        //     description: package.description,
-        //     version: package.version,
-        //     // hash: hash,
-        //     author: package.author,
-        //     time: getDate()
-        // })
+        new HtmlWebpackPlugin({
+            title: package.title + (__DEV__ ? ' DEV ' : ' ') + package.version,
+            template: __DEV__ ? './public/index.dev.ejs' : './public/index.ejs',
+            filename: './index.html',
+            name: package.name,
+            description: package.description,
+            version: package.version,
+            // hash: hash,
+            author: package.author,
+            time: getDate(),
+            env: NODE_ENV
+        })
     ]
 };
 
