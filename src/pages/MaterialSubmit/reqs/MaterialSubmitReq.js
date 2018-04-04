@@ -37,6 +37,16 @@ class MaterialSubmitReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //保存表单
+  saveFrom(data){
+    let options = {
+      url: this._host + '/loans/'+data.id,
+      method: 'PUT',
+      data:data
+    }
+    return super.fetchData(options);
+  }
+
 }
 
 export default new MaterialSubmitReq();

@@ -9,7 +9,9 @@ import  Req from '../../reqs/MaterialSubmitReq'
 import { hashHistory } from 'react-router';
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
+import { Feedback } from "@icedesign/base";
 
+const Toast = Feedback.toast;
 const cardTarget = {
   drop() {},
 }
@@ -24,6 +26,7 @@ class MaterialSubmit extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      queryCache:{},
       value: {},
       Component :[],
       dataSource: [],
@@ -107,7 +110,6 @@ class MaterialSubmit extends Component {
   handleFileChange(info){
     console.log(info)
     this.setState({fileList: info.fileList})
-
   }
   renderCell(value, index, record){
     return(
@@ -168,11 +170,21 @@ class MaterialSubmit extends Component {
   }
   //提交
   submit = ()=>{
-
+    this.state.queryCache.id = this.props.params.id;
+    this.state.queryCache.status = 1;
+    Req.saveFrom(this.state.queryCache).then((res)=>{
+      console.log(res)
+      if(res && res.code == 200){
+        Toast.success('提交成功');
+        hashHistory.push('/entryQuery');
+      }
+    }).catch((errors)=>{
+      console.log(errors);
+    });
   }
   //保存
   save =  () =>{
-
+    Toast.success('保存成功，请提交～');
   }
   render() {
     const { connectDropTarget  } = this.props
