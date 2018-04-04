@@ -47,9 +47,9 @@ class EntryQueryReq extends CurdReq{
     return super.fetchData(options);
   }
   //获取select下拉框的options
-  getSelectList(name) {
+  getSelectList(data) {
     let options = {
-      url: this._host + '/cars?name='+name,
+      url: this._host + `/cars?name=${data.name}&productCode=${data.productCode}`,
       method: 'Get',
     }
     return super.fetchData(options);

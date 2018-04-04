@@ -5,7 +5,7 @@ import { DragDropContext, DropTarget } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import DragFile from './DragFile';
 import DropCell from './DropCell';
-
+import  Req from '../../reqs/MaterialSubmitReq'
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
 
@@ -25,12 +25,12 @@ class MaterialSubmit extends Component {
     this.state = {
       value: {},
       Component :[],
-      dataSource: [{id: 1, fileName: '2016',limitSize:'2131'},{id: 2, fileName: 'test',limitSize:'20'}],
+      dataSource: [],
       tableList: [
                     {id: 'id',title:'序号'},
                     {id:'fileName',title: '材料名称'},
-                    {id:'limitSize',title:'限制大小'},
-                    {id:'f',title:'文件'}],
+                    {id:'fileSize',title:'限制大小'},
+                    {id:'f',title:'文件' ,draggable:true}],
       fileList: [{
         id: 1,
         fileName: "IMG.png",
@@ -70,26 +70,23 @@ class MaterialSubmit extends Component {
     };
   }
   componentDidMount(){
-    if(this.props.data){
-      this.state.tableList.push(this.props.data)
-    }
     this.getLoanUpload(this.props.params.id);
     console.log(this.props)
   }
   //获取上传资料列表
   getLoanUpload(id) {
-    // Req.getLoanUploadApi(id)
-    //   .then((res) => {
-    //     const { data } = res;
-    //     const { list } = data;
-    //     let upLoadList;
-    //     list.map((el)=> upLoadList = el.collectionDetails)
-    //     this.setState({
-    //       upLoadList
-    //     })
-    //   },(error) => {
-    //     console.log(error)
-    //   })
+    Req.getLoanUploadApi(id)
+      .then((res) => {
+        const { data } = res;
+        const { list } = data;
+        var dataSource;
+        list.map((el)=> dataSource = el.collectionDetails)
+        this.setState({
+          dataSource:dataSource
+        })
+      },(error) => {
+        console.log(error)
+      })
   }
   handleFileChange(info){
     console.log(info)
@@ -148,52 +145,72 @@ class MaterialSubmit extends Component {
     d.value = undefined;
     this.setState({dataSource,fileList})
   }
+  //
+  addTableList = (data)=>{
+    this.state.tableList.map((item,index)=>{
+      console.log(item.id )
+      console.log(data.id )
+      if(item.id == data.id){
+        this.state.tableList.splice(index,1)
+      }
+    })
+    console.log(this.state.tableList)
+    this.state.tableList.push(data)
+    console.log(this.state.tableList)
+  }
   render() {
-    const { connectDropTarget } = this.props
+    const { connectDropTarget ,data } = this.props
     let { fileList, tableList, dataSource } = this.state;
-
-    // fileList = fileList.filter(f => !f.isUsed)
-
+    console.log(data)
+    if(data && data.id){
+      this.addTableList(data);
+    }
     return connectDropTarget(
           <div>
-            
-            <ImageUpload
-              className='upload-picture'
-              listType="picture-card"
-              action="/loanApi/file/upload"
-              data={{'path':'path/to/file'}}
-              formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
-              accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-              fileList={this.state.fileList}
-              showUploadList={false}
-              onChange={this.handleFileChange.bind(this)}
-            />
-            <div
-              className="material-files"
-              >
-              {fileList.map((item, idx) => {
-                return(
-                  <DragFile
-                    key={idx}
-                    id={item.id}
-                    index={idx}
-                    data={item}
-                    moveCard={this.moveCard.bind(this)}
-                  />
-                )
-              })}
-            </div>
-            <Table dataSource={dataSource} className="basic-table">
-              {tableList.map((item,index) =>{
-                let myCell;
-                if(item.id == 'f'){
-                  myCell = this.renderCell.bind(this);
-                }
-                return (
-                  <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
-                )
-              })}
-            </Table>
+            <IceContainer title="材料提交" className='subtitle'>
+              <ImageUpload
+                className='upload-picture'
+                listType="picture-card"
+                action="/loanApi/file/upload"
+                data={{'path':'path/to/file'}}
+                formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
+                accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                fileList={this.state.fileList}
+                showUploadList={false}
+                onChange={this.handleFileChange.bind(this)}
+              />
+              <div
+                className="material-files"
+                >
+                {fileList.map((item, idx) => {
+                  return(
+                    <DragFile
+                      key={idx}
+                      id={item.id}
+                      index={idx}
+                      data={item}
+                      moveCard={this.moveCard.bind(this)}
+                    />
+                  )
+                })}
+              </div>
+              <Table dataSource={dataSource} className="basic-table">
+                {tableList.map((item,index) =>{
+                  let myCell;
+                  if(item.draggable){
+                    myCell = this.renderCell.bind(this);
+                  }
+                  return (
+                    <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
+                  )
+                })}
+              </Table>
+              <div className='button-box'>
+                <Button onClick={this.submit}>提交</Button>
+                <Button onClick={this.save}>保存</Button>
+                <Button onClick={this.cancel}>取消</Button>
+              </div>
+            </IceContainer>
           </div>
     );
   }
