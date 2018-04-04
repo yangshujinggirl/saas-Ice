@@ -658,12 +658,14 @@ body {
 //   }
 // }
 // 重构
-img#logo {
-    width: 70%;
-    margin-left: 10%;
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
+.pc-menu{
+    height: 50px;
+    padding: 8px;
+    img#logo {
+        display: block;
+        margin: 0px auto;
+        max-height: 34px;
+    }
 }
 
 .ice-menu {

@@ -1,5 +1,5 @@
-import T from '../constants/LoanApplicationConstant'
-import Req from '../reqs/LoanApplicationReq'
+import T from '../constants/DashboardConstant'
+import Req from '../reqs/DashboardReq'
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
