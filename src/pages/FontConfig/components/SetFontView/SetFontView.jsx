@@ -168,9 +168,9 @@ export default class setFont extends Component {
         // 固定左侧菜单
         window.onscroll = function () {
             let scrollFix = document.querySelector('.scrollFix');
-                if (!scrollFix) {
-                    return;
-                }
+            if(!scrollFix){
+                return 
+            }
                 if (window.scrollY > 130) {
                     scrollFix.style.cssText += 'position:fixed;top:50px;'
                 } else {

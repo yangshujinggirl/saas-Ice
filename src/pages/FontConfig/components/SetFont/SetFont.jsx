@@ -105,9 +105,8 @@ export default class setFont extends Component {
             name: this.state.pageValue
         }
         FontConfigReq.changPageName(pageName,id).then((data) => {
-            if (data == '200') {
+            if (data.code == 200) {
                 this.props.router.push(`font/view?id=${id}`)
-                
             } else {
                 Dialog.alert({
                     title: '提示',
