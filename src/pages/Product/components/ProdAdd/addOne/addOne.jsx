@@ -186,19 +186,32 @@ export default class CreateActivityForm extends Component {
   }
  Option=(data)=>{
    console.log(data)
-  let coll =[]
-  for(var i=0;i<data.length;i++){
-   let colltemp= data[i].collectionDetails
-    colltemp.map((val,j)=>{
-      coll.push({
-        cid:val.collectionId,
-        id:val.id,
-        name:val.name,
+    let coll =[];
+    let test=[]
+    for(var i=0;i<data.length;i++){
+    let colltemp= data[i].collectionDetails
+      colltemp.map((val,j)=>{
+        coll.push({
+          cid:val.collectionId,
+          id:val.id,
+          name:val.name,
+        })
       })
-    })
+    }
+    //去重
+    for(var i=0;i<coll.length;i++){
+      　　var flag = true;
+      　　for(var j=0;j<test.length;j++){
+      　　　　if(coll[i].name == test[j].name){
+      　　　　　　flag = false;
+      　　　　};
+      　　}; 
+      　　if(flag){
+      test.push(coll[i]);
+      　　};
+      };
+    return test;
   }
-  return coll;
- }
   render() {
     let data = this.props.prodActions|| {}
     data = data.data ||{}
@@ -266,7 +279,7 @@ export default class CreateActivityForm extends Component {
                     <Select
                       name="productType"
                       required 
-                       message="必填"
+                      message="必填"
                       placeholder="请选择"
                       style={styles.filterTool}
                       
