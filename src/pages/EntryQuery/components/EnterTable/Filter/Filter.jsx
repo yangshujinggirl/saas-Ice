@@ -24,19 +24,19 @@ export default class Filter extends Component {
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>姓名</label>
               <IceFormBinder>
-                <Input name="borrowerName" />
+                <Input name="borrowerName" className="custom-input"/>
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>身份证号</label>
               <IceFormBinder>
-                <Input name="borrowerIdNo" />
+                <Input name="borrowerIdNo" className="custom-input"/>
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
               <label style={styles.filterTitle}>手机号</label>
               <IceFormBinder>
-                <Input name="borrowerMobile" />
+                <Input name="borrowerMobile" className="custom-input" />
               </IceFormBinder>
             </Col>
             <Col xxs={24} xs={12} l={6} style={styles.filterCol}>

@@ -113,7 +113,7 @@ export default class LoanModify extends Component {
         }
       }
       console.log(this.queryCache)
-      this.queryCache.status = 'save'
+      // this.queryCache.status = 'save'
       Req.saveFrom(this.queryCache).then((res)=>{
         console.log(res)
         if(res && res.code == 200){

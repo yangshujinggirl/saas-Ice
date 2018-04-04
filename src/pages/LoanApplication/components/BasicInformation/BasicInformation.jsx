@@ -145,6 +145,7 @@ class BasicInformation extends Component {
                     style={styles.select}
                     dataSource={this.state.dataSource}
                     disabled={ele.isReadonly}
+                    placeholder={"请输入"+ele.label}
                     {...init(ele.name,
                       { rules:[{ required: ele.isRequired, message: `${ele.label}不能为空` }]}
                     )}>
@@ -158,7 +159,7 @@ class BasicInformation extends Component {
           return <Input
                   trim
                   style={styles.select}
-                  placeholder={ele.type}
+                  placeholder={"请输入"+ ele.label}
                   htmlType='text'
                   disabled={ele.isReadonly}
                   {...init(ele.name,
@@ -174,13 +175,12 @@ class BasicInformation extends Component {
                   disabled={ele.isReadonly}
                   style={styles.select}
                   hasLimitHint={true}
-                  placeholder={ele.type}
+                  placeholder={"请输入"+ele.label}
                   htmlType='number'
                   {...init(ele.name,
                     {
                       rules:[
-                        { required: ele.isRequired, message:`${ele.label}不能为空`},
-                        { validator: this.checkNum }
+                        { required: ele.isRequired, message:`${ele.label}不能为空`}
                       ]
                     }
                   )}
@@ -190,9 +190,7 @@ class BasicInformation extends Component {
                   disabled={ele.isReadonly}
                   value={this.state.month}
                   type="inline"
-                  step={2}
-                  min={1}
-                  max={12}
+                  placeholder={"请输入"+ele.label}
                   {...init(ele.name,
                     { rules:[{ required: ele.isRequired, message: `${ele.label}不能为空` }] }
                   )}
@@ -210,7 +208,7 @@ class BasicInformation extends Component {
               field={this.field}>
               <Row  align="top" wrap>
                 {
-                  list.length>0 && list[0].fields.map((ele,index) => (
+                  list.length>0 && list[0].fields && list[0].fields.map((ele,index) => (
                     <Col span={6} key={index}>
                       <FormItem {...formItemLayout} label={labels(ele.label)}>
                         {
