@@ -23,7 +23,7 @@ import myCustomNavs from './_navs';
 
 let leafs = Storage.get('MENUS') || [];
 
-leafs = [];
+// leafs = [];
 
 function transform(navs) {
   // custom logical
