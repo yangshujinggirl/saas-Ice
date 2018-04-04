@@ -1,24 +1,21 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import { Input, Button, Checkbox, Grid, Feedback } from '@icedesign/base';
-import {
-  FormBinderWrapper as IceFormBinderWrapper,
-  FormBinder as IceFormBinder,
-  FormError as IceFormError,
-} from '@icedesign/form-binder';
+import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError, } from '@icedesign/form-binder';
 import IceIcon from '@icedesign/icon';
-import './UserLogin.scss';
+import './Login.scss';
 
-const { Row, Col } = Grid;
+const {Row, Col} = Grid;
 
 // 寻找背景图片可以从 https://unsplash.com/ 寻找
 const backgroundImage = require('./admin-login-bg.png');
+const adminLogo = require('./admin-logo.png');
 
-import {hashHistory} from 'react-router';
-import {Storage} from '../../../../base/utils';
+import { hashHistory } from 'react-router';
+import { Storage } from '../../../../base/utils';
 import AccountReq from '../../reqs/AccountReq';
 
-export default class UserLogin extends Component {
+export default class Login extends Component {
   static displayName = 'UserLogin';
 
   static propTypes = {};
@@ -31,16 +28,20 @@ export default class UserLogin extends Component {
       value: {
         userName: undefined,
         password: undefined,
-        checkbox: false,
-        isLoging: false
+        checkbox: false
       },
+      isLoging: false
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let remember = Storage.get('REMEMBER');
-    if(remember){
-      this.setState({value:{...remember}});
+    if (remember) {
+      this.setState({
+        value: {
+          ...remember
+        }
+      });
     }
   }
 
@@ -52,34 +53,39 @@ export default class UserLogin extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+
     this.refs.form.validateAll((errors, values) => {
       if (errors) {
         console.log('errors', errors);
         return;
       }
 
-      this.setState({value: {isLoging: true}});
+      this.setState({
+        isLoging: true
+      });
 
       AccountReq.login(values).then((res) => {
-        this.setState({value: {isLoging: false}});
-        if(!res || res.code != 200) return;
+        this.setState({
+          isLoging: false
+        });
+        if (!res || res.code != 200) return;
         Feedback.toast.success('登录成功');
 
-        if(values.checkbox){
+        if (values.checkbox) {
           //记住账号
           Storage.set('REMEMBER', values);
-        }else{
+        } else {
           Storage.remove('REMEMBER');
         }
 
         Storage.set('MENUS', (res.data.leaf));
 
         AccountReq.getUserInfo().then((res) => {
-          if(res || res.code == 200){
+          if (res || res.code == 200) {
             Storage.set("USERINFO", res.data);
-            setTimeout(function(){
+            setTimeout(function() {
               hashHistory.push('/dashboard') //跳转首页
-            },500)
+            }, 500)
           }
         })
       });
@@ -87,86 +93,60 @@ export default class UserLogin extends Component {
   };
 
   render() {
-    let {isLoging} = this.state.value;
+    let {isLoging} = this.state;
 
     return (
       <div style={styles.userLogin} className="user-login">
-        <div
-          style={{
-            ...styles.userLoginBg,
-            backgroundImage: `url(${backgroundImage})`,
-          }}
-        />
-        <div style={styles.contentWrapper} className="content-wrapper">
-          <h2 style={styles.slogan} className="slogan">
-            欢迎使用 <br /> 平常金服SAAS系统
-          </h2>
-          <div style={styles.formContainer}>
-            <h4 style={styles.formTitle}>登录</h4>
-            <IceFormBinderWrapper
-              value={this.state.value}
-              onChange={this.formChange}
-              onSubmit={this.handleSubmit}
-              ref="form"
-            >
-              <div style={styles.formItems}>
-                <Row style={styles.formItem}>
-                  <Col>
-                    <IceIcon
-                      type="person"
-                      size="small"
-                      style={styles.inputIcon}
-                    />
-                    <IceFormBinder name="userName" required message="必填">
-                      <Input maxLength={20} placeholder="会员名/手机号" />
+        <div style={{
+        ...styles.userLoginBg,
+        backgroundImage: `url(${backgroundImage})`
+      }}/>
+        <div className="pch-login-form">
+        <div className="login-form-header">
+            <div className="login-logo">
+                <img src={adminLogo} />
+            </div>
+        </div>
+        <IceFormBinderWrapper value={this.state.value} onChange={this.formChange} ref="form">
+          <form className="layui-form layui-form-pane" onSubmit={this.handleSubmit}>
+              <Row style={styles.formItem} className="layui-form-item">
+                  <Col className="layui-input-block">
+                    <IceIcon className="layui-input-icon" type="person" style={styles.inputIcon}/>
+                    <IceFormBinder name="userName" required message="请输入账号">
+                      <Input maxLength={20} autoComplete="off" className="layui-input" placeholder="请输入账号(手机号码)" autoFocus={true} />
                     </IceFormBinder>
                   </Col>
-                  <Col>
+                  <Col className="layui-form-error">
                     <IceFormError name="userName" />
                   </Col>
-                </Row>
-
-                <Row style={styles.formItem}>
-                  <Col>
-                    <IceIcon
-                      type="lock"
-                      size="small"
-                      style={styles.inputIcon}
-                    />
-                    <IceFormBinder name="password" required message="必填">
-                      <Input htmlType="password" placeholder="密码" />
+              </Row>
+              <Row style={styles.formItem} className="layui-form-item">
+                  <Col className="layui-input-block">
+                    <IceIcon className="layui-input-icon lx-iconfont" type="lock" style={styles.inputIcon} />
+                    <IceFormBinder name="password" required message="请输入密码">
+                      <Input className="layui-input" autoComplete="off" htmlType="password" placeholder="请输入密码" />
                     </IceFormBinder>
                   </Col>
-                  <Col>
+                  <Col className="layui-form-error">
                     <IceFormError name="password" />
                   </Col>
                 </Row>
-
-                <Row style={styles.formItem}>
+              <Row style={styles.formItem} className="layui-form-item">
                   <Col>
                     <IceFormBinder name="checkbox">
-                      <Checkbox style={styles.checkbox} >记住账号</Checkbox>
+                      <Checkbox style={styles.checkbox} checked={this.state.value.checkbox}>记住账号</Checkbox>
                     </IceFormBinder>
                   </Col>
                 </Row>
-
-                <Row style={styles.formItem}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={this.handleSubmit}
-                    style={styles.submitBtn}
-                  >
-                    {isLoging ? '登录中...' : '登 录'}
+              <div className="layui-form-item">
+                  <Button className="layui-btn layui-btn-sm" htmlType="submit" style={styles.submitBtn} disabled={isLoging}>
+                      {isLoging ? '登录中' : '登录'}
                   </Button>
-                </Row>
-
-                
               </div>
-            </IceFormBinderWrapper>
-          </div>
-        </div>
+          </form>
+          </IceFormBinderWrapper>
       </div>
+    </div>
     );
   }
 }
@@ -206,13 +186,11 @@ const styles = {
   },
   inputIcon: {
     position: 'absolute',
-    left: '0px',
-    top: '3px',
+    left: '10px',
+    top: '10px',
     color: '#999',
   },
   submitBtn: {
-    width: '240px',
-    background: '#3080fe',
     borderRadius: '28px',
   },
   checkbox: {

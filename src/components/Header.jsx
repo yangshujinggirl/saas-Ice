@@ -19,6 +19,8 @@ export default class Header extends PureComponent {
     e.preventDefault();
     
     AccountReq.logout().then((res) => {
+      Storage.remove('MENUS');
+      Storage.remove('USERINFO');
       hashHistory.push('/account');
     })
   }
@@ -33,7 +35,12 @@ export default class Header extends PureComponent {
         routes = [routes[0]];
     }
 
+    let nickname = '--';
     //获取登陆用户信息
+    let userinfo = Storage.get('USERINFO');
+    if(userinfo){
+      nickname = userinfo.realName || userinfo.userName;
+    }
 
     return (
       <Layout.Header
@@ -84,7 +91,7 @@ export default class Header extends PureComponent {
                 offset={[0, 11]}
                 size={20}
                 shape="circle"
-                userName="Jack"
+                userName={nickname}
                 avatar="//img.alicdn.com/tfs/TB1JLbBQXXXXXcUapXXXXXXXXXX-215-185.png"
                 style={{marginRight: 20}}
               >

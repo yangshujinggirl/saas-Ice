@@ -165,7 +165,7 @@ export default class setFont extends Component {
             let res = data.data
             this.setState({
                 resData: res,
-                pageValue: res.name
+                pageValue: res&&res.name
             })
             for (const key in this.state.resData.fieldset) {
 
@@ -179,6 +179,15 @@ export default class setFont extends Component {
                 }
             }
         })
+        // 固定左侧菜单
+        window.onscroll = function () {
+                let scrollFix = document.querySelector('.scrollFix');
+                if (window.scrollY > 130) {
+                    scrollFix.style.cssText += 'position:fixed;top:50px;'
+                } else {
+                    scrollFix.style.cssText += 'position:static;top:auto;'                    
+                }
+        }
     }
 
     render() {
@@ -478,10 +487,26 @@ export default class setFont extends Component {
                     </Select>
                     break;
                 case 'CHECKBOX':
-                    inputType = <Checkbox />
+                    inputType = <span className="addNewCheckbox">
+                        {
+                            <label>
+                                <CheckboxGroup
+                                dataSource={item.options}
+                                />
+                            </label>
+                        } 
+                    </span>
                     break;
                 case 'RADIO':
-                    inputType = <Radio />
+                    inputType = <span className="addNewRadio">
+                        {
+                            <label>
+                                <RadioGroup
+                                dataSource={item.options}
+                                />
+                            </label>
+                        }
+                    </span>
                     break;
                 case 'ADDRESS':
                     inputType = <CascaderSelect
@@ -506,7 +531,10 @@ export default class setFont extends Component {
         const handleAddValue = (index) => {
             let data = this.state.addValue
             if (index == 'add') {
-                data.push(index)
+                data.push("123")
+                this.setState({
+                    addValue: data
+                })
             } else {
                 data.splice(index, 1)
                 let ds = this.state.fields;
@@ -635,12 +663,11 @@ export default class setFont extends Component {
         
         const handleSelect = (index, value) => {
             let data = this.state.fields;
-            data.options[index] = value;
+            data.options[index] = {label: value,value: value};
             this.setState({
                 fields: data
             })
             console.log(this.state.fields);
-            
         }
 
         const handleEditeCoce = (index, inj) => {
@@ -670,7 +697,7 @@ export default class setFont extends Component {
                 <div className="container">
                     {/*渲染左边  */}
                     <div className="container-left">
-                        <ul>
+                        <ul className='scrollFix'>
                             {
                                 this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
                                     return (
@@ -719,7 +746,7 @@ export default class setFont extends Component {
                                                         <div onMouseLeave={hover.bind(this, 0)} onMouseEnter={hover.bind(this, 1, item.label)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                             'false', {active: this.state.rightActive == item.label} )} key={inj}>
                                                             <div className="clearfix">
-                                                                <label htmlFor="">
+                                                                <label htmlFor="" className='label'>
                                                                     <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
                                                                     <span className='required'>*</span>
                                                                 </label>
@@ -738,7 +765,7 @@ export default class setFont extends Component {
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                             'false')} key={inj}>
                                                             <div className="clearfix">
-                                                                <label htmlFor="">
+                                                                <label htmlFor=""  className='label'>
                                                                     <span className='ellips' title={item.label}>{item.label}</span>
                                                                     <span className='required'>*</span>
                                                                 </label>
@@ -783,7 +810,7 @@ export default class setFont extends Component {
                                                             active: this.state.rightActive == item.label
                                                         })} >
                                                         <div className="clearfix">
-                                                            <label htmlFor="">
+                                                            <label htmlFor=""  className='label'>
                                                                 <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
                                                                 <span className='required' onClick={validaRequire.bind(this, index, inj)}>
                                                                     {item.isRequired ? <span>*</span> : ''}

@@ -148,10 +148,28 @@
                             display: block;
                             clear: both;
                         }
+                        .next-range-picker-medium {
+                            width: 200px !important;
+                        }
                         .next-select {
                             margin-top: 0;
                         }
-                        label {
+                        .addNewCheckbox {
+                            margin-top: 7px;
+                            >label {
+                                margin-left: 8px;
+                            }
+                        }
+                        .addNewRadio {
+                            margin-top: 7px;
+                            >label {
+                                margin-left: 8px;
+                                >label {
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+                        .label {
                             float: left;
                             margin-left: 2px;
                             margin-right: 5px;
@@ -159,6 +177,7 @@
                             width: 175px !important;
                             text-align: right;
                             position: relative;
+                            
                             &:nth-child(2) {
                                 width: auto !important;
                                 .next-radio {
@@ -350,4 +369,7 @@
             }
         }
     }
+    ::-webkit-scrollbar{
+        display:none;
+      }
 }
