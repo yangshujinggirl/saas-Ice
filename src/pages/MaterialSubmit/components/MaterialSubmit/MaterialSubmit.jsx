@@ -161,31 +161,22 @@ class MaterialSubmit extends Component {
     d.value = undefined;
     this.setState({dataSource,fileList})
   }
-  //
-  addTableList = (data)=>{
-    this.state.tableList.map((item,index)=>{
-      console.log(item.id )
-      console.log(data.id )
-      if(item.id == data.id){
-        this.state.tableList.splice(index,1)
-      }
-    })
-    console.log(this.state.tableList)
-    this.state.tableList.push(data)
-    console.log(this.state.tableList)
-  }
   //cancel 提交
   cancel = (e)=>{
     e.preventDefault();
     hashHistory.push('/entryQuery');
   }
+  //提交
+  submit = ()=>{
+
+  }
+  //保存
+  save =  () =>{
+
+  }
   render() {
-    const { connectDropTarget ,data } = this.props
+    const { connectDropTarget  } = this.props
     let { fileList, tableList, dataSource } = this.state;
-    console.log(data)
-    if(data && data.id){
-      this.addTableList(data);
-    }
     return connectDropTarget(
           <div>
             <IceContainer title="材料提交" className='subtitle'>

@@ -70,13 +70,14 @@ class BasicInformation extends Component {
   }
 
   getProductNum() {
-    Req.getProductNumApi()
+    const limit = 20;
+    Req.getProductNumApi(limit)
     .then((res) => {
       const { data } = res;
       const { list } = data;
       let dataSource = list.map((el) => {
         return {
-          label:el.productCode,
+          label:el.name,
           value:el.productCode,
         }
       });
@@ -117,7 +118,7 @@ class BasicInformation extends Component {
     const { borrowerName, borrowerIdNo, borrowerMobile } = this.field.getValues();
     if(name== 'borrowerName' || name== 'borrowerIdNo' || name== 'borrowerMobile') {
       if(borrowerName && borrowerIdNo && borrowerMobile) {
-        this.secondsfrom()
+        // this.secondsfrom()
       }
     } else {
       return
