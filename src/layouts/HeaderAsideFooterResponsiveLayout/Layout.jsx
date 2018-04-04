@@ -150,7 +150,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
 
   render() {
     const { location = {}, routes } = this.props;
-    // console.log(this.props)
+    console.log(asideNavs)
     const { pathname } = location;
 
     return (

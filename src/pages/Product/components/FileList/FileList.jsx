@@ -152,6 +152,7 @@ export default class FileList extends Component {
                         name="dataType"
                         placeholder="请选择"
                         style={styles.filterTool}
+                        className="custom-select"
                       >
                         <Option value="option1">产品进件</Option>
                       </Select>
@@ -163,7 +164,7 @@ export default class FileList extends Component {
                     <IceFormBinder
                       name="name"
                     >
-                      <Input placeholder="清单名称" />
+                      <Input className="custom-input" placeholder="清单名称" />
                     </IceFormBinder>
                     <IceFormError name="name" />
                   </Col>
