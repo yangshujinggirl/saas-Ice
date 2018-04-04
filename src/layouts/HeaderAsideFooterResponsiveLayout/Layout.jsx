@@ -197,7 +197,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               defaultSelectedKeys={[pathname]}
               onOpenChange={this.onOpenChange}
               onClick={this.onMenuClick}
-              
             >
               {asideNavs &&
                 asideNavs.length > 0 &&
@@ -210,7 +209,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         title={
                           <span>
                             {navData.icon ? (
-                              <FoundationSymbol size="small" type={navData.icon} />
+                              <i className="icon icon-menu" dangerouslySetInnerHTML={{ __html: navData.icon }}></i>
                             ) : null}
                             <span className="ice-menu-collapse-hide">
                               {navData.name}
