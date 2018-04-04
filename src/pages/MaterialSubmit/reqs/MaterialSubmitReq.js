@@ -1,6 +1,6 @@
 import CurdReq from '../../../base/reqs/CurdReq'
 
-class EntryQueryReq extends CurdReq{
+class MaterialSubmitReq extends CurdReq{
 	constructor(){
 		super();
 
@@ -8,10 +8,10 @@ class EntryQueryReq extends CurdReq{
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
             create: this._host + '/filter-table-list.json',
-            update: this._host + '/loans/:id',
-            retrieve: this._host + '/loans',
+            update: this._host + '/filter-table-list.json',
+            retrieve: this._host + '/filter-table-list.json',
             delete: this._host + '/detail.json',
-            detail: this._host + '/loans/:id/screen'
+            detail: this._host + '/detail.json'
         }
 	}
 
@@ -28,15 +28,6 @@ class EntryQueryReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-	//保存表单
-  saveFrom(data){
-    let options = {
-      url: this._host + '/loans/'+data.id,
-      method: 'PUT',
-      data:data
-    }
-    return super.fetchData(options);
-  }
   //获取进件详情
   getLoanUploadApi(id) {
     let options = {
@@ -46,14 +37,6 @@ class EntryQueryReq extends CurdReq{
     }
     return super.fetchData(options);
   }
-  //获取select下拉框的options
-  getSelectList(data) {
-    let options = {
-      url: this._host + `/cars?name=${data.name}&productCode=${data.productCode}`,
-      method: 'Get',
-    }
-    return super.fetchData(options);
-  }
 }
 
-export default new EntryQueryReq();
+export default new MaterialSubmitReq();

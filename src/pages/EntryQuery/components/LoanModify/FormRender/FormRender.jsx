@@ -15,8 +15,8 @@ const formItemLayoutR = {
   wrapperCol: { span: 21 }
 };
 const formItemLayoutCombobox = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 }
+  labelCol: { span: 3 },
+  wrapperCol: { span: 15 }
 };
 export default class FormRender extends Component {
   static displayName = 'FormRender';
@@ -105,15 +105,17 @@ export default class FormRender extends Component {
                <Combobox
                      // onInputUpdate={this.onInputUpdate.bind(this)}
                      fillProps="label"
-                     filterLocal={false}
+                     filterLocal={true}
                      placeholder={"请输入"+el.label}
                      style={{width:"100%"}}
-                     onChange={this.onChange}
+                     autoWidth
+                     hasClear
+                     // onChange={this.onChange}
                      dataSource={this.state.list}
-                     onSearch ={this.onSearch}
+                     // onSearch ={this.onSearch}
                      onInputUpdate={this.onInputUpdate.bind(this)}
                      {...init(el.name, {
-                       initValue: el.value,
+                       // initValue: el.value,
                        rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
                      })}
                    />
@@ -169,7 +171,7 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             min={0}
             max={el.maxValue}
-            inputWidth={'100%'}
+            inputWidth={'100px'}
             {...init(el.name, {
               initValue: el.value,
               rules: [
@@ -221,7 +223,6 @@ export default class FormRender extends Component {
       else{
         var   setValue = '';
         setValue =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
-        console.log(setValue)
         Fields.push(<FormItem key={el.id} className='item' label={this.label(el.label)}
                               {...formItemLayout}>
           <RadioGroup
@@ -281,7 +282,13 @@ export default class FormRender extends Component {
     console.log(option)
   }
   onInputUpdate = (value)=>{
-    Req.getSelectList(value).then((res)=>{
+    const  productCode = this.props.field.getValue('productCode');
+    var carList = {
+      productCode : productCode,
+      name : value
+    }
+    console.log(carList)
+    Req.getSelectList(carList).then((res)=>{
       if(res && res.code == 200){
         const dataSource =  res.data.list.map((item,index)=>{
           return {
@@ -317,20 +324,34 @@ export default class FormRender extends Component {
   }
   //调用秒拒功能
   refuse = (name)=>{
+    //担保人材料上传列表增加一列
+    if(name == 'guarantor.name'){
+      const  guarantorName = this.props.field.getValue('guarantor.name');
+      var guarantorNameData = {id:'guarantorName',title:guarantorName ,draggable:true}
+      this.props.addColumn(guarantorNameData);
+    }
+    //共同贷款人材料上传列表增加一列
+    if(name == 'coBorrower.name'){
+      const  coBorrowerName = this.props.field.getValue('coBorrower.name');
+      var coBorrowerData = {id:'coBorrowerName',title:coBorrowerName ,draggable:true}
+      this.props.addColumn(coBorrowerData);
+    }
+    //共同贷款人秒拒
     if(name == 'coBorrower.name' || name == 'coBorrower.idNo'|| name == 'coBorrower.mobile'){
       const  coBorrowerName = this.props.field.getValue('coBorrower.name');
       const  coBorrowerIdNo = this.props.field.getValue('coBorrower.idNo');
       const  coBorrowerMobile = this.props.field.getValue('coBorrower.mobile');
       if(coBorrowerName && coBorrowerIdNo && coBorrowerMobile){
-        alert('123')
+        // alert('123')
       }
     }
+    //担保人秒拒
     if(name == 'guarantor.name' || name == 'guarantor.idNo'|| name == 'guarantor.mobile'){
       const  guarantorName = this.props.field.getValue('guarantor.name');
       const  guarantorIdNo = this.props.field.getValue('guarantor.idNo');
       const  guarantorMobile = this.props.field.getValue('guarantor.mobile');
       if(guarantorName && guarantorIdNo && guarantorMobile){
-        alert('123')
+        // alert('123')
       }
     }
   }

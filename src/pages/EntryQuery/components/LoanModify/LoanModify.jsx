@@ -9,17 +9,12 @@ import DataBinder from '@icedesign/data-binder/lib/index';
 import {browserHistory, hashHistory} from 'react-router';
 import  './LoanModify.scss'
 import FormRender from  './FormRender'
-import MaterialSubmit from  './MaterialSubmit'
-
+import Req from '../../reqs/EntryQueryReq';
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { DragUpload } = Upload;
 
-
-const tableList =[
-
-]
 export default class LoanModify extends Component {
   static displayName = 'LoanModify';
 
@@ -71,7 +66,7 @@ export default class LoanModify extends Component {
     return list;
   }
 
-  //跳转
+  //title跳转
   scrollToAnchor = (anchorName) => {
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
@@ -119,8 +114,14 @@ export default class LoanModify extends Component {
       }
       console.log(this.queryCache)
       this.queryCache.status = 'save'
-      this.props.actions.saveFrom(this.queryCache);
-
+      Req.saveFrom(this.queryCache).then((res)=>{
+        console.log(res)
+        if(res && res.code == 200){
+          hashHistory.push('/MaterialSubmit/'+this.props.params.id);
+        }
+      }).catch((errors)=>{
+        console.log(errors);
+      });
     });
   }
 
@@ -129,17 +130,19 @@ export default class LoanModify extends Component {
     e.preventDefault();
     hashHistory.push('/entryQuery');
   }
-
+  //新增列表一列传递的方法
+  addColumn = (data)=>{
+    this.setState({
+      tableList:data
+    })
+  }
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    // console.log(details)
+    console.log(this.state.tableList)
     // console.log(this.props.params);
     const init = this.field.init;
-    const borrowerName = this.field.getValue('borrowerName');
-    tableList.push({id:'borrowerName',title:12313})
     return (
-        <Loading visible={this.state.visible} shape="flower">
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
             <Row  className='modify-page'>
               <Col span="3">
@@ -155,14 +158,12 @@ export default class LoanModify extends Component {
                   labelAlign= "left"
                   field={this.field}
                 >
-                  <FormRender {...this.props} data={details.list} init = {init} field={this.field}></FormRender>
+                  <FormRender {...this.props} data={details.list} init = {init} field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
                   <div className='info' id='material'>
-                    <h4>材料提交</h4>
-                    <MaterialSubmit {...this.props} data={tableList}></MaterialSubmit>
                     <div className='button-box'>
-                      <Button onClick={this.submit}>提交</Button>
-                      <Button onClick={this.save}>保存</Button>
-                      <Button onClick={this.cancel}>取消</Button>
+
+                      <Button onClick={this.save}>下一步</Button>
+
                     </div>
                   </div>
                 </Form>
@@ -170,8 +171,6 @@ export default class LoanModify extends Component {
               </Col>
             </Row>
           </IceContainer>
-        </Loading>
-
     );
   }
 }
