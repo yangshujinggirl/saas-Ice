@@ -105,9 +105,8 @@ export default class setFont extends Component {
             name: this.state.pageValue
         }
         FontConfigReq.changPageName(pageName,id).then((data) => {
-            if (data == '200') {
+            if (data.code == 200) {
                 this.props.router.push(`font/view?id=${id}`)
-                
             } else {
                 Dialog.alert({
                     title: '提示',
@@ -181,7 +180,10 @@ export default class setFont extends Component {
         })
         // 固定左侧菜单
         window.onscroll = function () {
-                let scrollFix = document.querySelector('.scrollFix');
+            let scrollFix = document.querySelector('.scrollFix');
+                if (!scrollFix) {
+                    return
+                }
                 if (window.scrollY > 130) {
                     scrollFix.style.cssText += 'position:fixed;top:50px;'
                 } else {

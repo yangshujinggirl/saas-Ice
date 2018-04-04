@@ -66,10 +66,7 @@ export default class setFont extends Component {
             arraList: sortedArray
         });
     }
-     //取消
-    cancelPage = () => {
-        this.props.router.push('font/list')
-    }
+
     handleAddElement = () => {
         this.setState({
             arraList: this.state.arraList.concat(Math.round(Math.random() * 1000))
@@ -96,8 +93,18 @@ export default class setFont extends Component {
         })
         
     }
+    // 上一页
     upPage = () => {
-        this.props.router.go(-1)
+        let id =  this.props.router.location.query.id
+        this.props.router.push(`font/add?id=${id}`)
+    } 
+    // 下一页
+    downPage = () => {
+        this.props.router.push(`font`)     
+    }
+    //取消
+    cancelPage = () => {
+        this.props.router.push('font/list')
     }
     menuNav = (archer,index) => {
         this.scrollToAnchor(archer)
@@ -144,7 +151,7 @@ export default class setFont extends Component {
             let res = data.data
             this.setState({
                 resData: res,
-                pageValue: res.name
+                pageValue: res&&res.name
             })
             for (const key in this.state.resData.fieldset) {
 
@@ -158,6 +165,18 @@ export default class setFont extends Component {
                 }
             }
         })
+        // 固定左侧菜单
+        window.onscroll = function () {
+            let scrollFix = document.querySelector('.scrollFix');
+            if(!scrollFix){
+                return 
+            }
+                if (window.scrollY > 130) {
+                    scrollFix.style.cssText += 'position:fixed;top:50px;'
+                } else {
+                    scrollFix.style.cssText += 'position:static;top:auto;'                    
+                }
+        }
     }
 
     render() {
@@ -219,12 +238,14 @@ export default class setFont extends Component {
             let resData = this.state.resData;
             if (reqData.label == "") {
                 Dialog.alert({
+                    title: '提示',
                     content: '字段名称不能为空'
                 })
                 return 
             }
             if (reqData.type == "") {
                 Dialog.alert({
+                    title: '提示',
                     content: '字段类型不能为空'
                 })
                 return 
@@ -240,6 +261,7 @@ export default class setFont extends Component {
                     resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
                 } else {
                     Dialog.alert({
+                        title: '提示',
                         content: data.msg
                     })  
                 }                 
@@ -266,6 +288,7 @@ export default class setFont extends Component {
             }
             if (reqData.label == "") {
                 Dialog.alert({
+                    title: '提示',
                     content: '字段名称不能为空'
                 })
                 return 
@@ -282,6 +305,7 @@ export default class setFont extends Component {
                     // resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
                 } else {
                     Dialog.alert({
+                        title: '提示',
                         content: data.msg
                     })  
                 }                 
@@ -496,7 +520,10 @@ export default class setFont extends Component {
         const handleAddValue = (index) => {
             let data = this.state.addValue
             if (index == 'add') {
-                data.push(index)
+                data.push("123")
+                this.setState({
+                    addValue: data
+                })
             } else {
                 data.splice(index, 1)
                 let ds = this.state.fields;
@@ -625,12 +652,11 @@ export default class setFont extends Component {
         
         const handleSelect = (index, value) => {
             let data = this.state.fields;
-            data.options[index] = value;
+            data.options[index] = {label: value,value: value};
             this.setState({
                 fields: data
             })
             console.log(this.state.fields);
-            
         }
 
         const handleEditeCoce = (index, inj) => {
@@ -643,17 +669,24 @@ export default class setFont extends Component {
             })
         }
 
+        const handlePageName = (e) => {
+   
+            this.setState({
+                pageValue : e.target.value
+            })
+        }
         return (
             <div className="setFont">
                 <IceContainer className='subtitle'>
                     <div className="pageName">
                         <label>页面名称</label>
-                        <input type="text" name='' value={this.state.pageValue} />
+                        <input type="text" name='' onChange={handlePageName} value={this.state.pageValue} />
                     </div>
                 </IceContainer>
                 <div className="container">
+                    {/*渲染左边  */}
                     <div className="container-left">
-                        <ul>
+                        <ul className='scrollFix'>
                             {
                                 this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
                                     return (
@@ -665,11 +698,13 @@ export default class setFont extends Component {
 
                         </ul>
                     </div>
+                    {/* 渲染右边 */}
                     <div className="container-right">
                         <div className="dynamic-demo">
                             {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
                                 return (
                                     <div key={index}>
+                                        {/*添加字段按钮和小标题  */}
                                         <div className='baseDetail customer'>
                                             <span className='active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
                                                 {
@@ -680,16 +715,19 @@ export default class setFont extends Component {
                                                 }
 
                                             </span>
+
+
                                         </div>
                                         <div className='ui-sortable'>
                                             {index == 0 ? item.fields.map((item, inj) => {
                                                 if (item.isCustom) {
                                                     return (
+                                                        // 基本信息里面自定义字段
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                             'false', {active: this.state.rightActive == item.label} )} key={inj}>
                                                             <div className="clearfix">
-                                                                <label htmlFor="">
-                                                                    <span className='ellips' title={item.label}>{item.label}</span>
+                                                                <label htmlFor="" className='label'>
+                                                                    <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
                                                                     <span className='required'>*</span>
                                                                 </label>
                                                                 {handleFixed(item)}
@@ -703,10 +741,11 @@ export default class setFont extends Component {
                                                     )
                                                 } else {
                                                     return (
+                                                        // 固定字段
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                             'false')} key={inj}>
                                                             <div className="clearfix">
-                                                                <label htmlFor="">
+                                                                <label htmlFor=""  className='label'>
                                                                     <span className='ellips' title={item.label}>{item.label}</span>
                                                                     <span className='required'>*</span>
                                                                 </label>
@@ -751,8 +790,8 @@ export default class setFont extends Component {
                                                             active: this.state.rightActive == item.label
                                                         })} >
                                                         <div className="clearfix">
-                                                            <label htmlFor="">
-                                                                <span className='ellips' title={item.label}>{item.label}</span>
+                                                            <label htmlFor=""  className='label'>
+                                                                <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
                                                                 <span className='required' onClick={validaRequire.bind(this, index, inj)}>
                                                                     {item.isRequired ? <span>*</span> : ''}
                                                                 </span>
@@ -782,8 +821,8 @@ export default class setFont extends Component {
                         <div className='submit'>
                             <Button
                                 type="secondary"
-                                onClick={this.cancelPage}
-                                style={{ marginLeft: '10px' }}>
+                                style={{ marginLeft: '10px' }}
+                                onClick={this.downPage}>
                                 返回
                             </Button>
                         </div>
