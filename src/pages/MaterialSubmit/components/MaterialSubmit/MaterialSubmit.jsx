@@ -6,6 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import DragFile from './DragFile';
 import DropCell from './DropCell';
 import  Req from '../../reqs/MaterialSubmitReq'
+import { hashHistory } from 'react-router';
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
 
@@ -80,7 +81,22 @@ class MaterialSubmit extends Component {
         const { data } = res;
         const { list } = data;
         var dataSource;
-        list.map((el)=> dataSource = el.collectionDetails)
+        list.map((el)=> {
+          dataSource = el.collectionDetails
+          var _josn = {}
+          if(el.type == '主贷人'){
+             _josn = {id:'principalLender',title:el.name ,draggable:true}
+            this.state.tableList.push(_josn)
+          }
+          else if(el.type == '共借人'){
+            _josn = {id:'coBorrower',title:el.name ,draggable:true}
+            this.state.tableList.push(_josn)
+          }
+          if(el.type == '担保人'){
+            _josn = {id:'guarantor',title:el.name ,draggable:true}
+            this.state.tableList.push(_josn)
+          }
+        })
         this.setState({
           dataSource:dataSource
         })
@@ -157,6 +173,11 @@ class MaterialSubmit extends Component {
     console.log(this.state.tableList)
     this.state.tableList.push(data)
     console.log(this.state.tableList)
+  }
+  //cancel 提交
+  cancel = (e)=>{
+    e.preventDefault();
+    hashHistory.push('/entryQuery');
   }
   render() {
     const { connectDropTarget ,data } = this.props

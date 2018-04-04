@@ -33,7 +33,7 @@ const labels =(name)=> (
   <span>
     <Balloon
       type="primary"
-      trigger={<span>{name}</span>}
+      trigger={<span>{name}:</span>}
       closable={false}
       triggerType="hover">
       {name}
@@ -52,8 +52,8 @@ class BasicInformation extends Component {
     this.field = new Field(this)
   }
   componentWillMount() {
-    this.actionType()
     this.getProductNum()
+    this.actionType()
   }
 
   actionType() {
@@ -66,7 +66,7 @@ class BasicInformation extends Component {
   }
 
   changeInfomation(productId) {
-    alert(productId)
+
   }
 
   getProductNum() {
@@ -135,7 +135,7 @@ class BasicInformation extends Component {
   render() {
     const { list=[] } = this.props.pageData;
     const { init } = this.field;
-
+    const { productId } = this.state;
     let Mod;
     let InputMod = (ele) => {
       switch(ele.type) {
@@ -198,8 +198,9 @@ class BasicInformation extends Component {
                 />
       }
     }
+    console.log(list)
     return (
-      <div className="content-editor">
+      !productId ?  <div className="content-editor">
         <IceFormBinderWrapper>
           <IceContainer title="车贷申请" className='subtitle'>
             <Form
@@ -231,7 +232,7 @@ class BasicInformation extends Component {
             </Form>
           </IceContainer>
         </IceFormBinderWrapper>
-      </div>
+      </div> : <div>接口未提供暂时未开发</div>
     );
   }
 }
