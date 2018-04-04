@@ -16,7 +16,7 @@ class DropCell extends Component {
         const {
             index,
             data,
-            text,
+            type,
             isDragging,
             connectDropTarget,
             onRemoveClick
@@ -25,12 +25,12 @@ class DropCell extends Component {
 
         return connectDropTarget(
             <div className={cx('listCode')}>
-                <Icon type="close" onClick={onRemoveClick.bind(this,index, data.sourceId)} />
-                {data.value ?
+                <Icon type="close" onClick={onRemoveClick.bind(this,index, data.sourceId, type)} />
+                {data[type] ?
                 <IceImg
                     height={20}
                     width={20}
-                    src={data.value}
+                    src={data[type]}
                   />
                   : '请拖动图片'
                 }
@@ -46,7 +46,7 @@ const cardTarget = {
     hover(props, monitor, component) {
         // console.log('DropCell hover', props,monitor.getItem())
         const { lastTargetIndex, id: sourceId } = monitor.getItem()
-        const { index: targetIndex} = props
+        const { index: targetIndex, type} = props
 
         // Don't replace items with themselves
         if (lastTargetIndex === targetIndex) {
@@ -54,7 +54,7 @@ const cardTarget = {
         }
 
         // Time to actually perform the action
-        props.moveCard(targetIndex, sourceId, false, lastTargetIndex)
+        props.moveCard(targetIndex, sourceId, false, lastTargetIndex, type)
 
         // Note: we're mutating the monitor item here!
         // Generally it's better to avoid mutations,

@@ -33,8 +33,7 @@ class MaterialSubmit extends Component {
       tableList: [
                     {id: 'id',title:'序号'},
                     {id:'fileName',title: '材料名称'},
-                    {id:'fileSize',title:'限制大小'},
-                    {id:'f',title:'文件' ,draggable:true}],
+                    {id:'fileSize',title:'限制大小'}],
       fileList: [{
         id: 1,
         fileName: "IMG.png",
@@ -84,7 +83,7 @@ class MaterialSubmit extends Component {
         const { data } = res;
         const { list } = data;
         var dataSource;
-        list.map((el)=> {
+        list.map((el) => {
           dataSource = el.collectionDetails
           var _josn = {}
           if(el.type == '主贷人'){
@@ -101,7 +100,8 @@ class MaterialSubmit extends Component {
           }
         })
         this.setState({
-          dataSource:dataSource
+          dataSource:dataSource,
+          originData: list
         })
       },(error) => {
         console.log(error)
@@ -111,12 +111,13 @@ class MaterialSubmit extends Component {
     console.log(info)
     this.setState({fileList: info.fileList})
   }
-  renderCell(value, index, record){
+  renderCell(key, value, index, record){
     return(
       <DropCell
         key={record.id}
         index={index}
         data={record}
+        type={key}
         moveCard={this.moveCard.bind(this)}
         onRemoveClick={this.handleRemoveClick.bind(this)}
       />
@@ -131,56 +132,79 @@ class MaterialSubmit extends Component {
       index: fileList.indexOf(file),
     }
   }
-  moveCard(targetIndex, sourceId, isCancel, lastTargetIndex) {
-    // console.log('moveCard', arguments);
+  moveCard(targetIndex, sourceId, isCancel, lastTargetIndex, type) {
+    console.log('moveCard', arguments);
     let { dataSource, fileList} = this.state
     let dragCard = this.findFile(sourceId);
     let d = dataSource[targetIndex];
 
     if(isCancel){
-      d.value = undefined;
+      d[type] = undefined;
       dragCard.file.isUsed = false;
     }else{
       if(typeof lastTargetIndex != 'undefined'){
-        dataSource[lastTargetIndex].value = undefined;
+        dataSource[lastTargetIndex][type] = undefined;
       }
        if(typeof d.sourceId != 'undefined'){
         let lastDragCard = this.findFile(d.sourceId);
         // lastDragCard.file.isUsed = false;
       }
       dragCard.file.isUsed = true;
-      d.value = dragCard.file.imgURL;
+      d[type] = dragCard.file.imgURL;
       d.sourceIndex = dragCard.index;
       d.sourceId = sourceId;
     }
     this.setState({dataSource,fileList})
   }
-  handleRemoveClick(index, sourceId){
+  handleRemoveClick(index, sourceId, type){
     let { dataSource, fileList} = this.state;
     let dragCard = this.findFile(sourceId);
     let d = dataSource[index];
     dragCard.file.isUsed = false;
-    d.value = undefined;
+    d[type] = undefined;
     this.setState({dataSource,fileList})
   }
   //cancel 提交
-  cancel = (e)=>{
+  cancel = (e) => {
     e.preventDefault();
     hashHistory.push('/entryQuery');
   }
   //提交
-  submit = ()=>{
+  submit = () => {
     this.state.queryCache.id = this.props.params.id;
     this.state.queryCache.status = 1;
-    Req.saveFrom(this.state.queryCache).then((res)=>{
-      console.log(res)
-      if(res && res.code == 200){
-        Toast.success('提交成功');
-        hashHistory.push('/entryQuery');
+
+    let { originData, tableList, dataSource } = this.state;
+    let data = [];
+    originData.map((item) =>{
+      let key = '';
+      if(item.type == '主贷人'){
+        key = 'principalLender';
+      }else if(item.type == '共借人'){
+        key = 'coBorrower';
+      }else{
+        key = 'guarantor';
       }
-    }).catch((errors)=>{
-      console.log(errors);
-    });
+      item.collectionDetails.map((citem, j) => {
+        citem.downloadUrl = dataSource[j][key]
+      })
+    })
+
+    console.log(originData);
+    Req.saveMaterial(this.props.params.id, originData).then((res) => {
+      if(res && res.code == 200){
+
+        Req.saveFrom(this.state.queryCache).then((res) =>{
+          console.log(res)
+          if(res && res.code == 200){
+            Toast.success('提交成功');
+            hashHistory.push('/entryQuery');
+          }
+        }).catch((errors) =>{
+          console.log(errors);
+        });
+      }
+    })
   }
   //保存
   save =  () =>{
@@ -222,7 +246,7 @@ class MaterialSubmit extends Component {
                 {tableList.map((item,index) =>{
                   let myCell;
                   if(item.draggable){
-                    myCell = this.renderCell.bind(this);
+                    myCell = this.renderCell.bind(this, item.id);
                   }
                   return (
                     <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
