@@ -40,12 +40,26 @@ export default class setFont extends Component {
                 options: [],
                 length: 30,
             },
+            fieldsEdite: {
+                fieldsetOrder:1,
+                hasAttachedFields:false,
+                isCustom:true,
+                isRepeatable:false,
+                isRequired:false,
+                label:"",
+                name:"",
+                orderId:43,
+                screenSchemeId:'',
+                type: "",
+                options: [],
+                length: 30,
+            },
             arraList: [5, 6, 7, 8, 9],
             dialogOne: false,
             dialogTwo: false,
             boolDate: false,
             boolSelect: false,
-            value: ["true"],
+            value: [],//添加字段时候字段的熟悉，例如只读
             listDate: ["yyyy"],
             editeCodeIndex: {
                 index: 0,
@@ -67,26 +81,44 @@ export default class setFont extends Component {
         });
     }
 
-    handleAddElement = () => {
-        this.setState({
-            arraList: this.state.arraList.concat(Math.round(Math.random() * 1000))
-        });
-    }
+    // handleAddElement = () => {
+    //     this.setState({
+    //         arraList: this.state.arraList.concat(Math.round(Math.random() * 1000))
+    //     });
+    // }
 
     handleRemoveElement = (index, inj) => {
+        
         let id = this.props.router.location.query.id        
-        const newArr = this.state.resData;
-        let deleteObj = newArr.fieldset[index].fields.splice(inj, 1);
-        let fileId = deleteObj[0].id;
-        console.log(deleteObj[0]);
+        const newArr = Object.assign({},this.state.resData);
+        let deleteObj = newArr.fieldset[index].fields[inj];
+        let fileId = deleteObj.id;
         
         FontConfigReq.deleteCode(id,fileId).then((data) => {
-            if (data.code == '200') {
+            if (data.code == 200) {
+                newArr.fieldset[index].fields.splice(inj, 1);                
+                this.setState({
+                    resData: newArr
+                });
+            }
+        })
+        
+    }
+
+    handleRemoveModule = (index) => {
+        let id = this.props.router.location.query.id        
+        const newArr = this.state.resData;     
+        let deleteObj = newArr.fieldset[index].name;
+        
+        FontConfigReq.deleteModelCode(id,encodeURIComponent(deleteObj)).then((data) => {
+            if (data.code == 200) {
+                newArr.fieldset.splice(index,1)
                 this.setState({
                     resData: newArr
                 });
             } else {
                 Dialog.alert({
+                    title: '提示',
                     content: data.msg
                 })
             }
@@ -100,9 +132,31 @@ export default class setFont extends Component {
     } 
     // 下一页
     downPage = () => {
-        let id =  this.props.router.location.query.id        
+        let id = this.props.router.location.query.id;
+        let resData = this.state.resData;
+        // 空区块删除
+        let tts = resData.fieldset.every((item) => {
+            if (!item.fields.length) {
+                Dialog.alert({
+                    title: '提示',
+                    content: `${item.name}里面没有定义字段，请删除！`
+                })
+                return false
+            } else {
+                return true
+            }
+        })
+        if (!tts) { return }
+        
         let pageName = {
             name: this.state.pageValue
+        }
+        if (!pageName.name.length) {
+            Dialog.alert({
+                title: '提示',
+                content: '页面名称不能为空'
+            })
+            return
         }
         FontConfigReq.changPageName(pageName,id).then((data) => {
             if (data.code == 200) {
@@ -161,13 +215,13 @@ export default class setFont extends Component {
         let id = this.props.router.location.query.id
 
         FontConfigReq.getCode(id).then((data) => {
-            let res = data.data
+            if (data.code == 200) {
+                let res = data.data
             this.setState({
                 resData: res,
                 pageValue: res&&res.name
             })
             for (const key in this.state.resData.fieldset) {
-
                 if (this.state.resData.fieldset[key].name == '基本信息') {
                     let allDate = this.state.resData
                     let first = allDate.fieldset.splice(key, 1)
@@ -177,6 +231,8 @@ export default class setFont extends Component {
                     })
                 }
             }
+            }
+            
         })
         // 固定左侧菜单
         window.onscroll = function () {
@@ -246,9 +302,10 @@ export default class setFont extends Component {
                 dialogTwo: false
             })
         }
-        const handleSubmit = () => {
-            let reqData = this.state.fields;
+        const handleSubmitCode = () => {
+            let reqData = { ...this.state.fields };
             let resData = this.state.resData;
+           
             if (reqData.label == "") {
                 Dialog.alert({
                     title: '提示',
@@ -268,66 +325,83 @@ export default class setFont extends Component {
             this.setState({
                 dialogOne: false
             })
-            FontConfigReq.submitCustomeCode(reqData,id).then((data) => {
-                if (data.code == '200') {
-                    reqData.id = data.data.id;
-                    resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                } else {
-                    Dialog.alert({
-                        title: '提示',
-                        content: data.msg
-                    })  
-                }                 
-            })
+             // 判断是不是新的模块
+             if (resData.fieldset[reqData.fieldsetOrder].new) {
+                 resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
+                 if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题') {
+                     Dialog.alert({
+                         title: "提示",
+                         content: '请输入模块名字'
+                     })
+                     console.log('请输入模块名字');
+                     
+                     return 
+                } 
+                 
+                delete resData.fieldset[reqData.fieldsetOrder].new
+                reqData = resData.fieldset[reqData.fieldsetOrder];
+                FontConfigReq.changPageName(reqData,id).then((data) => {
+                    if (data.code == 200) {
+                        this.setState({
+                            boolSelect: false,
+                            resData,
+                        })
+                    } else {
+                        Dialog.alert({
+                            title: '提示',
+                            content: data.msg
+                        })
+                    }
+                })
+            } else {
+                FontConfigReq.submitCustomeCode(reqData,id).then((data) => {
+                    if (data.code == 200) {
+                        let allData = this.state.resData
+                        reqData.id= data.data.id
+                        resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
+                        this.setState({
+                            resData
+                        })
+                    } else {
+                        Dialog.alert({
+                            title: '提示',
+                            content: data.msg
+                        })  
+                    }                 
+                })
+            }
         }
         const handleEdite = () => { 
             let resData = this.state.resData;
+            let fields = this.state.fieldsEdite;
             let index = this.state.editeCodeIndex.index;
             let inj = this.state.editeCodeIndex.inj;
-            let label = resData.fieldset[index].fields[inj].label;
-            let isRequired = resData.fieldset[index].fields[inj].isRequired
-            let isUnique = resData.fieldset[index].fields[inj].isUnique
-            let isReadonly = resData.fieldset[index].fields[inj].isReadonly
-            let line = resData.fieldset[index].fields[inj].line
-            let type = resData.fieldset[index].fields[inj].type
+            fields.type = resData.fieldset[index].fields[inj].type
+            fields.fieldset = resData.fieldset[index].fields[inj].fieldset
+            fields.id = resData.fieldset[index].fields[inj].id
+            fields.fieldsetOrder = resData.fieldset[index].fields[inj].fieldsetOrder
+            fields.options = resData.fieldset[index].fields[inj].options
             
-            let reqData = {
-                label,
-                isRequired,
-                isUnique,
-                isReadonly,
-                line,
-                type
-            }
-            if (reqData.label == "") {
-                Dialog.alert({
-                    title: '提示',
-                    content: '字段名称不能为空'
-                })
-                return 
-            }
             let id = this.props.router.location.query.id
-            let fileId = resData.fieldset[index].fields[inj].id
-            console.log(reqData);
+            
+            let fileId = fields.id
+            console.log(fields);
             this.setState({
                 dialogTwo: false
             })
-            FontConfigReq.submitModifyCode(reqData,id,fileId).then((data) => {
-                if (data.code == '200') {
-                    // reqData.id = data.data.id;
-                    // resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                } else {
-                    Dialog.alert({
-                        title: '提示',
-                        content: data.msg
-                    })  
-                }                 
+            FontConfigReq.submitModifyCode(fields,id,fileId).then((data) => {
+                if (data.code == 200) {
+                    resData.fieldset[index].fields.splice(inj, 1, fields);
+                    this.setState({
+                        resData
+                    })
+                }                  
             })
         }
         
         const footer = (
             <div key='1'>
-                <Button type="primary" style={{ marginLeft: '10px' }} onClick={handleSubmit}>
+                <Button type="primary" style={{ marginLeft: '10px' }} onClick={handleSubmitCode}>
                     提交
                 </Button>
                 <Button type="secondary" style={{ marginLeft: '10px' }} onClick={onClose}>
@@ -377,13 +451,6 @@ export default class setFont extends Component {
             });
         }
 
-        const deleteData = (index) => {
-            const newArr = this.state.resData;
-            newArr.fieldset.splice(index, 1)
-            this.setState({
-                resData: newArr
-            });
-        }
 
         const moveDown = (index) => {
             const newArr = this.state.resData;
@@ -391,6 +458,9 @@ export default class setFont extends Component {
                 return
             }
             [newArr.fieldset[index + 1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index + 1]]
+            newArr.fieldset[index + 1].fields.map((item) => {
+                item.fieldsetOrder = index + 1;
+            })
             this.setState({
                 resData: newArr
             });
@@ -402,6 +472,9 @@ export default class setFont extends Component {
                 return
             }
             [newArr.fieldset[index - 1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index - 1]]
+            newArr.fieldset[index - 1].fields.map((item) => {
+                item.fieldsetOrder = index - 1;
+            })
             this.setState({
                 resData: newArr
             });
@@ -409,6 +482,7 @@ export default class setFont extends Component {
         const handleAddModule = () => {
             const newArr = this.state.resData;
             let add = {
+                new: 1,
                 name: '请输入标题',
                 fields: []
             }
@@ -457,9 +531,10 @@ export default class setFont extends Component {
         ];
         const handleFixed = (item) => {
             let inputType = <Input placeholder="" />
+            
             switch (item.type) {
                 case 'STRING':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder=""  readOnly = { item.isReadonly ? true : false}  />
                     break;
                 case 'TEXT':
                     inputType = <Input placeholder="" />
@@ -524,6 +599,8 @@ export default class setFont extends Component {
         const handleAddCode = (index) => {
             let data = this.state.fields;
             data.fieldset = this.state.resData.fieldset[index].name;
+            data.name = this.state.resData.fieldset[index].name;
+            
             data.fieldsetOrder = index;
             this.setState({
                 dialogOne: true,
@@ -559,13 +636,11 @@ export default class setFont extends Component {
             })
         }
         const codeNameTwo = (value) => {
-            let data = this.state.resData;
-            let index = this.state.editeCodeIndex.index;
-            let inj = this.state.editeCodeIndex.inj;
-            data.fieldset[index].fields[inj].label = value
-            // this.setState({
-            //     fields: data
-            // })
+            let data = this.state.fieldsEdite;
+            data.label = value
+            this.setState({
+                fieldsEdite: data
+            })
         }
 
         const codeSuffix = (value) => {
@@ -641,31 +716,29 @@ export default class setFont extends Component {
 
         const codeRequireTwo = (value) => {
             console.log(value);
-            let data = this.state.resData;
-            let index = this.state.editeCodeIndex.index;
-            let inj = this.state.editeCodeIndex.inj;
+            let data = this.state.fieldsEdite;
 
             if (value.join().match('true')) {
-                data.fieldset[index].fields[inj].isRequired = true
+                data.isRequired = true
             }
             if (value.join().match('unique')) {
-                data.fieldset[index].fields[inj].isUnique = true
+                data.isUnique = true
             }
             if (value.join().match('readonly')) {
-                data.fieldset[index].fields[inj].isReadonly = true
+                data.isReadonly = true
             }
             if (value.join().match('nowrap')) {
-                data.fieldset[index].fields[inj].line = 1
+                data.line = 1
             }
             this.setState({
                 value: value,
-                resData: data
+                fieldsEdite: data
             })
         }
         
         const handleSelect = (index, value) => {
             let data = this.state.fields;
-            data.options[index] = {label: value,value: value};
+            data.options[index] = {label: value,value: value+index};
             this.setState({
                 fields: data
             })
@@ -735,7 +808,7 @@ export default class setFont extends Component {
                                                         <span className="addStr" onClick={handleAddCode.bind(this, index)}>自定义字段</span>
                                                         <span className='icon down' onClick={moveDown.bind(this, index)}>&#xe629;</span>
                                                         <span className='icon up' onClick={moveUp.bind(this, index)}>&#xe62b;</span>
-                                                        <span className='icon delete' onClick={deleteData.bind(this, index)}>&#xe625;</span>
+                                                        <span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}>&#xe625;</span>
                                                     </span>
                                             }
 
@@ -746,14 +819,14 @@ export default class setFont extends Component {
                                                     return (
                                                         // 基本信息里面自定义字段
                                                         <div onMouseLeave={hover.bind(this, 0)} onMouseEnter={hover.bind(this, 1, item.label)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false', {active: this.state.rightActive == item.label} )} key={inj}>
+                                                            'false', { active: this.state.rightActive == item.label })} key={inj} data-row={item.line==1? true : ''}>
                                                             <div className="clearfix">
                                                                 <label htmlFor="" className='label'>
                                                                     <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
                                                                     <span className='required'>*</span>
                                                                 </label>
                                                                 {handleFixed(item)}
-                                                                <span className='edite icon'>&#xe62a;</span>
+                                                                <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
                                                             </div>
                                                             <span className="delete"
                                                                 onClick={this.handleRemoveElement.bind(this, index, inj)}>
@@ -765,7 +838,7 @@ export default class setFont extends Component {
                                                     return (
                                                         // 固定字段
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false')} key={inj}>
+                                                            'false')} key={inj} data-row={item.line == 1 ? true : ''}>
                                                             <div className="clearfix">
                                                                 <label htmlFor=""  className='label'>
                                                                     <span className='ellips' title={item.label}>{item.label}</span>
@@ -810,7 +883,7 @@ export default class setFont extends Component {
                                                     <div key={inj} onMouseLeave={hover.bind(this, 0)} onMouseEnter={hover.bind(this, 1, item.label)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                         'false', {
                                                             active: this.state.rightActive == item.label
-                                                        })} >
+                                                        })} data-row={item.line == 1 ? true : ''}>
                                                         <div className="clearfix">
                                                             <label htmlFor=""  className='label'>
                                                                 <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
@@ -819,7 +892,7 @@ export default class setFont extends Component {
                                                                 </span>
                                                             </label>
                                                             {handleFixed(item)}
-                                                            <span className='edite icon'>&#xe62a;</span>
+                                                            <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
                                                         </div>
                                                         <span className="delete"
                                                             onClick={this.handleRemoveElement.bind(this, index, inj)}>
@@ -866,7 +939,7 @@ export default class setFont extends Component {
 
                 <Dialog
                     visible={this.state.dialogOne}
-                    onOk={handleSubmit}
+                    onOk={handleSubmitCode}
                     closable="esc,mask,close"
                     onCancel={onClose}
                     onClose={onClose}
@@ -995,10 +1068,10 @@ export default class setFont extends Component {
                 </Dialog>
                 <Dialog
                     visible={this.state.dialogTwo}
-                    onOk={this.onClose}
+   
                     closable="esc,mask,close"
-                    onCancel={this.onClose}
-                    onClose={this.onClose}
+
+                    onClose={onClose}
                     title="添加自定义字段"
                     footer={footerTwo}
                     footerAlign='center'

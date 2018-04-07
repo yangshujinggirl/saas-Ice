@@ -75,6 +75,18 @@ class FontConfigReq extends CurdReq{
 	}
 
 
+  /**
+   * 删除模块
+   */
+ deleteModelCode(id, fieldsetName) {
+  let options = {
+    url: this._host + '/screen-schemes/'+ id + '/fieldset/' + fieldsetName,
+    method: 'delete',
+    contentType: 'application/json'
+  }
+  return super.fetchData(options);
+}
+
 	/**
    * 提交自定义字段
    */
