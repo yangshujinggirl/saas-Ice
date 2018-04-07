@@ -225,6 +225,7 @@
                             display: none;
                             margin-left: 6px;
                             margin-top: 5px;
+                            cursor: pointer;
                         }
                         .delete {
                             float: right;
@@ -372,4 +373,8 @@
     ::-webkit-scrollbar{
         display:none;
       }
+}
+[data-row=true] {
+    // display: block;
+    // float: left;
 }
