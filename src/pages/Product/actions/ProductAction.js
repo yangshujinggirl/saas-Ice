@@ -259,10 +259,10 @@ export const fileEditSave = (value,id)=>{
   }
 }
 
-export const addTwoList=(data,formData)=>{
+export const addTwoList=(data,formData,page)=>{
   return (dispatch) => {
     dispatch(fetchStart())
-    Req.addTwoList(data,formData).then((res) => {
+    Req.addTwoList(data,formData,page).then((res) => {
       dispatch(fetchSuccess({ addTwoData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

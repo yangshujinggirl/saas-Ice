@@ -170,12 +170,6 @@ export default class addTwo extends Component {
             <div className="next-btn-box">
               <div className="next-btn-lx" onClick={this.onsubmit}>下一步</div>
             </div>
-            <Dialog
-              visible={this.state.visible}
-              onOk={this.onOK}
-              onClose={this.onClose}
-              >
-              </Dialog>
           </IceContainer>
         </div>
       </IceFormBinderWrapper>

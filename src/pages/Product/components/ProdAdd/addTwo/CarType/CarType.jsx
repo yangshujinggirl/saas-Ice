@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Form,Input,Button,Checkbox,Select,DatePicker,Switch,Radio,Grid,Field,
-  Table,Transfer ,
+  Form, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Field,
+  Table, Transfer, Icon, Pagination
 } from '@icedesign/base';
 
 import IceContainer from '@icedesign/container';
@@ -38,77 +38,130 @@ export default class CarType extends Component {
   static displayName = 'CarType';
   constructor(props) {
     super(props);
-    this.state = {
-      value:{},
-      type:''
+
+    // 表格可以勾选配置项
+    this.rowSelection = {
+      // 表格发生勾选状态变化时触发
+      onChange: (ids,array) => {
+        let arra = []
+        arra.push(...array)
+        this.setState({
+          selectDate: arra
+        })
+        
+        console.log('ids', ids);
+        this.setState({
+          selectedRowKeys: ids,
+        });
+      },
+      // 全选表格时触发的回调
+      onSelectAll: (selected, records) => {
+      },
     };
-  }
-  componentDidMount(){
-    console.log(this.props)
-    let {actions,addTwoData} = this.props;
-    let val = this.props.data; 
-    this.state.type = val
-    console.log(val)
-      actions.addTwoList(val,'')
+
+    this.state = {
+      value: {},
+      type: '',
+      dataSourceRight:[],//存储选中的数据，渲染右侧
+      selectedRowKeys: [],//选中的复选框
+      selectDate: []
+    };
    
   }
+  componentDidMount() {
+    console.log(this.props)
+    let { actions, addTwoData } = this.props;
+    let val = this.props.data;
+    this.state.type = val
+    actions.addTwoList(val, '')
 
-  renderDataWithCar=(type, list)=>{
-    let carType = CARTYPES[type];
-    const tempData=[]
-      list.map((item,i)=>{
-        tempData.push({
-          label: <div style={styles.div}>
-                  <span style={styles.SpaLeft}>{carType.name}</span>
-                  <span style={styles.SpaRight}>{item.name}</span>
-                </div>,
-          value: `${i}`,
-        });
-      })
-      return tempData;
   }
-leftData=(value,data)=>{
-  let {CarData} = this.props;
-  let val = this.props.data
-  data.map((item,i)=>{
-    CarData.productScopes.push({
-      relatedId: item.value,
-      relatedName: val=='1'?'品牌':(val=='2'?'车系':'车型'),
-      relatedPath: "SP2",
-      relatedPathName: "SP1关联",
-      type:'CARS'
+
+  renderDataWithCar = (type, list) => {
+    let carType = CARTYPES[type];
+    const tempData = []
+    list.map((item, i) => {
+      tempData.push({
+        type:carType.name,
+        id:item.id,
+        name:item.name
+      });
     })
-  })
-  console.log(CarData)
-}
- //查询
- searchCar(){
-  let {actions, data, getCarList} = this.props;
-  let { name } = this.state.value;
-  console.log(this.state.value)
-  getCarList(data, name);
-}
-onFormChange(value){
-  this.props.changeCarName && this.props.changeCarName(value.name);
+    return tempData;
+  }
+  
+  //查询
+  searchCar() {
+    let { actions, data, getCarList } = this.props;
+    let { name } = this.state.value;
+    getCarList(data, name);
+  }
+  onFormChange(value) {
+    this.props.changeCarName && this.props.changeCarName(value.name);
+    this.setState({
+      value
+    })
+  }
+  //向右移动
+  onRight(){
+    let { CarData } = this.props;
+    let arra = []
+    arra = [...this.state.selectDate]
+    CarData.productScopes = arra;
+
+    this.setState({
+      dataSourceRight: arra
+    })
+  }
+  //操作
+  renderOperator = (value, index, record) => {
+    return (
+      <div>
+        <a
+          style={styles.removeBtn}
+          onClick={this.deleteItem.bind(this, index)}
+        >
+          删除
+        </a>
+      </div>
+    );
+  };
+//右侧删除一列
+deleteItem = (index) => {
+  let data = this.state.dataSourceRight;
+  console.log(index);
+  
+  data.splice(index,1)
   this.setState({
-    value
+    dataSourceRight: data
   })
-}
+};
+//分页
+changePage = (currentPage) => {
+  let { actions, addTwoData } = this.props;
+  let { name } = this.state.value;
+  let val = this.props.data;
+  this.state.type = val
+  actions.addTwoList(val, name,currentPage)
+};
   render() {
-    let addTwoData = this.props.addTwoData || {}
-    let type = this.props.data; 
-    let list = addTwoData.data || {}
-    list = list.list|| []
+    let addTwoData = this.props.addTwoData || {};
+    let type = this.props.data;
+    let list = addTwoData.data || {};
+    let page = list.page;
+    let limit = list.limit ;
+    let total = list.total;
+        list = list.list || [];
 
     let dataSource = this.renderDataWithCar(type, list);
 
     return (
       <IceFormBinderWrapper
-      ref={(formRef) => {
-        this.formRef = formRef;
-      }}
-      value={this.state.value}
-      onChange={this.onFormChange.bind(this)}
+        ref={(formRef) => {
+          this.formRef = formRef;
+        }}
+        value={this.state.value}
+        onChange={this.onFormChange.bind(this)}
       >
         <div>
           <IceContainer>
@@ -126,8 +179,8 @@ onFormChange(value){
                   查询
                 </button>
               </Col>
-              </Row>
-              <Row wrap style={{marginBottom:"30px"}} >
+            </Row>
+            {/* <Row wrap style={{marginBottom:"30px"}} >
                 <Transfer 
                   titles={['选项',' 选项']}
                   dataSource={dataSource}
@@ -136,7 +189,51 @@ onFormChange(value){
                   onChange={this.leftData}
                 >
                 </Transfer>
-              </Row>
+              </Row>*/}
+          </IceContainer>
+          <IceContainer>
+            <div className="table-center">
+              <div className="table-left">
+                <Table
+                  dataSource={dataSource}
+                  rowSelection={{
+                    ...this.rowSelection,
+                    selectedRowKeys: this.state.selectedRowKeys,
+                  }}
+                >
+                 
+                  <Table.Column title="类型" dataIndex="type" width={50} />
+                  <Table.Column title="名称" dataIndex="name" width={200} />
+                </Table>
+                <div style={styles.pagination}>
+                  <Pagination 
+                    current={page}
+                    pageSize={limit}
+                    total={total}
+                    onChange={this.changePage}
+                    />
+                </div>
+              </div>
+
+              <div className="table-center-btn">
+                  <button onClick={this.onRight.bind(this)}>>></button>
+              </div>
+
+              <div className="table-right">
+                <Table
+                  dataSource={this.state.dataSourceRight}
+                >
+                  <Table.Column title="类型" dataIndex="type" width={50} />
+                  <Table.Column title="名称" dataIndex="name" width={300} />
+                  <Table.Column
+                    title="操作"
+                    cell={this.renderOperator}
+                    lock="right"
+                    width={50}
+                  />
+                </Table>
+              </div>
+            </div>
           </IceContainer>
         </div>
       </IceFormBinderWrapper>
@@ -145,20 +242,25 @@ onFormChange(value){
 }
 
 const styles = {
-  div:{
-    display:'inline-block',
-    width:'100%',
+  removeBtn:{
+    background: '#fff',
+    color: '#1AA8F0 ',
+    cursor: 'pointer'
   },
-  SpaLeft:{
-    marginLeft:'20px',
-    display:'inline-block',
-    width:'50px',
-    textAlign:'center',
+  div: {
+    display: 'inline-block',
+    width: '100%',
   },
-  SpaRight:{
-    display:'inline-block',
-    width:'75%',
-    textAlign:'center',
+  SpaLeft: {
+    marginLeft: '20px',
+    display: 'inline-block',
+    width: '50px',
+    textAlign: 'center',
+  },
+  SpaRight: {
+    display: 'inline-block',
+    width: '75%',
+    textAlign: 'center',
   },
   filterCol: {
     display: 'flex',
@@ -179,7 +281,10 @@ const styles = {
     borderRadius: 'none !important',
     background: '#ec9d00',
     color: '#fff',
-    marginLeft:'20px'
+    marginLeft: '20px'
 
   },
+  pagination:{
+    marginTop:'10px'
+  }
 };

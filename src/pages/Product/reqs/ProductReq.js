@@ -187,10 +187,11 @@ fileRemoveDes(id, callback, callbackError) {
   }
 
   //addTwoList
-  addTwoList(type,name) {
+  addTwoList(type,name,page) {
     let condition = {
       name:name,
-      type:type
+      type:type,
+      page:page,
     }
     let options = {
       // url: this._host + '/product/data
