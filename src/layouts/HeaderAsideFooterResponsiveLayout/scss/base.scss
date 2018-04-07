@@ -848,4 +848,11 @@ body {
 .ice-design-header-aside-footer-responsive-layout-light.ice-design-layout .ice-design-layout-aside .ice-menu-item-selected > a:hover{
     color: #fff !important;
 }
-
+// 单选框、复选框 小手样式
+.next-checkbox-label,.next-radio-label{
+    cursor: pointer;
+}
+//表格无数据时，高度
+.next-table-empty{
+    padding: 10px 0 !important;
+}

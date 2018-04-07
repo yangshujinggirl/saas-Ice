@@ -91,7 +91,7 @@ export default class Chanpinlilv extends Component {
     return(
     	<div>
     		<Button
-    			onClick={this.deleteItem.bind(this, index)} 
+    			onClick={this.props.removeItem.bind(this, index)} 
     			shape="text"
     			className="deleteBtn">删除</Button>
 	    </div>
@@ -99,13 +99,13 @@ export default class Chanpinlilv extends Component {
   }
 
   render() {
-  	let { styles } = this.props;
+  	let { styles, items } = this.props;
   	
     return (
     	<div className="chanpinchengshu">
 	    	<div className="table-title">产品利率设置</div>
 			<Table
-				dataSource={this.state.percentageSetting}
+				dataSource={items}
 				hasHeader
 				className="table"
 			>
@@ -115,7 +115,7 @@ export default class Chanpinlilv extends Component {
 				<Table.Column title="操作" width={80} cell={this.renderCell5} />
 				</Table>
 			<div style={styles.addNew}>
-			<Button onClick={this.addNewList.bind(this)} style={styles.addNewItem}>新增一行</Button>
+			<Button onClick={this.props.addItem.bind(this)} style={styles.addNewItem}>新增一行</Button>
 			</div>
 		</div>
     )

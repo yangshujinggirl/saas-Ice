@@ -48,7 +48,8 @@ export default class CarType extends Component {
     let {actions,addTwoData} = this.props;
     let val = this.props.data; 
     this.state.type = val
-      actions.addTwoList()
+    console.log(val)
+      actions.addTwoList(val,'')
    
   }
 
@@ -59,7 +60,7 @@ export default class CarType extends Component {
         tempData.push({
           label: <div style={styles.div}>
                   <span style={styles.SpaLeft}>{carType.name}</span>
-                  <span style={styles.SpaRight}>{item[carType.key]}</span>
+                  <span style={styles.SpaRight}>{item.name}</span>
                 </div>,
           value: `${i}`,
         });

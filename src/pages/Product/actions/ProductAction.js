@@ -262,7 +262,6 @@ export const fileEditSave = (value,id)=>{
 export const addTwoList=(data,formData)=>{
   return (dispatch) => {
     dispatch(fetchStart())
-    console.log(data,"1234")
     Req.addTwoList(data,formData).then((res) => {
       dispatch(fetchSuccess({ addTwoData: res }))
     }).catch((ex) => {

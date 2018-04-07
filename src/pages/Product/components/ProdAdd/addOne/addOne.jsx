@@ -185,10 +185,8 @@ export default class CreateActivityForm extends Component {
     let coll =[];
     let test=[]
     for(var i=0;i<data.length;i++){
-    let colltemp= data[i].collectionDetails
-      colltemp.map((val,j)=>{
+      data.map((val,j)=>{
         coll.push({
-          cid:val.collectionId,
           id:val.id,
           name:val.name,
         })
@@ -387,10 +385,10 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
                   <IceFormBinder name="purposeOfLoan" >
                       <CheckboxGroup
-                        className="next-form-text-align" >
+                        className="next-form-text-align " >
                         {data.purposeOfLoan&&data.purposeOfLoan.map((val,i) =>{
                           return(
-                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                            <Checkbox value={val.value} key={i} className="checkboxCurr">{val.desc}</Checkbox>
                           )
                         })}
                       </CheckboxGroup>

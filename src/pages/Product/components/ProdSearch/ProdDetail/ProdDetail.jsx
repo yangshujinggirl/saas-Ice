@@ -143,7 +143,7 @@ export default class ProdDetail extends Component {
                 <span >{product.description}</span>
               </Row>
             </div>
-          <legend className="legend">
+          <legend className="legend" style={{marginTop:"30px"}}>
             <span className="legLine"></span>额度期限设置
             </legend>
           <div className="f-box">
@@ -189,7 +189,7 @@ export default class ProdDetail extends Component {
               </Table>
           </div>
 
-          <legend className="legend">
+          <legend className="legend" style={{marginTop:"30px"}}>
             <span className="legLine"></span>利率设置
             </legend>
           <div className="f-box">
@@ -233,7 +233,7 @@ export default class ProdDetail extends Component {
               </Table>
           </div>
 
-          <legend className="legend">
+          <legend className="legend" style={{marginTop:"30px"}}>
             <span className="legLine"></span>还款设置
           </legend>
           <div className="f-box">
@@ -318,12 +318,12 @@ export default class ProdDetail extends Component {
                 <Table.Column title="期限单位" dataIndex="termUnit"/>
                 <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage"/>
               </Table>
-            
-            <legend className="legend">
-            <span className="legLine"></span>按品牌/车厂/车系/车型
+          </div>
+          <legend className="legend" style={{marginTop:"30px"}}>
+            <span className="legLine"></span>按品牌/车系/车型
             </legend>
             <div className="f-box">
-            <div className="table-title">品牌/车厂/车系/车型</div>
+            <div className="table-title">按品牌/车系/车型</div>
             <Table
               dataSource={productScopes}
                 hasHeader
@@ -335,13 +335,12 @@ export default class ProdDetail extends Component {
               </Table>
             </div>
 
-            <legend className="legend">
+            <legend className="legend" style={{marginTop:"30px"}}>
               <span className="legLine"></span>按集团/渠道/厅店
             </legend>
-            <div className="f-box">
-            <div className="table-title">集团/渠道/厅店</div>
+            <div className="f-box" >
+            <div className="table-title">按集团/渠道/厅店</div>
             <Table
-
                 hasHeader
                 className="table"
                 primaryKey="id"
@@ -351,7 +350,6 @@ export default class ProdDetail extends Component {
               </Table>
             </div>
 
-          </div>
           </IceContainer>
         </div>
       </IceFormBinderWrapper >

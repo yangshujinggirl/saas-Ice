@@ -121,7 +121,7 @@ export default class addTwo extends Component {
         <div>
           <IceContainer>
             <legend className="legend">
-              <span className="legLine"></span>按品牌/车厂/车系/车型
+              <span className="legLine"></span>按品牌/车系/车型
             </legend>
             <div className="f-box">
               <Row wrap>
