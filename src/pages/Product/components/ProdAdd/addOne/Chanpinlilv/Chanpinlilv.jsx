@@ -28,28 +28,24 @@ export default class Chanpinlilv extends Component {
     super(props);
 
     this.state = {
-    	percentageSetting: [{}]
+    	percentageSetting: []
     }
   }
 
   addNewList(data){
-    let newData = this.state.percentageSetting;
-    newData = newData.push({})
+    let percentageSetting = this.state.percentageSetting;
+    percentageSetting.push({})
     this.setState({
-      newData
+      percentageSetting
     })
   }
 
   deleteItem(index){
-    let oldData = this.state.percentageSetting
-    if (oldData.length == 1) {
-      return false
-    } else {
-      oldData.splice(index, 1);
+    let percentageSetting = this.state.percentageSetting
+      percentageSetting.splice(index, 1);
       this.setState({
-        oldData
+        percentageSetting
       });
-    }
   }
 
   renderCell1 = (value, index, record, context) => {
@@ -95,7 +91,7 @@ export default class Chanpinlilv extends Component {
     return(
     	<div>
     		<Button
-    			onClick={this.deleteItem.bind(this, index)} 
+    			onClick={this.props.removeItem.bind(this, index)} 
     			shape="text"
     			className="deleteBtn">删除</Button>
 	    </div>
@@ -103,13 +99,13 @@ export default class Chanpinlilv extends Component {
   }
 
   render() {
-  	let { styles } = this.props;
+  	let { styles, items } = this.props;
   	
     return (
     	<div className="chanpinchengshu">
 	    	<div className="table-title">产品利率设置</div>
 			<Table
-				dataSource={this.state.percentageSetting}
+				dataSource={items}
 				hasHeader
 				className="table"
 			>
@@ -119,7 +115,7 @@ export default class Chanpinlilv extends Component {
 				<Table.Column title="操作" width={80} cell={this.renderCell5} />
 				</Table>
 			<div style={styles.addNew}>
-			<Button onClick={this.addNewList.bind(this)} style={styles.addNewItem}>新增一行</Button>
+			<Button onClick={this.props.addItem.bind(this)} style={styles.addNewItem}>新增一行</Button>
 			</div>
 		</div>
     )

@@ -19,6 +19,7 @@ import {
 } from '@icedesign/base';
 
 const { Row, Col } = Grid;
+const { Option } = Select;
 
 // FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
 
@@ -28,38 +29,47 @@ export default class Huankuanfangshi extends Component {
     super(props);
 
     this.state = {
-    	percentageSetting: [{}]
+    	percentageSetting: []
     }
   }
 
   addNewList(data){
-    let newData = this.state.percentageSetting;
-    newData = newData.push({})
+    let percentageSetting = this.state.percentageSetting;
+    percentageSetting.push({})
     this.setState({
-      newData
+      percentageSetting
     })
   }
 
   deleteItem(index){
-    let oldData = this.state.percentageSetting
-    if (oldData.length == 1) {
-      return false
-    } else {
-      oldData.splice(index, 1);
+    let percentageSetting = this.state.percentageSetting
+      percentageSetting.splice(index, 1);
       this.setState({
-        oldData
+        percentageSetting
       });
-    }
   }
 
   renderCell1 = (value, index, record, context) => {
+		let { data } = this.props;
+		let repaymentMethods = data.repaymentMethods;
     return(
     	<div>
     		<IceFormBinder
     		required
 	        name={`repaymentMethodsSetting[${index}].repaymentMethods`}
 	        >
-	        	<Input placeholder="还款方式" />
+					<Select 
+						placeholder="还款方式" 
+						style={{width:'200px'}}
+					>
+						{
+								repaymentMethods.map((item,i)=>{
+								return(
+									<Option value={item.value} key={i}>{item.desc}</Option>
+								)
+							})
+						}
+					</Select>
 	        </IceFormBinder>
 	    </div>
 	);
@@ -92,13 +102,26 @@ export default class Huankuanfangshi extends Component {
   }
 
   renderCell4 = (value, index, record, context) => {
+		let { data } = this.props;
+		let repaymentMethods = data.repaymentMethods;
     return(
     	<div>
     		<IceFormBinder
     		required
 	        name={`repaymentMethodsSetting[${index}].repaymentExpirationGracePeriod`}
 	        >
-	        	<Input placeholder="宽限期失效后还款方式" />
+						<Select 
+							placeholder="宽限期失效后还款方式" 
+							style={{width:'200px'}}
+							>
+							{
+								repaymentMethods.map((item,i)=>{
+									return(
+										<Option value={item.value} key={i}>{item.desc}</Option>
+									)
+								})
+							}
+						</Select>
 	        </IceFormBinder>
 	    </div>
 	);
@@ -108,7 +131,7 @@ export default class Huankuanfangshi extends Component {
     return(
     	<div>
     		<Button
-    			onClick={this.deleteItem.bind(this, index)} 
+    			onClick={this.props.removeItem.bind(this, index)} 
     			shape="text"
     			className="deleteBtn">删除</Button>
 	    </div>
@@ -116,13 +139,13 @@ export default class Huankuanfangshi extends Component {
   }
 
   render() {
-  	let { styles } = this.props;
+  	let { styles, items } = this.props;
   	
     return (
     	<div>
 	    	<div className="table-title">还款方式设置</div>
 			<Table
-				dataSource={this.state.percentageSetting}
+				dataSource={items}
 				hasHeader
 				className="table"
 			>
@@ -133,7 +156,7 @@ export default class Huankuanfangshi extends Component {
 				<Table.Column title="操作" width={80} cell={this.renderCell5} />
 				</Table>
 			<div style={styles.addNew}>
-			<Button onClick={this.addNewList.bind(this)} style={styles.addNewItem}>新增一行</Button>
+			<Button onClick={this.props.addItem.bind(this)} style={styles.addNewItem}>新增一行</Button>
 			</div>
 		</div>
     )

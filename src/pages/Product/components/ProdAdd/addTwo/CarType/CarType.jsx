@@ -12,12 +12,27 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-
+import Req from '../../../../reqs/ProductReq'
 
 import './CarType.scss';
 const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
+
+const CARTYPES = {
+  '1': {
+    name: '品牌',
+    key: 'brandName'
+  },
+  '2': {
+    name: '车系',
+    key: 'seriesGroupName'
+  },
+  '3': {
+    name: '车型',
+    key: 'modelName'
+  }
+}
 
 export default class CarType extends Component {
   static displayName = 'CarType';
@@ -25,77 +40,40 @@ export default class CarType extends Component {
     super(props);
     this.state = {
       value:{},
+      type:''
     };
   }
   componentDidMount(){
     console.log(this.props)
     let {actions,addTwoData} = this.props;
-    actions.addTwoList()
+    let val = this.props.data; 
+    this.state.type = val
+    console.log(val)
+      actions.addTwoList(val,'')
+   
   }
 
-  CarBrand=(list)=>{
-    console.log(list)
-    const CarBrand=[]
+  renderDataWithCar=(type, list)=>{
+    let carType = CARTYPES[type];
+    const tempData=[]
       list.map((item,i)=>{
-        CarBrand.push({
+        tempData.push({
           label: <div style={styles.div}>
-                  <span style={styles.SpaLeft}>品牌</span>
-                  <span style={styles.SpaRight}>{item.brandName}</span>
+                  <span style={styles.SpaLeft}>{carType.name}</span>
+                  <span style={styles.SpaRight}>{item.name}</span>
                 </div>,
           value: `${i}`,
         });
       })
-      return CarBrand;
+      return tempData;
   }
-  Car=(list)=>{
-    console.log(list)
-    const Car=[]
-      list.map((item,i)=>{
-        Car.push({
-          label: <div style={styles.div}>
-                  <span style={styles.SpaLeft}>车系</span>
-                  <span style={styles.SpaRight}>{item.seriesGroupName}</span>
-                </div>,
-          value: `${i}`,
-        });
-      })
-      return Car;
-  }
-  
-  carType=(list)=>{
-    console.log(list)
-    const carType=[]
-      list.map((item,i)=>{
-        carType.push({
-          label: <div style={styles.div}>
-                  <span style={styles.SpaLeft}>车型</span>
-                  <span style={styles.SpaRight}>{item.modelName}</span>
-                </div>,
-          value: `${i}`,
-        });
-      })
-      return carType;
-  }
-  dataSource=(list,val)=>{
-    console.log(val)
-    if(val =='carBrand'){
-      let testList = this.CarBrand(list)
-      return testList 
-    } else if(val =='Car'){
-      let testList = this.Car(list)
-      return testList 
-    }else if (val == 'carType'){
-      let testList = this.carType(list)
-      return testList 
-    }   
-  }
-LeftData=(value,data)=>{
+leftData=(value,data)=>{
   let {CarData} = this.props;
   let val = this.props.data
   data.map((item,i)=>{
     CarData.productScopes.push({
       relatedId: item.value,
-      relatedName: val=='carBrand'?'品牌':(val=='Car'?'车系':'车型'),
+      relatedName: val=='1'?'品牌':(val=='2'?'车系':'车型'),
       relatedPath: "SP2",
       relatedPathName: "SP1关联",
       type:'CARS'
@@ -104,24 +82,25 @@ LeftData=(value,data)=>{
   console.log(CarData)
 }
  //查询
- CarBtn = () =>{
-  let {actions, data} = this.props;
-  this.formRef.validateAll((error, value) => {
-    console.log('error', error, 'value', value);
-    if (error) {
-      // 处理表单报错
-      return;
-    }
-    // 提交当前填写的数据
-    actions.addTwoList(data,value) 
-  });
-};
+ searchCar(){
+  let {actions, data, getCarList} = this.props;
+  let { name } = this.state.value;
+  console.log(this.state.value)
+  getCarList(data, name);
+}
+onFormChange(value){
+  this.props.changeCarName && this.props.changeCarName(value.name);
+  this.setState({
+    value
+  })
+}
   render() {
     let addTwoData = this.props.addTwoData || {}
-    let val = this.props.data; 
+    let type = this.props.data; 
     let list = addTwoData.data || {}
     list = list.list|| []
-    let dataSource = this.dataSource(list,val)
+
+    let dataSource = this.renderDataWithCar(type, list);
 
     return (
       <IceFormBinderWrapper
@@ -129,21 +108,21 @@ LeftData=(value,data)=>{
         this.formRef = formRef;
       }}
       value={this.state.value}
-      onChange={this.onFormChange}
+      onChange={this.onFormChange.bind(this)}
       >
         <div>
           <IceContainer>
             <Row wrap style={styles.formItem}>
               <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <IceFormBinder
-                  name="carbrand"
+                  name="name"
                 >
                   <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
                 </IceFormBinder>
                 <IceFormError name="name" />
               </Col>
               <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <button style={styles.btns} type='submit' onClick={this.CarBtn}>
+                <button style={styles.btns} type='submit' onClick={this.searchCar.bind(this)}>
                   查询
                 </button>
               </Col>
@@ -154,7 +133,7 @@ LeftData=(value,data)=>{
                   dataSource={dataSource}
                   defaultLeftChecked={["0"]}
                   listStyle={{width:"500px",height:"320px"}}
-                  onChange={this.LeftData}
+                  onChange={this.leftData}
                 >
                 </Transfer>
               </Row>

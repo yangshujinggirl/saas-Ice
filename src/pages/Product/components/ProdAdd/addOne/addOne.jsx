@@ -79,10 +79,10 @@ export default class CreateActivityForm extends Component {
             prepaymentPeriodsLimit:'',
             penaltyBasicAmount:'',
             penaltyCalculationType:'',
-            percentageSetting: [{}],
-            ratesSetting: [{}],
-            repaymentMethodsSetting: [{}],
-            prepaymentSetting: [{}],
+            percentageSetting: [],
+            ratesSetting: [],
+            repaymentMethodsSetting: [],
+            prepaymentSetting: [],
             productScope: []
       },
      
@@ -175,24 +175,18 @@ export default class CreateActivityForm extends Component {
 
   removeItem(key, index){
     let oldData = this.state.value[key]
-    if (oldData.length == 1) {
-      return false
-    } else {
       oldData.splice(index, 1);
       this.setState({
         oldData
       });
-    }
   }
  Option=(data)=>{
    console.log(data)
     let coll =[];
     let test=[]
     for(var i=0;i<data.length;i++){
-    let colltemp= data[i].collectionDetails
-      colltemp.map((val,j)=>{
+      data.map((val,j)=>{
         coll.push({
-          cid:val.collectionId,
           id:val.id,
           name:val.name,
         })
@@ -275,6 +269,7 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>产品类型</label>
                   <IceFormBinder
                     name="productType"
+                    placeholder="请选择"
                   >
                     <Select
                       name="productType"
@@ -390,10 +385,10 @@ export default class CreateActivityForm extends Component {
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款用途</label>
                   <IceFormBinder name="purposeOfLoan" >
                       <CheckboxGroup
-                        className="next-form-text-align" >
+                        className="next-form-text-align " >
                         {data.purposeOfLoan&&data.purposeOfLoan.map((val,i) =>{
                           return(
-                            <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                            <Checkbox value={val.value} key={i} className="checkboxCurr">{val.desc}</Checkbox>
                           )
                         })}
                       </CheckboxGroup>
@@ -773,6 +768,7 @@ export default class CreateActivityForm extends Component {
               <Huankuanfangshi
                 styles={styles}
                 items={this.state.value.repaymentMethodsSetting}
+                data={this.props.prodActions && this.props.prodActions.data}
                 addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
                 removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
               />

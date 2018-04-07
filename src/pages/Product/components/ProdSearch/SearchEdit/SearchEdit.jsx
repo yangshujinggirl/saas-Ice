@@ -169,6 +169,7 @@ export default class SearchEdit extends Component {
                           placeholder="请选择"
                           style={{ width: '200px' }}
                           className="custom-select"
+                          hasClear={true}
                         >
                           <Option value="ONE">1</Option>
                           <Option value="TWO">2</Option>
@@ -188,6 +189,7 @@ export default class SearchEdit extends Component {
                         <Select
                           style={{ width: '200px' }}
                           className="custom-select"
+                          hasClear={true}
                         >
                         <Option value="0">生效</Option>
                         <Option value="1">未生效</Option>

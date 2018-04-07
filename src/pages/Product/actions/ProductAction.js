@@ -99,7 +99,7 @@ export const productsave = (data,id) => {
 
     Req.productsave(data,id).then((res) => {
       if(!res || res.code != 200) return;
-      // hashHistory.push(`/product/addthree/${id}`)
+      hashHistory.push(`/product/addthree/${id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -259,10 +259,10 @@ export const fileEditSave = (value,id)=>{
   }
 }
 
-export const addTwoList=(type,formData)=>{
+export const addTwoList=(data,formData)=>{
   return (dispatch) => {
     dispatch(fetchStart())
-    Req.addTwoList(type,formData).then((res) => {
+    Req.addTwoList(data,formData).then((res) => {
       dispatch(fetchSuccess({ addTwoData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

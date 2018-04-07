@@ -27,30 +27,31 @@ const { Group: RadioGroup } = Radio;
 
 const list = [
   [{
-    value: "carBrand",
+    value: "1",
     label: "品牌",
   },
   {
-    value: "Car",
+    value: "2",
     label: "车系"
   },
   {
-    value: "carType",
+    value: "3",
     label: "车型"
   }],
-  [{
-    value: "carGroup",
-    label: "集团",
-    disabled: false
-  },
-  {
-    value: "carChannel",
-    label: "渠道"
-  },
-  {
-    value: "carStore",
-    label: "厅店"
-  }],
+    [{
+      value: "carGroup",
+      label: "集团",
+      disabled: false
+    },
+    {
+      value: "carChannel",
+      label: "渠道"
+    },
+    {
+      value: "carStore",
+      label: "厅店"
+    }
+],
 ];
 export default class addTwo extends Component {
   static displayName = 'addTwo';
@@ -61,7 +62,8 @@ export default class addTwo extends Component {
       value:{
           productScopes: []
           },
-      value1:'carBrand',
+      type: '1',
+      name: undefined,
       value2:'carGroup',
       visible: false
     };
@@ -84,15 +86,27 @@ export default class addTwo extends Component {
   }
   onTypeChange=(value)=> {
     this.setState({
-      value1: value
+      type: value
     });
-    console.log(value)
+    this.getCarList(value, this.state.value.name)
   }
   onNestChange=(value)=>{
     this.setState({
       value2: value
     });
     console.log(value)
+  }
+
+  getCarList(type, name){
+    let {actions} = this.props;
+    actions.addTwoList(type,name);
+  }
+
+  changeCarName(name){
+
+    let value = this.state.value;
+    value.name = name;
+    this.setState({value: value});
   }
   
   render() {
@@ -107,15 +121,15 @@ export default class addTwo extends Component {
         <div>
           <IceContainer>
             <legend className="legend">
-              <span className="legLine"></span>按品牌/车厂/车系/车型
+              <span className="legLine"></span>按品牌/车系/车型
             </legend>
             <div className="f-box">
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <RadioGroup 
                     dataSource={list[0]} 
-                    defaultValue={"carBrand"}
-                    value={this.state.value1}                    
+                    defaultValue={'1'}
+                    value={this.state.type}                    
                     onChange={this.onTypeChange}
                     />
                 </Col>
@@ -125,7 +139,7 @@ export default class addTwo extends Component {
               <IceFormBinder
                     name="CarTypeBrand"
                   >
-                     <CarType {...this.props} data={this.state.value1} CarData={this.state.value}/>
+                     <CarType {...this.props} data={this.state.type} CarData={this.state.value} getCarList={this.getCarList.bind(this)} changeCarName={this.changeCarName.bind(this)}/>
                   </IceFormBinder>
                   <IceFormError name="CarTypeBrand" />
                

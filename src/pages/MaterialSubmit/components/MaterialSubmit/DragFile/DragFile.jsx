@@ -39,7 +39,8 @@ const cardSource1 = {
         return {
             id: props.id,
             index: props.index,
-            data: props.data
+            data: props.data,
+            type: props.type
         }
     },
 }
@@ -48,17 +49,18 @@ const cardSource = {
         return {
             id: props.id,
             index: props.index,
+            type: props.type
         }
     },
 
     endDrag(props, monitor) {
         // console.log('endDrag',props, monitor.getItem())
         const { index: sourceIndex, id: sourceId } = props
-        const { lastId, lastTargetIndex } = monitor.getItem()
+        const { lastId, lastTargetIndex, type } = monitor.getItem()
         const didDrop = monitor.didDrop()
 
         if (!didDrop) {
-            props.moveCard(lastTargetIndex, sourceId, true)
+            props.moveCard(lastTargetIndex, sourceId, true, undefined, type)
         }
     },
 }
