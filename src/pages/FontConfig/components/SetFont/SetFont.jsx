@@ -215,7 +215,8 @@ export default class setFont extends Component {
         let id = this.props.router.location.query.id
 
         FontConfigReq.getCode(id).then((data) => {
-            let res = data.data
+            if (data.code == 200) {
+                let res = data.data
             this.setState({
                 resData: res,
                 pageValue: res&&res.name
@@ -230,6 +231,8 @@ export default class setFont extends Component {
                     })
                 }
             }
+            }
+            
         })
         // 固定左侧菜单
         window.onscroll = function () {
