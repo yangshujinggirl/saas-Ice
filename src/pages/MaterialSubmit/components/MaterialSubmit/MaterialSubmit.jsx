@@ -80,23 +80,34 @@ class MaterialSubmit extends Component {
   getLoanUpload(id) {
     Req.getLoanUploadApi(id)
       .then((res) => {
+        if(!res || res.code != 200){
+          return;
+        }
+
         const { data } = res;
         const { list } = data;
-        var dataSource;
+
+        let dataSource = [];
+        if(list && list.length > 0 && list[0].collectionDetails){
+          dataSource = list[0].collectionDetails;
+        }
+
         list.map((el) => {
-          dataSource = el.collectionDetails
           var _josn = {}
           if(el.type == '主贷人'){
              _josn = {id:'principalLender',title:el.name ,draggable:true}
             this.state.tableList.push(_josn)
+            this.processDataSource(dataSource, 'principalLender');
           }
           else if(el.type == '共借人'){
             _josn = {id:'coBorrower',title:el.name ,draggable:true}
             this.state.tableList.push(_josn)
+            this.processDataSource(dataSource, 'coBorrower');
           }
           if(el.type == '担保人'){
             _josn = {id:'guarantor',title:el.name ,draggable:true}
             this.state.tableList.push(_josn)
+            this.processDataSource(dataSource, 'guarantor');
           }
         })
         this.setState({
@@ -106,6 +117,11 @@ class MaterialSubmit extends Component {
       },(error) => {
         console.log(error)
       })
+  }
+  processDataSource(dataSource, key){
+    dataSource.map((item, i) => {
+      item[key] = item.downloadUrl;
+    });
   }
   handleFileChange(info){
     console.log(info)
