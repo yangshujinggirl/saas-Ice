@@ -34,7 +34,7 @@ export default class addThree extends Component {
   componentDidMount(){
     let {actions,htmlData} = this.props
     console.log(this.props)
-    Req.htmlName().then((data) => {
+    Req.htmlName({limit:999}).then((data) => {
       let html=this.state.list
        console.log(data.data.list)
         html = data.data.list
@@ -107,6 +107,7 @@ export default class addThree extends Component {
               </Col>
             </Row>
              </div>
+             <div style={{height:'500px'}}></div>
              <div className="next-btn-box">
                 <div className="next-btn-lx" onClick={this.onsubmit}>保存</div>
               </div>
