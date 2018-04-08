@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
+import { Balloon } from "@icedesign/base";
 import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
@@ -553,7 +554,7 @@ export default class setFont extends Component {
                     break;
                 case 'SELECT':
                     inputType = <Select
-                        placeholder="选择尺寸"
+                        placeholder="请选择"
                     >
                         {item.options && item.options.map((item, index) => {
                             return (
@@ -822,8 +823,18 @@ export default class setFont extends Component {
                                                             'false', { active: this.state.rightActive == item.label })} key={inj} data-row={item.line==1? true : ''}>
                                                             <div className="clearfix">
                                                                 <label htmlFor="" className='label'>
-                                                                    <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
-                                                                    <span className='required'>*</span>
+                                                                    <Balloon
+                                                                            type="primary"
+                                                                            trigger={ <span className='ellips' onDoubleClick={handleEditeCoce.bind(this, index, inj)} title={item.label}>
+                                                                            <span className='required' onClick={validaRequire.bind(this, index, inj)}>
+                                                                                {item.isRequired ? <span>*</span> : ''}
+                                                                            </span>    
+                                                                            {item.label}
+                                                                        </span>}
+                                                                            closable={false}
+                                                                            triggerType="hover">
+                                                                            {item.label}
+                                                                    </Balloon>    
                                                                 </label>
                                                                 {handleFixed(item)}
                                                                 <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
@@ -840,9 +851,17 @@ export default class setFont extends Component {
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                             'false')} key={inj} data-row={item.line == 1 ? true : ''}>
                                                             <div className="clearfix">
-                                                                <label htmlFor=""  className='label'>
-                                                                    <span className='ellips' title={item.label}>{item.label}</span>
-                                                                    <span className='required'>*</span>
+                                                                <label htmlFor="" className='label'>
+                                                                    <Balloon
+                                                                            type="primary"
+                                                                            trigger={ <span className='ellips'>
+                                                                            <span className='required'>*</span>  
+                                                                            {item.label}:
+                                                                            </span>}
+                                                                            closable={false}
+                                                                            triggerType="hover">
+                                                                            {item.label}
+                                                                    </Balloon>    
                                                                 </label>
                                                                 {handleFixed(item)}
                                                                 <span className='edite icon'>&#xe62a;</span>
@@ -886,10 +905,18 @@ export default class setFont extends Component {
                                                         })} data-row={item.line == 1 ? true : ''}>
                                                         <div className="clearfix">
                                                             <label htmlFor=""  className='label'>
-                                                                <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
-                                                                <span className='required' onClick={validaRequire.bind(this, index, inj)}>
-                                                                    {item.isRequired ? <span>*</span> : ''}
-                                                                </span>
+                                                                <Balloon
+                                                                        type="primary"
+                                                                        trigger={ <span className='ellips' onDoubleClick={handleEditeCoce.bind(this, index, inj)} title={item.label}>
+                                                                        <span className='required' onClick={validaRequire.bind(this, index, inj)}>
+                                                                            {item.isRequired ? <span>*</span> : ''}
+                                                                        </span>    
+                                                                        {item.label}
+                                                                    </span>}
+                                                                        closable={false}
+                                                                        triggerType="hover">
+                                                                        {item.label}
+                                                                </Balloon> 
                                                             </label>
                                                             {handleFixed(item)}
                                                             <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>

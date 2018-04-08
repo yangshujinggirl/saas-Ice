@@ -218,10 +218,10 @@ export default class EnhanceTable extends Component {
           >
             <Table.Column
               title="业务类型"
-              dataIndex="name"
+              dataIndex="businessType"
               width={320}
             />
-            <Table.Column title="功能模块" dataIndex="type" width={85} />
+            <Table.Column title="功能模块" dataIndex="functionType" width={85} />
             <Table.Column
               title="页面名称"
               dataIndex="name"
