@@ -209,7 +209,7 @@ class BasicInformation extends Component {
               <Row  align="top" wrap>
                 {
                   list.length>0 && list[0].fields && list[0].fields.map((ele,index) => (
-                    <Col span={6} key={index}>
+                    <Col xl={6} key={index} l={8}>
                       <FormItem {...formItemLayout} label={labels(ele.label)}>
                         {
                           InputMod(ele)
