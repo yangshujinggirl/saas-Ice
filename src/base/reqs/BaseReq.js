@@ -3,7 +3,7 @@ import BaseConfig from '../../config/BaseConfig'
 import Cookie from '../utils/Cookie'
 import Storage from '../utils/Storage'
 import Tools from '../utils/Tools'
-import {hashHistory} from 'react-router'
+import { hashHistory } from 'react-router'
 
 import { Feedback } from "@icedesign/base";
 
@@ -151,6 +151,11 @@ class BaseReq {
     if (res.status == 0) {
       // 接口发起成功但没收到响应，一般请求超时
       msg = '请求超时，请重试';
+      
+      //解决退出登陆302跳转的错误提示
+      if (error.config && error.config.url == '/crm/saas/logout') {
+        msg = '';
+      }
     }
 
     this._showMsg('error', msg);
@@ -163,6 +168,9 @@ class BaseReq {
   }
 
   _showMsg(type, msg, tick) {
+    if (!msg) {
+      return;
+    }
     // 'success', 'error', 'prompt', 'help', 'loading'
     Feedback.toast.show({
       type: type,
