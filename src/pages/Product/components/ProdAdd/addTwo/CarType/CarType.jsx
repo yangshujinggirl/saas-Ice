@@ -19,6 +19,8 @@ const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
 
+const arrayRightData = [];//全局
+
 const CARTYPES = {
   '1': {
     name: '品牌',
@@ -44,12 +46,12 @@ export default class CarType extends Component {
       // 表格发生勾选状态变化时触发
       onChange: (ids,array) => {
         let arra = []
-        arra.push(...array)
+        arrayRightData.push(...array)
         this.setState({
-          selectDate: arra
+          selectDate: arrayRightData
         })
         
-        console.log('ids', ids);
+        console.log('ids', array);
         this.setState({
           selectedRowKeys: ids,
         });
@@ -104,14 +106,37 @@ export default class CarType extends Component {
   }
   //向右移动
   onRight(){
-    let { CarData } = this.props;
-    let arra = []
-    arra = [...this.state.selectDate]
-    CarData.productScopes = arra;
+    let CarData = this.props.CarData || {};
+    CarData.productScopes = []
+    let testarray = []
+    for(var i=0;i<arrayRightData.length;i++){
+      　　var flag = true;
+      　　for(var j=0;j<testarray.length;j++){
+      　　　　if(arrayRightData[i].id == testarray[j].id){
+      　　　　　　flag = false;
+      　　　　};
+      　　}; 
+      　　if(flag){
+        testarray.push(arrayRightData[i]);
+      　　};
+      };
+      //去重后渲染
+    let arra = testarray
+      this.setState({
+        dataSourceRight: arra
+      })
 
-    this.setState({
-      dataSourceRight: arra
+      //右侧提交数据
+      testarray.map((item,i)=>{
+      CarData.productScopes.push({
+        relatedId:item.id,
+        relatedName:item.type,
+        relatedPath:'',
+        relatedPathName:'',
+        type:'CARS'
+      })
     })
+
   }
   //操作
   renderOperator = (value, index, record) => {
@@ -222,6 +247,8 @@ changePage = (currentPage) => {
               <div className="table-right">
                 <Table
                   dataSource={this.state.dataSourceRight}
+                  fixedHeader={true}
+                  maxBodyHeight={400}
                 >
                   <Table.Column title="类型" dataIndex="type" width={50} />
                   <Table.Column title="名称" dataIndex="name" width={300} />

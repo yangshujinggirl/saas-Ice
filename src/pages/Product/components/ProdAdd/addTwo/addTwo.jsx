@@ -110,6 +110,7 @@ export default class addTwo extends Component {
   }
   
   render() {
+    console.log(this.state.value)
     return (
       <IceFormBinderWrapper
         ref={(formRef) => {
