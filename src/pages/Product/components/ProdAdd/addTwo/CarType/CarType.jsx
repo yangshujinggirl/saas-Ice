@@ -119,15 +119,15 @@ export default class CarType extends Component {
       　　if(flag){
         testarray.push(arrayRightData[i]);
       　　};
-      };
+    };
       //去重后渲染
     let arra = testarray
       this.setState({
         dataSourceRight: arra
       })
 
-      //右侧提交数据
-      testarray.map((item,i)=>{
+    //右侧提交数据
+    testarray.map((item,i)=>{
       CarData.productScopes.push({
         relatedId:item.id,
         relatedName:item.type,
@@ -136,7 +136,6 @@ export default class CarType extends Component {
         type:'CARS'
       })
     })
-
   }
   //操作
   renderOperator = (value, index, record) => {
@@ -306,7 +305,7 @@ const styles = {
     border: 'none',
     fontSize: '16px',
     borderRadius: 'none !important',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
     marginLeft: '20px'
 

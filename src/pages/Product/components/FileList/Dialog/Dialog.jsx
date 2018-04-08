@@ -281,28 +281,36 @@ export default class DiaLog extends Component {
           }}
           value={data}
           >
-          <Form className="dialog-form">
-            <Row wrap>
-              <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}>清单类型：</label>
-                {this.testType(this.props.params.id,data)}
-              </Col>
-              <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}>清单名称：</label>
-                {this.testName(this.props.params.id,data)}
+          <div>
+            <legend className="legend">
+              <span className="legLine"></span>
+             {this.props.params.id?'材料编辑':'资料新增'} 
+            </legend>
+            <div className="f-box">
+              <Form className="dialog-form">
+                <Row wrap>
+                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                    <label style={styles.filterTitle}>清单类型：</label>
+                    {this.testType(this.props.params.id,data)}
+                  </Col>
+                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                    <label style={styles.filterTitle}>清单名称：</label>
+                    {this.testName(this.props.params.id,data)}
 
-              </Col>
-            </Row>
-            <FileListDetail
-              data={data.collectionDetails}
-              onRemove={this.removeRow.bind(this)}
-              onChangeType={this.handleChangeType.bind(this)}
-            />
-            <div style={styles.btn}>
-              <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
-              <Button onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>
+                  </Col>
+                </Row>
+                <FileListDetail
+                  data={data.collectionDetails}
+                  onRemove={this.removeRow.bind(this)}
+                  onChangeType={this.handleChangeType.bind(this)}
+                />
+                <div style={styles.btn}>
+                  <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
+                  <Button onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>
+                </div>
+              </Form>
             </div>
-          </Form>
+          </div>
         </IceFormBinderWrapper>
 
       </IceContainer>
@@ -328,7 +336,7 @@ const styles = {
     borderRadius: 0,
     border: 'none',
     marginTop: '20px',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
   },
   sureBtn: {
@@ -336,7 +344,7 @@ const styles = {
     borderRadius: 0,
     border: 'none',
     marginTop: '20px',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
     float: 'right'
   },

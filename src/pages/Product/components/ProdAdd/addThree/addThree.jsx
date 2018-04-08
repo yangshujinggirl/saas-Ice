@@ -91,6 +91,7 @@ export default class addThree extends Component {
                   <Select
                     placeholder="请选择"
                     style={styles.filterTool}
+                    className="custom-select"
                   >
                   {
                     this.state.list.map((item,i)=>{

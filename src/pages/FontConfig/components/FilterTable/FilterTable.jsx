@@ -56,59 +56,90 @@ class  SearchForm extends Component {
             labelAlign="left"
             className="search-form"
             field={this.field}>
-            <Row  align="top" justify="space-between">
-              <Col span={4} >
-                <FormItem {...formItemLayout} label='资方'>
+            <Row wrap style={styles.formItem}>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                资方
+              </Col>
+              <Col s="4" l="4">
+                <FormItem {...formItemLayout}>
                   <Select
                     name="size"
                     placeholder="请选择"
                     style={styles.filterTool}
                     {...init('tenantId')}
+                    className="custom-select"
                   >
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='业务类型'>
-                  <Select
-                    name="size"
-                    defaultValue='贷款业务'
-                    style={styles.filterTool}
-                    {...init('businessType')}
-                  >
+
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                业务类型
+              </Col>
+              <Col s="4" l="4">
+                <FormItem {...formItemLayout} >
+                    <Select
+                      name="size"
+                      defaultValue='贷款业务'
+                      style={styles.filterTool}
+                      {...init('businessType')}
+                      className="custom-select"
+                    >
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='功能模块'>
+
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                功能模块
+              </Col>
+              <Col s="4" l="4">
+                <FormItem {...formItemLayout}>
                   <Select
                     name="size"
                     defaultValue='进件'
                     style={styles.filterTool}
                     {...init('functionType')}
+                    className="custom-select"
                   >
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='流程名称'>
-                  <Select
-                    name="size"
-                    defaultValue='全部'
-                    style={styles.filterTool}
-                    {...init('process')}
-                  >
-                  </Select>
+            </Row>
+            <Row wrap style={styles.formItem}>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                流程名称
+              </Col>
+              <Col s="4" l="4">
+                <FormItem {...formItemLayout}>
+                    <Select
+                      name="size"
+                      defaultValue='全部'
+                      style={styles.filterTool}
+                      {...init('process')}
+                      className="custom-select"
+                    >
+                    </Select>
                 </FormItem>
               </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='页面名称'>
-                  <Input
-                    placeholder='请输入'
-                    {...init('name')}/>
+
+
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                页面名称
+              </Col>
+              <Col s="4" l="4">
+                <FormItem {...formItemLayout} >
+                    <Input
+                        placeholder='请输入'
+                      {...init('name')}
+                      className="custom-input"
+                      />
                 </FormItem>
               </Col>
-              <Col span={4}>
+             
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                
+              </Col>
+              <Col  s="4" l="4">
                 <div>
                   <Button
                     type="normal"
@@ -187,10 +218,10 @@ export default class EnhanceTable extends Component {
           >
             <Table.Column
               title="业务类型"
-              dataIndex="name"
+              dataIndex="businessType"
               width={320}
             />
-            <Table.Column title="功能模块" dataIndex="type" width={85} />
+            <Table.Column title="功能模块" dataIndex="functionType" width={85} />
             <Table.Column
               title="页面名称"
               dataIndex="name"
@@ -246,5 +277,14 @@ const styles = {
   },
   filterTool: {
     width: '160px',
-  }
+  },
+   formItem: {
+    height: '28px',
+    lineHeight: '28px',
+    marginBottom:'28px'
+  },
+  formLabel: {
+    marginLeft: '85px',
+    textAlign: 'right',
+  },
 };

@@ -113,12 +113,12 @@ htmlName(data) {
   
 
   //材料清单查询
-  filesearch(value) {
+  filesearch(condition) {
     let options = {
-      url: this._host + '/product/collect',
+      url: this._host + `/product/collect`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
-      params: value
+      params: condition
     }
     return super.fetchData(options);
   }

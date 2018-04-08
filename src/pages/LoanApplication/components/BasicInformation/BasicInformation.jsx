@@ -146,6 +146,7 @@ class BasicInformation extends Component {
                     dataSource={this.state.dataSource}
                     disabled={ele.isReadonly}
                     placeholder={"请输入"+ele.label}
+                    className="custom-select"
                     {...init(ele.name,
                       { rules:[{ required: ele.isRequired, message: `${ele.label}不能为空` }]}
                     )}>
@@ -162,6 +163,7 @@ class BasicInformation extends Component {
                   placeholder={"请输入"+ ele.label}
                   htmlType='text'
                   disabled={ele.isReadonly}
+                  className="custom-input"
                   {...init(ele.name,
                     {
                       rules:[{ required: ele.isRequired, message:`${ele.label}不能为空` }],
@@ -177,6 +179,7 @@ class BasicInformation extends Component {
                   hasLimitHint={true}
                   placeholder={"请输入"+ele.label}
                   htmlType='number'
+                  className='custom-input'
                   {...init(ele.name,
                     {
                       rules:[
@@ -209,7 +212,7 @@ class BasicInformation extends Component {
               <Row  align="top" wrap>
                 {
                   list.length>0 && list[0].fields && list[0].fields.map((ele,index) => (
-                    <Col span={6} key={index}>
+                    <Col xl={6} key={index} l={8}>
                       <FormItem {...formItemLayout} label={labels(ele.label)}>
                         {
                           InputMod(ele)
