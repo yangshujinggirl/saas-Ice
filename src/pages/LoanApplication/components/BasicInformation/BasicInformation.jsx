@@ -146,6 +146,7 @@ class BasicInformation extends Component {
                     dataSource={this.state.dataSource}
                     disabled={ele.isReadonly}
                     placeholder={"请输入"+ele.label}
+                    className="custom-select"
                     {...init(ele.name,
                       { rules:[{ required: ele.isRequired, message: `${ele.label}不能为空` }]}
                     )}>
@@ -162,6 +163,7 @@ class BasicInformation extends Component {
                   placeholder={"请输入"+ ele.label}
                   htmlType='text'
                   disabled={ele.isReadonly}
+                  className="custom-input"
                   {...init(ele.name,
                     {
                       rules:[{ required: ele.isRequired, message:`${ele.label}不能为空` }],
@@ -177,6 +179,7 @@ class BasicInformation extends Component {
                   hasLimitHint={true}
                   placeholder={"请输入"+ele.label}
                   htmlType='number'
+                  className='custom-input'
                   {...init(ele.name,
                     {
                       rules:[

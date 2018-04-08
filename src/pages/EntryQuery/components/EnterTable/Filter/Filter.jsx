@@ -20,32 +20,48 @@ export default class Filter extends Component {
         onChange={this.props.onChange}
       >
         <div>
-          <Row wrap>
-            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
-              <label style={styles.filterTitle}>姓名</label>
+          <Row wrap  style={styles.formItem}>
+            <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+              姓名：
+            </Col>
+            <Col s="4" l="4">
               <IceFormBinder>
-                <Input name="borrowerName" className="custom-input"/>
+                <Input name="borrowerName" className="custom-input" placeholder="姓名"/>
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
-              <label style={styles.filterTitle}>身份证号</label>
+
+
+            <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+              身份证号：
+            </Col>
+            <Col s="4" l="4">
               <IceFormBinder>
-                <Input name="borrowerIdNo" className="custom-input"/>
+                <Input name="borrowerIdNo" className="custom-input" placeholder="身份证号"/>
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
-              <label style={styles.filterTitle}>手机号</label>
+
+             <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+             手机号：
+            </Col>
+            <Col s="4" l="4">
               <IceFormBinder>
-                <Input name="borrowerMobile" className="custom-input" />
+                <Input name="borrowerMobile" className="custom-input" placeholder="手机号"/>
               </IceFormBinder>
             </Col>
-            <Col xxs={24} xs={12} l={6} style={styles.filterCol}>
-            <div>
-              <Button onClick={this.props.onSubmit} type="normal" className='next-btn-search'>
-                查询
-              </Button>
-            </div>
-          </Col>
+          </Row>
+          <Row wrap  style={styles.formItem}>
+            <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
+            <Col s="4" l="4"></Col>
+            <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
+            <Col s="4" l="4"></Col>
+            <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
+            <Col  s="4" l="4">
+              <div>
+                <Button onClick={this.props.onSubmit} type="normal" className='next-btn-search'>
+                  查询
+                </Button>
+              </div>
+            </Col>
           </Row>
 
         </div>
@@ -71,5 +87,14 @@ const styles = {
 
   filterTool: {
     width: '200px',
+  },
+  formItem: {
+    height: '33px',
+    lineHeight: '33px',
+    marginBottom:'28px'
+  },
+  formLabel: {
+    marginLeft: '85px',
+    textAlign: 'right',
   },
 };

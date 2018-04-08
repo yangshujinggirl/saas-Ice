@@ -743,10 +743,18 @@ body {
 //导航标题
 .legend{
     font-family: PingFangSC-Medium;
-    font-size: 16px;
+    font-size: 16px !important;
     color: #1B2630;
     padding-top:0 !important;
-    padding-left: 0; 
+    padding-left: 0 !important; 
+    .legLine{
+        height: 18px !important;
+        margin-top:3px;
+    }
+}
+.f-box{
+    //padding-left: 0 !important
+    margin: 0 !important
 }
 //
 .next-row{
@@ -755,6 +763,9 @@ body {
     color: #151515;
     letter-spacing: 0;
     line-height: 20px;
+}
+.next-row-wrap{
+
 }
 //多选框文字
 .next-checkbox-label{
@@ -770,13 +781,19 @@ body {
     
 }
 //长度，宽度
-.custom-input,.custom-select{
+.custom-input{
     width:220px !important;
     height: 33px !important;
     font-size: 14px;
     line-height: 33px !important;
 }
-
+.custom-select{
+    width:220px !important;
+    height: 33px !important;
+    font-size: 14px;
+    line-height: 30px !important;
+    
+}
 
 //表格.next-table .next-table-inner .next-table-header 
 .next-table .next-table-inner .next-table-header .next-table-header-inner{
@@ -786,7 +803,10 @@ body {
         border-spacing: 0;
         th{
             background:  #FDF4E3 !important;
-            border:1px solid #F6DCA9 ;
+            //border:1px solid #F6DCA9 ;
+            border-top:1px solid #F6DCA9 ;
+            border-left: 1px solid #F6DCA9 ;
+            border-right: 1px solid #F6DCA9 ;
             font-family: PingFangSC-Medium;
             font-size: 14px;
             color: #000000;
@@ -796,7 +816,6 @@ body {
             }
         }
     }
-   
 }
 .next-table .next-table-inner .next-table-body {
     table{
@@ -856,3 +875,16 @@ body {
 .next-table-empty{
     padding: 10px 0 !important;
 }
+//
+.next-form-left.next-form-medium .next-form-item-label{
+    color: #1B2630
+}
+
+
+.next-radio.checked .next-radio-inner {
+    border-color: #ec9d00 !important ;
+}
+.next-radio.checked .next-radio-inner::after {
+   background: #ec9d00
+}
+

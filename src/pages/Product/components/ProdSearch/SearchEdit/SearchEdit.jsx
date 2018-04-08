@@ -187,16 +187,16 @@ export default class SearchEdit extends Component {
                         message="必填"
                       >
                         <Select
-                          style={{ width: '200px' }}
                           className="custom-select"
                           hasClear={true}
+                          placeholder="请选择"
                         >
-                        <Option value="0">生效</Option>
-                        <Option value="1">未生效</Option>
-                        <Option value="2">失效</Option>
+                          <Option value="1">生效</Option>
+                          <Option value="0">未生效</Option>
+                          <Option value="2">失效</Option>
                       </Select>
                     </IceFormBinder>
-                    <IceFormError name="lineName" />
+                    <IceFormError name="status" />
                   </Col>
                 </Row>
                 <Row wrap style={styles.formItem} >

@@ -155,10 +155,10 @@ Order=(dataIndex,order)=>{
           >
             <div>
               <legend style={styles.legend}  className="legend" >
-                <span style={styles.legLine}></span>查询
+                <span className="legLine"></span>查询
               </legend>
-              <div style={styles.fieldBox}>
-                <Row style={styles.formItem}>
+              <div className="f-box">
+                <Row wrap style={styles.formItem}>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                     产品编号：
                   </Col>
@@ -231,8 +231,8 @@ Order=(dataIndex,order)=>{
 
                   </Col>
 
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    合同名称：
+                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                      合同名称：
                   </Col>
                   <Col s="4" l="4">
                     <IceFormBinder
@@ -324,10 +324,11 @@ const styles = {
     padding: '25px 0 0 0',
     borderTop: '1px solid #d8d8d8',
   },
+  
   formItem: {
     height: '28px',
     lineHeight: '28px',
-    marginBottom: '25px',
+    marginBottom:'28px'
   },
   formLabel: {
     marginLeft: '85px',
@@ -341,7 +342,7 @@ const styles = {
     fontSize: '16px',
     borderRadius: 'none !important',
     color: '#fff',
-    backgroundColor:'#ec9d00'
+    backgroundColor:'#FC9E25'
   },
   searchTable: {
     width: '1400px',

@@ -116,7 +116,6 @@ export default class FileList extends Component {
   render() {
         let dataSource=this.state.dataSource
         dataSource = this.props.fileData || {}//data
-        console.log(dataSource)
         dataSource = dataSource.data||{}
         dataSource = dataSource.list
         dataSource && dataSource.map((item) => {
@@ -138,8 +137,8 @@ export default class FileList extends Component {
             onChange={this.onFormChange}
           >
             <div>
-              <legend style={styles.legend}>
-                <span style={styles.legLine}></span>资料清单
+              <legend className="legend">
+                <span className="legLine"></span>资料清单
               </legend>
               <div className="f-box">
                 <Row wrap>
@@ -149,13 +148,12 @@ export default class FileList extends Component {
                       name="dataType"
                     >
                       <Select
-                        name="dataType"
                         placeholder="请选择"
                         style={styles.filterTool}
                         className="custom-select"
                         hasClear={true}
                       >
-                        <Option value="option1">产品进件</Option>
+                        <Option value="产品进件">产品进件</Option>
                       </Select>
                     </IceFormBinder>
                     <IceFormError name="dataType" />
@@ -242,7 +240,7 @@ const styles = {
     border: 'none',
     fontSize: '16px',
     borderRadius: 'none !important',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
   },
   addNew: {
@@ -253,7 +251,7 @@ const styles = {
     hiegth: '30px',
     borderRadius: 0,
     border: 'none',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
   },
   newCol: {
