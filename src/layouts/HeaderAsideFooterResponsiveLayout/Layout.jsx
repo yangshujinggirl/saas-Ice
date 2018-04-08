@@ -43,10 +43,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     this.enquireScreenRegister();
   }
 
-  componentWillReceiveProps(){
-    console.log('componentWillReceiveProps')
-  }
-
   /**
    * 注册监听屏幕的变化，可根据不同分辨率做对应的处理
    */
@@ -132,10 +128,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     const { routes } = this.props;
     const matched = routes[0].path;
     let openKeys = [];
+    let allAsideNav = asideNavs || [];
 
-    asideNavs &&
-      asideNavs.length > 0 &&
-      asideNavs.map((item, index) => {
+    let leafs = Storage.get('MENUS') || [];
+    allAsideNav = allAsideNav.concat(leafs);
+
+    allAsideNav &&
+      allAsideNav.length > 0 &&
+      allAsideNav.map((item, index) => {
         if (item.value && item.value.value === matched) {
           openKeys = [`${index}`];
         }
@@ -155,6 +155,10 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   render() {
     const { location = {}, routes } = this.props;
     const { pathname } = location;
+    let allAsideNav = asideNavs || [];
+
+    let leafs = Storage.get('MENUS') || [];
+    allAsideNav = allAsideNav.concat(leafs);
 
     return (
       <Layout
@@ -201,9 +205,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               onOpenChange={this.onOpenChange}
               onClick={this.onMenuClick}
             >
-              {asideNavs &&
-                asideNavs.length > 0 &&
-                asideNavs.map((nav, index) => {
+              {allAsideNav &&
+                allAsideNav.length > 0 &&
+                allAsideNav.map((nav, index) => {
                   let navData = nav.value;
                   if (nav.leaf && nav.leaf.length > 0) {
                     return (
@@ -270,7 +274,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         <Layout.Section>
         <Header
           theme={theme}
-          menus={asideNavs}
+          menus={allAsideNav}
           pathname={pathname}
           routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}

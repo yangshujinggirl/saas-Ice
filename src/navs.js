@@ -22,11 +22,11 @@ import BaseConfig from './config/BaseConfig';
 import { Storage } from './base/utils';
 import myCustomNavs from './_navs';
 
-let leafs = Storage.get('MENUS') || [];
+let leafs = [];
 
 if('PC_ENV' in window && PC_ENV == 'development' && BaseConfig.IS_AUTO_MENU_USED){
   //仅仅在开发环境且启用使用自动自动生成菜单
-  leafs = [...myCustomNavs, ...leafs];
+  leafs = myCustomNavs;
 }
 
 
