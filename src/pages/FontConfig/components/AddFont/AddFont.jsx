@@ -185,17 +185,19 @@ export default class AdFont extends Component {
         console.log(this.state.isFixed);
         
         return (
-            <div className="addFont">
+            <IceContainer className="pch-container addFont">
                 {/* <IceContainer className='subtitle'>
                     <div className="pageName">
                         <label>页面成名</label>
                         <input type="text" name='' onChange={this.onChang.bind(this)} />
                     </div>
                 </IceContainer> */}
-                <IceContainer title="选择字段" className='subtitle'>
+                <legend className="pch-legend" >
+                  <span className="pch-legend-legline"></span>选择字段
+                </legend>
                     {
                         <div>
-                            <div className="diffence">字段（必选）</div>
+                            <div className="diffence" style={{marginTop:20}}>字段（必选）</div>
                             {/* <DragFields
                                 isFixed={true}
                                 data={this.state.isFixed}
@@ -240,8 +242,6 @@ export default class AdFont extends Component {
                             })}
                         </div>
                     }
-
-                </IceContainer>
                 <div className='btn-list'>
                     <Button onClick={this.submit.bind(this)} type="normal" className='next-btn-search btn'>
                         下一步
@@ -251,7 +251,7 @@ export default class AdFont extends Component {
                     </Button>
                 </div>
 
-            </div>
+            </IceContainer>
         );
     }
 }
