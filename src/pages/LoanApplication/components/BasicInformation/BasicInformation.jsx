@@ -29,7 +29,7 @@ const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: { span: 8 },
 };
-const labels =(name)=> (
+const labels =(name) => (
   <span>
     <Balloon
       type="primary"
@@ -109,7 +109,7 @@ class BasicInformation extends Component {
         let { id } = data.data;
         hashHistory.push(`/entryQuery/update/${id}`)
       }
-    },(error)=> {
+    },(error) => {
       console.log(error)
     })
   }
@@ -142,7 +142,7 @@ class BasicInformation extends Component {
       switch(ele.type) {
         case 'SELECT':
           return <Select
-                    style={styles.select}
+                    size="large"
                     dataSource={this.state.dataSource}
                     disabled={ele.isReadonly}
                     placeholder={"请输入"+ele.label}
@@ -159,23 +159,22 @@ class BasicInformation extends Component {
         case 'STRING':
           return <Input
                   trim
-                  style={styles.select}
+                  size="large"
                   placeholder={"请输入"+ ele.label}
-                  htmlType='text'
                   disabled={ele.isReadonly}
-                  className="custom-input"
+                  className='custom-input'
                   {...init(ele.name,
                     {
                       rules:[{ required: ele.isRequired, message:`${ele.label}不能为空` }],
-                      props:{ onBlur:()=> this.warnTips(ele.name) }
+                      props:{ onBlur:() => this.warnTips(ele.name) }
                     }
                   )}
                 />
         case 'DECIMAL':
           return <Input
                   trim
+                  size="large"
                   disabled={ele.isReadonly}
-                  style={styles.select}
                   hasLimitHint={true}
                   placeholder={"请输入"+ele.label}
                   htmlType='number'
@@ -190,6 +189,7 @@ class BasicInformation extends Component {
                 />
         case 'INT':
           return <NumberPicker
+                  size="large"
                   disabled={ele.isReadonly}
                   value={this.state.month}
                   type="inline"
@@ -209,10 +209,11 @@ class BasicInformation extends Component {
           </legend>
           <IceFormBinderWrapper>
             <Form
+              size="large"
+              className="pch-form"
               labelAlign="left"
-              style={styles.form}
               field={this.field}>
-              <Row  align="top" wrap>
+              <Row align="top" wrap>
                 {
                   list.length>0 && list[0].fields && list[0].fields.map((ele,index) => (
                     <Col xl={6} key={index} l={8}>
@@ -229,7 +230,7 @@ class BasicInformation extends Component {
               <Row style={{ marginTop: 24 }} >
                 <Col offset="10" className ='botton-col'>
                   <Button
-                    type="primary" onClick={this.handleSubmit.bind(this)}>
+                    type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
                     下一步
                   </Button>
                 </Col>

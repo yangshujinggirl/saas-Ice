@@ -824,7 +824,11 @@ body {
     background-color: #f3f3f3;
 }
 .pch-form{
-    padding: 20px 15px 0;
+    padding: 30px 15px 20px 15px;
+
+    .next-form-item{
+        margin-bottom: 24px;
+    }
 
     .next-select{
         width: 100%;
