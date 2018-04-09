@@ -208,9 +208,9 @@ class BasicInformation extends Component {
             <span className="pch-legend-legline"></span>车贷申请
           </legend>
           <IceFormBinderWrapper>
+            <div className="pch-form">
             <Form
               size="large"
-              className="pch-form"
               labelAlign="left"
               field={this.field}>
               <Row align="top" wrap>
@@ -236,6 +236,7 @@ class BasicInformation extends Component {
                 </Col>
               </Row>
             </Form>
+            </div>
           </IceFormBinderWrapper>
         </IceContainer> : <div>接口未提供暂时未开发</div>
     );

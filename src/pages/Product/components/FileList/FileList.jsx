@@ -180,7 +180,7 @@ export default class FileList extends Component {
                 </Col>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="&nbsp;">
-                    <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.submit}>
+                    <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.onSubmit}>
                       查询
                     </Button>
                   </FormItem>

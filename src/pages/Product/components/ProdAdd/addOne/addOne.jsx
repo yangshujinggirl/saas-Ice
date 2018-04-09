@@ -15,7 +15,8 @@ import {
   Radio,
   Grid,
   Table,
-  Dialog
+  Dialog,
+  Form,
 } from '@icedesign/base';
 
 import Chanpinchengshu from './Chanpinchengshu';
@@ -30,7 +31,11 @@ const { Row, Col } = Grid;
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
+const FormItem = Form.Item;
 
+const formItemLayout = {
+  labelCol: { span: 8 },
+};
 
 export default class CreateActivityForm extends Component {
   static displayName = 'CreateActivityForm';
@@ -335,7 +340,10 @@ repaymentAccountChange=(data)=>{
           value={this.state.value}
           onChange={this.onFormChange}
         >
-          <div>
+        <div className="pch-form">
+          <Form
+              size="large"
+              labelAlign="left">
           <legend className="pch-legend">
             <span className="pch-legend-legline"></span>基本信息
           </legend>
@@ -540,7 +548,7 @@ repaymentAccountChange=(data)=>{
             </Row>
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}> <span className="label-required">*</span>支付方式</label>
+                <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>支付方式:</span>}>
                 <IceFormBinder
                   name="paymentOfLoan"
                   >
@@ -560,7 +568,9 @@ repaymentAccountChange=(data)=>{
                       })}
                   </Select>
                 </IceFormBinder>
-                <IceFormError name="paymentOfLoan"/>
+                <div><IceFormError name="paymentOfLoan"/></div>
+                </FormItem>
+                
               </Col>
             </Row>
             <Row wrap>
@@ -925,6 +935,7 @@ repaymentAccountChange=(data)=>{
               <Button type="secondary" size="large" onClick={this.submit}>下一步</Button>
             </div>
           </div>
+        </Form>
         </div>
         </IceFormBinderWrapper>
       </IceContainer>
