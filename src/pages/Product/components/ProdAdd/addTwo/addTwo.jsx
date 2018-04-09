@@ -121,10 +121,10 @@ export default class addTwo extends Component {
         >
         <div>
           <IceContainer>
-            <legend className="legend">
-              <span className="legLine"></span>按品牌/车系/车型
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>按品牌/车系/车型
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <RadioGroup 
@@ -147,10 +147,10 @@ export default class addTwo extends Component {
 
               </Row>
           </div>
-              {/*<legend className="legend">
-              <span className="legLine"></span>按集团/渠道/厅店
+              {/*<legend className="pch-legend">
+              <span className="pch-legend-legline"></span>按集团/渠道/厅店
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
              <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <RadioGroup 

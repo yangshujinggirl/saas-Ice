@@ -282,11 +282,11 @@ export default class DiaLog extends Component {
           value={data}
           >
           <div>
-            <legend className="legend">
-              <span className="legLine"></span>
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>
              {this.props.params.id?'材料编辑':'资料新增'} 
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Form className="dialog-form">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>

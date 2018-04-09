@@ -128,7 +128,7 @@ class MaterialSubmit extends Component {
     }
   }
   moveCard(targetIndex, sourceId, isCancel, lastTargetIndex, type) {
-    console.log('moveCard', arguments);
+    // console.log('moveCard', arguments);
     let { dataSource, fileList} = this.state
     let dragCard = this.findFile(sourceId);
     let d = dataSource[targetIndex];
@@ -140,9 +140,9 @@ class MaterialSubmit extends Component {
       if(typeof lastTargetIndex != 'undefined'){
         dataSource[lastTargetIndex][type] = undefined;
       }
-       if(typeof d.sourceId != 'undefined'){
+      if(typeof d.sourceId != 'undefined'){
         let lastDragCard = this.findFile(d.sourceId);
-        // lastDragCard.file.isUsed = false;
+        lastDragCard.file.isUsed = false;
       }
       dragCard.file.isUsed = true;
       d[type] = dragCard.file.imgURL;

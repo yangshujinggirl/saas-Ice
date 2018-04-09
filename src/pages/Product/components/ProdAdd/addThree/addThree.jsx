@@ -77,10 +77,10 @@ export default class addThree extends Component {
       >
         <div>
           <IceContainer>
-            <legend className="legend">
-              <span className="legLine"></span>页面名称
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>页面名称
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}> <span className="label-required">*</span>页面名称</label>
