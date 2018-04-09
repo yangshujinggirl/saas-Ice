@@ -23,28 +23,25 @@ import {
   Grid,
   Table,
   Pagination,
+  Form,
+  Field,
 } from '@icedesign/base';
 
 const { Row, Col } = Grid;
+const FormItem = Form.Item;
 
 // FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
-// Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
-const SwitchForForm = (props) => {
-  const checked = props.checked === undefined ? props.value : props.checked;
-
-  return (
-    <Switch
-      {...props}
-      checked={checked}
-      onChange={(currentChecked) => {
-        if (props.onChange) props.onChange(currentChecked);
-      }}
-    />
-  );
+const formItemLayout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 12
+  }
 };
 
 export default class ProdSeachList extends Component {
@@ -60,6 +57,7 @@ export default class ProdSeachList extends Component {
         contractDisplayName:''
       },
     };
+    this.field = new Field(this);
   }
   componentWillMount() {
     this.props.actions.search();
@@ -137,188 +135,247 @@ export default class ProdSeachList extends Component {
     this.props.actions.search({page:currentPage});
   };
 //排序
-Order=(dataIndex,order)=>{
+Order=(dataIndex,order) =>{
     dataIndex:{productCode}
     order:{desc}
 }
   render() {
-    const { list=[], total, limit, page} =this.props.pageData;
+    const { list=[], total, limit, page} = this.props.pageData;
+    const { init, getValue } = this.field;
+
     return (
-      <div className="create-activity-form" style={styles.container}>
-        <IceContainer title="" >
-          <IceFormBinderWrapper
-            ref={(formRef) => {
-              this.formRef = formRef;
-            }}
-            value={this.state.value}
-            onChange={this.onFormChange}
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>查询
+        </legend>
+        <IceFormBinderWrapper
+          ref={(formRef) => {
+            this.formRef = formRef;
+          }}
+          value={this.state.value}
+          onChange={this.onFormChange}
           >
-            <div>
-              <legend style={styles.legend}  className="legend" >
-                <span className="legLine"></span>查询
-              </legend>
-              <div className="f-box">
-                <Row wrap style={styles.formItem}>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    产品编号：
-                  </Col>
-                  <Col s="4" l="4">
+          <div className="pch-condition">
+            <Form
+              size="large"
+              direction="hoz"
+              labelAlign={getValue("labelAlign")}
+              >
+              <Row>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="产品编号：">
                     <IceFormBinder
                       name="productCode"
                     >
-                      <Input style={{ width: '175px' }} placeholder="产品编号"  className="custom-input"/>
+                      <Input size="large" placeholder="产品编号" />
                     </IceFormBinder>
-                    <IceFormError name="productCode" />
-                  </Col>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    产品名称：
-                  </Col>
-                  <Col s="4" l="4">
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="产品名称：">
                     <IceFormBinder
-                      name="name"
+                    name="name"
                     >
-                      <Input style={{ width: '175px' }} placeholder="产品名称"  className="custom-input"/>
+                      <Input size="large" placeholder="产品名称" />
                     </IceFormBinder>
-                    <IceFormError name="name" />
-                  </Col>
-
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    产品类型：
-                  </Col>
-                  <Col s="4" l="4">
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="产品编号：">
                     <IceFormBinder
-                        name="productType"
+                      name="productType"
+                    >
+                     <Select
+                        placeholder="请选择"
+                        hasClear={true}
+                        size="large"
                       >
-                       <Select
-                          placeholder="请选择"
-                          style={{ width: '175px' }}
-                          className="custom-select"
-                          hasClear={true}
-                        >
-                          <Option value="NEW_CAR_LOAN">新车贷款</Option>
-                          <Option value="NEW_CAR_RENTAL">新车租赁</Option>
-                          <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
-                          <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
-                          <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
-                          <Option value="CONSUMER_LOAN">消费贷款</Option>
-                        </Select>
-                      </IceFormBinder>
-                    <IceFormError name="productType" />
-
-                  </Col>
-                </Row>
-                <Row wrap style={styles.formItem}>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      状态：
-                  </Col>
-                  <Col s="4" l="4">
+                        <Option value="NEW_CAR_LOAN">新车贷款</Option>
+                        <Option value="NEW_CAR_RENTAL">新车租赁</Option>
+                        <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
+                        <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
+                        <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
+                        <Option value="CONSUMER_LOAN">消费贷款</Option>
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="状态：">
                     <IceFormBinder
-                        name="status"
+                      name="status"
+                    >
+                      <Select
+                        placeholder="请选择"
+                        hasClear={true}
+                        size="large"
                       >
-                        <Select
-                          placeholder="请选择"
-                          style={{ width: '175px' }}
-                          className="custom-select"
-                          hasClear={true}
-                        >
-                          <Option value="1">生效</Option>
-                          <Option value="0">未生效</Option>
-                          <Option value="2">失效</Option>
-                          
-                        </Select>
-                      </IceFormBinder>
-                      <IceFormError name="status" />
-
-                  </Col>
-
-                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      合同名称：
-                  </Col>
-                  <Col s="4" l="4">
+                        <Option value="1">生效</Option>
+                        <Option value="0">未生效</Option>
+                        <Option value="2">失效</Option>
+                        
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="合同名称：">
                     <IceFormBinder
                       name="contractDisplayName"
                     >
-                      <Input style={{ width: '175px' }} placeholder="合同名称"  className="custom-input"/>
+                      <Input size="large" placeholder="合同名称" />
                     </IceFormBinder>
-                    <IceFormError name="contractDisplayName" />
+                  </FormItem>
                   </Col>
-
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    <button style={styles.btns} type='submit' onClick={this.submit}>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="&nbsp;">
+                    <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.submit}>
                       查询
-                    </button>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </IceFormBinderWrapper>
-          <Table
-              dataSource={list}
-              isLoading={this.state.isLoading}
-              isZebra={true}
-              onSort={this.Order}
-            >
-              <Table.Column title="产品编号" dataIndex="productCode" width={160} />
-              <Table.Column title="产品名称" dataIndex="name" width={200} />
-              <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
-              <Table.Column title="状态" cell={this.status} width={100} />
-              <Table.Column title="产品类型" dataIndex="productType" width={160} />
-              <Table.Column title="生效期限" cell={this.timeRange} width={250} />
-              <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
-              <Table.Column title="资金方" dataIndex="createdUser" width={120} />
-              <Table.Column title="金额范围(元)" width={200} cell={this.moneyRange} />
-              <Table.Column title="期限范围(月)" cell={this.monthRange} width={120} />
-              <Table.Column title="贷款比率(%)" cell={this.loanNpiRange} width={120} />
-              <Table.Column title="执行年利率范围(%)" cell={this.interestRateRange} width={160} />
-              <Table.Column
-                title="操作"
-                cell={this.renderOperator}
-                lock="right"
-                width={140}
-              />
-            </Table>
-            {
-              list.length>0 && <div style={styles.pagination}>
-                                <Pagination
-                                  shape="arrow-only"
-                                  current={page}
-                                  pageSize={limit}
-                                  total={total}
-                                  onChange={this.changePage}
-                                />
-                              </div>
-            }
+                    </Button>
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>
+            <Row wrap style={styles.formItem}>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                产品编号：
+              </Col>
+              <Col s="4" l="4">
+                <IceFormBinder
+                  name="productCode"
+                >
+                  <Input style={{ width: '175px' }} size="large" placeholder="产品编号"  className="custom-input"/>
+                </IceFormBinder>
+                <IceFormError name="productCode" />
+              </Col>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                产品名称：
+              </Col>
+              <Col s="4" l="4">
+                <IceFormBinder
+                  name="name"
+                >
+                  <Input style={{ width: '175px' }} size="large" placeholder="产品名称"  className="custom-input"/>
+                </IceFormBinder>
+                <IceFormError name="name" />
+              </Col>
 
-        </IceContainer>
-      </div>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                产品类型：
+              </Col>
+              <Col s="4" l="4">
+                <IceFormBinder
+                    name="productType"
+                  >
+                   <Select
+                      placeholder="请选择"
+                      style={{ width: '175px' }}
+                      className="custom-select"
+                      hasClear={true}
+                      size="large"
+                    >
+                      <Option value="NEW_CAR_LOAN">新车贷款</Option>
+                      <Option value="NEW_CAR_RENTAL">新车租赁</Option>
+                      <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
+                      <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
+                      <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
+                      <Option value="CONSUMER_LOAN">消费贷款</Option>
+                    </Select>
+                  </IceFormBinder>
+                <IceFormError name="productType" />
+
+              </Col>
+            </Row>
+            <Row wrap style={styles.formItem}>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                  状态：
+              </Col>
+              <Col s="4" l="4">
+                <IceFormBinder
+                    name="status"
+                  >
+                    <Select
+                      placeholder="请选择"
+                      style={{ width: '175px' }}
+                      className="custom-select"
+                      hasClear={true}
+                      size="large"
+                    >
+                      <Option value="1">生效</Option>
+                      <Option value="0">未生效</Option>
+                      <Option value="2">失效</Option>
+                      
+                    </Select>
+                  </IceFormBinder>
+                  <IceFormError name="status" />
+
+              </Col>
+
+             <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                  合同名称：
+              </Col>
+              <Col s="4" l="4">
+                <IceFormBinder
+                  name="contractDisplayName"
+                >
+                  <Input style={{ width: '175px' }} size="large" placeholder="合同名称"  className="custom-input"/>
+                </IceFormBinder>
+                <IceFormError name="contractDisplayName" />
+              </Col>
+
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
+              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
+                <button style={styles.btns} type='submit' onClick={this.submit}>
+                  查询
+                </button>
+              </Col>
+            </Row>
+          </div>
+        </IceFormBinderWrapper>
+        <Table
+            dataSource={list}
+            isLoading={this.state.isLoading}
+            isZebra={true}
+            onSort={this.Order}
+          >
+            <Table.Column title="产品编号" dataIndex="productCode" width={160} />
+            <Table.Column title="产品名称" dataIndex="name" width={200} />
+            <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
+            <Table.Column title="状态" cell={this.status} width={100} />
+            <Table.Column title="产品类型" dataIndex="productType" width={160} />
+            <Table.Column title="生效期限" cell={this.timeRange} width={250} />
+            <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
+            <Table.Column title="资金方" dataIndex="createdUser" width={120} />
+            <Table.Column title="金额范围(元)" width={200} cell={this.moneyRange} />
+            <Table.Column title="期限范围(月)" cell={this.monthRange} width={120} />
+            <Table.Column title="贷款比率(%)" cell={this.loanNpiRange} width={120} />
+            <Table.Column title="执行年利率范围(%)" cell={this.interestRateRange} width={160} />
+            <Table.Column
+              title="操作"
+              cell={this.renderOperator}
+              lock="right"
+              width={140}
+            />
+          </Table>
+          {
+            list.length>0 && <div style={styles.pagination}>
+                              <Pagination
+                                shape="arrow-only"
+                                current={page}
+                                pageSize={limit}
+                                total={total}
+                                onChange={this.changePage}
+                              />
+                            </div>
+          }
+      </IceContainer>
     );
   }
 }
 
 const styles = {
-  container: {
-    paddingBottom: 0,
-  },
-  legend: {
-    marginLeft: 0,
-    paddingLeft: '15px',
-    paddingTop: '12px',
-    paddingBottom: '12px',
-    backgroundColor: '#fff',
-    fontSize: '18px',
-    fontWeight: '500',
-    lineHeight: '25px',
-  },
-  legLine: {
-    display: 'inline-block',
-    zoom: 1,
-    verticalAlign: 'top',
-    marginRight: '12px',
-    width: '4px',
-    height: '25px',
-    backgroundColor: '#ec9d00',
-  },
   fieldBox: {
     margin: '0 15px',
     padding: '25px 0 0 0',

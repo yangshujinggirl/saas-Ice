@@ -137,10 +137,10 @@ export default class FileList extends Component {
             onChange={this.onFormChange}
           >
             <div>
-              <legend className="legend">
-                <span className="legLine"></span>资料清单
+              <legend className="pch-legend">
+                <span className="pch-legend-legline"></span>资料清单
               </legend>
-              <div className="f-box">
+              <div className="pch-condition">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <label style={styles.filterTitle}>清单类型：</label>

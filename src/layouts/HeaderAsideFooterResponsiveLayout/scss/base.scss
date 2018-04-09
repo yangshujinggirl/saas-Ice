@@ -50,7 +50,7 @@
  */
 
 /* put your code here*/
-.container-block {
+.pch-container, .container-block {
     border-radius:0 !important;
     padding-bottom: 50px !important;
 }
@@ -741,20 +741,48 @@ body {
 //菜单hover的颜色
 
 //导航标题
-.legend{
+.pch-legend {
     font-family: PingFangSC-Medium;
-    font-size: 16px !important;
+    font-size: 16px;
     color: #1B2630;
-    padding-top:0 !important;
-    padding-left: 0 !important; 
-    .legLine{
-        height: 18px !important;
-        margin-top:3px;
-    }
+    line-height: 22px;
+    padding-bottom: 10px;
+    .pch-legend-legline {
+        display: inline-block;
+        zoom: 1;
+        vertical-align: top;
+        margin-right: 8px;
+        width: 4px;
+        height: 18px;
+        margin-top:2px;
+        background-color: #ec9d00;
+    }  
 }
-.f-box{
-    //padding-left: 0 !important
-    margin: 0 !important
+.pch-condition{
+    padding: 20px 15px 0;
+    border-top: 1px solid #d8d8d8;
+
+    .next-form-left.next-form-large .next-form-item-label{
+        line-height: 34px;
+        color: #151515;
+    }
+    .next-form-hoz .next-form-item{
+        width: 100%;
+        margin-bottom: 24px;
+    }
+
+    .next-select{
+        width: 100%;
+    }
+    .next-input-large input{
+        height: 32px;
+    }
+    .next-btn{
+        border-radius: 4px;
+    }
+    .next-btn-secondary{
+        background-color: #FC9E25;
+    }
 }
 //
 .next-row{

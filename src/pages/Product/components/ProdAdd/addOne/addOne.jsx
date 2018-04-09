@@ -334,10 +334,10 @@ repaymentAccountChange=(data)=>{
             onChange={this.onFormChange}
           >
             <div>
-            <legend className="legend">
-              <span className="legLine"></span>基本信息
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>基本信息
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}><label className="label-required">*</label>资金方</label>
@@ -565,10 +565,10 @@ repaymentAccountChange=(data)=>{
                 <IceFormError name="description"/>
               </Row>
             </div>
-            <legend className="legend">
-              <span className="legLine"></span>额度期限设置
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>额度期限设置
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款期限变更</label>
@@ -662,10 +662,10 @@ repaymentAccountChange=(data)=>{
               />
             </div>
             
-            <legend className="legend">
-              <span className="legLine"></span>利率设置
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>利率设置
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>贷款利率变更</label>
@@ -738,8 +738,7 @@ repaymentAccountChange=(data)=>{
                     required 
                     message="必填"
                   >
-                    <Input 
-                      
+                    <Input
                       style={{ width: '100px',height:'34px' }}
                      />
                   </IceFormBinder>
@@ -786,10 +785,10 @@ repaymentAccountChange=(data)=>{
                 removeItem={this.removeItem.bind(this, 'ratesSetting')}
               />
             </div>
-            <legend className="legend">
-              <span className="legLine"></span>还款设置
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>还款设置
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}> <span className="label-required">*</span>还款账户变更</label>

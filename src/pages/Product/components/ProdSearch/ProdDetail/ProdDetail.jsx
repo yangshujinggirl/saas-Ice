@@ -71,10 +71,10 @@ export default class ProdDetail extends Component {
       >
         <div>
           <IceContainer>
-            <legend className="legend">
-              <span className="legLine"></span>基本信息
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>基本信息
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>资金方：</label>
@@ -143,10 +143,10 @@ export default class ProdDetail extends Component {
                 <span >{product.description}</span>
               </Row>
             </div>
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>额度期限设置
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>额度期限设置
             </legend>
-          <div className="f-box">
+          <div className="pch-condition">
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款期限变更：</label>
@@ -189,10 +189,10 @@ export default class ProdDetail extends Component {
               </Table>
           </div>
 
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>利率设置
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>利率设置
             </legend>
-          <div className="f-box">
+          <div className="pch-condition">
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款利率变更：</label>
@@ -233,10 +233,10 @@ export default class ProdDetail extends Component {
               </Table>
           </div>
 
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>还款设置
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>还款设置
           </legend>
-          <div className="f-box">
+          <div className="pch-condition">
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款账户变更：</label>
@@ -319,10 +319,10 @@ export default class ProdDetail extends Component {
                 <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage"/>
               </Table>
           </div>
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>按品牌/车系/车型
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>按品牌/车系/车型
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
             <div className="table-title">按品牌/车系/车型</div>
             <Table
               dataSource={productScopes}
@@ -335,10 +335,10 @@ export default class ProdDetail extends Component {
               </Table>
             </div>
 
-            <legend className="legend" style={{marginTop:"30px"}}>
-              <span className="legLine"></span>按集团/渠道/厅店
+            <legend className="pch-legend" style={{marginTop:"30px"}}>
+              <span className="pch-legend-legline"></span>按集团/渠道/厅店
             </legend>
-            <div className="f-box" >
+            <div className="pch-condition" >
             <div className="table-title">按集团/渠道/厅店</div>
             <Table
                 hasHeader

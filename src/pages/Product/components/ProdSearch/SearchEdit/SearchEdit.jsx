@@ -107,6 +107,20 @@ export default class SearchEdit extends Component {
       if (item.times){
         item.temptime = item.times.join('~')
       }
+      switch (item.status) {
+        case 1:
+          item.status ='生效'
+          break;
+        case 0:
+        item.status ='未生效'
+        break;
+        case 2:
+        item.status ='失效'
+        break;
+      
+        default:
+          break;
+      }
     })
 
     return (
