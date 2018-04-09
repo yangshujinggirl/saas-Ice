@@ -119,7 +119,7 @@ export default class SearchEdit extends Component {
             value={{
                     name:name,
                     id:this.props.params.id,
-                    status:''}}
+                    status:undefined}}
           >
             <div>
               <legend style={styles.legend}>
@@ -265,7 +265,7 @@ const styles = {
   },
   formItem: {
     height: '28px',
-    lineHeight: '28px',
+    lineHeight: '33px',
     marginBottom: '25px',
   },
   formLabel: {

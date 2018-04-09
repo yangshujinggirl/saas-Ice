@@ -242,7 +242,7 @@ export default class DiaLog extends Component {
           <IceFormBinder
             name="name"
           >
-            <Input />
+            <Input className="custom-input"/>
           </IceFormBinder>
           <IceFormError name="name"/>
         </span>
@@ -258,7 +258,7 @@ export default class DiaLog extends Component {
           <IceFormBinder
             name="dataType"
           >
-            <Input />
+            <Input className="custom-input"/>
           </IceFormBinder>
           <IceFormError name="dataType"/>
         </span>
