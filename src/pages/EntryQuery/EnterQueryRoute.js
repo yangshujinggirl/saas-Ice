@@ -19,6 +19,6 @@ export default {
   component: HeaderAsideFooterResponsiveLayout,
   indexRoute: {
     component: Index.EntryQuery,
-    name:'车贷申请列表'
+    name:'车贷查询'
   }
 }

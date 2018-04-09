@@ -195,7 +195,6 @@ export default class EnhanceTable extends Component {
     const { list=[], total, limit, page } = this.props.pageData;
     return (
       <IceContainer className="pch-container">
-      <div className="filter-table">
         <legend className="pch-legend" >
           <span className="pch-legend-legline"></span>页面配置
         </legend>
@@ -245,7 +244,6 @@ export default class EnhanceTable extends Component {
                                 />
                               </div>
           }
-      </div>
       </IceContainer>
     );
   }

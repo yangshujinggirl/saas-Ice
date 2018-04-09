@@ -3,7 +3,7 @@ import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterRe
 
 export default {
   path: "/font",
-  name: '字段配置',
+  name: '业务配置',
   childRoutes: [{
     path: 'list',
     name: '字段配置新增',
@@ -23,7 +23,7 @@ export default {
   }],
   component: HeaderAsideFooterResponsiveLayout,
   indexRoute: {
-    name: '字段配置',
+    name: '页面配置',
     component: Font.fontConfig
   }
 }

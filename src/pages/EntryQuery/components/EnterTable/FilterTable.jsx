@@ -143,18 +143,18 @@ export default class EnhanceTable extends Component {
     // const tableData = this.props.bindingData.tableData;
     const tableData = this.props.pageData || {};
     const { filterFormValue } = this.state;
-    console.log(tableData)
+    
     return (
-      <div className="filter-table">
-        <IceContainer title="查询" className='subtitle'>
-          <FilterForm
-            value={filterFormValue}
-            onChange={this.filterFormChange}
-            onSubmit={this.filterTables}
-            onReset={this.resetFilter}
-          />
-        </IceContainer>
-        <IceContainer>
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>车贷查询
+        </legend>
+        <FilterForm
+          value={filterFormValue}
+          onChange={this.filterFormChange}
+          onSubmit={this.filterTables}
+          onReset={this.resetFilter}
+        />
           <Table
             dataSource={tableData.list}
             isLoading={this.props.isFetching}
@@ -214,7 +214,6 @@ export default class EnhanceTable extends Component {
             />
           </div>
         </IceContainer>
-      </div>
     );
   }
 }
