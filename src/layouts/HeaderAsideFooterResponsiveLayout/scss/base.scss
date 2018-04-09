@@ -175,7 +175,7 @@
 }
 
 .next-btn-primary {
-    background-color: #1AA8F0 !important;
+    // background-color: #1AA8F0 !important;
 }
 
 .next-btn-medium {
@@ -783,8 +783,20 @@ body {
     .next-btn{
         border-radius: 4px;
     }
+
+    .next-btn-primary{
+        background-color: #1AA8F0;
+
+        &:hover{
+            background-color: #008cd2;
+        }
+    }
     .next-btn-secondary{
         background-color: #FC9E25;
+
+        &:hover{
+            background-color: #F58C00;
+        }
     }
 }
 //
