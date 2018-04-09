@@ -777,6 +777,9 @@ body {
     .next-input-large input{
         height: 32px;
     }
+    .next-input-large input::placeholder{
+        color: #999;
+    }
     .next-btn{
         border-radius: 4px;
     }

@@ -159,7 +159,6 @@ Order=(dataIndex,order) =>{
             <Form
               size="large"
               direction="hoz"
-              labelAlign={getValue("labelAlign")}
               >
               <Row>
                 <Col s="8" l="8">
@@ -238,100 +237,6 @@ Order=(dataIndex,order) =>{
                 </Col>
               </Row>
             </Form>
-            <Row wrap style={styles.formItem}>
-              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                产品编号：
-              </Col>
-              <Col s="4" l="4">
-                <IceFormBinder
-                  name="productCode"
-                >
-                  <Input style={{ width: '175px' }} size="large" placeholder="产品编号"  className="custom-input"/>
-                </IceFormBinder>
-                <IceFormError name="productCode" />
-              </Col>
-              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                产品名称：
-              </Col>
-              <Col s="4" l="4">
-                <IceFormBinder
-                  name="name"
-                >
-                  <Input style={{ width: '175px' }} size="large" placeholder="产品名称"  className="custom-input"/>
-                </IceFormBinder>
-                <IceFormError name="name" />
-              </Col>
-
-              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                产品类型：
-              </Col>
-              <Col s="4" l="4">
-                <IceFormBinder
-                    name="productType"
-                  >
-                   <Select
-                      placeholder="请选择"
-                      style={{ width: '175px' }}
-                      className="custom-select"
-                      hasClear={true}
-                      size="large"
-                    >
-                      <Option value="NEW_CAR_LOAN">新车贷款</Option>
-                      <Option value="NEW_CAR_RENTAL">新车租赁</Option>
-                      <Option value="SECONDHAND_CAR_LOAN">二手车贷款</Option>
-                      <Option value="SECONDHAND_CAR_RENTAL">二手车租赁</Option>
-                      <Option value="CAR_MORTGAGE_LOAN">汽车抵押贷款</Option>
-                      <Option value="CONSUMER_LOAN">消费贷款</Option>
-                    </Select>
-                  </IceFormBinder>
-                <IceFormError name="productType" />
-
-              </Col>
-            </Row>
-            <Row wrap style={styles.formItem}>
-              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  状态：
-              </Col>
-              <Col s="4" l="4">
-                <IceFormBinder
-                    name="status"
-                  >
-                    <Select
-                      placeholder="请选择"
-                      style={{ width: '175px' }}
-                      className="custom-select"
-                      hasClear={true}
-                      size="large"
-                    >
-                      <Option value="1">生效</Option>
-                      <Option value="0">未生效</Option>
-                      <Option value="2">失效</Option>
-                      
-                    </Select>
-                  </IceFormBinder>
-                  <IceFormError name="status" />
-
-              </Col>
-
-             <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                  合同名称：
-              </Col>
-              <Col s="4" l="4">
-                <IceFormBinder
-                  name="contractDisplayName"
-                >
-                  <Input style={{ width: '175px' }} size="large" placeholder="合同名称"  className="custom-input"/>
-                </IceFormBinder>
-                <IceFormError name="contractDisplayName" />
-              </Col>
-
-              <Col xxs="6" s="2" l="2" style={styles.formLabel}></Col>
-              <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                <button style={styles.btns} type='submit' onClick={this.submit}>
-                  查询
-                </button>
-              </Col>
-            </Row>
           </div>
         </IceFormBinderWrapper>
         <Table
