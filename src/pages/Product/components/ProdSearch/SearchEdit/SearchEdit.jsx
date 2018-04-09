@@ -107,6 +107,20 @@ export default class SearchEdit extends Component {
       if (item.times){
         item.temptime = item.times.join('~')
       }
+      switch (item.status) {
+        case 1:
+          item.status ='生效'
+          break;
+        case 0:
+        item.status ='未生效'
+        break;
+        case 2:
+        item.status ='失效'
+        break;
+      
+        default:
+          break;
+      }
     })
 
     return (
@@ -119,7 +133,7 @@ export default class SearchEdit extends Component {
             value={{
                     name:name,
                     id:this.props.params.id,
-                    status:''}}
+                    status:undefined}}
           >
             <div>
               <legend style={styles.legend}>
@@ -265,7 +279,7 @@ const styles = {
   },
   formItem: {
     height: '28px',
-    lineHeight: '28px',
+    lineHeight: '33px',
     marginBottom: '25px',
   },
   formLabel: {

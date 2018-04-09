@@ -289,7 +289,7 @@ const styles = {
   
   formItem: {
     height: '28px',
-    lineHeight: '28px',
+    lineHeight: '33px',
     marginBottom:'28px'
   },
   formLabel: {

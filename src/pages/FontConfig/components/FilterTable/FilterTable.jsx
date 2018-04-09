@@ -229,7 +229,7 @@ export default class EnhanceTable extends Component {
             />
             <Table.Column
               title="流程"
-              dataIndex="id"
+              dataIndex=""
               width={85}
               cell={this.renderStatus}
             />
@@ -280,7 +280,7 @@ const styles = {
   },
    formItem: {
     height: '28px',
-    lineHeight: '28px',
+    lineHeight: '33px',
     marginBottom:'28px'
   },
   formLabel: {
