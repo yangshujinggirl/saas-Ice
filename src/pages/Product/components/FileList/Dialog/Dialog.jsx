@@ -258,7 +258,9 @@ export default class DiaLog extends Component {
           <IceFormBinder
             name="dataType"
           >
-            <Input />
+            <Select>
+              <Select.Option value="产品进件">产品进件</Select.Option>
+          </Select>
           </IceFormBinder>
           <IceFormError name="dataType"/>
         </span>

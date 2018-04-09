@@ -151,6 +151,9 @@
                         .next-range-picker-medium {
                             width: 140px;
                         }
+                        .next-input-group {
+                            width: 150px !important;
+                        }
                         @media screen and (max-width: 1400px) {
                             .next-range-picker-medium {
                                 width: 150px;
@@ -189,6 +192,7 @@
                             & + .next-input, & + .next-select{
                                 width: 150px !important;
                             }
+                           
                             @media screen and (max-width: 1400px) {
                                 & + .next-input, & + .next-select{
                                     width: 150px !important;

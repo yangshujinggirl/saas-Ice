@@ -229,7 +229,7 @@ export default class EnhanceTable extends Component {
             />
             <Table.Column
               title="流程"
-              dataIndex="id"
+              dataIndex=""
               width={85}
               cell={this.renderStatus}
             />

@@ -466,7 +466,7 @@ export default class setFont extends Component {
                     break;
                 case 'SELECT':
                     inputType = <Select
-                        placeholder="选择尺寸"
+                        placeholder="请选择"
                     >
                         {item.options && item.options.map((item, index) => {
                             return (

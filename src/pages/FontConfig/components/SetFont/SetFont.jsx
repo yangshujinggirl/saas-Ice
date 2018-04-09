@@ -199,9 +199,13 @@ export default class setFont extends Component {
             })
         }
     }
+    // 修改页面标题
     handleGroupTitle = (index, view) => {
         let copyDate = this.state.resData;
         copyDate.fieldset[index].name = view
+        copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
+            item.fieldset = view
+        })
         this.setState({
             resData: copyDate
         })
@@ -337,9 +341,8 @@ export default class setFont extends Component {
                  if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题') {
                      Dialog.alert({
                          title: "提示",
-                         content: '请输入模块名字'
+                         content: '请输入标题名称'
                      })
-                     console.log('请输入模块名字');
                      
                      return 
                 } 
@@ -544,14 +547,14 @@ export default class setFont extends Component {
                     inputType = <Input placeholder=""  readOnly = { item.isReadonly ? true : false}  />
                     break;
                 case 'TEXT':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder="" addonAfter={item.append}/>
                     // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder="" addonAfter={item.append}/>
                     break;
                 case 'DECIMAL':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder="" addonAfter={item.append}/>
                     break;
                 case 'DATE':
                     inputType = <RangePicker
