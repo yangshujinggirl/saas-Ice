@@ -31,44 +31,23 @@ class MaterialSubmit extends Component {
       Component :[],
       dataSource: [],
       tableList: [
-                    {id: 'id',title:'序号'},
-                    {id:'fileName',title: '材料名称'},
-                    {id:'fileSize',title:'限制大小'}],
-      fileList: [{
-        id: 1,
-        fileName: "IMG.png",
-        status: "done",
-        size: 1024,
-        downloadURL:
-          "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-        fileURL:
-          "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-        imgURL:
-          "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
-      },{
-        id: 2,
-        fileName: "tessd.png",
-        status: "done",
-        size: 12,
-        downloadURL:
-          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/93bcbae1ef95de70113cf5dc44b8c8b8.jpg",
-        fileURL:
-          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/93bcbae1ef95de70113cf5dc44b8c8b8.jpg",
-        imgURL:
-          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/93bcbae1ef95de70113cf5dc44b8c8b8.jpg"
-      },{
-        id: 3,
-        fileName: "f703738da9773912b571474cf3198618367ae24c.jpg",
-        status: "done",
-        size: 12,
-        downloadURL:
-          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/c5e98176055a3510a3714b6d8c7423c3.jpg",
-        fileURL:
-          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/c5e98176055a3510a3714b6d8c7423c3.jpg",
-        imgURL:
-          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/c5e98176055a3510a3714b6d8c7423c3.jpg"
-      }
-    ],
+        {id: 'id',title:'序号'},
+        {id:'fileName',title: '材料名称'},
+        {id:'fileSize',title:'限制大小'}],
+      fileList: [
+      // {
+      //   id: 1,
+      //   fileName: "IMG.png",
+      //   status: "done",
+      //   size: 1024,
+      //   downloadURL:
+      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
+      //   fileURL:
+      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
+      //   imgURL:
+      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
+      // }
+      ],
       upLoadList:[]
     };
   }
@@ -172,11 +151,20 @@ class MaterialSubmit extends Component {
     }
     this.setState({dataSource,fileList})
   }
-  handleRemoveClick(index, sourceId, type){
+  handleRemoveClick(index, sourceId, type, imgURL){
     let { dataSource, fileList} = this.state;
     let dragCard = this.findFile(sourceId);
     let d = dataSource[index];
-    dragCard.file.isUsed = false;
+
+    if(!sourceId){
+      fileList.push({
+        id: fileList.length + 1,
+        imgURL: imgURL,
+        status: 'done'
+      })
+    }else{
+      dragCard.file.isUsed = false;
+    }
     d[type] = undefined;
     this.setState({dataSource,fileList})
   }
@@ -230,52 +218,52 @@ class MaterialSubmit extends Component {
     const { connectDropTarget  } = this.props
     let { fileList, tableList, dataSource } = this.state;
     return connectDropTarget(
-          <div>
-            <IceContainer title="材料提交" className='subtitle'>
-              <ImageUpload
-                className='upload-picture'
-                listType="picture-card"
-                action="/loanApi/file/upload"
-                data={{'path':'path/to/file'}}
-                formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
-                accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                fileList={this.state.fileList}
-                showUploadList={false}
-                onChange={this.handleFileChange.bind(this)}
-              />
-              <div
-                className="material-files"
-                >
-                {fileList.map((item, idx) => {
-                  return(
-                    <DragFile
-                      key={idx}
-                      id={item.id}
-                      index={idx}
-                      data={item}
-                      moveCard={this.moveCard.bind(this)}
-                    />
-                  )
-                })}
-              </div>
-              <Table dataSource={dataSource} className="basic-table">
-                {tableList.map((item,index) =>{
-                  let myCell;
-                  if(item.draggable){
-                    myCell = this.renderCell.bind(this, item.id);
-                  }
-                  return (
-                    <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
-                  )
-                })}
-              </Table>
-              <div className='button-box'>
-                <Button onClick={this.submit}>提交</Button>
-                <Button onClick={this.save}>保存</Button>
-                <Button onClick={this.cancel}>取消</Button>
-              </div>
-            </IceContainer>
+      <div>
+        <IceContainer title="材料提交" className='subtitle'>
+          <ImageUpload
+            className='upload-picture'
+            listType="picture-card"
+            action="/loanApi/file/upload"
+            data={{'path':'path/to/file'}}
+            formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
+            accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+            fileList={this.state.fileList}
+            showUploadList={false}
+            onChange={this.handleFileChange.bind(this)}
+          />
+          <div
+            className="material-files"
+            >
+            {fileList.map((item, idx) => {
+              return(
+                <DragFile
+                  key={idx}
+                  id={item.id}
+                  index={idx}
+                  data={item}
+                  moveCard={this.moveCard.bind(this)}
+                />
+              )
+            })}
           </div>
+          <Table dataSource={dataSource} className="basic-table">
+            {tableList.map((item,index) =>{
+              let myCell;
+              if(item.draggable){
+                myCell = this.renderCell.bind(this, item.id);
+              }
+              return (
+                <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
+              )
+            })}
+          </Table>
+          <div className='button-box'>
+            <Button onClick={this.submit}>提交</Button>
+            <Button onClick={this.save}>保存</Button>
+            <Button onClick={this.cancel}>取消</Button>
+          </div>
+        </IceContainer>
+      </div>
     );
   }
 }

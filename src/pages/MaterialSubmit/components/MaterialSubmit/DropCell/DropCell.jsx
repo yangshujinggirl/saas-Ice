@@ -7,8 +7,6 @@ import { Icon } from "@icedesign/base";
 import IceImg from '@icedesign/img';
 
 class DropCell extends Component {
-    static displayName = 'Fields';
-
     constructor(props) {
         super(props);
     }
@@ -17,15 +15,14 @@ class DropCell extends Component {
             index,
             data,
             type,
-            isDragging,
+            isOver,
             connectDropTarget,
             onRemoveClick
         } = this.props
-        const opacity = isDragging ? 0.1 : 1
 
         return connectDropTarget(
             <div className={cx('listCode')}>
-                <Icon type="close" onClick={onRemoveClick.bind(this,index, data.sourceId, type)} />
+                <Icon type="close" onClick={onRemoveClick.bind(this,index, data.sourceId, type, data[type])} />
                 {data[type] ?
                 <IceImg
                     height={20}
@@ -65,8 +62,10 @@ const cardTarget = {
     }
 }
 
-DropCell = DropTarget('CARD', cardTarget, connect => ({
+DropCell = DropTarget('CARD', cardTarget, (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
 }))(DropCell)
 
 
