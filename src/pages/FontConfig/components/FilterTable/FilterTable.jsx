@@ -197,7 +197,7 @@ export default class EnhanceTable extends Component {
       <IceContainer className="pch-container">
       <div className="filter-table">
         <legend className="pch-legend" >
-          <span className="pch-legend-legline"></span>字段配置
+          <span className="pch-legend-legline"></span>页面配置
         </legend>
           <SearchForm searchEvent={(values) =>this.searchConditon(values)}/>
           <Table

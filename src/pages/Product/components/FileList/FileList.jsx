@@ -8,7 +8,7 @@ import './FileList.scss';
 import DiaLog from './Dialog'
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError, } from '@icedesign/form-binder';
 
-import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog, } from '@icedesign/base';
+import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog,Pagination } from '@icedesign/base';
 
 const {Row, Col} = Grid;
 const FormItem = Form.Item;
@@ -118,20 +118,28 @@ export default class FileList extends Component {
   addNewItem() {
     hashHistory.push(`/product/filelistnew`)
   }
+   //分页
+   changePage = (currentPage) => {
+    let { actions } = this.props;
+    actions.filesearch({page:currentPage});
+    //this.props.actions.search({page:currentPage});
+  };
   render() {
-    let dataSource = this.state.dataSource
-    dataSource = this.props.fileData || {} //data
-    dataSource = dataSource.data || {}
-    dataSource = dataSource.list
-    dataSource && dataSource.map((item) => {
-      let temp = [];
-      item.collectionDetails && item.collectionDetails.map((ditem, j) => {
-        temp.push(ditem.name);
-      })
-      item.fileNamestr = temp.join(',')
-    })
-    let map = new Map()
-
+        let dataSource=this.state.dataSource
+        dataSource = this.props.fileData || {}//data
+        dataSource = dataSource.data||{}
+        let page = dataSource.page;
+        let limit = dataSource.limit;
+        let total = dataSource.total;
+        dataSource = dataSource.list
+        dataSource && dataSource.map((item) => {
+          let temp = [];
+          item.collectionDetails && item.collectionDetails.map((ditem, j) => {
+            temp.push(ditem.name);
+          })
+          item.fileNamestr = temp.join(',')
+        })
+        let map = new Map()
     return (
       <IceContainer className="pch-container">
         <legend className="pch-legend" >
@@ -201,6 +209,15 @@ export default class FileList extends Component {
           <div style={styles.addNew}>
             <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
           </div>
+          <div style={styles.pagination}>
+                              <Pagination
+                                shape="arrow-only"
+                                current={page}
+                                pageSize={limit}
+                               total={total}
+                                onChange={this.changePage}
+                              />
+                            </div>
         </IceContainer>
     );
   }
