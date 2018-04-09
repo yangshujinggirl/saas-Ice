@@ -108,6 +108,17 @@ export default class DiaLog extends Component {
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
       });
+      //临时解决数据缓存
+      this.props.actions.changeFileDetail({
+        fileType: '',
+        fileName: '',
+        collectionDetails: [{
+          dataName: '',
+          fileSize: undefined,
+          fileType: ''
+        }]
+      })
+
       // 提交当前填写的数据
       let id = this.props.params.id;
       if(id){
