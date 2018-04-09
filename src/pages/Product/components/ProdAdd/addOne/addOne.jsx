@@ -333,6 +333,9 @@ repaymentAccountChange=(data)=>{
     let collData = this.Option(data1)
     return (
       <IceContainer className="pch-container">
+        <legend className="pch-legend">
+          <span className="pch-legend-legline"></span>基本信息
+        </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
             this.formRef = formRef;
@@ -344,9 +347,7 @@ repaymentAccountChange=(data)=>{
           <Form
               size="large"
               labelAlign="left">
-          <legend className="pch-legend">
-            <span className="pch-legend-legline"></span>基本信息
-          </legend>
+      
           <div className="pch-form">
             <Row wrap>
               <Col xxs={24} xs={12} l={8} style={styles.filterCol}>

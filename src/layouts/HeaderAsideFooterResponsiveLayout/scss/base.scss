@@ -957,14 +957,20 @@ body {
     td {
         .next-table-cell-wrapper{
             button{
-                background: #fff;
+                background: transparent;
                 color: #1AA8F0 !important;
+                &:hover{
+                    color: #5cc7fd !important;
+                }
             }
         }
         .filter-table-operation{
             a{
-                background: #fff;
+                background: transparent;
                 color: #1AA8F0 !important;
+                &:hover{
+                    color: #5cc7fd !important;
+                }
             }
         }
     }
