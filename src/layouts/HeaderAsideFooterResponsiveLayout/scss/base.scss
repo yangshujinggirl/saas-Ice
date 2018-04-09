@@ -321,11 +321,11 @@ body {
         .ice-design-layout-header {
             position: fixed;
             z-index: 2;
-            width: 90%;
             background: #FC9E25;
             color: #fff;
             height: 50px;
-            left: 10%;
+            left: 200px;
+            right: 0;
             margin: 0px auto;
             display: flex;
             justify-content: space-between;
@@ -383,11 +383,12 @@ body {
             z-index: 3;
             
             // font-size: 14px;
-            width: 10% !important;
+            // width: 10% !important;
             box-sizing: border-box;
 
             // color: #1B2630;
             height: 100%;
+            box-shadow: 0 -1px 6px rgba(179,179,179,0.5);
 
             .collapse-btn {
                 cursor: pointer;
@@ -556,8 +557,7 @@ body {
 
         // main
         .ice-layout-section {
-            margin-left: 10%;
-            width: 90%;
+            margin-left: 200px;
         }
 
         /* FOOTER */
