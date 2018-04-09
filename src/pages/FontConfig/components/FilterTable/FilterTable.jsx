@@ -58,7 +58,7 @@ class  SearchForm extends Component {
             field={this.field}>
             <Row wrap style={styles.formItem}>
               <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                资方
+                资方名称
               </Col>
               <Col s="4" l="4">
                 <FormItem {...formItemLayout}>
