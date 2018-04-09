@@ -244,7 +244,7 @@ export default class DiaLog extends Component {
 
       return arr;
   }
-  testName=(id,data)=>{
+  testName=(id,data) =>{
     if(id){
       return(<label>{data.name}</label>)
     }else{
@@ -253,14 +253,14 @@ export default class DiaLog extends Component {
           <IceFormBinder
             name="name"
           >
-            <Input className="custom-input"/>
+            <Input size="large" className="custom-input" placeholder="请输入清单名称"/>
           </IceFormBinder>
           <IceFormError name="name"/>
         </span>
       )
     }
   }
-  testType=(id,data)=>{
+  testType=(id,data) =>{
     if(id){
       return(<label>{data.dataType}</label>)
     }else{
@@ -269,7 +269,7 @@ export default class DiaLog extends Component {
           <IceFormBinder
             name="dataType"
           >
-            <Select>
+            <Select size="large" placeholder="请选择" className="custom-select">
               <Select.Option value="产品进件">产品进件</Select.Option>
           </Select>
           </IceFormBinder>
@@ -287,42 +287,40 @@ export default class DiaLog extends Component {
     })
     console.log('render', data)
     return (
-      <IceContainer>
+      <IceContainer className="pch-container">
+        <legend className="pch-legend">
+          <span className="pch-legend-legline"></span>
+          {this.props.params.id?'材料编辑':'资料新增'} 
+        </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
             this.formRef = formRef;
           }}
           value={data}
           >
-          <div>
-            <legend className="pch-legend">
-              <span className="pch-legend-legline"></span>
-             {this.props.params.id?'材料编辑':'资料新增'} 
-            </legend>
-            <div className="pch-condition">
-              <Form className="dialog-form">
-                <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}>清单类型：</label>
-                    {this.testType(this.props.params.id,data)}
-                  </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}>清单名称：</label>
-                    {this.testName(this.props.params.id,data)}
+          <div className="pch-form">
+            <Form size="large" className="dialog-form">
+              <Row wrap>
+                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <label style={styles.filterTitle}>清单类型：</label>
+                  {this.testType(this.props.params.id,data)}
+                </Col>
+                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <label style={styles.filterTitle}>清单名称：</label>
+                  {this.testName(this.props.params.id,data)}
 
-                  </Col>
-                </Row>
-                <FileListDetail
-                  data={data.collectionDetails}
-                  onRemove={this.removeRow.bind(this)}
-                  onChangeType={this.handleChangeType.bind(this)}
-                />
-                <div style={styles.btn}>
-                  <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
-                  <Button onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>
-                </div>
-              </Form>
-            </div>
+                </Col>
+              </Row>
+              <FileListDetail
+                data={data.collectionDetails}
+                onRemove={this.removeRow.bind(this)}
+                onChangeType={this.handleChangeType.bind(this)}
+              />
+              <div style={styles.btn}>
+                <Button type="secondary" onClick={this.addNewRow.bind(this)}>新增一行</Button>
+                <Button type="secondary" onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>
+              </div>
+            </Form>
           </div>
         </IceFormBinderWrapper>
 
@@ -344,21 +342,10 @@ const styles = {
     marginRight: '12px',
     fontSize: '14px',
   },
-  newCol: {
-    hiegth: '30px',
-    borderRadius: 0,
-    border: 'none',
-    marginTop: '20px',
-    background: '#FC9E25',
-    color: '#fff',
+  btn:{
+    marginTop: 20
   },
   sureBtn: {
-    hiegth: '30px',
-    borderRadius: 0,
-    border: 'none',
-    marginTop: '20px',
-    background: '#FC9E25',
-    color: '#fff',
     float: 'right'
   },
 };
