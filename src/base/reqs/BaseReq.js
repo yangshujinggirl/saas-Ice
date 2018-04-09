@@ -33,6 +33,13 @@ class BaseReq {
       options.data = JSON.stringify(options.data);
     }
 
+    if(!options.method || options.method == 'get'){
+      if(!options.params){
+        options.params = {};
+      }
+      options.params.t = new Date().getTime().toString(32);
+    }
+
     return axios({
         url: options.url,
         method: options.method || 'get',

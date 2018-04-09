@@ -8,14 +8,14 @@ import './FileList.scss';
 import DiaLog from './Dialog'
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError, } from '@icedesign/form-binder';
 
-import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog,Pagination } from '@icedesign/base';
+import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog, Pagination } from '@icedesign/base';
 
-const {Row, Col} = Grid;
+const { Row, Col } = Grid;
 const FormItem = Form.Item;
 // FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
@@ -23,11 +23,11 @@ const SwitchForForm = (props) => {
 
   return (
     <Switch
-    {...props}
-    checked={checked}
-    onChange={(currentChecked) => {
-      if (props.onChange) props.onChange(currentChecked);
-    }}
+      {...props}
+      checked={checked}
+      onChange={(currentChecked) => {
+        if (props.onChange) props.onChange(currentChecked);
+      }}
     />
   );
 };
@@ -68,7 +68,7 @@ export default class FileList extends Component {
     }
   }
   componentDidMount() {
-    let {actions} = this.props;
+    let { actions } = this.props;
     actions.filesearch();
     console.log(this.props)
   }
@@ -81,7 +81,7 @@ export default class FileList extends Component {
 
   //查询
   onSubmit = (data) => {
-    let {actions} = this.props;
+    let { actions } = this.props;
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
       if (error) {
@@ -104,72 +104,72 @@ export default class FileList extends Component {
     </div>
   };
 
-  open =(record) => {
+  open = (record) => {
 
     hashHistory.push(`/product/fileedit/${record.id}`)
   }
-  deleteRow =(idx) => {
-    let {actions} = this.props;
+  deleteRow = (idx) => {
+    let { actions } = this.props;
     actions.fileremove(idx);
-    actions.filesearch();
+    //actions.filesearch();
 
   }
 
   addNewItem() {
     hashHistory.push(`/product/filelistnew`)
   }
-   //分页
-   changePage = (currentPage) => {
+  //分页
+  changePage = (currentPage) => {
     let { actions } = this.props;
-    actions.filesearch({page:currentPage});
+    actions.filesearch({ page: currentPage });
     //this.props.actions.search({page:currentPage});
   };
   render() {
-        let dataSource=this.state.dataSource
-        dataSource = this.props.fileData || {}//data
-        dataSource = dataSource.data||{}
-        let page = dataSource.page;
-        let limit = dataSource.limit;
-        let total = dataSource.total;
-        dataSource = dataSource.list
-        dataSource && dataSource.map((item) => {
-          let temp = [];
-          item.collectionDetails && item.collectionDetails.map((ditem, j) => {
-            temp.push(ditem.name);
-          })
-          item.fileNamestr = temp.join(',')
-        })
-        let map = new Map()
+    let dataSource = this.state.dataSource
+    dataSource = this.props.fileData || {}//data
+    dataSource = dataSource.data || {}
+    let page = dataSource.page;
+    let limit = dataSource.limit;
+    let total = dataSource.total;
+    dataSource = dataSource.list
+    dataSource && dataSource.map((item) => {
+      let temp = [];
+      item.collectionDetails && item.collectionDetails.map((ditem, j) => {
+        temp.push(ditem.fileName);
+      })
+      item.fileNamestr = temp.join(',')
+    })
+    let map = new Map()
     return (
       <IceContainer className="pch-container">
         <legend className="pch-legend" >
           <span className="pch-legend-legline"></span>资料清单
         </legend>
-          <IceFormBinderWrapper
-      ref={(formRef) => {
-        this.formRef = formRef;
-      }}
-      value={this.state.value}
-      onChange={this.onFormChange}
-      >
-        <div className="pch-condition">
+        <IceFormBinderWrapper
+          ref={(formRef) => {
+            this.formRef = formRef;
+          }}
+          value={this.state.value}
+          onChange={this.onFormChange}
+        >
+          <div className="pch-condition">
             <Form
               size="large"
               direction="hoz"
-              >
+            >
               <Row>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="清单类型：">
                     <IceFormBinder
-      name="dataType"
-      >
+                      name="dataType"
+                    >
                       <Select
-      placeholder="请选择"
-      style={styles.filterTool}
-      className="custom-select"
-      hasClear={true}
-      size="large"
-      >
+                        placeholder="请选择"
+                        style={styles.filterTool}
+                        className="custom-select"
+                        hasClear={true}
+                        size="large"
+                      >
                         <Option value="产品进件">产品进件</Option>
                       </Select>
                     </IceFormBinder>
@@ -178,12 +178,12 @@ export default class FileList extends Component {
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="清单名称：">
                     <IceFormBinder
-      name="name"
-      >
+                      name="name"
+                    >
                       <Input size="large" placeholder="清单名称" />
                     </IceFormBinder>
                   </FormItem>
-                  </Col>
+                </Col>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="&nbsp;">
                     <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.submit}>
@@ -194,31 +194,31 @@ export default class FileList extends Component {
               </Row>
             </Form>
           </div>
-          </IceFormBinderWrapper>
-          <div style={styles.searchTable}>
-            <Table
-      dataSource={dataSource}
-      maxBodyHeight={800}
-      >
-              <Table.Column title="清单类型" dataIndex="dataType" />
-              <Table.Column title="清单名称" dataIndex="name" />
-              <Table.Column title="材料名称" dataIndex="fileNamestr"/>
-              <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
-            </Table>
-          </div>
-          <div style={styles.addNew}>
-            <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
-          </div>
-          <div style={styles.pagination}>
-                              <Pagination
-                                shape="arrow-only"
-                                current={page}
-                                pageSize={limit}
-                               total={total}
-                                onChange={this.changePage}
-                              />
-                            </div>
-        </IceContainer>
+        </IceFormBinderWrapper>
+        <div style={styles.searchTable}>
+          <Table
+            dataSource={dataSource}
+            maxBodyHeight={800}
+          >
+            <Table.Column title="清单类型" dataIndex="dataType" />
+            <Table.Column title="清单名称" dataIndex="name" />
+            <Table.Column title="材料名称" dataIndex="fileNamestr" />
+            <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
+          </Table>
+        </div>
+        <div style={styles.addNew}>
+          <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
+        </div>
+        <div style={styles.pagination}>
+          <Pagination
+            shape="arrow-only"
+            current={page}
+            pageSize={limit}
+            total={total}
+            onChange={this.changePage}
+          />
+        </div>
+      </IceContainer>
     );
   }
 }

@@ -221,9 +221,8 @@ export const fileremove = (id) => {
     dispatch(fetchStart())
 
     Req.fileremove(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
-      //filesearch()
-      filesearch()
+      filesearch()(dispatch);
+      //dispatch(fetchSuccess({delete: true}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
