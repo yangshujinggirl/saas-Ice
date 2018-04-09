@@ -557,7 +557,9 @@ body {
 
         // main
         .ice-layout-section {
-            margin-left: 200px;
+            padding-left: 200px;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         /* FOOTER */
@@ -747,6 +749,8 @@ body {
     color: #1B2630;
     line-height: 22px;
     padding-bottom: 10px;
+    border-bottom: 1px solid #d8d8d8;
+
     .pch-legend-legline {
         display: inline-block;
         zoom: 1;
@@ -756,11 +760,22 @@ body {
         height: 18px;
         margin-top:2px;
         background-color: #ec9d00;
-    }  
+    }
+    h4 {
+        position: relative;
+        &::before {
+            background: #ec9d00;
+            width: 4px;
+            height: 18px;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 3px;
+        } 
+    }
 }
 .pch-condition{
     padding: 20px 15px 0;
-    border-top: 1px solid #d8d8d8;
 
     .next-form-left.next-form-large .next-form-item-label{
         line-height: 34px;
@@ -808,6 +823,42 @@ body {
     color: #333;
     background-color: #f3f3f3;
 }
+.pch-form{
+    padding: 20px 15px 0;
+
+    .next-select{
+        width: 100%;
+    }
+    .next-select.large{
+        line-height: 32px;
+        height: 34px;
+    }
+    .next-input-large input{
+        height: 32px;
+    }
+    .next-input-large input::placeholder{
+        color: #999;
+    }
+
+    .next-checkbox.hovered .next-checkbox-inner, .next-checkbox.focused .next-checkbox-inner{
+        border-color: #fc9e85;
+        background-color: #fff3e4;
+    }
+    .next-checkbox.checked.hovered .next-checkbox-inner > .next-icon, .next-checkbox.checked.focused .next-checkbox-inner > .next-icon{
+        color: #fc9e85;
+    }
+
+    .next-btn{
+        border-radius: 4px;
+    }
+    .next-btn-secondary{
+        background-color: #FC9E25;
+
+        &:hover{
+            background-color: #F58C00;
+        }
+    }
+}
 //
 .next-row{
     font-family: PingFangSC-Regular;
@@ -835,15 +886,15 @@ body {
 //长度，宽度
 .custom-input{
     width:220px !important;
-    height: 33px !important;
-    font-size: 14px;
-    line-height: 33px !important;
+    // height: 33px !important;
+    // font-size: 14px;
+    // line-height: 33px !important;
 }
 .custom-select{
     width:220px !important;
-    height: 33px !important;
-    font-size: 14px;
-    line-height: 30px !important;
+    // height: 33px !important;
+    // font-size: 14px;
+    // line-height: 30px !important;
     
 }
 
@@ -941,5 +992,5 @@ body {
 }
 
 .next-select-arrow {
-    margin-top: -17px !important;
+    // margin-top: -17px !important;
 }

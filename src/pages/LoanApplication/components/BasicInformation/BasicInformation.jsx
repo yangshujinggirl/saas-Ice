@@ -202,9 +202,12 @@ class BasicInformation extends Component {
     }
     console.log(list)
     return (
-      !productId ?  <div className="content-editor">
-        <IceFormBinderWrapper>
-          <IceContainer title="车贷申请" className='subtitle'>
+      !productId ? 
+        <IceContainer className="pch-container">
+          <legend className="pch-legend" >
+            <span className="pch-legend-legline"></span>车贷申请
+          </legend>
+          <IceFormBinderWrapper>
             <Form
               labelAlign="left"
               style={styles.form}
@@ -232,9 +235,8 @@ class BasicInformation extends Component {
                 </Col>
               </Row>
             </Form>
-          </IceContainer>
-        </IceFormBinderWrapper>
-      </div> : <div>接口未提供暂时未开发</div>
+          </IceFormBinderWrapper>
+        </IceContainer> : <div>接口未提供暂时未开发</div>
     );
   }
 }

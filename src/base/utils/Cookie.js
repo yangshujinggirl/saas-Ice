@@ -31,7 +31,7 @@ class Cookie {
      */
     _set(c_name, value, days, hours, minutes, seconds) {
         var expires = null;
-        var domain = location.host.indexOf("meigooo.com") >= 0 ? "domain= meigooo.com" : "";
+        var domain = location.host.indexOf("pingchang666.com") >= 0 ? "domain= pingchang666.com" : "";
         if (typeof days == 'number' && typeof hours == 'number' && typeof minutes == 'number' && typeof seconds == 'number') {
             if (days == 0 && hours == 0 && minutes == 0 && seconds == 0) {
                 expires = null;
@@ -41,6 +41,7 @@ class Cookie {
         } else {
             expires = days || this.getExpDate(7, 0, 0, 0);
         }
+        console.log(c_name + "=" + escape(value) + ((expires == null) ? "" : ";expires=" + expires) + "; path=/ ;" + domain)
 
         document.cookie = c_name + "=" + escape(value) + ((expires == null) ? "" : ";expires=" + expires) + "; path=/ ;" + domain;
     }

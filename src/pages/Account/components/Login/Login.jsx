@@ -12,7 +12,7 @@ const backgroundImage = require('./admin-login-bg.png');
 const adminLogo = require('./admin-logo.png');
 
 import { hashHistory } from 'react-router';
-import { Storage } from '../../../../base/utils';
+import { Storage, Cookie } from '../../../../base/utils';
 import AccountReq from '../../reqs/AccountReq';
 
 export default class Login extends Component {
