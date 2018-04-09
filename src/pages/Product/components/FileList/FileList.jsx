@@ -160,13 +160,9 @@ export default class FileList extends Component {
               <Row>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="清单类型：">
-                    <IceFormBinder
-      name="dataType"
-      >
+                    <IceFormBinder name="dataType" >
                       <Select
       placeholder="请选择"
-      style={styles.filterTool}
-      className="custom-select"
       hasClear={true}
       size="large"
       >
@@ -177,9 +173,7 @@ export default class FileList extends Component {
                 </Col>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="清单名称：">
-                    <IceFormBinder
-      name="name"
-      >
+                    <IceFormBinder name="name" >
                       <Input size="large" placeholder="清单名称" />
                     </IceFormBinder>
                   </FormItem>

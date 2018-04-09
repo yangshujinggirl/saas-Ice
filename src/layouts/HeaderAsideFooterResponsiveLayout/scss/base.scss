@@ -774,6 +774,10 @@ body {
     .next-select{
         width: 100%;
     }
+    .next-select.large{
+        line-height: 32px;
+        height: 34px;
+    }
     .next-input-large input{
         height: 32px;
     }
@@ -798,6 +802,11 @@ body {
             background-color: #F58C00;
         }
     }
+}
+//下拉弹出框
+.next-menu .next-menu-item.focused{
+    color: #333;
+    background-color: #f3f3f3;
 }
 //
 .next-row{
