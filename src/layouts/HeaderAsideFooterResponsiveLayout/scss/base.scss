@@ -796,6 +796,9 @@ body {
     .next-input-large input{
         height: 32px;
     }
+    .next-input.next-input-single.focus{
+        border: 1px solid #FC9E25;
+    }
     .next-input-large input::placeholder{
         color: #999;
     }
@@ -843,6 +846,10 @@ body {
     }
     .next-input-large input{
         height: 32px;
+    }
+    
+    .next-input.next-input-single.focus{
+        border: 1px solid #FC9E25;
     }
     .next-input-large input::placeholder{
         color: #999;
