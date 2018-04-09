@@ -1,25 +1,21 @@
 import React, { Component } from 'react';
-import { Router, Route, Link, hashHistory} from 'react-router'
+import { Router, Route, Link, hashHistory } from 'react-router'
 
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 
 import './FileList.scss';
 import DiaLog from './Dialog'
-import {
-  FormBinderWrapper as IceFormBinderWrapper,
-  FormBinder as IceFormBinder,
-  FormError as IceFormError,
-} from '@icedesign/form-binder';
+import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError, } from '@icedesign/form-binder';
 
 import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog, } from '@icedesign/base';
 
-const { Row, Col } = Grid;
+const {Row, Col} = Grid;
 const FormItem = Form.Item;
 // FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
-const { RangePicker } = DatePicker;
+const {RangePicker} = DatePicker;
 
 // Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
 const SwitchForForm = (props) => {
@@ -27,15 +23,23 @@ const SwitchForForm = (props) => {
 
   return (
     <Switch
-      {...props}
-      checked={checked}
-      onChange={(currentChecked) => {
-        if (props.onChange) props.onChange(currentChecked);
-      }}
+    {...props}
+    checked={checked}
+    onChange={(currentChecked) => {
+      if (props.onChange) props.onChange(currentChecked);
+    }}
     />
   );
 };
 
+const formItemLayout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 12
+  }
+};
 
 export default class FileList extends Component {
   static displayName = 'FileList';
@@ -51,24 +55,25 @@ export default class FileList extends Component {
       style: {
         width: "70%"
       },
-      value:{
-        name	:'',
-        dataType:''
+      value: {
+        name: '',
+        dataType: undefined
       },
-      fileList:[{
-        dataType:"",
-        dataname:'',
-        fileTypeL:'',
+      fileList: [{
+        dataType: "",
+        dataname: '',
+        fileTypeL: '',
       }],
-      dataSource:'',
+      dataSource: '',
     }
   }
   componentDidMount() {
     let {actions} = this.props;
-      actions.filesearch();
-      console.log(this.props)
-  };
-  componentDidUpdate(dataSource){
+    actions.filesearch();
+    console.log(this.props)
+  }
+  ;
+  componentDidUpdate(dataSource) {
     // this.setState({
     //   dataSource
     // })
@@ -84,14 +89,14 @@ export default class FileList extends Component {
         return;
       }
       // 提交当前填写的数据
-      this.props.actions.filesearch(value);//返回符合条件的数据
+      this.props.actions.filesearch(value); //返回符合条件的数据
     });
   };
   onRowClick = (record, index, e) => {
     console.log(record, index, e);
   };
 
-//操作
+  //操作
   renderTest = (value, index, record) => {
     return <div>
       <button className="edithbtn" onClick={() => this.open(record)}>编辑</button>
@@ -99,89 +104,94 @@ export default class FileList extends Component {
     </div>
   };
 
-  open =(record) =>{
+  open =(record) => {
 
     hashHistory.push(`/product/fileedit/${record.id}`)
   }
   deleteRow =(idx) => {
-    let { actions } = this.props;
+    let {actions} = this.props;
     actions.fileremove(idx);
     actions.filesearch();
 
   }
 
-  addNewItem=()=>{
+  addNewItem() {
     hashHistory.push(`/product/filelistnew`)
   }
   render() {
-        let dataSource=this.state.dataSource
-        dataSource = this.props.fileData || {}//data
-        dataSource = dataSource.data||{}
-        dataSource = dataSource.list
-        dataSource && dataSource.map((item) => {
-          let temp = [];
-          item.collectionDetails && item.collectionDetails.map((ditem, j) => {
-            temp.push(ditem.name);
-          })
-          item.fileNamestr = temp.join(',')
-        })
-        let map = new Map()
+    let dataSource = this.state.dataSource
+    dataSource = this.props.fileData || {} //data
+    dataSource = dataSource.data || {}
+    dataSource = dataSource.list
+    dataSource && dataSource.map((item) => {
+      let temp = [];
+      item.collectionDetails && item.collectionDetails.map((ditem, j) => {
+        temp.push(ditem.name);
+      })
+      item.fileNamestr = temp.join(',')
+    })
+    let map = new Map()
+
     return (
-      <div className="create-activity-form" style={styles.container}>
-        <IceContainer title="" >
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>资料清单
+        </legend>
           <IceFormBinderWrapper
-            ref={(formRef) => {
-              this.formRef = formRef;
-            }}
-            value={this.state.value}
-            onChange={this.onFormChange}
-          >
-            <div>
-              <legend className="pch-legend">
-                <span className="pch-legend-legline"></span>资料清单
-              </legend>
-              <div className="pch-condition">
-                <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}>清单类型：</label>
+      ref={(formRef) => {
+        this.formRef = formRef;
+      }}
+      value={this.state.value}
+      onChange={this.onFormChange}
+      >
+        <div className="pch-condition">
+            <Form
+              size="large"
+              direction="hoz"
+              >
+              <Row>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="清单类型：">
                     <IceFormBinder
-                      name="dataType"
-                    >
+      name="dataType"
+      >
                       <Select
-                        placeholder="请选择"
-                        style={styles.filterTool}
-                        className="custom-select"
-                        hasClear={true}
-                      >
+      placeholder="请选择"
+      style={styles.filterTool}
+      className="custom-select"
+      hasClear={true}
+      size="large"
+      >
                         <Option value="产品进件">产品进件</Option>
                       </Select>
                     </IceFormBinder>
-                    <IceFormError name="dataType" />
-                  </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}>清单名称：</label>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="清单名称：">
                     <IceFormBinder
-                      name="name"
-                    >
-                      <Input className="custom-input" placeholder="清单名称" />
+      name="name"
+      >
+                      <Input size="large" placeholder="清单名称" />
                     </IceFormBinder>
-                    <IceFormError name="name" />
+                  </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}></label>
-                    <button style={styles.btns} type='submit' onClick={this.onSubmit}>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="&nbsp;">
+                    <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.submit}>
                       查询
-                    </button>
-                  </Col>
-                </Row>
-              </div>
-            </div>
+                    </Button>
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>
+          </div>
           </IceFormBinderWrapper>
           <div style={styles.searchTable}>
             <Table
-              dataSource={dataSource}
-              maxBodyHeight={800}
-            >
+      dataSource={dataSource}
+      maxBodyHeight={800}
+      >
               <Table.Column title="清单类型" dataIndex="dataType" />
               <Table.Column title="清单名称" dataIndex="name" />
               <Table.Column title="材料名称" dataIndex="fileNamestr"/>
@@ -192,7 +202,6 @@ export default class FileList extends Component {
             <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
           </div>
         </IceContainer>
-      </div>
     );
   }
 }
