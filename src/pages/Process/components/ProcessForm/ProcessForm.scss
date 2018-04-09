@@ -1,0 +1,25 @@
+.create-activity-form {
+  .container {
+    display: table;
+    width: 100%;
+    border: 1px solid #F6DCA9;
+    background: #fff;
+    .container-left {
+      display: table-cell;
+      width: 150px;
+      box-sizing: border-box;
+      color: #666;
+      line-height: 30px;
+      background: #FDF4E3;
+      border-right: 1px solid #F6DCA9;
+      padding: 15px 0 15px 20px;
+      height: 100%;
+    }
+    .container-right {
+      background: #fff;
+      display: table-cell;
+      padding: 15px;
+      padding-top: 25px;
+    }
+  }
+}
