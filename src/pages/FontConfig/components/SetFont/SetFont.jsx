@@ -150,7 +150,10 @@ export default class setFont extends Component {
         if (!tts) { return }
         
         let pageName = {
-            name: this.state.pageValue
+            name: this.state.pageValue,
+            businessType: "货款业务",
+            functionType: "进件",
+            fields: []
         }
         if (!pageName.name.length) {
             Dialog.alert({
@@ -159,14 +162,16 @@ export default class setFont extends Component {
             })
             return
         }
+        resData.fieldset.map((item) => {
+            item.fields.map((item) => {
+                pageName.fields.push(item) 
+            })
+        })
+        console.log(pageName);
+        
         FontConfigReq.changPageName(pageName,id).then((data) => {
             if (data.code == 200) {
                 this.props.router.push(`font/view?id=${id}`)
-            } else {
-                Dialog.alert({
-                    title: '提示',
-                    content: data.msg
-                })
             }
         })
     }
@@ -347,11 +352,6 @@ export default class setFont extends Component {
                             boolSelect: false,
                             resData,
                         })
-                    } else {
-                        Dialog.alert({
-                            title: '提示',
-                            content: data.msg
-                        })
                     }
                 })
             } else {
@@ -462,6 +462,9 @@ export default class setFont extends Component {
             newArr.fieldset[index + 1].fields.map((item) => {
                 item.fieldsetOrder = index + 1;
             })
+            newArr.fieldset[index].fields.map((item) => {
+                item.fieldsetOrder = index-1;
+            })
             this.setState({
                 resData: newArr
             });
@@ -475,6 +478,9 @@ export default class setFont extends Component {
             [newArr.fieldset[index - 1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index - 1]]
             newArr.fieldset[index - 1].fields.map((item) => {
                 item.fieldsetOrder = index - 1;
+            })
+            newArr.fieldset[index].fields.map((item) => {
+                item.fieldsetOrder = index + 1;
             })
             this.setState({
                 resData: newArr
