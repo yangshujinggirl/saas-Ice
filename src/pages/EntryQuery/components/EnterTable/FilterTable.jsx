@@ -164,22 +164,22 @@ export default class EnhanceTable extends Component {
             <Table.Column
               title="贷款编号"
               width={150}
-              align={'center'}
+              align={'left'}
               dataIndex="code"
             />
             <Table.Column
               title="贷款状态"
               dataIndex=""
               width={150}
-              align={'center'}
+              align={'left'}
             />
-            <Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'center'}/>
+            <Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'left'}/>
             <Table.Column
               title="证件号码"
               dataIndex="borrowerIdNo"
               width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
 
             <Table.Column
@@ -187,35 +187,35 @@ export default class EnhanceTable extends Component {
               dataIndex="borrowerMobile"
               width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
               title="申请金额"
               dataIndex="principalAmount"
               width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
               title="贷款产品"
               dataIndex="productName"
               width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
               title="展厅名称"
               dataIndex=""
               width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
               title="申请时间"
               dataIndex="createdAt"
               width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
               lock="right"
