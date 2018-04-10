@@ -37,9 +37,16 @@ class  SearchForm extends Component {
   constructor(props) {
     super(props)
     this.field = new Field(this)
+    this.state = {
+      values: {
+        businessType: '货款业务',
+        functionType: '进件',
+        name: ''
+      }
+    }
   }
   addPage() {
-    hashHistory.push('font/add')
+    hashHistory.push(`font/add?pageName=${this.state.values.name}`)
   }
   //提交表单
   handleSubmit(e) {
@@ -49,14 +56,15 @@ class  SearchForm extends Component {
       if (errors) {
         return;
       }
-      searchEvent(values)
+      
+      searchEvent(this.state.values)
     });
   }
   render() {
     const { init } = this.field;
 
     return(
-        <IceFormBinderWrapper>
+      <IceFormBinderWrapper value={this.state.values}>
           <div className="pch-condition">
             <Form
               size="large"

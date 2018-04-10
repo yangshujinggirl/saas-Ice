@@ -31,8 +31,12 @@ export default class AdFont extends Component {
         };
     }
     submit = () => {
+        // 页面名称
+        let pageName = this.props.router.location.query.pageName
+        console.log(pageName);
+        
         let reqDate = {
-            "name": this.state.pageName,
+            "name": '',
             "businessType": "货款业务",
             "functionType": "进件",
             "fields": []
@@ -84,7 +88,7 @@ export default class AdFont extends Component {
             FontConfigReq.save(reqDate).then((data) => {
                 let res = data.data;
                 if (data.code == 200) {
-                    this.props.router.push(`/font/set?id=${res.id}`)
+                    this.props.router.push(`/font/set?id=${res.id}&pageName=${pageName}`)
                 } else {
                     Dialog.alert({
                         content: res.msg,
