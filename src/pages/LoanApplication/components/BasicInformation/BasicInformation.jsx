@@ -70,7 +70,7 @@ class BasicInformation extends Component {
   }
 
   getProductNum() {
-    const limit = 20;
+    const limit = 990;
     Req.getProductNumApi(limit)
     .then((res) => {
       const { data } = res;
