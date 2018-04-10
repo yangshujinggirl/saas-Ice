@@ -17,6 +17,12 @@ module.exports = {
     //     chunkFilename: "[id].[hash].js",
     //     pathinfo: true
     // },
+    resolve: {
+        alias: {
+            'utils': resolve('src/base/utils'),
+            'components': resolve('src/components'),
+        }
+    },
     devServer: {
         proxy: {
             '/loan-ft1': {
@@ -31,7 +37,7 @@ module.exports = {
             '/loanApi': {
                 target: LOAN_HOST,
                 changeOrigin: true,
-                pathRewrite:{"^/loanApi" : ""},
+                pathRewrite: { "^/loanApi": "" },
                 bypass: function(req, res, proxyOpt) {
                     // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');

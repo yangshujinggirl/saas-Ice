@@ -7,6 +7,8 @@ import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
 import {browserHistory, hashHistory} from 'react-router';
 
+import { Title, BtnAddRow } from 'components';
+
 @DataBinder({
   tableData: {
     // 详细请求配置请参见 https://github.com/axios/axios
@@ -133,9 +135,7 @@ export default class EnhanceTable extends Component {
 
     return (
         <IceContainer className="pch-container">
-          <legend className="pch-legend" >
-            <span className="pch-legend-legline"></span>内容筛选
-          </legend>
+          <Title title="内容筛选" />
           <FilterForm
             value={filterFormValue}
             onChange={this.filterFormChange}
@@ -175,6 +175,7 @@ export default class EnhanceTable extends Component {
               cell={this.renderOperations}
             />
           </Table>
+          <BtnAddRow style={{marginTop: 10}} />
           <div style={styles.paginationWrapper}>
             <Pagination
               current={tableData.currentPage}

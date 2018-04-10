@@ -744,6 +744,8 @@ body {
 
 //导航标题
 .pch-legend {
+    display: block;
+    width: 100%;
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #1B2630;
@@ -1017,4 +1019,34 @@ body {
 
 .next-select-arrow {
     // margin-top: -17px !important;
+}
+
+.pch-btnaddrow{
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+    font-size: 16px;
+    background: #FAFAFA;
+    border: 1px dashed #D8D8D8;
+    border-radius: 8px;
+    cursor: pointer;
+
+    .next-icon{
+        margin-right: 7px;
+    }
+
+    &:hover{
+        background: #FFF3E4;
+        border-color: #F5A623;
+        color: #F5A623;
+    }
+
+    &.disabled{
+        background: #ccc;
+        border-color: transparent;
+        color: inherit;
+    }
+    &.hide{
+        display: none;
+    }
 }

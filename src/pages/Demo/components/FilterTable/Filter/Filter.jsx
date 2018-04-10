@@ -127,22 +127,13 @@ export default class Filter extends Component {
               </IceFormBinder>
               </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} xl={6} style={styles.filterCol}></Col>
-            <Col xxs={24} xs={24} l={16} xl={6} style={styles.filterCol}>
+            <Col xxs={24} xs={12} l={8} xl={6}></Col>
+            <Col xxs={24} xs={12} l={8} xl={6}></Col>
+            <Col xxs={24} xs={24} l={8} xl={6}>
             <FormItem {...formItemLayout} label="&nbsp;">
-            <div
-                style={{
-                  textAlign: 'right',
-                  marginLeft: '12px',
-                }}
-              >
-                <Button onClick={this.props.onReset} type="normal">
-                  重置
-                </Button>
                 <Button
                   onClick={this.props.onSubmit}
                   type="secondary"
-                  style={{ marginLeft: '10px' }}
                 >
                   确定
                 </Button>
@@ -153,32 +144,12 @@ export default class Filter extends Component {
                 >
                   新增
                 </Button>
-              </div>
               </FormItem>
             </Col>
           </Row>
-          
         </Form>
       </IceFormBinderWrapper>
       </div>
     );
   }
 }
-
-const styles = {
-  filterCol: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-
-  filterTitle: {
-    width: '68px',
-    textAlign: 'right',
-    marginRight: '12px',
-    fontSize: '14px',
-  },
-
-  filterTool: {
-    width: '200px',
-  },
-};
