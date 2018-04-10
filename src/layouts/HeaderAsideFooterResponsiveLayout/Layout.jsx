@@ -148,6 +148,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     let userInfo = Storage.get('USERINFO');
     if(userInfo && userInfo.ownerId){
       link += (link.indexOf('?') >= 0 ? '&' : '?' )+ 'ownerId=' + userInfo.ownerId;
+      link += '&userId=' + userInfo.id;
+      link += '&type=saas';
     }
     return link;
   }

@@ -69,7 +69,7 @@ export default class Login extends Component {
           isLoging: false
         });
         if (!res || res.code != 200) return;
-        Feedback.toast.success('登录成功');
+        // Feedback.toast.success('登录成功');
 
         if (values.checkbox) {
           //记住账号
@@ -83,9 +83,7 @@ export default class Login extends Component {
         AccountReq.getUserInfo().then((res) => {
           if (res || res.code == 200) {
             Storage.set("USERINFO", res.data);
-            setTimeout(function() {
-              hashHistory.push('/dashboard') //跳转首页
-            }, 500)
+            hashHistory.push('/dashboard') //跳转首页
           }
         })
       });
