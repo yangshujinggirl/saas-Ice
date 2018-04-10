@@ -106,7 +106,10 @@ export default class CreateActivityForm extends Component {
     
     return (
       <div className="create-activity-form">
-        <IceContainer title="活动发布" style={styles.container}>
+        <IceContainer className="pch-container">
+          <legend className="pch-legend" >
+            <span className="pch-legend-legline"></span>活动发布
+          </legend>
           <IceFormBinderWrapper
             ref={(formRef) => {
               this.formRef = formRef;
@@ -114,7 +117,7 @@ export default class CreateActivityForm extends Component {
             value={data}
             onChange={this.onFormChange}
           >
-            <div>
+            <div className="pch-form">
               <Row style={styles.formItem}>
                 <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                   活动名称：
