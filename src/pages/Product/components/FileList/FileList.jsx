@@ -100,7 +100,7 @@ export default class FileList extends Component {
   renderTest = (value, index, record) => {
     return <div>
       <button className="edithbtn" onClick={() => this.open(record)}>编辑</button>
-      <button className="deletbtn" onClick={() => this.deleteRow(record.id)}>删除</button>
+      <button className="deletbtn" onClick={() => this.deleteRow(record.id)}>删除</button>
     </div>
   };
 
