@@ -57,9 +57,26 @@ export default class DiaLog extends Component {
     if(id){
       this.props.actions.fileDetail(this.props.params.id);
     }else{
+      // this.props.actions.changeFileDetail({
+      //   fileType: '',
+      //   fileName: '',
+      //   collectionDetails: [{
+      //     dataName: '',
+      //     fileSize: undefined,
+      //     fileType: ''
+      //   }]
+      // })
+    }
+    //
+  }
+
+  componentWillReceiveProps(nextProps){
+    // console.log('componentWillReceiveProps', this.props.route.path, nextProps.route.path)
+    if(this.props.route.path != nextProps.route.path){
+      // this.props.actions.changeFileDetail({})
       this.props.actions.changeFileDetail({
-        fileType: '',
-        fileName: '',
+        dataType: '',
+        name: '',
         collectionDetails: [{
           dataName: '',
           fileSize: undefined,
@@ -67,12 +84,10 @@ export default class DiaLog extends Component {
         }]
       })
     }
-    //
   }
 
   addNewRow() {
     let tempData = this.props.editData;
-    console.log(tempData)
     tempData.collectionDetails.push({
       dataName: '',
       fileSize: undefined,
@@ -108,16 +123,6 @@ export default class DiaLog extends Component {
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
       });
-      //临时解决数据缓存
-      this.props.actions.changeFileDetail({
-        fileType: '',
-        fileName: '',
-        collectionDetails: [{
-          dataName: '',
-          fileSize: undefined,
-          fileType: ''
-        }]
-      })
 
       // 提交当前填写的数据
       let id = this.props.params.id;
@@ -286,6 +291,7 @@ export default class DiaLog extends Component {
       item.fileTypeArr = this.setFileTypeChecked(fileTypeValueArr);
     })
     console.log('render', data)
+
     return (
       <IceContainer className="pch-container">
         <legend className="pch-legend">

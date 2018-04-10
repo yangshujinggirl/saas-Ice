@@ -201,12 +201,14 @@ export const changeFileDetail = (data) => {
     dispatch(change({editData: data}))
   }
 }
+
 //保存资料清单信息
   export const fileSave = (value)=>{
     return (dispatch) => {
       dispatch(fetchStart())
       Req.fileSave(value).then((res) => {
         if(!res || res.code != 200) return;
+        dispatch(change({editData: {}}))
         hashHistory.push('/product/filelist')
       }).catch((ex) => {
         dispatch(fetchFailed(ex))
@@ -251,6 +253,7 @@ export const fileEditSave = (value,id)=>{
     dispatch(fetchStart())
     Req.fileEditSave(value,id).then((res) => {
       if(!res || res.code != 200) return;
+      dispatch(change({editData: {}}))
       hashHistory.push('/product/filelist')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
