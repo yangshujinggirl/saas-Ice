@@ -59,11 +59,7 @@
       .item{
         width: 25%;
         margin: 10px 0px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -o-text-overflow: ellipsis;
-        -webkit-text-overflow: ellipsis;
-        white-space: nowrap;
+
       }
       .half{
         width: 100%;
@@ -113,4 +109,11 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.next-form-left.next-form-medium .next-form-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  white-space: nowrap;
 }
