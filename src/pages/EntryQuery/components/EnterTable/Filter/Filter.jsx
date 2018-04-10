@@ -36,37 +36,73 @@ export default class Filter extends Component {
             >
             <Row>
               <Col s="8" l="8">
-                <FormItem {...formItemLayout} label="姓名：">
+                <FormItem {...formItemLayout} label="贷款编号：">
+                  <IceFormBinder
+                    name="productCode"
+                  >
+                    <Input size="large" placeholder="贷款编号" />
+                  </IceFormBinder>
+                </FormItem>
+
+              </Col>
+              <Col s="8" l="8">
+                <FormItem {...formItemLayout} label="主贷人姓名：">
                   <IceFormBinder
                     name="borrowerName"
                   >
-                    <Input size="large" placeholder="姓名" />
+                    <Input size="large" placeholder="主贷人姓名" />
                   </IceFormBinder>
                 </FormItem>
               </Col>
               <Col s="8" l="8">
-                <FormItem {...formItemLayout} label="身份证号：">
+                <FormItem {...formItemLayout} label="申请开始时间：">
                   <IceFormBinder
-                  name="borrowerIdNo"
+                    name="startTime"
                   >
-                    <Input size="large" placeholder="身份证号" />
-                  </IceFormBinder>
-                </FormItem>
-              </Col>
-              <Col s="8" l="8">
-                <FormItem {...formItemLayout} label="手机号：">
-                  <IceFormBinder
-                    name="borrowerMobile"
-                  >
-                    <Input size="large" placeholder="手机号" />
+                    <DatePicker
+                      style={{width:"100%"}}
+                      placeholder="申请开始时间" />
                   </IceFormBinder>
                 </FormItem>
               </Col>
             </Row>
             <Row>
               <Col s="8" l="8">
+                <FormItem {...formItemLayout} label="申请结束时间：">
+                  <IceFormBinder
+                    name="endTime"
+                  >
+                    <DatePicker
+                      style={{width:"100%"}}
+                      placeholder="申请结束时间" />
+                  </IceFormBinder>
+                </FormItem>
               </Col>
               <Col s="8" l="8">
+                <FormItem {...formItemLayout} label="贷款状态：">
+                  <IceFormBinder
+                    name="borrowerMobile"
+                  >
+                    <Input size="large" placeholder="贷款状态" />
+                  </IceFormBinder>
+                </FormItem>
+              </Col>
+              <Col s="8" l="8">
+                <FormItem {...formItemLayout} label="展厅名称：">
+                  <IceFormBinder
+                    name="borrowerName"
+                  >
+                    <Input size="large" placeholder="展厅名称" />
+                  </IceFormBinder>
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col s="8" l="8">
+
+              </Col>
+              <Col s="8" l="8">
+
               </Col>
               <Col s="8" l="8">
                 <FormItem {...formItemLayout} label="&nbsp;">
@@ -77,7 +113,7 @@ export default class Filter extends Component {
               </Col>
             </Row>
           </Form>
-          
+
 
         </div>
       </IceFormBinderWrapper>
