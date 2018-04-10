@@ -8,7 +8,7 @@ export default class Title extends PureComponent {
 
     return (
       <div className={cx('pch-btnaddrow', {'disabled': disabled, 'hide': hide})} onClick={onClick} style={style}>
-          <Icon type="add" />{text}
+          <Icon type="add" size="small" />{text}
       </div>
     );
   }

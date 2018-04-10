@@ -160,7 +160,7 @@ Order=(dataIndex,order) =>{
               size="large"
               direction="hoz"
               >
-              <Row>
+              <Row wrap>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="产品编号：">
                     <IceFormBinder
@@ -199,8 +199,6 @@ Order=(dataIndex,order) =>{
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-              </Row>
-              <Row>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="状态：">
                     <IceFormBinder
