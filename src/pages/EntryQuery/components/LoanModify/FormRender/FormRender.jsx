@@ -36,10 +36,18 @@ export default class FormRender extends Component {
     this.state = {
       value: {},
       Component :[],
-      list:[]
+      list:[],
+      dataSource:[]
     };
   }
+  //请求数据
+  fetchData = (flag) => {
+    let {actions} = this.props;
+    actions.getDetail(this.props.params.id);
+    console.log(this.props.params.id)
+  };
   componentWillMount(){
+    // this.fetchData()
     this.SelectList();
   }
   //渲染表单
@@ -95,7 +103,6 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
-            // defaultValue={el.value}
             {...init(el.name,{
               initValue: el.value,
               rules: [{ required:  el.isRequired, message: "请填写"+el.label }],
@@ -233,8 +240,8 @@ export default class FormRender extends Component {
       else{
         var   setValue = '';
         setValue =   el.value ==undefined || el.value =='' ||  el.value =='undefined' ? Default : el.value ;
-        console.log(Default)
-        console.log(setValue)
+        // console.log(Default)
+        // console.log(setValue)
         Fields.push(<FormItem key={el.id} className='item' label={this.label(el.label)}
                               {...formItemLayout}>
           <RadioGroup
@@ -292,7 +299,6 @@ export default class FormRender extends Component {
                   {...formItemLayoutTEXT}>
           <Input multiple ='6'
                  style={{width:'85%'}}
-                 defaultValue ={el.value}
                  disabled={ el.isReadonly}
                  {...init(el.name, {
                    initValue: el.value,
@@ -383,7 +389,7 @@ export default class FormRender extends Component {
     }
   }
   render() {
-    console.log(this.state.list)
+    console.log(this.props.data)
     const { data, init } = this.props;
     return (
       this.renderForm(data)

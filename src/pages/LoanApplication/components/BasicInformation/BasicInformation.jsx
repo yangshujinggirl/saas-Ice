@@ -77,6 +77,7 @@ class BasicInformation extends Component {
       const { list } = data;
       let dataSource = list.map((el) => {
         return {
+          id : el.id,
           label:el.name,
           value:el.productCode,
         }
@@ -202,7 +203,7 @@ class BasicInformation extends Component {
     }
     console.log(list)
     return (
-      !productId ? 
+      !productId ?
         <IceContainer className="pch-container">
           <legend className="pch-legend" >
             <span className="pch-legend-legline"></span>车贷申请

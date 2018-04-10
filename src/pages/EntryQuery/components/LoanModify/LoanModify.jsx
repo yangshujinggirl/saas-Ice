@@ -139,8 +139,8 @@ export default class LoanModify extends Component {
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    console.log(this.state.tableList)
-    // console.log(this.props.params);
+    // console.log(this.state.tableList)
+    // console.log(this.props.detail);
     const init = this.field.init;
     return (
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
