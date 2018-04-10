@@ -102,7 +102,7 @@ export default class DiaLog extends Component {
             dataSource={data}
             className="basic-table"
             >
-            <Table.Column title="资料名称" cell={this.renderFileName} width={230}/>
+            <Table.Column title="材料名称" cell={this.renderFileName} width={230}/>
             <Table.Column title="文件类型" cell={this.renderFileType}/>
             <Table.Column title="限制大小" cell={this.renderFileSize} width={200}/>
             <Table.Column title="操作" cell={this.renderOperate} width={120}/>

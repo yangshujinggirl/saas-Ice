@@ -151,6 +151,10 @@ export default class CreateActivityForm extends Component {
       }
     )
   }
+  //数据校验
+  dataVerif = (value) => {
+    console.log(value)
+  }
   submit = () => {
     this.formRef.validateAll((error, value) => {
       if (error) {
@@ -161,6 +165,7 @@ export default class CreateActivityForm extends Component {
       value.effectiveDate = value.time[0];
       value.expirationDate = value.time[1]
       let AllValue = this.AllValue(value);
+      this.dataVerif(value);
       this.props.actions.save(AllValue);
     });
   };
@@ -351,9 +356,6 @@ export default class CreateActivityForm extends Component {
             <Form
               size="large"
               labelAlign="left">
-              <legend className="pch-legend">
-                <span className="pch-legend-legline"></span>基本信息
-          </legend>
               <div className="pch-form">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>

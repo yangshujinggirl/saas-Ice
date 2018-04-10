@@ -137,7 +137,7 @@ export default class FileList extends Component {
       item.collectionDetails && item.collectionDetails.map((ditem, j) => {
         temp.push(ditem.fileName);
       })
-      item.fileNamestr = temp.join(',')
+      item.fileNamestr = temp.join(';')
     })
     let map = new Map()
     return (
