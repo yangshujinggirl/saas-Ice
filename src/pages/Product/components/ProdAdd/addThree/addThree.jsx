@@ -109,7 +109,7 @@ export default class addThree extends Component {
              </div>
              <div style={{height:'500px'}}></div>
              <div className="next-btn-box">
-                <div className="next-btn-lx" onClick={this.onsubmit}>保存</div>
+             <Button type="secondary" size="large" onClick={this.onsubmit}>保存</Button>
               </div>
           </IceContainer>
         </div>

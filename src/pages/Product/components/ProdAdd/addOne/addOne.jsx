@@ -337,6 +337,9 @@ export default class CreateActivityForm extends Component {
     let collData = this.Option(data1)
     return (
       <IceContainer className="pch-container">
+        <legend className="pch-legend">
+          <span className="pch-legend-legline"></span>基本信息
+        </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
             this.formRef = formRef;

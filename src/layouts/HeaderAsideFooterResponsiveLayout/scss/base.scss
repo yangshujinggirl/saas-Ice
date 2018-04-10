@@ -64,7 +64,7 @@
 
 .next-breadcrumb .next-breadcrumb-item {
     display: inline-block;
-    
+
 }
 
 .next-breadcrumb .next-breadcrumb-item .next-breadcrumb-text {
@@ -381,7 +381,7 @@ body {
             background: $ice-aside-bg;
             position: fixed;
             z-index: 3;
-            
+
             // font-size: 14px;
             // width: 10% !important;
             box-sizing: border-box;
@@ -402,7 +402,7 @@ body {
             .ice-menu {
                 background: $ice-aside-menu-bg;
                 transition: all 0.3s ease;
-                box-shadow: 2px 0 0 #ddd;  
+                box-shadow: 2px 0 0 #ddd;
                 &.ice-menu-inline .ice-icon-stable {
                     font-weight: normal;
                 }
@@ -495,7 +495,7 @@ body {
                     color: $ice-aside-menu-item-selected-text-color;
                     text-align: left;
                 }
-                
+
                 .ice-menu .ice-menu-item:hover,
                 .ice-menu.ice-menu-horizontal > .ice-menu-item:hover,
                 .ice-menu.ice-menu-root > .ice-menu-item:hover {
@@ -701,10 +701,10 @@ body {
     letter-spacing: 0;
     line-height: 14px;
     .ice-menu-item{
-        color: #7A756B !important; 
+        color: #7A756B !important;
         background: #f8f8f8
     }
-   
+
 }
 
 .ice-menu .ice-menu-submenu-inline > .ice-menu-submenu-title::after {
@@ -744,6 +744,8 @@ body {
 
 //导航标题
 .pch-legend {
+    display: block;
+    width: 100%;
     font-family: PingFangSC-Medium;
     font-size: 16px;
     color: #1B2630;
@@ -771,7 +773,7 @@ body {
             position: absolute;
             top: 0;
             left: 3px;
-        } 
+        }
     }
 }
 .pch-condition{
@@ -789,12 +791,18 @@ body {
     .next-select{
         width: 100%;
     }
+    .next-date-picker-large{
+        width: 100%;
+    }
     .next-select.large{
         line-height: 32px;
         height: 34px;
     }
     .next-input-large input{
         height: 32px;
+    }
+    .next-input.next-input-single.focus{
+        border: 1px solid #FC9E25;
     }
     .next-input-large input::placeholder{
         color: #999;
@@ -843,6 +851,10 @@ body {
     .next-input-large input{
         height: 32px;
     }
+
+    .next-input.next-input-single.focus{
+        border: 1px solid #FC9E25;
+    }
     .next-input-large input::placeholder{
         color: #999;
     }
@@ -853,6 +865,15 @@ body {
     }
     .next-checkbox.checked.hovered .next-checkbox-inner > .next-icon, .next-checkbox.checked.focused .next-checkbox-inner > .next-icon{
         color: #fc9e85;
+    }
+
+    .next-radio.focused .next-radio-inner, .next-radio.hovered .next-radio-inner{
+        border-color: #fc9e85;
+        background-color: #fff3e4;
+    }
+
+    .next-radio.checked.hovered .next-radio-inner:after, .next-radio.checked.focused .next-radio-inner:after{
+        background-color: #fc9e85;
     }
 
     .next-btn{
@@ -889,7 +910,7 @@ body {
 //输入框 下拉框
 .next-select,.next-input {
     color: #151515
-    
+
 }
 //长度，宽度
 .custom-input{
@@ -903,10 +924,10 @@ body {
     // height: 33px !important;
     // font-size: 14px;
     // line-height: 30px !important;
-    
+
 }
 
-//表格.next-table .next-table-inner .next-table-header 
+//表格.next-table .next-table-inner .next-table-header
 .next-table .next-table-inner .next-table-header .next-table-header-inner{
     table{
         border:1px solid #F6DCA9 ;
@@ -942,8 +963,8 @@ body {
                 border:1px solid #F6DCA9 !important ;
             }
         }
-       
-       
+
+
     }
 }
 //表格鼠标划过
@@ -957,14 +978,20 @@ body {
     td {
         .next-table-cell-wrapper{
             button{
-                background: #fff;
+                background: transparent;
                 color: #1AA8F0 !important;
+                &:hover{
+                    color: #5cc7fd !important;
+                }
             }
         }
         .filter-table-operation{
             a{
-                background: #fff;
+                background: transparent;
                 color: #1AA8F0 !important;
+                &:hover{
+                    color: #5cc7fd !important;
+                }
             }
         }
     }
@@ -995,10 +1022,40 @@ body {
 .next-radio.checked .next-radio-inner {
     border-color: #ec9d00 !important ;
 }
-.next-radio.checked .next-radio-inner::after {
+.next-radio.checked .next-radio-inner:after {
    background: #ec9d00
 }
 
 .next-select-arrow {
     // margin-top: -17px !important;
+}
+
+.pch-btnaddrow{
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+    font-size: 16px;
+    background: #FAFAFA;
+    border: 1px dashed #D8D8D8;
+    border-radius: 8px;
+    cursor: pointer;
+
+    .next-icon{
+        margin-right: 7px;
+    }
+
+    &:hover{
+        background: #FFF3E4;
+        border-color: #F5A623;
+        color: #F5A623;
+    }
+
+    &.disabled{
+        background: #ccc;
+        border-color: transparent;
+        color: inherit;
+    }
+    &.hide{
+        display: none;
+    }
 }

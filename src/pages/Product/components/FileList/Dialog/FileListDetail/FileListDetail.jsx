@@ -41,7 +41,7 @@ export default class DiaLog extends Component {
     		required
 	        name={`collectionDetails[${index}].fileName`}
 	        >
-	        	<Input placeholder="资料名称" />
+	        	<Input size="large" placeholder="资料名称" />
 	        </IceFormBinder>
 	    </div>
 	);
@@ -73,7 +73,7 @@ export default class DiaLog extends Component {
 	        required
 	        type="number"
 	        >
-            <NumberPicker placeholder="文件大小" type="inline" max={100} min={0}/>
+            <NumberPicker size="large" placeholder="文件大小" type="inline" max={100} min={0}/>
 	        </IceFormBinder>
 	    </div>
 	);

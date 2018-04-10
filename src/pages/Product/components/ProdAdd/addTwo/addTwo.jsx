@@ -169,7 +169,7 @@ export default class addTwo extends Component {
            
            
             <div className="next-btn-box">
-              <div className="next-btn-lx" onClick={this.onsubmit}>下一步</div>
+              <Button type="secondary" size="large" onClick={this.onsubmit}>下一步</Button>
             </div>
           </IceContainer>
         </div>
