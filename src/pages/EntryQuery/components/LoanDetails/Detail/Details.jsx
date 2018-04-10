@@ -33,16 +33,23 @@ export default class Details extends Component {
   }
   //内容value
   value = (el)=>{
-    var value =el.value;
+    var value = el.value;
     if(el.type == 'INT' && el.value == 0){
       value = 0;
-    }else {
-      if(el.value == 0){
-        value = '否'
-      }else if(el.value == 1){
-        value = '是'
-      }
+    }else if(el.type == 'SELECT' && el.options && el.options.length){
+        el.options.map((item,index)=>{
+          if(value == item.value){
+            value = item.label;
+          }
+        })
+    } else if(el.type == 'RADIO') {
+        if(el.value == 0){
+          value = '否'
+        }else if(el.value == 1){
+          value = '是'
+        }
     }
+
     const valueTips =  <div >{value}</div>;
     return(
       <Balloon
