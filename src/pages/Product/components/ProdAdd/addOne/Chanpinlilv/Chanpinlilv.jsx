@@ -30,8 +30,8 @@ export default class Chanpinlilv extends Component {
     this.state = {
     	percentageSetting: []
     }
-  }
-
+	}
+	
   addNewList(data){
     let percentageSetting = this.state.percentageSetting;
     percentageSetting.push({})
@@ -55,7 +55,13 @@ export default class Chanpinlilv extends Component {
     		required
 	        name={`ratesSetting[${index}].channelTypes`}
 	        >
-	        	<Input placeholder="渠道" />
+	        	<Select 
+						placeholder="渠道" 
+						style={{width:'200px'}}
+					>
+						<Option value='A'>集团A</Option>
+						<Option value='B'>集团B</Option>
+					</Select>
 	        </IceFormBinder>
 	    </div>
 	);
@@ -68,7 +74,7 @@ export default class Chanpinlilv extends Component {
     		required
 	        name={`ratesSetting[${index}].interestRatesRangeMin`}
 	        >
-	        	<Input placeholder="最小执行年利率" />
+	        	<Input  placeholder="最小执行年利率" />
 	        </IceFormBinder>
 	    </div>
 	);

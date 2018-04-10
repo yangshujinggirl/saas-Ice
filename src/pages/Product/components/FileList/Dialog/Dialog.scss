@@ -70,3 +70,17 @@
     
     
 }
+.btns{
+    height: 80px;
+    position: relative;
+}
+.sureBtn{
+    position: absolute;
+    left: 50%;
+    top: 80%;
+}
+.addNewBtn{
+    position: absolute;
+    top: 30px;
+    right: 0;
+}

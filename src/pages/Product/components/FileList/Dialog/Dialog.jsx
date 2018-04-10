@@ -290,7 +290,7 @@ export default class DiaLog extends Component {
       <IceContainer className="pch-container">
         <legend className="pch-legend">
           <span className="pch-legend-legline"></span>
-          {this.props.params.id?'材料编辑':'资料新增'} 
+          {this.props.params.id?'材料编辑':'材料新增'} 
         </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
@@ -316,9 +316,10 @@ export default class DiaLog extends Component {
                 onRemove={this.removeRow.bind(this)}
                 onChangeType={this.handleChangeType.bind(this)}
               />
-              <div style={styles.btn}>
-                <Button type="secondary" onClick={this.addNewRow.bind(this)}>新增一行</Button>
-                <Button type="secondary" onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>
+              <div className="btns">
+                <Button type="secondary" onClick={this.onOk.bind(this,data.id)} className="sureBtn">提交</Button>
+                <Button type="secondary" onClick={this.addNewRow.bind(this)} className="addNewBtn">添加一行</Button>
+                
               </div>
             </Form>
           </div>
@@ -341,11 +342,5 @@ const styles = {
     textAlign: 'right',
     marginRight: '12px',
     fontSize: '14px',
-  },
-  btn:{
-    marginTop: 20
-  },
-  sureBtn: {
-    float: 'right'
   },
 };

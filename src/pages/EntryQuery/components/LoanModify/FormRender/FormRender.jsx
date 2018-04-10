@@ -87,7 +87,7 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
-            defaultValue={el.value}
+            // defaultValue={el.value}
             {...init(el.name,{
               initValue: el.value,
               rules: [{ required:  el.isRequired, message: "请填写"+el.label }],
@@ -105,8 +105,8 @@ export default class FormRender extends Component {
                           {...formItemLayoutCombobox}>
                <Combobox
                      // onInputUpdate={this.onInputUpdate.bind(this)}
-                     fillProps="label"
-                     filterLocal={true}
+                     fillProps={el.label}
+                     // filterLocal={true}
                      placeholder={"请输入"+el.label}
                      style={{width:"100%"}}
                      autoWidth
@@ -116,7 +116,7 @@ export default class FormRender extends Component {
                      // onSearch ={this.onSearch}
                      onInputUpdate={this.onInputUpdate.bind(this)}
                      {...init(el.name, {
-                       // initValue: el.value,
+                       initValue: el.value,
                        rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
                      })}
                    />
@@ -190,12 +190,13 @@ export default class FormRender extends Component {
         el.options.map((item,index)=>{
           if(item.isDefault){
             Default =item.value;
+            // console.log(Default)
           }
         })
       }
       if(el.hasAttachedFields){
         var value = ''
-        value =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
+        value =  el.value ==undefined || el.value =='' ||  el.value =='undefined' ? Default : el.value ;
         Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
                               {...formItemLayoutR}>
           <RadioGroup
@@ -223,7 +224,9 @@ export default class FormRender extends Component {
       }
       else{
         var   setValue = '';
-        setValue =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
+        setValue =   el.value ==undefined || el.value =='' ||  el.value =='undefined' ? Default : el.value ;
+        console.log(Default)
+        console.log(setValue)
         Fields.push(<FormItem key={el.id} className='item' label={this.label(el.label)}
                               {...formItemLayout}>
           <RadioGroup
