@@ -59,6 +59,21 @@ export const search = (condition) => {
     })
   }
 }
+// 获取列表
+export const aduitList = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+    Req.getAuditListApi(condition).then((res) => {
+      if(!res || res.code != 200) {
+        return
+      }
+      dispatch(fetchSuccess({ pageData: res.data}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
 
 // 保存表单
 export const save = (data) => {
@@ -72,44 +87,4 @@ export const save = (data) => {
       dispatch(fetchFailed(ex))
     })
   }
-}
-
-// 获取详情
-export const getDetail = (id) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-// 删除一条记录
-export const remove = (id) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.delete(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-export function changeViewToForm() {
-  return dispatch({ view: 'form' });
-}
-
-export function changeViewToList() {
-  return dispatch({ view: 'list' });
-}
-
-export function changeViewToView() {
-  return dispatch({ view: 'view' });
 }

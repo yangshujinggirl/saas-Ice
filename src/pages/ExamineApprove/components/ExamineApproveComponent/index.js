@@ -11,15 +11,24 @@ import {
   Grid,
   Button,
   Table,
-  Pagination
+  Pagination,
+  NumberPicker,
+  Radio
  } from "@icedesign/base";
 import './index.scss';
+import Req from '../../reqs/ExamineApproveReq';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
+const { Group: RadioGroup } = Radio;
+
 const formItemLayout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 12 }
+  wrapperCol: { span: 16 }
+};
+const formItemLayoutR = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 22 }
 };
 
 const label =(name)=> (
@@ -37,7 +46,24 @@ const label =(name)=> (
 class ExamineApproveComponent extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loadDetail:[]
+    }
     this.field = new Field(this);
+  }
+  componentWillMount() {
+    this.getLoanDetail('208')
+  }
+  //获取进件详情
+  getLoanDetail(id) {
+    Req.getLoanDetailApi(id)
+    .then((res) => {
+      const { data } = res;
+      const { list } = data;
+      this.setState({ loadDetail: list})
+    },(error) => {
+      console.log(error)
+    })
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -58,7 +84,79 @@ class ExamineApproveComponent extends Component {
     }
   }
   render() {
+    const { loadDetail } = this.state;
     const { init } = this.field;
+    let InputMod = (ele) => {
+      switch(ele.type) {
+        case 'SELECT':
+          return <Select
+                    style={{width:"100%"}}
+                    dataSource={this.state.dataSource}
+                    disabled={ele.isFixed? true: false}
+                    {...init(ele.name,
+                      {'initValue':ele.isFixed? ele.value: ''},
+                      { rules:[{ required: true, message: `${ele.label}不能为空` }] }
+                    )}>
+                    {
+                      ele.options && ele.options.map((opt,ide) => (
+                        <div value={opt.value} key={ide}>{opt.label}</div>
+                      ))
+                    }
+                  </Select>
+        case 'STRING':
+          return <Input
+                  trim
+                  style={styles.select}
+                  placeholder={ele.type}
+                  htmlType='text'
+                  disabled={ele.isFixed? true: false}
+                  {...init(ele.name,
+                    {'initValue':ele.isFixed? ele.value: ''},
+                    { rules:[{ required: true, message:`${ele.label}不能为空` }]}
+                  )}
+                />
+        case 'DECIMAL':
+          return <Input
+                  trim
+                  style={styles.select}
+                  hasLimitHint={true}
+                  placeholder={ele.type}
+                  disabled={ele.isFixed? true: false}
+                  htmlType='number'
+                  {...init(ele.name,
+                    {'initValue':ele.isFixed? ele.value: ''},
+                    {
+                      rules:[
+                        { required: true, message:`${ele.label}不能为空` ,min:2},
+                        { validator: this.checkNum }
+                      ]
+                    }
+                  )}
+                />
+        case 'INT':
+          return <NumberPicker
+                  disabled={ele.isFixed? true: false}
+                  type="inline"
+                  step={2}
+                  min={1}
+                  max={12}
+                  {...init(ele.name,
+                    {'initValue':ele.isFixed? ele.value: 0},
+                    { rules:[{ required: true, message: `${ele.label}不能为空` }] }
+                  )}
+                />
+        case 'ADDRESS':
+          return <CascaderSelect
+                    expandTrigger={this.state.trigger}
+                    dataSource={addressDataSource}
+                    onChange={this.handleChange}
+                  />
+        case 'RADIO':
+          return <RadioGroup dataSource={ele.options} value={1}/>
+        case 'DATE':
+          return <DatePicker onChange={(val, str) => console.log(val, str)} style={{width:"100%"}}/>
+      }
+    }
     return(
       <div className="examine-approve-pages">
         <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className="subtitle">
@@ -186,59 +284,36 @@ class ExamineApproveComponent extends Component {
                   </div>
                 </div>
               </div>
-              <div className="part-same part-base-info">
-                <p className="module-name">基础信息</p>
-                <Form>
-                  <Row wrap>
-                   <Col span="6">
-                     <FormItem {...formItemLayout} label={label('贷款名称')}>
-                       <Input
-                         placeholder="请输入贷款名称"
-                         style={styles.normalInput}
-                         {...init('loanName')}
-                       />
-                     </FormItem>
-                   </Col>
-                   <Col span="6">
-                     <FormItem {...formItemLayout} label={label('主贷人姓名')} required>
-                       <Input
-                         placeholder="请输入主贷人姓名"
-                         style={styles.normalInput}
-                         {...init('userName')}
-                       />
-                     </FormItem>
-                   </Col>
-                   <Col span="6">
-                     <FormItem {...formItemLayout} label={label('申请开始时间')}>
-                       <DatePicker
-                         style={styles.normalInput}
-                         {...init('startTime')}
-                       />
-                     </FormItem>
-                   </Col>
-                   <Col span="6">
-                     <FormItem {...formItemLayout} label={label('申请结束时间')}>
-                       <DatePicker
-                         style={styles.normalInput}
-                         {...init('endTime')}
-                       />
-                     </FormItem>
-                   </Col>
-                   <Col span="6">
-                     <FormItem {...formItemLayout} label={label('展厅名称')}>
-                       <Select
-                         style={styles.normalInput}
-                         {...init('exhibitionName')}
-                         >
-                         <div value="option1">option1</div>
-                         <div value="option2">option2</div>
-                         <div disabled>disabled</div>
-                       </Select>
-                     </FormItem>
-                   </Col>
-                 </Row>
-                </Form>
-              </div>
+              <Form
+                labelAlign= "left"
+                field={this.field}
+                >
+              {
+                loadDetail.length>0 && loadDetail.map((ele,index) => (
+                  <div className="part-same part-base-info" id={ele.name}  key={index}>
+                    <p className="module-name">{ele.name}</p>
+                    <div className="row-action">
+                        {
+                          ele.fields && ele.fields.map((flf,idx) => (
+                            <FormItem
+                              key={idx}
+                              labelCol={{span: flf.type == 'RADIO'?2:8}}
+                              wrapperCol={{span: 14 }}
+                              label={label(flf.label)}
+                              className={`item ${flf.type == 'RADIO'?'full-line':''}`}
+                              >
+                              {
+                                InputMod(flf)
+                              }
+                            </FormItem>
+                          ))
+                        }
+                    </div>
+                  </div>
+                ))
+              }
+              </Form>
+
             </Col>
           </Row>
         </IceContainer>
