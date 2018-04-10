@@ -48,9 +48,11 @@
 //     }  
 // }
 .lx-mid-line {
+    display: inline;
     padding-left: 3px !important;
     padding-right: 3px !important;
     margin-right: 10px;
+    margin-left: 10px;
     width: 10px;
     height: 34px;
     line-height: 34px;
