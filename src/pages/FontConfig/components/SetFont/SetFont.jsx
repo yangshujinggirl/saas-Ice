@@ -94,7 +94,6 @@ export default class setFont extends Component {
         const newArr = Object.assign({},this.state.resData);
         let deleteObj = newArr.fieldset[index].fields[inj];
         let fileId = deleteObj.id;
-        
         FontConfigReq.deleteCode(id,fileId).then((data) => {
             if (data.code == 200) {
                 newArr.fieldset[index].fields.splice(inj, 1);                
@@ -315,12 +314,14 @@ export default class setFont extends Component {
                 label: "秒"
             }
         ];
+        // 关闭修改字段弹窗
         const onClose = () => {
             this.setState({
                 dialogOne: false,
                 dialogTwo: false
             })
         }
+        // 添加自定义字段
         const handleSubmitCode = () => {
             let reqData = { ...this.state.fields };
             let resData = this.state.resData;
@@ -344,10 +345,13 @@ export default class setFont extends Component {
             this.setState({
                 dialogOne: false
             })
-             // 判断是不是新的模块
-             if (resData.fieldset[reqData.fieldsetOrder].new) {
+             // 判断是不是新的模块 ，新添加的模块会多一个new属性做呢判断 是不是新添加的模块
+            //  if (resData.fieldset[reqData.fieldsetOrder].new) {
+            
+            if (false) {
+                //  批量提交字段，目前这一块先放这里，后台接口在调整
                  resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                 if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题') {
+                 if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题名称') {
                      Dialog.alert({
                          title: "提示",
                          content: '请输入标题名称'
@@ -376,10 +380,8 @@ export default class setFont extends Component {
                             resData
                         })
                     } else {
-                        Dialog.alert({
-                            title: '提示',
-                            content: data.msg
-                        })  
+                        console.log("添加字段",data.msg);
+                        
                     }                 
                 })
             }
@@ -399,6 +401,13 @@ export default class setFont extends Component {
             
             let fileId = fields.id
             console.log(fields);
+            if (!fields.label.length) {
+                Dialog.alert({
+                    title: "提示",
+                    content: '字段名称不能为空'
+                })
+                return 
+            }
             this.setState({
                 dialogTwo: false
             })
@@ -502,7 +511,7 @@ export default class setFont extends Component {
             const newArr = this.state.resData;
             let add = {
                 new: 1,
-                name: '请输入标题',
+                name: '请输入标题名称',
                 fields: []
             }
             newArr.fieldset.push(add)
@@ -713,18 +722,21 @@ export default class setFont extends Component {
             })
         }
         const codeRequire = (value) => {
-            console.log(value);
             let data = this.state.fields;
-            if (value.join().match('true')) {
+            data.isRequired = false
+            data.isUnique = false
+            data.isReadonly = false
+            data.line = 1
+            if (value.join().indexOf('true')!=-1) {
                 data.isRequired = true
             }
-            if (value.join().match('unique')) {
+            if (value.join().indexOf('unique')!=-1) {
                 data.isUnique = true
             }
-            if (value.join().match('readonly')) {
+            if (value.join().indexOf('readonly')!=-1) {
                 data.isReadonly = true
             }
-            if (value.join().match('nowrap')) {
+            if (value.join().indexOf('nowrap')!=-1) {
                 data.line = 1
             }
             this.setState({
@@ -734,19 +746,22 @@ export default class setFont extends Component {
         }
 
         const codeRequireTwo = (value) => {
-            console.log(value);
+            
             let data = this.state.fieldsEdite;
-
-            if (value.join().match('true')) {
+            data.isRequired = false
+            data.isUnique = false
+            data.isReadonly = false
+            data.line = 1
+            if (value.join().indexOf('true')!=-1) {
                 data.isRequired = true
             }
-            if (value.join().match('unique')) {
+            if (value.join().indexOf('unique')!=-1) {
                 data.isUnique = true
             }
-            if (value.join().match('readonly')) {
+            if (value.join().indexOf('readonly')!=-1) {
                 data.isReadonly = true
             }
-            if (value.join().match('nowrap')) {
+            if (value.join().indexOf('nowrap')!=-1) {
                 data.line = 1
             }
             this.setState({
