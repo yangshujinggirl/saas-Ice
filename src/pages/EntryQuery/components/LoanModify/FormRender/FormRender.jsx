@@ -19,6 +19,10 @@ const formItemLayoutCombobox = {
   labelCol: { span: 3 },
   wrapperCol: { span: 15 }
 };
+const formItemLayoutTEXT = {
+  labelCol: { span: 3},
+  wrapperCol: { span: 21 }
+};
 export default class FormRender extends Component {
   static displayName = 'FormRender';
 
@@ -65,6 +69,10 @@ export default class FormRender extends Component {
   //区块分类渲染
   FromRender = (el,outIndex,inIndex)=>{
     if(el.hasAttachedFields){
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el,outIndex,inIndex)}
+      </div>)
+    }else if(el.line == '1'){
       return (<div className="subsidiary-field" key={el.name}>
         {this.RenderField(el,outIndex,inIndex)}
       </div>)
@@ -244,7 +252,7 @@ export default class FormRender extends Component {
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
       return(
-        <FormItem key={el.id} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} className='item ' label={this.label(el.label)}
                   {...formItemLayout}>
           <CheckboxGroup
             defaultValue ={el.value}
@@ -275,6 +283,21 @@ export default class FormRender extends Component {
             },{
               rules: [{ required: el.isRequired, message: "请选择"+el.label }]
             })}
+          />
+        </FormItem>
+      )
+    }else if(el.type == 'TEXT'){
+      return(
+        <FormItem key={el.id} style={{width:'90%'}} className='item' label={this.label(el.label)}
+                  {...formItemLayoutTEXT}>
+          <Input multiple ='6'
+                 style={{width:'85%'}}
+                 defaultValue ={el.value}
+                 disabled={ el.isReadonly}
+                 {...init(el.name, {
+                   initValue: el.value,
+                   rules: [{ required: el.isRequired, message: "请填写"+el.label }]
+                 })}
           />
         </FormItem>
       )
