@@ -366,12 +366,23 @@ export default class CreateActivityForm extends Component {
       }
     })
   };
-
+  
+//还款周期全选
+repaymentPeriodFrequency = (data) => {
+  data.map((item, i) => {//
+    if (item == 'ALL_CHOICE') {
+      this.state.value.repaymentPeriodFrequency = ["ALL_CHOICE","MONTH","SEASON","YEAR","ONCE","TWO_WEEK","HALF_YEAR"]
+    }else{
+      this.state.value.repaymentPeriodFrequency = ["MONTH"]
+    }
+  })
+}
   
   
   render() {
     let data = this.props.prodActions || {}
     data = data.data || {}
+    console.log(data)
     let data1 = this.props.fileData || {}
     data1 = data1.data || {}
     data1 = data1.list || []
@@ -891,6 +902,7 @@ export default class CreateActivityForm extends Component {
                         <CheckboxGroup
                           className="next-form-text-align"
                         >
+                          <Checkbox value="ALL_CHOICE" onChange={this.repaymentPeriodFrequency(this.state.value.repaymentPeriodFrequency)}>全选</Checkbox>
                           {data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
                             return (
                               <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
