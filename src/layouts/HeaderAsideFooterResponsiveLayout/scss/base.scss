@@ -868,6 +868,15 @@ body {
         color: #fc9e85;
     }
 
+    .next-radio.focused .next-radio-inner, .next-radio.hovered .next-radio-inner{
+        border-color: #fc9e85;
+        background-color: #fff3e4;
+    }
+
+    .next-radio.checked.hovered .next-radio-inner:after, .next-radio.checked.focused .next-radio-inner:after{
+        background-color: #fc9e85;
+    }
+
     .next-btn{
         border-radius: 4px;
     }
@@ -1013,7 +1022,7 @@ body {
 .next-radio.checked .next-radio-inner {
     border-color: #ec9d00 !important ;
 }
-.next-radio.checked .next-radio-inner::after {
+.next-radio.checked .next-radio-inner:after {
    background: #ec9d00
 }
 
