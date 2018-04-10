@@ -116,6 +116,15 @@ export default class FileList extends Component {
   }
 
   addNewItem() {
+    this.props.actions.changeFileDetail({
+        dataType: '',
+        name: '',
+        collectionDetails: [{
+          dataName: '',
+          fileSize: undefined,
+          fileType: ''
+        }]
+      })
     hashHistory.push(`/product/filelistnew`)
   }
   //分页
@@ -201,7 +210,7 @@ export default class FileList extends Component {
           </Table>
         </div>
         <div style={styles.addNew}>
-          <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
+          <Button onClick={this.addNewItem.bind(this)} style={styles.addNewItem}>新增</Button>
         </div>
         <div style={styles.pagination}>
           <Pagination
