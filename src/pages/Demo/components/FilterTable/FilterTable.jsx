@@ -130,11 +130,12 @@ export default class EnhanceTable extends Component {
     // const tableData = this.props.bindingData.tableData;
     const { filterFormValue } = this.state;
     const tableData = this.props.pageData || {};
-    console.log(tableData)
 
     return (
-      <div className="filter-table">
-        <IceContainer title="内容筛选">
+        <IceContainer className="pch-container">
+          <legend className="pch-legend" >
+            <span className="pch-legend-legline"></span>内容筛选
+          </legend>
           <FilterForm
             value={filterFormValue}
             onChange={this.filterFormChange}
@@ -142,8 +143,6 @@ export default class EnhanceTable extends Component {
             onReset={this.resetFilter}
             {...this.props.actions}
           />
-        </IceContainer>
-        <IceContainer>
           <Table
             dataSource={tableData.list}
             isLoading1={tableData.__loading}
@@ -186,7 +185,6 @@ export default class EnhanceTable extends Component {
             />
           </div>
         </IceContainer>
-      </div>
     );
   }
 }

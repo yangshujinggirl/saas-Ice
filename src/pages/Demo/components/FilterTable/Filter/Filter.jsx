@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {hashHistory} from 'react-router';
-import { Input, Grid, Select, Button, DatePicker } from '@icedesign/base';
+import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
 // form binder 详细用法请参见官方文档
 import {
@@ -10,6 +10,16 @@ import {
 
 const { Row, Col } = Grid;
 const { Option } = Select;
+const FormItem = Form.Item;
+
+const formItemLayout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 12
+  }
+};
 
 export default class Filter extends Component {
   static displayName = 'Filter';
@@ -20,120 +30,137 @@ export default class Filter extends Component {
 
   render() {
     return (
+      <div className="pch-condition">
       <IceFormBinderWrapper
         value={this.props.value}
         onChange={this.props.onChange}
       >
-        <div>
+        <Form size="large" direction="hoz">
           <Row wrap>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>所属应用</label>
+            <Col xxs={24} xs={12} l={8} xl={6} >
+              <FormItem {...formItemLayout} label="所属应用：">
               <IceFormBinder>
-                <Input name="app" />
+                <Input name="app" size="large" />
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>分类ID</label>
+            <Col xxs={24} xs={12} l={8} xl={6} >
+              <FormItem {...formItemLayout} label="分类ID：">
               <IceFormBinder>
-                <Input name="id" />
+                <Input name="id" size="large" />
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>标签ID</label>
+            <Col xxs={24} xs={12} l={8} xl={6} >
+            <FormItem {...formItemLayout} label="标签ID：">
               <IceFormBinder>
-                <Input name="tag" />
+                <Input name="tag" size="large" />
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>开始时间</label>
+            <Col xxs={24} xs={12} l={8} xl={6} >
+              <FormItem {...formItemLayout} label="开始时间：">
               <IceFormBinder
                 valueFormatter={(date, strValue) => {
                   return strValue;
                 }}
               >
-                <DatePicker name="startTime" style={styles.filterTool} />
+                <DatePicker name="startTime" size="large" />
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>结束时间</label>
+            <Col xxs={24} xs={12} l={8} xl={6} >
+            <FormItem {...formItemLayout} label="结束时间：">
               <IceFormBinder
                 valueFormatter={(date, strValue) => {
                   return strValue;
                 }}
               >
-                <DatePicker name="endTime" style={styles.filterTool} />
+                <DatePicker name="endTime" size="large" />
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>尺寸</label>
+            <Col xxs={24} xs={12} l={8} xl={6}>
+            <FormItem {...formItemLayout} label="尺寸：">
               <IceFormBinder>
                 <Select
                   name="size"
+                  size="large"
                   placeholder="请选择"
-                  style={styles.filterTool}
                 >
                   <Option value="small">Small</Option>
                   <Option value="medium">Medium</Option>
                   <Option value="large">Large</Option>
                 </Select>
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>删除状态</label>
+            <Col xxs={24} xs={12} l={8} xl={6}>
+              <FormItem {...formItemLayout} label="删除状态：">
               <IceFormBinder>
-                <Select name="status" style={styles.filterTool}>
+                <Select size="large" name="status">
                   <Option value="success">成功</Option>
                   <Option value="failed">失败</Option>
                 </Select>
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>讨论ID</label>
-              <IceFormBinder>
-                <Input name="commentId" />
+            <Col xxs={24} xs={12} l={8} xl={6}>
+            <FormItem {...formItemLayout} label="讨论ID：">
+              <IceFormBinder name="commentId">
+                <Input name="commentId" size="large" />
               </IceFormBinder>
+              </FormItem>
             </Col>
-            <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-              <label style={styles.filterTitle}>置顶</label>
+            <Col xxs={24} xs={12} l={8} xl={6}>
+              <FormItem {...formItemLayout} label="置顶：">
               <IceFormBinder>
                 <Select
+                  size="large"
                   name="isStick"
                   placeholder="请选择"
-                  style={styles.filterTool}
                 >
                   <Option value="all">不限</Option>
                   <Option value="stick">置顶</Option>
                   <Option value="not-stick">不置顶</Option>
                 </Select>
               </IceFormBinder>
+              </FormItem>
+            </Col>
+            <Col xxs={24} xs={12} l={8} xl={6} style={styles.filterCol}></Col>
+            <Col xxs={24} xs={24} l={16} xl={6} style={styles.filterCol}>
+            <FormItem {...formItemLayout} label="&nbsp;">
+            <div
+                style={{
+                  textAlign: 'right',
+                  marginLeft: '12px',
+                }}
+              >
+                <Button onClick={this.props.onReset} type="normal">
+                  重置
+                </Button>
+                <Button
+                  onClick={this.props.onSubmit}
+                  type="secondary"
+                  style={{ marginLeft: '10px' }}
+                >
+                  确定
+                </Button>
+                <Button
+                  onClick={this.handleAdd}
+                  type="primary"
+                  style={{ marginLeft: '10px' }}
+                >
+                  新增
+                </Button>
+              </div>
+              </FormItem>
             </Col>
           </Row>
-          <div
-            style={{
-              textAlign: 'left',
-              marginLeft: '12px',
-            }}
-          >
-            <Button onClick={this.props.onReset} type="normal">
-              重置
-            </Button>
-            <Button
-              onClick={this.props.onSubmit}
-              type="primary"
-              style={{ marginLeft: '10px' }}
-            >
-              确定
-            </Button>
-            <Button
-              onClick={this.handleAdd}
-              type="primary"
-              style={{ marginLeft: '10px' }}
-            >
-              新增
-            </Button>
-          </div>
-        </div>
+          
+        </Form>
       </IceFormBinderWrapper>
+      </div>
     );
   }
 }
@@ -142,7 +169,6 @@ const styles = {
   filterCol: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: '20px',
   },
 
   filterTitle: {
