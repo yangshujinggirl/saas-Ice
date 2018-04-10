@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
+const { Group: CheckboxGroup } = Checkbox;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Combobox } = Select;

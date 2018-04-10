@@ -151,9 +151,6 @@ export default class setFont extends Component {
         
         let pageName = {
             name: this.state.pageValue,
-            businessType: "货款业务",
-            functionType: "进件",
-            fields: []
         }
         if (!pageName.name.length) {
             Dialog.alert({
@@ -162,12 +159,12 @@ export default class setFont extends Component {
             })
             return
         }
-        resData.fieldset.map((item) => {
-            item.fields.map((item) => {
-                pageName.fields.push(item) 
-            })
-        })
-        console.log(pageName);
+        // resData.fieldset.map((item) => {
+        //     item.fields.map((item) => {
+        //         pageName.fields.push(item) 
+        //     })
+        // })
+        // console.log(pageName);
         
         FontConfigReq.changPageName(pageName,id).then((data) => {
             if (data.code == 200) {
@@ -201,15 +198,27 @@ export default class setFont extends Component {
     }
     // 修改页面标题
     handleGroupTitle = (index, view) => {
+        let id = this.props.router.location.query.id;
         let copyDate = this.state.resData;
         copyDate.fieldset[index].name = view
         copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
             item.fieldset = view
+            item.name
         })
         this.setState({
             resData: copyDate
         })
-
+    }
+    
+    handleGroupTitleSubmint = (index, view) => {
+        let id = this.props.router.location.query.id;
+        let copyDate = this.state.resData;
+        let obj = {}
+        obj.fields = copyDate.fieldset[index].fields
+        FontConfigReq.changPageName( obj,id).then((data) => {
+            if (data.code == 200) {
+            }
+        })
     }
 
     scrollToAnchor = (anchorName) => {
@@ -805,7 +814,7 @@ export default class setFont extends Component {
                                             <span className='active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
                                                 {
                                                     this.state.subTitle == index + 1 ?
-                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={validEmpty} className='moduleStr' />
+                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={this.handleGroupTitleSubmint.bind(this, index)} className='moduleStr' />
                                                         :
                                                         <Input placeholder="" value={item.name} className='moduleStr' readOnly />
                                                 }

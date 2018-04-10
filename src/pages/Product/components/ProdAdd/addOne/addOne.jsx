@@ -17,7 +17,9 @@ import {
   Table,
   Dialog,
   Form,
+  Feedback
 } from '@icedesign/base';
+
 
 import Chanpinchengshu from './Chanpinchengshu';
 import Chanpinlilv from './Chanpinlilv';
@@ -95,6 +97,11 @@ export default class CreateActivityForm extends Component {
     };
   }
   onFormChange = (value) => {
+    // 最大执行年利率不能大于执行年利率范围
+    if (value.interestRatesRangeMin<0) {
+        value.interestRatesRangeMin = 0
+    }
+
     this.setState({
       value,
     });
@@ -160,6 +167,33 @@ export default class CreateActivityForm extends Component {
       // 提交当前填写的数据
       value.effectiveDate = value.time[0];
       value.expirationDate = value.time[1]
+      // 执行年利率范围 和 最小、最大执行年利率比较
+      let boolean = true;
+      value.ratesSetting && value.ratesSetting.map((item) => {
+        console.log(item);
+        if (item.interestRatesRangeMax) {
+          if (Number(value.interestRatesRangeMax) < item.interestRatesRangeMax) {
+            // item.interestRatesRangeMax = value.interestRatesRangeMax
+            Feedback.toast.show({
+              type: 'error',
+              content: '最大执行年利率不能大于执行年利率范围最大值',
+            });
+            boolean = false
+          }
+        }
+        if (item.interestRatesRangeMin) {
+          if (Number(value.interestRatesRangeMin) > item.interestRatesRangeMin) {
+            // item.interestRatesRangeMin = value.interestRatesRangeMin
+            Feedback.toast.show({
+              type: 'error',
+              content: '最小执行年利率不能小于执行年利率范围最小值',
+            });
+            boolean = false
+          }
+        }
+      })
+      if (!boolean) return
+      //
       let AllValue = this.AllValue(value);
       this.props.actions.save(AllValue);
     });
@@ -328,6 +362,8 @@ export default class CreateActivityForm extends Component {
     })
   };
 
+  
+  
   render() {
     let data = this.props.prodActions || {}
     data = data.data || {}
