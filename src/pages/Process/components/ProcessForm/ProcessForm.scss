@@ -1,25 +1,82 @@
 .create-activity-form {
   .container {
-    display: table;
+    // display: table;
+    position: relative;
     width: 100%;
     border: 1px solid #F6DCA9;
     background: #fff;
+    font-size: 0;
+    line-height: 0;
     .container-left {
-      display: table-cell;
+      // display: table-cell;
+      position: absolute;
       width: 150px;
-      box-sizing: border-box;
-      color: #666;
-      line-height: 30px;
-      background: #FDF4E3;
-      border-right: 1px solid #F6DCA9;
-      padding: 15px 0 15px 20px;
       height: 100%;
+      .con {
+        color: #666;
+        line-height: 30px;
+        background: #FDF4E3;
+        border-right: 1px solid #F6DCA9;
+        padding: 15px 0 15px 20px;
+        height: 100%;
+        font-size: 14px;
+        color: #4A4A4A;
+      }
+
+      .container-left-uls {
+        li {
+          position: relative;
+          height: 40px;
+          line-height: 40px;
+          .texts {
+            width: 90px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            display: block;
+          }
+          .icons {
+            i {
+              position: absolute;
+              right: 10px;
+              top: 10px;
+              border: #ccc solid 1px;
+              border-radius: 100%;
+              width: 20px;
+              height: 20px;
+              line-height: 20px;
+              text-align: center;
+              cursor: pointer;
+              &:before {
+                width: auto;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
     }
     .container-right {
-      background: #fff;
-      display: table-cell;
-      padding: 15px;
-      padding-top: 25px;
+      padding: 0 0 15px 150px;
+      .con {
+        background: #fff; // display: table-cell;
+        min-height: 500px;
+        .container-right-tabRow {
+          padding: 10px 20px;
+          &.even {
+            background: #FBFAFA;
+          }
+          .next-col {}
+        }
+        .container-right-title {
+          background: #FEF9EE;
+          height: 46px;
+          line-height: 46px;
+          font-size: 14px;
+          color: #333333;
+          text-align: center;
+        }
+      }
     }
   }
 }
