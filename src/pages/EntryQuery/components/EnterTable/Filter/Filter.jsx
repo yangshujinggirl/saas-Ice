@@ -60,6 +60,7 @@ export default class Filter extends Component {
                     name="startTime"
                   >
                     <DatePicker
+                      size="large"
                       style={{width:"100%"}}
                       placeholder="申请开始时间" />
                   </IceFormBinder>
@@ -73,6 +74,7 @@ export default class Filter extends Component {
                     name="endTime"
                   >
                     <DatePicker
+                      size="large"
                       style={{width:"100%"}}
                       placeholder="申请结束时间" />
                   </IceFormBinder>

@@ -382,11 +382,11 @@ repaymentPeriodFrequency = (data) => {
   render() {
     let data = this.props.prodActions || {}
     data = data.data || {}
-    console.log(data)
     let data1 = this.props.fileData || {}
     data1 = data1.data || {}
     data1 = data1.list || []
     let collData = this.Option(data1)
+
     return (
       <IceContainer className="pch-container">
         <legend className="pch-legend">
@@ -403,7 +403,7 @@ repaymentPeriodFrequency = (data) => {
             <Form
               size="large"
               labelAlign="left">
-              <div className="pch-product-sep">
+              <div>
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资金方:</span>}>

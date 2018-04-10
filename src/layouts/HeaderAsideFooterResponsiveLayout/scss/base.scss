@@ -844,6 +844,10 @@ body {
         line-height: 34px;
     }
 
+    .next-form-left.next-form-large .next-form-text-align{
+        line-height: 34px;
+    }
+
     .next-select{
         width: 100%;
     }
@@ -1041,6 +1045,7 @@ body {
     background: #FAFAFA;
     border: 1px dashed #D8D8D8;
     cursor: pointer;
+    border-radius: 4px;
 
     .next-icon{
         margin-right: 7px;
