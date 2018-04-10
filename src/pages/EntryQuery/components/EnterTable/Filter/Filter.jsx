@@ -34,7 +34,7 @@ export default class Filter extends Component {
             size="large"
             direction="hoz"
             >
-            <Row>
+            <Row wrap>
               <Col s="8" l="8">
                 <FormItem {...formItemLayout} label="贷款编号：">
                   <IceFormBinder
@@ -66,8 +66,6 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col s="8" l="8">
                 <FormItem {...formItemLayout} label="申请结束时间：">
                   <IceFormBinder
@@ -98,8 +96,6 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col s="8" l="8">
 
               </Col>
@@ -108,46 +104,15 @@ export default class Filter extends Component {
               </Col>
               <Col s="8" l="8">
                 <FormItem {...formItemLayout} label="&nbsp;">
-                  <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.props.onSubmit}>
+                  <Button type="secondary" htmlType='submit' onClick={this.props.onSubmit}>
                     查询
                   </Button>
                 </FormItem>
               </Col>
             </Row>
           </Form>
-
-
         </div>
       </IceFormBinderWrapper>
     );
   }
 }
-
-const styles = {
-  filterCol: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-
-  filterTitle: {
-    width: '68px',
-    textAlign: 'left',
-    marginRight: '12px',
-    fontSize: '14px',
-    marginLeft:'10px',
-  },
-
-  filterTool: {
-    width: '200px',
-  },
-  formItem: {
-    height: '33px',
-    lineHeight: '33px',
-    marginBottom:'28px'
-  },
-  formLabel: {
-    marginLeft: '85px',
-    textAlign: 'right',
-  },
-};

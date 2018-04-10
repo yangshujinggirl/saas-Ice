@@ -62,7 +62,7 @@ class  SearchForm extends Component {
               size="large"
               direction="hoz"
               >
-              <Row>
+              <Row wrap>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="资方名称：">
                     <IceFormBinder
@@ -102,8 +102,6 @@ class  SearchForm extends Component {
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-              </Row>
-              <Row>
                 <Col s="8" l="8">
                   <FormItem {...formItemLayout} label="流程名称：">
                     <IceFormBinder
