@@ -26,7 +26,6 @@ export default class setFont extends Component {
             leftActive: 0,
             rightActive: '',
             subTitle: '',
-            addValue: [1],
             fields: {
                 fieldsetOrder:1,
                 hasAttachedFields:false,
@@ -38,7 +37,7 @@ export default class setFont extends Component {
                 orderId:43,
                 screenSchemeId:'',
                 type: "",
-                options: [],
+                options: [{value: '',label: ""}],
                 length: 30,
             },
             fieldsEdite: {
@@ -231,13 +230,14 @@ export default class setFont extends Component {
 
     componentDidMount() {
         let id = this.props.router.location.query.id
-
+        let pageName = this.props.router.location.query.pageName
+        
         FontConfigReq.getCode(id).then((data) => {
             if (data.code == 200) {
                 let res = data.data
             this.setState({
                 resData: res,
-                pageValue: res&&res.name
+                pageValue: pageName||res&&res.name
             })
             for (const key in this.state.resData.fieldset) {
                 if (this.state.resData.fieldset[key].name == '基本信息') {
@@ -340,6 +340,12 @@ export default class setFont extends Component {
                 })
                 return 
             }
+            reqData.options.map((item,index) => {
+                if (item.label == '') {
+                    reqData.options.splice(index,1)
+                }
+            })
+            
             let id = this.props.router.location.query.id
             console.log(this.state.resData);
             this.setState({
@@ -623,36 +629,36 @@ export default class setFont extends Component {
             }
             return inputType
         }
-
+// 点击添加自定义字段执行的函数
         const handleAddCode = (index) => {
             let data = this.state.fields;
             data.fieldset = this.state.resData.fieldset[index].name;
             data.name = this.state.resData.fieldset[index].name;
+            // 下拉框初始化值
+            data.type = '';
+            data.options = [{ label: '', value: '' }];
             
             data.fieldsetOrder = index;
             this.setState({
                 dialogOne: true,
-                fields: data
+                fields: data,
+                boolSelect: false
             })
         }
+        // 自定义字段添加下拉框执行的函数
         const handleAddValue = (index) => {
-            let data = this.state.addValue
+            let ds = this.state.fields;
             if (index == 'add') {
-                data.push("123")
+                ds.options.push({label: '',value: ''})
                 this.setState({
-                    addValue: data
+                    fields: ds,
                 })
             } else {
-                data.splice(index, 1)
-                let ds = this.state.fields;
                 ds.options.splice(index, 1);
                 this.setState({
-                    fields: ds
+                    fields: ds,
                 })
             }
-            this.setState({
-                addValue: data
-            })
         }
 
         const codeName = (value) => {
@@ -769,7 +775,7 @@ export default class setFont extends Component {
                 fieldsEdite: data
             })
         }
-        
+        // 添加自定义字段，选择下拉框，下拉框输入值的时候触发的函数
         const handleSelect = (index, value) => {
             let data = this.state.fields;
             data.options[index] = {label: value,value: value+index};
@@ -1088,7 +1094,7 @@ export default class setFont extends Component {
                     
                     { this.state.boolSelect ? <div className='beautify constraint'>
                         <label htmlFor="" className='changSet' >选择设置:</label><br />
-                        {this.state.addValue.map((item, index) => {
+                        {this.state.fields.options.map((item, index) => {
                             return (
                                 index == 0 ?
                                     <div className='dropDown clearfix' key={index}>
@@ -1103,7 +1109,7 @@ export default class setFont extends Component {
                                     <div className='dropDown' key={index}>
                                         <div>
                                             {/* <Checkbox /> */}
-                                            <Input className="" placeholder=" 请输入值" onChange={handleSelect.bind(this,index)}/>
+                                            <Input className="" value={item.label} placeholder=" 请输入值" onChange={handleSelect.bind(this,index)}/>
                                             <div className='addReduce'>
                                                 <span onClick={handleAddValue.bind(this, 'add')}>+</span>
                                                 <span onClick={handleAddValue.bind(this, index)}>-</span>
@@ -1132,7 +1138,7 @@ export default class setFont extends Component {
                     closable="esc,mask,close"
 
                     onClose={onClose}
-                    title="添加自定义字段"
+                    title="修改自定义字段"
                     footer={footerTwo}
                     footerAlign='center'
                 >
