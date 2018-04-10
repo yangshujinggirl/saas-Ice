@@ -403,7 +403,7 @@ repaymentPeriodFrequency = (data) => {
             <Form
               size="large"
               labelAlign="left">
-              <div className="pch-form">
+              <div className="pch-product-sep">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资金方:</span>}>
@@ -653,7 +653,7 @@ repaymentPeriodFrequency = (data) => {
               <legend className="pch-legend">
                 <span className="pch-legend-legline"></span>额度期限设置
           </legend>
-              <div className="pch-form">
+              <div className="pch-product-sep">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>贷款期限变更:</span>}>
@@ -681,7 +681,7 @@ repaymentPeriodFrequency = (data) => {
                         required
                         validator={this.checkRes}
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }} />
+                        <Input size="large" style={{ width: '80px', height: '34px' }} />
                       </IceFormBinder>
                       <div className="lx-mid-line">—</div>
                       <IceFormBinder
@@ -689,7 +689,7 @@ repaymentPeriodFrequency = (data) => {
                         required
                         message="申请金额范围必填"
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }} />
+                        <Input size="large" style={{ width: '80px', height: '34px' }} />
 
                       </IceFormBinder>
                       <div><IceFormError name="principalAmountMax" /></div>
@@ -701,7 +701,7 @@ repaymentPeriodFrequency = (data) => {
                         name="loanTermRangeMin"
                         required
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }} />
+                        <Input size="large" style={{ width: '80px', height: '34px' }} />
                       </IceFormBinder>
                       <div className="lx-mid-line">—</div>
                       <IceFormBinder
@@ -709,7 +709,7 @@ repaymentPeriodFrequency = (data) => {
                         required
                         message="期限范围必填"
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }} />
+                        <Input size="large" style={{ width: '80px', height: '34px' }} />
 
                       </IceFormBinder>
                       <div><IceFormError name="loanTermRangeMax" /></div>
@@ -721,7 +721,7 @@ repaymentPeriodFrequency = (data) => {
                         name="loanPercentageMin"
                         required
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }} />
+                        <Input size="large" style={{ width: '80px', height: '34px' }} />
                       </IceFormBinder>
                       <div className="lx-mid-line">—</div>
                       <IceFormBinder
@@ -729,7 +729,7 @@ repaymentPeriodFrequency = (data) => {
                         required
                         message="贷款比率必填"
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }} />
+                        <Input size="large" style={{ width: '80px', height: '34px' }} />
 
                       </IceFormBinder>
                       <div><IceFormError name="loanPercentageMax" /></div>
@@ -747,7 +747,7 @@ repaymentPeriodFrequency = (data) => {
               <legend className="pch-legend">
                 <span className="pch-legend-legline"></span>利率设置
           </legend>
-              <div className="pch-form">
+              <div className="pch-product-sep">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={12} style={styles.filterCol}>
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>贷款利率变更:</span>}>
@@ -824,7 +824,7 @@ repaymentPeriodFrequency = (data) => {
                         required
                       >
                         <Input size="large"
-                          style={{ width: '100px', height: '34px' }}
+                          style={{ width: '80px', height: '34px' }}
                         />
                       </IceFormBinder>
                       <div className="lx-mid-line">—</div>
@@ -833,7 +833,7 @@ repaymentPeriodFrequency = (data) => {
                         required
                         message="执行年利率范围必填"
                       >
-                        <Input size="large" style={{ width: '100px', height: '34px' }}
+                        <Input size="large" style={{ width: '80px', height: '34px' }}
                         />
                       </IceFormBinder>
                       <div><IceFormError name="interestRatesRangeMax" /></div>
@@ -873,8 +873,8 @@ repaymentPeriodFrequency = (data) => {
               </div>
               <legend className="pch-legend">
                 <span className="pch-legend-legline"></span>还款设置
-          </legend>
-              <div className="pch-form">
+              </legend>
+              <div className="pch-product-sep">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={12} style={styles.filterCol}>
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款账户变更:</span>}>
