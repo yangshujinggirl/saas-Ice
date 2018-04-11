@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 // import ProcessDetail from './components/ProcessDetail';
+import { Icon, Input, Button, Checkbox, Select, Switch, Radio, Grid, Field } from '@icedesign/base';
 
 export default class Demo extends Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      title:1
+    }
   }
 
   /**
@@ -15,7 +18,7 @@ export default class Demo extends Component {
   render() {
     return (
       <div className="process-page">
-        这是详情
+        <Input defaultValue={this.state.title}/>
       </div>
     );
   }
