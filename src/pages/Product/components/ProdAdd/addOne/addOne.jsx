@@ -310,7 +310,7 @@ export default class CreateActivityForm extends Component {
     for (var i = 0; i < data.length; i++) {
       data.map((val, j) => {
         coll.push({
-          id: val.id,
+          id: val.id.toString(),
           name: val.name,
         })
       })
@@ -506,12 +506,11 @@ prdNameChange = (rule,value,callback) => {
   
   render() {
     let data = this.props.prodActions || {}
-    data = data.data || {}
-    let data1 = this.props.fileData || {}
-    data1 = data1.data || {}
-    data1 = data1.list || []
-    console.log(data1)
-    let collData = this.Option(data1)
+    // data = data.data || {}
+    let fileData = this.props.fileData || {}
+    fileData = fileData.data || {}
+    fileData = fileData.list || []
+    let collData = this.Option(fileData);
 
     return (
       <IceContainer className="pch-container">
@@ -1032,8 +1031,6 @@ prdNameChange = (rule,value,callback) => {
                           onChange={this.repaymentPeriodFrequency}
                           value={this.state.value.repaymentPeriodFrequency}
                         >
-                        
-                          <Checkbox value="ALL_CHOICE" key= {0} >全选</Checkbox>                          
                           {data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
                             return (
                               <Checkbox value={val.value}  key={i}>{val.desc}</Checkbox>
@@ -1105,7 +1102,7 @@ prdNameChange = (rule,value,callback) => {
                 <Huankuanfangshi
                   styles={styles}
                   items={this.state.value.repaymentMethodsSetting}
-                  data={this.props.prodActions && this.props.prodActions.data}
+                  data={data}
                   addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
                   removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
                 />
