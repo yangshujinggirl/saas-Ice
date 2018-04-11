@@ -1,18 +1,21 @@
 import React ,{ Component }from 'react';
+import {hashHistory} from 'react-router';
 import IceContainer from '@icedesign/container';
 import {
   Form,
   Input,
+  Button,
   Select,
   Field,
   DatePicker,
   Balloon,
   Icon,
   Grid,
-  Button,
   Table,
-  Pagination
+  Pagination,
+  moment
  } from "@icedesign/base";
+ import Req from '../../reqs/ExamineApproveReq';
 
 import './index.scss';
 const { Row, Col } = Grid;
@@ -39,62 +42,66 @@ class AuditList extends Component {
     super(props);
     this.field = new Field(this);
   }
+  componentWillMount() {
+    this.props.actions.aduitList()
+  }
+  //操作
+  operationEvent(record) {
+    if(record.status == 'claim') {
+      // this.goClaim()
+      hashHistory.push(`/examineapprove/detail/${record.productId}`)
+    } else {
+      hashHistory.push(`/examineapprove/detail/${record.productId}`)
+    }
+  }
+  //去签收
+  goClaim() {
+    console.log('去签收')
+  }
+  //表格操作
+  renderOperator = (value, index, record) => {
+    return (
+        <Button
+          type='normal'
+          shape="text"
+          onClick = {()=>this.operationEvent(record)}
+        >
+          {record.status == "claim" ?'签收':'详情'}
+        </Button>
+    );
+  };
+  //提交查询
   handleSubmit(e) {
     e.preventDefault();
     this.field.validate((errors,values) => {
-      console.log(values);
+      let startTime = this.field.getValue('submitStart');
+      let endTime = this.field.getValue('submitEnd');
+      startTime = startTime && moment(startTime).format('YYYY-MM-DD HH:mm:ss');
+      endTime = endTime && moment(endTime).format('YYYY-MM-DD HH:mm:ss');
+      this.field.setValue('submitStart', startTime);
+      this.field.setValue('submitEnd', endTime);
+      let params = this.field.getValues()
       if(errors) {
         return
       }
+      this.props.actions.aduitList(params)
     })
   }
   render() {
     const { init } = this.field;
-    const dataSource = [
-      {
-        num:'0',
-        name:'平平',
-        idType:'身份证',
-        idCard:'413026199008255778',
-        phoneNum:'13652345556',
-        money:'99999',
-      },
-      {
-        num:'1',
-        name:'平安',
-        idType:'身份证',
-        idCard:'413026199008255778',
-        phoneNum:'13652345556',
-        money:'99999',
-      },
-      {
-        num:'2',
-        name:'平宝',
-        idType:'身份证',
-        idCard:'413026199008255778',
-        phoneNum:'13652345556',
-        money:'99999',
-      },
-      {
-        num:'3',
-        name:'平福',
-        idType:'身份证',
-        idCard:'413026199008255778',
-        phoneNum:'13652345556',
-        money:'99999',
-      },
-    ]
+    const { list=[], limit, page, total} = this.props.pageData;
+
     return(
       <div className="audit-list-pages">
         <IceContainer title="查询列表" className="subtitle">
           <Form>
             <Row>
              <Col span="1p5">
-               <FormItem {...formItemLayout} label={label('贷款名称')}>
+               <FormItem {...formItemLayout} label={label('贷款编号')}>
                  <Input
                    placeholder="请输入贷款名称"
                    style={styles.normalInput}
-                   {...init('loanName')}
+                   {...init('code')}
                  />
                </FormItem>
              </Col>
@@ -103,7 +110,7 @@ class AuditList extends Component {
                  <Input
                    placeholder="请输入主贷人姓名"
                    style={styles.normalInput}
-                   {...init('userName')}
+                   {...init('borrowerName')}
                  />
                </FormItem>
              </Col>
@@ -111,7 +118,7 @@ class AuditList extends Component {
                <FormItem {...formItemLayout} label={label('申请开始时间')}>
                  <DatePicker
                    style={styles.normalInput}
-                   {...init('startTime')}
+                   {...init('submitStart')}
                  />
                </FormItem>
              </Col>
@@ -119,7 +126,7 @@ class AuditList extends Component {
                <FormItem {...formItemLayout} label={label('申请结束时间')}>
                  <DatePicker
                    style={styles.normalInput}
-                   {...init('endTime')}
+                   {...init('submitEnd')}
                  />
                </FormItem>
              </Col>
@@ -127,11 +134,11 @@ class AuditList extends Component {
                <FormItem {...formItemLayout} label={label('展厅名称')}>
                  <Select
                    style={styles.normalInput}
-                   {...init('exhibitionName')}
+                   {...init('exhibitionHallName')}
                    >
                    <div value="option1">option1</div>
                    <div value="option2">option2</div>
-                   <div disabled>disabled</div>
+                   <div value="option3">option3</div>
                  </Select>
                </FormItem>
              </Col>
@@ -142,27 +149,36 @@ class AuditList extends Component {
                <Button
                  type="primary"
                  onClick={this.handleSubmit.bind(this)}
+                 className="search-btn"
                  >
                    查询
                </Button>
              </Col>
            </Row>
           </Form>
-          <Table dataSource={dataSource} className="table-list">
-            <Table.Column title="编号" dataIndex="num"/>
-            <Table.Column title="姓名" dataIndex="name"/>
-            <Table.Column title="证件类型" dataIndex="idType"/>
-            <Table.Column title="证件号码" dataIndex="idCard"/>
-            <Table.Column title="手机号" dataIndex="phoneNum"/>
-            <Table.Column title="金额" dataIndex="money"/>
+          <Table dataSource={list} className="table-list">
+            <Table.Column title="编号" dataIndex="code"/>
+            <Table.Column title="姓名" dataIndex="borrowerName"/>
+            <Table.Column title="证件类型" dataIndex="borrowerIdType"/>
+            <Table.Column title="证件号码" dataIndex="borrowerIdNo"/>
+            <Table.Column title="手机号" dataIndex="borrowerMobile"/>
+            <Table.Column title="金额" dataIndex="principalAmount"/>
+            <Table.Column
+              title="操作"
+              cell={this.renderOperator}
+              lock="right"
+              width={140}
+            />
           </Table>
-          <Pagination
-            className='pagination-wraps'
-            shape="arrow-only"
-            current={0}
-            pageSize={4}
-            total={20}
-          />
+          {
+            list.length>0 && <Pagination
+                              className='pagination-wraps'
+                              shape="arrow-only"
+                              current={page}
+                              pageSize={limit}
+                              total={total}
+                            />
+          }
         </IceContainer>
       </div>
     )

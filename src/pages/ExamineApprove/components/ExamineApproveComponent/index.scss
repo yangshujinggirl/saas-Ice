@@ -40,11 +40,12 @@
         color: #000;
         background: #F9F8F8;
         box-shadow: inset 0 -1px 0 0 #ECE9EC;
+        margin-bottom:20px;
       }
     }
     .part-process {
       .process-action {
-        padding:30px 0 30px 66px;
+        padding:0 0 30px 66px;
         .item:not(:last-child) {
           padding-bottom: 62px;
           position: relative;
@@ -114,8 +115,11 @@
       .partner-action {
         padding: 0 20px 44px;
       }
+      .item {
+        margin-bottom:20px;
+      }
       .partner-name {
-        padding: 16px 0 8px;
+        padding: 0 0 8px;
         color: #000;
       }
       .info-action {
@@ -147,6 +151,20 @@
         }
         .col:not(:last-child) {
           border-right: 1px solid #D9D9D9;
+        }
+      }
+    }
+    .part-base-info {
+      .row-action {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 10px;
+      }
+      .item {
+        width: 25%;
+        margin: 10px 0px;
+        &.full-line {
+          width: 100%;
         }
       }
     }

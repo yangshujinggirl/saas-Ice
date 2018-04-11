@@ -1,5 +1,7 @@
-import ExamineApprove from './ExamineApprove'
-import ExamineAudit from './ExamineAudit'
+import ExamineApprove from './ExamineApprove';
+import ExamineAudit from './ExamineAudit';
+import CheckEssential from './CheckEssential';
+import CheckAuthority from './CheckAuthority';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ExamineApproveActions from './actions/ExamineApproveAction.js'
@@ -25,8 +27,20 @@ let ExamineAuditObj = connect(
     mapDispatchToProps
 )(ExamineAudit);
 
+let CheckEssentialObj = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CheckEssential);
+
+let CheckAuthorityObj = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CheckAuthority);
+
 
 export default {
 	ExamineApprove: ExamineApproveObj,
 	ExamineAudit: ExamineAuditObj,
+	CheckAuthority: CheckAuthorityObj,
+	CheckEssential: CheckEssentialObj,
 }
