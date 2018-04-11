@@ -54,9 +54,9 @@ export default class CarType extends Component {
         let types = this.props.data;
         let arra = [];
 
-        if(types='1'){
+        if(types=='1'){
           arrayRightData.pinpai = [...array]
-        }else if(types='2'){
+        }else if(types=='2'){
           arrayRightData.chexi = [...array]
         }else{
           arrayRightData.cehxing = [...array]
@@ -122,37 +122,39 @@ export default class CarType extends Component {
   onRight(){
     let CarData = this.props.CarData || {};
     CarData.productScopes = []
-    for (var key in arrayRightData){
-      for(var i=0;i<arrayRightData[key].length;i++){
-        　　var flag = true;
-        　　for(var j=0;j<testarray.length;j++){
-        　　　　if(arrayRightData[key][i].id == testarray[j].id){
-        　　　　　　flag = false;
-        　　　　};
-        　　}; 
-        　　if(flag){
-          testarray.push(arrayRightData[key][i]);
-        　　};
-      };
+    for (var key in arrayRightData) {
+      for (var i = 0; i < arrayRightData[key].length; i++) {　　
+        var flag = true;　　
+        for (var j = 0; j < testarray.length; j++) {
+          if (arrayRightData[key][i].id == testarray[j].id) {
+            flag = false;
+          }
+        }
+        　
+        if (flag) {
+          testarray.push(arrayRightData[key][i]);　　
+        }
+      }
     }
-    
-      //去重后渲染
+
+    //去重后渲染
     let arra = testarray
-      this.setState({
-        dataSourceRight: arra
-      })
+    this.setState({
+      dataSourceRight: arra
+    })
 
     //右侧提交数据
-    arra.map((item,i)=>{
+    arra.map((item, i) => {
       console.log(item)
       CarData.productScopes.push({
-        relatedId:item.id,
-        relatedName:item.type=='品牌'?item.name:(item.type=='车系'?item.name:item.name),
-        relatedPath:'',
-        relatedPathName:'',
-        type:'CARS'
+        relatedId: item.id,
+        relatedName: item.type == '品牌' ? item.name : (item.type == '车系' ? item.name : item.name),
+        relatedPath: '',
+        relatedPathName: '',
+        type: 'CARS'
       })
     })
+
   }
   //操作
   renderOperator = (value, index, record) => {
@@ -205,20 +207,17 @@ changePage = (currentPage) => {
         onChange={this.onFormChange.bind(this)}
       >
         <div>
-          <IceContainer>
             <Row wrap style={styles.formItem}>
-              <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
+              <Col s="4" l="4" xxs={24} xs={12} l={8}>
                 <IceFormBinder
                   name="name"
                 >
-                  <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
+                  <Input size="large" style={{ width: '175px' }} placeholder="请输入查询名称" />
                 </IceFormBinder>
                 <IceFormError name="name" />
-              </Col>
-              <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <button style={styles.btns}  onClick={this.searchCar.bind(this)}>
+                <Button size="large" htmlType="submit" type="secondary" onClick={this.searchCar.bind(this)} style={{marginLeft: 12}}>
                   查询
-                </button>
+                </Button>
               </Col>
             </Row>
             {/* <Row wrap style={{marginBottom:"30px"}} >
@@ -231,8 +230,6 @@ changePage = (currentPage) => {
                 >
                 </Transfer>
               </Row>*/}
-          </IceContainer>
-          <IceContainer>
             <div className="table-center">
               <div className="table-left">
                 <Table
@@ -277,7 +274,6 @@ changePage = (currentPage) => {
                 </Table>
               </div>
             </div>
-          </IceContainer>
         </div>
       </IceFormBinderWrapper>
     );
@@ -311,9 +307,7 @@ const styles = {
     marginBottom: '20px',
   },
   formItem: {
-    height: '28px',
-    lineHeight: '28px',
-    marginBottom: '25px',
+    marginBottom: '24px',
   },
   btns: {
     width: '90px',

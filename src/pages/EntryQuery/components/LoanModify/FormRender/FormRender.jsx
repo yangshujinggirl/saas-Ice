@@ -200,12 +200,12 @@ export default class FormRender extends Component {
                   {...formItemLayout}>
           <NumberPicker
             disabled={el.isFixed || el.isReadonly}
-            defaultValue={el.value}
+            defaultValue={el.value ? parseInt(el.value) : el.value}
             min={0}
             max={el.maxValue}
             inputWidth={'100px'}
             {...init(el.name, {
-              initValue: el.value,
+              initValue: el.value ? parseInt(el.value) : el.value,
               rules: [
                 { required: el.isRequired,message: "请填写"+el.label}
               ]
@@ -274,8 +274,10 @@ export default class FormRender extends Component {
       }
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
-      if(el.value ){
-         el.value =  (el.value).split(',');
+      console.log(el.value)
+      var str = el.value
+      if(str && str.indexOf(",") >= 0){
+         el.value =  str.split(',');
       }
       console.log(el.value)
       return(
@@ -298,14 +300,13 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'DATE'){
+      console.log(el.value)
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <DatePicker
             defaultValue={el.value}
             disabled={el.isReadonly}
-            format={"YYYY-MM-DD"}
-            // formater={["YYYY-MM-DD"]}
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,

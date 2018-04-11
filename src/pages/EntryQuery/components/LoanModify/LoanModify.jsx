@@ -113,8 +113,11 @@ export default class LoanModify extends Component {
           if(values[key] != 'undefined'){
             if(this.isCheckBox(key)){
               console.log("多选")
+              console.log(values[key])
               // alert("123")
-              values[key] = values[key].join(',');
+              if(typeof (values[key]) == 'object'){
+                values[key] = values[key].join(',');
+              }
             }
             this.queryCache[key] = values[key];
           }
