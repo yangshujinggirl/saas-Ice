@@ -285,7 +285,7 @@ export default class CreateActivityForm extends Component {
   componentDidMount() {
     let { actions } = this.props
     console.log(this.props)
-    actions.search();
+    actions.filesearch({limit:999});
     actions.prodActions();
     
   }
@@ -449,23 +449,12 @@ export default class CreateActivityForm extends Component {
   };
 
 //还款周期全选
-<<<<<<< Updated upstream
 repaymentPeriodFrequency = (data,e) => {
   let values = this.state.value
   if (e.target.value == 'ALL_CHOICE') {
     values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
     if (data.length > 5) {
     values.repaymentPeriodFrequency = ["MONTH"]
-=======
-repaymentPeriodFrequency = (data) => {
-  data.map((item, i) => {
-    if (item == 'ALL_CHOICE') {
-      this.state.value.repaymentPeriodFrequency = ["ALL_CHOICE","MONTH","SEASON","YEAR","ONCE","TWO_WEEK","HALF_YEAR"]
-    }else if(item != 'ALL_CHOICE'){
-      this.state.value.repaymentPeriodFrequency = []
-    }else{
-      this.state.value.repaymentPeriodFrequency.push([...data])
->>>>>>> Stashed changes
     }
       this.setState({
         value:values
@@ -502,24 +491,16 @@ checkOnChange=(value,e)=>{
 }
 //产品名称是否已存在
 prdNameChange = (rule,value,callback) => {
-  this.props.actions.productNameRepeat(value)
-  let {productAllName} = this.props
-  let data = productAllName&&productAllName.data
   if(rule.required && !value){
     callback('产品名称必填')
     return;
   }
-  if(data){
-    callback('存在')
-  }
-  // ProductReq.prodActions({
-  //   url:`/product/collect/exists?name=${value}`,
-  //   value:value
-  // }).then((data) =>{
-  //   callback('产品名称已存在');
-  // });
-  
-    
+  ProductReq.productNameRepeat(value).then((res)=>{
+    if(res.data){
+      callback("产品名已存在")
+    }
+    callback()
+  })
 }
   
   render() {
@@ -528,6 +509,7 @@ prdNameChange = (rule,value,callback) => {
     let data1 = this.props.fileData || {}
     data1 = data1.data || {}
     data1 = data1.list || []
+    console.log(data1)
     let collData = this.Option(data1)
 
     return (
@@ -617,7 +599,7 @@ prdNameChange = (rule,value,callback) => {
                   </Col>
 
                   <Col xxs={24} xs={12} l={8} >
-                    <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资料收取清单:</span>}>
+                    <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>材料收取清单:</span>}>
                       <IceFormBinder
                         name="collectionDetailListId"
                       >
@@ -1049,12 +1031,8 @@ prdNameChange = (rule,value,callback) => {
                           onChange={this.repaymentPeriodFrequency}
                           value={this.state.value.repaymentPeriodFrequency}
                         >
-<<<<<<< Updated upstream
-                        <Checkbox value="ALL_CHOICE">全选</Checkbox>
-=======
                         
                           <Checkbox value="ALL_CHOICE" key= {0} >全选</Checkbox>                          
->>>>>>> Stashed changes
                           {data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
                             return (
                               <Checkbox value={val.value}  key={i}>{val.desc}</Checkbox>
