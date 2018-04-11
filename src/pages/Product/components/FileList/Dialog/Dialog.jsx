@@ -57,15 +57,15 @@ export default class DiaLog extends Component {
     if(id){
       this.props.actions.fileDetail(this.props.params.id);
     }else{
-      // this.props.actions.changeFileDetail({
-      //   fileType: '',
-      //   fileName: '',
-      //   collectionDetails: [{
-      //     dataName: '',
-      //     fileSize: undefined,
-      //     fileType: ''
-      //   }]
-      // })
+      this.props.actions.changeFileDetail({
+        fileType: '',
+        fileName: '',
+        collectionDetails: [{
+          dataName: '',
+          fileSize: undefined,
+          fileType: ''
+        }]
+      })
     }
     //
   }
