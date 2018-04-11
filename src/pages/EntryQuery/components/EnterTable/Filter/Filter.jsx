@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Grid, Select, Button, DatePicker } from '@icedesign/base';
+import { Form, Input, Grid, Select, Button, DatePicker,Feedback} from '@icedesign/base';
 
 // form binder 详细用法请参见官方文档
 import {
@@ -10,6 +10,7 @@ import {
 const { Row, Col } = Grid;
 const { Option } = Select;
 const FormItem = Form.Item;
+const Toast = Feedback.toast;
 
 const formItemLayout = {
   labelCol: {
@@ -22,7 +23,16 @@ const formItemLayout = {
 
 export default class Filter extends Component {
   static displayName = 'Filter';
-
+  submit = () =>{
+    // this.props.onSubmit();
+    console.log(this.props.value)
+    let {endTime, startTime } = this.props.value
+    console.log(endTime)
+    console.log(startTime)
+    if(endTime.getTime() <= startTime.getTime()){
+      Toast.help("申请开始时间不能大于申请结束时间");
+    }
+  }
   render() {
     return (
       <IceFormBinderWrapper
@@ -104,7 +114,7 @@ export default class Filter extends Component {
               </Col>
               <Col s="8" l="8">
                 <FormItem {...formItemLayout} label="&nbsp;">
-                  <Button type="secondary" htmlType='submit' onClick={this.props.onSubmit}>
+                  <Button type="secondary" htmlType='submit' onClick={this.submit}>
                     查询
                   </Button>
                 </FormItem>
