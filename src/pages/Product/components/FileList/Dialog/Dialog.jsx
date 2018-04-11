@@ -23,7 +23,6 @@ const { RangePicker } = DatePicker;
 
 import FileListDetail from './FileListDetail';
 
-
 export default class DiaLog extends Component {
   static displayName = 'Dialog';
 
@@ -251,20 +250,18 @@ export default class DiaLog extends Component {
   }
 
   //判断清单名称是否已存在
-  nameRepeat=(value)=>{
-    let { data } =  this.props.fileData
-    let { list } = data;
-    let boolean = true;
-    list.map((item,i)=>{
-      if(value==item.name){
-        Feedback.toast.show({
-          type: 'error',
-          content: '该清单名称已存在！！',
-        });
-        boolean = false
-      }
-    })
-    if (!boolean) return
+  nameRepeat=(rule,value,callback)=>{
+
+  if(rule.required && !value){
+    callback('清单名称必填')
+    return;
+  }
+  ProductReq.fileNameRepeat(value).then((res)=>{
+    if(res.data){
+      callback("该名已存在")
+    }
+    callback()
+  })
   }
 
   testName=(id,data) =>{
@@ -276,15 +273,16 @@ export default class DiaLog extends Component {
         <span>
           <IceFormBinder
             name="name"
+            validator={this.nameRepeat}
+            required
           >
             <Input 
               size="large" 
               className="custom-input" 
               placeholder="请输入清单名称"
-              onChange={this.nameRepeat}
               />
           </IceFormBinder>
-          <IceFormError name="name"/>
+          <div><IceFormError name="name"/></div>
         </span>
       )
     }
@@ -297,12 +295,14 @@ export default class DiaLog extends Component {
         <span>
           <IceFormBinder
             name="dataType"
+            required
+            message="清单类型必选"
           >
             <Select name="dataType" size="large" placeholder="请选择" className="custom-select">
               <Select.Option value="产品进件">产品进件</Select.Option>
           </Select>
           </IceFormBinder>
-          <IceFormError name="dataType"/>
+          <div><IceFormError name="dataType"/></div>
         </span>
       )
     }

@@ -117,7 +117,7 @@ export default class ProdDetail extends Component {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>状态：</label>
-                  <span >{product.status=='0'?'生效':(product.status=='1'?'未生效':'失效')}</span>
+                  <span >{product.status=='1'?'生效':(product.status=='0'?'未生效':'失效')}</span>
                 </Col>
               </Row>
               <Row wrap>

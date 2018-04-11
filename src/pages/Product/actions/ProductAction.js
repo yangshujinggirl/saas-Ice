@@ -272,6 +272,38 @@ export const addTwoList=(data,formData,page)=>{
   }
 }
 
+//产品名称不重复
+export const productNameRepeat=(condition)=>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.productNameRepeat(condition).then((res) => {
+      if(res.code == 200) {
+        dispatch(fetchSuccess({ productAllName: res }))
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//材料名称不重复
+export const fileNameRepeat=(condition)=>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.fileNameRepeat(condition).then((res) => {
+      if(res.code == 200) {
+        dispatch(fetchSuccess({ fileAllName: res }))
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 export function changeViewToForm() {
   return change({ view: 'form' });
 }
