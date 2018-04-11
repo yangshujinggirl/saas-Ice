@@ -411,6 +411,10 @@ export default class FormRender extends Component {
       }
     }
   }
+  //日期格式修改
+  formater = (val, str)=>{
+    return str;
+  }
   render() {
     console.log(this.props.data)
     const { data, init } = this.props;
