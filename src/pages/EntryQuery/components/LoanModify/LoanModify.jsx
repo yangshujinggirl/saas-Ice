@@ -4,6 +4,8 @@ import  classNames from  'classnames'
 import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload, Loading} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
 } from '@icedesign/form-binder';
 import DataBinder from '@icedesign/data-binder/lib/index';
 import {browserHistory, hashHistory} from 'react-router';
@@ -28,7 +30,8 @@ export default class LoanModify extends Component {
     this.state = {
       index : 0,
       tableList:[],
-      visible:false
+      visible:false,
+      value:{}
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -108,6 +111,11 @@ export default class LoanModify extends Component {
       for(var key in values){
         if(values[key] != undefined){
           if(values[key] != 'undefined'){
+            if(this.isCheckBox(key)){
+              console.log("多选")
+              // alert("123")
+              values[key] = values[key].join(',');
+            }
             this.queryCache[key] = values[key];
           }
         }
@@ -123,6 +131,34 @@ export default class LoanModify extends Component {
         console.log(errors);
       });
     });
+  }
+
+  isCheckBox(key){
+    console.log(this.props.detail.list)
+    let list = this.props.detail.list;
+    for(var i =0 ; i<list.length;i++){
+      for(var j=0; j<list[i].fields.length;j++){
+        if(list[i].fields[j].type== 'CHECKBOX'&& list[i].fields[j].name == key){
+          return true;
+        }
+      }
+    }
+    return false;
+    // this.props.detail.list.map((item, i) => {
+    //   let flag = false
+    //   item.fields.map((fitem, j) => {
+    //     if(fitem.type == 'CHECKBOX' && fitem.name == key){
+    //       console.log(fitem.type);
+    //       flag = true;
+    //       return true;
+    //     }
+
+    //   })
+    //   if(flag){
+    //     return true;
+    //   }
+    // })
+    // return false;
   }
 
   //cancel 提交
@@ -143,6 +179,8 @@ export default class LoanModify extends Component {
     // console.log(this.props.detail);
     const init = this.field.init;
     return (
+      <IceFormBinderWrapper
+        value={this.state.value}>
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
             <Row  className='modify-page'>
               <Col span="3">
@@ -171,6 +209,7 @@ export default class LoanModify extends Component {
               </Col>
             </Row>
           </IceContainer>
+      </IceFormBinderWrapper>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Grid, Select, Button, DatePicker,Feedback} from '@icedesign/base';
+import { Form, Input, Grid, Select, Button, DatePicker,Feedback,Field} from '@icedesign/base';
 
 // form binder 详细用法请参见官方文档
 import {
@@ -23,17 +23,46 @@ const formItemLayout = {
 
 export default class Filter extends Component {
   static displayName = 'Filter';
+  field = new Field(this);
+
   submit = () =>{
     // this.props.onSubmit();
-    console.log(this.props.value)
-    let {endTime, startTime } = this.props.value
-    console.log(endTime)
-    console.log(startTime)
-    if(endTime.getTime() <= startTime.getTime()){
-      Toast.help("申请开始时间不能大于申请结束时间");
-    }
+    // console.log(this.props.field)
+    // let {endTime, startTime } = this.props.field
+    // console.log(endTime)
+    // console.log(startTime)
+    // if(endTime && startTime){
+    //   if(endTime.getTime() <= startTime.getTime()){
+    //     Toast.help("申请开始时间不能大于申请结束时间");
+    //   }
+    // }
+    // e.preventDefault();
+    this.field.validate((errors, values) => {
+      if (errors) {
+        console.log("Errors in form!!!");
+        return;
+      }
+      console.log("Submit!!!");
+      // console.log(values);
+      for(var key in values){
+        if(values[key] != undefined){
+          if(values[key] != 'undefined'){
+            this.queryCache[key] = values[key];
+          }
+        }
+      }
+      this.queryCache.status = 'submit'
+      console.log(this.queryCache)
+      this.props.actions.saveFrom(this.queryCache);
+    });
+  }
+  onChange = (val, str)=>{
+    console.log(val)
+    console.log(str)
+    return str;
   }
   render() {
+    const init = this.field.init;
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -70,9 +99,14 @@ export default class Filter extends Component {
                     name="startTime"
                   >
                     <DatePicker
+                      format={"YYYY-MM-DD"}
                       size="large"
                       style={{width:"100%"}}
-                      placeholder="申请开始时间" />
+                      placeholder="申请开始时间"
+                      {...init('startTime', {
+                        getValueFromEvent: this.onChange
+                      })}
+                    />
                   </IceFormBinder>
                 </FormItem>
               </Col>
@@ -82,8 +116,10 @@ export default class Filter extends Component {
                     name="endTime"
                   >
                     <DatePicker
+                      format={"YYYY-MM-DD"}
                       size="large"
                       style={{width:"100%"}}
+                      // onChange={this.onChange}
                       placeholder="申请结束时间" />
                   </IceFormBinder>
                 </FormItem>

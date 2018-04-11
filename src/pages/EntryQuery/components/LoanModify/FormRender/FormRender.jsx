@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
+import {
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
 const { Group: CheckboxGroup } = Checkbox;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -23,6 +28,11 @@ const formItemLayoutTEXT = {
   labelCol: { span: 3},
   wrapperCol: { span: 21 }
 };
+const formItemLayoutCHECKBOX = {
+  labelCol: { span: 6},
+  wrapperCol: { span: 21 }
+};
+
 export default class FormRender extends Component {
   static displayName = 'FormRender';
 
@@ -80,7 +90,13 @@ export default class FormRender extends Component {
       return (<div className="subsidiary-field" key={el.name}>
         {this.RenderField(el,outIndex,inIndex)}
       </div>)
-    }else if(el.line == '1'){
+    }
+    else if(el.type == 'CHECKBOX' || el.type == 'RADIO'){
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el,outIndex,inIndex)}
+      </div>)
+    }
+    else if(el.line == '1'){
       return (<div className="subsidiary-field" key={el.name}>
         {this.RenderField(el,outIndex,inIndex)}
       </div>)
@@ -242,8 +258,8 @@ export default class FormRender extends Component {
         setValue =   el.value ==undefined || el.value =='' ||  el.value =='undefined' ? Default : el.value ;
         // console.log(Default)
         // console.log(setValue)
-        Fields.push(<FormItem key={el.id} className='item' label={this.label(el.label)}
-                              {...formItemLayout}>
+        Fields.push(<FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
+                              {...formItemLayoutTEXT}>
           <RadioGroup
             defaultValue ={setValue+''}
             disabled={el.isReadonly}
@@ -259,9 +275,10 @@ export default class FormRender extends Component {
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
       return(
-        <FormItem key={el.id} className='item ' label={this.label(el.label)}
-                  {...formItemLayout}>
+        <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
+                  {...formItemLayoutTEXT}>
           <CheckboxGroup
+            style={{width:'100%'}}
             defaultValue ={el.value}
             disabled={ el.isReadonly}
             {...init(el.name, {
