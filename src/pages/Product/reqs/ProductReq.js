@@ -202,7 +202,32 @@ fileRemoveDes(id, callback, callbackError) {
     }
     return super.fetchData(options);
   }
+
+
+  //查询产品名称是否重复
+  productNameRepeat(condition){
+    let options = {
+      // url: this._host + '/product/data
+      url: this._host + `/product/name/exists?name=${condition}`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
+
+  //查询材料名称是否重复
+  fileNameRepeat(condition){
+    let options = {
+      // url: this._host + '/product/data
+      url: this._host + `/product/collect/exists?name=${condition}`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
 }
+
+
 
 
 // put :data delete :data params

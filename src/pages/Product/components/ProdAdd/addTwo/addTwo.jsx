@@ -128,7 +128,6 @@ export default class addTwo extends Component {
               <Form
                 size="large"
                 labelAlign="left">
-                <div className="pch-form">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                     <RadioGroup 
@@ -139,18 +138,14 @@ export default class addTwo extends Component {
                       />
                   </Col>
                 </Row>
-              
                 <Row wrap style={{marginBottom:"30px"}} >
-                <IceFormBinder
+                  <IceFormBinder
                       name="CarTypeBrand"
                     >
                       <CarType {...this.props} data={this.state.type} CarData={this.state.value} getCarList={this.getCarList.bind(this)} changeCarName={this.changeCarName.bind(this)}/>
                     </IceFormBinder>
                     <IceFormError name="CarTypeBrand" />
-                
-
                 </Row>
-            </div>
                 {/*<legend className="pch-legend">
                 <span className="pch-legend-legline"></span>按集团/渠道/厅店
               </legend>

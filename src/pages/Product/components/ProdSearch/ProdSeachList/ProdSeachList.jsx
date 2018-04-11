@@ -74,7 +74,7 @@ export default class ProdSeachList extends Component {
   //状态
   status(value, index, record){
     // 0=未生效；1=生效；2=失效
-    return`${record.status=='0'?'未生效':(record.status=='1'?'生效':'失效')}`
+    return`${record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')}`
   }
   //金额范围
   moneyRange(value, index, record) {
@@ -210,7 +210,7 @@ Order=(dataIndex,order) =>{
                         size="large"
                       >
                         <Option value="1">生效</Option>
-                        <Option value="0">未生效</Option>
+                        <Option value="0">关闭</Option>
                         <Option value="2">失效</Option>
                         
                       </Select>

@@ -142,7 +142,7 @@ export default class FileList extends Component {
     return (
       <IceContainer className="pch-container">
         <legend className="pch-legend" >
-          <span className="pch-legend-legline"></span>资料查询
+          <span className="pch-legend-legline"></span>材料查询
         </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
