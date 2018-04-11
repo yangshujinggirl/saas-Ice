@@ -274,11 +274,14 @@ export default class FormRender extends Component {
       }
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
+      if(el.value ){
+         el.value =  (el.value).split(',');
+      }
+      console.log(el.value)
       return(
 
         <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
-
           <CheckboxGroup
             className='CheckboxGroup'
             style={{width:'100%'}}
