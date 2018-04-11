@@ -190,11 +190,12 @@ export default class LoanModify extends Component {
                   </ul>
                 </div>
               </Col>
-              <Col span="21" className='modify-form'>
+              <Col span="21" className='modify-form pch-form'>
 
                 <Form
                   labelAlign= "left"
                   field={this.field}
+                  size="large"
                 >
                   <FormRender {...this.props} data={details.list} init = {init} field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
                   <div className='info' id='material'>

@@ -93,7 +93,16 @@ export default class Details extends Component {
                     })
                   }
                   return list;
-                }else{
+                }else if(el.type == "TEXT" || el.type == "CHECKBOX" || el.type == "RADIO"){
+                  list.push( <div className='config-font colspan' key={el.id}>
+                      {this.label(el.label)}
+                      <span>:</span>
+                      {this.value(el)}
+                    </div>
+                  )
+                  return list;
+                }
+                else{
                     list.push( <div className='config-font ' key={el.id}>
                         {this.label(el.label)}
                         <span>:</span>

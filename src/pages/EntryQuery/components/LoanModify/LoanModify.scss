@@ -74,6 +74,11 @@
         justify-content: flex-start;
         align-items: center;
       }
+      .CheckboxGroup{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
     }
     .button-box{
       height: 50px;
@@ -120,4 +125,8 @@
 .item .next-col-21 .next-form-item-explain{
   top: 0px;
   position: relative;
+}
+.next-form-left .next-form-item-control {
+  display: flex;
+  align-items: center;
 }

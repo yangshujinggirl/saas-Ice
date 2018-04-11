@@ -275,9 +275,12 @@ export default class FormRender extends Component {
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
       return(
+
         <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
+
           <CheckboxGroup
+            className='CheckboxGroup'
             style={{width:'100%'}}
             defaultValue ={el.value}
             disabled={ el.isReadonly}
