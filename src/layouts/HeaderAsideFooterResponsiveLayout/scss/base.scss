@@ -833,6 +833,13 @@ body {
     color: #333;
     background-color: #f3f3f3;
 }
+.next-menu .next-menu-item.selected{
+    color: #fc9e25;
+
+    .next-icon{
+        display: none;
+    }
+}
 .pch-form{
     padding: 30px 15px 20px 15px;
 
