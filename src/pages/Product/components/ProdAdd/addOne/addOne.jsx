@@ -79,6 +79,7 @@ export default class CreateActivityForm extends Component {
         interestRateBaseDate: undefined,
         repaymentAccountChange: ['ALLOW_CHANGE'],
         repaymentPeriodFrequency: ['MONTH'],
+        repaymentPeriodFrequencySubmit: [],
         repaymentDateChange: 'true',
         gracePeriodChange: 'true',
         repaymentMethodChange: 'true',
@@ -140,7 +141,7 @@ export default class CreateActivityForm extends Component {
           interestRatesRangeMax: value.interestRatesRangeMax,
           interestRateBaseDate: value.interestRateBaseDate,
           repaymentAccountChange: value.repaymentAccountChange,
-          repaymentPeriodFrequency: value.repaymentPeriodFrequency,
+          repaymentPeriodFrequency: value.repaymentPeriodFrequencySubmit,
           repaymentDateChange: value.repaymentDateChange,
           gracePeriodChange: value.gracePeriodChange,
           repaymentMethodChange: value.repaymentMethodChange,
@@ -447,12 +448,29 @@ export default class CreateActivityForm extends Component {
   };
 
 //还款周期全选
-repaymentPeriodFrequency = (data) => {
-  data.map((item, i) => {//
-    if (item == 'ALL_CHOICE') {
-      this.state.value.repaymentPeriodFrequency = ["ALL_CHOICE","MONTH","SEASON","YEAR","ONCE","TWO_WEEK","HALF_YEAR"]
+repaymentPeriodFrequency = (data,e) => {
+  let values = this.state.value
+  if (e.target.value == 'ALL_CHOICE') {
+    values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
+    if (data.length > 5) {
+    values.repaymentPeriodFrequency = ["MONTH"]
     }
-  })
+      this.setState({
+        value:values
+      })
+  } else {
+    let index = data.findIndex((data) => data == "ALL_CHOICE")
+    data.splice(index,1)
+    values.repaymentPeriodFrequency = data
+      this.setState({
+          value:values
+      })
+  }
+    let allDate = [...values.repaymentPeriodFrequency];
+    let index = allDate.findIndex((data) => data == "ALL_CHOICE");
+      index!=-1 ? allDate.splice(index,1) :''
+      this.state.value.repaymentPeriodFrequencySubmit = allDate
+  console.log(this.state.value.repaymentPeriodFrequencySubmit);
 }
 checkOnChange=(value)=>{
   console.log(value)
@@ -993,19 +1011,20 @@ prdNameChange = (value) => {
                 <Row wrap>
                   <Col xxs={24} xs={12} l={12} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款周期:</span>}>
-                      <IceFormBinder name="repaymentPeriodFrequency" >
+                      
                         <CheckboxGroup
                           className="next-form-text-align"
-                          onChange={this.checkOnChange}
+                          onChange={this.repaymentPeriodFrequency}
+                          value={this.state.value.repaymentPeriodFrequency}
                         >
-                          <Checkbox value="ALL_CHOICE" key= {0} onChange={this.repaymentPeriodFrequency(this.state.value.repaymentPeriodFrequency)}>全选</Checkbox>                          
+                        <Checkbox value="ALL_CHOICE">全选</Checkbox>
                           {data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
                             return (
-                              <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+                              <Checkbox value={val.value}  key={i}>{val.desc}</Checkbox>
                             )
                           })}
                         </CheckboxGroup>
-                      </IceFormBinder>
+                     
                       <div>
                         <IceFormError name="repaymentPeriodFrequency" />
                       </div>
