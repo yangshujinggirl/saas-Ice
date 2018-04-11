@@ -340,6 +340,7 @@ export default class setFont extends Component {
                 })
                 return 
             }
+            // 删除下拉框的单选框复选框空置值
             reqData.options.map((item,index) => {
                 if (item.label == '') {
                     reqData.options.splice(index,1)
@@ -347,7 +348,7 @@ export default class setFont extends Component {
             })
             
             let id = this.props.router.location.query.id
-            console.log(this.state.resData);
+            // console.log(this.state.resData);
             this.setState({
                 dialogOne: false
             })
@@ -563,6 +564,7 @@ export default class setFont extends Component {
                 ]
             }
         ];
+        //  根据type值渲染不同的输入框
         const handleFixed = (item) => {
             let inputType = <Input placeholder="" />
             
@@ -685,8 +687,9 @@ export default class setFont extends Component {
                 fields: data
             })
         }
+        // 根据字段类型判断值的设置是否显示出来
         const codeType = (value) => {
-            console.log(value);
+            // console.log(value);
             let data = this.state.fields;
             data.type = value;
             if (value == "SELECT"||value == "RADIO"||value == "CHECKBOX") {
@@ -711,6 +714,7 @@ export default class setFont extends Component {
                 fields: data
             })
         }
+        // 自定义字段字段长度
         const codeLength = (value) => {
             console.log(value);
             let data = this.state.fields;
@@ -727,6 +731,7 @@ export default class setFont extends Component {
                 fields: data
             })
         }
+        // 字段必输值唯一选择执行的函数
         const codeRequire = (value) => {
             let data = this.state.fields;
             data.isRequired = false
@@ -743,6 +748,9 @@ export default class setFont extends Component {
                 data.isReadonly = true
             }
             if (value.join().indexOf('nowrap')!=-1) {
+                data.line = 1
+            }
+            if (data.type=='TEXT') {
                 data.line = 1
             }
             this.setState({
@@ -1057,6 +1065,7 @@ export default class setFont extends Component {
                             onChange={codeRequire}
                         />
                     </div>
+                    {this.state.fields.type == "TEXT" ? <div>提示：字段类型为文本域，字段独占一行显示</div>:''}
                     {/* <div className='beautify constraint'>
                         <Checkbox />
                         <span className='marv5'>显示约束</span>
@@ -1157,6 +1166,7 @@ export default class setFont extends Component {
                             onChange={codeRequireTwo}
                         />
                     </div>
+                    {this.state.fields.type == "TEXT" ? <div>提示：字段类型为文本域，字段独占一行显示</div>:''}                    
                     {/* <div className='beautify constraint'>
                         <Checkbox />
                         <span className='marv5'>显示约束</span>
