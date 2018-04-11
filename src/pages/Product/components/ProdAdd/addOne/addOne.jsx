@@ -25,6 +25,7 @@ import Chanpinchengshu from './Chanpinchengshu';
 import Chanpinlilv from './Chanpinlilv';
 import Huankuanfangshi from './Huankuanfangshi';
 import Tiqianhuankuanfangshi from './Tiqianhuankuanfangshi';
+import ProductReq from '../../../reqs/ProductReq'
 import './addOne.scss';
 
 const { Row, Col } = Grid;
@@ -205,7 +206,7 @@ export default class CreateActivityForm extends Component {
         boolean = false
       }
       // 贷款比率 
-      if(Number(value.loanPercentageMin) < 0 || Number( value.loanPercentageMax) < 0){
+      if(Number(value.loanPercentageMin) < 0 ||Number(value.loanPercentageMin) > 100 || Number( value.loanPercentageMax) < 0 || Number( value.loanPercentageMax) > 100){
         Feedback.toast.show({
           type: 'error',
           content: '贷款比率不能小于0',
@@ -244,27 +245,27 @@ export default class CreateActivityForm extends Component {
         }
       })
       //执行年利率范围
-      if(Number(value.interestRatesRangeMin) < 0 || Number(value.interestRatesRangeMax) < 0 ){
+      if((Number(value.interestRatesRangeMin) < 0 || Number(value.interestRatesRangeMin) > 100 )|| (Number(value.interestRatesRangeMax) < 0 || Number(value.interestRatesRangeMax) > 100) ){
         Feedback.toast.show({
           type: 'error',
-          content: '执行年利率不能小于0',
+          content: '执行年利率在0～100内',
         });
         boolean = false
-      }else if(Number(value.interestRatesRangeMin) > Number(value.interestRatesRangeMax)){
+      }else if(Number(value.interestRatesRangeMin) >= Number(value.interestRatesRangeMax)){
         Feedback.toast.show({
           type: 'error',
-          content: '执行年利率范围前者不能大于后者',
+          content: '执行年利率范围前者不能大于或等于后者',
         });
         boolean = false
       }
       //最小提前还款金额
-      if(Number(value.prepaymentAmountMin)<0){
-        Feedback.toast.show({
-          type: 'error',
-          content: '最小提前还款金额不能小于0',
-        });
-        boolean = false
-      }
+      // if(Number(value.prepaymentAmountMin)<0){
+      //   Feedback.toast.show({
+      //     type: 'error',
+      //     content: '最小提前还款金额不能小于0',
+      //   });
+      //   boolean = false
+      // }
       //最早提前还款期数
       if(Number(value.prepaymentPeriodsLimit)<0){
         Feedback.toast.show({
@@ -283,9 +284,10 @@ export default class CreateActivityForm extends Component {
   };
   componentDidMount() {
     let { actions } = this.props
+    console.log(this.props)
     actions.search();
     actions.prodActions();
-    actions.filesearch()
+    
   }
   addNewItem(key) {
     let newData = this.state.value[key];
@@ -339,7 +341,6 @@ export default class CreateActivityForm extends Component {
                 name="prepaymentAmountMin"
                 required
                 message="最小提前还款金额必填"
-
               >
                 <Input size="large" placeholder="最小提前还款金额" className="custom-input" />
               </IceFormBinder>
@@ -448,12 +449,23 @@ export default class CreateActivityForm extends Component {
   };
 
 //还款周期全选
+<<<<<<< Updated upstream
 repaymentPeriodFrequency = (data,e) => {
   let values = this.state.value
   if (e.target.value == 'ALL_CHOICE') {
     values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
     if (data.length > 5) {
     values.repaymentPeriodFrequency = ["MONTH"]
+=======
+repaymentPeriodFrequency = (data) => {
+  data.map((item, i) => {
+    if (item == 'ALL_CHOICE') {
+      this.state.value.repaymentPeriodFrequency = ["ALL_CHOICE","MONTH","SEASON","YEAR","ONCE","TWO_WEEK","HALF_YEAR"]
+    }else if(item != 'ALL_CHOICE'){
+      this.state.value.repaymentPeriodFrequency = []
+    }else{
+      this.state.value.repaymentPeriodFrequency.push([...data])
+>>>>>>> Stashed changes
     }
       this.setState({
         value:values
@@ -472,23 +484,42 @@ repaymentPeriodFrequency = (data,e) => {
       this.state.value.repaymentPeriodFrequencySubmit = allDate
   console.log(this.state.value.repaymentPeriodFrequencySubmit);
 }
-checkOnChange=(value)=>{
+checkOnChange=(value,e)=>{
   console.log(value)
+  // value.map((item,i)=>{
+  //   if(item == 'ALL_CHOICE'){
+  //     let  values = this.state.value;
+  //     values.repaymentPeriodFrequency = ["MONTH","SEASON","YEAR","ONCE","TWO_WEEK","HALF_YEAR"]
+  //      this.setState({
+  //        value: values
+  //      })
+  //      console.log(this.state.value.repaymentPeriodFrequency);
+       
+  //   }else {
+  //     this.state.value.repaymentPeriodFrequency  = [...value]
+  //   }
+  // })
 }
 //产品名称是否已存在
-prdNameChange = (value) => {
-  let { list = [] } = this.props.pageData;
-  let boolean = true;
-  list.map((item,i)=>{
-    if(item.name==value){
-      Feedback.toast.show({
-        type: 'error',
-        content: '产品名称已存在',
-      });
-      boolean = false
-    }
-    if(!boolean) return
-  })
+prdNameChange = (rule,value,callback) => {
+  this.props.actions.productNameRepeat(value)
+  let {productAllName} = this.props
+  let data = productAllName&&productAllName.data
+  if(rule.required && !value){
+    callback('产品名称必填')
+    return;
+  }
+  if(data){
+    callback('存在')
+  }
+  // ProductReq.prodActions({
+  //   url:`/product/collect/exists?name=${value}`,
+  //   value:value
+  // }).then((data) =>{
+  //   callback('产品名称已存在');
+  // });
+  
+    
 }
   
   render() {
@@ -522,6 +553,7 @@ prdNameChange = (value) => {
                       <IceFormBinder
                         name="tenantId"
                         validator={this.check}
+                       
                       >
                         <Input size="large" value="资金方" disabled className="custom-input" />
                       </IceFormBinder>
@@ -532,12 +564,12 @@ prdNameChange = (value) => {
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品名称:</span>}>
                       <IceFormBinder
                         name="name"
+                        required
+                        validator={this.prdNameChange}
+                        
                       >
                         <Input size="large" placeholder="产品名称"
-                          required
-                          message="产品名称必填"
                           className="custom-input"
-                          onChange={this.prdNameChange}
                         />
                       </IceFormBinder>
                       <div><IceFormError name="name" /></div>
@@ -659,7 +691,7 @@ prdNameChange = (value) => {
                           className="custom-select"
                         >
                           <Option value="1">生效</Option>
-                          <Option value="0">未生效</Option>
+                          <Option value="0">关闭</Option>
                           <Option value="2">失效</Option>
                         </Select>
                       </IceFormBinder>
@@ -1017,7 +1049,12 @@ prdNameChange = (value) => {
                           onChange={this.repaymentPeriodFrequency}
                           value={this.state.value.repaymentPeriodFrequency}
                         >
+<<<<<<< Updated upstream
                         <Checkbox value="ALL_CHOICE">全选</Checkbox>
+=======
+                        
+                          <Checkbox value="ALL_CHOICE" key= {0} >全选</Checkbox>                          
+>>>>>>> Stashed changes
                           {data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
                             return (
                               <Checkbox value={val.value}  key={i}>{val.desc}</Checkbox>
@@ -1114,7 +1151,7 @@ prdNameChange = (value) => {
                 {this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
 
                 <div className="next-btn-box">
-                  <Button  size="large" onClick={this.submit}>下一步</Button>
+                  <Button type="secondary" size="large" onClick={this.submit}>下一步</Button>
                 </div>
               </div>
             </Form>

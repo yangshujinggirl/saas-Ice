@@ -252,19 +252,22 @@ export default class DiaLog extends Component {
 
   //判断清单名称是否已存在
   nameRepeat=(value)=>{
-    let { data } =  this.props.fileData
-    let { list } = data;
-    let boolean = true;
-    list.map((item,i)=>{
-      if(value==item.name){
-        Feedback.toast.show({
-          type: 'error',
-          content: '该清单名称已存在！！',
-        });
-        boolean = false
-      }
-    })
-    if (!boolean) return
+
+   this.props.actions.fileNameRepeat(value)
+  let {fileAllName} = this.props
+  let data = fileAllName&&fileAllName.data
+    console.log(data)
+    // let boolean = true;
+    // list.map((item,i)=>{
+    //   if(value==item.name){
+    //     Feedback.toast.show({
+    //       type: 'error',
+    //       content: '该清单名称已存在！！',
+    //     });
+    //     boolean = false
+    //   }
+    // })
+    // if (!boolean) return
   }
 
   testName=(id,data) =>{
