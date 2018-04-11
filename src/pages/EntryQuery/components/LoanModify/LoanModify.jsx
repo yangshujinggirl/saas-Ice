@@ -182,8 +182,7 @@ export default class LoanModify extends Component {
     // console.log(this.props.detail);
     const init = this.field.init;
     return (
-      <IceFormBinderWrapper
-        value={this.state.value}>
+
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
             <Row  className='modify-page'>
               <Col span="3">
@@ -194,7 +193,10 @@ export default class LoanModify extends Component {
                 </div>
               </Col>
               <Col span="21" className='modify-form pch-form'>
-
+                <IceFormBinderWrapper
+                  value={this.state.value}
+                  onChange={this.formChange}
+                >
                 <Form
                   labelAlign= "left"
                   field={this.field}
@@ -209,11 +211,10 @@ export default class LoanModify extends Component {
                     </div>
                   </div>
                 </Form>
-
+                </IceFormBinderWrapper>
               </Col>
             </Row>
           </IceContainer>
-      </IceFormBinderWrapper>
     );
   }
 }

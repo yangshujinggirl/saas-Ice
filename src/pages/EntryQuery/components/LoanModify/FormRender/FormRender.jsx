@@ -118,15 +118,16 @@ export default class FormRender extends Component {
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <Input
-            {...init(el.name,{
-              initValue: el.value,
-              rules: [{ required:  el.isRequired, message: "请填写"+el.label }],
-              props:{ onBlur:()=> this.refuse(el.name) }
-            })}
-            placeholder={"请输入"+el.label}
-            disabled={el.isFixed || el.isReadonly}
-          />
+          <IceFormBinder
+            name={`${el.value}`}
+            required ={true}
+          >
+            <Input
+
+              placeholder={"请输入"+el.label}
+              disabled={el.isFixed || el.isReadonly}
+            />
+          </IceFormBinder>
         </FormItem>
       )
     }else if(el.type == "SELECT"){
@@ -134,6 +135,7 @@ export default class FormRender extends Component {
        return(
                <FormItem  key={el.id} className='item half' label={this.label(el.label)}
                           {...formItemLayoutCombobox}>
+
                <Combobox
                      // onInputUpdate={this.onInputUpdate.bind(this)}
                      fillProps={el.label}
@@ -303,16 +305,17 @@ export default class FormRender extends Component {
       console.log(el.value)
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
-                  {...formItemLayout}>
+                  {...formItemLayout}  >
           <DatePicker
             defaultValue={el.value}
             disabled={el.isReadonly}
+            format={"YYYY-MM-DD"}
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,
               getValueFromEvent: this.formater
             },{
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required: true, message: "请选择"+el.label }]
             })}
           />
         </FormItem>
