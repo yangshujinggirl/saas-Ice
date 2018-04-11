@@ -58,7 +58,7 @@ export default class DiaLog extends Component {
       this.props.actions.fileDetail(this.props.params.id);
     }else{
       this.props.actions.changeFileDetail({
-        fileType: '',
+        fileType: null,
         fileName: '',
         collectionDetails: [{
           dataName: '',
@@ -75,7 +75,7 @@ export default class DiaLog extends Component {
     if(this.props.route.path != nextProps.route.path){
       // this.props.actions.changeFileDetail({})
       this.props.actions.changeFileDetail({
-        dataType: '',
+        dataType: null,
         name: '',
         collectionDetails: [{
           dataName: '',
@@ -298,7 +298,7 @@ export default class DiaLog extends Component {
           <IceFormBinder
             name="dataType"
           >
-            <Select size="large" placeholder="请选择" className="custom-select">
+            <Select name="dataType" size="large" placeholder="请选择" className="custom-select">
               <Select.Option value="产品进件">产品进件</Select.Option>
           </Select>
           </IceFormBinder>
@@ -314,7 +314,7 @@ export default class DiaLog extends Component {
       let fileTypeValueArr = item.fileType.split(',');
       item.fileTypeArr = this.setFileTypeChecked(fileTypeValueArr);
     })
-    console.log('render', data)
+    // console.log('render', data)
 
     return (
       <IceContainer className="pch-container">
