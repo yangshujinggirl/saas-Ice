@@ -16,8 +16,8 @@ import {
   moment
  } from "@icedesign/base";
  import Req from '../../reqs/ExamineApproveReq';
-
 import './index.scss';
+
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
@@ -47,16 +47,22 @@ class AuditList extends Component {
   }
   //操作
   operationEvent(record) {
+    const { taskId, proInstId, loanId } = record;
     if(record.status == 'claim') {
-      // this.goClaim()
-      hashHistory.push(`/examineapprove/detail/${record.productId}`)
+      this.goClaim(taskId)
     } else {
-      hashHistory.push(`/examineapprove/detail/${record.productId}`)
+      hashHistory.push(`/examineapprove/detail/${proInstId}/${loanId}`)
     }
   }
   //去签收
-  goClaim() {
-    console.log('去签收')
+  goClaim(id) {
+    Req.assigneeApi(id)
+    .then((res) => {
+      const { code } = res;
+      if(code == 200) {
+        this.props.actions.aduitList()
+      }
+    })
   }
   //表格操作
   renderOperator = (value, index, record) => {
@@ -66,7 +72,7 @@ class AuditList extends Component {
           shape="text"
           onClick = {()=>this.operationEvent(record)}
         >
-          {record.status == "claim" ?'签收':'详情'}
+          { record.status == "claim" ?'签收':'详情' }
         </Button>
     );
   };

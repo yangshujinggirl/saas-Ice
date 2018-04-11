@@ -74,6 +74,36 @@ export const aduitList = (condition) => {
     })
   }
 }
+// 审查进件详情
+export const approveLoanDetail = (proInstId,loanId) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+    Req.getApproveDetailApi(proInstId,loanId).then((res) => {
+      if(!res || res.code != 200) {
+        return
+      }
+      dispatch(fetchSuccess({ pageData: res.data}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+// 查看必要字段详情
+export const checkEssential = (taskTypeId) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+    Req.checkEssentialApi(taskTypeId).then((res) => {
+      if(!res || res.code != 200) {
+        return
+      }
+      dispatch(fetchSuccess({ pageData: res}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
 
 // 保存表单
 export const save = (data) => {

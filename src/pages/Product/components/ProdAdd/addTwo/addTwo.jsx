@@ -78,7 +78,7 @@ export default class addTwo extends Component {
     console.log(id)
     actions.productsave(this.state.value,id);
   }
-  
+
   onFormChange=()=>{
     this.setState({
       value
@@ -108,7 +108,7 @@ export default class addTwo extends Component {
     value.name = name;
     this.setState({value: value});
   }
-  
+
   render() {
     return (
       <IceFormBinderWrapper
@@ -126,15 +126,15 @@ export default class addTwo extends Component {
             <div className="f-box">
               <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <RadioGroup 
-                    dataSource={list[0]} 
+                  <RadioGroup
+                    dataSource={list[0]}
                     defaultValue={'1'}
-                    value={this.state.type}                    
+                    value={this.state.type}
                     onChange={this.onTypeChange}
                     />
                 </Col>
               </Row>
-             
+
               <Row wrap style={{marginBottom:"30px"}} >
               <IceFormBinder
                     name="CarTypeBrand"
@@ -142,7 +142,7 @@ export default class addTwo extends Component {
                      <CarType {...this.props} data={this.state.type} CarData={this.state.value} getCarList={this.getCarList.bind(this)} changeCarName={this.changeCarName.bind(this)}/>
                   </IceFormBinder>
                   <IceFormError name="CarTypeBrand" />
-               
+
 
               </Row>
           </div>
@@ -152,21 +152,21 @@ export default class addTwo extends Component {
             <div className="f-box">
              <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <RadioGroup 
+                  <RadioGroup
                     dataSource={list[1]}
-                    defaultValue={"carGroup"} 
-                    value={this.state.value2}                    
+                    defaultValue={"carGroup"}
+                    value={this.state.value2}
                     onChange={this.onNestChange}
                     />
                 </Col>
               </Row>
-             
+
               <Row wrap style={{marginBottom:"30px"}} >
-               <OrgType {...this.props} data={this.state.value2}/> 
+               <OrgType {...this.props} data={this.state.value2}/>
               </Row>
             </div>*/}
-           
-           
+
+
             <div className="next-btn-box">
               <div className="next-btn-lx" onClick={this.onsubmit}>下一步</div>
             </div>

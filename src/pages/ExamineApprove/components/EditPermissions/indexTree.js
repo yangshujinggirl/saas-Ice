@@ -171,7 +171,7 @@ class EditPermissions extends Component {
       dataSourceRight
     })
   }
-  renderOperation(value, index, record) {
+  operationEvent(value, index, record) {
     return (
         <Button
           type='normal'
@@ -181,9 +181,6 @@ class EditPermissions extends Component {
           删除
         </Button>
     );
-  }
-  renderLevel(value, index, record) {
-    return record.name
   }
   changePage(current) {
     this.setState({
@@ -220,7 +217,7 @@ class EditPermissions extends Component {
                   isTree
                   rowSelection={{...this.rowSelection}}
                   >
-                    <Table.Column title="机构" cell={this.renderLevel}/>
+                    <Table.Column title="机构" dataIndex="name" />
                 </Table>
                 <Table
                   dataSource={data[1]}
@@ -243,7 +240,7 @@ class EditPermissions extends Component {
                   maxBodyHeight={370}
                   >
                     <Table.Column title="权限" dataIndex="name" />
-                  <Table.Column title="操作" cell={()=>this.renderOperation()}/>
+                    <Table.Column title="操作" cell={()=>this.operationEvent()}/>
                 </Table>
               </div>
             </div>

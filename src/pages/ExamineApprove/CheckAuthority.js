@@ -48,7 +48,7 @@ class CheckAuthority extends Component {
           </Table>
           <Button type="primary" className="return-btn">返回</Button>
         </IceContainer>
-        <EditPermissions />
+        <EditPermissions visible={true}/>
       </div>
     );
   }

@@ -48,7 +48,7 @@ export default class CarType extends Component {
         this.setState({
           selectDate: arra
         })
-        
+
         console.log('ids', ids);
         this.setState({
           selectedRowKeys: ids,
@@ -66,7 +66,7 @@ export default class CarType extends Component {
       selectedRowKeys: [],//选中的复选框
       selectDate: []
     };
-   
+
   }
   componentDidMount() {
     console.log(this.props)
@@ -89,7 +89,7 @@ export default class CarType extends Component {
     })
     return tempData;
   }
-  
+
   //查询
   searchCar() {
     let { actions, data, getCarList } = this.props;
@@ -105,6 +105,7 @@ export default class CarType extends Component {
   //向右移动
   onRight(){
     let { CarData } = this.props;
+    debugger
     let arra = []
     arra = [...this.state.selectDate]
     CarData.productScopes = arra;
@@ -130,7 +131,7 @@ export default class CarType extends Component {
 deleteItem = (index) => {
   let data = this.state.dataSourceRight;
   console.log(index);
-  
+
   data.splice(index,1)
   this.setState({
     dataSourceRight: data
@@ -154,7 +155,7 @@ changePage = (currentPage) => {
         list = list.list || [];
 
     let dataSource = this.renderDataWithCar(type, list);
-
+    console.log(this.props)
     return (
       <IceFormBinderWrapper
         ref={(formRef) => {
@@ -181,7 +182,7 @@ changePage = (currentPage) => {
               </Col>
             </Row>
             {/* <Row wrap style={{marginBottom:"30px"}} >
-                <Transfer 
+                <Transfer
                   titles={['选项',' 选项']}
                   dataSource={dataSource}
                   defaultLeftChecked={["0"]}
@@ -201,12 +202,12 @@ changePage = (currentPage) => {
                     selectedRowKeys: this.state.selectedRowKeys,
                   }}
                 >
-                 
+
                   <Table.Column title="类型" dataIndex="type" width={50} />
                   <Table.Column title="名称" dataIndex="name" width={200} />
                 </Table>
                 <div style={styles.pagination}>
-                  <Pagination 
+                  <Pagination
                     current={page}
                     pageSize={limit}
                     total={total}

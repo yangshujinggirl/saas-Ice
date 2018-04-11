@@ -224,7 +224,7 @@ Order=(dataIndex,order)=>{
                           <Option value="1">生效</Option>
                           <Option value="0">未生效</Option>
                           <Option value="2">失效</Option>
-                          
+
                         </Select>
                       </IceFormBinder>
                       <IceFormError name="status" />

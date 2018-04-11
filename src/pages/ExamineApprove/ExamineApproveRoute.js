@@ -6,7 +6,7 @@ export default {
   name:'进件审查审批',
   childRoutes: [
     {
-      path: 'detail/:id',
+      path: 'detail/:proInstId/:loanId',
       name: '进件审查审批',
       component: ExamineApprove.ExamineApprove
     },
