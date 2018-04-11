@@ -1,6 +1,11 @@
-import keyMirror from 'keymirror';
-import BaseConstants from '../../../base/constants/BaseConstant';
+import BaseConstant from '../../../base/constants/BaseConstant';
 
-export default Object.assign({}, BaseConstants, keyMirror({
+class LoanApplicationConstant extends BaseConstant{
+	constructor(){
+		super();
 
-}));
+		this.key = 'LOANAPPLICATION_'
+	}
+}
+
+export default new LoanApplicationConstant();
