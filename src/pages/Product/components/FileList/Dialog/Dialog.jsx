@@ -12,7 +12,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table } from '@icedesign/base';
+import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table,Feedback} from '@icedesign/base';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -249,16 +249,40 @@ export default class DiaLog extends Component {
 
       return arr;
   }
+
+  //判断清单名称是否已存在
+  nameRepeat=(value)=>{
+    let { data } =  this.props.fileData
+    let { list } = data;
+    let boolean = true;
+    list.map((item,i)=>{
+      if(value==item.name){
+        Feedback.toast.show({
+          type: 'error',
+          content: '该清单名称已存在！！',
+        });
+        boolean = false
+      }
+    })
+    if (!boolean) return
+  }
+
   testName=(id,data) =>{
     if(id){
       return(<label>{data.name}</label>)
     }else{
+      
       return(
         <span>
           <IceFormBinder
             name="name"
           >
-            <Input size="large" className="custom-input" placeholder="请输入清单名称"/>
+            <Input 
+              size="large" 
+              className="custom-input" 
+              placeholder="请输入清单名称"
+              onChange={this.nameRepeat}
+              />
           </IceFormBinder>
           <IceFormError name="name"/>
         </span>

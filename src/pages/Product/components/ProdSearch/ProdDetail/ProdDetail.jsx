@@ -39,7 +39,6 @@ export default class ProdDetail extends Component {
     this.state = {
      
     };
-    console.log(this.props.location.params)//id
   }
 
   addNewItem = () => {
@@ -57,6 +56,12 @@ export default class ProdDetail extends Component {
     let {actions,pageData, params} = this.props;
     this.props.actions.getDetail(params.id);//传参数，eg:ID
   }
+  //判断品牌／车型／车系
+  relatedType=(value, index, record)=>{
+   let itemPath= record.relatedPath.split('/');
+   return itemPath.length==3?'品牌':(itemPath.length==4?'车系':'车型')
+  }
+
   render() {
     let product = this.props.formData.product||[];//基本信息
     let percentageSetting = this.props.formData.percentageSetting ||[];//贷款成数设置
@@ -64,6 +69,7 @@ export default class ProdDetail extends Component {
     let repaymentMethodsSetting = this.props.formData.repaymentMethodsSetting ||[];//还款方式设置    
     let prepaymentSetting = this.props.formData.prepaymentSetting ||[];//提前还款设置
     let productScopes =this.props.formData.productScopes ||[]
+     
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -330,8 +336,8 @@ export default class ProdDetail extends Component {
                 className="table"
                 primaryKey="id"
               >
-                <Table.Column title="类型" dataIndex="relatedName"/>
-                <Table.Column title="名称" dataIndex="relatedPath1"/>
+                <Table.Column title="类型" cell={this.relatedType}/>
+                <Table.Column title="名称" dataIndex="relatedPathName"/>
               </Table>
             </div>
 

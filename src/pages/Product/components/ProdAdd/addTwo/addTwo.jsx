@@ -124,52 +124,58 @@ export default class addTwo extends Component {
             <legend className="pch-legend">
               <span className="pch-legend-legline"></span>按品牌/车系/车型
             </legend>
-            <div className="pch-condition">
-              <Row wrap>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <RadioGroup 
-                    dataSource={list[0]} 
-                    defaultValue={'1'}
-                    value={this.state.type}                    
-                    onChange={this.onTypeChange}
-                    />
-                </Col>
-              </Row>
-             
-              <Row wrap style={{marginBottom:"30px"}} >
-              <IceFormBinder
-                    name="CarTypeBrand"
-                  >
-                     <CarType {...this.props} data={this.state.type} CarData={this.state.value} getCarList={this.getCarList.bind(this)} changeCarName={this.changeCarName.bind(this)}/>
-                  </IceFormBinder>
-                  <IceFormError name="CarTypeBrand" />
-               
+            <div className="pch-form">
+              <Form
+                size="large"
+                labelAlign="left">
+                <div className="pch-form">
+                <Row wrap>
+                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                    <RadioGroup 
+                      dataSource={list[0]} 
+                      defaultValue={'1'}
+                      value={this.state.type}                    
+                      onChange={this.onTypeChange}
+                      />
+                  </Col>
+                </Row>
+              
+                <Row wrap style={{marginBottom:"30px"}} >
+                <IceFormBinder
+                      name="CarTypeBrand"
+                    >
+                      <CarType {...this.props} data={this.state.type} CarData={this.state.value} getCarList={this.getCarList.bind(this)} changeCarName={this.changeCarName.bind(this)}/>
+                    </IceFormBinder>
+                    <IceFormError name="CarTypeBrand" />
+                
 
-              </Row>
-          </div>
-              {/*<legend className="pch-legend">
-              <span className="pch-legend-legline"></span>按集团/渠道/厅店
-            </legend>
-            <div className="pch-condition">
-             <Row wrap >
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <RadioGroup 
-                    dataSource={list[1]}
-                    defaultValue={"carGroup"} 
-                    value={this.state.value2}                    
-                    onChange={this.onNestChange}
-                    />
-                </Col>
-              </Row>
-             
-              <Row wrap style={{marginBottom:"30px"}} >
-               <OrgType {...this.props} data={this.state.value2}/> 
-              </Row>
-            </div>*/}
-           
-           
-            <div className="next-btn-box">
-              <Button type="secondary" size="large" onClick={this.onsubmit}>下一步</Button>
+                </Row>
+            </div>
+                {/*<legend className="pch-legend">
+                <span className="pch-legend-legline"></span>按集团/渠道/厅店
+              </legend>
+              <div className="pch-condition">
+              <Row wrap >
+                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                    <RadioGroup 
+                      dataSource={list[1]}
+                      defaultValue={"carGroup"} 
+                      value={this.state.value2}                    
+                      onChange={this.onNestChange}
+                      />
+                  </Col>
+                </Row>
+              
+                <Row wrap style={{marginBottom:"30px"}} >
+                <OrgType {...this.props} data={this.state.value2}/> 
+                </Row>
+              </div>*/}
+            
+            
+              <div className="next-btn-box">
+                <Button type="secondary" size="large" onClick={this.onsubmit}>下一步</Button>
+              </div>
+              </Form>
             </div>
           </IceContainer>
         </div>

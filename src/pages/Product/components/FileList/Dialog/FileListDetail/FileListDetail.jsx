@@ -41,7 +41,7 @@ export default class DiaLog extends Component {
     		required
 	        name={`collectionDetails[${index}].fileName`}
 	        >
-	        	<Input size="large" placeholder="资料名称" />
+	        	<Input size="large" placeholder="材料名称" />
 	        </IceFormBinder>
 	    </div>
 	);

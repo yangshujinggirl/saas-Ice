@@ -171,8 +171,54 @@ export default class CreateActivityForm extends Component {
       // 提交当前填写的数据
       value.effectiveDate = value.time[0];
       value.expirationDate = value.time[1]
-      // 执行年利率范围 和 最小、最大执行年利率比较
+      
+      //输入框校验
       let boolean = true;
+      //申请金额范围 principalAmountMin
+      if(Number(value.principalAmountMin) < 0 || Number( value.principalAmountMax) < 0){
+        Feedback.toast.show({
+          type: 'error',
+          content: '申请金额不能小于0',
+        });
+        boolean = false
+      }else if(Number(value.principalAmountMin) > Number( value.principalAmountMax)){
+        Feedback.toast.show({
+          type: 'error',
+          content: '申请金额范围前者不能大于后者',
+        });
+        boolean = false
+      }
+
+      //期限范围 loanTermRangeMin
+      if(Number(value.loanTermRangeMin) < 0 || Number( value.loanTermRangeMax) < 0){
+        Feedback.toast.show({
+          type: 'error',
+          content: '期限范围不能小于0',
+        });
+        boolean = false
+      }else if(Number(value.loanTermRangeMin) > Number( value.loanTermRangeMax)){
+        Feedback.toast.show({
+          type: 'error',
+          content: '期限范围前者不能大于后者',
+        });
+        boolean = false
+      }
+      // 贷款比率 
+      if(Number(value.loanPercentageMin) < 0 || Number( value.loanPercentageMax) < 0){
+        Feedback.toast.show({
+          type: 'error',
+          content: '贷款比率不能小于0',
+        });
+        boolean = false
+      }else if(Number(value.loanPercentageMin) > Number( value.loanPercentageMax)){
+        Feedback.toast.show({
+          type: 'error',
+          content: '贷款比率前者不能大于后者',
+        });
+        boolean = false
+      }
+
+      // 执行年利率范围 和 最小、最大执行年利率比较
       value.ratesSetting && value.ratesSetting.map((item) => {
         console.log(item);
         if (item.interestRatesRangeMax) {
@@ -196,6 +242,37 @@ export default class CreateActivityForm extends Component {
           }
         }
       })
+      //执行年利率范围
+      if(Number(value.interestRatesRangeMin) < 0 || Number(value.interestRatesRangeMax) < 0 ){
+        Feedback.toast.show({
+          type: 'error',
+          content: '执行年利率不能小于0',
+        });
+        boolean = false
+      }else if(Number(value.interestRatesRangeMin) > Number(value.interestRatesRangeMax)){
+        Feedback.toast.show({
+          type: 'error',
+          content: '执行年利率范围前者不能大于后者',
+        });
+        boolean = false
+      }
+      //最小提前还款金额
+      if(Number(value.prepaymentAmountMin)<0){
+        Feedback.toast.show({
+          type: 'error',
+          content: '最小提前还款金额不能小于0',
+        });
+        boolean = false
+      }
+      //最早提前还款期数
+      if(Number(value.prepaymentPeriodsLimit)<0){
+        Feedback.toast.show({
+          type: 'error',
+          content: '最早提前还款期数不能小于0',
+        });
+        boolean = false
+      }
+
       if (!boolean) return
       //
       let AllValue = this.AllValue(value);
@@ -204,8 +281,10 @@ export default class CreateActivityForm extends Component {
     });
   };
   componentDidMount() {
-    this.props.actions.prodActions();
-    this.props.actions.filesearch()
+    let { actions } = this.props
+    actions.search();
+    actions.prodActions();
+    actions.filesearch()
   }
   addNewItem(key) {
     let newData = this.state.value[key];
@@ -253,7 +332,7 @@ export default class CreateActivityForm extends Component {
     return (
       <div>
         <Row wrap>
-          <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+          <Col xxs={24} xs={12} l={8} >
             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>最小提前还款金额:</span>}>
               <IceFormBinder
                 name="prepaymentAmountMin"
@@ -266,22 +345,22 @@ export default class CreateActivityForm extends Component {
             <div> <IceFormError name="prepaymentAmountMin" /></div>
            </FormItem>
           </Col>
-          <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-            <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>早提前还款期数:</span>}>
+          <Col xxs={24} xs={12} l={8} >
+            <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>最早提前还款期数:</span>}>
               <IceFormBinder
                 name="prepaymentPeriodsLimit"
                 required
-                message="早提前还款期数必填"
+                message="最早提前还款期数必填"
               >
 
-                <Input size="large" placeholder="早提前还款期数" className="custom-input" />
+                <Input size="large" placeholder="最早提前还款期数" className="custom-input" />
               </IceFormBinder>
               <div><IceFormError name="prepaymentPeriodsLimit" /></div>
             </FormItem>
           </Col>
         </Row>
         <Row wrap>
-          <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+          <Col xxs={24} xs={12} l={8} >
             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>违约金计算基础:</span>}>
               <IceFormBinder
                 name="penaltyBasicAmount"
@@ -305,7 +384,7 @@ export default class CreateActivityForm extends Component {
               <div><IceFormError name="penaltyBasicAmount" /></div>
             </FormItem>
           </Col>
-          <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+          <Col xxs={24} xs={12} l={8} >
             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>违约金计算方式:</span>}>
               <IceFormBinder
                 name="penaltyCalculationType"
@@ -366,18 +445,33 @@ export default class CreateActivityForm extends Component {
       }
     })
   };
-  
+
 //还款周期全选
 repaymentPeriodFrequency = (data) => {
   data.map((item, i) => {//
     if (item == 'ALL_CHOICE') {
       this.state.value.repaymentPeriodFrequency = ["ALL_CHOICE","MONTH","SEASON","YEAR","ONCE","TWO_WEEK","HALF_YEAR"]
-    }else{
-      this.state.value.repaymentPeriodFrequency = ["MONTH"]
     }
   })
 }
-  
+checkOnChange=(value)=>{
+  console.log(value)
+}
+//产品名称是否已存在
+prdNameChange = (value) => {
+  let { list = [] } = this.props.pageData;
+  let boolean = true;
+  list.map((item,i)=>{
+    if(item.name==value){
+      Feedback.toast.show({
+        type: 'error',
+        content: '产品名称已存在',
+      });
+      boolean = false
+    }
+    if(!boolean) return
+  })
+}
   
   render() {
     let data = this.props.prodActions || {}
@@ -405,7 +499,7 @@ repaymentPeriodFrequency = (data) => {
               labelAlign="left">
               <div>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资金方:</span>}>
                       <IceFormBinder
                         name="tenantId"
@@ -416,7 +510,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="tenantId" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品名称:</span>}>
                       <IceFormBinder
                         name="name"
@@ -425,12 +519,13 @@ repaymentPeriodFrequency = (data) => {
                           required
                           message="产品名称必填"
                           className="custom-input"
+                          onChange={this.prdNameChange}
                         />
                       </IceFormBinder>
                       <div><IceFormError name="name" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>合同显示名称:</span>}>
                       <IceFormBinder
                         name="contractDisplayName"
@@ -446,7 +541,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品类型:</span>}>
                       <IceFormBinder
                         name="productType"
@@ -471,7 +566,7 @@ repaymentPeriodFrequency = (data) => {
                     </FormItem>
                   </Col>
 
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资料收取清单:</span>}>
                       <IceFormBinder
                         name="collectionDetailListId"
@@ -495,7 +590,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="collectionDetailListId" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限:</span>}>
                       <IceFormBinder
                         name="time"
@@ -510,7 +605,7 @@ repaymentPeriodFrequency = (data) => {
                 </Row>
                 <Row wrap>
 
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>允许贴息:</span>}>
                       <IceFormBinder
                         name="isPermittedDiscount"
@@ -531,7 +626,7 @@ repaymentPeriodFrequency = (data) => {
                       <div> <IceFormError name="isPermittedDiscount" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>状态:</span>}>
                       <IceFormBinder
                         name="status"
@@ -553,7 +648,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="status" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>尾款产品:</span>}>
                       <IceFormBinder
                         name="isRetainage"
@@ -576,7 +671,7 @@ repaymentPeriodFrequency = (data) => {
                 </Row>
 
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>贷款用途:</span>}>
                       <IceFormBinder name="purposeOfLoan" >
                         <CheckboxGroup
@@ -593,7 +688,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>担保方式:</span>}>
                       <IceFormBinder name="guaranteeMethodType" >
                         <CheckboxGroup
@@ -612,7 +707,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>支付方式:</span>}>
                       <IceFormBinder
                         name="paymentOfLoan"
@@ -638,7 +733,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span>产品描述:</span>}>
                       <IceFormBinder
                         name="description"
@@ -655,7 +750,7 @@ repaymentPeriodFrequency = (data) => {
           </legend>
               <div className="pch-product-sep">
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>贷款期限变更:</span>}>
                       <IceFormBinder name="loanTermChange" >
                         <CheckboxGroup
@@ -674,7 +769,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>申请金额范围(元):</span>}>
                       <IceFormBinder
                         name="principalAmountMin"
@@ -695,7 +790,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="principalAmountMax" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>期限范围(月):</span>}>
                       <IceFormBinder
                         name="loanTermRangeMin"
@@ -715,7 +810,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="loanTermRangeMax" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>贷款比率(%):</span>}>
                       <IceFormBinder
                         name="loanPercentageMin"
@@ -749,7 +844,7 @@ repaymentPeriodFrequency = (data) => {
           </legend>
               <div className="pch-product-sep">
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={12} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={12} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>贷款利率变更:</span>}>
                       <IceFormBinder name="interestLoanRateChange" >
                         <CheckboxGroup
@@ -768,7 +863,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>定价利率规则:</span>}>
                       <IceFormBinder
                         name="interestRateRules"
@@ -791,7 +886,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="interestRateRules" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>利率模式:</span>}>
                       <IceFormBinder
                         name="interestRateModel"
@@ -817,7 +912,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>执行年利率范围(%):</span>}>
                       <IceFormBinder
                         name="interestRatesRangeMin"
@@ -839,7 +934,7 @@ repaymentPeriodFrequency = (data) => {
                       <div><IceFormError name="interestRatesRangeMax" /></div>
                     </FormItem>
                   </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>利率基准日:</span>}>
                       <IceFormBinder
                         name="interestRateBaseDate"
@@ -876,9 +971,9 @@ repaymentPeriodFrequency = (data) => {
               </legend>
               <div className="pch-product-sep">
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={12} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={12} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款账户变更:</span>}>
-                      <IceFormBinder name="repaymentAccountChange" type="array">
+                      <IceFormBinder name="repaymentAccountChange" >
                         <CheckboxGroup
                           className="next-form-text-align"
                         >
@@ -896,13 +991,14 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={12} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={12} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款周期:</span>}>
                       <IceFormBinder name="repaymentPeriodFrequency" >
                         <CheckboxGroup
                           className="next-form-text-align"
+                          onChange={this.checkOnChange}
                         >
-                          <Checkbox value="ALL_CHOICE" onChange={this.repaymentPeriodFrequency(this.state.value.repaymentPeriodFrequency)}>全选</Checkbox>
+                          <Checkbox value="ALL_CHOICE" key= {0} onChange={this.repaymentPeriodFrequency(this.state.value.repaymentPeriodFrequency)}>全选</Checkbox>                          
                           {data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
                             return (
                               <Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
@@ -918,7 +1014,7 @@ repaymentPeriodFrequency = (data) => {
                 </Row>
 
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款日变更:</span>}>
                       <IceFormBinder name="repaymentDateChange" >
                         <RadioGroup
@@ -936,7 +1032,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>宽限期变更:</span>}>
                       <IceFormBinder name="gracePeriodChange" >
                         <RadioGroup
@@ -954,7 +1050,7 @@ repaymentPeriodFrequency = (data) => {
                   </Col>
                 </Row>
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款方式变更:</span>}>
                       <IceFormBinder name="repaymentMethodChange" >
                         <RadioGroup
@@ -979,7 +1075,7 @@ repaymentPeriodFrequency = (data) => {
                   removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
                 />
                 <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>提前还款:</span>}>
                       <IceFormBinder name="isEarlyRepaymentAllowed" >
                         <RadioGroup
@@ -999,7 +1095,7 @@ repaymentPeriodFrequency = (data) => {
                 {this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
 
                 <div className="next-btn-box">
-                  <Button type="secondary" size="large" onClick={this.submit}>下一步</Button>
+                  <Button  size="large" onClick={this.submit}>下一步</Button>
                 </div>
               </div>
             </Form>

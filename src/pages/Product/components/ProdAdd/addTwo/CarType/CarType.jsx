@@ -19,7 +19,13 @@ const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
 
-const arrayRightData = [];//全局
+//存储选中的数据
+let arrayRightData = {
+    chexing:[],
+    chexi:[],
+    pinpai:[]
+  };//全局
+const testarray = []; //右侧即将要渲染的数据
 
 const CARTYPES = {
   '1': {
@@ -45,13 +51,21 @@ export default class CarType extends Component {
     this.rowSelection = {
       // 表格发生勾选状态变化时触发
       onChange: (ids,array) => {
-        let arra = []
-        arrayRightData.push(...array)
+        let types = this.props.data;
+        let arra = [];
+
+        if(types='1'){
+          arrayRightData.pinpai = [...array]
+        }else if(types='2'){
+          arrayRightData.chexi = [...array]
+        }else{
+          arrayRightData.cehxing = [...array]
+        }
+        
         this.setState({
           selectDate: arrayRightData
         })
         
-        console.log('ids', array);
         this.setState({
           selectedRowKeys: ids,
         });
@@ -108,18 +122,20 @@ export default class CarType extends Component {
   onRight(){
     let CarData = this.props.CarData || {};
     CarData.productScopes = []
-    let testarray = []
-    for(var i=0;i<arrayRightData.length;i++){
-      　　var flag = true;
-      　　for(var j=0;j<testarray.length;j++){
-      　　　　if(arrayRightData[i].id == testarray[j].id){
-      　　　　　　flag = false;
-      　　　　};
-      　　}; 
-      　　if(flag){
-        testarray.push(arrayRightData[i]);
-      　　};
-    };
+    for (var key in arrayRightData){
+      for(var i=0;i<arrayRightData[key].length;i++){
+        　　var flag = true;
+        　　for(var j=0;j<testarray.length;j++){
+        　　　　if(arrayRightData[key][i].id == testarray[j].id){
+        　　　　　　flag = false;
+        　　　　};
+        　　}; 
+        　　if(flag){
+          testarray.push(arrayRightData[key][i]);
+        　　};
+      };
+    }
+    
       //去重后渲染
     let arra = testarray
       this.setState({
@@ -127,10 +143,11 @@ export default class CarType extends Component {
       })
 
     //右侧提交数据
-    testarray.map((item,i)=>{
+    arra.map((item,i)=>{
+      console.log(item)
       CarData.productScopes.push({
         relatedId:item.id,
-        relatedName:item.type,
+        relatedName:item.type=='品牌'?item.name:(item.type=='车系'?item.name:item.name),
         relatedPath:'',
         relatedPathName:'',
         type:'CARS'
@@ -199,7 +216,7 @@ changePage = (currentPage) => {
                 <IceFormError name="name" />
               </Col>
               <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <button style={styles.btns} type='submit' onClick={this.searchCar.bind(this)}>
+                <button style={styles.btns}  onClick={this.searchCar.bind(this)}>
                   查询
                 </button>
               </Col>

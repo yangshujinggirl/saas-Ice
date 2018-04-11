@@ -70,20 +70,12 @@ export default class FileList extends Component {
   componentDidMount() {
     let { actions } = this.props;
     actions.filesearch();
-    console.log(this.props)
-  }
-  ;
-  componentDidUpdate(dataSource) {
-    // this.setState({
-    //   dataSource
-    // })
   }
 
   //查询
   onSubmit = (data) => {
     let { actions } = this.props;
     this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
       if (error) {
         // 处理表单报错
         return;
@@ -93,7 +85,6 @@ export default class FileList extends Component {
     });
   };
   onRowClick = (record, index, e) => {
-    console.log(record, index, e);
   };
 
   //操作
@@ -131,7 +122,6 @@ export default class FileList extends Component {
   changePage = (currentPage) => {
     let { actions } = this.props;
     actions.filesearch({ page: currentPage });
-    //this.props.actions.search({page:currentPage});
   };
   render() {
     let dataSource = this.state.dataSource
@@ -146,13 +136,13 @@ export default class FileList extends Component {
       item.collectionDetails && item.collectionDetails.map((ditem, j) => {
         temp.push(ditem.fileName);
       })
-      item.fileNamestr = temp.join(';')
+      item.fileNamestr = temp.join(' ; ')
     })
     let map = new Map()
     return (
       <IceContainer className="pch-container">
         <legend className="pch-legend" >
-          <span className="pch-legend-legline"></span>资料清单
+          <span className="pch-legend-legline"></span>资料查询
         </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
