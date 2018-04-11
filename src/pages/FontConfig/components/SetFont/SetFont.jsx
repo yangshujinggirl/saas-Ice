@@ -51,7 +51,7 @@ export default class setFont extends Component {
                 orderId:43,
                 screenSchemeId:'',
                 type: "",
-                options: [],
+                options: [{value: '',label: ""}],                
                 length: 30,
             },
             arraList: [5, 6, 7, 8, 9],
@@ -416,7 +416,7 @@ export default class setFont extends Component {
                 return 
             }
             this.setState({
-                dialogTwo: false
+                dialogTwo: false,
             })
             FontConfigReq.submitModifyCode(fields,id,fileId).then((data) => {
                 if (data.code == 200) {
@@ -634,17 +634,20 @@ export default class setFont extends Component {
 // 点击添加自定义字段执行的函数
         const handleAddCode = (index) => {
             let data = this.state.fields;
+            // 字段必填选项等设置为空
+            let value = this.state.value;
             data.fieldset = this.state.resData.fieldset[index].name;
             data.name = this.state.resData.fieldset[index].name;
             // 下拉框初始化值
             data.type = '';
             data.options = [{ label: '', value: '' }];
-            
             data.fieldsetOrder = index;
+            value = [];
             this.setState({
                 dialogOne: true,
                 fields: data,
-                boolSelect: false
+                boolSelect: false,
+                value
             })
         }
         // 自定义字段添加下拉框执行的函数
@@ -798,9 +801,16 @@ export default class setFont extends Component {
             // reqData.fieldset[index].fields[inj].label
             this.state.editeCodeIndex.index = index;
             this.state.editeCodeIndex.inj = inj;
-            this.setState({
-                dialogTwo: true,
-            })
+            if (this.state.resData.fieldset[index].fields[inj].isCustom) { 
+                this.setState({
+                    dialogOne: true
+                })
+            } else {
+                this.setState({
+                    dialogTwo: true,
+                })
+            }
+            
         }
 
         const handlePageName = (e) => {

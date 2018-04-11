@@ -201,7 +201,7 @@ export default class AdFont extends Component {
                 </legend>
                     {
                         <div>
-                            <div className="diffence" style={{marginTop:20}}>字段（必选）</div>
+                            <div className="diffence" style={{marginTop:20}}>字段（已锁定）</div>
                             {/* <DragFields
                                 isFixed={true}
                                 data={this.state.isFixed}

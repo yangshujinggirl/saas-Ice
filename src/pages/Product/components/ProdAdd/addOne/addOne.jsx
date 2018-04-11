@@ -460,7 +460,8 @@ repaymentPeriodFrequency = (data,e) => {
       })
   } else {
     let index = data.findIndex((data) => data == "ALL_CHOICE")
-    data.splice(index,1)
+    index != -1 ? data.splice(index, 1) : '';
+   
     values.repaymentPeriodFrequency = data
       this.setState({
           value:values
