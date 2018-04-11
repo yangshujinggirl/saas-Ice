@@ -126,7 +126,8 @@
   top: 0px;
   position: relative;
 }
-.next-form-left .next-form-item-control {
+.item .next-form-left .next-form-item-control {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
 }
