@@ -247,8 +247,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     );
                   }
                   const linkProps = {};
-                  if (itemData.target == '_blank') {
-                    linkProps.href = navData.to;
+                  if (navData.target == '_blank') {
+                    linkProps.href = this.processLinkWithOwnerId(navData.value);
                     linkProps.target = '_blank';
                   } else if (navData.external) {
                     linkProps.href = navData.value;
@@ -260,8 +260,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                       <Link {...linkProps}>
                         <span>
                           {navData.icon ? (
-                            <FoundationSymbol size="small" type={navData.icon} />
-                          ) : null}
+                              <i className="icon icon-menu" dangerouslySetInnerHTML={{ __html: navData.icon }}></i>
+                            ) : null}
                           <span className="ice-menu-collapse-hide">
                             {navData.name}
                           </span>

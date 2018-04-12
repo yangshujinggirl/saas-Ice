@@ -22,6 +22,7 @@
     "axios": "^0.17.1",
     "bizcharts": "latest",
     "classnames": "^2.2.5",
+    "core-js": "^2.5.5",
     "enquire-js": "^0.1.2",
     "foundation-symbol": "^0.1.0",
     "immutability-helper": "^2.6.6",

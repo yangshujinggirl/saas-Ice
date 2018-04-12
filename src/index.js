@@ -1,3 +1,7 @@
+// import 'core-js/es6/map';
+// import 'core-js/es6/set';
+// import 'core-js/es6/object';
+// import 'core-js/es6';
 
 import ReactDOM from 'react-dom';
 // 载入默认全局样式 normalize 、.clearfix 和一些 mixin 方法等
