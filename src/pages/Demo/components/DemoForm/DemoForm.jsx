@@ -14,6 +14,6 @@ export default class DemoForm extends Component {
       <div className="demo-form-page">
         <FilterTable />
       </div>
-    );
+      );
   }
 }

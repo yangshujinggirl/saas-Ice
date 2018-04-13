@@ -474,7 +474,7 @@ repaymentPeriodFrequency = (data,e) => {
       this.state.value.repaymentPeriodFrequencySubmit = allDate
   console.log(this.state.value.repaymentPeriodFrequencySubmit);
 }
-checkOnChange=(value,e)=>{
+checkOnChange=(value,e) =>{
   console.log(value)
   // value.map((item,i)=>{
   //   if(item == 'ALL_CHOICE'){
@@ -496,7 +496,7 @@ prdNameChange = (rule,value,callback) => {
     callback('产品名称必填')
     return;
   }
-  ProductReq.productNameRepeat(value).then((res)=>{
+  ProductReq.productNameRepeat(value).then((res) =>{
     if(res.data){
       callback("产品名已存在")
     }
@@ -506,7 +506,6 @@ prdNameChange = (rule,value,callback) => {
   
   render() {
     let data = this.props.prodActions || {}
-    // data = data.data || {}
     let fileData = this.props.fileData || {}
     fileData = fileData.data || {}
     fileData = fileData.list || []
