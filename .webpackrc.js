@@ -6,8 +6,8 @@ const { resolve } = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
-var NODE_ENV = process.env.NODE_ENV || 'development';
-var __DEV__ = NODE_ENV !== 'production';
+var NODE_ENV = process.env.NODE_ENV || 'DEVELOPMENT';
+var __DEV__ = NODE_ENV !== 'PRODUCTION';
 
 module.exports = {
     // output: {
