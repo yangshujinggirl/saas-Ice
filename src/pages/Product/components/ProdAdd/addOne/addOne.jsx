@@ -372,187 +372,186 @@ export default class CreateActivityForm extends Component {
 		})
 	};
 
-	//还款周期全选
-	repaymentPeriodFrequency = (data, e) => {
-		let values = this.state.value
-		if (e.target.value == 'ALL_CHOICE') {
-			values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
-			if (data.length > 5) {
-				values.repaymentPeriodFrequency = ["MONTH"]
-			}
-			this.setState({
-				value: values
-			})
-		} else {
-			let index = data.findIndex((data) => data == "ALL_CHOICE")
-			data.splice(index, 1)
-			values.repaymentPeriodFrequency = data
-			this.setState({
-				value: values
-			})
-		}
-		let allDate = [...values.repaymentPeriodFrequency];
-		let index = allDate.findIndex((data) => data == "ALL_CHOICE");
-		index != -1 ? allDate.splice(index, 1) : ''
-		this.state.value.repaymentPeriodFrequencySubmit = allDate
-		console.log(this.state.value.repaymentPeriodFrequencySubmit);
-	}
-	checkOnChange = (value, e) => {
-		console.log(value)
-	}
+//还款周期全选
+repaymentPeriodFrequency = (data,e) => {
+  let values = this.state.value
+  if (e.target.value == 'ALL_CHOICE') {
+    values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
+    if (data.length > 5) {
+    values.repaymentPeriodFrequency = ["MONTH"]
+    }
+      this.setState({
+        value:values
+      })
+  } else {
+    let index = data.findIndex((data) => data == "ALL_CHOICE")
+    index != -1 ? data.splice(index, 1) : '';
+   
+    values.repaymentPeriodFrequency = data
+      this.setState({
+          value:values
+      })
+  }
+    let allDate = [...values.repaymentPeriodFrequency];
+    let index = allDate.findIndex((data) => data == "ALL_CHOICE");
+      index!=-1 ? allDate.splice(index,1) :''
+      this.state.value.repaymentPeriodFrequencySubmit = allDate
+  console.log(this.state.value.repaymentPeriodFrequencySubmit);
+}
+checkOnChange=(value,e) =>{
+  
+}
 
-	//产品名称是否已存在
-	prdNameChange = (rule, value, callback) => {
-		if (rule.required && !value) {
-			callback('产品名称必填')
-			return;
-		}
-		ProductReq.productNameRepeat(value).then((res) => {
-			if (res.data) {
-				callback("产品名已存在")
-			}
-			callback()
-		})
+//产品名称是否已存在
+prdNameChange = (rule, value, callback) => {
+	if (rule.required && !value) {
+		callback('产品名称必填')
+		return;
 	}
+	ProductReq.productNameRepeat(value).then((res) => {
+		if (res.data) {
+			callback("产品名已存在")
+		}
+		callback()
+	})
+}
 
-	//申请金额范围 
-	principalAmountMinChange = (rule, value, callback) => {
-		if (rule.required && !value) {
-			callback('申请金额必填');
-			return;
-		}
-		if (value < 0) {
-			callback('申请金额不能小于0')
-		}
-		callback();
+//申请金额范围 
+principalAmountMinChange = (rule, value, callback) => {
+	if (rule.required && !value) {
+		callback('申请金额必填');
+		return;
 	}
-	principalAmountMaxChange = (rule, value, callback) => {
-		let min = this.state.value;
+	if (value < 0) {
+		callback('申请金额不能小于0')
+	}
+	callback();
+}
+principalAmountMaxChange = (rule, value, callback) => {
+	let min = this.state.value;
 
-		if (rule.required && !value) {
-			callback('申请金额必填');
-			return;
-		}
-		if (value < 0) {
-			callback('申请金额不能小于0')
-		}
-		if(Number(value ) < min.principalAmountMin){
-			callback('必须大于前者')
-		}
-		callback();
+	if (rule.required && !value) {
+		callback('申请金额必填');
+		return;
 	}
+	if (value < 0) {
+		callback('申请金额不能小于0')
+	}
+	if(Number(value ) < min.principalAmountMin){
+		callback('必须大于前者')
+	}
+	callback();
+}
 
-	//期限范围
-	loanTermRangeMinChange = (rule, value, callback) => {
-		if (rule.required && !value) {
-			callback('期限范围必填');
-			return;
-		}
-		if (value < 0) {
-			callback('期限范围不能小于0')
-		}
-		callback();
+//期限范围
+loanTermRangeMinChange = (rule, value, callback) => {
+	if (rule.required && !value) {
+		callback('期限范围必填');
+		return;
 	}
-	loanTermRangeMaxChange = (rule, value, callback) => {
-		if (rule.required && !value) {
-			callback('期限范围必填');
-			return;
-		}
-		if (value < 0) {
-			callback('期限范围不能小于0')
-		}
-		callback();
+	if (value < 0) {
+		callback('期限范围不能小于0')
 	}
+	callback();
+}
+loanTermRangeMaxChange = (rule, value, callback) => {
+	if (rule.required && !value) {
+		callback('期限范围必填');
+		return;
+	}
+	if (value < 0) {
+		callback('期限范围不能小于0')
+	}
+	callback();
+}
 
-	// 贷款比率
-	loanPercentageMinChange = (rule, value, callback) => {
-		if (rule.required && !value) {
-			callback('贷款比率必填');
-			return;
-		}
-		if (value < 0) {
-			callback('比率范围0～100内')
-		}
-		callback();
+// 贷款比率
+loanPercentageMinChange = (rule, value, callback) => {
+	if (rule.required && !value) {
+		callback('贷款比率必填');
+		return;
 	}
-	loanPercentageMaxChange = (rule, value, callback) => {
-		let min = this.state.value
-		if (rule.required && !value) {
-			callback('贷款比率必填');
-			return;
-		}
-		if (value < 0 || value > 100) {
-			callback('比率范围0～100内')
-		}
-		if(Number(value ) < min.loanPercentageMin){
-			callback('必须大于前者')
-		}
-		callback();
+	if (value < 0) {
+		callback('比率范围0～100内')
 	}
+	callback();
+}
+loanPercentageMaxChange = (rule, value, callback) => {
+	let min = this.state.value
+	if (rule.required && !value) {
+		callback('贷款比率必填');
+		return;
+	}
+	if (value < 0 || value > 100) {
+		callback('比率范围0～100内')
+	}
+	if(Number(value ) < min.loanPercentageMin){
+		callback('必须大于前者')
+	}
+	callback();
+}
 
-	//最小提前还款金额
-	prepaymentAmountMinChange = (rule, value, callback) => {
-		if (rule.required && !value) {
-			callback('最小提前还款金额必填');
-			return;
-		}
-		if (value < 0) {
-			callback('最小提前还款金额不能小于0');
-		}
-		callback();
+//最小提前还款金额
+prepaymentAmountMinChange = (rule, value, callback) => {
+	if (rule.required && !value) {
+		callback('最小提前还款金额必填');
+		return;
 	}
+	if (value < 0) {
+		callback('最小提前还款金额不能小于0');
+	}
+	callback();
+}
 
-	//最早提前还款期数
-	prepaymentPeriodsLimitChange = (rule, value, callback) => {
-		let min = this.state.value;
-		this.setState({
-			value:min
-		})
-		if (rule.required && !value) {
-			callback('最早提前还款期数必填');
-			return;
-		}
-		if (value < 0) {
-			callback('最早提前还款期数小于0');
-		}
-		callback();
+//最早提前还款期数
+prepaymentPeriodsLimitChange = (rule, value, callback) => {
+	let min = this.state.value;
+	this.setState({
+		value:min
+	})
+	if (rule.required && !value) {
+		callback('最早提前还款期数必填');
+		return;
 	}
+	if (value < 0) {
+		callback('最早提前还款期数小于0');
+	}
+	callback();
+}
 
-	//执行年利率
-	interestRatesRangeMinChange=(rule, value, callback)=>{
-		if (rule.required && !value) {
-			callback('执行年利率必填');
-			return;
-		}
-		if (value < 0 || value > 100) {
-			callback('利率范围0～100内');
-		}
-		callback();
+//执行年利率
+interestRatesRangeMinChange=(rule, value, callback)=>{
+	if (rule.required && !value) {
+		callback('执行年利率必填');
+		return;
 	}
-	interestRatesRangeMaxChange=(rule, value, callback)=>{
-		let allValues = this.state.value;
+	if (value < 0 || value > 100) {
+		callback('利率范围0～100内');
+	}
+	callback();
+}
+interestRatesRangeMaxChange=(rule, value, callback)=>{
+	let allValues = this.state.value;
 
-		if (rule.required && !value) {
-			callback('执行年利率必填');
-			return;
-		}
-		if (value < 0 || value > 100) {
-			callback('利率范围0～100内');
-		}
-		if(Number(value ) < allValues.interestRatesRangeMin){
-			callback('必须大于前者');
-		}
-		callback();
+	if (rule.required && !value) {
+		callback('执行年利率必填');
+		return;
 	}
-	
-	render() {
-		let data = this.props.prodActions || {}
-		data = data.data || {}
-		let data1 = this.props.fileData || {}
-		data1 = data1.data || {}
-		data1 = data1.list || []
-		console.log(data1)
-		let collData = this.Option(data1)
+	if (value < 0 || value > 100) {
+		callback('利率范围0～100内');
+	}
+	if(Number(value ) < allValues.interestRatesRangeMin){
+		callback('必须大于前者');
+	}
+	callback();
+}
+  
+  render() {
+    let data = this.props.prodActions || {}
+    let fileData = this.props.fileData || {}
+    fileData = fileData.data || {}
+    fileData = fileData.list || []
+    let collData = this.Option(fileData);
 
 		return (
 			<IceContainer className="pch-container">
@@ -854,7 +853,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.principalAmountMinChange}
 													>
-														<Input size="large" style={{ width: '120px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="principalAmountMin" /></div>
 												</div>
@@ -865,7 +864,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.principalAmountMaxChange}
 													>
-														<Input size="large" style={{ width: '120px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 
 													</IceFormBinder>
 													<div ><IceFormError name="principalAmountMax" /></div>
@@ -882,7 +881,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.loanTermRangeMinChange}
 													>
-														<Input size="large" style={{ width: '120px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="loanTermRangeMin" /></div>
 												</div>
@@ -893,7 +892,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.loanTermRangeMaxChange}
 													>
-														<Input size="large" style={{ width: '120px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="loanTermRangeMax" /></div>
 												</div>
@@ -909,7 +908,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.loanPercentageMinChange}
 													>
-														<Input size="large" style={{ width: '120px', height: '34px' }} />
+														<Input size="large" style={{width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="loanPercentageMin" /></div>
 												</div>
@@ -921,7 +920,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.loanPercentageMaxChange}
 													>
-														<Input size="large" style={{ width: '120px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 
 													</IceFormBinder>
 													<div><IceFormError name="loanPercentageMax" /></div>
@@ -1020,7 +1019,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.interestRatesRangeMinChange}
 													>
-														<Input size="large" style={{ width: '80px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="interestRatesRangeMin" /></div>
 												</div>
@@ -1031,7 +1030,7 @@ export default class CreateActivityForm extends Component {
 														required
 														validator={this.interestRatesRangeMaxChange}
 													>
-														<Input size="large" style={{ width: '80px', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="interestRatesRangeMax" /></div>
 												</div>
@@ -1104,7 +1103,6 @@ export default class CreateActivityForm extends Component {
 													value={this.state.value.repaymentPeriodFrequency}
 												>
 
-													<Checkbox value="ALL_CHOICE" key={0} >全选</Checkbox>
 													{data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
 														return (
 															<Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
@@ -1211,6 +1209,7 @@ export default class CreateActivityForm extends Component {
 				);
 			}
 		}
+	
 		
 const styles = {
 					container: {

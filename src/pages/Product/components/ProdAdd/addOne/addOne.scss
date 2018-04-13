@@ -118,14 +118,17 @@
   padding: 30px 0px 20px 0px
 }
 .box{
+    width: 80%;
     overflow: hidden;
     .box1{
         float: left;
+        width: 40%;
     }
     .lx-mid-line{
         float: left;
     }
     .box2{
         float: left;
+        width: 40%;
     }
 }
