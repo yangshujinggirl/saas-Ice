@@ -1,3 +1,9 @@
+.default-font {
+  font-size: 13px;
+  color: #127FD8;
+  letter-spacing: 0;
+}
+
 .create-activity-form {
   .container {
     // display: table;
@@ -37,20 +43,13 @@
           }
           .icons {
             i {
+              color: #FC9E25;
               position: absolute;
               right: 10px;
-              top: 10px;
-              border: #ccc solid 1px;
-              border-radius: 100%;
-              width: 20px;
-              height: 20px;
-              line-height: 20px;
-              text-align: center;
+              top: 0;
+              font-style: normal;
+              font-size: 20px;
               cursor: pointer;
-              &:before {
-                width: auto;
-                font-size: 12px;
-              }
             }
           }
         }
@@ -62,11 +61,60 @@
         background: #fff; // display: table-cell;
         min-height: 500px;
         .container-right-tabRow {
-          padding: 10px 20px;
+          padding: 30px 20px;
           &.even {
             background: #FBFAFA;
           }
-          .next-col {}
+          .pch-icon-setting {
+            i {
+              position: absolute;
+              top: 50%;
+              left: 170px;
+              margin:-10px 0 0 0;
+              font-size: 20px;
+              cursor: pointer;
+              color: #DADADA;
+              font-style: normal;
+            }
+          }
+          .next-col {
+            .next-input,
+            .pch-page-name {
+              width: 110px;
+            }
+            &.pch-moduleName {
+              position: relative;
+              .pch-realname {
+                position: absolute;
+                top: -22px;
+                left: 0;
+                font-size: 12px;
+                color: #888888;
+                letter-spacing: 0;
+              }
+            }
+            .pch-target-name,
+            .pch-type-name {
+              .next-select {
+                width: 110px;
+                margin-left: 20px;
+                &:first-child {
+                  margin-left: 0;
+                }
+              }
+            }
+            .pch-target {
+              @extend .default-font;
+              cursor: pointer;
+              display: block;
+            }
+            .pch-page-name {
+              display: block;
+              &+.pch-target {
+                margin: 3px 0 0 0;
+              }
+            }
+          }
         }
         .container-right-title {
           background: #FEF9EE;
@@ -74,7 +122,18 @@
           line-height: 46px;
           font-size: 14px;
           color: #333333;
-          text-align: center;
+          padding: 0 20px; // text-align: center;
+          .pch-target-name {
+            span {
+              &:first-child {
+                width: 130px;
+              }
+              float:left;
+              &:last-child {
+                text-align: left;
+              }
+            }
+          }
         }
       }
     }

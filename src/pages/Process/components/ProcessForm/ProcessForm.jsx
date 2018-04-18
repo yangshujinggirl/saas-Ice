@@ -64,6 +64,7 @@ export default class ProcessForm extends Component {
           let customMenuList = res.data;
           let resultArray = customMenuList.map((item, index) => {
             item.uid = 'menu_' + index;
+            item.realname = item.name
             return item;
           });
           this.state.customMenuList = resultArray;
@@ -117,7 +118,7 @@ export default class ProcessForm extends Component {
     });
     this.setState({
       selectList: result,
-    },()=>{
+    },() => {
       this.watchIoSelect(event);
     });
   };
@@ -248,7 +249,7 @@ export default class ProcessForm extends Component {
   render() {
     const init = this.field.init;
     const locationInfo = this.props.location.state;
-    this.state.value.lenderName = locationInfo.name;
+    if(locationInfo) this.state.value.lenderName = locationInfo.name;
     return (
       <div className="create-activity-form">
         <IceContainer title="">
@@ -263,13 +264,13 @@ export default class ProcessForm extends Component {
                     业务类型：
                   </Col>
                   <Col s="4" l="4">
-                    {locationInfo.type}
+                    {locationInfo && locationInfo.type}
                   </Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                     资方：
                   </Col>
                   <Col s="4" l="4">
-                    {locationInfo.lenderType}
+                    {locationInfo &&  locationInfo.lenderType}
                   </Col>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                     流程名称：
@@ -296,8 +297,7 @@ export default class ProcessForm extends Component {
                       return (
                         <li key={index}>
                           <span className="texts">{item.number}-{item.name}</span>
-                          <span className="icons">{item.number > 0 &&
-                          <Icon onClick={() => this.setModule(item, 'add')} type="add"/>}</span>
+                          <span className="icons">{item.number > 0 && <i onClick={() => this.setModule(item, 'add')} className="icon">&#xe61c;</i>}</span>
                         </li>
                       );
                     })
@@ -310,23 +310,24 @@ export default class ProcessForm extends Component {
               <IceFormBinderWrapper value={this.state.value} onBlur={this.formChange} ref="form">
                 <div className="con">
                   <Row className="container-right-title">
-                    <Col xxs="6" s="2" l="2">操作</Col>
-                    <Col xxs="6" s="2" l="4">模块</Col>
-                    <Col xxs="6" s="2" l="6"><span>条件</span>------<span>跳转</span></Col>
+                    <Col xxs="6" s="2" l="2">1</Col>
+                    <Col xxs="6" s="3" l="3">模块</Col>
+                    <Col xxs="6" s="2" l="6" className="pch-target-name"><span>条件</span><span>跳转</span></Col>
                     <Col xxs="6" s="2" l="4">页面</Col>
-                    <Col xxs="6" s="2" l="4">权限</Col>
-                    <Col xxs="6" s="2" l="4">必要数据</Col>
+                    <Col xxs="6" s="2" l="2">权限</Col>
+                    <Col xxs="6" s="3" l="3">必要数据</Col>
                     <Col xxs="6" s="2" l="4">方式</Col>
                   </Row>
                   {/*内容区域*/}
                   {
                     this.state.moduleList && this.state.moduleList.map((item, index) => {
                       return (
-                        <Row align="top" key={index} className={`container-right-tabRow ${1 ? 'even' : ''}`}>
-                          <Col xxs="6" s="2" l="2">
-                            {index != 0 && <Icon onClick={() => this.setModule(item, 'minus', index)} type="minus"/>}
+                        <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
+                          <Col xxs="6" s="2" l="2" className="pch-icon-setting">
+                            {index != 0 && <i onClick={() => this.setModule(item, 'minus', index)} className="icon">&#xe68e;</i>}
                           </Col>
-                          <Col xxs="6" s="2" l="4">
+                          <Col xxs="6" s="3" l="3" className="pch-moduleName">
+                            <div className="pch-realname">{item.realname}</div>
                             <IceFormBinder name={`rightFromList[${index}].moduleName`} required max={10} message="模块名称">
                               <Input onChange={this.moduleChange}/>
                             </IceFormBinder>
@@ -334,7 +335,7 @@ export default class ProcessForm extends Component {
                           <Col xxs="6" s="2" l="6">
                             {item.config && item.config.map((list, ind) => {
                               return (
-                                <div key={ind}>
+                                <div className="pch-target-name" key={ind}>
                                   <Select disabled defaultValue={list}>{this.renderSelect([{
                                     name: list,
                                     value: list,
@@ -348,18 +349,18 @@ export default class ProcessForm extends Component {
                           </Col>
                           <Col xxs="6" s="2" l="4">
                             {item.page ? <IceFormBinder
-                              name={`rightFromList[${index}].pageName`}><Select>{this.renderSelect(item.page)}</Select></IceFormBinder> : '--'}
-                            {item.page && <a>新增页面</a>}
+                              name={`rightFromList[${index}].pageName`}><Select className="pch-page-name">{this.renderSelect(item.page)}</Select></IceFormBinder> : '--'}
+                            {item.page && <a className='pch-target'>新增页面</a>}
                           </Col>
-                          <Col xxs="6" s="2" l="4">
-                            {item.private && <a>编辑</a>}
+                          <Col xxs="6" s="2" l="2">
+                            {item.private && <a className="pch-target">编辑</a>}
                           </Col>
-                          <Col xxs="6" s="2" l="4">
-                            {item.source && <a>查看</a>}
+                          <Col xxs="6" s="3" l="3">
+                            {item.source && <a className="pch-target">查看</a>}
                           </Col>
                           <Col xxs="6" s="2" l="4">
                             {item.type ? <IceFormBinder
-                              name={`rightFromList[${index}].type`}><Select>{this.renderSelect(item.type)}</Select></IceFormBinder> : '--'}
+                              name={`rightFromList[${index}].type`}><Select className="pch-type-name">{this.renderSelect(item.type)}</Select></IceFormBinder> : '--'}
                           </Col>
                         </Row>
                       );
