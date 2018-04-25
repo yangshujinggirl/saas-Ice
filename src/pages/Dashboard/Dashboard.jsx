@@ -1,43 +1,21 @@
-
-
 import React, { Component } from 'react';
+// import Dashboard from './components/Dashboard';
 
-import DisplayCard from './components/DisplayCard';
-
-import TabChart from './components/TabChart';
-
-import PieDoughnutChart from './components/PieDoughnutChart';
-
-import ProgressTable from './components/ProgressTable';
-
-import EditableTable from './components/EditableTable';
-
-import ChartBar from './components/ChartBar';
-
-import './Dashboard.scss';
-
-export default class Dashboard extends Component {
-  static displayName = 'Dashboard';
+export default class Demo extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    
   }
 
+  /**
+   * <Dashboard {...this.props} />
+   * @return {[type]} [description]
+   */
   render() {
     return (
       <div className="dashboard-page">
-        <DisplayCard />
-
-        <TabChart />
-
-        <PieDoughnutChart />
-
-        <ProgressTable />
-
-        <EditableTable />
-
-        <ChartBar />
+        这是默认
       </div>
     );
   }

@@ -1,0 +1,149 @@
+
+.layui-form-item:after {
+    content: '\20';
+    clear: both;
+    display: block;
+    height: 0;
+}
+
+.layui-btn {
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 18px;
+    background-color: #009688;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.pch-login-form {
+    width: 360px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -180px;
+    margin-top: -200px;
+    padding: 25px 0 0;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.pch-login-form .login-form-header .login-logo {
+    height: 50px;
+    text-align: center;
+
+    img {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+.pch-login-form .layui-form {
+    height: 240px;
+    margin-top: 30px;
+
+    .layui-form-item {
+        position: relative;
+        margin-bottom: 18px;
+        padding: 0 25px;
+
+        .layui-input-block {
+            position: relative;
+            left: -1px;
+            min-width: 175px;
+            max-width: 800px;
+            min-height: 34px;
+
+            .layui-input-icon {
+                position: absolute;
+                left: 12px;
+                top: 12px;
+                color: #6d6d6d;
+                z-index: 999;
+                font-size: 16px;
+            }
+
+            .layui-input {
+                display: block;
+                width: 100%;
+                height: 40px;
+                line-height: 1;
+                padding-left: 35px;
+                border-color: #e9e9e9;
+                border-radius: 2px;
+                margin-top: 0;
+                border: 1px solid #d8d8d8;
+                outline: 0;
+                -webkit-appearance: none;
+                transition: all .3s;
+                -webkit-transition: all .3s;
+                box-sizing: border-box;
+
+                &.is-danger {
+                    border-color: #FF5722;
+                }
+            }
+        }
+
+        &.auth-extend {
+            position: relative;
+            padding-top: 10px;
+
+            .auth-forgot {
+                position: absolute;
+                right: 25px;
+                top: -10px;
+
+                .forgot-link {
+                    font-size: 13px;
+                    color: #0f88eb;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .layui-form-error{
+            position: absolute;
+            top: 40px;
+        }
+
+        .layui-btn {
+            width: 100%;
+            height: 40px;
+            line-height: 30px;
+            padding: 0 10px;
+            background-color: #FC9E25;
+            font-size: 14px;
+            border-radius: 4px;
+            outline: none;
+
+            &:hover{
+                color: #fff;
+                background-color: #F58C00;
+            }
+            &:disabled {
+                background-color: #F58C00;
+            }
+        }
+    }
+}
+
+
+.user-login{
+    .next-checkbox-label {
+        color: #999;
+        font-size: 13px;
+    }
+    .next-input-medium input{
+        height: 38px;
+        font-size: 12px;
+    }
+}

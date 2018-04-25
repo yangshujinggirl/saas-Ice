@@ -1,0 +1,38 @@
+.config-font-box{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  .config-font{
+    font-size: 14px;
+    color:#000000;
+    width: 25%;
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    div{
+      width: 150px;
+      height: 40px;
+      line-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      white-space: nowrap;
+
+    }
+    div:first-child{
+      text-align: right;
+      font-weight: 600;
+      width: 130px;
+
+    }
+    span{
+      text-align:center;
+      width: 30px;
+      height: 40px;
+    }
+  }
+  .colspan{
+    width: 100%;
+  }
+}
+

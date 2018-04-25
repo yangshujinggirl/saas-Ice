@@ -11,8 +11,11 @@ import Header from './../../components/Header';
 import Footer from './../../components/Footer';
 import Logo from './../../components/Logo';
 import { asideNavs } from './../../navs';
+import { Storage } from '../../base/utils';
 import './scss/light.scss';
 // import './scss/dark.scss';
+
+const logoImg = require('./img/logo.svg');
 
 // 设置默认的皮肤配置，支持 dark 和 light 两套皮肤配置
 // const theme = typeof THEME === 'undefined' ? 'dark' : THEME;
@@ -125,11 +128,15 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     const { routes } = this.props;
     const matched = routes[0].path;
     let openKeys = [];
+    let allAsideNav = asideNavs || [];
 
-    asideNavs &&
-      asideNavs.length > 0 &&
-      asideNavs.map((item, index) => {
-        if (item.to === matched) {
+    let leafs = Storage.get('MENUS') || [];
+    allAsideNav = allAsideNav.concat(leafs);
+
+    allAsideNav &&
+      allAsideNav.length > 0 &&
+      allAsideNav.map((item, index) => {
+        if (item.value && item.value.value === matched) {
           openKeys = [`${index}`];
         }
       });
@@ -137,10 +144,23 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     return openKeys;
   };
 
+  processLinkWithOwnerId(link){
+    let userInfo = Storage.get('USERINFO');
+    if(userInfo && userInfo.ownerId){
+      link += (link.indexOf('?') >= 0 ? '&' : '?' )+ 'ownerId=' + userInfo.ownerId;
+      link += '&userId=' + userInfo.id;
+      link += '&type=saas';
+    }
+    return link;
+  }
+
   render() {
-    const { location = {} } = this.props;
-    // console.log(this.props)
+    const { location = {}, routes } = this.props;
     const { pathname } = location;
+    let allAsideNav = asideNavs || [];
+
+    let leafs = Storage.get('MENUS') || [];
+    allAsideNav = allAsideNav.concat(leafs);
 
     return (
       <Layout
@@ -152,14 +172,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           }
         )}
       >
-        {/* {this.state.isScreen === 'isMobile' && (
+         {this.state.isScreen === 'isMobile' && (
             <a className="menu-btn" onClick={this.toggleMenu}>
               <Icon type="category" size="small" />
             </a>
           )}
           {this.state.openDrawer && (
             <div className="open-drawer-bg" onClick={this.toggleMenu} />
-          )} */}
+          )} 
         <Layout.Aside
             theme={theme}
             className={cx('ice-design-layout-aside', {
@@ -167,15 +187,17 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
             })}
           >
             {/* 侧边菜单项 begin */}
-            {/* {this.state.isScreen !== 'isMobile' && (
+             {/*{this.state.isScreen !== 'isMobile' && (
               <a className="collapse-btn" onClick={this.toggleCollapse}>
                 <Icon
                   type={this.state.collapse ? 'arrow-right' : 'arrow-left'}
                   size="small"
                 />
               </a>
-            )} */}
-            <img id='logo' src="src/layouts/HeaderAsideFooterResponsiveLayout/img/logo.svg" alt=""/>
+            )}*/}
+            <div className="pc-menu">
+            <img id='logo' src={logoImg} alt=""/>
+            </div>
             <Menu
               inlineCollapsed={this.state.collapse}
               mode="inline"
@@ -184,39 +206,40 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               defaultSelectedKeys={[pathname]}
               onOpenChange={this.onOpenChange}
               onClick={this.onMenuClick}
-              
             >
-              {asideNavs &&
-                asideNavs.length > 0 &&
-                asideNavs.map((nav, index) => {
-                  if (nav.children && nav.children.length > 0) {
+              {allAsideNav &&
+                allAsideNav.length > 0 &&
+                allAsideNav.map((nav, index) => {
+                  let navData = nav.value;
+                  if (nav.leaf && nav.leaf.length > 0) {
                     return (
                       <SubMenu
                         key={index}
                         title={
                           <span>
-                            {nav.icon ? (
-                              <FoundationSymbol size="small" type={nav.icon} />
+                            {navData.icon ? (
+                              <i className="icon icon-menu" dangerouslySetInnerHTML={{ __html: navData.icon }}></i>
                             ) : null}
                             <span className="ice-menu-collapse-hide">
-                              {nav.text}
+                              {navData.name}
                             </span>
                           </span>
                         }
                       >
-                        {nav.children.map((item) => {
+                        {nav.leaf.map((item) => {
                           const linkProps = {};
-                          if (item.newWindow) {
-                            linkProps.href = item.to;
+                          let itemData = item.value || {};
+                          if (itemData.target == '_blank') {
+                            linkProps.href = this.processLinkWithOwnerId(itemData.value);
                             linkProps.target = '_blank';
-                          } else if (item.external) {
-                            linkProps.href = item.to;
+                          } else if (itemData.external) {
+                            linkProps.href = itemData.value;
                           } else {
-                            linkProps.to = item.to;
+                            linkProps.to = itemData.value;
                           }
                           return (
-                            <MenuItem key={item.to}>
-                              <Link {...linkProps}>{item.text}</Link>
+                            <MenuItem key={itemData.value}>
+                              <Link {...linkProps}>{itemData.name}</Link>
                             </MenuItem>
                           );
                         })}
@@ -224,23 +247,23 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     );
                   }
                   const linkProps = {};
-                  if (nav.newWindow) {
-                    linkProps.href = nav.to;
+                  if (navData.target == '_blank') {
+                    linkProps.href = this.processLinkWithOwnerId(navData.value);
                     linkProps.target = '_blank';
-                  } else if (nav.external) {
-                    linkProps.href = nav.to;
+                  } else if (navData.external) {
+                    linkProps.href = navData.value;
                   } else {
-                    linkProps.to = nav.to;
+                    linkProps.to = navData.value;
                   }
                   return (
-                    <MenuItem key={nav.to}>
+                    <MenuItem key={navData.value}>
                       <Link {...linkProps}>
                         <span>
-                          {nav.icon ? (
-                            <FoundationSymbol size="small" type={nav.icon} />
-                          ) : null}
+                          {navData.icon ? (
+                              <i className="icon icon-menu" dangerouslySetInnerHTML={{ __html: navData.icon }}></i>
+                            ) : null}
                           <span className="ice-menu-collapse-hide">
-                            {nav.text}
+                            {navData.name}
                           </span>
                         </span>
                       </Link>
@@ -253,6 +276,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         <Layout.Section>
         <Header
           theme={theme}
+          menus={allAsideNav}
+          pathname={pathname}
+          routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
         />
           

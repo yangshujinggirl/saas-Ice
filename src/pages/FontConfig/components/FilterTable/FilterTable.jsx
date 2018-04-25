@@ -1,26 +1,164 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
-import { Table, Pagination } from '@icedesign/base';
+import { Link, hashHistory } from 'react-router';
+import {
+  Table,
+  Pagination,
+  Field,
+  Form,
+  Grid,
+  Select,
+  Button,
+  Input
+ } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
-import DataBinder from '@icedesign/data-binder';
-import IceLabel from '@icedesign/label';
-import FilterForm from './Filter';
+import {
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
 
-@DataBinder({
-  tableData: {
-    // 详细请求配置请参见 https://github.com/axios/axios
-    url: '/mock/filter-table-list.json',
-    params: {
-      page: 1,
-    },
-    defaultBindingData: {
-      list: [],
-      total: 100,
-      pageSize: 10,
-      currentPage: 1,
-    },
+import FontConfigReq from './../../reqs/FontConfigReq.js'
+import './FilterTable.scss';
+
+const { Row, Col } = Grid;
+const FormItem = Form.Item;
+
+const formItemLayout = {
+  labelCol: {
+    span: 8
   },
-})
+  wrapperCol: {
+    span: 12
+  }
+};
+
+class  SearchForm extends Component {
+  constructor(props) {
+    super(props)
+    this.field = new Field(this)
+    this.state = {
+      values: {
+        businessType: '货款业务',
+        functionType: '进件',
+        name: ''
+      }
+    }
+  }
+  addPage() {
+    hashHistory.push(`font/add?pageName=${this.state.values.name}`)
+  }
+  //提交表单
+  handleSubmit(e) {
+    const { searchEvent } = this.props;
+    e.preventDefault();
+    this.field.validate((errors, values) => {
+      if (errors) {
+        return;
+      }
+      
+      searchEvent(this.state.values)
+    });
+  }
+  render() {
+    const { init } = this.field;
+
+    return(
+      <IceFormBinderWrapper value={this.state.values}>
+          <div className="pch-condition">
+            <Form
+              size="large"
+              direction="hoz"
+              >
+              <Row wrap>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="资方名称：">
+                    <IceFormBinder
+                      name="tenantId"
+                    >
+                      <Select
+                        size="large"
+                        placeholder="请选择"
+                      >
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="业务类型：">
+                    <IceFormBinder
+                    name="businessType"
+                    >
+                      <Select
+                          size="large"
+                          placeholder="请选择"
+                        >
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="功能模块：">
+                    <IceFormBinder
+                      name="functionType"
+                    >
+                     <Select
+                      size="large"
+                        placeholder="请选择"
+                      >
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="流程名称：">
+                    <IceFormBinder
+                      name="process"
+                    >
+                      <Select
+                          size="large"
+                          placeholder="请选择"
+                        >
+                        </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="页面名称：">
+                    <IceFormBinder
+                      name="name"
+                    >
+                      <Input
+                        size="large"
+                        placeholder="请输入"
+                      />
+                    </IceFormBinder>
+                  </FormItem>
+                  </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="&nbsp;">
+                    <Button type="secondary" htmlType='submit' onClick={this.handleSubmit.bind(this)}>
+                      查询
+                    </Button>
+                    
+                    <Button
+                      type="primary"
+                      style={{ marginLeft: '10px' }}
+                      onClick={() =>this.addPage()}
+                    >
+                      新增
+                    </Button>
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+        </IceFormBinderWrapper>
+    )
+  }
+}
+
+
 export default class EnhanceTable extends Component {
   static displayName = 'EnhanceTable';
 
@@ -28,37 +166,20 @@ export default class EnhanceTable extends Component {
 
   constructor(props) {
     super(props);
-
-    // 请求参数缓存
-    this.queryCache = {};
-    this.state = {
-      filterFormValue: {},
-    };
   }
 
-  componentDidMount() {
-    this.queryCache.page = 1;
-    this.fetchData();
+  componentWillMount() {
+    this.props.actions.search();
   }
 
-  fetchData = () => {
-    this.props.updateBindingData('tableData', {
-      data: this.queryCache,
-    });
+  //分页
+  changePage = (currentPage) => {
+    this.props.actions.search({page:currentPage});
   };
 
-  renderTitle = (value, index, record) => {
-    return (
-      <div style={styles.titleWrapper}>
-        <span style={styles.title}>{record.title}</span>
-      </div>
-    );
-  };
-
-  editItem = (record, e) => {
-    e.preventDefault();
-    // TODO: record 为该行所对应的数据，可自定义操作行为
-  };
+  searchConditon(values) {
+    this.props.actions.search(values);
+  }
 
   renderOperations = (value, index, record) => {
     return (
@@ -66,115 +187,70 @@ export default class EnhanceTable extends Component {
         className="filter-table-operation"
         style={styles.filterTableOperation}
       >
-        <a
-          href="#"
-          style={styles.operationItem}
-          target="_blank"
-          onClick={this.editItem.bind(this, record)}
-        >
-          解决
-        </a>
-        <a href="#" style={styles.operationItem} target="_blank">
+        <Link to={`/font/view?id=${record.id}`} className='operate-btn'>
           详情
-        </a>
-        <a href="#" style={styles.operationItem} target="_blank">
-          分类
-        </a>
+        </Link>
+        <Link to={`/font/set?id=${record.id}`}  className='operate-btn'>
+          编辑
+        </Link>
       </div>
     );
   };
 
-  renderStatus = (value) => {
-    return (
-      <IceLabel inverse={false} status="default">
-        {value}
-      </IceLabel>
-    );
-  };
-
-  changePage = (currentPage) => {
-    this.queryCache.page = currentPage;
-
-    this.fetchData();
-  };
-
-  filterFormChange = (value) => {
-    this.setState({
-      filterFormValue: value,
-    });
-  };
-
-  filterTable = () => {
-    // 合并参数，请求数据
-    this.queryCache = {
-      ...this.queryCache,
-      ...this.state.filterFormValue,
-    };
-    this.fetchData();
-  };
-
-  resetFilter = () => {
-    this.setState({
-      filterFormValue: {},
-    });
-  };
-
   render() {
-    const tableData = this.props.bindingData.tableData;
-    const { filterFormValue } = this.state;
-
+    const { list=[], total, limit, page } = this.props.pageData;
     return (
-      <div className="filter-table">
-        <IceContainer title="内容筛选">
-          <FilterForm
-            value={filterFormValue}
-            onChange={this.filterFormChange}
-            onSubmit={this.filterTable}
-            onReset={this.resetFilter}
-          />
-        </IceContainer>
-        <IceContainer>
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>页面配置
+        </legend>
+          <SearchForm searchEvent={(values) =>this.searchConditon(values)}/>
           <Table
-            dataSource={tableData.list}
-            isLoading={tableData.__loading}
+            dataSource={list}
             className="basic-table"
-            style={styles.basicTable}
             hasBorder={false}
           >
             <Table.Column
-              title="问题描述"
-              cell={this.renderTitle}
+              title="业务类型"
+              dataIndex="businessType"
               width={320}
             />
-            <Table.Column title="问题分类" dataIndex="type" width={85} />
+            <Table.Column title="功能模块" dataIndex="functionType" width={85} />
             <Table.Column
-              title="发布时间"
-              dataIndex="publishTime"
+              title="页面名称"
+              dataIndex="name"
               width={150}
             />
             <Table.Column
-              title="状态"
-              dataIndex="publishStatus"
+              title="流程"
+              dataIndex=""
               width={85}
               cell={this.renderStatus}
             />
             <Table.Column
+              title="最后修改时间"
+              dataIndex="createdAt"
+              width={150}
+            />
+            <Table.Column
               title="操作"
-              dataIndex="operation"
               width={150}
               cell={this.renderOperations}
+              lock='right'
             />
           </Table>
-          <div style={styles.paginationWrapper}>
-            <Pagination
-              current={tableData.currentPage}
-              pageSize={tableData.pageSize}
-              total={tableData.total}
-              onChange={this.changePage}
-            />
-          </div>
-        </IceContainer>
-      </div>
+          {
+            list.length>0 && <div style={styles.paginationWrapper}>
+                                <Pagination
+                                  shape="arrow-only"
+                                  current={page}
+                                  pageSize={limit}
+                                  total={total}
+                                  onChange={this.changePage}
+                                />
+                              </div>
+          }
+      </IceContainer>
     );
   }
 }
@@ -183,21 +259,24 @@ const styles = {
   filterTableOperation: {
     lineHeight: '28px',
   },
-  operationItem: {
-    marginRight: '12px',
-    textDecoration: 'none',
-    color: '#5485F7',
-  },
-  titleWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  title: {
-    marginLeft: '10px',
-    lineHeight: '20px',
-  },
   paginationWrapper: {
-    textAlign: 'right',
+    textAlign: 'left',
     paddingTop: '26px',
+  },
+  marb0: {
+    marginBottom: '0',
+    borderRadius: '0'
+  },
+  filterTool: {
+    width: '160px',
+  },
+   formItem: {
+    height: '28px',
+    lineHeight: '33px',
+    marginBottom:'28px'
+  },
+  formLabel: {
+    marginLeft: '85px',
+    textAlign: 'right',
   },
 };

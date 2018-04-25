@@ -1,0 +1,72 @@
+.pch-breadcrumb {
+  background-color: #fff;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 20px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  .layui-breadcrumb {
+      > a {
+          color: #1b2630;
+          font-size: 13px;
+          padding: 0 5px;
+          &:hover {
+              color: #ec9d00 !important;
+          }
+          > cite {
+              //color: $lx-core-font-lighter-color;
+              color: #ec9d00 !important;
+              font-style: normal;
+          }
+      }
+  }
+}
+// .f-box {
+//     margin: 0 15px;
+//     padding: 25px 0 0 0;
+//     border-top: 1px solid #d8d8d8;
+// }
+.deletbtn,.edithbtn {
+    width:"50px";
+    height:"40px";
+    border: none;
+    color: #fff;
+    margin-left: 15px;
+    background: #ec9d00;
+}
+.dialog-form-ul {
+    overflow: hidden;
+    margin-top:30px;
+    text-align: center;
+    li{
+        width: 20%;
+        float: left;
+        border: 1px #999 solid;
+        height: 30px;
+        line-height: 25px;
+    }
+    .liTow {
+        width: 40% !important;
+       
+    }
+    .liType {
+        height: 90px;
+        padding:10px 0;
+    }
+    .liColor {
+        background: #ec9d00 !important;
+    }
+}
+
+.dialog-form-checkbox {
+    overflow: hidden;
+    margin-top:30px;
+    text-align: center;
+    li{
+        width: 20%;
+        float: left;
+        border: 1px #999 solid;
+    }
+    
+    
+}

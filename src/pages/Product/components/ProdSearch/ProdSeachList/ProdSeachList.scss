@@ -1,0 +1,90 @@
+.pch-breadcrumb {
+  background-color: #fff;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 20px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  .layui-breadcrumb {
+      > a {
+          color: #1b2630;
+          font-size: 13px;
+          padding: 0 5px;
+          &:hover {
+              color: #ec9d00 !important;
+          }
+          > cite {
+              //color: $lx-core-font-lighter-color;
+              color: #ec9d00 !important;
+              font-style: normal;
+          }
+      }
+  }
+}
+// .legend {
+//     margin-left: 0;
+//     padding-left: 15px;
+//     padding-top: 12px;
+//     background-color: #fff;
+//     font-size: 18px;
+//     font-weight: 500;
+//     line-height: 25px;
+//     padding-bottom: 14px;
+//     .legLine {
+//         display: inline-block;
+//         zoom: 1;
+//         vertical-align: top;
+//         margin-right: 12px;
+//         width: 4px;
+//         height: 25px;
+//         background-color: #ec9d00;
+//     }  
+// }
+.lx-mid-line {
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    margin-right: 10px;
+    width: 10px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+}
+.line {
+    height: 5px;
+    border: #999 1px solid;
+}
+.label-required {
+    font-size: 12px;
+    padding: 0 2px;
+    color: #dd4444;
+}
+.next-checkbox-label {
+    margin:0 10px;
+}
+.layui-textarea {
+    min-height: 100px;
+    height: auto;
+    padding: 6px 10px;
+    resize: vertical;
+    display: block;
+    width: 100%;
+    line-height: 20px;
+    border-color: #999
+}
+// .f-box {
+//     margin: 0 15px;
+//     padding: 25px 0 0 0;
+//     border-top: 1px solid #d8d8d8;
+// }
+
+.editbtn ,.searchbtn{
+    width:"40px";
+    height:"25px";
+    border: none;
+    color: #fff !important;
+    margin-left: 15px;
+    background: #ec9d00;
+}
+.editbtn {
+    margin-left: 0;
+}
