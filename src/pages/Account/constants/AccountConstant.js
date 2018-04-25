@@ -1,6 +1,16 @@
 import keyMirror from 'keymirror';
-import BaseConstants from '../../../base/constants/BaseConstant';
+import BaseConstant from '../../../base/constants/BaseConstant';
 
-export default Object.assign({}, BaseConstants, keyMirror({
+// export default Object.assign({}, BaseConstant, keyMirror({
 
-}));
+// }));
+
+class AccountConstant extends BaseConstant{
+	constructor(){
+		super();
+
+		this.key = 'ACCOUNT_'
+	}
+}
+
+export default new AccountConstant();

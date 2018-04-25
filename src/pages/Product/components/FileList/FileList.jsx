@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { Router, Route, Link, hashHistory} from 'react-router'
+import { Router, Route, Link, hashHistory } from 'react-router'
 
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
 
 import './FileList.scss';
 import DiaLog from './Dialog'
-import {
-  FormBinderWrapper as IceFormBinderWrapper,
-  FormBinder as IceFormBinder,
-  FormError as IceFormError,
-} from '@icedesign/form-binder';
+import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError, } from '@icedesign/form-binder';
 
-import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog, } from '@icedesign/base';
+import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Dialog, Pagination } from '@icedesign/base';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -36,6 +32,14 @@ const SwitchForForm = (props) => {
   );
 };
 
+const formItemLayout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 12
+  }
+};
 
 export default class FileList extends Component {
   static displayName = 'FileList';
@@ -51,150 +55,163 @@ export default class FileList extends Component {
       style: {
         width: "70%"
       },
-      value:{
-        name	:'',
-        dataType:''
+      value: {
+        name: '',
+        dataType: undefined
       },
-      fileList:[{
-        dataType:"",
-        dataname:'',
-        fileTypeL:'',
+      fileList: [{
+        dataType: "",
+        dataname: '',
+        fileTypeL: '',
       }],
-      dataSource:'',
+      dataSource: '',
     }
   }
   componentDidMount() {
-    let {actions} = this.props;
-      actions.filesearch();
-      console.log(this.props)
-  };
-  componentDidUpdate(dataSource){
-    // this.setState({
-    //   dataSource
-    // })
+    let { actions } = this.props;
+    actions.filesearch();
   }
 
   //查询
   onSubmit = (data) => {
-    let {actions} = this.props;
+    let { actions } = this.props;
     this.formRef.validateAll((error, value) => {
-      console.log('error', error, 'value', value);
       if (error) {
         // 处理表单报错
         return;
       }
       // 提交当前填写的数据
-      this.props.actions.filesearch(value);//返回符合条件的数据
+      this.props.actions.filesearch(value); //返回符合条件的数据
     });
   };
   onRowClick = (record, index, e) => {
-    console.log(record, index, e);
   };
 
-//操作
+  //操作
   renderTest = (value, index, record) => {
     return <div>
       <button className="edithbtn" onClick={() => this.open(record)}>编辑</button>
-      <button className="deletbtn" onClick={() => this.deleteRow(record.id)}>删除</button>
+      <button className="deletbtn" onClick={() => this.deleteRow(record.id)}>删除</button>
     </div>
   };
 
-  open =(record) =>{
+  open = (record) => {
 
     hashHistory.push(`/product/fileedit/${record.id}`)
   }
-  deleteRow =(idx) => {
+  deleteRow = (idx) => {
     let { actions } = this.props;
     actions.fileremove(idx);
-    actions.filesearch();
+    //actions.filesearch();
 
   }
 
-  addNewItem=()=>{
+  addNewItem() {
+    this.props.actions.changeFileDetail({
+        dataType: '',
+        name: '',
+        collectionDetails: [{
+          dataName: '',
+          fileSize: undefined,
+          fileType: ''
+        }]
+      })
     hashHistory.push(`/product/filelistnew`)
   }
+  //分页
+  changePage = (currentPage) => {
+    let { actions } = this.props;
+    actions.filesearch({ page: currentPage });
+  };
   render() {
-        let dataSource=this.state.dataSource
-        dataSource = this.props.fileData || {}//data
-        console.log(dataSource)
-        dataSource = dataSource.data||{}
-        dataSource = dataSource.list
-        dataSource && dataSource.map((item) => {
-          let temp = [];
-          item.collectionDetails && item.collectionDetails.map((ditem, j) => {
-            temp.push(ditem.name);
-          })
-          item.fileNamestr = temp.join(',')
-        })
-        let map = new Map()
+    let dataSource = this.state.dataSource
+    dataSource = this.props.fileData || {}//data
+    dataSource = dataSource.data || {}
+    let page = dataSource.page;
+    let limit = dataSource.limit;
+    let total = dataSource.total;
+    dataSource = dataSource.list
+    dataSource && dataSource.map((item) => {
+      let temp = [];
+      item.collectionDetails && item.collectionDetails.map((ditem, j) => {
+        temp.push(ditem.fileName);
+      })
+      item.fileNamestr = temp.join(' ; ')
+    })
+    let map = new Map()
     return (
-      <div className="create-activity-form" style={styles.container}>
-        <IceContainer title="" >
-          <IceFormBinderWrapper
-            ref={(formRef) => {
-              this.formRef = formRef;
-            }}
-            value={this.state.value}
-            onChange={this.onFormChange}
-          >
-            <div>
-              <legend style={styles.legend}>
-                <span style={styles.legLine}></span>资料清单
-              </legend>
-              <div className="f-box">
-                <Row wrap>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}>清单类型：</label>
-                    <IceFormBinder
-                      name="dataType"
-                    >
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>材料查询
+        </legend>
+        <IceFormBinderWrapper
+          ref={(formRef) => {
+            this.formRef = formRef;
+          }}
+          value={this.state.value}
+          onChange={this.onFormChange}
+        >
+          <div className="pch-condition">
+            <Form
+              size="large"
+              direction="hoz"
+            >
+              <Row>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="清单类型：">
+                    <IceFormBinder name="dataType" >
                       <Select
-                        name="dataType"
                         placeholder="请选择"
-                        style={styles.filterTool}
-                        className="custom-select"
                         hasClear={true}
+                        size="large"
                       >
-                        <Option value="option1">产品进件</Option>
+                        <Option value="产品进件">产品进件</Option>
                       </Select>
                     </IceFormBinder>
-                    <IceFormError name="dataType" />
-                  </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}>清单名称：</label>
-                    <IceFormBinder
-                      name="name"
-                    >
-                      <Input className="custom-input" placeholder="清单名称" />
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="清单名称：">
+                    <IceFormBinder name="name" >
+                      <Input size="large" placeholder="清单名称" />
                     </IceFormBinder>
-                    <IceFormError name="name" />
-                  </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <label style={styles.filterTitle}></label>
-                    <button style={styles.btns} type='submit' onClick={this.onSubmit}>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="&nbsp;">
+                    <Button style={styles.btns1} type="secondary" htmlType='submit' onClick={this.onSubmit}>
                       查询
-                    </button>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </IceFormBinderWrapper>
-          <div style={styles.searchTable}>
-            <Table
-              dataSource={dataSource}
-              maxBodyHeight={800}
-            >
-              <Table.Column title="清单类型" dataIndex="dataType" />
-              <Table.Column title="清单名称" dataIndex="name" />
-              <Table.Column title="材料名称" dataIndex="fileNamestr"/>
-              <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
-            </Table>
+                    </Button>
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>
           </div>
-          <div style={styles.addNew}>
-            <Button onClick={this.addNewItem} style={styles.addNewItem}>新增</Button>
-          </div>
-        </IceContainer>
-      </div>
+        </IceFormBinderWrapper>
+        <div style={styles.searchTable}>
+          <Table
+            dataSource={dataSource}
+            maxBodyHeight={800}
+          >
+            <Table.Column title="清单类型" dataIndex="dataType" />
+            <Table.Column title="清单名称" dataIndex="name" />
+            <Table.Column title="材料名称" dataIndex="fileNamestr" />
+            <Table.Column title="操作" dataIndex="time" cell={this.renderTest} width={150} lock="right" />
+          </Table>
+        </div>
+        <div style={styles.addNew}>
+          <Button onClick={this.addNewItem.bind(this)} style={styles.addNewItem}>新增</Button>
+        </div>
+        <div style={styles.pagination}>
+          <Pagination
+            shape="arrow-only"
+            current={page}
+            pageSize={limit}
+            total={total}
+            onChange={this.changePage}
+          />
+        </div>
+      </IceContainer>
     );
   }
 }
@@ -242,7 +259,7 @@ const styles = {
     border: 'none',
     fontSize: '16px',
     borderRadius: 'none !important',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
   },
   addNew: {
@@ -253,7 +270,7 @@ const styles = {
     hiegth: '30px',
     borderRadius: 0,
     border: 'none',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
   },
   newCol: {

@@ -5,7 +5,7 @@ export default class Demo extends Component {
 
   constructor(props) {
     super(props);
-    
+
   }
 
   /**
@@ -14,9 +14,13 @@ export default class Demo extends Component {
    */
   render() {
     return (
-      <div className="demo-page">
-        <DemoForm {...this.props} />
+      
+      <div 
+
+      className="demo-page">
+        <DemoForm 
+        {...this.props} />
       </div>
-    );
+      );
   }
 }

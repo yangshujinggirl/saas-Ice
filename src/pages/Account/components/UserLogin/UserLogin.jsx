@@ -15,7 +15,7 @@ const { Row, Col } = Grid;
 const backgroundImage = require('./admin-login-bg.png');
 
 import {hashHistory} from 'react-router';
-import {Storage} from '../../../../base/utils';
+import {Storage, Cookie} from '../../../../base/utils';
 import AccountReq from '../../reqs/AccountReq';
 
 export default class UserLogin extends Component {
@@ -92,81 +92,7 @@ export default class UserLogin extends Component {
 
     return (
       <div style={styles.userLogin} className="user-login">
-        <div
-          style={{
-            ...styles.userLoginBg,
-            backgroundImage: `url(${backgroundImage})`,
-          }}
-        />
-        <div style={styles.contentWrapper} className="content-wrapper">
-          <h2 style={styles.slogan} className="slogan">
-            欢迎使用 <br /> 平常金服SAAS系统
-          </h2>
-          <div style={styles.formContainer}>
-            <h4 style={styles.formTitle}>登录</h4>
-            <IceFormBinderWrapper
-              value={this.state.value}
-              onChange={this.formChange}
-              onSubmit={this.handleSubmit}
-              ref="form"
-            >
-              <div style={styles.formItems}>
-                <Row style={styles.formItem}>
-                  <Col>
-                    <IceIcon
-                      type="person"
-                      size="small"
-                      style={styles.inputIcon}
-                    />
-                    <IceFormBinder name="userName" required message="必填">
-                      <Input maxLength={20} placeholder="会员名/手机号" />
-                    </IceFormBinder>
-                  </Col>
-                  <Col>
-                    <IceFormError name="userName" />
-                  </Col>
-                </Row>
-
-                <Row style={styles.formItem}>
-                  <Col>
-                    <IceIcon
-                      type="lock"
-                      size="small"
-                      style={styles.inputIcon}
-                    />
-                    <IceFormBinder name="password" required message="必填">
-                      <Input htmlType="password" placeholder="密码" />
-                    </IceFormBinder>
-                  </Col>
-                  <Col>
-                    <IceFormError name="password" />
-                  </Col>
-                </Row>
-
-                <Row style={styles.formItem}>
-                  <Col>
-                    <IceFormBinder name="checkbox">
-                      <Checkbox style={styles.checkbox} >记住账号</Checkbox>
-                    </IceFormBinder>
-                  </Col>
-                </Row>
-
-                <Row style={styles.formItem}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={this.handleSubmit}
-                    style={styles.submitBtn}
-                  >
-                    {isLoging ? '登录中...' : '登 录'}
-                  </Button>
-                </Row>
-
-                
-              </div>
-            </IceFormBinderWrapper>
-          </div>
-        </div>
+        
       </div>
     );
   }

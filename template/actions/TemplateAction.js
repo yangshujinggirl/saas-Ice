@@ -38,10 +38,11 @@ function fetchFailed(error) {
   }
 }
 
-function dispatch(data) {
+function change(data) {
   return {
     type: T.CHANGE,
-    ...data
+    ...data,
+    time: Date.now()
   }
 }
 

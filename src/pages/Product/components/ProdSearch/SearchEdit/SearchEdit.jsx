@@ -23,6 +23,7 @@ import {
   Grid,
   Table,
   Pagination,
+  Form,
 } from '@icedesign/base';
 
 const { Row, Col } = Grid;
@@ -31,23 +32,14 @@ const { Row, Col } = Grid;
 const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
+const FormItem = Form.Item;
 //组件引入
 // import SearchEditer from './searchEditer/searchEditer';
-
-
-// Switch 组件的选中等 props 是 checked 不符合表单规范的 value 在此做转换
-const SwitchForForm = (props) => {
-  const checked = props.checked === undefined ? props.value : props.checked;
-
-  return (
-    <Switch
-      {...props}
-      checked={checked}
-      onChange={(currentChecked) => {
-        if (props.onChange) props.onChange(currentChecked);
-      }}
-    />
-  );
+const formItemLayout = {
+  labelCol: { span: 8 },
+  wrapperCol: {
+    span: 12
+  }
 };
 
 export default class SearchEdit extends Component {
@@ -107,11 +99,28 @@ export default class SearchEdit extends Component {
       if (item.times){
         item.temptime = item.times.join('~')
       }
+      switch (item.status) {
+        case 1:
+          item.status ='生效'
+          break;
+        case 0:
+        item.status ='关闭'
+        break;
+        case 2:
+        item.status ='失效'
+        break;
+      
+        default:
+          break;
+      }
     })
 
     return (
       <div className="create-activity-form" style={styles.container}>
-        <IceContainer title="" >
+        <IceContainer className="pch-container">
+          <legend className="pch-legend">
+            <span className="pch-legend-legline"></span>产品编辑
+          </legend>
           <IceFormBinderWrapper
             ref={(formRef) => {
               this.formRef = formRef;
@@ -119,99 +128,88 @@ export default class SearchEdit extends Component {
             value={{
                     name:name,
                     id:this.props.params.id,
-                    status:''}}
+                    status:undefined}}
           >
-            <div>
-              <legend style={styles.legend}>
-                <span style={styles.legLine}></span>产品编辑
-              </legend>
-              <div style={styles.fieldBox}>
-                <Row style={styles.formItem}>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    产品名称：
-                  </Col>
-                  <Col s="4" l="4">
+            <div className="pch-form">
+              <Form
+                style={{width: '80%'}}
+                size="large"
+                labelAlign="left">
+                <Row wrap>
+                  <Col s={12} l={12}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品名称</span>}>
                     <IceFormBinder
                       name="name"
-                      message="必填"
+                      message="产品名称必填"
                     >
-                      <Input placeholder="产品名称" value={name}  className="custom-input" />
+                      <Input size="large" placeholder="产品名称" value={name} className="custom-input" />
                     </IceFormBinder>
-                    <IceFormError name="name" />
+                    <div><IceFormError name="name" /></div>
+                    </FormItem>
                   </Col>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                    生效期限：
-                  </Col>
-                  <Col s="4" l="4">
+                  <Col s={12} l={12}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限</span>}>
                     <IceFormBinder
                       name="time"
                       required
-                      message="必填"
+                      message="生效日期必填"
                       valueFormatter={(date, dateStr) => dateStr}
                     >
-                      <RangePicker format={"YYYY-MM-DD"} style={{width:"200px"}}  className="custom-select"/> 
+                      <RangePicker size="large" format={"YYYY-MM-DD"} className="custom-select"/> 
                     </IceFormBinder>
-                   
+                    <div><IceFormError name="time" /></div>
+                   </FormItem>
                   </Col>
-                </Row>
-
-                <Row wrap style={styles.formItem}>
-                <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      流程名称：
-                  </Col>
-                  <Col s="4" l="4">
+                  <Col s={12} l={12}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>流程名称</span>}>
                     <IceFormBinder
                         name="lineName"
                         required
-                        message="必填"
+                        message="流程名称必填"
                       >
                         <Select
                           placeholder="请选择"
-                          style={{ width: '200px' }}
                           className="custom-select"
                           hasClear={true}
+                          size="large"
                         >
                           <Option value="ONE">1</Option>
                           <Option value="TWO">2</Option>
                         </Select>
                       </IceFormBinder>
-                      <IceFormError name="lineName" />
+                      <div><IceFormError name="lineName" /></div>
+                      </FormItem>
                   </Col>
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      状态：
-                  </Col>
-                  <Col s="4" l="4">
+                  <Col s={12} l={12}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>状态</span>}>
                     <IceFormBinder
                         name="status"
                         required
-                        message="必填"
+                        message="状态必填"
                       >
                         <Select
-                          style={{ width: '200px' }}
                           className="custom-select"
                           hasClear={true}
+                          placeholder="请选择"
+                          size="large"
                         >
-                        <Option value="0">生效</Option>
-                        <Option value="1">未生效</Option>
-                        <Option value="2">失效</Option>
+                          <Option value="1">生效</Option>
+                          <Option value="0">关闭</Option>
+                          <Option value="2">失效</Option>
                       </Select>
                     </IceFormBinder>
-                    <IceFormError name="lineName" />
+                    <div><IceFormError name="status" /></div>
+                    </FormItem>
+                  </Col>
+                  <Col s={12} l={12}></Col>
+                  <Col s={12} l={12}>
+                    <FormItem {...formItemLayout} label="&nbsp;">
+                      <Button type="secondary" onClick={this.upData}>确定</Button>
+                      <Button onClick={()=>{javascript:history.back(-1);}} style={{marginLeft: 8}}>返回</Button>
+                    </FormItem>
                   </Col>
                 </Row>
-                <Row wrap style={styles.formItem} >
-                  <Col xxs="6" s="2" l="2" style={styles.formLabel}>
-                      
-                  </Col>
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <a  className="back-btn" href="javascript:history.back(-1);" >返回</a>
-                  </Col>
-
-                  <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <button className="dete-btn" onClick ={this.upData}>确定</button>
-                  </Col>
-                </Row>
-                <Row wrap >
+                </Form>
                 <Table
                   dataSource={dataSource}
                   isLoading={this.state.isLoading}
@@ -225,8 +223,6 @@ export default class SearchEdit extends Component {
                   <Table.Column title="时间" dataIndex="operateAt" width={120} />
                   <Table.Column title="操作人" dataIndex="operateName" width={120} />
               </Table>
-              </Row>
-              </div>
             </div>
           </IceFormBinderWrapper>
         </IceContainer>    
@@ -265,7 +261,7 @@ const styles = {
   },
   formItem: {
     height: '28px',
-    lineHeight: '28px',
+    lineHeight: '33px',
     marginBottom: '25px',
   },
   formLabel: {

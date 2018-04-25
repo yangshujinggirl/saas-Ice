@@ -143,64 +143,85 @@ export default class EnhanceTable extends Component {
     // const tableData = this.props.bindingData.tableData;
     const tableData = this.props.pageData || {};
     const { filterFormValue } = this.state;
-    console.log(tableData)
+
     return (
-      <div className="filter-table">
-        <IceContainer title="查询" className='subtitle'>
-          <FilterForm
-            value={filterFormValue}
-            onChange={this.filterFormChange}
-            onSubmit={this.filterTables}
-            onReset={this.resetFilter}
-          />
-        </IceContainer>
-        <IceContainer>
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>车贷查询
+        </legend>
+        <FilterForm
+          value={filterFormValue}
+          onChange={this.filterFormChange}
+          onSubmit={this.filterTables}
+          onReset={this.resetFilter}
+        />
           <Table
             dataSource={tableData.list}
             isLoading={this.props.isFetching}
             className="basic-table"
-            style={styles.basicTable}
             hasBorder={false}
           >
             <Table.Column
-              title="编号"
-              width={85}
-              align={'center'}
+              title="贷款编号"
+              width={150}
+              align={'left'}
               dataIndex="code"
             />
-            <Table.Column title="姓名" dataIndex="borrowerName" width={85}  align={'center'}/>
             <Table.Column
-              title="证件类型"
-              dataIndex="borrowerIdType"
-              width={85}
-              align={'center'}
+              title="贷款状态"
+              dataIndex=""
+              width={150}
+              align={'left'}
             />
+            <Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'left'}/>
             <Table.Column
               title="证件号码"
               dataIndex="borrowerIdNo"
-              width={85}
+              width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
 
             <Table.Column
               title="手机号"
               dataIndex="borrowerMobile"
-              width={85}
+              width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
-              title="金额"
+              title="申请金额"
               dataIndex="principalAmount"
-              width={85}
+              width={150}
               cell={this.renderStatus}
-              align={'center'}
+              align={'left'}
             />
             <Table.Column
+              title="贷款产品"
+              dataIndex="productName"
+              width={150}
+              cell={this.renderStatus}
+              align={'left'}
+            />
+            <Table.Column
+              title="展厅名称"
+              dataIndex=""
+              width={150}
+              cell={this.renderStatus}
+              align={'left'}
+            />
+            <Table.Column
+              title="申请时间"
+              dataIndex="createdAt"
+              width={150}
+              cell={this.renderStatus}
+              align={'left'}
+            />
+            <Table.Column
+              lock="right"
               title="操作"
               dataIndex="operation"
-              width={85}
+              width={150}
               cell={this.renderOperations}
               align={'center'}
             />
@@ -214,7 +235,6 @@ export default class EnhanceTable extends Component {
             />
           </div>
         </IceContainer>
-      </div>
     );
   }
 }

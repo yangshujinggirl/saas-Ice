@@ -25,16 +25,28 @@ const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
 const formItemLayout = {
-  labelCol: { span: 7 },
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 12
+  }
 };
 
 class  SearchForm extends Component {
   constructor(props) {
     super(props)
     this.field = new Field(this)
+    this.state = {
+      values: {
+        businessType: '货款业务',
+        functionType: '进件',
+        name: ''
+      }
+    }
   }
   addPage() {
-    hashHistory.push('font/add')
+    hashHistory.push(`font/add?pageName=${this.state.values.name}`)
   }
   //提交表单
   handleSubmit(e) {
@@ -44,94 +56,106 @@ class  SearchForm extends Component {
       if (errors) {
         return;
       }
-      searchEvent(values)
+      
+      searchEvent(this.state.values)
     });
   }
   render() {
     const { init } = this.field;
 
     return(
-        <IceFormBinderWrapper>
-          <Form
-            labelAlign="left"
-            className="search-form"
-            field={this.field}>
-            <Row  align="top" justify="space-between">
-              <Col span={4} >
-                <FormItem {...formItemLayout} label='资方'>
-                  <Select
-                    name="size"
-                    placeholder="请选择"
-                    style={styles.filterTool}
-                    {...init('tenantId')}
-                  >
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='业务类型'>
-                  <Select
-                    name="size"
-                    defaultValue='贷款业务'
-                    style={styles.filterTool}
-                    {...init('businessType')}
-                  >
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='功能模块'>
-                  <Select
-                    name="size"
-                    defaultValue='进件'
-                    style={styles.filterTool}
-                    {...init('functionType')}
-                  >
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='流程名称'>
-                  <Select
-                    name="size"
-                    defaultValue='全部'
-                    style={styles.filterTool}
-                    {...init('process')}
-                  >
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={4}>
-                <FormItem {...formItemLayout} label='页面名称'>
-                  <Input
-                    placeholder='请输入'
-                    {...init('name')}/>
-                </FormItem>
-              </Col>
-              <Col span={4}>
-                <div>
-                  <Button
-                    type="normal"
-                    className='next-btn-search'
-                    onClick={(e)=>this.handleSubmit(e)}
+      <IceFormBinderWrapper value={this.state.values}>
+          <div className="pch-condition">
+            <Form
+              size="large"
+              direction="hoz"
+              >
+              <Row wrap>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="资方名称：">
+                    <IceFormBinder
+                      name="tenantId"
                     >
-                    查询
-                  </Button>
-                  <Button
-                    type="primary"
-                    style={{ marginLeft: '10px' }}
-                    onClick={()=>this.addPage()}
-                  >
-                    新增
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </Form>
+                      <Select
+                        size="large"
+                        placeholder="请选择"
+                      >
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="业务类型：">
+                    <IceFormBinder
+                    name="businessType"
+                    >
+                      <Select
+                          size="large"
+                          placeholder="请选择"
+                        >
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="功能模块：">
+                    <IceFormBinder
+                      name="functionType"
+                    >
+                     <Select
+                      size="large"
+                        placeholder="请选择"
+                      >
+                      </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="流程名称：">
+                    <IceFormBinder
+                      name="process"
+                    >
+                      <Select
+                          size="large"
+                          placeholder="请选择"
+                        >
+                        </Select>
+                    </IceFormBinder>
+                  </FormItem>
+                </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="页面名称：">
+                    <IceFormBinder
+                      name="name"
+                    >
+                      <Input
+                        size="large"
+                        placeholder="请输入"
+                      />
+                    </IceFormBinder>
+                  </FormItem>
+                  </Col>
+                <Col s="8" l="8">
+                  <FormItem {...formItemLayout} label="&nbsp;">
+                    <Button type="secondary" htmlType='submit' onClick={this.handleSubmit.bind(this)}>
+                      查询
+                    </Button>
+                    
+                    <Button
+                      type="primary"
+                      style={{ marginLeft: '10px' }}
+                      onClick={() =>this.addPage()}
+                    >
+                      新增
+                    </Button>
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>
+          </div>
         </IceFormBinderWrapper>
     )
   }
-
 }
 
 
@@ -173,13 +197,14 @@ export default class EnhanceTable extends Component {
     );
   };
 
-
   render() {
     const { list=[], total, limit, page } = this.props.pageData;
     return (
-      <div className="filter-table">
-        <IceContainer title="字段配置" className='subtitle' style={styles.marb0}>
-          <SearchForm searchEvent={(values)=>this.searchConditon(values)}/>
+      <IceContainer className="pch-container">
+        <legend className="pch-legend" >
+          <span className="pch-legend-legline"></span>页面配置
+        </legend>
+          <SearchForm searchEvent={(values) =>this.searchConditon(values)}/>
           <Table
             dataSource={list}
             className="basic-table"
@@ -187,10 +212,10 @@ export default class EnhanceTable extends Component {
           >
             <Table.Column
               title="业务类型"
-              dataIndex="name"
+              dataIndex="businessType"
               width={320}
             />
-            <Table.Column title="功能模块" dataIndex="type" width={85} />
+            <Table.Column title="功能模块" dataIndex="functionType" width={85} />
             <Table.Column
               title="页面名称"
               dataIndex="name"
@@ -198,7 +223,7 @@ export default class EnhanceTable extends Component {
             />
             <Table.Column
               title="流程"
-              dataIndex="id"
+              dataIndex=""
               width={85}
               cell={this.renderStatus}
             />
@@ -225,9 +250,7 @@ export default class EnhanceTable extends Component {
                                 />
                               </div>
           }
-
-        </IceContainer>
-      </div>
+      </IceContainer>
     );
   }
 }
@@ -246,5 +269,14 @@ const styles = {
   },
   filterTool: {
     width: '160px',
-  }
+  },
+   formItem: {
+    height: '28px',
+    lineHeight: '33px',
+    marginBottom:'28px'
+  },
+  formLabel: {
+    marginLeft: '85px',
+    textAlign: 'right',
+  },
 };

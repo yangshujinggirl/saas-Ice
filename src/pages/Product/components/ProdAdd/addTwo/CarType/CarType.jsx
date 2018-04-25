@@ -19,6 +19,14 @@ const { Row, Col } = Grid;
 const { Option } = Select;
 const { Group: RadioGroup } = Radio;
 
+//存储选中的数据
+let arrayRightData = {
+    chexing:[],
+    chexi:[],
+    pinpai:[]
+  };//全局
+const testarray = []; //右侧即将要渲染的数据
+
 const CARTYPES = {
   '1': {
     name: '品牌',
@@ -43,13 +51,20 @@ export default class CarType extends Component {
     this.rowSelection = {
       // 表格发生勾选状态变化时触发
       onChange: (ids,array) => {
-        let arra = []
-        arra.push(...array)
-        this.setState({
-          selectDate: arra
-        })
+        let types = this.props.data;
+        let arra = [];
 
-        console.log('ids', ids);
+        if(types=='1'){
+          arrayRightData.pinpai = [...array]
+        }else if(types=='2'){
+          arrayRightData.chexi = [...array]
+        }else{
+          arrayRightData.cehxing = [...array]
+        }
+        
+        this.setState({
+          selectDate: arrayRightData
+        })
         this.setState({
           selectedRowKeys: ids,
         });
@@ -104,15 +119,41 @@ export default class CarType extends Component {
   }
   //向右移动
   onRight(){
-    let { CarData } = this.props;
-    debugger
-    let arra = []
-    arra = [...this.state.selectDate]
-    CarData.productScopes = arra;
+    let CarData = this.props.CarData || {};
+    CarData.productScopes = []
+    for (var key in arrayRightData) {
+      for (var i = 0; i < arrayRightData[key].length; i++) {　　
+        var flag = true;　　
+        for (var j = 0; j < testarray.length; j++) {
+          if (arrayRightData[key][i].id == testarray[j].id) {
+            flag = false;
+          }
+        }
+        　
+        if (flag) {
+          testarray.push(arrayRightData[key][i]);　　
+        }
+      }
+    }
 
+    //去重后渲染
+    let arra = testarray
     this.setState({
       dataSourceRight: arra
     })
+
+    //右侧提交数据
+    arra.map((item, i) => {
+      console.log(item)
+      CarData.productScopes.push({
+        relatedId: item.id,
+        relatedName: item.type == '品牌' ? item.name : (item.type == '车系' ? item.name : item.name),
+        relatedPath: '',
+        relatedPathName: '',
+        type: 'CARS'
+      })
+    })
+
   }
   //操作
   renderOperator = (value, index, record) => {
@@ -165,20 +206,17 @@ changePage = (currentPage) => {
         onChange={this.onFormChange.bind(this)}
       >
         <div>
-          <IceContainer>
             <Row wrap style={styles.formItem}>
-              <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
+              <Col s="4" l="4" xxs={24} xs={12} l={8}>
                 <IceFormBinder
                   name="name"
                 >
-                  <Input style={{ width: '175px' }} placeholder="请输入查询名称" />
+                  <Input size="large" style={{ width: '175px' }} placeholder="请输入查询名称" />
                 </IceFormBinder>
                 <IceFormError name="name" />
-              </Col>
-              <Col s="4" l="4" xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <button style={styles.btns} type='submit' onClick={this.searchCar.bind(this)}>
+                <Button size="large" htmlType="submit" type="secondary" onClick={this.searchCar.bind(this)} style={{marginLeft: 12}}>
                   查询
-                </button>
+                </Button>
               </Col>
             </Row>
             {/* <Row wrap style={{marginBottom:"30px"}} >
@@ -191,8 +229,6 @@ changePage = (currentPage) => {
                 >
                 </Transfer>
               </Row>*/}
-          </IceContainer>
-          <IceContainer>
             <div className="table-center">
               <div className="table-left">
                 <Table
@@ -223,6 +259,8 @@ changePage = (currentPage) => {
               <div className="table-right">
                 <Table
                   dataSource={this.state.dataSourceRight}
+                  fixedHeader={true}
+                  maxBodyHeight={400}
                 >
                   <Table.Column title="类型" dataIndex="type" width={50} />
                   <Table.Column title="名称" dataIndex="name" width={300} />
@@ -235,7 +273,6 @@ changePage = (currentPage) => {
                 </Table>
               </div>
             </div>
-          </IceContainer>
         </div>
       </IceFormBinderWrapper>
     );
@@ -269,9 +306,7 @@ const styles = {
     marginBottom: '20px',
   },
   formItem: {
-    height: '28px',
-    lineHeight: '28px',
-    marginBottom: '25px',
+    marginBottom: '24px',
   },
   btns: {
     width: '90px',
@@ -280,7 +315,7 @@ const styles = {
     border: 'none',
     fontSize: '16px',
     borderRadius: 'none !important',
-    background: '#ec9d00',
+    background: '#FC9E25',
     color: '#fff',
     marginLeft: '20px'
 

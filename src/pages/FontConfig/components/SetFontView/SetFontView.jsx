@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
+import { Balloon } from "@icedesign/base";
 import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
@@ -27,15 +28,15 @@ export default class setFont extends Component {
             subTitle: '',
             addValue: [1],
             fields: {
-                fieldsetOrder:1,
-                hasAttachedFields:false,
-                isCustom:true,
-                isRepeatable:false,
-                isRequired:false,
-                label:"",
-                name:"",
-                orderId:43,
-                screenSchemeId:'',
+                fieldsetOrder: 1,
+                hasAttachedFields: false,
+                isCustom: true,
+                isRepeatable: false,
+                isRequired: false,
+                label: "",
+                name: "",
+                orderId: 43,
+                screenSchemeId: '',
                 type: "",
                 options: [],
                 length: 30,
@@ -74,13 +75,13 @@ export default class setFont extends Component {
     }
 
     handleRemoveElement = (index, inj) => {
-        let id = this.props.router.location.query.id        
+        let id = this.props.router.location.query.id
         const newArr = this.state.resData;
         let deleteObj = newArr.fieldset[index].fields.splice(inj, 1);
         let fileId = deleteObj[0].id;
         console.log(deleteObj[0]);
-        
-        FontConfigReq.deleteCode(id,fileId).then((data) => {
+
+        FontConfigReq.deleteCode(id, fileId).then((data) => {
             if (data.code == '200') {
                 this.setState({
                     resData: newArr
@@ -91,22 +92,22 @@ export default class setFont extends Component {
                 })
             }
         })
-        
+
     }
     // 上一页
     upPage = () => {
-        let id =  this.props.router.location.query.id
+        let id = this.props.router.location.query.id
         this.props.router.push(`font/add?id=${id}`)
-    } 
+    }
     // 下一页
     downPage = () => {
-        this.props.router.push(`font`)     
+        this.props.router.push(`font`)
     }
     //取消
     cancelPage = () => {
         this.props.router.push('font/list')
     }
-    menuNav = (archer,index) => {
+    menuNav = (archer, index) => {
         this.scrollToAnchor(archer)
         this.setState({
             leftActive: index,
@@ -140,9 +141,9 @@ export default class setFont extends Component {
             // 找到锚点
             let anchorElement = document.getElementById(anchorName);
             // 如果对应id的锚点存在，就跳转到锚点
-            if(anchorElement) { anchorElement.scrollIntoView(); }
+            if (anchorElement) { anchorElement.scrollIntoView(); }
         }
-      }
+    }
 
     componentDidMount() {
         let id = this.props.router.location.query.id
@@ -151,7 +152,7 @@ export default class setFont extends Component {
             let res = data.data
             this.setState({
                 resData: res,
-                pageValue: res&&res.name
+                pageValue: res && res.name
             })
             for (const key in this.state.resData.fieldset) {
 
@@ -168,14 +169,14 @@ export default class setFont extends Component {
         // 固定左侧菜单
         window.onscroll = function () {
             let scrollFix = document.querySelector('.scrollFix');
-            if(!scrollFix){
-                return 
+            if (!scrollFix) {
+                return
             }
-                if (window.scrollY > 130) {
-                    scrollFix.style.cssText += 'position:fixed;top:50px;'
-                } else {
-                    scrollFix.style.cssText += 'position:static;top:auto;'                    
-                }
+            if (window.scrollY > 130) {
+                scrollFix.style.cssText += 'position:fixed;top:50px;'
+            } else {
+                scrollFix.style.cssText += 'position:static;top:auto;'
+            }
         }
     }
 
@@ -241,21 +242,21 @@ export default class setFont extends Component {
                     title: '提示',
                     content: '字段名称不能为空'
                 })
-                return 
+                return
             }
             if (reqData.type == "") {
                 Dialog.alert({
                     title: '提示',
                     content: '字段类型不能为空'
                 })
-                return 
+                return
             }
             let id = this.props.router.location.query.id
             console.log(this.state.resData);
             this.setState({
                 dialogOne: false
             })
-            FontConfigReq.submitCustomeCode(reqData,id).then((data) => {
+            FontConfigReq.submitCustomeCode(reqData, id).then((data) => {
                 if (data.code == '200') {
                     reqData.id = data.data.id;
                     resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
@@ -263,11 +264,11 @@ export default class setFont extends Component {
                     Dialog.alert({
                         title: '提示',
                         content: data.msg
-                    })  
-                }                 
+                    })
+                }
             })
         }
-        const handleEdite = () => { 
+        const handleEdite = () => {
             let resData = this.state.resData;
             let index = this.state.editeCodeIndex.index;
             let inj = this.state.editeCodeIndex.inj;
@@ -277,7 +278,7 @@ export default class setFont extends Component {
             let isReadonly = resData.fieldset[index].fields[inj].isReadonly
             let line = resData.fieldset[index].fields[inj].line
             let type = resData.fieldset[index].fields[inj].type
-            
+
             let reqData = {
                 label,
                 isRequired,
@@ -291,7 +292,7 @@ export default class setFont extends Component {
                     title: '提示',
                     content: '字段名称不能为空'
                 })
-                return 
+                return
             }
             let id = this.props.router.location.query.id
             let fileId = resData.fieldset[index].fields[inj].id
@@ -299,7 +300,7 @@ export default class setFont extends Component {
             this.setState({
                 dialogTwo: false
             })
-            FontConfigReq.submitModifyCode(reqData,id,fileId).then((data) => {
+            FontConfigReq.submitModifyCode(reqData, id, fileId).then((data) => {
                 if (data.code == '200') {
                     // reqData.id = data.data.id;
                     // resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
@@ -307,11 +308,11 @@ export default class setFont extends Component {
                     Dialog.alert({
                         title: '提示',
                         content: data.msg
-                    })  
-                }                 
+                    })
+                }
             })
         }
-        
+
         const footer = (
             <div key='1'>
                 <Button type="primary" style={{ marginLeft: '10px' }} onClick={handleSubmit}>
@@ -332,7 +333,7 @@ export default class setFont extends Component {
                 </Button>
             </div>
         );
-        
+
         const hover = (bool, item) => {
 
             if (bool) {
@@ -465,7 +466,7 @@ export default class setFont extends Component {
                     break;
                 case 'SELECT':
                     inputType = <Select
-                        placeholder="选择尺寸"
+                        placeholder="请选择"
                     >
                         {item.options && item.options.map((item, index) => {
                             return (
@@ -480,10 +481,10 @@ export default class setFont extends Component {
                         {
                             <label>
                                 <CheckboxGroup
-                                dataSource={item.options}
+                                    dataSource={item.options}
                                 />
                             </label>
-                        } 
+                        }
                     </span>
                     break;
                 case 'RADIO':
@@ -491,7 +492,7 @@ export default class setFont extends Component {
                         {
                             <label>
                                 <RadioGroup
-                                dataSource={item.options}
+                                    dataSource={item.options}
                                 />
                             </label>
                         }
@@ -567,7 +568,7 @@ export default class setFont extends Component {
             console.log(value);
             let data = this.state.fields;
             data.type = value;
-            if (value == "SELECT"||value == "RADIO"||value == "CHECKBOX") {
+            if (value == "SELECT" || value == "RADIO" || value == "CHECKBOX") {
                 this.setState({
                     boolSelect: true,
                 })
@@ -649,10 +650,10 @@ export default class setFont extends Component {
                 resData: data
             })
         }
-        
+
         const handleSelect = (index, value) => {
             let data = this.state.fields;
-            data.options[index] = {label: value,value: value};
+            data.options[index] = { label: value, value: value };
             this.setState({
                 fields: data
             })
@@ -670,9 +671,9 @@ export default class setFont extends Component {
         }
 
         const handlePageName = (e) => {
-   
+
             this.setState({
-                pageValue : e.target.value
+                pageValue: e.target.value
             })
         }
         return (
@@ -691,7 +692,7 @@ export default class setFont extends Component {
                                 this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
                                     return (
                                         <li className={cx({ 'active': this.state.leftActive === index })} key={index}>
-                                            <a  onClick={this.menuNav.bind(this,item.name,index)}>{item.name}</a>
+                                            <a onClick={this.menuNav.bind(this, item.name, index)}>{item.name}</a>
                                         </li>
                                     )
                                 })}
@@ -723,15 +724,25 @@ export default class setFont extends Component {
                                                 if (item.isCustom) {
                                                     return (
                                                         // 基本信息里面自定义字段
-                                                        <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false', {active: this.state.rightActive == item.label} )} key={inj}>
+                                                        <div onMouseLeave={hover.bind(this, 0)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
+                                                            'false')} key={inj} data-row={item.line==1? true : ''}>
                                                             <div className="clearfix">
                                                                 <label htmlFor="" className='label'>
-                                                                    <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
-                                                                    <span className='required'>*</span>
+                                                                    <Balloon
+                                                                            type="primary"
+                                                                            trigger={ <span className='ellips'  title={item.label}>
+                                                                            <span className='required'>
+                                                                                {item.isRequired ? <span>*</span> : ''}
+                                                                            </span>    
+                                                                            {item.label}
+                                                                        </span>}
+                                                                            closable={false}
+                                                                            triggerType="hover">
+                                                                            {item.label}
+                                                                    </Balloon>    
                                                                 </label>
                                                                 {handleFixed(item)}
-                                                                <span className='edite icon'>&#xe62a;</span>
+                                                                <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
                                                             </div>
                                                             <span className="delete"
                                                                 onClick={this.handleRemoveElement.bind(this, index, inj)}>
@@ -743,17 +754,24 @@ export default class setFont extends Component {
                                                     return (
                                                         // 固定字段
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false')} key={inj}>
+                                                            'false')} key={inj} data-row={item.line == 1 ? true : ''}>
                                                             <div className="clearfix">
-                                                                <label htmlFor=""  className='label'>
-                                                                    <span className='ellips' title={item.label}>{item.label}</span>
-                                                                    <span className='required'>*</span>
+                                                                <label htmlFor="" className='label'>
+                                                                    <Balloon
+                                                                            type="primary"
+                                                                            trigger={ <span className='ellips'>
+                                                                            <span className='required'>*</span>  
+                                                                            {item.label}:
+                                                                            </span>}
+                                                                            closable={false}
+                                                                            triggerType="hover">
+                                                                            {item.label}
+                                                                    </Balloon>    
                                                                 </label>
                                                                 {handleFixed(item)}
                                                                 <span className='edite icon'>&#xe62a;</span>
                                                             </div>
-                                                            <span className="delete"
-                                                                onClick={this.handleRemoveElement.bind(this, index)}>
+                                                            <span className="delete">
                                                                 &times;
                                                                 </span>
                                                         </div>
@@ -786,18 +804,24 @@ export default class setFont extends Component {
                                             {index == 0 ? '' : item.fields.map((item, inj) => {
                                                 return (
                                                     <div key={inj} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                        'false', {
-                                                            active: this.state.rightActive == item.label
-                                                        })} >
+                                                        'false')} data-row={item.line == 1 ? true : ''}>
                                                         <div className="clearfix">
                                                             <label htmlFor=""  className='label'>
-                                                                <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
-                                                                <span className='required' onClick={validaRequire.bind(this, index, inj)}>
-                                                                    {item.isRequired ? <span>*</span> : ''}
-                                                                </span>
+                                                                <Balloon
+                                                                        type="primary"
+                                                                        trigger={ <span className='ellips'  title={item.label}>
+                                                                        <span className='required'>
+                                                                            {item.isRequired ? <span>*</span> : ''}
+                                                                        </span>    
+                                                                        {item.label}
+                                                                    </span>}
+                                                                        closable={false}
+                                                                        triggerType="hover">
+                                                                        {item.label}
+                                                                </Balloon> 
                                                             </label>
                                                             {handleFixed(item)}
-                                                            <span className='edite icon'>&#xe62a;</span>
+                                                            <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
                                                         </div>
                                                         <span className="delete"
                                                             onClick={this.handleRemoveElement.bind(this, index, inj)}>
@@ -850,14 +874,14 @@ export default class setFont extends Component {
                             <label htmlFor="">
                                 <span>字段后缀</span>
                             </label>
-                            <Input placeholder="请输入" onChange={codeSuffix}/>
+                            <Input placeholder="请输入" onChange={codeSuffix} />
                         </div>
                         <br />
                         <div className='first'>
                             <label htmlFor="">
                                 <span>字段类型</span>
                             </label>
-                            <Select size="large" onChange ={codeType}>
+                            <Select size="large" onChange={codeType}>
                                 <Select.Option select value="STRING">输入文本</Select.Option>
                                 <Select.Option value="TEXT">文本域</Select.Option>
                                 <Select.Option value="RADIO">单选框</Select.Option>
@@ -873,7 +897,7 @@ export default class setFont extends Component {
                             <label htmlFor="">
                                 <span>字段长度</span>
                             </label>
-                            <Input placeholder="请输入" onChange ={codeLength} />
+                            <Input placeholder="请输入" onChange={codeLength} />
                         </div>
                     </div>
                     <div className='beautify'>
@@ -917,8 +941,8 @@ export default class setFont extends Component {
                     <div className='beautify'>
                         <Input className="" placeholder="Medium" />
                     </div> */}
-                    
-                    { this.state.boolSelect ? <div className='beautify constraint'>
+
+                    {this.state.boolSelect ? <div className='beautify constraint'>
                         <label htmlFor="" className='changSet' >选择设置:</label><br />
                         {this.state.addValue.map((item, index) => {
                             return (
@@ -926,7 +950,7 @@ export default class setFont extends Component {
                                     <div className='dropDown clearfix' key={index}>
                                         <div>
                                             {/* <Checkbox /> */}
-                                            <Input className="" placeholder="请输入值" onChange={handleSelect.bind(this,index)}/>
+                                            <Input className="" placeholder="请输入值" onChange={handleSelect.bind(this, index)} />
                                             <div className='addReduce'>
                                                 <span onClick={handleAddValue.bind(this, 'add')}>+</span>
                                             </div>
@@ -935,7 +959,7 @@ export default class setFont extends Component {
                                     <div className='dropDown' key={index}>
                                         <div>
                                             {/* <Checkbox /> */}
-                                            <Input className="" placeholder=" 请输入值" onChange={handleSelect.bind(this,index)}/>
+                                            <Input className="" placeholder=" 请输入值" onChange={handleSelect.bind(this, index)} />
                                             <div className='addReduce'>
                                                 <span onClick={handleAddValue.bind(this, 'add')}>+</span>
                                                 <span onClick={handleAddValue.bind(this, index)}>-</span>
@@ -946,16 +970,16 @@ export default class setFont extends Component {
 
                         })}
 
-                    </div>: ''}
-                    {this.state.boolDate ? 
-                    <div className='beautify'>
-                        <label htmlFor="" className='marr10'>日期格式</label>
-                        <CheckboxGroup
-                            value={this.state.listDate}
-                            dataSource={listDate}
-                            onChange={codeDate}
-                        /> 
-                    </div>: ""}
+                    </div> : ''}
+                    {this.state.boolDate ?
+                        <div className='beautify'>
+                            <label htmlFor="" className='marr10'>日期格式</label>
+                            <CheckboxGroup
+                                value={this.state.listDate}
+                                dataSource={listDate}
+                                onChange={codeDate}
+                            />
+                        </div> : ""}
 
                 </Dialog>
                 <Dialog
@@ -973,7 +997,7 @@ export default class setFont extends Component {
                             <label htmlFor="">
                                 <span>字段名称</span>
                             </label>
-                            <Input placeholder="请输入" onChange={codeNameTwo}/>
+                            <Input placeholder="请输入" onChange={codeNameTwo} />
                         </div>
                     </div>
                     <div className='beautify'>

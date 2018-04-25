@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
+import {
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
+const { Group: CheckboxGroup } = Checkbox;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Combobox } = Select;
@@ -20,6 +26,15 @@ const formItemLayoutCombobox = {
   labelCol: { span: 3 },
   wrapperCol: { span: 15 }
 };
+const formItemLayoutTEXT = {
+  labelCol: { span: 3},
+  wrapperCol: { span: 21 }
+};
+const formItemLayoutCHECKBOX = {
+  labelCol: { span: 6},
+  wrapperCol: { span: 21 }
+};
+
 export default class FormRender extends Component {
   static displayName = 'FormRender';
 
@@ -33,10 +48,18 @@ export default class FormRender extends Component {
     this.state = {
       value: {},
       Component :[],
-      list:[]
+      list:[],
+      dataSource:[]
     };
   }
+  //请求数据
+  fetchData = (flag) => {
+    let {actions} = this.props;
+    actions.getDetail(this.props.params.id);
+    console.log(this.props.params.id)
+  };
   componentWillMount(){
+    // this.fetchData()
     this.SelectList();
   }
   //渲染表单
@@ -70,6 +93,16 @@ export default class FormRender extends Component {
         {this.RenderField(el,outIndex,inIndex)}
       </div>)
     }
+    else if(el.type == 'CHECKBOX' || el.type == 'RADIO'){
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el,outIndex,inIndex)}
+      </div>)
+    }
+    else if(el.line == '1'){
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el,outIndex,inIndex)}
+      </div>)
+    }
     return this.RenderField(el,outIndex,inIndex)
   }
   //selectList
@@ -87,16 +120,16 @@ export default class FormRender extends Component {
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <Input
-            defaultValue={el.value}
-            {...init(el.name,{
-              initValue: el.value,
-              rules: [{ required:  el.isRequired, message: "请填写"+el.label }],
-              props:{ onBlur:()=> this.refuse(el.name) }
-            })}
-            placeholder={"请输入"+el.label}
-            disabled={el.isFixed || el.isReadonly}
-          />
+          <IceFormBinder
+            name={`${el.value}`}
+            required ={true}
+          >
+            <Input
+
+              placeholder={"请输入"+el.label}
+              disabled={el.isFixed || el.isReadonly}
+            />
+          </IceFormBinder>
         </FormItem>
       )
     }else if(el.type == "SELECT"){
@@ -104,10 +137,11 @@ export default class FormRender extends Component {
        return(
                <FormItem  key={el.id} className='item half' label={this.label(el.label)}
                           {...formItemLayoutCombobox}>
+
                <Combobox
                      // onInputUpdate={this.onInputUpdate.bind(this)}
-                     fillProps="label"
-                     filterLocal={true}
+                     fillProps={el.label}
+                     // filterLocal={true}
                      placeholder={"请输入"+el.label}
                      style={{width:"100%"}}
                      autoWidth
@@ -117,7 +151,7 @@ export default class FormRender extends Component {
                      // onSearch ={this.onSearch}
                      onInputUpdate={this.onInputUpdate.bind(this)}
                      {...init(el.name, {
-                       // initValue: el.value,
+                       initValue: el.value,
                        rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
                      })}
                    />
@@ -170,12 +204,12 @@ export default class FormRender extends Component {
                   {...formItemLayout}>
           <NumberPicker
             disabled={el.isFixed || el.isReadonly}
-            defaultValue={el.value}
+            defaultValue={el.value ? parseInt(el.value) : el.value}
             min={0}
             max={el.maxValue}
             inputWidth={'100px'}
             {...init(el.name, {
-              initValue: el.value,
+              initValue: el.value ? parseInt(el.value) : el.value,
               rules: [
                 { required: el.isRequired,message: "请填写"+el.label}
               ]
@@ -191,12 +225,13 @@ export default class FormRender extends Component {
         el.options.map((item,index)=>{
           if(item.isDefault){
             Default =item.value;
+            // console.log(Default)
           }
         })
       }
       if(el.hasAttachedFields){
         var value = ''
-        value =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
+        value =  el.value ==undefined || el.value =='' ||  el.value =='undefined' ? Default : el.value ;
         Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
                               {...formItemLayoutR}>
           <RadioGroup
@@ -224,9 +259,11 @@ export default class FormRender extends Component {
       }
       else{
         var   setValue = '';
-        setValue =  el.value !='' ||  el.value =='undefined' ? el.value : Default;
-        Fields.push(<FormItem key={el.id} className='item' label={this.label(el.label)}
-                              {...formItemLayout}>
+        setValue =   el.value ==undefined || el.value =='' ||  el.value =='undefined' ? Default : el.value ;
+        // console.log(Default)
+        // console.log(setValue)
+        Fields.push(<FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
+                              {...formItemLayoutTEXT}>
           <RadioGroup
             defaultValue ={setValue+''}
             disabled={el.isReadonly}
@@ -241,10 +278,19 @@ export default class FormRender extends Component {
       }
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
+      console.log(el.value)
+      var str = el.value
+      if(str && str.indexOf(",") >= 0){
+         el.value =  str.split(',');
+      }
+      console.log(el.value)
       return(
-        <FormItem key={el.id} className='item' label={this.label(el.label)}
-                  {...formItemLayout}>
+
+        <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
+                  {...formItemLayoutTEXT}>
           <CheckboxGroup
+            className='CheckboxGroup'
+            style={{width:'100%'}}
             defaultValue ={el.value}
             disabled={ el.isReadonly}
             {...init(el.name, {
@@ -258,21 +304,35 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'DATE'){
+      console.log(el.value)
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
-                  {...formItemLayout}>
+                  {...formItemLayout}  >
           <DatePicker
             defaultValue={el.value}
             disabled={el.isReadonly}
             format={"YYYY-MM-DD"}
-            // formater={["YYYY-MM-DD"]}
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,
               getValueFromEvent: this.formater
             },{
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required: true, message: "请选择"+el.label }]
             })}
+          />
+        </FormItem>
+      )
+    }else if(el.type == 'TEXT'){
+      return(
+        <FormItem key={el.id} style={{width:'90%'}} className='item' label={this.label(el.label)}
+                  {...formItemLayoutTEXT}>
+          <Input multiple ='6'
+                 style={{width:'85%'}}
+                 disabled={ el.isReadonly}
+                 {...init(el.name, {
+                   initValue: el.value,
+                   rules: [{ required: el.isRequired, message: "请填写"+el.label }]
+                 })}
           />
         </FormItem>
       )
@@ -357,8 +417,12 @@ export default class FormRender extends Component {
       }
     }
   }
+  //日期格式修改
+  formater = (val, str)=>{
+    return str;
+  }
   render() {
-    console.log(this.state.list)
+    console.log(this.props.data)
     const { data, init } = this.props;
     return (
       this.renderForm(data)

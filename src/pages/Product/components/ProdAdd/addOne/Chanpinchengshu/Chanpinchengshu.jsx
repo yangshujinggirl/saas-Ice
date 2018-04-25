@@ -17,6 +17,7 @@ import {
   Table,
   Dialog
 } from '@icedesign/base';
+import { Title, BtnAddRow } from 'components';
 
 const { Row, Col } = Grid;
 
@@ -123,14 +124,12 @@ export default class Chanpinchengshu extends Component {
 				className="table"
 			>
 				<Table.Column title="最小期限(月)" cell={this.renderCell1} />
-				<Table.Column title="最大成数(%)"  cell={this.renderCell2} />
-				<Table.Column title="最小成数(%)"  cell={this.renderCell3} />
 				<Table.Column title="最大期限(月)"  cell={this.renderCell4} />
+				<Table.Column title="最小成数(%)"  cell={this.renderCell3} />
+				<Table.Column title="最大成数(%)"  cell={this.renderCell2} />
 				<Table.Column title="操作" width={80}  cell={this.renderCell5} />
 				</Table>
-			<div style={styles.addNew}>
-			<Button onClick={this.props.addItem.bind(this)} style={styles.addNewItem}>新增一行</Button>
-			</div>
+        <BtnAddRow style={{marginTop: 20}} onClick={this.props.addItem.bind(this)} />
 		</div>
     )
   }

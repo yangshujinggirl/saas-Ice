@@ -12,3 +12,10 @@ input[type="number"]{
     height: 30px;
   }
 }
+// 修改ui组件错误提示不占空间
+.next-form-item-control {
+  .next-form-item-explain {
+    top: 29px;
+    position: absolute;
+  }
+}

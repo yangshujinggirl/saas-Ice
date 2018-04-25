@@ -31,8 +31,12 @@ export default class AdFont extends Component {
         };
     }
     submit = () => {
+        // 页面名称
+        let pageName = this.props.router.location.query.pageName
+        console.log(pageName);
+        
         let reqDate = {
-            "name": this.state.pageName,
+            "name": '',
             "businessType": "货款业务",
             "functionType": "进件",
             "fields": []
@@ -84,7 +88,7 @@ export default class AdFont extends Component {
             FontConfigReq.save(reqDate).then((data) => {
                 let res = data.data;
                 if (data.code == 200) {
-                    this.props.router.push(`/font/set?id=${res.id}`)
+                    this.props.router.push(`/font/set?id=${res.id}&pageName=${pageName}`)
                 } else {
                     Dialog.alert({
                         content: res.msg,
@@ -185,17 +189,19 @@ export default class AdFont extends Component {
         console.log(this.state.isFixed);
         
         return (
-            <div className="addFont">
+            <IceContainer className="pch-container addFont">
                 {/* <IceContainer className='subtitle'>
                     <div className="pageName">
                         <label>页面成名</label>
                         <input type="text" name='' onChange={this.onChang.bind(this)} />
                     </div>
                 </IceContainer> */}
-                <IceContainer title="选择字段" className='subtitle'>
+                <legend className="pch-legend" >
+                  <span className="pch-legend-legline"></span>选择字段
+                </legend>
                     {
                         <div>
-                            <div className="diffence">字段（必选）</div>
+                            <div className="diffence" style={{marginTop:20}}>字段（已锁定）</div>
                             {/* <DragFields
                                 isFixed={true}
                                 data={this.state.isFixed}
@@ -240,8 +246,6 @@ export default class AdFont extends Component {
                             })}
                         </div>
                     }
-
-                </IceContainer>
                 <div className='btn-list'>
                     <Button onClick={this.submit.bind(this)} type="normal" className='next-btn-search btn'>
                         下一步
@@ -251,7 +255,7 @@ export default class AdFont extends Component {
                     </Button>
                 </div>
 
-            </div>
+            </IceContainer>
         );
     }
 }

@@ -17,6 +17,7 @@ import {
   Table,
   Dialog
 } from '@icedesign/base';
+import { Title, BtnAddRow } from 'components';
 
 const { Row, Col } = Grid;
 const { Option } = Select;
@@ -155,9 +156,8 @@ export default class Huankuanfangshi extends Component {
 				<Table.Column title="宽限期失效后还款方式" cell={this.renderCell4} />
 				<Table.Column title="操作" width={80} cell={this.renderCell5} />
 				</Table>
-			<div style={styles.addNew}>
-			<Button onClick={this.props.addItem.bind(this)} style={styles.addNewItem}>新增一行</Button>
-			</div>
+        <BtnAddRow style={{marginTop: 20}} onClick={this.props.addItem.bind(this)} />
+			
 		</div>
     )
   }

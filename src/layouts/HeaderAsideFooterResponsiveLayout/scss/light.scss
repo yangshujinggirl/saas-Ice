@@ -35,6 +35,17 @@ $ice-aside-collapse-menu-text-color: $color-text1-3 !default;
 $ice-copyright-text-color: $color-text1-3 !default;
 $ice-copyright-text-hover-color: $color-brand1-5 !default;
 
+// ------------------------ button ------------------------ //
+$btn-secondary-bg: #FC9E25 !default;
+
+$btn-secondary-bg-hover: #FFA000 !default;
+
+$btn-secondary-border-color: transparent;
+
+$btn-secondary-border-color-hover: transparent;
+
+$btn-secondary-color: #FFFFFF !default;
+
 $theme: "light";
 
 @import "./base.scss";

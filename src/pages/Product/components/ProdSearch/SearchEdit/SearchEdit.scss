@@ -25,25 +25,25 @@ border-radius: 2px;
 }
 }
 
-.legend {
-  margin-left: 0;
-  padding-left: 15px;
-  padding-top: 12px;
-  background-color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 25px;
-  padding-bottom: 14px;
-  .legLine {
-      display: inline-block;
-      zoom: 1;
-      vertical-align: top;
-      margin-right: 12px;
-      width: 4px;
-      height: 25px;
-      background-color: #ec9d00;
-  }  
-}
+// .legend {
+//   margin-left: 0;
+//   padding-left: 15px;
+//   padding-top: 12px;
+//   background-color: #fff;
+//   font-size: 18px;
+//   font-weight: 500;
+//   line-height: 25px;
+//   padding-bottom: 14px;
+//   .legLine {
+//       display: inline-block;
+//       zoom: 1;
+//       vertical-align: top;
+//       margin-right: 12px;
+//       width: 4px;
+//       height: 25px;
+//       background-color: #ec9d00;
+//   }  
+// }
 .lx-mid-line {
   padding-left: 3px !important;
   padding-right: 3px !important;
@@ -75,19 +75,19 @@ border-radius: 2px;
   line-height: 20px;
   border-color: #999
 }
-.f-box {
-  margin: 0 15px;
-  padding: 25px 0 0 0;
-  border-top: 1px solid #d8d8d8;
-}
-.table-title {
-  height: 41px;
-  line-height: 41px;
-  text-align: center;
-  border: 1px solid #f6dca9;
-  border-bottom: none;
-  background: #fdf4e3;
-}
+// .f-box {
+//   margin: 0 15px;
+//   padding: 25px 0 0 0;
+//   border-top: 1px solid #d8d8d8;
+// }
+// .table-title {
+//   height: 41px;
+//   line-height: 41px;
+//   text-align: center;
+//   border: 1px solid #f6dca9;
+//   border-bottom: none;
+//   background: #fdf4e3;
+// }
 
 .back-btn,.dete-btn {
   display: block;
@@ -96,30 +96,30 @@ border-radius: 2px;
   text-align: center;
   border: none;
   border-radius: 2px;
-  background: #ec9d00;
+  background: #FC9E25;
   color: #fff !important;
 
 }
 
-.next-btn-box {
-  width: 100%;
-  text-align: center;
-  // overflow: hidden;
-  height: 100px;
-  position: relative;
-  cursor: pointer;
-  .next-btn-lx {
-      position: absolute;
-      top:20px;
-      left: 50%;
-      height: 50px;
-      width: 150px;
-      background: #ec9d00;
-      color: #fff;
-      text-align: center;
-      line-height: 50px;
-      font-size: 16px;
-  }
-}
+// .next-btn-box {
+//   width: 100%;
+//   text-align: center;
+//   // overflow: hidden;
+//   height: 100px;
+//   position: relative;
+//   cursor: pointer;
+//   .next-btn-lx {
+//       position: absolute;
+//       top:20px;
+//       left: 50%;
+//       height: 50px;
+//       width: 150px;
+//       background: #ec9d00;
+//       color: #fff;
+//       text-align: center;
+//       line-height: 50px;
+//       font-size: 16px;
+//   }
+// }
 
 

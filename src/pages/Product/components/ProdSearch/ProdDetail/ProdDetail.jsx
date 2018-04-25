@@ -39,7 +39,6 @@ export default class ProdDetail extends Component {
     this.state = {
      
     };
-    console.log(this.props.location.params)//id
   }
 
   addNewItem = () => {
@@ -57,6 +56,12 @@ export default class ProdDetail extends Component {
     let {actions,pageData, params} = this.props;
     this.props.actions.getDetail(params.id);//传参数，eg:ID
   }
+  //判断品牌／车型／车系
+  relatedType=(value, index, record)=>{
+   let itemPath= record.relatedPath.split('/');
+   return itemPath.length==3?'品牌':(itemPath.length==4?'车系':'车型')
+  }
+
   render() {
     let product = this.props.formData.product||[];//基本信息
     let percentageSetting = this.props.formData.percentageSetting ||[];//贷款成数设置
@@ -64,6 +69,7 @@ export default class ProdDetail extends Component {
     let repaymentMethodsSetting = this.props.formData.repaymentMethodsSetting ||[];//还款方式设置    
     let prepaymentSetting = this.props.formData.prepaymentSetting ||[];//提前还款设置
     let productScopes =this.props.formData.productScopes ||[]
+     
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -71,10 +77,10 @@ export default class ProdDetail extends Component {
       >
         <div>
           <IceContainer>
-            <legend className="legend">
-              <span className="legLine"></span>基本信息
+            <legend className="pch-legend">
+              <span className="pch-legend-legline"></span>基本信息
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
               <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>资金方：</label>
@@ -111,7 +117,7 @@ export default class ProdDetail extends Component {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>状态：</label>
-                  <span >{product.status=='0'?'生效':(product.status=='1'?'未生效':'失效')}</span>
+                  <span >{product.status=='1'?'生效':(product.status=='0'?'未生效':'失效')}</span>
                 </Col>
               </Row>
               <Row wrap>
@@ -143,10 +149,10 @@ export default class ProdDetail extends Component {
                 <span >{product.description}</span>
               </Row>
             </div>
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>额度期限设置
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>额度期限设置
             </legend>
-          <div className="f-box">
+          <div className="pch-condition">
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款期限变更：</label>
@@ -189,10 +195,10 @@ export default class ProdDetail extends Component {
               </Table>
           </div>
 
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>利率设置
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>利率设置
             </legend>
-          <div className="f-box">
+          <div className="pch-condition">
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款利率变更：</label>
@@ -233,10 +239,10 @@ export default class ProdDetail extends Component {
               </Table>
           </div>
 
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>还款设置
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>还款设置
           </legend>
-          <div className="f-box">
+          <div className="pch-condition">
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款账户变更：</label>
@@ -319,10 +325,10 @@ export default class ProdDetail extends Component {
                 <Table.Column title="违约金比例(%)" dataIndex="penaltyPercentage"/>
               </Table>
           </div>
-          <legend className="legend" style={{marginTop:"30px"}}>
-            <span className="legLine"></span>按品牌/车系/车型
+          <legend className="pch-legend" style={{marginTop:"30px"}}>
+            <span className="pch-legend-legline"></span>按品牌/车系/车型
             </legend>
-            <div className="f-box">
+            <div className="pch-condition">
             <div className="table-title">按品牌/车系/车型</div>
             <Table
               dataSource={productScopes}
@@ -330,15 +336,15 @@ export default class ProdDetail extends Component {
                 className="table"
                 primaryKey="id"
               >
-                <Table.Column title="类型" dataIndex="relatedName"/>
-                <Table.Column title="名称" dataIndex="relatedPath1"/>
+                <Table.Column title="类型" cell={this.relatedType}/>
+                <Table.Column title="名称" dataIndex="relatedPathName"/>
               </Table>
             </div>
 
-            <legend className="legend" style={{marginTop:"30px"}}>
-              <span className="legLine"></span>按集团/渠道/厅店
+            <legend className="pch-legend" style={{marginTop:"30px"}}>
+              <span className="pch-legend-legline"></span>按集团/渠道/厅店
             </legend>
-            <div className="f-box" >
+            <div className="pch-condition" >
             <div className="table-title">按集团/渠道/厅店</div>
             <Table
                 hasHeader

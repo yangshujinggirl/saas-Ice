@@ -1,6 +1,6 @@
 import T from '../constants/ProductConstant'
 import Req from '../reqs/ProductReq'
-import {hashHistory} from 'react-router';
+import { hashHistory } from 'react-router';
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
 /**
@@ -47,14 +47,24 @@ function change(data) {
 }
 
 //产品初始
-export const prodActions = (condition)=>{
+export const prodActions = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
     Req.prodActions(condition).then((res) => {
-      // res.data
-      dispatch(fetchSuccess({ prodActions: res}))
+      let data = res.data;
+      if (!res || res.code != 200) {
+        data = {};
+      }
+      
+      // 添加一个默认全部选项
+      data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.splice(0, 0, {
+        value: 'ALL_CHOICE',
+        desc: '全部'
+      });
+
+      dispatch(fetchSuccess({ prodActions: data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -67,7 +77,7 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      if(res.code == 200) {
+      if (res.code == 200) {
         dispatch(fetchSuccess({ pageData: res.data }))
       }
     }).catch((ex) => {
@@ -83,7 +93,7 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
-      if(!res || res.code != 200) return;
+      if (!res || res.code != 200) return;
       // console.log(res)
       hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
@@ -92,13 +102,13 @@ export const save = (data) => {
   }
 }
 //产品提交第二步保存
-export const productsave = (data,id) => {
+export const productsave = (data, id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.productsave(data,id).then((res) => {
-      if(!res || res.code != 200) return;
+    Req.productsave(data, id).then((res) => {
+      if (!res || res.code != 200) return;
       hashHistory.push(`/product/addthree/${id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -106,13 +116,13 @@ export const productsave = (data,id) => {
   }
 }
 ////产品提交第三步保存
-export const prodHtmlSave = (data,id) => {
+export const prodHtmlSave = (data, id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.prodHtmlSave(data,id).then((res) => {
-      if(!res || res.code != 200) return;
+    Req.prodHtmlSave(data, id).then((res) => {
+      if (!res || res.code != 200) return;
       hashHistory.push('/product/search')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -139,18 +149,18 @@ export const remove = (id) => {
     dispatch(fetchStart())
 
     Req.delete(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
+      dispatch(fetchSuccess({ delete: true }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
 //产品编辑页的记录展示
-export const edit = (id) =>{
+export const edit = (id) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.prodedit(id).then((res) => {
-      dispatch(fetchSuccess({prodInfo: res}))
+      dispatch(fetchSuccess({ prodInfo: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -158,11 +168,11 @@ export const edit = (id) =>{
 }
 
 //产品修改后保存
-export const prodrevise = (condition)=>{
+export const prodrevise = (condition) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.prodrevise(condition).then((res) => {
-      if(!res || res.code != 200) return;
+      if (!res || res.code != 200) return;
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -182,14 +192,14 @@ export const filesearch = (condition) => {
 }
 
 //材料清单明细
-export const fileDetail = (id) =>{
+export const fileDetail = (id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
     Req.fileDetail(id).then((res) => {
-      if(!res || res.code != 200) dispatch(fetchFailed(res));
-      dispatch(fetchSuccess({editData: res.data}))
+      if (!res || res.code != 200) dispatch(fetchFailed(res));
+      dispatch(fetchSuccess({ editData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -198,21 +208,23 @@ export const fileDetail = (id) =>{
 
 export const changeFileDetail = (data) => {
   return (dispatch) => {
-    dispatch(change({editData: data}))
+    dispatch(change({ editData: data }))
   }
 }
+
 //保存资料清单信息
-  export const fileSave = (value)=>{
-    return (dispatch) => {
-      dispatch(fetchStart())
-      Req.fileSave(value).then((res) => {
-        if(!res || res.code != 200) return;
-        hashHistory.push('/product/filelist')
-      }).catch((ex) => {
-        dispatch(fetchFailed(ex))
-      })
-    }
+export const fileSave = (value) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.fileSave(value).then((res) => {
+      if (!res || res.code != 200) return;
+      dispatch(change({ editData: {} }))
+      hashHistory.push('/product/filelist')
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
   }
+}
 
 //删除材料资料清单
 export const fileremove = (id) => {
@@ -221,9 +233,8 @@ export const fileremove = (id) => {
     dispatch(fetchStart())
 
     Req.fileremove(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
-      //filesearch()
-      filesearch()
+      filesearch()(dispatch);
+      //dispatch(fetchSuccess({delete: true}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -237,7 +248,7 @@ export const fileRemoveDes = (id) => {
 
     Req.fileRemoveDes(id).then((res) => {
       Req.fileDetail(id).then((res) => {
-        dispatch(fetchSuccess({editData: res}))
+        dispatch(fetchSuccess({ editData: res }))
       }).catch((ex) => {
         dispatch(fetchFailed(ex))
       })
@@ -247,11 +258,12 @@ export const fileRemoveDes = (id) => {
   }
 }
 //材料 编辑后确定
-export const fileEditSave = (value,id)=>{
+export const fileEditSave = (value, id) => {
   return (dispatch) => {
     dispatch(fetchStart())
-    Req.fileEditSave(value,id).then((res) => {
-      if(!res || res.code != 200) return;
+    Req.fileEditSave(value, id).then((res) => {
+      if (!res || res.code != 200) return;
+      dispatch(change({ editData: {} }))
       hashHistory.push('/product/filelist')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -259,11 +271,43 @@ export const fileEditSave = (value,id)=>{
   }
 }
 
-export const addTwoList=(data,formData,page)=>{
+export const addTwoList = (data, formData, page) => {
   return (dispatch) => {
     dispatch(fetchStart())
-    Req.addTwoList(data,formData,page).then((res) => {
+    Req.addTwoList(data, formData, page).then((res) => {
       dispatch(fetchSuccess({ addTwoData: res }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//产品名称不重复
+export const productNameRepeat = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.productNameRepeat(condition).then((res) => {
+      if (res.code == 200) {
+        dispatch(fetchSuccess({ productAllName: res }))
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//材料名称不重复
+export const fileNameRepeat = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.fileNameRepeat(condition).then((res) => {
+      if (res.code == 200) {
+        dispatch(fetchSuccess({ fileAllName: res }))
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

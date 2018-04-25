@@ -1,6 +1,11 @@
-import keyMirror from 'keymirror';
-import BaseConstants from '../../../base/constants/BaseConstant';
+import BaseConstant from '../../../base/constants/BaseConstant';
 
-export default Object.assign({}, BaseConstants, keyMirror({
+class DemoConstant extends BaseConstant{
+	constructor(){
+		super();
 
-}));
+		this.key = 'DEMO_'
+	}
+}
+
+export default new DemoConstant();

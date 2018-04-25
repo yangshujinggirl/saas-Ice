@@ -1,6 +1,6 @@
 /**
  * 功能：自动生成路由的
- * 命令：node generate-router.js
+ * 命令：node generate-navs.js
  * 实现：读取src目录下的所有子目录，
  *      识别到带有route关键字的文件当作路由的入口文件，
  *      按照一定格式拼成一个路由模块

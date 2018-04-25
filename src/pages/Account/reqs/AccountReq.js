@@ -50,7 +50,7 @@ class AccountReq extends CurdReq{
 	logout(){
 		let options = {
 			url: '/crm/saas/logout',
-			method: 'POST',
+			method: 'GET',
 			contentType: 'application/json',
 		}
 		return super.fetchData(options);

@@ -12,7 +12,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table } from '@icedesign/base';
+import { Form, Field, Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table,Feedback} from '@icedesign/base';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -22,7 +22,6 @@ const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
 import FileListDetail from './FileListDetail';
-
 
 export default class DiaLog extends Component {
   static displayName = 'Dialog';
@@ -58,7 +57,7 @@ export default class DiaLog extends Component {
       this.props.actions.fileDetail(this.props.params.id);
     }else{
       this.props.actions.changeFileDetail({
-        fileType: '',
+        fileType: null,
         fileName: '',
         collectionDetails: [{
           dataName: '',
@@ -70,9 +69,24 @@ export default class DiaLog extends Component {
     //
   }
 
+  componentWillReceiveProps(nextProps){
+    // console.log('componentWillReceiveProps', this.props.route.path, nextProps.route.path)
+    if(this.props.route.path != nextProps.route.path){
+      // this.props.actions.changeFileDetail({})
+      this.props.actions.changeFileDetail({
+        dataType: null,
+        name: '',
+        collectionDetails: [{
+          dataName: '',
+          fileSize: undefined,
+          fileType: ''
+        }]
+      })
+    }
+  }
+
   addNewRow() {
     let tempData = this.props.editData;
-    console.log(tempData)
     tempData.collectionDetails.push({
       dataName: '',
       fileSize: undefined,
@@ -108,6 +122,7 @@ export default class DiaLog extends Component {
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
       });
+
       // 提交当前填写的数据
       let id = this.props.params.id;
       if(id){
@@ -233,23 +248,46 @@ export default class DiaLog extends Component {
 
       return arr;
   }
-  testName=(id,data)=>{
+
+  //判断清单名称是否已存在
+  nameRepeat=(rule,value,callback)=>{
+
+  if(rule.required && !value){
+    callback('清单名称必填')
+    return;
+  }
+  ProductReq.fileNameRepeat(value).then((res)=>{
+    if(res.data){
+      callback("该名已存在")
+    }
+    callback()
+  })
+  }
+
+  testName=(id,data) =>{
     if(id){
       return(<label>{data.name}</label>)
     }else{
+      
       return(
         <span>
           <IceFormBinder
             name="name"
+            validator={this.nameRepeat}
+            required
           >
-            <Input />
+            <Input 
+              size="large" 
+              className="custom-input" 
+              placeholder="请输入清单名称"
+              />
           </IceFormBinder>
-          <IceFormError name="name"/>
+          <div><IceFormError name="name"/></div>
         </span>
       )
     }
   }
-  testType=(id,data)=>{
+  testType=(id,data) =>{
     if(id){
       return(<label>{data.dataType}</label>)
     }else{
@@ -257,10 +295,14 @@ export default class DiaLog extends Component {
         <span>
           <IceFormBinder
             name="dataType"
+            required
+            message="清单类型必选"
           >
-            <Input />
+            <Select name="dataType" size="large" placeholder="请选择" className="custom-select">
+              <Select.Option value="产品进件">产品进件</Select.Option>
+          </Select>
           </IceFormBinder>
-          <IceFormError name="dataType"/>
+          <div><IceFormError name="dataType"/></div>
         </span>
       )
     }
@@ -272,37 +314,45 @@ export default class DiaLog extends Component {
       let fileTypeValueArr = item.fileType.split(',');
       item.fileTypeArr = this.setFileTypeChecked(fileTypeValueArr);
     })
-    console.log('render', data)
+    // console.log('render', data)
+
     return (
-      <IceContainer>
+      <IceContainer className="pch-container">
+        <legend className="pch-legend">
+          <span className="pch-legend-legline"></span>
+          {this.props.params.id?'材料编辑':'材料新增'} 
+        </legend>
         <IceFormBinderWrapper
           ref={(formRef) => {
             this.formRef = formRef;
           }}
           value={data}
           >
-          <Form className="dialog-form">
-            <Row wrap>
-              <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}>清单类型：</label>
-                {this.testType(this.props.params.id,data)}
-              </Col>
-              <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                <label style={styles.filterTitle}>清单名称：</label>
-                {this.testName(this.props.params.id,data)}
+          <div className="pch-form">
+            <Form size="large" className="dialog-form">
+              <Row wrap>
+                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <label style={styles.filterTitle}>清单类型：</label>
+                  {this.testType(this.props.params.id,data)}
+                </Col>
+                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <label style={styles.filterTitle}>清单名称：</label>
+                  {this.testName(this.props.params.id,data)}
 
-              </Col>
-            </Row>
-            <FileListDetail
-              data={data.collectionDetails}
-              onRemove={this.removeRow.bind(this)}
-              onChangeType={this.handleChangeType.bind(this)}
-            />
-            <div style={styles.btn}>
-              <Button onClick={this.addNewRow.bind(this)} style={styles.newCol}>新增一行</Button>
-              <Button onClick={this.onOk.bind(this,data.id)} style={styles.sureBtn}>确定</Button>
-            </div>
-          </Form>
+                </Col>
+              </Row>
+              <FileListDetail
+                data={data.collectionDetails}
+                onRemove={this.removeRow.bind(this)}
+                onChangeType={this.handleChangeType.bind(this)}
+              />
+              <div className="btns">
+                <Button type="secondary" onClick={this.onOk.bind(this,data.id)} className="sureBtn">提交</Button>
+                <Button type="secondary" onClick={this.addNewRow.bind(this)} className="addNewBtn">添加一行</Button>
+                
+              </div>
+            </Form>
+          </div>
         </IceFormBinderWrapper>
 
       </IceContainer>
@@ -322,22 +372,5 @@ const styles = {
     textAlign: 'right',
     marginRight: '12px',
     fontSize: '14px',
-  },
-  newCol: {
-    hiegth: '30px',
-    borderRadius: 0,
-    border: 'none',
-    marginTop: '20px',
-    background: '#ec9d00',
-    color: '#fff',
-  },
-  sureBtn: {
-    hiegth: '30px',
-    borderRadius: 0,
-    border: 'none',
-    marginTop: '20px',
-    background: '#ec9d00',
-    color: '#fff',
-    float: 'right'
   },
 };

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
+import { Balloon } from "@icedesign/base";
 import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
@@ -25,7 +26,6 @@ export default class setFont extends Component {
             leftActive: 0,
             rightActive: '',
             subTitle: '',
-            addValue: [1],
             fields: {
                 fieldsetOrder:1,
                 hasAttachedFields:false,
@@ -37,7 +37,7 @@ export default class setFont extends Component {
                 orderId:43,
                 screenSchemeId:'',
                 type: "",
-                options: [],
+                options: [{value: '',label: ""}],
                 length: 30,
             },
             fieldsEdite: {
@@ -51,7 +51,7 @@ export default class setFont extends Component {
                 orderId:43,
                 screenSchemeId:'',
                 type: "",
-                options: [],
+                options: [{value: '',label: ""}],                
                 length: 30,
             },
             arraList: [5, 6, 7, 8, 9],
@@ -93,7 +93,6 @@ export default class setFont extends Component {
         const newArr = Object.assign({},this.state.resData);
         let deleteObj = newArr.fieldset[index].fields[inj];
         let fileId = deleteObj.id;
-        
         FontConfigReq.deleteCode(id,fileId).then((data) => {
             if (data.code == 200) {
                 newArr.fieldset[index].fields.splice(inj, 1);                
@@ -149,7 +148,7 @@ export default class setFont extends Component {
         if (!tts) { return }
         
         let pageName = {
-            name: this.state.pageValue
+            name: this.state.pageValue,
         }
         if (!pageName.name.length) {
             Dialog.alert({
@@ -158,14 +157,16 @@ export default class setFont extends Component {
             })
             return
         }
+        // resData.fieldset.map((item) => {
+        //     item.fields.map((item) => {
+        //         pageName.fields.push(item) 
+        //     })
+        // })
+        // console.log(pageName);
+        
         FontConfigReq.changPageName(pageName,id).then((data) => {
             if (data.code == 200) {
                 this.props.router.push(`font/view?id=${id}`)
-            } else {
-                Dialog.alert({
-                    title: '提示',
-                    content: data.msg
-                })
             }
         })
     }
@@ -193,13 +194,29 @@ export default class setFont extends Component {
             })
         }
     }
+    // 修改页面标题
     handleGroupTitle = (index, view) => {
+        let id = this.props.router.location.query.id;
         let copyDate = this.state.resData;
         copyDate.fieldset[index].name = view
+        copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
+            item.fieldset = view
+            item.name
+        })
         this.setState({
             resData: copyDate
         })
-
+    }
+    
+    handleGroupTitleSubmint = (index, view) => {
+        let id = this.props.router.location.query.id;
+        let copyDate = this.state.resData;
+        let obj = {}
+        obj.fields = copyDate.fieldset[index].fields
+        FontConfigReq.changPageName( obj,id).then((data) => {
+            if (data.code == 200) {
+            }
+        })
     }
 
     scrollToAnchor = (anchorName) => {
@@ -213,13 +230,14 @@ export default class setFont extends Component {
 
     componentDidMount() {
         let id = this.props.router.location.query.id
-
+        let pageName = this.props.router.location.query.pageName
+        
         FontConfigReq.getCode(id).then((data) => {
             if (data.code == 200) {
                 let res = data.data
             this.setState({
                 resData: res,
-                pageValue: res&&res.name
+                pageValue: pageName||res&&res.name
             })
             for (const key in this.state.resData.fieldset) {
                 if (this.state.resData.fieldset[key].name == '基本信息') {
@@ -296,12 +314,14 @@ export default class setFont extends Component {
                 label: "秒"
             }
         ];
+        // 关闭修改字段弹窗
         const onClose = () => {
             this.setState({
                 dialogOne: false,
                 dialogTwo: false
             })
         }
+        // 添加自定义字段
         const handleSubmitCode = () => {
             let reqData = { ...this.state.fields };
             let resData = this.state.resData;
@@ -320,20 +340,29 @@ export default class setFont extends Component {
                 })
                 return 
             }
+            // 删除下拉框的单选框复选框空置值
+            reqData.options.map((item,index) => {
+                if (item.label == '') {
+                    reqData.options.splice(index,1)
+                }
+            })
+            
             let id = this.props.router.location.query.id
-            console.log(this.state.resData);
+            // console.log(this.state.resData);
             this.setState({
                 dialogOne: false
             })
-             // 判断是不是新的模块
-             if (resData.fieldset[reqData.fieldsetOrder].new) {
+             // 判断是不是新的模块 ，新添加的模块会多一个new属性做呢判断 是不是新添加的模块
+            //  if (resData.fieldset[reqData.fieldsetOrder].new) {
+            
+            if (false) {
+                //  批量提交字段，目前这一块先放这里，后台接口在调整
                  resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                 if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题') {
+                 if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题名称') {
                      Dialog.alert({
                          title: "提示",
-                         content: '请输入模块名字'
+                         content: '请输入标题名称'
                      })
-                     console.log('请输入模块名字');
                      
                      return 
                 } 
@@ -345,11 +374,6 @@ export default class setFont extends Component {
                         this.setState({
                             boolSelect: false,
                             resData,
-                        })
-                    } else {
-                        Dialog.alert({
-                            title: '提示',
-                            content: data.msg
                         })
                     }
                 })
@@ -363,10 +387,8 @@ export default class setFont extends Component {
                             resData
                         })
                     } else {
-                        Dialog.alert({
-                            title: '提示',
-                            content: data.msg
-                        })  
+                        console.log("添加字段",data.msg);
+                        
                     }                 
                 })
             }
@@ -386,8 +408,15 @@ export default class setFont extends Component {
             
             let fileId = fields.id
             console.log(fields);
+            if (!fields.label.length) {
+                Dialog.alert({
+                    title: "提示",
+                    content: '字段名称不能为空'
+                })
+                return 
+            }
             this.setState({
-                dialogTwo: false
+                dialogTwo: false,
             })
             FontConfigReq.submitModifyCode(fields,id,fileId).then((data) => {
                 if (data.code == 200) {
@@ -461,6 +490,9 @@ export default class setFont extends Component {
             newArr.fieldset[index + 1].fields.map((item) => {
                 item.fieldsetOrder = index + 1;
             })
+            newArr.fieldset[index].fields.map((item) => {
+                item.fieldsetOrder = index-1;
+            })
             this.setState({
                 resData: newArr
             });
@@ -475,6 +507,9 @@ export default class setFont extends Component {
             newArr.fieldset[index - 1].fields.map((item) => {
                 item.fieldsetOrder = index - 1;
             })
+            newArr.fieldset[index].fields.map((item) => {
+                item.fieldsetOrder = index + 1;
+            })
             this.setState({
                 resData: newArr
             });
@@ -483,7 +518,7 @@ export default class setFont extends Component {
             const newArr = this.state.resData;
             let add = {
                 new: 1,
-                name: '请输入标题',
+                name: '请输入标题名称',
                 fields: []
             }
             newArr.fieldset.push(add)
@@ -529,6 +564,7 @@ export default class setFont extends Component {
                 ]
             }
         ];
+        //  根据type值渲染不同的输入框
         const handleFixed = (item) => {
             let inputType = <Input placeholder="" />
             
@@ -537,14 +573,14 @@ export default class setFont extends Component {
                     inputType = <Input placeholder=""  readOnly = { item.isReadonly ? true : false}  />
                     break;
                 case 'TEXT':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder="" addonAfter={item.append}/>
                     // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder="" addonAfter={item.append}/>
                     break;
                 case 'DECIMAL':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input placeholder="" addonAfter={item.append}/>
                     break;
                 case 'DATE':
                     inputType = <RangePicker
@@ -553,7 +589,7 @@ export default class setFont extends Component {
                     break;
                 case 'SELECT':
                     inputType = <Select
-                        placeholder="选择尺寸"
+                        placeholder="请选择"
                     >
                         {item.options && item.options.map((item, index) => {
                             return (
@@ -595,36 +631,39 @@ export default class setFont extends Component {
             }
             return inputType
         }
-
+// 点击添加自定义字段执行的函数
         const handleAddCode = (index) => {
             let data = this.state.fields;
+            // 字段必填选项等设置为空
+            let value = this.state.value;
             data.fieldset = this.state.resData.fieldset[index].name;
             data.name = this.state.resData.fieldset[index].name;
-            
+            // 下拉框初始化值
+            data.type = '';
+            data.options = [{ label: '', value: '' }];
             data.fieldsetOrder = index;
+            value = [];
             this.setState({
                 dialogOne: true,
-                fields: data
+                fields: data,
+                boolSelect: false,
+                value
             })
         }
+        // 自定义字段添加下拉框执行的函数
         const handleAddValue = (index) => {
-            let data = this.state.addValue
+            let ds = this.state.fields;
             if (index == 'add') {
-                data.push("123")
+                ds.options.push({label: '',value: ''})
                 this.setState({
-                    addValue: data
+                    fields: ds,
                 })
             } else {
-                data.splice(index, 1)
-                let ds = this.state.fields;
                 ds.options.splice(index, 1);
                 this.setState({
-                    fields: ds
+                    fields: ds,
                 })
             }
-            this.setState({
-                addValue: data
-            })
         }
 
         const codeName = (value) => {
@@ -651,8 +690,9 @@ export default class setFont extends Component {
                 fields: data
             })
         }
+        // 根据字段类型判断值的设置是否显示出来
         const codeType = (value) => {
-            console.log(value);
+            // console.log(value);
             let data = this.state.fields;
             data.type = value;
             if (value == "SELECT"||value == "RADIO"||value == "CHECKBOX") {
@@ -677,6 +717,7 @@ export default class setFont extends Component {
                 fields: data
             })
         }
+        // 自定义字段字段长度
         const codeLength = (value) => {
             console.log(value);
             let data = this.state.fields;
@@ -693,19 +734,26 @@ export default class setFont extends Component {
                 fields: data
             })
         }
+        // 字段必输值唯一选择执行的函数
         const codeRequire = (value) => {
-            console.log(value);
             let data = this.state.fields;
-            if (value.join().match('true')) {
+            data.isRequired = false
+            data.isUnique = false
+            data.isReadonly = false
+            data.line = 1
+            if (value.join().indexOf('true')!=-1) {
                 data.isRequired = true
             }
-            if (value.join().match('unique')) {
+            if (value.join().indexOf('unique')!=-1) {
                 data.isUnique = true
             }
-            if (value.join().match('readonly')) {
+            if (value.join().indexOf('readonly')!=-1) {
                 data.isReadonly = true
             }
-            if (value.join().match('nowrap')) {
+            if (value.join().indexOf('nowrap')!=-1) {
+                data.line = 1
+            }
+            if (data.type=='TEXT') {
                 data.line = 1
             }
             this.setState({
@@ -715,19 +763,22 @@ export default class setFont extends Component {
         }
 
         const codeRequireTwo = (value) => {
-            console.log(value);
+            
             let data = this.state.fieldsEdite;
-
-            if (value.join().match('true')) {
+            data.isRequired = false
+            data.isUnique = false
+            data.isReadonly = false
+            data.line = 1
+            if (value.join().indexOf('true')!=-1) {
                 data.isRequired = true
             }
-            if (value.join().match('unique')) {
+            if (value.join().indexOf('unique')!=-1) {
                 data.isUnique = true
             }
-            if (value.join().match('readonly')) {
+            if (value.join().indexOf('readonly')!=-1) {
                 data.isReadonly = true
             }
-            if (value.join().match('nowrap')) {
+            if (value.join().indexOf('nowrap')!=-1) {
                 data.line = 1
             }
             this.setState({
@@ -735,7 +786,7 @@ export default class setFont extends Component {
                 fieldsEdite: data
             })
         }
-        
+        // 添加自定义字段，选择下拉框，下拉框输入值的时候触发的函数
         const handleSelect = (index, value) => {
             let data = this.state.fields;
             data.options[index] = {label: value,value: value+index};
@@ -750,9 +801,16 @@ export default class setFont extends Component {
             // reqData.fieldset[index].fields[inj].label
             this.state.editeCodeIndex.index = index;
             this.state.editeCodeIndex.inj = inj;
-            this.setState({
-                dialogTwo: true,
-            })
+            if (this.state.resData.fieldset[index].fields[inj].isCustom) { 
+                this.setState({
+                    dialogOne: true
+                })
+            } else {
+                this.setState({
+                    dialogTwo: true,
+                })
+            }
+            
         }
 
         const handlePageName = (e) => {
@@ -795,7 +853,7 @@ export default class setFont extends Component {
                                             <span className='active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
                                                 {
                                                     this.state.subTitle == index + 1 ?
-                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={validEmpty} className='moduleStr' />
+                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={this.handleGroupTitleSubmint.bind(this, index)} className='moduleStr' />
                                                         :
                                                         <Input placeholder="" value={item.name} className='moduleStr' readOnly />
                                                 }
@@ -822,8 +880,18 @@ export default class setFont extends Component {
                                                             'false', { active: this.state.rightActive == item.label })} key={inj} data-row={item.line==1? true : ''}>
                                                             <div className="clearfix">
                                                                 <label htmlFor="" className='label'>
-                                                                    <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
-                                                                    <span className='required'>*</span>
+                                                                    <Balloon
+                                                                            type="primary"
+                                                                            trigger={ <span className='ellips' onDoubleClick={handleEditeCoce.bind(this, index, inj)} title={item.label}>
+                                                                            <span className='required' onClick={validaRequire.bind(this, index, inj)}>
+                                                                                {item.isRequired ? <span>*</span> : ''}
+                                                                            </span>    
+                                                                            {item.label}
+                                                                        </span>}
+                                                                            closable={false}
+                                                                            triggerType="hover">
+                                                                            {item.label}
+                                                                    </Balloon>    
                                                                 </label>
                                                                 {handleFixed(item)}
                                                                 <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
@@ -840,9 +908,17 @@ export default class setFont extends Component {
                                                         <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
                                                             'false')} key={inj} data-row={item.line == 1 ? true : ''}>
                                                             <div className="clearfix">
-                                                                <label htmlFor=""  className='label'>
-                                                                    <span className='ellips' title={item.label}>{item.label}</span>
-                                                                    <span className='required'>*</span>
+                                                                <label htmlFor="" className='label'>
+                                                                    <Balloon
+                                                                            type="primary"
+                                                                            trigger={ <span className='ellips'>
+                                                                            <span className='required'>*</span>  
+                                                                            {item.label}:
+                                                                            </span>}
+                                                                            closable={false}
+                                                                            triggerType="hover">
+                                                                            {item.label}
+                                                                    </Balloon>    
                                                                 </label>
                                                                 {handleFixed(item)}
                                                                 <span className='edite icon'>&#xe62a;</span>
@@ -886,10 +962,18 @@ export default class setFont extends Component {
                                                         })} data-row={item.line == 1 ? true : ''}>
                                                         <div className="clearfix">
                                                             <label htmlFor=""  className='label'>
-                                                                <span className='ellips' onDoubleClick={handleEditeCoce.bind(this,index,inj)} title={item.label}>{item.label}</span>
-                                                                <span className='required' onClick={validaRequire.bind(this, index, inj)}>
-                                                                    {item.isRequired ? <span>*</span> : ''}
-                                                                </span>
+                                                                <Balloon
+                                                                        type="primary"
+                                                                        trigger={ <span className='ellips' onDoubleClick={handleEditeCoce.bind(this, index, inj)} title={item.label}>
+                                                                        <span className='required' onClick={validaRequire.bind(this, index, inj)}>
+                                                                            {item.isRequired ? <span>*</span> : ''}
+                                                                        </span>    
+                                                                        {item.label}
+                                                                    </span>}
+                                                                        closable={false}
+                                                                        triggerType="hover">
+                                                                        {item.label}
+                                                                </Balloon> 
                                                             </label>
                                                             {handleFixed(item)}
                                                             <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
@@ -991,6 +1075,7 @@ export default class setFont extends Component {
                             onChange={codeRequire}
                         />
                     </div>
+                    {this.state.fields.type == "TEXT" ? <div>提示：字段类型为文本域，字段独占一行显示</div>:''}
                     {/* <div className='beautify constraint'>
                         <Checkbox />
                         <span className='marv5'>显示约束</span>
@@ -1028,7 +1113,7 @@ export default class setFont extends Component {
                     
                     { this.state.boolSelect ? <div className='beautify constraint'>
                         <label htmlFor="" className='changSet' >选择设置:</label><br />
-                        {this.state.addValue.map((item, index) => {
+                        {this.state.fields.options.map((item, index) => {
                             return (
                                 index == 0 ?
                                     <div className='dropDown clearfix' key={index}>
@@ -1043,7 +1128,7 @@ export default class setFont extends Component {
                                     <div className='dropDown' key={index}>
                                         <div>
                                             {/* <Checkbox /> */}
-                                            <Input className="" placeholder=" 请输入值" onChange={handleSelect.bind(this,index)}/>
+                                            <Input className="" value={item.label} placeholder=" 请输入值" onChange={handleSelect.bind(this,index)}/>
                                             <div className='addReduce'>
                                                 <span onClick={handleAddValue.bind(this, 'add')}>+</span>
                                                 <span onClick={handleAddValue.bind(this, index)}>-</span>
@@ -1072,7 +1157,7 @@ export default class setFont extends Component {
                     closable="esc,mask,close"
 
                     onClose={onClose}
-                    title="添加自定义字段"
+                    title="修改自定义字段"
                     footer={footerTwo}
                     footerAlign='center'
                 >
@@ -1091,6 +1176,7 @@ export default class setFont extends Component {
                             onChange={codeRequireTwo}
                         />
                     </div>
+                    {this.state.fields.type == "TEXT" ? <div>提示：字段类型为文本域，字段独占一行显示</div>:''}                    
                     {/* <div className='beautify constraint'>
                         <Checkbox />
                         <span className='marv5'>显示约束</span>

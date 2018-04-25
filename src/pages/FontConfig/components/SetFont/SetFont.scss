@@ -149,7 +149,15 @@
                             clear: both;
                         }
                         .next-range-picker-medium {
-                            width: 200px !important;
+                            width: 140px;
+                        }
+                        .next-input-group {
+                            width: 150px !important;
+                        }
+                        @media screen and (max-width: 1400px) {
+                            .next-range-picker-medium {
+                                width: 150px;
+                            }
                         }
                         .next-select {
                             margin-top: 0;
@@ -174,10 +182,25 @@
                             margin-left: 2px;
                             margin-right: 5px;
                             margin-top: 7px;
-                            width: 175px !important;
                             text-align: right;
                             position: relative;
-                            
+                            .ellips {
+                                width: 140px;
+                                float: right;
+                                // line-height: 14px;
+                            }
+                            & + .next-input, & + .next-select{
+                                width: 150px !important;
+                            }
+                           
+                            @media screen and (max-width: 1400px) {
+                                & + .next-input, & + .next-select{
+                                    width: 150px !important;
+                                }
+                                .ellips {
+                                    width: 100px;
+                                }
+                            }
                             &:nth-child(2) {
                                 width: auto !important;
                                 .next-radio {
@@ -196,7 +219,7 @@
                                 float: left;
                                 
                             }
-                            >span:last-child {
+                            span.required {
                                 color: #666;
                                 text-align: center;
                                 cursor: pointer;
@@ -206,17 +229,14 @@
                                 border-radius: 2px;
                                 height: 15px;
                                 width: 15px;
-                                float: right;
-                                margin-top: 1px;           
+                                display: inline-block;
+                                       
                             }
                             .required {
                                 color: #FD5848 !important;
                                
                             }
-                            .ellips {
-                                width: auto;
-                                float: right;
-                            }
+                            
                             .none {
                                 display: none;
                             }

@@ -3,7 +3,7 @@ import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterRe
 
 export default {
   path: "/loanapplication/fixed(/:id)",
-  name:'贷款申请',
+  name:'贷款管理',
   childRoutes: [],
   component: HeaderAsideFooterResponsiveLayout,
   indexRoute: {

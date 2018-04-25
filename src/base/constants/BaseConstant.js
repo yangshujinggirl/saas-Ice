@@ -2,13 +2,24 @@
 /**
  * 常量定义，约定action到reducer的处理关系
  */
-import keyMirror from 'keymirror';
+export default class BaseConstant {
+	constructor(){
+		this.key = '';
+	}
 
-export default keyMirror({
-    FETCH_START: null,
-    FETCH_SUCCESS: null,
-    FETCH_FAILED: null,
-    CHANGE: null,
-    UPDATE_FORMDATA: null,
-});
+	get FETCH_START(){
+		return this.key + 'FETCH_START';
+	}
 
+	get FETCH_SUCCESS(){
+		return this.key + 'FETCH_SUCCESS';
+	}
+
+	get FETCH_FAILED(){
+		return this.key + 'FETCH_FAILED';
+	}
+
+	get CHANGE(){
+		return this.key + 'CHANGE';
+	}
+}

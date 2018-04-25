@@ -30,7 +30,7 @@ export default {
       component: Product.AddThree
     },{
       path: 'filelist',
-      name: '材料清单',
+      name: '材料查询',
       component: Product.FileList
     }, {
       path: 'fileedit/:id',

@@ -33,17 +33,6 @@ class DragFile extends Component {
     }
 }
 
-
-const cardSource1 = {
-    beginDrag(props) {
-        return {
-            id: props.id,
-            index: props.index,
-            data: props.data,
-            type: props.type
-        }
-    },
-}
 const cardSource = {
     beginDrag(props) {
         return {

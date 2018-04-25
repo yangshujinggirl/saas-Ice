@@ -128,10 +128,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     const { routes } = this.props;
     const matched = routes[0].path;
     let openKeys = [];
+    let allAsideNav = asideNavs || [];
 
-    asideNavs &&
-      asideNavs.length > 0 &&
-      asideNavs.map((item, index) => {
+    let leafs = Storage.get('MENUS') || [];
+    allAsideNav = allAsideNav.concat(leafs);
+
+    allAsideNav &&
+      allAsideNav.length > 0 &&
+      allAsideNav.map((item, index) => {
         if (item.value && item.value.value === matched) {
           openKeys = [`${index}`];
         }
@@ -144,6 +148,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     let userInfo = Storage.get('USERINFO');
     if(userInfo && userInfo.ownerId){
       link += (link.indexOf('?') >= 0 ? '&' : '?' )+ 'ownerId=' + userInfo.ownerId;
+      link += '&userId=' + userInfo.id;
+      link += '&type=saas';
     }
     return link;
   }
@@ -151,6 +157,11 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   render() {
     const { location = {}, routes } = this.props;
     const { pathname } = location;
+    let allAsideNav = asideNavs || [];
+
+    let leafs = Storage.get('MENUS') || [];
+    allAsideNav = allAsideNav.concat(leafs);
+
     return (
       <Layout
         style={{ minHeight: '100vh' }}
@@ -196,9 +207,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               onOpenChange={this.onOpenChange}
               onClick={this.onMenuClick}
             >
-              {asideNavs &&
-                asideNavs.length > 0 &&
-                asideNavs.map((nav, index) => {
+              {allAsideNav &&
+                allAsideNav.length > 0 &&
+                allAsideNav.map((nav, index) => {
                   let navData = nav.value;
                   if (nav.leaf && nav.leaf.length > 0) {
                     return (
@@ -236,8 +247,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     );
                   }
                   const linkProps = {};
-                  if (itemData.target == '_blank') {
-                    linkProps.href = navData.to;
+                  if (navData.target == '_blank') {
+                    linkProps.href = this.processLinkWithOwnerId(navData.value);
                     linkProps.target = '_blank';
                   } else if (navData.external) {
                     linkProps.href = navData.value;
@@ -249,8 +260,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                       <Link {...linkProps}>
                         <span>
                           {navData.icon ? (
-                            <FoundationSymbol size="small" type={navData.icon} />
-                          ) : null}
+                              <i className="icon icon-menu" dangerouslySetInnerHTML={{ __html: navData.icon }}></i>
+                            ) : null}
                           <span className="ice-menu-collapse-hide">
                             {navData.name}
                           </span>
@@ -265,7 +276,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         <Layout.Section>
         <Header
           theme={theme}
-          menus={asideNavs}
+          menus={allAsideNav}
           pathname={pathname}
           routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}

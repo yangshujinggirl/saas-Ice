@@ -6,6 +6,7 @@ import {
 } from '@icedesign/form-binder';
 import DataBinder from '@icedesign/data-binder/lib/index';
 import  Detail from './Detail/index'
+import  MaterialSubmit from './MaterialSubmit/index'
 import  './LoanDetails.scss'
 import {browserHistory, hashHistory} from 'react-router';
 const { Row, Col } = Grid;
@@ -66,16 +67,8 @@ export default class LoanDetails extends Component {
     console.log(this.props.params);
     return (
       <div className="rcontent-edito">
-        <IceFormBinderWrapper
-          ref={(refInstance) => {
-            this.postForm = refInstance;
-          }}
-          value={this.state.value}
-          onChange={this.formChange}
-        >
-          <Detail dataSource={details.list}></Detail>
-
-        </IceFormBinderWrapper>
+          <Detail dataSource={details.list} ></Detail>
+          <MaterialSubmit {...this.props}></MaterialSubmit>
         <div className='botton-box'>
         <Button className='botton' onClick={this.back}>返回</Button>
       </div>
