@@ -12,8 +12,6 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Combobox } = Select;
 
-const { Group: CheckboxGroup } = Checkbox;
-
 const formItemLayout = {
   labelCol: { span: 11 },
   wrapperCol: { span: 13 }
