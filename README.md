@@ -2,6 +2,18 @@
 
 产品、进件页面字段配置
 
+
+### 提测步骤
+1. 发送提测邮件给测试人员
+* 将主干合并至待发布分支
+* 在根目录执行./upload.sh 测试环境名称[ft1|ft2|ft3]
+
+### 上线步骤
+1. 合并发布库指定分支到master
+* 合并后通知运维同事，更新ucloud
+* 上线验证完成后，合并开发库并删除此开发分支
+
+
 ## 特性
 
 * 专业的设计支持: [ICE Design](https://alibaba.github.io/ice/design.html)
@@ -45,3 +57,5 @@ $ npm run build  // 构建 dist
 $ node generate  // 生成代码相关的文件
 $ node create-module xx // 添加一个新的模块
 ```
+
+3. 执行upload.sh在根目录下，如没权限请执行 chmod +x upload.sh
