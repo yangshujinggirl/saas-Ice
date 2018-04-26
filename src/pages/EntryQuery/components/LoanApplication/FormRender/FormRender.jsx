@@ -150,7 +150,7 @@ export default class FormRender extends Component {
                      onInputUpdate={this.onInputUpdate.bind(this)}
                      {...init(el.name, {
                        initValue: el.value,
-                       rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+                       rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]
                      })}
                    />
                </FormItem>
@@ -166,7 +166,7 @@ export default class FormRender extends Component {
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]
             })}
             dataSource={el.options}
           >
@@ -189,7 +189,7 @@ export default class FormRender extends Component {
             htmlType="number"
             {...init(el.name,{
               initValue: el.value,
-              rules: [{ required: el.isRequired, message: "请填写"+el.label}]
+              rules: [{ required: el.isRequired, message: el.label +"不能为空"}]
             })}
             placeholder={"请输入"+el.label}
           />
@@ -209,7 +209,7 @@ export default class FormRender extends Component {
             {...init(el.name, {
               initValue: el.value ? parseInt(el.value) : el.value,
               rules: [
-                { required: el.isRequired,message: "请填写"+el.label}
+                { required: el.isRequired,message: el.label +"不能为空"}
               ]
             })}
           />
@@ -237,7 +237,7 @@ export default class FormRender extends Component {
             defaultValue ={value+''}
             {...init(el.name, {
               initValue: value+'',
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }],
+              rules: [{ required: el.isRequired, message: el.label +"不能为空" }],
               props:{
                 onChange:()=> {
                   this.isChange(outIndex,inIndex);
@@ -268,7 +268,7 @@ export default class FormRender extends Component {
             dataSource={el.options}
             {...init(el.name, {
               initValue: setValue+'',
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required: el.isRequired, message: el.label +"不能为空"}]
             })}
           >
           </RadioGroup>
@@ -293,7 +293,7 @@ export default class FormRender extends Component {
             disabled={ el.isReadonly}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required: el.isRequired, message: el.label +"不能为空" }]
             })}
             dataSource = {el.options}
           >
@@ -315,7 +315,7 @@ export default class FormRender extends Component {
               initValue: el.value,
               getValueFromEvent: this.formater
             },{
-              rules: [{ required: true, message: "请选择"+el.label }]
+              rules: [{ required: true, message: el.label +"不能为空" }]
             })}
           />
         </FormItem>
@@ -329,7 +329,7 @@ export default class FormRender extends Component {
                  disabled={ el.isReadonly}
                  {...init(el.name, {
                    initValue: el.value,
-                   rules: [{ required: el.isRequired, message: "请填写"+el.label }]
+                   rules: [{ required: el.isRequired, message: el.label +"不能为空" }]
                  })}
           />
         </FormItem>
