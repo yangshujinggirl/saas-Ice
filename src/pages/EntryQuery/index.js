@@ -1,6 +1,7 @@
 import EntryQuery from './EntryQuery'
 import  LoanDetails  from './LoanDetails'
 import  LoanModify  from './LoanModify'
+import  LoanApplication  from './LoanApplication'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as EntryQueryActions from './actions/EntryQueryAction.js'
@@ -31,8 +32,14 @@ let LoanModifyObj = connect(
   mapDispatchToProps
 )(LoanModify);
 
+let LoanApplicationObj = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoanApplication);
+
 export default {
   LoanDetails: LoanDetailsObj,
   EntryQuery: EntryQueryObj,
-  LoanModify: LoanModifyObj
+  LoanModify: LoanModifyObj,
+  LoanApplication: LoanApplicationObj
 }

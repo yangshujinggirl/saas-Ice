@@ -18,9 +18,11 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
+
 import Req from '../../reqs/LoanApplicationReq'
 
 import  './basicInfo.scss'
+import classNames from 'classnames';
 
 const { Options } = Select;
 const { Row, Col } = Grid;
@@ -40,7 +42,7 @@ const labels =(name) => (
     </Balloon>
   </span>
 );
-
+const value = {};
 class BasicInformation extends Component {
   constructor(props) {
     super(props);
@@ -134,6 +136,26 @@ class BasicInformation extends Component {
       }
     });
   }
+
+  formChange(){
+
+  }
+  //渲染
+  renderTitle = (data) =>{
+    const  list = [];
+    if(data){
+      data.map((item,index)=>{
+        var btnClass = classNames({
+          'active': this.state.index == index,
+        });
+        list.push(
+          <a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a>
+        )
+      })
+    }
+    return list;
+  }
+
   render() {
     const { list=[] } = this.props.pageData;
     const { init } = this.field;
@@ -208,36 +230,17 @@ class BasicInformation extends Component {
           <legend className="pch-legend" >
             <span className="pch-legend-legline"></span>车贷申请
           </legend>
-          <IceFormBinderWrapper>
-            <div className="pch-form">
-            <Form
-              size="large"
-              labelAlign="left"
-              field={this.field}>
-              <Row align="top" wrap>
-                {
-                  list.length>0 && list[0].fields && list[0].fields.map((ele,index) => (
-                    <Col xl={6} key={index} l={8}>
-                      <FormItem {...formItemLayout} label={labels(ele.label)}>
-                        {
-                          InputMod(ele)
-                        }
-
-                      </FormItem>
-                    </Col>
-                    ))
-                  }
-              </Row>
-              <Row style={{ marginTop: 24 }} >
-                <Col offset="10" className ='botton-col'>
-                  <Button
-                    type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
-                    下一步
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
-            </div>
+          <IceFormBinderWrapper value={value} onChange={this.formChange} className='loan'>
+            <Row  className='modify-page'>
+              <Col span="3">
+                <div className='title'>
+                  <ul>{this.renderTitle()}</ul>
+                </div>
+              </Col>
+              <Col span="21" className='modify-form pch-form'>
+                  1231
+              </Col>
+            </Row>
           </IceFormBinderWrapper>
         </IceContainer> : <div>接口未提供暂时未开发</div>
     );
