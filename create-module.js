@@ -12,6 +12,7 @@ const folderSep = '/';
 const moduleFolders = [
     'actions',
     'constants',
+    'columns',
     'reducers',
     'reqs',
 ];
