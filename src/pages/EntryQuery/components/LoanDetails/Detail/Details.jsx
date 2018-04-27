@@ -69,7 +69,8 @@ export default class Details extends Component {
     if(this.props.dataSource){
       this.props.dataSource.forEach((item,i)=>{
         this.state.Component.push(
-          <IceContainer title={item.name} className='subtitle'  key={i}>
+          <div className='info' key={i} id={item.name}>
+            <h4 >{item.name}</h4>
             <div className='config-font-box'>
               {item.fields.map((el,ind)=>{
                 var list = [];
@@ -114,7 +115,7 @@ export default class Details extends Component {
               })
               }
             </div>
-          </IceContainer>
+          </div>
         )
 
       })

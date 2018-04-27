@@ -80,8 +80,7 @@ export default class MaterialSubmit extends Component {
   render() {
     let { fileList, tableList, dataSource } = this.state;
     return (
-      <IceContainer title="材料提交" className='subtitle'>
-
+      <div className='info'  id='材料提交'>
         <Table dataSource={dataSource} className="basic-table">
           {tableList.map((item,index) =>{
             return (
@@ -89,7 +88,7 @@ export default class MaterialSubmit extends Component {
             )
           })}
         </Table>
-      </IceContainer>
+      </div>
     );
   }
 }
