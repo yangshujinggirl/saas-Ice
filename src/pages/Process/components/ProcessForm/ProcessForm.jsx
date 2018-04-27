@@ -228,24 +228,17 @@ export default class ProcessForm extends Component {
     return false;
   };
 
-  //select生成
-  renderSelect = (data) => {
-    return (
-      data && data.map((item, index) => {
-        return (
-          <Select.Option key={index} value={`${item.value}`}>{item.name}</Select.Option>
-        );
-      })
-    );
-  };
-
   //校验
-  validateAllFormField = () => {
+  handleSubmit = () => {
     this.refs.form.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
       return false;
     });
-  };
+  }
+
+  handleCancel(){
+    hashHistory.push('process');
+  }
 
   /**
    * 渲染
@@ -259,7 +252,9 @@ export default class ProcessForm extends Component {
           <Title title="流程新增/修改" />
           <div className="pch-form">
             <IceFormBinderWrapper value={this.state.value} onBlur={this.formChange} ref="form">
-            <Form>
+            <Form
+              size="large"
+              labelAlign="left">
             <Row>
               <Col xxs="6" s="2" l="2" style={styles.formLabel}>
                 业务类型：
@@ -292,26 +287,27 @@ export default class ProcessForm extends Component {
               <div className="container-right">
                   <div className="con">
                     <Row className="container-right-title">
+                      <Col xxs="6" s="2" l="2">&nbsp;</Col>
                       <Col xxs="6" s="3" l="3">模块</Col>
                       <Col xxs="6" s="2" l="6" className="pch-target-name"><span>条件</span><span>跳转</span></Col>
-                      <Col xxs="6" s="2" l="4">页面</Col>
-                      <Col xxs="6" s="2" l="4">材料清单</Col>
+                      <Col xxs="6" s="2" l="3">页面</Col>
+                      <Col xxs="6" s="2" l="3">材料清单</Col>
                       <Col xxs="6" s="2" l="2">权限</Col>
-                      <Col xxs="6" s="3" l="3">必要数据</Col>
-                      <Col xxs="6" s="2" l="4">方式</Col>
+                      <Col xxs="6" s="3" l="2">必要数据</Col>
+                      <Col xxs="6" s="2" l="3">方式</Col>
                     </Row>
                     {/*内容区域*/}
                     {
                       this.state.moduleList && this.state.moduleList.map((item, index) => {
                         return (
                           <ProcessFormItem key={index} index={index} item={item} selectData={this.getSelectList(item.cid)} />
-                          
                         );
                       })
                     }
-                    <Button style={{ marginLeft: 10 }} onClick={this.validateAllFormField}>
-                      校验整个表单
-                    </Button>
+                  </div>
+                  <div className="next-btn-box">
+                    <Button type="secondary" size="large" onClick={this.handleSubmit}>提交</Button>
+                    <Button type="default" size="large" onClick={this.handleCancel} style={{marginLeft: 10}}>取消</Button>
                   </div>
               </div>
             </div>
