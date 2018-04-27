@@ -5,9 +5,9 @@ import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 
-import './Process.scss';
+// import './Process.scss';
 
-export default class Process extends BaseApp {
+export default class ReviewApprove extends BaseApp {
     constructor(props) {
         super(props);
     }
