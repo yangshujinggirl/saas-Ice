@@ -49,7 +49,7 @@ const cardSource = {
         const didDrop = monitor.didDrop()
 
         if (!didDrop) {
-            props.moveCard(lastTargetIndex, sourceId, true, undefined, type)
+            //props.moveCard(lastTargetIndex, sourceId, true, undefined, type)
         }
     },
 }

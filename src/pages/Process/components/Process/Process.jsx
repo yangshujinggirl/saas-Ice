@@ -3,6 +3,8 @@ import DataBinder from '@icedesign/data-binder';
 import IceContainer from '@icedesign/container';
 import './Process.scss';
 import {hashHistory} from 'react-router';
+import { Title, PchPagination } from 'components';
+import FilterForm from './Filter';
 
 import {
   Input,
@@ -36,7 +38,8 @@ export default class Process extends Component {
       			type	:'10',
         		lenderType:'10',
         		name	:'',
-		    }
+        },
+        filterFormValue: {},
 		}        
     }
     /**
@@ -109,15 +112,20 @@ export default class Process extends Component {
   	 * 渲染
   	 */
     render() {
-    	const { list=[], total, limit, page} =this.props.pageData;
+      const { filterFormValue } = this.state;
+    	const { list=[], total, limit, page} = this.props.pageData;
     	return (
-    		<div className="create-activity-form" style={styles.container}>
-    			 <IceContainer title="" >
+    			 <IceContainer className="pch-container">
+            <Title title="查询" />
+            <FilterForm
+              value={filterFormValue}
+              onChange={this.filterFormChange}
+              onSubmit={this.filterTable}
+              onReset={this.resetFilter}
+              {...this.props.actions}
+            />
     			 	<IceFormBinderWrapper ref={(formRef) => {this.formRef = formRef;}} value={this.state.value} onChange={this.onFormChange}>
     			 		<div>
-			               <legend style={styles.legend}  className="legend" >
-			                 <span style={styles.legLine}></span>查询
-			               </legend>
 			               <div style={styles.fieldBox}>
 			               		<Row style={styles.formItem}>
 			               			<Col xxs="6" s="2" l="2" style={styles.formLabel}>
@@ -199,19 +207,8 @@ export default class Process extends Component {
                 width={140}
               />
             </Table>
-            {
-              list.length>0 && <div style={styles.pagination}>
-                                <Pagination
-                                  shape="arrow-only"
-                                  current={page}
-                                  pageSize={limit}
-                                  total={total}
-                                  onChange={this.changePage}
-                                />
-                              </div>
-            }
+            <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
     			 </IceContainer>
-    		</div>
     	)
     }
 }
