@@ -60,108 +60,74 @@ export default class Filter extends Component {
             <div className="pch-condition">
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
-                        <Row wrap>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                          <FormItem {...formItemLayout} label="业务类型：">
-                              <IceFormBinder
-                                name="productCode"
-                              >
+                      <Row wrap>
+                        <Col s="8" l="8">
+                          <FormItem {...formItemLayout} label="贷款编号：">
+                            <IceFormBinder
+                              name="productCode"
+                            >
                               <Input size="large" placeholder="贷款编号" />
                             </IceFormBinder>
                           </FormItem>
+
                         </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="贷款状态：">
-                                <IceFormBinder
-                                  name="borrowerMobile"
-                                >
-                                  <Input size="large" placeholder="贷款状态" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="主贷人姓名：">
-                                <IceFormBinder
-                                  name="borrowerName"
-                                >
-                                  <Input size="large" placeholder="主贷人姓名" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="证件号码：">
-                                <IceFormBinder
-                                  name="borrowerID"
-                                >
-                                  <Input size="large" placeholder="证件号码" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="手机号码：">
-                                <IceFormBinder
-                                  name="borrowerID"
-                                >
-                                  <Input size="large" placeholder="手机号码" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="申请金额：">
-                                <IceFormBinder
-                                  name="borrowerID"
-                                >
-                                  <Input size="large" placeholder="申请金额" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="贷款产品：">
-                                <IceFormBinder
-                                  name="borrowerID"
-                                >
-                                  <Input size="large" placeholder="贷款产品" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="展厅名称：">
-                                <IceFormBinder
-                                  name="borrowerID"
-                                >
-                                  <Input size="large" placeholder="展厅名称" />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                              <FormItem {...formItemLayout} label="申请开始时间：">
-                                <IceFormBinder
-                                  name="startTime"
-                                >
-                                  <DatePicker
-                                    format={"YYYY-MM-DD"}
-                                    size="large"
-                                    style={{width:"100%"}}
-                                    placeholder="申请开始时间"
-                                    {...init('startTime', {
-                                      getValueFromEvent: this.onChange
-                                    })}
-                                  />
-                                </IceFormBinder>
-                              </FormItem>
-                            </Col>
-                          <Col xxs={24} xs={12} l={8} xl={8}>
-                          </Col>
-                          <Col xxs={24} xs={12} l={8} xl={8}>
-                          </Col>
-                            <Col xxs={24} xs={12} l={8} xl={8}>
-                                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
-                                    <Button onClick={this.handleSubmit.bind(this)} type="secondary">
-                                        查询
-                                    </Button>
-                                </FormItem>
-                            </Col>
-                        </Row>
+                        <Col s="8" l="8">
+                          <FormItem {...formItemLayout} label="主贷人姓名：">
+                            <IceFormBinder
+                              name="borrowerName"
+                            >
+                              <Input size="large" placeholder="主贷人姓名" />
+                            </IceFormBinder>
+                          </FormItem>
+                        </Col>
+                        <Col s="8" l="8">
+                          <FormItem {...formItemLayout} label="申请开始时间：">
+                            <IceFormBinder
+                              name="startTime"
+                            >
+                              <DatePicker
+                                format={"YYYY-MM-DD"}
+                                size="large"
+                                style={{width:"100%"}}
+                                placeholder="申请开始时间"
+                                {...init('startTime', {
+                                  getValueFromEvent: this.onChange
+                                })}
+                              />
+                            </IceFormBinder>
+                          </FormItem>
+                        </Col>
+                        <Col s="8" l="8">
+                          <FormItem {...formItemLayout} label="申请结束时间：">
+                            <IceFormBinder
+                              name="endTime"
+                            >
+                              <DatePicker
+                                format={"YYYY-MM-DD"}
+                                size="large"
+                                style={{width:"100%"}}
+                                // onChange={this.onChange}
+                                placeholder="申请结束时间" />
+                            </IceFormBinder>
+                          </FormItem>
+                        </Col>
+                        <Col s="8" l="8">
+                          <FormItem {...formItemLayout} label="展厅名称：">
+                            <IceFormBinder
+                              name="borrowerName"
+                            >
+                              <Input size="large" placeholder="展厅名称" />
+                            </IceFormBinder>
+                          </FormItem>
+                        </Col>
+                        <Col s="8" l="8">
+                          <FormItem {...formItemLayout} label="&nbsp;">
+                            <Button type="secondary" htmlType='submit' onClick={this.submit}>
+                              查询
+                            </Button>
+                          </FormItem>
+                        </Col>
+                      </Row>
                     </Form>
                 </IceFormBinderWrapper>
             </div>

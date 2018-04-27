@@ -10,34 +10,46 @@ class ReviewApproveColumn extends BaseColumn {
         super();
 
         this._columns = [{
-            title: '业务类型',
-            dataIndex: 'productCode',
+            title: '贷款编号',
+            dataIndex: 'code',
             width: 160
         }, {
-            title: '流程名称',
-            dataIndex: 'name',
-            width: 200
+            title: '贷款状态',
+            dataIndex: '',
+            width: 150
         }, {
-            title: '资方',
-            dataIndex: 'contractDisplayName',
-            width: 160
+            title: '主贷人姓名',
+            dataIndex: 'borrowerName',
+            width: 150
         }, {
-            title: '产品类型',
-            dataIndex: 'productType',
-            width: 160
+            title: '证件号码',
+            dataIndex: 'borrowerIdNo',
+            width: 150
         }, {
-            title: '产品名称',
-            dataIndex: 'endedAt',
-            width: 250
+            title: '手机号',
+            dataIndex: 'borrowerMobile',
+            width: 150
         }, {
-            title: '最后修改时间',
-            dataIndex: 'commissionRate',
-            width: 120
+          title: '申请金额',
+          dataIndex: 'principalAmount',
+          width: 150
+        },{
+          title: '贷款产品',
+          dataIndex: 'productName',
+          width: 150
+        },{
+          title: '展厅名称',
+          dataIndex: '',
+          width: 150
         }, {
+          title: '申请时间',
+          dataIndex: 'createdAt',
+          width: 150
+        },{
             title: '操作',
             dataIndex: 'visible',
             lock: 'right',
-            width: 140,
+            width: 150,
             cell: (value, index, record) => {
                 return (
                     <div>
