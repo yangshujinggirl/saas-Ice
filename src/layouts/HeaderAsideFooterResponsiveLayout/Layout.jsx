@@ -229,9 +229,11 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         {nav.leaf.map((item) => {
                           const linkProps = {};
                           let itemData = item.value || {};
-                          if (itemData.target == '_blank') {
+                          if (itemData.target == '_blank' || itemData.value.indexOf('http://') != -1) {
                             linkProps.href = this.processLinkWithOwnerId(itemData.value);
+                            if(itemData.target == '_blank'){
                             linkProps.target = '_blank';
+                            }
                           } else if (itemData.external) {
                             linkProps.href = itemData.value;
                           } else {
