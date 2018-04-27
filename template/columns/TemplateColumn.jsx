@@ -9,7 +9,7 @@ class [MODULE]Column extends BaseColumn {
     constructor() {
         super();
 
-        this.columns = [{
+        this._columns = [{
             title: '业务类型',
             dataIndex: 'productCode',
             width: 160
