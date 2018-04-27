@@ -7,6 +7,7 @@ import {
 import DataBinder from '@icedesign/data-binder/lib/index';
 import  Detail from './Detail/index'
 import  MaterialSubmit from './MaterialSubmit/index'
+import  EntryTrack from './EntryTrack/index'
 import  './LoanDetails.scss'
 import {browserHistory, hashHistory} from 'react-router';
 import classNames from 'classnames';
@@ -132,64 +133,13 @@ export default class LoanDetails extends Component {
                   <div className="rcontent-edito">
                     <Detail dataSource={details.list} ></Detail>
                     <MaterialSubmit {...this.props}></MaterialSubmit>
+                    <EntryTrack {...this.props}></EntryTrack>
                     <div className='botton-box'>
                       <Button className='botton' onClick={this.back}>返回</Button>
                     </div>
                   </div>
 
-                  <div className="part-same part-process" id="process">
-                    <p className="module-name">流程轨迹</p>
-                    <div className="process-action">
-                      <div className="item">
-                        <div className="circle status-error">审查</div>
-                        <div className="status-title">初审</div>
-                        <div className="status-desc">
-                          申请金额:10000 (7000)评审意见：未通过
-                          审查意见:信誉良好 资料基本吻合
-                        </div>
-                        <div className="content">
-                          <p>办理人：龚伟东（126007）</p>
-                          <p className="time">时间：2018-07-20</p>
-                        </div>
-                      </div>
-                      <div className="item">
-                        <div className="circle status-success">审查</div>
-                        <div className="status-title">初审</div>
-                        <div className="status-desc">
-                          申请金额:10000 (7000)评审意见：通过
-                          审查意见:信誉良好 资料基本吻合
-                        </div>
-                        <div className="content">
-                          <p>办理人：龚伟东（126007）</p>
-                          <p className="time">时间：2018-07-20</p>
-                        </div>
-                      </div>
-                      <div className="item">
-                        <div className="circle status-return">审查</div>
-                        <div className="status-title">初审</div>
-                        <div className="status-desc">
-                          申请金额:10000 (7000)评审意见：通回
-                          审查意见:信誉良好 资料基本吻合
-                        </div>
-                        <div className="content">
-                          <p>办理人：龚伟东（126007）</p>
-                          <p className="time">时间：2018-07-20</p>
-                        </div>
-                      </div>
-                      <div className="item">
-                        <div className="circle status-manpower">审查</div>
-                        <div className="status-title">初审</div>
-                        <div className="status-desc">
-                          申请金额:10000 (7000)评审意见：转人工
-                          审查意见:信誉良好 资料基本吻合
-                        </div>
-                        <div className="content">
-                          <p>办理人：龚伟东（126007）</p>
-                          <p className="time">时间：2018-07-20</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
                 </Col>
             </Row>
 

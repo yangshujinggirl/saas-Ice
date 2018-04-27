@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import {  Table } from '@icedesign/base';
-import Req from '../../../../MaterialSubmit/reqs/MaterialSubmitReq';
+// import Req from '../../../../MaterialSubmit/reqs/MaterialSubmitReq';
+import Req from '../../../reqs/EntryQueryReq';
 export default class MaterialSubmit extends Component {
   static displayName = 'MaterialSubmit';
 
