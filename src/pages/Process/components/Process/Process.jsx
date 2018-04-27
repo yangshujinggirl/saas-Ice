@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
+import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 
 import './Process.scss';
 
-export default class Process extends Component {
+export default class Process extends BaseApp {
     constructor(props) {
         super(props);
     }
@@ -33,11 +34,11 @@ export default class Process extends Component {
      */
     handleOperateClick(data, type) {
         switch (type) {
-            case 'EDIT': {
+            case this.OPERATE_TYPE.EDIT: {
                 hashHistory.push(`process/detail/${record.id}`)
                 break;
             }
-            case 'VIEW': {
+            case this.OPERATE_TYPE.VIEW: {
                 hashHistory.push(`process/detail/${record.id}`)
                 break;
             }

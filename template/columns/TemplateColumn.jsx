@@ -1,5 +1,5 @@
 
-import BaseColumn from '../../../base/columns/BaseColumn';
+import { BaseColumn } from 'base';
 
 /**
  * 定义列表的表头

@@ -1,4 +1,4 @@
-import BaseConstant from '../../../base/constants/BaseConstant';
+import { BaseConstant } from 'base';
 
 class ProcessConstant extends BaseConstant{
 	constructor(){

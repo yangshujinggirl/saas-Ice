@@ -1,4 +1,4 @@
-import CurdReq from '../../../base/reqs/CurdReq'
+import { CurdReq } from 'base';
 
 class [MODULE]Req extends CurdReq{
 	constructor(){
