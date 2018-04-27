@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
-// form binder 详细用法请参见官方文档
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
 
@@ -18,61 +17,59 @@ const formItemLayout = {
         span: 12
     }
 };
+//获取下拉
+import { company_type } from '../../../config'
 
 export default class Filter extends Component {
-    static displayName = 'Filter';
+    constructor() {
+        super();
+
+        // 搜索框表单的对应的值，可以设置默认值
+        this.state = {
+            value: {
+                type: '10',
+                lenderType: '10',
+                name: '',
+            }
+        };
+    }
 
     handleAdd() {
-        hashHistory.push('/demo/add');
+        let path = {
+            pathname: 'process/add',
+            state: this.state.value
+        }
+        hashHistory.push(path)
+    }
+
+    filterFormChange = (value) => {
+        this.setState({
+            value: value,
+        });
+    }
+
+    handleSubmit() {
+        this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
 
     render() {
         return (
             <div className="pch-condition">
-                <IceFormBinderWrapper
-                    value={this.props.value}
-                    onChange={this.props.onChange}>
-                    <Form
-                        size="large"
-                        direction="hoz">
+                <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
+                    <Form size="large" direction="hoz">
                         <Row wrap>
-                            <Col
-                                xxs={24}
-                                xs={12}
-                                l={8}
-                                xl={6}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="业务类型：">
+                            <Col xxs={24} xs={12} l={8} xl={6}>
+                                <FormItem {...formItemLayout} label="业务类型：">
                                     <IceFormBinder name="type">
-                                        <Select
-                                            size="large"
-                                            placeholder="请选择">
-                                            <Option value="small">
-                                                Small
-                                            </Option>
-                                            <Option value="medium">
-                                                Medium
-                                            </Option>
-                                            <Option value="large">
-                                                Large
-                                            </Option>
+                                        <Select size="large" placeholder="请选择" dataSource={company_type}>
                                         </Select>
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col
-                                xxs={24}
-                                xs={12}
-                                l={8}
-                                xl={6}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="资方：">
+                            <Col xxs={24} xs={12} l={8} xl={6}>
+                                <FormItem {...formItemLayout} label="资方：">
                                     <IceFormBinder name="lenderType">
-                                        <Select
-                                            size="large"
-                                            placeholder="请选择">
+                                        <Select size="large" placeholder="请选择">
                                             <Option value="small">
                                                 Small
                                             </Option>
@@ -86,40 +83,19 @@ export default class Filter extends Component {
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col
-                                xxs={24}
-                                xs={12}
-                                l={8}
-                                xl={6}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="流程名称：">
+                            <Col xxs={24} xs={12} l={8} xl={6}>
+                                <FormItem {...formItemLayout} label="流程名称：">
                                     <IceFormBinder>
-                                        <Input
-                                            name="name"
-                                            size="large" />
+                                        <Input name="name" size="large" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col
-                                xxs={24}
-                                xs={12}
-                                l={8}
-                                xl={6}>
-                                <FormItem
-                                    {...formItemLayout}
-                                    label="&nbsp;">
-                                    <Button
-                                        onClick={this.props.onSubmit}
-                                        type="secondary">
+                            <Col xxs={24} xs={12} l={8} xl={6}>
+                                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                                    <Button onClick={this.handleSubmit.bind(this)} type="secondary">
                                         查询
                                     </Button>
-                                    <Button
-                                        onClick={this.handleAdd}
-                                        type="primary"
-                                        style={{
-                                                   marginLeft: '10px'
-                                               }}>
+                                    <Button onClick={this.handleAdd.bind(this)} type="primary">
                                         新增
                                     </Button>
                                 </FormItem>

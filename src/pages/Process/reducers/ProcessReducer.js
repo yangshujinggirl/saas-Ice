@@ -1,4 +1,5 @@
 import T from '../constants/ProcessConstant'
+import PROCESS_COLUMNS from '../columns/ProcessColumn';
 
 const index = (state = {
   isFetching: false,
@@ -13,6 +14,7 @@ const index = (state = {
     resource: '线下场地免费',
     extra: '',
   },
+  columns: PROCESS_COLUMNS,
   view: 'list' //展示界面类型，list列表、form表单、view详情等
 }, action) => {
   switch (action.type) {

@@ -14,6 +14,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 import Req from '../../reqs/ProcessReq';
+import { Title } from 'components';
 
 Array.prototype.remove = function (val) {
   let index = this.indexOf(val);
@@ -251,13 +252,11 @@ export default class ProcessForm extends Component {
     const locationInfo = this.props.location.state;
     if(locationInfo) this.state.value.lenderName = locationInfo.name;
     return (
-      <div className="create-activity-form">
-        <IceContainer title="">
+      <div className="pch-process">
+        <IceContainer className="pch-container pch-process">
+          <Title title="流程新增/修改" />
           <IceFormBinderWrapper>
             <div>
-              <legend style={styles.legend} className="legend">
-                <span style={styles.legLine}></span>流程新增/修改
-              </legend>
               <div style={styles.fieldBox}>
                 <Row style={styles.formItem}>
                   <Col xxs="6" s="2" l="2" style={styles.formLabel}>
