@@ -47,7 +47,7 @@ npm run prod
 
 # 拷贝打包后的代码
 cd ../
-cp -r dist/* release
+cp -r build/* release
 
 # 提交本次更改
 cd release

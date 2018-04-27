@@ -60,7 +60,7 @@
     "prod": "export NODE_ENV=production && node generate && ice build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
     "copy": "cp -R ./build/ ../saas-pro",
-    "up": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/"
+    "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.com",
