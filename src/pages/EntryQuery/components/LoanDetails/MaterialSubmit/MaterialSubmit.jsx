@@ -81,7 +81,6 @@ export default class MaterialSubmit extends Component {
     let { fileList, tableList, dataSource } = this.state;
     return (
       <div className='info'  id='材料提交'>
-        <h4 >材料提交</h4>
         <Table dataSource={dataSource} className="basic-table">
           {tableList.map((item,index) =>{
             return (
