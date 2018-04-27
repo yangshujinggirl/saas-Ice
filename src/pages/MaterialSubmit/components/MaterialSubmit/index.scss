@@ -83,3 +83,21 @@
 		height: 98px;
 	}
 }
+
+
+.material-file-cell.can-drop{
+	background-color: #ccc;
+}
+.material-file-content{
+	width: 44px;
+	height: 44px;
+	position: relative;
+
+	.material-file-cell-close{
+		position: absolute;
+		top: -6px;
+		right: -6px;
+		line-height: 16px;
+		cursor: pointer;
+	}
+}
