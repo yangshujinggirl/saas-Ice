@@ -1,6 +1,11 @@
-import keyMirror from 'keymirror';
-import BaseConstants from '../../../base/constants/BaseConstant';
+import BaseConstant from '../../../base/constants/BaseConstant';
 
-export default Object.assign({}, BaseConstants, keyMirror({
+class ProcessConstant extends BaseConstant{
+	constructor(){
+		super();
 
-}));
+		this.key = 'PROCESS_'
+	}
+}
+
+export default new ProcessConstant();

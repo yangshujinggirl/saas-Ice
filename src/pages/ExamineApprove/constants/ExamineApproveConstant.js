@@ -1,6 +1,11 @@
-import keyMirror from 'keymirror';
-import BaseConstants from '../../../base/constants/BaseConstant';
+import BaseConstant from '../../../base/constants/BaseConstant';
 
-export default Object.assign({}, BaseConstants, keyMirror({
+class ExamineApproveConstant extends BaseConstant{
+	constructor(){
+		super();
 
-}));
+		this.key = 'EXAMINEAPPROVE_'
+	}
+}
+
+export default new ExamineApproveConstant();

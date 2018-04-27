@@ -9,7 +9,7 @@ class ProcessReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/screen-schemes',
+            retrieve: this._host + '/processes',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }
