@@ -128,7 +128,6 @@ export default class ReviewApproveDetail extends Component {
                     </div>
                   </div>
 
-
                 </Col>
             </Row>
 
