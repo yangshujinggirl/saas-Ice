@@ -45,14 +45,21 @@ export default class ReviewApproveDetail extends Component {
   renderTitle = (data) =>{
     const  list = [];
     if(!this.isEmptyObject(data)){
-      var falg = false;
+      var materialsFalg = false;//材料标志falg
+      var trackFalg = false;//轨迹标志falg
       data.map((el,i)=>{
         if(el.name == '材料提交'){
-          falg = true;
+          materialsFalg = true;
+        }
+        if(el.name == '流程轨迹'){
+          trackFalg = true;
         }
       })
-      if(!falg){
+      if(!materialsFalg){
         data.push({name:'材料提交',fields:[]})
+      }
+      if(!trackFalg){
+        data.push({name:'流程轨迹',fields:[]})
       }
       data.map((item,index)=>{
         var btnClass = classNames({
