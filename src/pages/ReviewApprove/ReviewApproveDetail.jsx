@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import ReviewApproveDetail from './components/ReviewApproveDetail';
+import ReviewApproveDetail from './components/ReviewApproveDetail';
 
 export default class Demo extends Component {
 
@@ -15,7 +15,7 @@ export default class Demo extends Component {
   render() {
     return (
       <div className="reviewapprove-page">
-        这是详情
+        <ReviewApproveDetail  {...this.prop}></ReviewApproveDetail>
       </div>
     );
   }

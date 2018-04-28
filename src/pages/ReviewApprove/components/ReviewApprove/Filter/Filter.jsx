@@ -121,8 +121,8 @@ export default class Filter extends Component {
                           </FormItem>
                         </Col>
                         <Col s="8" l="8">
-                          <FormItem {...formItemLayout} label="&nbsp;">
-                            <Button type="secondary" htmlType='submit' onClick={this.submit}>
+                          <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                            <Button onClick={this.handleSubmit.bind(this)} type="secondary">
                               查询
                             </Button>
                           </FormItem>
