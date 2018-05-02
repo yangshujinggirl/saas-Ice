@@ -78,7 +78,7 @@ export default class addTwo extends Component {
     console.log(id)
     actions.productsave(this.state.value,id);
   }
-  
+
   onFormChange=()=>{
     this.setState({
       value
@@ -108,7 +108,7 @@ export default class addTwo extends Component {
     value.name = name;
     this.setState({value: value});
   }
-  
+
   render() {
     console.log(this.state.value)
     return (

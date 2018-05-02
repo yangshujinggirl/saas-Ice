@@ -179,7 +179,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           )}
           {this.state.openDrawer && (
             <div className="open-drawer-bg" onClick={this.toggleMenu} />
-          )} 
+          )}
         <Layout.Aside
             theme={theme}
             className={cx('ice-design-layout-aside', {
@@ -283,8 +283,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
         />
-          
-          
+
+
           {/* 主体内容 */}
           <Layout.Main>{this.props.children}</Layout.Main>
         </Layout.Section>

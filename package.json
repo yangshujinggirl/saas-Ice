@@ -52,7 +52,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
-    "ice-scripts": "^1.0.7",
+    "ice-scripts": "^1.1.1",
     "react-anything-sortable": "^1.7.4"
   },
   "scripts": {
@@ -60,7 +60,9 @@
     "prod": "export NODE_ENV=production && node generate && ice build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
     "copy": "cp -R ./build/ ../saas-pro",
-    "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/"
+    "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
+    "up": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
+    "build": "ice build"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.com",

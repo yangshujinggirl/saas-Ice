@@ -82,7 +82,7 @@ function getRouteFromFile(filePath) {
 
   let d = {
     value: {
-      icon: 'item',
+      icon: '&#xe643',
       name: '',
       value: ''
     },
