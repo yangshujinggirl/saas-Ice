@@ -28,31 +28,31 @@ export default class ProcessFormItem extends Component {
     };
 
     render() {
-        const {index, item, selectData} = this.props;
+        const {index, item, selectData, setModule} = this.props;
         return (
             <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
-                    {index != 0 && <i onClick={() => this.setModule(item, 'minus', index)} className="icon"></i>}
+                    {index != 0 && <i onClick={() => setModule(item, 'minus', index)} className="icon"></i>}
                 </Col>
                 <Col xxs="6" s="3" l="3" className="pch-moduleName">
                     <div className="pch-realname">
-                        {item.realname}
+                        {item.taskTypeName}
                     </div>
-                    <IceFormBinder name={`rightFromList[${index}].moduleName`} required max={10} message="模块名称">
+                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required max={10} message="模块名称">
                         <Input onChange={this.moduleChange} />
                     </IceFormBinder>
                 </Col>
                 <Col xxs="6" s="2" l="6">
-                    {item.config && item.config.map((list, ind) => {
+                    {item.transitionItems && item.transitionItems.map((list, ind) => {
                          return (
                              <div className="pch-target-name" key={ind}>
-                                 <Select disabled defaultValue={list}>
+                                 <Select disabled defaultValue={list.conditionName}>
                                      {this.renderSelect([{
-                                          name: list,
-                                          value: list,
+                                          name: list.conditionName,
+                                          value: list.conditionName,
                                       }])}
                                  </Select>
-                                 <IceFormBinder name={`rightFromList[${index}].targetName[${ind}]`}>
+                                 <IceFormBinder name={`taskItems[${index}].targetName[${ind}]`}>
                                      <Select>
                                          {this.renderSelect(selectData)}
                                      </Select>

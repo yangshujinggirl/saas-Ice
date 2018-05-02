@@ -51,6 +51,12 @@
               font-size: 20px;
               cursor: pointer;
             }
+
+            &.disabled{
+              i {
+                color: #666;
+              }
+            }
           }
         }
       }
@@ -61,6 +67,7 @@
         background: #fff; // display: table-cell;
         min-height: 500px;
         .container-right-tabRow {
+          position: relative;
           padding: 30px 20px;
           &.even {
             background: #FBFAFA;
@@ -69,7 +76,7 @@
             i {
               position: absolute;
               top: 50%;
-              left: 170px;
+              left: 50px;
               margin:-10px 0 0 0;
               font-size: 20px;
               cursor: pointer;
