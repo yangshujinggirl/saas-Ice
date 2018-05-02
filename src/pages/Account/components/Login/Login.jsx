@@ -94,9 +94,8 @@ export default class Login extends Component {
     let {isLoging} = this.state;
 
     return (
-      <div style={styles.userLogin} className="user-login">
-        <div style={{
-        ...styles.userLoginBg,
+      <div className="user-login">
+        <div className="user-login-bg" style={{
         backgroundImage: `url(${backgroundImage})`
       }}/>
         <div className="pch-login-form">
@@ -107,9 +106,9 @@ export default class Login extends Component {
         </div>
         <IceFormBinderWrapper value={this.state.value} onChange={this.formChange} ref="form">
           <form className="layui-form layui-form-pane" onSubmit={this.handleSubmit}>
-              <Row style={styles.formItem} className="layui-form-item">
+              <Row className="layui-form-item">
                   <Col className="layui-input-block">
-                    <IceIcon className="layui-input-icon" type="person" style={styles.inputIcon}/>
+                    <IceIcon className="layui-input-icon" type="person"/>
                     <IceFormBinder name="userName" required message="请输入账号">
                       <Input maxLength={20} autoComplete="off" className="layui-input" placeholder="请输入账号(手机号码)" autoFocus={true} />
                     </IceFormBinder>
@@ -118,9 +117,9 @@ export default class Login extends Component {
                     <IceFormError name="userName" />
                   </Col>
               </Row>
-              <Row style={styles.formItem} className="layui-form-item">
+              <Row className="layui-form-item">
                   <Col className="layui-input-block">
-                    <IceIcon className="layui-input-icon lx-iconfont" type="lock" style={styles.inputIcon} />
+                    <IceIcon className="layui-input-icon lx-iconfont input-icon" type="lock" />
                     <IceFormBinder name="password" required message="请输入密码">
                       <Input className="layui-input" autoComplete="off" htmlType="password" placeholder="请输入密码" />
                     </IceFormBinder>
@@ -129,15 +128,15 @@ export default class Login extends Component {
                     <IceFormError name="password" />
                   </Col>
                 </Row>
-              <Row style={styles.formItem} className="layui-form-item">
+              <Row className="layui-form-item">
                   <Col>
                     <IceFormBinder name="checkbox">
-                      <Checkbox style={styles.checkbox} checked={this.state.value.checkbox}>记住账号</Checkbox>
+                      <Checkbox checked={this.state.value.checkbox}>记住账号</Checkbox>
                     </IceFormBinder>
                   </Col>
                 </Row>
               <div className="layui-form-item">
-                  <Button className="layui-btn layui-btn-sm" htmlType="submit" style={styles.submitBtn} disabled={isLoging}>
+                  <Button className="layui-btn layui-btn-sm submit-btn" htmlType="submit" disabled={isLoging}>
                       {isLoging ? '登录中' : '登录'}
                   </Button>
               </div>
@@ -150,7 +149,7 @@ export default class Login extends Component {
 }
 
 const styles = {
-  userLogin: {
+  userLogin1: {
     position: 'relative',
     height: '100vh',
   },

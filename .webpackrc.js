@@ -7,7 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
 var NODE_ENV = process.env.NODE_ENV || 'DEVELOPMENT';
-var __DEV__ = NODE_ENV !== 'PRODUCTION';
+var __DEV__ = NODE_ENV.toUpperCase() !== 'PRODUCTION';
 
 module.exports = {
     // output: {
