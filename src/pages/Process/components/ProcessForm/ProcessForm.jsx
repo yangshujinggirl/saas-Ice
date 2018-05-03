@@ -3,130 +3,103 @@ import IceContainer from '@icedesign/container';
 import './ProcessForm.scss';
 import { hashHistory } from 'react-router';
 
-import { Form, Icon, Input, Button, Checkbox, Select, Switch, Radio, Grid, Field } from '@icedesign/base';
+import { Form, Icon, Input, Button, Checkbox, Select, Switch, Radio, Grid, Field, Dialog } from '@icedesign/base';
 
 const {Row, Col} = Grid;
 
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
-import Req from '../../reqs/ProcessReq';
 import { Title } from 'components';
+import { Tools } from 'utils';
 
 import ProcessFormName from './ProcessFormName';
 import ProcessFormModule from './ProcessFormModule';
 import ProcessFormItem from './ProcessFormItem';
 
-Array.prototype.remove = function(val) {
-    let index = this.indexOf(val);
-    if (index > -1) {
-        this.splice(index, 1);
-    }
-};
-
-Array.prototype.removeItem = function(key, val) {
-    let data = this;
-    for (let i in data) {
-        if (data[i][key] === val) {
-            this.splice(i, 1);
-        }
-    }
-};
-
-// "taskDefId": "", // 任务定义ID
-// "taskOrder": 1, // 任务在页面上的顺序号
-// "taskTypeId": 1, // 任务类型ID，对应表T_PROCESS_TASK_TYPE的id，如1对应进件
-// "taskTypeName": "进件", // 任务类型名称，如：进件
-// "taskAlias": "中行进件", // 任务别名，存为activiti的任务定义名称
-// "transitionItems": [ // 该任务的跳转条件
-//  {
-//    "conditionType": "SUBMIT", // 对应枚举类ActivitiTransitionEnum
-//    "conditionName": "已提交", // 对应枚举类ActivitiTransitionEnum
-//    "transToTaskOrder": 2, // 跳转到任务的顺序号
-//    "transToTaskName": "秒批决策" // 跳转到任务的名称
-//  }
-// ],
-// "pageId": 100, // 对应进件页面id
-// "pageName": "小贷进件专用页面", // 对应进件页面名称
 export default class ProcessForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            initFlag: true,
-            customMenuList: [],
-            selectList: [],
-            value: {
-                processDefId: "", //activiti中流程定义id
-                processName: "中行小贷", // 流程名称
-                processType: "LOAN", // 流程类型，如：进件流程
-                businessTypeId: 1000, // 业务类型ID
-                businessTypeName: "贷款业务", // 业务类型名称
-                tenantId: 10086, // 租户ID
-                tenantName: "中国银行", // 租户名称
-                taskItems: [] // 任务定义
-            },
-        };
+        this.state = {};
     }
-
-    field = new Field(this, {
-        scrollToFirstError: true
-    });
 
     /**
      * 初始化
      */
     componentDidMount() {
-        let { actions, params } = this.props;
+        let {actions, params} = this.props;
 
-        if(params.id){
-          //编辑数据
-          actions.getDetail(params.id);
+        if (params.id) {
+            actions.getDetail(params.id);
         }
         actions.getCustomMenuList();
-        // this.fetchData();
     }
 
     /**
-     * 编辑时处理数据，关联详情数据的模块数据
+     * 处理流程数据
+     * 1. 该方法仅在初始化且获取完数据之后执行一次
+     * 1. 新增时默认选择第一个进件模块
+     * 2. 编辑时获取详情数据关联模块数据并计算模块的使用数量
      * @return {[type]} [description]
      */
-    assignTaskItems(customMenuList, formData){
-        if(!formData || !formData.taskItems || formData.taskItems.length == 0 || !customMenuList || customMenuList.length == 0){
-            return;
-        }
+    assignTaskItems(params, customMenuList, formData) {
+        if (params.id) {
+            if (!formData || !formData.taskItems || formData.taskItems.length == 0 || !customMenuList || customMenuList.length == 0) {
+                return;
+            }
+            // 只处理一次
+            if (this.hasProcess) {
+                return;
+            }
+            this.hasProcess = true;
 
-        // 只处理一次
-        if(this.hasProcess){
-            return;
-        }
-        this.hasProcess = true;
-
-        formData.taskItems.map((item, i) => {
-            customMenuList.map((citem, j) => {
-                if(item.taskTypeId == citem.id){
-                    citem.limitedAddTimes--;
-                    item = Object.assign(item, citem);
-                }
-            })
+            formData.taskItems.map((item, i) => {
+                customMenuList.map((citem, j) => {
+                    if (item.taskTypeId == citem.id) {
+                        citem.limitedAddTimes--;
+                        item = Object.assign(item, citem);
+                    }
+                })
             // item.cid = i;
-        })
+            })
+        } else {
+            if (!customMenuList || customMenuList.length == 0) {
+                return;
+            }
+            // 只处理一次
+            if (this.hasProcess) {
+                return;
+            }
+            this.hasProcess = true;
 
-        // console.log('assignTaskItems', formData.taskItems)
-
+            customMenuList[0].limitedAddTimes--;
+            formData.taskItems = [];
+            formData.taskItems.push(Object.assign({
+                taskOrder: 0,
+                taskAlias: customMenuList[0].taskTypeName
+            }, customMenuList[0]));
+        }
     }
 
     getSelectList = (order) => {
         let result = [];
+
+        // 所有模块另默认加一个“结束”模块
+        result.push({
+            name: '结束',
+            value: -1
+        });
+
         this.props.formData.taskItems.map((item) => {
-            if(item.taskOrder != order){
+            if (item.taskOrder != order) {
                 result.push({
                     name: item.taskAlias,
                     value: item.taskOrder,
                 });
             }
         });
-        // console.log(data);
+
         return result;
-    };
+    }
 
     //模块添加删除
     setModule = (data, type, index) => {
@@ -135,25 +108,22 @@ export default class ProcessForm extends Component {
         if (type === 'add') {
             //添加模块
             data.limitedAddTimes--;
-            let newsData = Object.assign({}, data);
-            //newsData.taskAlias = data.taskTypeName + (data.count || '');
-            //let cid = data.id + '-' + data.count;
-            newsData.taskOrder = taskItems.length;
-            // this.addItem(newsData, cid);
-            // data.count++;
-            taskItems.push(newsData);
+            taskItems.push(Object.assign({
+                taskOrder: taskItems.length,
+                taskAlias: data.taskTypeName + taskItems.length
+            }, data));
         } else {
             let customMenuList = this.props.customMenuList;
             customMenuList.map((item, i) => {
-                if(item.id == data.taskTypeId){
+                if (item.id == data.taskTypeId) {
                     item.limitedAddTimes++;
                 }
             });
             taskItems.splice(index, 1);
         }
+
         //状态更新
         this.setState({
-            customMenuList: this.state.customMenuList,
             value: this.state.value,
         });
 
@@ -166,7 +136,12 @@ export default class ProcessForm extends Component {
         });
     }
 
-    //校验
+    //保存
+    handleSave = () => {
+
+    }
+
+    //提交
     handleSubmit = () => {
         this.refs.form.validateAll((errors, values) => {
             console.log('errors', errors, 'values', values);
@@ -174,8 +149,19 @@ export default class ProcessForm extends Component {
         });
     }
 
+    // 取消
     handleCancel() {
-        hashHistory.push('process');
+        // 取消后本次操作将不被保存，您确定吗？
+        Dialog.confirm({
+            content: "取消后本次操作将不被保存，您确定吗？",
+            locale: {
+                ok: "确认",
+                cancel: "取消"
+            },
+            onOk() {
+                hashHistory.push('process');
+            }
+        });
     }
 
     /**
@@ -183,13 +169,18 @@ export default class ProcessForm extends Component {
      */
     render() {
         const locationInfo = this.props.location.state;
-        const { taskItems } = this.state.value;
-        let { customMenuList, formData = {}, params } = this.props;
+        let {customMenuList, formData = {}, params} = this.props;
 
-        if(params.id){
-            this.assignTaskItems(customMenuList, formData);
+        this.assignTaskItems(params, customMenuList, formData);
+
+        if(!params.id){
+            // 新增时使用传递的数据设置
+            // 默认名称为新流程-MMddhhmmss
+            if(locationInfo && !locationInfo.processName){
+                locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
+            }
+            formData = Object.assign(formData, locationInfo);
         }
-
 
         return (
             <IceContainer className="pch-container pch-process">
@@ -197,7 +188,7 @@ export default class ProcessForm extends Component {
                 <div className="pch-form">
                     <IceFormBinderWrapper value={formData} onBlur={this.formChange} ref="form">
                         <Form size="large" labelAlign="left">
-                            <ProcessFormName info={locationInfo} />
+                            <ProcessFormName info={formData} />
                             {/*顶部结束*/}
                             <div className="container">
                                 {/*渲染左边  */}
@@ -242,14 +233,15 @@ export default class ProcessForm extends Component {
                                                  );
                                          })}
                                     </div>
-                                    <div className="next-btn-box">
+                                    <div className="next-btn-box pch-form-buttons">
+                                        <Button type="normal" size="large" onClick={this.handleCancel}>
+                                            取消
+                                        </Button>
+                                        <Button type="primary" size="large" onClick={this.handleSave}>
+                                            保存
+                                        </Button>
                                         <Button type="secondary" size="large" onClick={this.handleSubmit}>
                                             提交
-                                        </Button>
-                                        <Button type="normal" size="large" onClick={this.handleCancel} style={{
-                                                                                                                  marginLeft: 10
-                                                                                                              }}>
-                                            取消
                                         </Button>
                                     </div>
                                 </div>

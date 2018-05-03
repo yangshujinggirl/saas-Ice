@@ -12,40 +12,62 @@ class ProcessColumn extends BaseColumn {
         this._columns = [{
             title: '业务类型',
             dataIndex: 'businessTypeName',
-            width: 160
+            width: 140
         }, {
             title: '流程名称',
-            dataIndex: 'name',
+            dataIndex: 'processName',
             width: 200
         }, {
             title: '资方',
             dataIndex: 'tenantName',
-            width: 160
+            width: 140
         }, {
             title: '产品类型',
             dataIndex: 'productType',
-            width: 160
+            width: 140
         }, {
             title: '产品名称',
             dataIndex: 'productName',
             width: 250
         }, {
+            title: '状态',
+            dataIndex: 'status',
+            width: 100,
+            cell: (value, index, record) =>{
+                return record.status == '1' ? '已完成' : '未完成';
+            }
+        }, {
             title: '最后修改时间',
             dataIndex: 'updatedAt',
-            width: 120
+            width: 140
         }, {
             title: '操作',
             dataIndex: 'visible',
             lock: 'right',
-            width: 140,
+            width: 180,
             cell: (value, index, record) => {
-                return (
-                    <div>
-                        <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
-                            编辑
+
+                let editdom, productdom;
+                if(record.status == '1'){
+                    //完成显示产品按钮，否则显示修改按钮
+                    productdom = 
+                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER)}>
+                            产品
                         </button>
+                }else{
+                    editdom = 
+                        <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                            修改
+                        </button>
+                }
+                return (
+                    <div className="pch-condition-operate">
                         <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
-                            查看
+                            详情
+                        </button>
+                        {editdom}{productdom}
+                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                            复制
                         </button>
                     </div>
                     );

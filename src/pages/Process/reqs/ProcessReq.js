@@ -23,7 +23,7 @@ class ProcessReq extends CurdReq{
 	getCustomMenuList(){
 		let options = {
 			// url: 'http://172.16.0.242:7300/mock/5a52d59e84e9091a31919312/example/process/search',
-			url: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/process/task_types',
+			url: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/task/types',
 			// url: this._host + '/task_types',
 			method: 'GET',
 			contentType: 'application/x-www-form-urlencoded',

@@ -12,6 +12,16 @@ const FormItem = Form.Item;
 export default class ProcessFormItem extends Component {
     constructor() {
         super();
+
+        this.state = {
+            execModeData: [{
+                value: 0,
+                name: '系统'
+            },{
+                value: 1,
+                name: '页面'
+            }]
+        };
     }
 
     //select生成
@@ -20,15 +30,28 @@ export default class ProcessFormItem extends Component {
             data && data.map((item, index) => {
                 return (
                     <Select.Option key={index} value={`${item.value}`}>
-                        {item.name}
+                        {item.name || '--'}
                     </Select.Option>
                     );
             })
         );
     };
 
+    /**
+     * 设置模块的默认别名，默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
+     */
+    setModuleDefaultName = (item) => {
+        if(!item.taskAlias){
+            item.taskAlias = item.taskTypeName + item.taskOrder;
+        }
+    }
+
     render() {
         const {index, item, selectData, setModule} = this.props;
+
+        this.setModuleDefaultName(item);
 
         return (
             <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
@@ -53,7 +76,7 @@ export default class ProcessFormItem extends Component {
                                           value: list.conditionName,
                                       }])}
                                  </Select>
-                                 <IceFormBinder name={`taskItems[${index}].targetName[${ind}]`}>
+                                 <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskOrder`}>
                                      <Select>
                                          {this.renderSelect(selectData)}
                                      </Select>
@@ -64,13 +87,13 @@ export default class ProcessFormItem extends Component {
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     {item.haveConfigPage ? <a className='pch-target'>预览</a> : '--'}
-                    {item.haveConfigPage ? <a className='pch-target'>编辑</a> : '--'}
+                    {item.haveConfigPage ? <a className='pch-target'>编辑</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    <Select className="pch-page-name">
+                    {item.haveCollection == '1' ?<Select className="pch-page-name">
                     	{this.renderSelect(item.page)}
-                    </Select>
-                    {item.haveCollection && <a className="pch-target">添加</a>}
+                    </Select> : '--'}
+                    {item.haveCollection == '1' ? <a className="pch-target">添加</a>: ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">
                     {item.canPrivilegeEditable == '1' ? <a className="pch-target">编辑</a> : '--'}
@@ -79,11 +102,11 @@ export default class ProcessFormItem extends Component {
                     {item.haveRequiredField == '1' ? <a className="pch-target">查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.type ? <IceFormBinder name={`rightFromList[${index}].type`}>
-                                     <Select className="pch-type-name">
-                                         {this.renderSelect(item.type)}
-                                     </Select>
-                                 </IceFormBinder> : '--'}
+                    <IceFormBinder name={`taskItems[${index}].execMode`}>
+                         <Select className="pch-type-name">
+                             {this.renderSelect(this.state.execModeData)}
+                         </Select>
+                     </IceFormBinder>
                 </Col>
             </Row>
             );

@@ -27,9 +27,11 @@ export default class Filter extends Component {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-                type: '10',
-                lenderType: '10',
-                name: '',
+                businessTypeId: '10',
+                businessTypeName: '营业执照',
+                tenantId: 'small',
+                tenantName: 'Small',
+                processName: '',
             }
         };
     }
@@ -52,6 +54,20 @@ export default class Filter extends Component {
         this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
 
+    handleBusinessTypeChange(v, data){
+        let value  = this.state.value;
+        value.businessTypeName = data.label;
+
+        this.setState({value});
+    }
+
+    handleTenantChange(v, data){
+        let value  = this.state.value;
+        value.tenantName = data.label;
+
+        this.setState({value});
+    }
+
     render() {
         return (
             <div className="pch-condition">
@@ -60,16 +76,16 @@ export default class Filter extends Component {
                         <Row wrap>
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="业务类型：">
-                                    <IceFormBinder name="type">
-                                        <Select size="large" placeholder="请选择" dataSource={company_type}>
+                                    <IceFormBinder name="businessTypeId">
+                                        <Select size="large" placeholder="请选择" dataSource={company_type} onChange={this.handleBusinessTypeChange.bind(this)}>
                                         </Select>
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="资方：">
-                                    <IceFormBinder name="lenderType">
-                                        <Select size="large" placeholder="请选择">
+                                    <IceFormBinder name="tenantId">
+                                        <Select size="large" placeholder="请选择" onChange={this.handleTenantChange.bind(this)}>
                                             <Option value="small">
                                                 Small
                                             </Option>
@@ -85,8 +101,8 @@ export default class Filter extends Component {
                             </Col>
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="流程名称：">
-                                    <IceFormBinder>
-                                        <Input name="name" size="large" />
+                                    <IceFormBinder name="processName">
+                                        <Input size="large" placeholder="流程名称" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>

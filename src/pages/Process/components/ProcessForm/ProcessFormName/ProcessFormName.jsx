@@ -23,28 +23,34 @@ export default class ProcessFormItem extends Component {
     }
 
     render() {
-        const locationInfo = this.props.info;
+        const { info = {} } = this.props;
 
         return (
             <Row>
                 <Col xxs="6" s="6" l="6">
                     <FormItem {...formItemLayout} label="业务类型：">
                         <p className="next-form-text-align">
-                            {locationInfo && locationInfo.type}
+                            {info.businessTypeName}
                         </p>
                     </FormItem>
                 </Col>
                 <Col xxs="6" s="6" l="6">
                     <FormItem {...formItemLayout} label="资方：">
                         <p className="next-form-text-align">
-                            {locationInfo && locationInfo.type}
+                            {info.tenantName}
                         </p>
                     </FormItem>
                 </Col>
                 <Col xxs="6" s="6" l="6">
                     <FormItem {...formItemLayout} label="流程名称：">
                         <IceFormBinder name="processName">
-                            <Input value={location.name} placeholder="流程名称" size="large" />
+                            <Input placeholder="流程名称" size="large" />
+                        </IceFormBinder>
+                        <IceFormBinder name="businessTypeId">
+                            <Input htmlType="hidden" />
+                        </IceFormBinder>
+                        <IceFormBinder name="tenantId">
+                            <Input htmlType="hidden" />
                         </IceFormBinder>
                     </FormItem>
                 </Col>
