@@ -33,8 +33,8 @@ class BaseReq {
       options.data = JSON.stringify(options.data);
     }
 
-    if(!options.method || options.method == 'get'){
-      if(!options.params){
+    if (!options.method || options.method == 'get') {
+      if (!options.params) {
         options.params = {};
       }
       options.params.t = new Date().getTime().toString(32);
@@ -123,10 +123,14 @@ class BaseReq {
       return res.data;
     } else {
       // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
+      if (res.data.code == 103) {
+        // 未登陆跳转到登陆页，使用nginx重定向到单点登录页
+        location.href = '/login';
+      }
+
       this._showMsg('error', res.data.msg || res.data.message || '未知错误');
       return res.data;
     }
-
   }
 
   _processError(error) {
@@ -134,11 +138,11 @@ class BaseReq {
 
     let res = error.response || error.request;
 
-    if (res.status == 401) {
+    if (res.status == 103) {
       this._showMsg('error', 'Unauthorized未登录');
-      hashHistory.push('/account');
       // 未登陆跳转到登陆页，使用nginx重定向到单点登录页
       location.href = '/login';
+      // hashHistory.push('/account');
       return { status: 401, msg: 'Unauthorized未登录', data: { code: 401 } };
     }
 
@@ -160,7 +164,7 @@ class BaseReq {
     if (res.status == 0) {
       // 接口发起成功但没收到响应，一般请求超时
       msg = '请求超时，请重试';
-      
+
       //解决退出登陆302跳转的错误提示
       if (error.config && error.config.url == '/crm/saas/logout') {
         msg = '';

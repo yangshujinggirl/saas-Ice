@@ -1,6 +1,6 @@
-import BasedReq from './BasedReq'
+import BaseReq from './BaseReq'
 
-class CommonReq extends BasedReq{
+class CommonReq extends BaseReq{
 	constructor(){
 		super();
 

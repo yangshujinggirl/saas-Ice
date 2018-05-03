@@ -30,13 +30,13 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   constructor(props) {
     super(props);
 
-    const openKeys = this.getOpenKeys();
     this.state = {
       collapse: false,
       openDrawer: false,
       isScreen: undefined,
       openKeys,
     };
+    const openKeys = this.getOpenKeys();
     this.openKeysCache = openKeys;
   }
 
