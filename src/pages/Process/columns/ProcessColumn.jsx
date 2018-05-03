@@ -11,7 +11,7 @@ class ProcessColumn extends BaseColumn {
 
         this._columns = [{
             title: '业务类型',
-            dataIndex: 'productCode',
+            dataIndex: 'businessTypeName',
             width: 160
         }, {
             title: '流程名称',
@@ -19,7 +19,7 @@ class ProcessColumn extends BaseColumn {
             width: 200
         }, {
             title: '资方',
-            dataIndex: 'contractDisplayName',
+            dataIndex: 'tenantName',
             width: 160
         }, {
             title: '产品类型',
@@ -27,11 +27,11 @@ class ProcessColumn extends BaseColumn {
             width: 160
         }, {
             title: '产品名称',
-            dataIndex: 'endedAt',
+            dataIndex: 'productName',
             width: 250
         }, {
             title: '最后修改时间',
-            dataIndex: 'commissionRate',
+            dataIndex: 'updatedAt',
             width: 120
         }, {
             title: '操作',

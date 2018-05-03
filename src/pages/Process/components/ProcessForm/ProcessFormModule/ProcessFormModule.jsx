@@ -23,7 +23,7 @@ export default class ProcessFormModule extends Component {
                              return (
                                  <li key={index}>
                                      <span className="texts">{item.limitedAddTimes}-{item.taskTypeName}</span>
-                                     <span className={'icons' + (item.limitedAddTimes > 0 ? '' : ' disabled')}>{(index != 0 || item.limitedAddTimes != 0) && <i onClick={this.handleAddClick.bind(this, item)} className="icon"></i>}</span>
+                                     <span className={'icons' + (item.limitedAddTimes > 0 ? '' : ' disabled')}>{(index != 0 || item.limitedAddTimes > 0) && <i onClick={this.handleAddClick.bind(this, item)} className="icon"></i>}</span>
                                  </li>
                                  );
                          })}

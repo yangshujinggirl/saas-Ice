@@ -35,11 +35,11 @@ export default class Process extends BaseApp {
     handleOperateClick(data, type) {
         switch (type) {
             case this.OPERATE_TYPE.EDIT: {
-                hashHistory.push(`process/detail/${record.id}`)
+                hashHistory.push(`process/edit/${data.id}`)
                 break;
             }
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`process/detail/${record.id}`)
+                hashHistory.push(`process/detail/${data.id}`)
                 break;
             }
         }

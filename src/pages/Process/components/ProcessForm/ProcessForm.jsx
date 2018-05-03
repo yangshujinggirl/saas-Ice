@@ -75,8 +75,22 @@ export default class ProcessForm extends Component {
      * 初始化
      */
     componentDidMount() {
-        // let data = this.props.location.state;
-        this.fetchData();
+        let { actions, params } = this.props;
+
+        if(params.id){
+          //编辑数据
+          actions.getDetail(params.id);
+        }
+        actions.getCustomMenuList();
+        // this.fetchData();
+    }
+
+    /**
+     * 编辑时处理数据，关联详情数据的模块数据
+     * @return {[type]} [description]
+     */
+    processDataForEdit(){
+
     }
 
     fetchData = () => {
@@ -104,17 +118,11 @@ export default class ProcessForm extends Component {
             .then((res) => {
                 if (res.code == 200) {
                     let customMenuList = res.data;
-                    let resultArray = customMenuList.map((item, index) => {
-                        item.uid = 'menu_' + index;
-                        item.realname = item.name
-                        return item;
-                    });
-                    this.state.customMenuList = resultArray;
+                    this.state.customMenuList = customMenuList;
                     
                     // 赋值右侧数据
                     if (customMenuList && customMenuList.length) {
-                        let cid = customMenuList[0].uid + '-' + customMenuList[0].count;
-                        customMenuList[0].limitedAddTimes -= 1;
+                        //customMenuList[0].limitedAddTimes -= 1;
                         // this.addItem(customMenuList[0], cid);
                         this.setModule(customMenuList[0], 'add');
                     }
@@ -154,7 +162,7 @@ export default class ProcessForm extends Component {
             result.push({
                 name: item.moduleName,
                 value: item.moduleName,
-                uid: item.uid,
+                uid: item.id,
                 cid: item.cid,
             });
         });
@@ -192,11 +200,11 @@ export default class ProcessForm extends Component {
         //     pageName: "小贷进件专用页面", // 对应进件页面名称
             
         //     type: undefined,
-        //     uid: data.uid,
+        //     uid: data.id,
         //     cid: cid,
         // });
         this.state.value.taskItems.push(Object.assign({
-            uid: data.uid,
+            uid: data.id,
             cid: cid,
             transitionItems: []
           }, data))
@@ -215,7 +223,7 @@ export default class ProcessForm extends Component {
             data.limitedAddTimes--;
             let newsData = Object.assign({}, data);
             newsData.taskAlias = data.taskTypeName + (data.count || '');
-            let cid = data.uid + '-' + data.count;
+            let cid = data.id + '-' + data.count;
             newsData.cid = cid;
             this.addItem(newsData, cid);
             data.count++;
@@ -302,6 +310,7 @@ export default class ProcessForm extends Component {
     render() {
         const locationInfo = this.props.location.state;
         const { taskItems } = this.state.value;
+        const { formData } = this.props;
         console.log(this.state)
 
         return (
