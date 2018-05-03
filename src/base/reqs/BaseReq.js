@@ -137,6 +137,8 @@ class BaseReq {
     if (res.status == 401) {
       this._showMsg('error', 'Unauthorized未登录');
       hashHistory.push('/account');
+      // 未登陆跳转到登陆页，使用nginx重定向到单点登录页
+      location.href = '/login';
       return { status: 401, msg: 'Unauthorized未登录', data: { code: 401 } };
     }
 

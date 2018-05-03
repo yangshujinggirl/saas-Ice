@@ -25,7 +25,7 @@ export default class Header extends PureComponent {
     })
   }
   render() {
-    let { width, theme, isMobile, menus, pathname, routes } = this.props;
+    let { width, theme, isMobile, menus, pathname, routes, userinfo } = this.props;
     // let data = this.getBreadCrumb(menus, pathname);
     // let result = data ? [data.parentNode, data.node] : [{name: '未知页面'}];
 
@@ -37,7 +37,7 @@ export default class Header extends PureComponent {
 
     let nickname = '--';
     //获取登陆用户信息
-    let userinfo = Storage.get('USERINFO');
+    // let userinfo = Storage.get('USERINFO');
     if(userinfo){
       nickname = userinfo.realName || userinfo.userName;
     }
