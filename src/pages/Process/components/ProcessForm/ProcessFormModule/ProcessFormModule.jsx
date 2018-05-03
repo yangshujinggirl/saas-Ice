@@ -5,8 +5,8 @@ export default class ProcessFormModule extends Component {
         super();
     }
 
-    handleAddClick(item){
-        if(item.limitedAddTimes <= 0){
+    handleAddClick(item) {
+        if (item.limitedAddTimes <= 0) {
             return;
         }
         this.props.setModule(item, 'add')
@@ -20,6 +20,10 @@ export default class ProcessFormModule extends Component {
                 <div className="con">
                     <ul className='container-left-uls'>
                         {customMenuList && customMenuList.map((item, index) => {
+                             if (item.enable != 1) {
+                                 // 不启用不展示，enable是否可用,0不可用;1可用
+                                 return null;
+                             }
                              return (
                                  <li key={index}>
                                      <span className="texts">{item.limitedAddTimes}-{item.taskTypeName}</span>

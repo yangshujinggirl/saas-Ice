@@ -29,6 +29,7 @@ export default class ProcessFormItem extends Component {
 
     render() {
         const {index, item, selectData, setModule} = this.props;
+
         return (
             <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
@@ -62,20 +63,20 @@ export default class ProcessFormItem extends Component {
                      })}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.page ? <a className='pch-target'>预览</a> : '--'}
-                    {item.page ? <a className='pch-target'>编辑</a> : '--'}
+                    {item.haveConfigPage ? <a className='pch-target'>预览</a> : '--'}
+                    {item.haveConfigPage ? <a className='pch-target'>编辑</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     <Select className="pch-page-name">
                     	{this.renderSelect(item.page)}
                     </Select>
-                    {item.private && <a className="pch-target">添加</a>}
+                    {item.haveCollection && <a className="pch-target">添加</a>}
                 </Col>
                 <Col xxs="6" s="2" l="2">
-                    {item.private && <a className="pch-target">编辑</a>}
+                    {item.canPrivilegeEditable == '1' ? <a className="pch-target">编辑</a> : '--'}
                 </Col>
                 <Col xxs="6" s="3" l="2">
-                    {item.source && <a className="pch-target">查看</a>}
+                    {item.haveRequiredField == '1' ? <a className="pch-target">查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     {item.type ? <IceFormBinder name={`rightFromList[${index}].type`}>
