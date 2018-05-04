@@ -12,10 +12,10 @@ import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 import { Title } from 'components';
 import { Tools } from 'utils';
 
-import ProcessFormName from './ProcessFormName';
-import ProcessFormModule from './ProcessFormModule';
-import ProcessFormItem from './ProcessFormItem';
-import ProcessFields from '../ProcessFields';
+import ProcessFormName from '../../components/ProcessFormName';
+import ProcessFormModule from '../../components/ProcessFormModule';
+import ProcessFormItemList from '../../components/ProcessFormItemList';
+import ProcessFields from '../../components/ProcessFields';
 
 export default class ProcessForm extends Component {
     constructor(props) {
@@ -79,27 +79,6 @@ export default class ProcessForm extends Component {
                 taskAlias: customMenuList[0].taskTypeName
             }, customMenuList[0]));
         }
-    }
-
-    getSelectList = (order) => {
-        let result = [];
-
-        // 所有模块另默认加一个“结束”模块
-        result.push({
-            name: '结束',
-            value: -1
-        });
-
-        this.props.formData.taskItems.map((item) => {
-            if (item.taskOrder != order) {
-                result.push({
-                    name: item.taskAlias,
-                    value: item.taskOrder,
-                });
-            }
-        });
-
-        return result;
     }
 
     //模块添加删除
@@ -197,47 +176,10 @@ export default class ProcessForm extends Component {
                                     <ProcessFormModule customMenuList={customMenuList} setModule={this.setModule} />
                                     {/*右边*/}
                                     <div className="container-right">
-                                        <div className="con">
-                                            <Row className="container-right-title">
-                                                <Col xxs="6" s="2" l="2">
-                                                </Col>
-                                                <Col xxs="6" s="3" l="3">
-                                                    模块
-                                                </Col>
-                                                <Col xxs="6" s="2" l="6" className="pch-target-name">
-                                                    <span>条件</span><span>跳转</span>
-                                                </Col>
-                                                <Col xxs="6" s="2" l="3">
-                                                    页面
-                                                </Col>
-                                                <Col xxs="6" s="2" l="3">
-                                                    材料清单
-                                                </Col>
-                                                <Col xxs="6" s="2" l="2">
-                                                    权限
-                                                </Col>
-                                                <Col xxs="6" s="3" l="2">
-                                                    必要数据
-                                                </Col>
-                                                <Col xxs="6" s="2" l="3">
-                                                    方式
-                                                </Col>
-                                            </Row>
-                                            {/*内容区域*/}
-                                            {formData.taskItems && formData.taskItems.map((item, index) => {
-                                                 return (
-                                                     <ProcessFormItem
-                                                         key={index}
-                                                         index={index}
-                                                         item={item}
-                                                         selectData={this.getSelectList(item.taskOrder)}
-                                                         setModule={this.setModule} />
-                                                     );
-                                             })}
-                                        </div>
+                                        <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule}/>
                                         <div className="next-btn-box pch-form-buttons">
                                             <Button type="normal" size="large" onClick={this.handleCancel}>
-                                                取消
+                                                返回
                                             </Button>
                                             <Button type="primary" size="large" onClick={this.handleSave}>
                                                 保存

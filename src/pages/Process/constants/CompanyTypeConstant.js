@@ -1,4 +1,4 @@
-export  const company_type = [{
+export const COMPANY_TYPE = [{
     "label": "营业执照",
     "value": '10'
   },
