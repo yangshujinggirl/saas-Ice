@@ -33,6 +33,20 @@ class CommonReq extends BaseReq{
 		}
 		return super.fetchData(options);
 	}
+
+	/**
+	 * 心跳获取token
+	 * @return {[type]} [description]
+	 *
+	 */
+	getHeartToken(){
+		
+		let options = {
+			url: '/crm/token',
+			method: 'GET'
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new CommonReq();

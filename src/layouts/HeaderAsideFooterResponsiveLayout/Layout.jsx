@@ -11,7 +11,7 @@ import Header from './../../components/Header';
 import Footer from './../../components/Footer';
 import Logo from './../../components/Logo';
 import { asideNavs } from './../../navs';
-import { Storage } from '../../base/utils';
+import { Storage, Cookie } from '../../base/utils';
 import './scss/light.scss';
 // import './scss/dark.scss';
 import CommonReq from '../../base/reqs/CommonReq';
@@ -56,6 +56,13 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         this.setState({USDRINFO: res.data});
       }
     });
+
+    setInterval(function(){
+      CommonReq.getHeartToken().then(res => {
+        if (!res || res.code != 200) return;
+        Cookie.set('PCTOKEN', res.data.token);
+      })
+    }, 600000)
   }
 
   /**

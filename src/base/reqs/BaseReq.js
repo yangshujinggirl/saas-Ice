@@ -33,6 +33,12 @@ class BaseReq {
       options.data = JSON.stringify(options.data);
     }
 
+    //追加请求头
+    let pctoken = Cookie.get('PCTOKEN');
+    if(pctoken){
+      header['Authorization'] = pctoken;
+    }
+
     if (!options.method || options.method == 'get') {
       if (!options.params) {
         options.params = {};

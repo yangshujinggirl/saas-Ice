@@ -12,7 +12,7 @@ const backgroundImage = require('./admin-login-bg.png');
 const adminLogo = require('./admin-logo.png');
 
 import { hashHistory } from 'react-router';
-import { Storage, Cookie } from 'utils';
+import { Storage, Cookie, Tools } from 'utils';
 import AccountReq from '../../reqs/AccountReq';
 
 export default class Login extends Component {
@@ -78,14 +78,30 @@ export default class Login extends Component {
           Storage.remove('REMEMBER');
         }
 
-        Storage.set('MENUS', (res.data.leaf));
-
-        AccountReq.getUserInfo().then((res) => {
-          if (res || res.code == 200) {
-            Storage.set("USERINFO", res.data);
-            hashHistory.push('/dashboard') //跳转首页
+        Cookie.set('PCTOKEN', res.data.token);
+        
+        let fromUrl = this.props.params.from;
+        if(fromUrl){
+          fromUrl = decodeURIComponent(fromUrl);
+          if(fromUrl.indexOf('?') != -1){
+            fromUrl += '&token=' + res.data.token;
+          }else{
+            fromUrl += '?token=' + res.data.token;
           }
-        })
+
+          location.href = fromUrl;
+        }else{
+          Feedback.toast.success('登录成功');
+        }
+
+        //Storage.set('MENUS', (res.data.leaf));
+
+        // AccountReq.getUserInfo().then((res) => {
+        //   if (res || res.code == 200) {
+        //     Storage.set("USERINFO", res.data);
+        //     hashHistory.push('/dashboard') //跳转首页
+        //   }
+        // })
       });
     });
   };
