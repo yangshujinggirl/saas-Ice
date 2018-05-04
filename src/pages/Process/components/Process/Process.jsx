@@ -49,6 +49,7 @@ export default class Process extends BaseApp {
      */
     render() {
         const {pageData, columns} = this.props;
+        console.log(this.props)
         return (
             <IceContainer className="pch-container">
                 <Title title="流程配置查询" />

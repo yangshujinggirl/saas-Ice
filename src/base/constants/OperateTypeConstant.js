@@ -26,7 +26,10 @@ const OPERATE_TYPE = {
     OTHER3: 'other3',
     OTHER4: 'other4',
     OTHER5: 'other5',
-
+    SWITCH:'switch',//启用开关
+    BIND:'bind',//产品绑定
+    RETURN:'return',//退回
+    SIGN:'sign'//签字
 };
 
 export default OPERATE_TYPE;

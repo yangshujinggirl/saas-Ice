@@ -55,6 +55,16 @@ module.exports = {
                     res.set('X-ICE-PROXY-BY', ' http://172.16.0.218:8080/wf-dev');
                 },
             },
+            '/contractApi': {
+                target: ' http://172.16.1.47:8080',
+                changeOrigin: true,
+                pathRewrite:{"^/processApi" : ""},
+                bypass: function(req, res, proxyOpt) {
+                    // 添加 HTTP Header 标识 proxy 开启
+                    res.set('X-ICE-PROXY', 'on');
+                    res.set('X-ICE-PROXY-BY', 'http://172.16.1.47:8080');
+                },
+            },
             '/crm': {
                 target: CRM_HOST,
                 changeOrigin: true,

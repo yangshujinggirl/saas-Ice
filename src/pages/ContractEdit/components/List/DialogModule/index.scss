@@ -1,0 +1,22 @@
+.contract-template-dialog-wrap {
+  width: 26%;
+  .contract-template-dialog-content {
+    padding: 30px 20px 0 40px;
+    .title {
+      font-size: 14px;
+      line-height: 150%;
+    }
+    .check-group-style {
+      >label {
+        display: block;
+      }
+    }
+    .btns-wrap {
+      text-align: center;
+      padding-top: 20px;
+      .dialog-btn {
+        margin-right:10px;
+      }
+    }
+  }
+}

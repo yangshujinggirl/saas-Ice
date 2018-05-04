@@ -37,7 +37,7 @@ export default class PchTable extends Component{
     processData(data) {
         data && data.map((item, i) => {
             item.onOperateClick = (type) => { this.props.onOperateClick(item, type) };
-            
+
             // if(item.children && item.children.length > 0){
             //     this.processData(item.children);
             // }
