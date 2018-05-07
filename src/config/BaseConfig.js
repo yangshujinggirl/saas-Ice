@@ -1,5 +1,6 @@
 class BaseConfig {
     static HOST = '/loan-ft1';
+    static LOAN_HOST = '/loan';
     static PAGESIZE = 15;
     static IS_AUTO_MENU_USED = true; //是否使用自动生成菜单
 }

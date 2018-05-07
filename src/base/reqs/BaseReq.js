@@ -11,6 +11,7 @@ class BaseReq {
 
   constructor() {
     this._host = BaseConfig.HOST; //接口地址
+    this._loanHost = BaseConfig.LOAN_HOST; //贷前接口
     this._pageSize = BaseConfig.PAGESIZE; //分页大小
   }
 
@@ -158,7 +159,7 @@ class BaseReq {
     if (res.status == 0) {
       // 接口发起成功但没收到响应，一般请求超时
       msg = '请求超时，请重试';
-      
+
       //解决退出登陆302跳转的错误提示
       if (error.config && error.config.url == '/crm/saas/logout') {
         msg = '';

@@ -8,7 +8,7 @@ import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
-
+const Toast = Feedback.toast;
 const formItemLayout = {
     labelCol: {
         span: 8
@@ -19,7 +19,7 @@ const formItemLayout = {
 };
 //获取下拉
 import { company_type } from '../../../config'
-import { Field } from '@icedesign/base/index';
+import { Feedback, Field } from '@icedesign/base/index';
 
 export default class Filter extends Component {
     field = new Field(this);
@@ -29,9 +29,7 @@ export default class Filter extends Component {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-                type: '10',
-                lenderType: '10',
-                name: '',
+                limit : 10,
             }
         };
     }
@@ -49,8 +47,20 @@ export default class Filter extends Component {
             value: value,
         });
     }
-
     handleSubmit() {
+        const {submitStart, submitEnd} = this.state.value;
+        if(submitStart && submitEnd){
+          if(submitEnd.getTime() <= submitStart.getTime()){
+                Toast.help("申请开始时间不能大于申请结束时间");
+                return;
+          }
+          // else{
+          //   this.setState({
+          //     submitStart : submitStart.getFullYear()+"-"+parseInt(submitStart.getMonth()+1)+'-'+submitStart.getDay(),
+          //     submitEnd: submitEnd.getFullYear()+"-"+parseInt(submitEnd.getMonth()+1)+'-'+submitEnd.getDay(),
+          //   });
+          // }
+        }
         this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
 
@@ -64,7 +74,7 @@ export default class Filter extends Component {
                         <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="贷款编号：">
                             <IceFormBinder
-                              name="productCode"
+                              name="code"
                             >
                               <Input size="large" placeholder="贷款编号" />
                             </IceFormBinder>
@@ -83,16 +93,12 @@ export default class Filter extends Component {
                         <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="申请开始时间：">
                             <IceFormBinder
-                              name="startTime"
+                              name="submitStart"
                             >
                               <DatePicker
-                                format={"YYYY-MM-DD"}
                                 size="large"
                                 style={{width:"100%"}}
                                 placeholder="申请开始时间"
-                                {...init('startTime', {
-                                  getValueFromEvent: this.onChange
-                                })}
                               />
                             </IceFormBinder>
                           </FormItem>
@@ -100,13 +106,11 @@ export default class Filter extends Component {
                         <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="申请结束时间：">
                             <IceFormBinder
-                              name="endTime"
+                              name="submitEnd"
                             >
                               <DatePicker
-                                format={"YYYY-MM-DD"}
                                 size="large"
                                 style={{width:"100%"}}
-                                // onChange={this.onChange}
                                 placeholder="申请结束时间" />
                             </IceFormBinder>
                           </FormItem>
@@ -114,7 +118,7 @@ export default class Filter extends Component {
                         <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="展厅名称：">
                             <IceFormBinder
-                              name="borrowerName"
+                              name="exhibitionHallName"
                             >
                               <Input size="large" placeholder="展厅名称" />
                             </IceFormBinder>
