@@ -1,6 +1,6 @@
 const LOAN_HOST = 'http://172.16.0.218:8080/';
-// const CRM_HOST = 'http://172.16.0.211:8080/';
-const CRM_HOST = 'http://172.16.0.190:8080/';
+const CRM_HOST = 'http://172.16.0.211:8080/';
+// const CRM_HOST = 'http://172.16.0.190:8080/';
 
 const { resolve } = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');

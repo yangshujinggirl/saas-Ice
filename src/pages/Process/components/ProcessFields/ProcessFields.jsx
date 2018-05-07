@@ -36,7 +36,7 @@ class ProcessFields extends Component {
                         </Col>
                     </Row>
                     <Table dataSource={data} className="table-list">
-                        <Table.Column title="序号" dataIndex="orderId" />
+                        <Table.Column title="序号" dataIndex="orderId" width={120} />
                         <Table.Column title="名称" dataIndex="fieldValue" />
                     </Table>
                     <Button type="primary" className="return-btn">

@@ -144,6 +144,10 @@ export default class ProcessForm extends Component {
         });
     }
 
+    showView(){
+        //页面预览、页面编辑、材料清单、权限编辑、权限查看、查看字段
+    }
+
     /**
      * 渲染
      */
@@ -194,7 +198,7 @@ export default class ProcessForm extends Component {
                         </IceFormBinderWrapper>
                     </div>
                 </IceContainer>
-                <ProcessFields />
+                <ProcessFields visible={true} />
             </div>
             );
     }
