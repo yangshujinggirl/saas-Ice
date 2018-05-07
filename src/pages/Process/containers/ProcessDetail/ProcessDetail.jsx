@@ -114,7 +114,7 @@ export default class ProcessDetail extends Component {
                                 <ProcessFormName info={formData} editable={false} />
                                 {/*顶部结束*/}
                                 <div className="container">
-                                    <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule} changeView={this.changeView.bind(this)} />
+                                    <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule} changeView={this.changeView.bind(this)} editable={false} />
                                     <div className="next-btn-box pch-form-buttons">
                                         <Button type="normal" size="large" onClick={this.handleCancel}>
                                             返回

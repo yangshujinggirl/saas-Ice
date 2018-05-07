@@ -11,7 +11,7 @@ const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
 
-export default class ProcessFormItem extends Component {
+export default class ProcessDetailItem extends Component {
     constructor() {
         super();
 
@@ -41,19 +41,17 @@ export default class ProcessFormItem extends Component {
 
     render() {
         const {index, item, selectData, setModule, changeView} = this.props;
+        console.log(item)
 
         return (
             <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
-                    {index != 0 && <i onClick={() => setModule(item, 'minus', index)} className="icon"></i>}
                 </Col>
                 <Col xxs="6" s="3" l="3" className="pch-moduleName">
                     <div className="pch-realname">
                         {item.taskTypeName}
                     </div>
-                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required max={10} message="模块名称">
-                        <Input onChange={this.moduleChange} size="large" />
-                    </IceFormBinder>
+                    {item.taskAlias}
                 </Col>
                 <Col xxs="6" s="2" l="6">
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
@@ -75,26 +73,20 @@ export default class ProcessFormItem extends Component {
                      })}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE)}>预览</a> : '--'}
-                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE)}>编辑</a> : ''}
+                    {item.pageId ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE)}>{item.pageName}</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].file`}><PchMaterialSelect /></IceFormBinder></div> : '--'}
-                    {item.haveCollection == '1' ? <a className="pch-target" href="/#/product/filelist" target="_blank">添加</a>: ''}
+                    {item.file ? <div className="pch-target-name">{item.file}</div> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="2">
-                    {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.EDITAUTH)}>编辑</a> : '--'}
+                    {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWAUTH)}>查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="3" l="2">
                     {item.haveRequiredField == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWFIELD)}>查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     <div className="pch-target-name">
-                    <IceFormBinder name={`taskItems[${index}].execMode`}>
-                         <Select className="pch-type-name" size="large">
-                             {this.renderSelect(this.state.execModeData)}
-                         </Select>
-                    </IceFormBinder>
+                    {item.execMode}
                     </div>
                 </Col>
             </Row>

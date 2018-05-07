@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 import ProcessFormItem from '../ProcessFormItem';
+import ProcessDetailItem from '../ProcessDetailItem';
 
 const {Row, Col} = Grid;
 
@@ -33,7 +34,7 @@ export default class ProcessFormItemList extends Component {
     }
 
     render() {
-        const { taskItems = [], setModule, changeView } = this.props;
+        const { taskItems = [], setModule, changeView, editable = true } = this.props;
 
         return (
             <div className="container-right-con">
@@ -63,6 +64,7 @@ export default class ProcessFormItemList extends Component {
                     </Col>
                 </Row>
                 {taskItems.map((item, index) => {
+                    if(editable){
                      return (
                          <ProcessFormItem
                              key={index}
@@ -72,6 +74,17 @@ export default class ProcessFormItemList extends Component {
                              setModule={setModule}
                              changeView={changeView} />
                          );
+                    }else{
+                        return(
+                            <ProcessDetailItem
+                             key={index}
+                             index={index}
+                             item={item}
+                             selectData={this.getSelectList(item.taskOrder)}
+                             setModule={setModule}
+                             changeView={changeView} />
+                         );
+                    }
                  })}
             </div>
             );

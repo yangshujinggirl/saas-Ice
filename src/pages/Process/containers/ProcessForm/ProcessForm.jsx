@@ -95,6 +95,7 @@ export default class ProcessForm extends Component {
             data.limitedAddTimes--;
             taskItems.push(Object.assign({
                 taskOrder: taskItems.length,
+                // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
                 taskAlias: data.taskTypeName + taskItems.length,
                 taskTypeId: data.id
             }, data));
