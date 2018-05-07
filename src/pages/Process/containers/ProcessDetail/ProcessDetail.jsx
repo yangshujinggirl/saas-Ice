@@ -21,6 +21,8 @@ export default class ProcessDetail extends Component {
         this.state = {
             view: PROCESS_VIEW.DETAIL
         };
+
+        this.hasProcess = false;
     }
 
     /**
@@ -35,6 +37,18 @@ export default class ProcessDetail extends Component {
         actions.getCustomMenuList();
     }
 
+    componentWillUnmount(){
+        this.props.actions.changeHasProcess(false);
+    }
+
+    componentWillReceiveProps(nextProps){
+        let {customMenuList, formData = {}, params, hasProcess} = nextProps;
+
+        if(!hasProcess){
+            this.assignTaskItems(params, customMenuList, formData);
+        }
+    }
+
     /**
      * 处理流程数据
      * 1. 该方法仅在初始化且获取完数据之后执行一次
@@ -47,11 +61,6 @@ export default class ProcessDetail extends Component {
             if (!formData || !formData.taskItems || formData.taskItems.length == 0 || !customMenuList || customMenuList.length == 0) {
                 return;
             }
-            // 只处理一次
-            if (this.hasProcess) {
-                return;
-            }
-            this.hasProcess = true;
 
             formData.taskItems.map((item, i) => {
                 customMenuList.map((citem, j) => {
@@ -62,15 +71,13 @@ export default class ProcessDetail extends Component {
                 })
             // item.cid = i;
             })
+
+            // 只处理一次
+            this.props.actions.changeHasProcess(true);
         } else {
             if (!customMenuList || customMenuList.length == 0) {
                 return;
             }
-            // 只处理一次
-            if (this.hasProcess) {
-                return;
-            }
-            this.hasProcess = true;
 
             customMenuList[0].limitedAddTimes--;
             formData.taskItems = [];
@@ -78,6 +85,9 @@ export default class ProcessDetail extends Component {
                 taskOrder: 0,
                 taskAlias: customMenuList[0].taskTypeName
             }, customMenuList[0]));
+
+            // 只处理一次
+            this.props.actions.changeHasProcess(true);
         }
     }
 
@@ -102,7 +112,7 @@ export default class ProcessDetail extends Component {
     render() {
         let {customMenuList, formData = {}, params} = this.props;
 
-        this.assignTaskItems(params, customMenuList, formData);
+        // this.assignTaskItems(params, customMenuList, formData);
 
         return (
             <div className="">
@@ -114,7 +124,7 @@ export default class ProcessDetail extends Component {
                                 <ProcessFormName info={formData} editable={false} />
                                 {/*顶部结束*/}
                                 <div className="container">
-                                    <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule} changeView={this.changeView.bind(this)} editable={false} />
+                                    <ProcessFormItemList taskItems={formData.taskItems} changeView={this.changeView.bind(this)} editable={false} />
                                     <div className="next-btn-box pch-form-buttons">
                                         <Button type="normal" size="large" onClick={this.handleCancel}>
                                             返回
