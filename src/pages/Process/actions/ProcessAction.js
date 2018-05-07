@@ -116,14 +116,16 @@ export const remove = (id) => {
   }
 }
 
-export function changeViewToForm() {
-  return dispatch({ view: 'form' });
-}
+// 复制流程
+export const copyProcess = (id) => {
+  return (dispatch) => {
 
-export function changeViewToList() {
-  return dispatch({ view: 'list' });
-}
+    dispatch(fetchStart())
 
-export function changeViewToView() {
-  return dispatch({ view: 'view' });
+    Req.copyProcess(id).then((res) => {
+      dispatch(fetchSuccess({copy: true}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
 }

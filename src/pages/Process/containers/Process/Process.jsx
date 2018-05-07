@@ -18,13 +18,13 @@ export default class Process extends BaseApp {
         this.fetchData();
     }
     fetchData = (condition) => {
-        this.props.actions.search(condition);
+        this._condition = Object.assign(this._condition, condition);
+        this.props.actions.search(this._condition);
     }
     //点击分页
     changePage = (currentPage) => {
-        this.props.actions.search({
-            page: currentPage
-        });
+        this._condition.page = currentPage;
+        this.props.actions.search(this._condition);
     }
 
     /**
@@ -35,11 +35,23 @@ export default class Process extends BaseApp {
     handleOperateClick(data, type) {
         switch (type) {
             case this.OPERATE_TYPE.EDIT: {
+                // 修改
                 hashHistory.push(`process/edit/${data.processDefId}`)
                 break;
             }
             case this.OPERATE_TYPE.VIEW: {
+                // 详情
                 hashHistory.push(`process/detail/${data.processDefId}`)
+                break;
+            }
+            case this.OPERATE_TYPE.OTHER: {
+                // 产品
+                hashHistory.push(`process/detail/${data.processDefId}`)
+                break;
+            }
+            case this.OPERATE_TYPE.OTHER1: {
+                // 复制，复制该流程进入流程修改页面
+                hashHistory.push(`process/edit/${data.processDefId}`)
                 break;
             }
         }

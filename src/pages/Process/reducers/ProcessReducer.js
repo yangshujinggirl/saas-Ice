@@ -4,18 +4,11 @@ import PROCESS_COLUMNS from '../columns/ProcessColumn';
 const index = (state = {
   isFetching: false,
   pageData: {}, //列表分页数据1
-  customMenuList:[],
+  customMenuList:[],//流程模块数据
   formData: { //表单数据
-    title: '',
-    area: 'location1',
-    time: [],
-    delivery: false,
-    type: ['地推活动'],
-    resource: '线下场地免费',
-    extra: '',
+    taskItems: []
   },
-  columns: PROCESS_COLUMNS,
-  view: 'list' //展示界面类型，list列表、form表单、view详情等
+  columns: PROCESS_COLUMNS
 }, action) => {
   switch (action.type) {
     case T.FETCH_START:

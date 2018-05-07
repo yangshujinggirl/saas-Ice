@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
-import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
+import { 
+    FormBinderWrapper as IceFormBinderWrapper, 
+    FormBinder as IceFormBinder,
+    FormError as IceFormError,
 } from '@icedesign/form-binder';
 
 const {Row, Col} = Grid;
@@ -23,7 +26,7 @@ export default class ProcessFormItem extends Component {
     }
 
     render() {
-        const { info = {}, editable = false } = this.props;
+        const { info = {}, editable = true } = this.props;
 
         return (
             <Row>
@@ -43,9 +46,15 @@ export default class ProcessFormItem extends Component {
                 </Col>
                 <Col xxs="6" s="6" l="6">
                     <FormItem {...formItemLayout} label="流程名称：">
-                        <IceFormBinder name="processName">
+                        {editable ? 
+                        <IceFormBinder name="processName" required message="流程名称必填">
                             <Input placeholder="流程名称" size="large" />
-                        </IceFormBinder>
+                        </IceFormBinder>: 
+                        <p className="next-form-text-align">
+                            {info.processName}
+                        </p>
+                        }
+                        <div><IceFormError name="processName" /></div>
                         <IceFormBinder name="businessTypeId">
                             <Input htmlType="hidden" />
                         </IceFormBinder>

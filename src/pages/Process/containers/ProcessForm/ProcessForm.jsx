@@ -79,13 +79,15 @@ export default class ProcessForm extends Component {
             formData.taskItems = [];
             formData.taskItems.push(Object.assign({
                 taskOrder: 0,
-                taskAlias: customMenuList[0].taskTypeName
+                taskAlias: customMenuList[0].taskTypeName,
+                taskTypeId: customMenuList[0].id
             }, customMenuList[0]));
         }
     }
 
     //模块添加删除
     setModule = (data, type, index) => {
+        console.log('setModule', data)
         let taskItems = this.props.formData.taskItems;
 
         if (type === 'add') {
@@ -93,7 +95,8 @@ export default class ProcessForm extends Component {
             data.limitedAddTimes--;
             taskItems.push(Object.assign({
                 taskOrder: taskItems.length,
-                taskAlias: data.taskTypeName + taskItems.length
+                taskAlias: data.taskTypeName + taskItems.length,
+                taskTypeId: data.id
             }, data));
         } else {
             let customMenuList = this.props.customMenuList;
@@ -114,9 +117,7 @@ export default class ProcessForm extends Component {
 
     //表单校验change
     formChange = value => {
-        this.setState({
-            value: value,
-        });
+        this.props.formData = value;
     }
 
     //保存
@@ -186,10 +187,10 @@ export default class ProcessForm extends Component {
                                 {/*顶部结束*/}
                                 <div className="container">
                                     {/*渲染左边  */}
-                                    <ProcessFormModule customMenuList={customMenuList} setModule={this.setModule} />
+                                    <ProcessFormModule customMenuList={customMenuList} setModule={this.setModule.bind(this)} />
                                     {/*右边*/}
                                     <div className="container-right">
-                                        <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule} changeView={this.changeView.bind(this)} />
+                                        <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule.bind(this)} changeView={this.changeView.bind(this)} />
                                         <div className="next-btn-box pch-form-buttons">
                                             <Button type="normal" size="large" onClick={this.handleCancel}>
                                                 返回

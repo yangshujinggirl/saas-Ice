@@ -11,6 +11,11 @@ class BaseApp extends Component {
         this._store = store;//flux store
         this._action = action;//flux action
 
+        this._condition = {//列表的搜索条件
+            page: 1,
+            limie: 10
+        };
+
         this.OPERATE_TYPE = OperateTypeConstant;
     }
 

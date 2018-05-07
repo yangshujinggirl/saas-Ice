@@ -103,14 +103,4 @@ export const remove = (id) => {
   }
 }
 
-export function changeViewToForm() {
-  return dispatch({ view: 'form' });
-}
-
-export function changeViewToList() {
-  return dispatch({ view: 'list' });
-}
-
-export function changeViewToView() {
-  return dispatch({ view: 'view' });
-}
+/*****添加自定义的方法*****/

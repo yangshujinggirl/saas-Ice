@@ -1,5 +1,6 @@
 export const PROCESS_VIEW = {
 	"EDITFORM": "编辑流程",
+	"DETAIL": "查看流程",
 	"PREVIEWPAGE": "预览页面",
 	"EDITPAGE": "编辑页面",
 	"MATERIAL": "材料清单",

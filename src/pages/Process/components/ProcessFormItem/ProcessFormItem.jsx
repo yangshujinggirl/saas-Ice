@@ -52,7 +52,7 @@ export default class ProcessFormItem extends Component {
     render() {
         const {index, item, selectData, setModule, changeView} = this.props;
 
-        this.setModuleDefaultName(item);
+        // this.setModuleDefaultName(item);
 
         return (
             <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
@@ -94,7 +94,7 @@ export default class ProcessFormItem extends Component {
                     {item.haveCollection == '1' ?<Select className="pch-page-name">
                     	{this.renderSelect(item.page)}
                     </Select> : '--'}
-                    {item.haveCollection == '1' ? <a className="pch-target">添加</a>: ''}
+                    {item.haveCollection == '1' ? <a className="pch-target" href="/#/product/filelist" target="_blank">添加</a>: ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">
                     {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.EDITAUTH)}>编辑</a> : '--'}

@@ -31,6 +31,24 @@ class ProcessReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+
+	/**
+	 * 复制流程
+	 * @param  {[type]} id [description]
+	 * @return {[type]}    [description]
+	 */
+	copyProcess(id){
+		let options = {
+			url: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/task/types',
+			// url: this._host + '/task_types',
+			method: 'POST',
+			contentType: 'application/x-www-form-urlencoded',
+			data: {
+				id: id
+			}
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new ProcessReq();
