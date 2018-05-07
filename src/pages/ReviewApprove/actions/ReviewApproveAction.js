@@ -77,14 +77,41 @@ export const signIn = (condition) => {
 }
 
 
-// 获取详情
-export const getDetail = (data) => {
+// 获取进件详情
+export const getDetail = (id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(data).then((res) => {
+    Req.getDetail(id).then((res) => {
       dispatch(fetchSuccess({ detail: res.data, view: 'form' }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+// 获取轨迹详情
+export const getTrackDetail = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getTrackDetail(data).then((res) => {
+      dispatch(fetchSuccess({ trackDetail: res.data, view: 'form' }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+//获取进件材料详情
+export const getLoadMaterialDetails = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getLoadMaterialDetails(data).then((res) => {
+      dispatch(fetchSuccess({ loadMaterialDetails: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

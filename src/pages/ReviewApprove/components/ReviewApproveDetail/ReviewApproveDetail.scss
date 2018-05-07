@@ -37,6 +37,36 @@
       background: #FFF3E4;
       box-sizing: border-box;
       border: 1px solid #F6DCA9;
+      border-top: none;
+      ul{
+        padding-left: 25px;
+        a{
+          display: block;
+          color: rgb(102, 102, 102);
+          font-family: PingFangSC-Medium;
+          font-size: 15px;
+          letter-spacing: 0;
+          line-height: 48px;
+          text-align: left;
+        }
+        a.active {
+          position: relative;
+          color: #FC9E25;
+          text-decoration: none;
+          &::after {
+            content: '*';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -11px;
+            font-size: 12px;
+          }
+        }
+        li:hover{
+          cursor:pointer;
+        }
+      }
+
     }
   }
   .rcontent-edito{

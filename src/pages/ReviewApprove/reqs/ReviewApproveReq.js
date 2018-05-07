@@ -11,7 +11,7 @@ class ReviewApproveReq extends CurdReq{
             update: this._host + '/filter-table-list.json',
             retrieve: this._host + '/filter-table-list.json',
             delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
+            detail: this._host + '/loans/:id/screen'
         }
 	}
 
@@ -48,11 +48,29 @@ class ReviewApproveReq extends CurdReq{
   }
 
   //点击点击签收
-  getDetail(data) {
+  getTrackDetail(data) {
     let options = {
-      // url: this._loanHost + ` /loans/${data.loanId}/tasks/${data.proInstId}`,
+      // url: this._loanHost + `  /process/${data.proInstId}/track`,
       url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/loans',
       method: 'Get',
+    }
+    return super.fetchData(options);
+  }
+  //获取进件材料详情
+  getLoadMaterialDetails(data) {
+    let options = {
+      url: this._host + `/loans/${data.loanId}/collect`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //获取进件详情
+  getDetail(id) {
+    let options = {
+      url: this._host + `/loans/${id}/screen`,
+      method: 'Get',
+      contentType: 'application/json'
     }
     return super.fetchData(options);
   }

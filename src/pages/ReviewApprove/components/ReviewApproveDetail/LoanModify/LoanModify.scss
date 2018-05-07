@@ -1,0 +1,63 @@
+.modify-page{
+  height: 800px;
+  width: 100%;
+  .title{
+    float: left;
+    width: 80%;
+    height: 100%;
+    opacity: 0.6;
+    background: #FDF4E3;
+    box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+    -webkit-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+    -moz-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+    padding: 20px 00px 0px 35px;
+    box-sizing: border-box;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #000000;
+    letter-spacing: 0.92px;
+    line-height: 30px;
+    a{
+      display: block;
+      color: #000000;
+    }
+    a.active {
+      position: relative;
+      color: #FC9E25;
+      text-decoration: none;
+      &::after {
+        content: '*';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: -11px;
+        font-size: 12px;
+      }
+    }
+    li:hover{
+      cursor:pointer;
+    }
+  }
+}
+
+.next-form-left.next-form-large .next-form-item-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.next-form-left.next-form-medium .next-form-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.item .next-col-21 .next-form-item-explain{
+  top: 0px;
+  position: relative;
+}
+.item .next-form-left .next-form-item-control {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}

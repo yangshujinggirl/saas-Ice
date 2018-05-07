@@ -82,7 +82,7 @@ export default class EntryTrack extends Component {
     console.log(trackList)
     return (
       <div className="part-same part-process info review-detail" id='流程轨迹'>
-                  <span  className='name'>流程轨迹</span>
+                  {/*<span  className='name'>流程轨迹</span>*/}
                   <div className="process-action">
                         {
 

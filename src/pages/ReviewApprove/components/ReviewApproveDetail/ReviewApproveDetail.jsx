@@ -3,21 +3,20 @@ import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Loading, Select} from '@icedesign/base';
 // import  Detail from './Detail/index'
 // import  MaterialSubmit from './MaterialSubmit/index'
-import  EntryTrack from './EntryTrack/index'
-import  ApprovalBox from './ApprovalBox/index'
-import  './ReviewApproveDetail.scss'
-import {browserHistory, hashHistory} from 'react-router';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import  EntryTrack from './EntryTrack/index'
+import  ApprovalBox from './ApprovalBox/index'
+import  FormRender from './FormRender/index'
+
+import  './ReviewApproveDetail.scss'
+import {browserHistory, hashHistory} from 'react-router';
 import classNames from 'classnames';
 import { Field } from '@icedesign/base/index';
 const { Row, Col } = Grid;
-const FormItem = Form.Item;
-
-
 
 export default class ReviewApproveDetail extends Component {
   static displayName = 'ReviewApproveDetail';
@@ -74,7 +73,7 @@ export default class ReviewApproveDetail extends Component {
           'active': this.state.index == index,
         });
         list.push(
-          <a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a>
+           <li><a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a></li>
         )
       })
     }
@@ -99,10 +98,16 @@ export default class ReviewApproveDetail extends Component {
     let {actions} = this.props;
     console.log(this.props)
 
-    actions.getDetail({
-      loanId : this.props.params.loanId,
+    actions.getTrackDetail({
       proInstId : this.props.params.proInstId
     });
+
+    actions.getLoadMaterialDetails({
+      loanId: this.props.params.loanId
+    });
+
+    actions.getDetail(this.props.params.loanId);
+
   };
   //判断Json是否为kong
   isEmptyObject(e) {
@@ -110,6 +115,12 @@ export default class ReviewApproveDetail extends Component {
     for (t in e)
       return false;
     return true;
+  }
+  //新增列表一列传递的方法
+  addColumn = (data)=>{
+    this.setState({
+      tableList:data
+    })
   }
 
   render() {
@@ -128,8 +139,20 @@ export default class ReviewApproveDetail extends Component {
                     </div>
                   </div>
 
-                  <div className="rcontent-edito">
-                    <EntryTrack {...this.props}></EntryTrack>
+                  <div className="rcontent-edito modify-form">
+                    <IceFormBinderWrapper
+                      value={this.state.value}
+                      onChange={this.formChange}
+                    >
+                      <Form
+                        labelAlign= "left"
+                        field={this.field}
+                        size="large"
+                      >
+                        <FormRender {...this.props} data={details.list} init = {init} field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
+                      </Form>
+                    </IceFormBinderWrapper>
+
                     <EntryTrack {...this.props}></EntryTrack>
                     {/*<Detail dataSource={details.list} ></Detail>*/}
                     {/*<MaterialSubmit {...this.props}></MaterialSubmit>*/}
