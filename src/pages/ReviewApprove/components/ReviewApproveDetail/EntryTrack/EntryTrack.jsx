@@ -81,8 +81,8 @@ export default class EntryTrack extends Component {
     let { trackList } = this.state;
     console.log(trackList)
     return (
-      <div className="part-same part-process info" id='流程轨迹'>
-                  <h4>流程轨迹</h4>
+      <div className="part-same part-process info review-detail" id='流程轨迹'>
+                  <span  className='name'>流程轨迹</span>
                   <div className="process-action">
                         {
 

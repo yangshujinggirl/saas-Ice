@@ -38,6 +38,18 @@ export default class ProcessForm extends Component {
         actions.getCustomMenuList();
     }
 
+    componentWillUnmount(){
+        this.props.actions.changeHasProcess(false);
+    }
+
+    componentWillReceiveProps(nextProps){
+        let {customMenuList, formData = {}, params, hasProcess} = nextProps;
+
+        if(!hasProcess){
+            this.assignTaskItems(params, customMenuList, formData);
+        }
+    }
+
     /**
      * 处理流程数据
      * 1. 该方法仅在初始化且获取完数据之后执行一次
@@ -46,15 +58,11 @@ export default class ProcessForm extends Component {
      * @return {[type]} [description]
      */
     assignTaskItems(params, customMenuList, formData) {
+        console.log('ProcessForm assignTaskItems')
         if (params.id) {
             if (!formData || !formData.taskItems || formData.taskItems.length == 0 || !customMenuList || customMenuList.length == 0) {
                 return;
             }
-            // 只处理一次
-            if (this.hasProcess) {
-                return;
-            }
-            this.hasProcess = true;
 
             formData.taskItems.map((item, i) => {
                 customMenuList.map((citem, j) => {
@@ -65,15 +73,13 @@ export default class ProcessForm extends Component {
                 })
             // item.cid = i;
             })
+            
+            // 只处理一次
+            this.props.actions.changeHasProcess(true);
         } else {
             if (!customMenuList || customMenuList.length == 0) {
                 return;
             }
-            // 只处理一次
-            if (this.hasProcess) {
-                return;
-            }
-            this.hasProcess = true;
 
             customMenuList[0].limitedAddTimes--;
             formData.taskItems = [];
@@ -82,6 +88,9 @@ export default class ProcessForm extends Component {
                 taskAlias: customMenuList[0].taskTypeName,
                 taskTypeId: customMenuList[0].id
             }, customMenuList[0]));
+            
+            // 只处理一次
+            this.props.actions.changeHasProcess(true);
         }
     }
 
@@ -166,11 +175,9 @@ export default class ProcessForm extends Component {
         const locationInfo = this.props.location.state;
         let {customMenuList, formData = {}, params} = this.props;
 
-        this.assignTaskItems(params, customMenuList, formData);
-
         if(!params.id){
             // 新增时使用传递的数据设置
-            // 默认名称为新流程-MMddhhmmss
+            // 默认名称为"新流程-MMddhhmmss"
             if(locationInfo && !locationInfo.processName){
                 locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
             }

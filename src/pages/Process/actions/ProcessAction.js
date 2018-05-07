@@ -6,9 +6,10 @@ import Req from '../reqs/ProcessReq'
 /**
  * 请求开始的通知
  */
-function fetchStart() {
+function fetchStart(data = {}) {
   return {
     type: T.FETCH_START,
+    ...data,
     time: Date.now()
   }
 }
@@ -81,7 +82,7 @@ export const save = (data) => {
 export const getDetail = (id) => {
   return (dispatch) => {
 
-    dispatch(fetchStart())
+    dispatch(fetchStart({formData: {}}))
 
     Req.getDetail(id).then((res) => {
       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
@@ -90,10 +91,11 @@ export const getDetail = (id) => {
     })
   }
 }
+
 // 获取左侧
 export const getCustomMenuList = (id) => {
   return (dispatch) => {
-    dispatch(fetchStart())
+    dispatch(fetchStart({customMenuList: []}))
     Req.getCustomMenuList(id).then((res) => {
       dispatch(fetchSuccess({ customMenuList: res.data, view: 'view' }))
     }).catch((ex) => {
@@ -130,16 +132,9 @@ export const copyProcess = (id) => {
   }
 }
 
-// 查看权限配置详情列表
-export const getProcessPowerDetails = (id) => {
+// 更改标志
+export const changeHasProcess = (hasProcess) => {
   return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.getProcessPowerDetails(id).then((res) => {
-      dispatch(fetchSuccess({pageDatas: res.data}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
+    dispatch(change({hasProcess}))
   }
 }
