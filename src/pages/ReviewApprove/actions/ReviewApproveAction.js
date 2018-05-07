@@ -61,28 +61,30 @@ export const search = (condition) => {
   }
 }
 
-// 保存表单
-export const save = (data) => {
+
+// 签收
+export const signIn = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.save(data).then((res) => {
-      dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+    Req.signIn(condition).then((res) => {
+      dispatch(fetchSuccess({ signIn: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
 
+
 // 获取详情
-export const getDetail = (id) => {
+export const getDetail = (data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+    Req.getDetail(data).then((res) => {
+      dispatch(fetchSuccess({ detail: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

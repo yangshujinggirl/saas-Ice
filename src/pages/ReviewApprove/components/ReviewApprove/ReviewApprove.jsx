@@ -19,7 +19,7 @@ export default class ReviewApprove extends BaseApp {
         this.fetchData();
     }
     fetchData = (condition) => {
-      console.log(condition)
+        console.log(condition)
         this.props.actions.search(condition);
     }
     //点击分页
@@ -29,6 +29,14 @@ export default class ReviewApprove extends BaseApp {
         });
     }
 
+    //点击签收
+    signIN = (taskId)=>{
+      this.props.actions.signIn({
+        taskId: taskId
+      });
+    }
+
+
     /**
      * 处理行列表中操作栏的点击事件
      * @param data 传递给对应事件的行记录数据，okey一般为当前记录的主键
@@ -36,12 +44,13 @@ export default class ReviewApprove extends BaseApp {
      */
     handleOperateClick(data, type) {
         switch (type) {
-            case this.OPERATE_TYPE.EDIT: {
-                hashHistory.push(`process/detail/${record.id}`)
+            //签收
+            case this.OPERATE_TYPE.OTHER1: {
+                this.signIN(data.taskId);
                 break;
             }
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`process/detail/${record.id}`)
+                hashHistory.push(`reviewApprove/detail/${data.loanId}/${data.proInstId}`)
                 break;
             }
         }
