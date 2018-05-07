@@ -1,18 +1,17 @@
-import T from '../constants/ProcessConstant'
-import PROCESS_COLUMNS from '../columns/ProcessColumn';
-
+import T from '../constants/InterViewConstant'
+import InterView_COLUMNS from '../columns/InterViewColumn';
+import InterView_Column_From from '../columns/InterViewColumnFrom'
 const index = (state = {
   isFetching: false,
-  pageData: {}, //列表分页数据1
-  customMenuList:[],//流程模块数据
-  formData: { //表单数据
-    taskItems: []
-  },
-  columns: PROCESS_COLUMNS
+  pageData: {}, //列表分页数据
+  formData: {}, //表单数据
+  columns: InterView_COLUMNS,
+  columns2:InterView_Column_From,
+
 }, action) => {
   switch (action.type) {
     case T.FETCH_START:
-      return { ...state, isFetching: true, ...action }
+      return { ...state, isFetching: true }
     case T.FETCH_SUCCESS:
       return { ...state, isFetching: false, ...action }
     case T.FETCH_FAILED:

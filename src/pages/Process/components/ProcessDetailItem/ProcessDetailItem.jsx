@@ -41,7 +41,6 @@ export default class ProcessDetailItem extends Component {
 
     render() {
         const {index, item, selectData, setModule, changeView} = this.props;
-        console.log(item)
 
         return (
             <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>

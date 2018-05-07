@@ -146,7 +146,7 @@ export default class addTwo extends Component {
                     </IceFormBinder>
                     <IceFormError name="CarTypeBrand" />
                 </Row>
-                {/*<legend className="pch-legend">
+                {/* <legend className="pch-legend">
                 <span className="pch-legend-legline"></span>按集团/渠道/厅店
               </legend>
               <div className="pch-condition">
@@ -164,7 +164,7 @@ export default class addTwo extends Component {
                 <Row wrap style={{marginBottom:"30px"}} >
                 <OrgType {...this.props} data={this.state.value2}/> 
                 </Row>
-              </div>*/}
+              </div> */}
             
             
               <div className="next-btn-box">

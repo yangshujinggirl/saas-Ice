@@ -62,6 +62,18 @@ export default class ProdDetail extends Component {
    return itemPath.length==3?'品牌':(itemPath.length==4?'车系':'车型')
   }
 
+  //多选框展示
+  checkboxShow=(data)=>{
+    let temp = ''
+    for(var key in data){
+      if(key<data.length-1){
+        temp += data[key]+' 、 ' 
+      }else{
+        temp += data[key]
+      }
+    }
+   return temp;
+  }
   render() {
     let product = this.props.formData.product||[];//基本信息
     let percentageSetting = this.props.formData.percentageSetting ||[];//贷款成数设置
@@ -69,7 +81,7 @@ export default class ProdDetail extends Component {
     let repaymentMethodsSetting = this.props.formData.repaymentMethodsSetting ||[];//还款方式设置    
     let prepaymentSetting = this.props.formData.prepaymentSetting ||[];//提前还款设置
     let productScopes =this.props.formData.productScopes ||[]
-     
+    
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -101,12 +113,12 @@ export default class ProdDetail extends Component {
                   <span >{product.productType}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}>资料收取清单：</label>
+                  <label style={styles.filterTitle}>材料收取清单：</label>
                   <span >{product.collectionDetailListId}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>生效期限：</label>
-                  <span >{product.effectiveDate}</span>
+                  <span >{product.effectiveDate}～{product.expirationDate}</span>
                 </Col>
               </Row>
               <Row wrap>
@@ -119,23 +131,22 @@ export default class ProdDetail extends Component {
                   <label style={styles.filterTitle}>状态：</label>
                   <span >{product.status=='1'?'生效':(product.status=='0'?'未生效':'失效')}</span>
                 </Col>
-              </Row>
-              <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>尾款产品：</label>
                   <span >{product.isRetainage==true?'是':'否'}</span>
                 </Col>
               </Row>
+             
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}>贷款用途：</label>
-                  <span >{product.purposeOfLoan}</span>
+                  <span >{this.checkboxShow(product.purposeOfLoan)}</span>
                 </Col>
               </Row>
               <Row wrap>
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}>担保方式：</label>
-                  <span >{product.guaranteeMethodType}</span>
+                  <span >{this.checkboxShow(product.guaranteeMethodType)}</span>
                 </Col>
               </Row>
               <Row wrap>
@@ -156,7 +167,7 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款期限变更：</label>
-                <span >{product.loanTermChange+''}</span>
+                <span >{this.checkboxShow(product.loanTermChange)}</span>
               </Col>
             </Row>
             <Row wrap>
@@ -189,9 +200,9 @@ export default class ProdDetail extends Component {
                 className="table"
               >
                 <Table.Column title="最小期限(月)" dataIndex="loanTermRangeMin" />
-                <Table.Column title="最大成数(%)"  dataIndex="loanTermRangeMax"/>
-                <Table.Column title="最小成数(%)"  dataIndex="loanPercentageMin"/>
                 <Table.Column title="最大期限(月)"  dataIndex="loanTermRangeMax"/>
+                <Table.Column title="最小成数(%)"  dataIndex="loanPercentageMin"/>
+                <Table.Column title="最大成数(%)"  dataIndex="loanPercentageMax"/>
               </Table>
           </div>
 
@@ -202,7 +213,7 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>贷款利率变更：</label>
-                <span >{''+product.interestLoanRateChange}</span>
+                <span >{this.checkboxShow(product.interestLoanRateChange)}</span>
               </Col>
             </Row>
             <Row wrap>
@@ -246,13 +257,13 @@ export default class ProdDetail extends Component {
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款账户变更：</label>
-                <span >{product.repaymentAccountChange+''}</span>
+                <span >{this.checkboxShow(product.repaymentAccountChange)}</span>
               </Col>
             </Row>
             <Row wrap>
               <Col style={styles.filterCol}>
                 <label style={styles.filterTitle}>还款周期：</label>
-                <span >{product.repaymentPeriodFrequency+''}</span>
+                <span >{this.checkboxShow(product.repaymentPeriodFrequency)}</span>
               </Col>
             </Row>
 

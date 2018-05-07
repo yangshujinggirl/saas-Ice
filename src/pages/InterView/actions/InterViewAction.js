@@ -1,15 +1,14 @@
-import T from '../constants/ProcessConstant'
-import Req from '../reqs/ProcessReq'
+import T from '../constants/InterViewConstant'
+import Req from '../reqs/InterViewReq'
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
 /**
  * 请求开始的通知
  */
-function fetchStart(data = {}) {
+function fetchStart() {
   return {
     type: T.FETCH_START,
-    ...data,
     time: Date.now()
   }
 }
@@ -53,11 +52,8 @@ export const search = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
-
-    Req.search(condition).then((res) => {
-      if(res.code == 200) {
-        dispatch(fetchSuccess({ pageData: res.data }))
-      }
+    Req.searchList(condition).then((res) => {
+      dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -82,22 +78,10 @@ export const save = (data) => {
 export const getDetail = (id) => {
   return (dispatch) => {
 
-    dispatch(fetchStart({formData: {}}))
+    dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-// 获取左侧
-export const getCustomMenuList = (id) => {
-  return (dispatch) => {
-    dispatch(fetchStart({customMenuList: []}))
-    Req.getCustomMenuList(id).then((res) => {
-      dispatch(fetchSuccess({ customMenuList: res.data, view: 'view' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -118,23 +102,14 @@ export const remove = (id) => {
   }
 }
 
-// 复制流程
-export const copyProcess = (id) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.copyProcess(id).then((res) => {
-      dispatch(fetchSuccess({copy: true}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
+export function changeViewToForm() {
+  return dispatch({ view: 'form' });
 }
 
-// 更改标志
-export const changeHasProcess = (hasProcess) => {
-  return (dispatch) => {
-    dispatch(change({hasProcess}))
-  }
+export function changeViewToList() {
+  return dispatch({ view: 'list' });
+}
+
+export function changeViewToView() {
+  return dispatch({ view: 'view' });
 }
