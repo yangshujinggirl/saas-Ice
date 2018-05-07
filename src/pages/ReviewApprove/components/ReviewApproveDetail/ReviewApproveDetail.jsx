@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Loading } from '@icedesign/base';
+import { Input, Grid, Form, Button, Loading, Select} from '@icedesign/base';
 // import  Detail from './Detail/index'
 // import  MaterialSubmit from './MaterialSubmit/index'
 import  EntryTrack from './EntryTrack/index'
+import  ApprovalBox from './ApprovalBox/index'
 import  './ReviewApproveDetail.scss'
 import {browserHistory, hashHistory} from 'react-router';
+import {
+  FormBinderWrapper as IceFormBinderWrapper,
+  FormBinder as IceFormBinder,
+  FormError as IceFormError,
+} from '@icedesign/form-binder';
 import classNames from 'classnames';
+import { Field } from '@icedesign/base/index';
 const { Row, Col } = Grid;
+const FormItem = Form.Item;
+
 
 
 export default class ReviewApproveDetail extends Component {
@@ -19,17 +28,16 @@ export default class ReviewApproveDetail extends Component {
 
   constructor(props) {
     super(props);
+    this.field = new Field(this);
     this.state = {
       index : 0,
       value: {},
-      dataList:{}
+      dataList:{},
+      result :{}
     };
-    // 请求参数缓存
-    this.queryCache = {};
   }
   componentDidMount() {
-    // this.queryCache.id = this.props.params.id;
-    // this.fetchData();
+    this.fetchData();
 
   }
 
@@ -84,15 +92,17 @@ export default class ReviewApproveDetail extends Component {
   //返回
   back = (e)=>{
     e.preventDefault();
-    hashHistory.push('/entryQuery');
+    hashHistory.push('/reviewApprove');
   }
   //请求数据
   fetchData = () => {
     let {actions} = this.props;
-    actions.getDetail(this.props.params.id);
-    // this.props.updateBindingData('details', {
-    //   data:this.queryCache ,
-    // });
+    console.log(this.props)
+
+    actions.getDetail({
+      loanId : this.props.params.loanId,
+      proInstId : this.props.params.proInstId
+    });
   };
   //判断Json是否为kong
   isEmptyObject(e) {
@@ -105,29 +115,32 @@ export default class ReviewApproveDetail extends Component {
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    console.log(details.list)
-    console.log(details)
-    console.log(this.props.params);
+    const init = this.field.init;
     return (
-      <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
-            <Row  className='modify-page'>
-                <Col span="3">
-                  <div className='title'>
-                    <ul>
-                      {this.renderTitle(details.list)}
-                    </ul>
+      <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle' style={styles.bg}>
+            <Row>
+                <Col span="19" className='review-form'>
+                  <div className='review-page'>
+                    <div className='title'>
+                      <ul>
+                        {this.renderTitle(details.list)}
+                      </ul>
+                    </div>
                   </div>
-                </Col>
-                <Col span="16" className='modify-form'>
+
                   <div className="rcontent-edito">
+                    <EntryTrack {...this.props}></EntryTrack>
+                    <EntryTrack {...this.props}></EntryTrack>
                     {/*<Detail dataSource={details.list} ></Detail>*/}
                     {/*<MaterialSubmit {...this.props}></MaterialSubmit>*/}
-                    <EntryTrack {...this.props}></EntryTrack>
+
                     <div className='botton-box'>
                       <Button className='botton' onClick={this.back}>返回</Button>
                     </div>
                   </div>
-
+                </Col>
+                <Col span="5" className='audit-information'>
+                  <ApprovalBox {...this.props}></ApprovalBox>
                 </Col>
             </Row>
 
@@ -137,7 +150,14 @@ export default class ReviewApproveDetail extends Component {
 }
 
 const styles = {
-  bg:{
+  widthbg:{
     backgroundColor:'#fffffB'
+  },
+  informationBG:{
+    background: '#FFFCF7',
+    paddingBottom: 0,
+  },
+  width:{
+    width:'100%'
   }
 };

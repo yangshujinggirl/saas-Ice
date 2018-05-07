@@ -15,7 +15,7 @@ export default class Demo extends Component {
   render() {
     return (
       <div className="reviewapprove-page">
-        <ReviewApproveDetail  {...this.prop}></ReviewApproveDetail>
+        <ReviewApproveDetail  {...this.props}></ReviewApproveDetail>
       </div>
     );
   }
