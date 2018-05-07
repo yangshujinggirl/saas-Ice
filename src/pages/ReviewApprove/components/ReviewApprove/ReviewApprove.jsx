@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
+import  Req from '../../reqs/ReviewApproveReq'
 
 // import './Process.scss';
 
@@ -18,6 +19,7 @@ export default class ReviewApprove extends BaseApp {
         this.fetchData();
     }
     fetchData = (condition) => {
+      console.log(condition)
         this.props.actions.search(condition);
     }
     //点击分页

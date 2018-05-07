@@ -59,6 +59,12 @@ module.exports = {
                 target: CRM_HOST,
                 changeOrigin: true,
             },
+          // /loan/tasks?
+            '/loan': {
+              target: LOAN_HOST,
+              changeOrigin: true,
+              pathRewrite:{"^/loan" : ""},
+            },
         },
     },
     plugins: [

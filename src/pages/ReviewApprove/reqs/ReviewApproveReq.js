@@ -28,6 +28,14 @@ class ReviewApproveReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+  //
+  getListData() {
+    let options = {
+      url: this._loanHost + `/tasks`,
+      method: 'Get',
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new ReviewApproveReq();
