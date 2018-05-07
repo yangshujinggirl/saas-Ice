@@ -47,17 +47,53 @@ export default class Chanpinchengshu extends Component {
       this.setState({
         percentageSetting
       });
-  }
+	}
+	setVepeat = (items) => {
+		var mapArr1= items.map(item=>item.loanTermRangeMin);  
+		var mapArr2= items.map(item=>item.loanTermRangeMax);  
+		var mapArr3= items.map(item=>item.loanPercentageMin);  
+		var mapArr4= items.map(item=>item.loanPercentageMax); 
+
+		var setArr1 = new Set(mapArr1);//去重复 
+		var setArr2 = new Set(mapArr2);//去重复 
+		var setArr3 = new Set(mapArr3);//去重复 
+		var setArr4 = new Set(mapArr4);//去重复 
+		if(setArr1.size < mapArr1.length){
+			return true;
+		}else if(setArr2.size < mapArr2.length){
+			return true;
+		}else if(setArr3.size < mapArr3.length){
+			return true;
+		}else if(setArr4.size < mapArr4.length){
+			return true;
+		}
+	}
+	//最小期限不可重复 
+	testChange1 = (rule, value, callback) => {
+		let {items} = this.props
+		let flag = this.setVepeat(items)
+		
+		if (rule.required && !value) {
+			callback('贷款比率必填');
+			return;
+		}
+		if(flag){
+			callback('重复')
+		}
+		callback();
+	}
 
   renderCell1 = (value, index, record, context) => {
     return(
     	<div>
     		<IceFormBinder
     		required
-	        name={`percentageSetting[${index}].loanTermRangeMin`}
+					name={`percentageSetting[${index}].loanTermRangeMin`}
+					validator={this.testChange1}
 	        >
 	        	<Input placeholder="最小期限" />
 	        </IceFormBinder>
+					<div style={{display:'inline'}}><IceFormError name={`percentageSetting[${index}].loanTermRangeMin`}/></div>
 	    </div>
 	);
   }
@@ -67,7 +103,7 @@ export default class Chanpinchengshu extends Component {
     	<div>
     		<IceFormBinder
     		required
-	        name={`percentageSetting[${index}].loanPercentageMax`}
+					name={`percentageSetting[${index}].loanPercentageMax`}
 	        >
 	        	<Input placeholder="最大成数" />
 	        </IceFormBinder>
@@ -93,7 +129,7 @@ export default class Chanpinchengshu extends Component {
     	<div>
     		<IceFormBinder
     		required
-	        name={`percentageSetting[${index}].loanTermRangeMax`}
+					name={`percentageSetting[${index}].loanTermRangeMax`}
 	        >
 	        	<Input placeholder="最大期限" />
 	        </IceFormBinder>

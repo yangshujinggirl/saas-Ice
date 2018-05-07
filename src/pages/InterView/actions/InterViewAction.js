@@ -1,5 +1,5 @@
-import T from '../constants/ProcessConstant'
-import Req from '../reqs/ProcessReq'
+import T from '../constants/InterViewConstant'
+import Req from '../reqs/InterViewReq'
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
@@ -52,11 +52,8 @@ export const search = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
-
-    Req.search(condition).then((res) => {
-      if(res.code == 200) {
-        dispatch(fetchSuccess({ pageData: res.data }))
-      }
+    Req.searchList(condition).then((res) => {
+      dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -90,17 +87,6 @@ export const getDetail = (id) => {
     })
   }
 }
-// 获取左侧
-export const getCustomMenuList = (id) => {
-  return (dispatch) => {
-    dispatch(fetchStart())
-    Req.getCustomMenuList(id).then((res) => {
-      dispatch(fetchSuccess({ customMenuList: res.data, view: 'view' }))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
 
 // 删除一条记录
 export const remove = (id) => {
@@ -116,30 +102,14 @@ export const remove = (id) => {
   }
 }
 
-// 复制流程
-export const copyProcess = (id) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.copyProcess(id).then((res) => {
-      dispatch(fetchSuccess({copy: true}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
+export function changeViewToForm() {
+  return dispatch({ view: 'form' });
 }
 
-// 查看权限配置详情列表
-export const getProcessPowerDetails = (id) => {
-  return (dispatch) => {
+export function changeViewToList() {
+  return dispatch({ view: 'list' });
+}
 
-    dispatch(fetchStart())
-
-    Req.getProcessPowerDetails(id).then((res) => {
-      dispatch(fetchSuccess({pageDatas: res.data}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
+export function changeViewToView() {
+  return dispatch({ view: 'view' });
 }

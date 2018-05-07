@@ -33,7 +33,7 @@ export default class Huankuanfangshi extends Component {
     	percentageSetting: []
     }
   }
-
+	
   addNewList(data){
     let percentageSetting = this.state.percentageSetting;
     percentageSetting.push({})

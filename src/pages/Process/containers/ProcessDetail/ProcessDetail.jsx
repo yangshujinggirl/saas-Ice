@@ -15,6 +15,8 @@ import ProcessFormItemList from '../../components/ProcessFormItemList';
 import ProcessFields from '../../components/ProcessFields';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 
+import ProcessAuthDetails from '../../components/ProcessAuth/ProcessAuthDetails'
+import ProcessAuthEdit from '../../components/ProcessAuth/ProcessAuthEdit';
 export default class ProcessDetail extends Component {
     constructor(props) {
         super(props);
@@ -126,6 +128,9 @@ export default class ProcessDetail extends Component {
                     </div>
                 </IceContainer>
                 <ProcessFields visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
+                <ProcessAuthEdit visibled={this.state.view == PROCESS_VIEW.EDITAUTH}  changeView={this.changeView.bind(this)} />
+                <ProcessAuthDetails visible={this.state.view == PROCESS_VIEW.VIEWAUTH}  changeView={this.changeView.bind(this)} />
+                
             </div>
             );
     }
