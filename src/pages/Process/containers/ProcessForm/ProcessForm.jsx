@@ -16,11 +16,14 @@ import ProcessFormName from '../../components/ProcessFormName';
 import ProcessFormModule from '../../components/ProcessFormModule';
 import ProcessFormItemList from '../../components/ProcessFormItemList';
 import ProcessFields from '../../components/ProcessFields';
+import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 
 export default class ProcessForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            view: PROCESS_VIEW.EDITFORM
+        };
     }
 
     /**
@@ -144,8 +147,14 @@ export default class ProcessForm extends Component {
         });
     }
 
-    showView(){
-        //页面预览、页面编辑、材料清单、权限编辑、权限查看、查看字段
+    /**
+     * 切换显示的view
+     * @param  {[type]} view [description]
+     * @return {[type]}      [description]
+     */
+    changeView(view){
+        console.log('changeView', view)
+        this.setState({view})
     }
 
     /**
@@ -168,7 +177,7 @@ export default class ProcessForm extends Component {
 
         return (
             <div className="">
-                <IceContainer className="pch-container pch-process">
+                <IceContainer className="pch-container pch-process" style={{display: this.state.view == PROCESS_VIEW.EDITFORM ? '' : 'none'}}>
                     <Title title="流程新增/修改" />
                     <div className="pch-form">
                         <IceFormBinderWrapper value={formData} onBlur={this.formChange} ref="form">
@@ -180,7 +189,7 @@ export default class ProcessForm extends Component {
                                     <ProcessFormModule customMenuList={customMenuList} setModule={this.setModule} />
                                     {/*右边*/}
                                     <div className="container-right">
-                                        <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule}/>
+                                        <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule} changeView={this.changeView.bind(this)} />
                                         <div className="next-btn-box pch-form-buttons">
                                             <Button type="normal" size="large" onClick={this.handleCancel}>
                                                 返回
@@ -198,7 +207,7 @@ export default class ProcessForm extends Component {
                         </IceFormBinderWrapper>
                     </div>
                 </IceContainer>
-                <ProcessFields visible={true} />
+                <ProcessFields visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
             </div>
             );
     }

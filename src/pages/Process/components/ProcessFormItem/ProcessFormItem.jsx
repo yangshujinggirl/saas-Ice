@@ -4,6 +4,7 @@ import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
@@ -49,7 +50,7 @@ export default class ProcessFormItem extends Component {
     }
 
     render() {
-        const {index, item, selectData, setModule} = this.props;
+        const {index, item, selectData, setModule, changeView} = this.props;
 
         this.setModuleDefaultName(item);
 
@@ -86,8 +87,8 @@ export default class ProcessFormItem extends Component {
                      })}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.haveConfigPage ? <a className='pch-target'>预览</a> : '--'}
-                    {item.haveConfigPage ? <a className='pch-target'>编辑</a> : ''}
+                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE)}>预览</a> : '--'}
+                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE)}>编辑</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     {item.haveCollection == '1' ?<Select className="pch-page-name">
@@ -96,10 +97,10 @@ export default class ProcessFormItem extends Component {
                     {item.haveCollection == '1' ? <a className="pch-target">添加</a>: ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">
-                    {item.canPrivilegeEditable == '1' ? <a className="pch-target">编辑</a> : '--'}
+                    {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.EDITAUTH)}>编辑</a> : '--'}
                 </Col>
                 <Col xxs="6" s="3" l="2">
-                    {item.haveRequiredField == '1' ? <a className="pch-target">查看</a> : '--'}
+                    {item.haveRequiredField == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWFIELD)}>查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     <IceFormBinder name={`taskItems[${index}].execMode`}>

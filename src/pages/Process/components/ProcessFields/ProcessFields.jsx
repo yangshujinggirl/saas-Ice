@@ -6,6 +6,7 @@ import { Button, Grid, Table,
 
 const {Row, Col} = Grid;
 import { Title } from 'components';
+import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 
 class ProcessFields extends Component {
 
@@ -16,9 +17,10 @@ class ProcessFields extends Component {
         // this.props.actions.checkEssential('2')
     }
     render() {
-        const {data=[]} = this.props;
+        const {data=[], visible, changeView} = this.props;
+
         return (
-            <IceContainer className="pch-container">
+            <IceContainer className="pch-container" style={{display: visible ? '' : 'none'}}>
                 <Title title="查看必要字段详情" />
                 <div className="">
                     <Row className="row">
@@ -39,7 +41,7 @@ class ProcessFields extends Component {
                         <Table.Column title="序号" dataIndex="orderId" width={120} />
                         <Table.Column title="名称" dataIndex="fieldValue" />
                     </Table>
-                    <Button type="primary" className="return-btn">
+                    <Button type="primary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.EDITFORM)}>
                         返回
                     </Button>
                 </div>
