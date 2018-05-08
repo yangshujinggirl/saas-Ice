@@ -74,6 +74,16 @@ class ReviewApproveReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //提交审查审批
+  submitReview(data){
+    let options = {
+      // url: this._loanHost +  `/tasks/${data.taskId}`,
+      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/tasks/12311',
+      method: 'PUT',
+      data:data
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new ReviewApproveReq();

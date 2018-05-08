@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Loading, Select} from '@icedesign/base';
+import { Input, Grid, Form, Button, Loading, Select, Feedback} from '@icedesign/base';
 // import  Detail from './Detail/index'
 // import  MaterialSubmit from './MaterialSubmit/index'
 import {
@@ -17,7 +17,9 @@ import  './ReviewApproveDetail.scss'
 import {browserHistory, hashHistory} from 'react-router';
 import classNames from 'classnames';
 import { Field } from '@icedesign/base/index';
+import Req from '../../reqs/ReviewApproveReq'
 const { Row, Col } = Grid;
+const Toast = Feedback.toast;
 
 export default class ReviewApproveDetail extends Component {
   static displayName = 'ReviewApproveDetail';
@@ -35,7 +37,10 @@ export default class ReviewApproveDetail extends Component {
       dataList:{},
       result :{}
     };
+    // 请求参数缓存
+    this.queryCache = {};
   }
+
   componentDidMount() {
     this.fetchData();
 
@@ -102,9 +107,10 @@ export default class ReviewApproveDetail extends Component {
     let {actions} = this.props;
     console.log(this.props)
 
-    // actions.getTrackDetail({
-    //   proInstId : this.props.params.proInstId
-    // });
+    actions.getTrackDetail({
+      proInstId : this.props.params.proInstId,
+      isApproveInfo : true
+    });
 
     actions.getDetail(this.props.params.loanId);
 
@@ -122,12 +128,66 @@ export default class ReviewApproveDetail extends Component {
       tableList:data
     })
   }
+  submit = (e,data)=>{
+    e.preventDefault();
+    this.field.validate((errors, values) => {
+      if (errors) {
+        console.log("Errors in form!!!");
+        return;
+      }
+      console.log("Submit!!!");
+      for(var key in values){
+        if(values[key] != undefined){
+          if(values[key] != 'undefined'){
+            if(this.isCheckBox(key)){
+              console.log("多选")
+              console.log(values[key])
+              // alert("123")
+              if(typeof (values[key]) == 'object'){
+                values[key] = values[key].join(',');
+              }
+            }
+            this.queryCache[key] = values[key];
+          }
+        }
+      }
+      console.log(this.queryCache)
+      var dataJson = {
+        "choose"     : data.choose,
+        "approveMsg" : data.approveMsg,
+        "loanDetail" : this.queryCache,
+        "proInstId"  : this.props.params.proInstId,
+        "taskId"     : this.props.params.taskId,
+      }
+      Req.submitReview(dataJson).then((res)=>{
+        if(res && res.code == 200){
+          Toast.show({
+            type: "success",
+            content: "提交成功～",
+          });
+        }
+      }).catch((error)=>{
+          console.log(error)
+      })
+    });
+  }
+  isCheckBox(key) {
+    let list = this.props.detail.list;
+    for (var i = 0; i < list.length; i++) {
+      for (var j = 0; j < list[i].fields.length; j++) {
+        if (list[i].fields[j].type == 'CHECKBOX' && list[i].fields[j].name == key) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   render() {
-    // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    // const trackDetail = this.props.trackDetail || {};
+    const reviewList = this.props.trackDetail ? this.props.trackDetail.approveInfo  : {};
     const init = this.field.init;
+    console.log(reviewList)
     return (
       <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle' style={styles.bg}>
             <Row>
@@ -167,7 +227,7 @@ export default class ReviewApproveDetail extends Component {
                   </div>
                 </Col>
                 <Col span="5" className='audit-information'>
-                  <ApprovalBox {...this.props}></ApprovalBox>
+                  <ApprovalBox {...this.props}  reviewList={ reviewList.choose} submit={this.submit.bind(this)} ></ApprovalBox>
                 </Col>
             </Row>
 

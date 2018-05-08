@@ -49,8 +49,9 @@ export default class ReviewApprove extends BaseApp {
                 this.signIN(data.taskId);
                 break;
             }
+            //详情
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`reviewApprove/detail/${data.loanId}/${data.proInstId}`)
+                hashHistory.push(`reviewApprove/detail/${data.loanId}/${data.proInstId}/${data.taskId}`)
                 break;
             }
         }

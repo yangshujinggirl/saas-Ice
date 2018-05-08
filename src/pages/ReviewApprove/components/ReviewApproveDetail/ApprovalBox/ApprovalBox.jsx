@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Loading, Select} from '@icedesign/base';
+import { Input, Grid, Form, Button, Loading, Select, Feedback} from '@icedesign/base';
 import { Field } from '@icedesign/base/index';
 import Req from '../../../reqs/ReviewApproveReq';
 import  './ApprovalBox.scss'
 const FormItem = Form.Item;
-const dataSource = [
-  {label:'option1', value:'option1'},
-  {label:'option2', value:'option2'},
-]
+const Toast = Feedback.toast;
+
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 10 }
@@ -26,17 +24,61 @@ export default class ApprovalBox extends Component {
     this.state = {
       value: {},
       Component :[],
-      dataSource: [],
+      dataSource: [
+
+      ]
     };
   }
   componentDidMount(){
     // this.getLoanUpload(this.props.params.id);
     console.log(this.props)
   }
+  //判断Json是否为kong
+  isEmptyObject(e) {
+    var t;
+    for (t in e)
+      return false;
+    return true;
+  }
+  //提交
+  submit = (e)=>{
+    e.preventDefault();
+    this.field.validate((errors, values) => {
+      if (errors) {
+        console.log("Errors in form!!!");
+        return;
+      }
+      let { choose, approveMsg} = values;
+
+      console.log(approveMsg)
+      if(approveMsg == 'undefined'  || approveMsg == undefined){
+        Toast.show({
+          type: "help",
+          content: "请填写审查意见～",
+        });
+        return;
+      }
+      if(choose == 'undefined' || choose == undefined){
+        Toast.show({
+          type: "help",
+          content: "请填写审查结果～",
+        });
+        return;
+      }
+      this.props.submit(e,values);
+    });
+  }
   render() {
-    let { trackList } = this.state;
+    let { dataSource } = this.state;
     const init = this.field.init;
-    console.log(trackList)
+    let { reviewList } = this.props  || [];
+    console.log(reviewList)
+    if(!this.isEmptyObject(reviewList)){
+      var arr = [];
+      for (var i in reviewList){
+        arr.push({label:reviewList[i], value: i})
+      }
+    }
     return (
       <div className='information'>
         <b>审批信息</b>
@@ -47,10 +89,10 @@ export default class ApprovalBox extends Component {
             <Select
               className = 'select'
               placeholder="请选择审查结果"
-              {...init('www', {
-                rules: [{ required:  true, message: "请选择审查结果" }]
+              {...init('choose', {
+                rules: [{ required:  false, message: "请选择审查结果" }]
               })}
-              dataSource={dataSource}
+              dataSource={arr}
             >
             </Select>
           </FormItem>
@@ -60,13 +102,13 @@ export default class ApprovalBox extends Component {
                     className="text"
                     maxLength={500}
                     placeholder="请填写审查意见"
-                    {...init('www', {
-                      rules: [{ required:  true, message: "审查意见" }]
+                    {...init('approveMsg', {
+                      rules: [{ required:  false, message: "审查意见" }]
                     })}/>
           </FormItem>
           <FormItem  className='item' label=""
                      {...formItemLayout}>
-            <button >提交</button>
+            <button onClick={this.submit.bind(this)}>提交</button>
           </FormItem>
         </Form>
       </div>
