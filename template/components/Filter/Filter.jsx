@@ -17,8 +17,6 @@ const formItemLayout = {
         span: 12
     }
 };
-//获取下拉
-import { company_type } from '../../../config'
 
 export default class Filter extends Component {
     constructor() {
@@ -74,14 +72,6 @@ export default class Filter extends Component {
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
                         <Row wrap>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="业务类型：">
-                                    <IceFormBinder name="businessTypeId">
-                                        <Select size="large" placeholder="请选择" dataSource={company_type} onChange={this.handleBusinessTypeChange.bind(this)}>
-                                        </Select>
-                                    </IceFormBinder>
-                                </FormItem>
-                            </Col>
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">

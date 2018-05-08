@@ -11,6 +11,12 @@ export default class PchMaterialSelect extends Component {
         this.onSearch();
     }
 
+    componentWillUnmount(){
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
+    }
+
     render() {
         return (
             <Select

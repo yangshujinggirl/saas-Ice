@@ -52,7 +52,7 @@ function change(data) {
 export const search = (condition) => {
   return (dispatch) => {
 
-    dispatch(fetchStart())
+    dispatch(fetchStart({formData: {}}))
 
     Req.search(condition).then((res) => {
       if(res.code == 200) {
@@ -71,7 +71,7 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
-      dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+      dispatch(fetchSuccess({ formData: {} }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -85,7 +85,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart({formData: {}}))
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ formData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

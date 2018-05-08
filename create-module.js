@@ -15,6 +15,8 @@ const moduleFolders = [
     'columns',
     'reducers',
     'reqs',
+    'components',
+    'containers',
 ];
 
 var folderName = 'abc';
@@ -75,9 +77,18 @@ try {
         } else if (stat.isDirectory()) {
             const subFiles = fs.readdirSync(subFilePath);
             subFiles.map(function(sfile, i) {
-                const subStat = fs.statSync(subFilePath + folderSep + sfile);
+                let ssubFilePath = subFilePath + folderSep + sfile;
+                const subStat = fs.statSync(ssubFilePath);
                 if (subStat.isFile()) {
                     copyFile(sfile, subFilePath, targetPath + folderSep + file)
+                }else if(subStat.isDirectory()){
+                    const ssubFiles = fs.readdirSync(ssubFilePath);
+                    ssubFiles.map(function(ssfile, i) {
+                        const ssubStat = fs.statSync(ssubFilePath + folderSep + ssfile);
+                        if (ssubStat.isFile()) {
+                            copyFile(ssfile, ssubFilePath, targetPath + folderSep + file + folderSep + sfile)                            
+                        }
+                    })
                 }
             })
         }
@@ -98,6 +109,11 @@ function copyFile(fileName, sourcePath, targetPath) {
     fileContent = fileContent.replace(/\[MODULEPATH\]/g, moduleName.toLowerCase());
     fileContent = fileContent.replace(/\[MODULENAME\]/g, moduleTitle);
     fileName = fileName.replace('Template', moduleName);
+
+    targetPath = targetPath.replace('Template', moduleName);
+    if(!fs.existsSync(targetPath)){
+        fs.mkdirSync(targetPath);
+    }
     fs.writeFileSync(targetPath + folderSep + fileName, fileContent, 'utf8');
 }
 

@@ -3,28 +3,31 @@ import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
-import FilterForm from './Filter';
+import FilterForm from '../../components/Filter';
 
-import './Process.scss';
-
-export default class Process extends BaseApp {
+export default class [MODULE] extends BaseApp {
     constructor(props) {
         super(props);
     }
+
     /**
      * 初始化
      */
     componentDidMount() {
         this.fetchData();
     }
+
     fetchData = (condition) => {
-        this.props.actions.search(condition);
+        this._condition = Object.assign(this._condition, condition);
+        this.props.actions.search(this._condition);
     }
-    //点击分页
+
+    /**
+     * 点击分页
+     */
     changePage = (currentPage) => {
-        this.props.actions.search({
-            page: currentPage
-        });
+        this._condition.page = currentPage;
+        this.props.actions.search(this._condition);
     }
 
     /**
@@ -34,12 +37,10 @@ export default class Process extends BaseApp {
      */
     handleOperateClick(data, type) {
         switch (type) {
-            case this.OPERATE_TYPE.EDIT: {
-                hashHistory.push(`process/edit/${data.id}`)
-                break;
-            }
+            
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`process/detail/${data.id}`)
+                // 详情
+                hashHistory.push(`process/detail/${data.processDefId}`)
                 break;
             }
         }
@@ -51,7 +52,7 @@ export default class Process extends BaseApp {
         const {pageData, columns} = this.props;
         return (
             <IceContainer className="pch-container">
-                <Title title="流程配置查询" />
+                <Title title="xx查询" />
                 <FilterForm onSubmit={this.fetchData} />
                 <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
                 <PchPagination dataSource={pageData} onChange={this.changePage} />
