@@ -51,24 +51,24 @@ class ProcessColumn extends BaseColumn {
                 if(record.status == '1'){
                     //完成显示产品按钮，否则显示修改按钮
                     productdom = 
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER)}>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER)}>
                             产品
-                        </button>
+                        </a>
                 }else{
                     editdom = 
-                        <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
                             修改
-                        </button>
+                        </a>
                 }
                 return (
-                    <div className="pch-condition-operate">
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                    <div className="pch-table-operation">
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
                             详情
-                        </button>
+                        </a>
                         {editdom}{productdom}
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
                             复制
-                        </button>
+                        </a>
                     </div>
                     );
             }

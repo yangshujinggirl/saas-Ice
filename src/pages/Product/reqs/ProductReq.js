@@ -56,8 +56,8 @@ class ProductReq extends CurdReq {
   }
 
   //产品提交第二步保存
-  productsave(data,id) {
-    var url =this._host + `/product/${id}/scope`;
+  productsave(data, id) {
+    var url = this._host + `/product/${id}/scope`;
     let options = {
       url: url,
       method: 'POST',
@@ -66,28 +66,39 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
- //产品提交第三步保存
- prodHtmlSave(data,productId) {
-  var url =this._host + `/product/${productId}/screen`;
-  let options = {
-    url: url,
-    method: 'POST',
-    data: data,
-    contentType: 'application/json'
+  //产品提交第三步保存
+  prodHtmlSave(data, productId) {
+    var url = this._host + `/product/${productId}/screen`;
+    let options = {
+      url: url,
+      method: 'POST',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
   }
-  return super.fetchData(options);
-}
-//页面名称
-htmlName(data) {
-  var url =this._host + `/screen-schemes`;
-  let options = {
-    url: url,
-    method: 'get',
-    params: data,
-    contentType: 'application/json'
+  //页面名称
+  htmlName(data) {
+    var url = this._host + `/screen-schemes`;
+    let options = {
+      url: url,
+      method: 'get',
+      params: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
   }
-  return super.fetchData(options);
-}
+  //流程配置
+  _processList(){
+    var url = this._host + `/processes`;
+    let options = {
+      url: url,
+      method: 'get',
+      // params: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
   //产品修改
   prodedit(id) {
     let options = {
@@ -110,7 +121,7 @@ htmlName(data) {
     return super.fetchData(options);
   }
 
-  
+
 
   //材料清单查询
   filesearch(condition) {
@@ -135,30 +146,30 @@ htmlName(data) {
   }
 
 
-//删除资料清单一条数据
-fileremove(id, callback, callbackError) {
-	let options = {
-    // url: this.formatUrl(this.curd.filedelete, id),
-    url:this._host + `/product/collect/${id}`,
-		method: 'DELETE',
-		contentType: this.contentType || 'application/json'
-	}
-	return super.fetchData(options);
-}
+  //删除资料清单一条数据
+  fileremove(id, callback, callbackError) {
+    let options = {
+      // url: this.formatUrl(this.curd.filedelete, id),
+      url: this._host + `/product/collect/${id}`,
+      method: 'DELETE',
+      contentType: this.contentType || 'application/json'
+    }
+    return super.fetchData(options);
+  }
 
-//删除资料清单明细
-fileRemoveDes(id, callback, callbackError) {
-	let options = {
-    // url: this.formatUrl(this.curd.filedeletedes, id),
-    url:this._host + `/product/collect/detail/${id}`,
-		method: 'DELETE',
-		contentType: this.contentType || 'application/json'
-	}
-	return super.fetchData(options);
-}
+  //删除资料清单明细
+  fileRemoveDes(id, callback, callbackError) {
+    let options = {
+      // url: this.formatUrl(this.curd.filedeletedes, id),
+      url: this._host + `/product/collect/detail/${id}`,
+      method: 'DELETE',
+      contentType: this.contentType || 'application/json'
+    }
+    return super.fetchData(options);
+  }
 
 
-//材料编辑修改后确定
+  //材料编辑修改后确定
   fileEditSave(data, id) {
     var url = this._host + '/product/collect/' + id
     if (data) {
@@ -172,7 +183,7 @@ fileRemoveDes(id, callback, callbackError) {
       return super.fetchData(options);
     }
   }
-//资料保存
+  //资料保存
   fileSave(data) {
     var url = this._host + '/product/collect'
     if (data) {
@@ -187,11 +198,11 @@ fileRemoveDes(id, callback, callbackError) {
   }
 
   //addTwoList
-  addTwoList(type,name,page) {
+  addTwoList(type, name, page) {
     let condition = {
-      name:name,
-      type:type,
-      page:page,
+      name: name,
+      type: type,
+      page: page,
     }
     let options = {
       // url: this._host + '/product/data
@@ -205,7 +216,7 @@ fileRemoveDes(id, callback, callbackError) {
 
 
   //查询产品名称是否重复
-  productNameRepeat(condition){
+  productNameRepeat(condition) {
     let options = {
       // url: this._host + '/product/data
       url: this._host + `/product/name/exists?name=${condition}`,
@@ -216,7 +227,7 @@ fileRemoveDes(id, callback, callbackError) {
   }
 
   //查询材料名称是否重复
-  fileNameRepeat(condition){
+  fileNameRepeat(condition) {
     let options = {
       // url: this._host + '/product/data
       url: this._host + `/product/collect/exists?name=${condition}`,

@@ -135,7 +135,9 @@ export const getDetail = (id) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data }))
+      if(res.code==200){
+        dispatch(fetchSuccess({ formData: res.data }))
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
