@@ -24,7 +24,7 @@ const FormItem = Form.Item;
 
 const formItemLayout = {
     labelCol: {
-        span: 7
+        span: 10
     },
     wrapperCol: {
         span: 14
@@ -47,12 +47,19 @@ class DialogModule extends Component {
     })
   }
   onOk() {
+    const { status, contractId } = this.props.dialogObj;
     this.refs.form.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
       if(errors) {
         return
       }
-      this.props.submit();
+      let params = {
+        action:status,
+        contractId,
+        reason:this.refs.form.getter('reason'),
+        memo:this.refs.form.getter('memo')
+      }
+      this.props.submit(params);
       this.setState({
         visible:false
       })
@@ -62,6 +69,27 @@ class DialogModule extends Component {
     this.setState({
       visible:false
     })
+  }
+  //渲染title
+  dialogLabel (){
+    let { status } = this.props.dialogObj;
+    switch(status) {
+      case 2:
+      return {
+        labelOne:'请选择取消原因',
+        labelTwo:'请输入(200字符)'
+      }
+         break;
+      case 3:
+         return {
+           labelOne:'请选退回步骤',
+           labelTwo:'请输入退回原因'
+         }
+         break;
+       default:
+        return {};
+        break;
+    }
   }
 
   render() {
@@ -79,25 +107,25 @@ class DialogModule extends Component {
               <Form size="large" direction="hoz">
                 <Row wrap>
                   <Col span={24}>
-                    <FormItem {...formItemLayout} label={label(dialogObj.labelOne)}>
+                    <FormItem {...formItemLayout} label={label(this.dialogLabel().labelOne)}>
                       <IceFormBinder
                         required
                         message="请选择取消原因"
-                        name="result">
+                        name="reason">
                           <Select dataSource={dialogObj.dataSource} size="large"/>
                       </IceFormBinder>
-                      <div><IceFormError name="result" /></div>
+                      <div><IceFormError name="reason" /></div>
                     </FormItem>
                   </Col>
                   <Col span={24}>
-                    <FormItem {...formItemLayout} label={label(dialogObj.labelTwo)}>
+                    <FormItem {...formItemLayout} label={label(this.dialogLabel().labelTwo)}>
                       <IceFormBinder
                         required
                         message="请输入字符"
-                        name="text">
+                        name="memo">
                           <Input size="large" multiple maxLength={200} hasLimitHint />
                       </IceFormBinder>
-                      <div><IceFormError name="text" /></div>
+                      <div><IceFormError name="memo" /></div>
                     </FormItem>
                   </Col>
                   <Col span={24}>

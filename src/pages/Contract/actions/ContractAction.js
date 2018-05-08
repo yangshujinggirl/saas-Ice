@@ -67,7 +67,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.templateDetailApi(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ pageData: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

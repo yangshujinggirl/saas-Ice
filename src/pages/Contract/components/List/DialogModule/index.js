@@ -40,8 +40,7 @@ class DialogModule extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible:this.props.visible,
-      value:['apple','pear','orange']
+      visible:this.props.visible
     };
   }
   componentWillReceiveProps(props) {
@@ -50,39 +49,59 @@ class DialogModule extends Component {
     })
   }
   onOk() {
-    this.refs.form.validateAll((errors, values) => {
-      console.log('errors', errors, 'values', values);
-      if(errors) {
-        return
-      }
-      this.props.submit();
-      this.setState({
-        visible:false
-      })
-    });
+    this.props.submit(this.props.templateObj.id,this.props.templateObj.status);
+    this.setState({
+      visible:false
+    })
   }
   onClose() {
     this.setState({
       visible:false
     })
   }
+  //渲染title
+  dialogTitle (){
+    let { status, isBind } = this.props.templateObj;
+    switch(status) {
+      case 1:
+         if(isBind) {
+           return '该模板已绑定以下产品，启用后均能生效，您确定要启用吗';
+         } else {
+           return '您确定要启用该模板吗?';
+         }
+         break;
+      case 2:
+         if(isBind) {
+           return '该模板已绑定以下产品，您确定要停用吗';
+         } else {
+           return '您确定要停用该模板吗?';
+         }
+         break;
+      case 999:
+         if(isBind) {
+           return '该模板目前已被以下产品绑定，您确定删除吗？';
+         } else {
+           return '您确定删除该模板吗？';
+         }
+         break;
+       default:
+        return '';
+        break;
+    }
+  }
 
   render() {
-      const { dialogTitle } = this.props;
-      const list = [
-        {
-          value: "apple",
-          label: "苹果"
-        },
-        {
-          value: "pear",
-          label: "梨"
-        },
-        {
-          value: "orange",
-          label: "橙子"
-        }
-      ];
+      const { templateObj, productList } = this.props;
+      //初始化checked
+      const defaultValue =()=> (
+        templateObj.productList.length>0 ?
+        templateObj.productList.map((ele) => (
+            ele.value
+        ))
+        :
+        []
+      )
+
       return (
         <Dialog
           visible={this.state.visible}
@@ -93,18 +112,18 @@ class DialogModule extends Component {
           <div className="pch-form contract-template-dialog-content">
             <IceFormBinderWrapper ref="form">
               <Form size="large" direction="hoz">
-                <h2 className="title">{dialogTitle}</h2>
+                <h2 className="title">{this.dialogTitle()}</h2>
                 <Row wrap>
                   <Col span={24}>
                     <FormItem {...formItemLayout}>
                       <IceFormBinder
-                        required
-                        message="请选择取消原因"
                         name="result">
                         <CheckboxGroup
                           className="check-group-style"
-                          value={this.state.value}
-                          dataSource={list}/>
+                          value={defaultValue()}
+                          dataSource={templateObj.productList}
+                          disabled>
+                        </CheckboxGroup>
                       </IceFormBinder>
                       <div><IceFormError name="result" /></div>
                     </FormItem>

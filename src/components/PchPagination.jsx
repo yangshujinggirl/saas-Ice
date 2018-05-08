@@ -28,7 +28,7 @@ export default class PchPagination extends PureComponent {
                     current={dataSource.page}
                     pageSize={dataSource.limit}
                     total={dataSource.total}
-                    onChange={this.changePage} />
+                    onChange={changePage} />
             </div>
             );
     }

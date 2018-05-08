@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Dialog, Button } from "@icedesign/base";
+import { Dialog, Button, Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 import DialogModule from './DialogModule';
+import Req from '../../reqs/ContractEditReq';
 
+const Toast = Feedback.toast;
 
 class ContractList extends BaseApp {
   constructor(props) {
@@ -27,11 +29,11 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CANCEL: {
-            this.dialogEvent(this.OPERATE_TYPE.CANCEL);
+            this.dialogEvent(this.OPERATE_TYPE.CANCEL,record);
             break;
         }
         case this.OPERATE_TYPE.RETURN: {
-            this.dialogEvent(this.OPERATE_TYPE.RETURN)
+            this.dialogEvent(this.OPERATE_TYPE.RETURN,record)
             break;
         }
         case this.OPERATE_TYPE.CHANGE: {
@@ -41,24 +43,22 @@ class ContractList extends BaseApp {
     }
   }
   //取消，退回
-  dialogEvent(type) {
-    let dialogObj={};
+  dialogEvent(type,record) {
+    let status,dataSource;
     if(type == this.OPERATE_TYPE.CANCEL) {
-      dialogObj = {
-        labelOne:'请选择取消原因',
-        dataSource:['1','2','3'],
-        labelTwo:'请输入(200字符)'
-      }
+      status = 2;
+      dataSource = ['1','2','3']
     } else if(type == this.OPERATE_TYPE.RETURN) {
-      dialogObj = {
-        labelOne:'请选退回步骤',
-        dataSource:['第1步','第2步','第3步'],
-        labelTwo:'请输入退回原因'
-      }
+      status = 3;
+      dataSource = ['第1步','第2步','第3步']
     }
     this.setState({
       visible:true,
-      dialogObj
+      dialogObj:{
+        status:3,
+        contractId:record.id,
+        dataSource
+      }
     })
   }
   //改纸质
@@ -84,34 +84,32 @@ class ContractList extends BaseApp {
           page: currentPage
       });
   }
-  submit() {
-    alert('11111111')
+  submitOperate(params) {
+    Req.handleContractApi(params)
+    .then((res) => {
+      if(params.status == 2) {
+        Toast.success("取消成功");
+      } else if(params.status == 2) {
+        Toast.success("退回成功");
+      }
+    },error => {
+      Toast.error(error);
+    })
   }
   render() {
     const { columns } = this.props;
     const { dialogObj, visible } =this.state;
-    // const { list=[] } =this.props.pageData;
-    const list = [
-      {
-        'loanNo':'1001',
-        'contractNo':'1001',
-        'name':'邓超',
-        'documentCode':'自定义',
-        'capital':'大众',
-        'id':'10023'
-      },
-    ]
-
+    const { list=[] } = this.props.pageData;
     return(
       <IceContainer className="pch-container">
           <Title title="合同编辑" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={[]} onChange={this.changePage} />
+          <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
           <DialogModule
             dialogObj={dialogObj}
             visible={visible}
-            submit={this.submit}/>
+            submit={this.submitOperate}/>
       </IceContainer>
     )
   }

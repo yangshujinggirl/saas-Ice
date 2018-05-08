@@ -5,7 +5,7 @@ export default {
   path: "/contract",
   name:'合同管理',
   childRoutes: [{
-    path: 'add',
+    path: 'add/(:id)',
     name:'新增',
     component: Contract.ContractAdd
   },{

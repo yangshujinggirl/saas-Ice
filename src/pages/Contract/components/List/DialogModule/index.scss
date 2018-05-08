@@ -1,7 +1,10 @@
-.contract-edit-dialog-wrap {
-  width: 28%;
-  .contract-edit-dialog-content {
+.contract-template-dialog-wrap {
+  width: 26%;
+  .contract-template-dialog-content {
     padding-top: 30px;
+    .title {
+      text-align: center;
+    }
     .btns-wrap {
       text-align: center;
       padding-top: 20px;

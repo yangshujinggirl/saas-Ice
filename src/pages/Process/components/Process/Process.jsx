@@ -22,6 +22,7 @@ export default class Process extends BaseApp {
     }
     //点击分页
     changePage = (currentPage) => {
+      debugger
         this.props.actions.search({
             page: currentPage
         });
@@ -55,7 +56,7 @@ export default class Process extends BaseApp {
                 <Title title="流程配置查询" />
                 <FilterForm onSubmit={this.fetchData} />
                 <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-                <PchPagination dataSource={pageData} onChange={this.changePage} />
+                <PchPagination dataSource={pageData} changePage={this.changePage} />
             </IceContainer>
         )
     }

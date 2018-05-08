@@ -11,15 +11,15 @@ class ContractColumn extends BaseColumn {
 
         this._columns = [{
             title: '模板编号',
-            dataIndex: 'code',
+            dataIndex: 'templateCode',
             width: 100
         }, {
             title: '模板名称',
-            dataIndex: 'templateCode',
+            dataIndex: 'templateName',
             width: 160
         }, {
             title: '模板类型',
-            dataIndex: 'agencyType',
+            dataIndex: 'templateType',
             width: 160
         }, {
             title: '状态',
@@ -28,7 +28,7 @@ class ContractColumn extends BaseColumn {
             cell: (value, index, record) => {
                 return (
                   <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}>
-                      {record.status == 0?'启用':'停用'}
+                      {record.status == 1?'启用':'停用'}
                   </button>
                     );
             }

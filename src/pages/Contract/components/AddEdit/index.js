@@ -6,6 +6,7 @@ import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import { Base64 } from 'js-base64';
 // import htmlToDraft from 'html-to-draftjs';
 
 import {
@@ -42,64 +43,98 @@ class AddEit extends BaseApp {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty(),
-      textContent:'',
-      editorStateTwo:EditorState.createEmpty()
+      value: {
+        templateName:''
+      },
+      editorState: EditorState.createEmpty()
     }
+  }
+  componentWillMount() {
+    this.initPage()
   }
   onEditorStateChange: Function = (editorState) => {
     this.setState({
       editorState,
     });
   };
+  initPage() {
+    if(this.props.params.id) {
+      this.getDetail(this.props.params.id);
+    }
+  }
+  //编辑，调用详情api
+  getDetail(id) {
+    Req.templateDetailApi(id)
+    .then((res) => {
+      let { templateContent,templateName } = res.data;
+      templateContent = Base64.decode(templateContent);
+      const blocksFromHTML = convertFromHTML(templateContent);
+      const state = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap
+      );
+      this.setState({
+        editorState:EditorState.createWithContent(state),
+        value:{
+          templateName
+        }
+      })
+    })
+  }
   handleSubmit() {
     const { editorState } = this.state;
-    const template_content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-    // console.log(template_content)
+    let templateContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    templateContent = Base64.encode(templateContent)
+
     this.refs.form.validateAll((errors, values) => {
-      this.refs.form.setter('template_content',template_content);
+      if(errors) {
+        return
+      }
+      this.refs.form.setter('templateContent',templateContent);
       Req.addTemplatesApi(values)
       .then((res) => {
-        console.log(res);
+        const { status } =res.data;
+        if(!status && status!=200) {
+          return
+        }
+        hashHistory.push(`contract`)
       })
     });
   }
   render() {
     const { columns } = this.props;
     const { editorState, editorStateTwo } = this.state;
-    const testContent = draftToHtml(convertToRaw(editorState.getCurrentContent()))||'';
-    console.log(convertToRaw(editorState.getCurrentContent()))
-    console.log(typeof testContent)
     return(
       <IceContainer className="pch-container contract-edit-pages">
           <Title title="合同新增" />
           <div className="pch-form">
-            <IceFormBinderWrapper ref="form">
-              <Form size="large" direction="hoz">
+            <IceFormBinderWrapper  value={this.state.value} ref="form">
+              <Form size="large">
                 <Row wrap justify="center">
                   <Col span={6}>
-                    <FormItem
-                      {...formItemLayout}
-                      label="合同名称:">
+                    <FormItem {...formItemLayout} label="合同名称:">
                       <IceFormBinder
-                        name="template_no"
+                        name="templateName"
                         required
                         message="合同名称不为空">
                           <Input size="large" placeholder="合同名称"/>
                       </IceFormBinder>
-                      <div><IceFormError name="template_no" /></div>
+                      <div><IceFormError name="templateName" /></div>
                     </FormItem>
                   </Col>
                   <Col span={24}>
                     <FormItem className="editor-wrap">
                       <IceFormBinder
-                        name="template_content">
+                        name="templateContent"
+                        required
+                        message="合同内容不为空">
                         <Editor
                           editorState={editorState}
                           wrapperClassName="contract-template-add-wrapper"
                           editorClassName="contract-template-editor"
                           onEditorStateChange={this.onEditorStateChange}/>
                       </IceFormBinder>
+                      <div><IceFormError name="templateContent" /></div>
                     </FormItem>
                   </Col>
                   <Col span={24}>
@@ -127,7 +162,6 @@ class AddEit extends BaseApp {
                 </Row>
               </Form>
             </IceFormBinderWrapper>
-
           </div>
       </IceContainer>
     )
