@@ -33,7 +33,7 @@ const formItemLayoutTEXT = {
 const formItemLayoutCHECKBOX = {
   labelCol: { span: 6},
   wrapperCol: { span: 21 }
-};
+}
 
 export default class FormRenderFormRender extends Component {
   static displayName = 'FormRender';
@@ -126,16 +126,14 @@ export default class FormRenderFormRender extends Component {
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <IceFormBinder
-            name={`${el.value}`}
-            required ={true}
-          >
             <Input
-
               placeholder={"请输入"+el.label}
               disabled={el.isFixed || el.isReadonly}
+              {...init(el.name, {
+                initValue: el.value,
+                rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+              })}
             />
-          </IceFormBinder>
         </FormItem>
       )
     }else if(el.type == "SELECT"){
