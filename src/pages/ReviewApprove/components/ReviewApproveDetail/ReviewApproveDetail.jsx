@@ -11,6 +11,7 @@ import {
 import  EntryTrack from './EntryTrack/index'
 import  ApprovalBox from './ApprovalBox/index'
 import  FormRender from './FormRender/index'
+import MaterialSubmit  from './MaterialSubmit/index'
 
 import  './ReviewApproveDetail.scss'
 import {browserHistory, hashHistory} from 'react-router';
@@ -51,6 +52,7 @@ export default class ReviewApproveDetail extends Component {
   //渲染标题
   renderTitle = (data) =>{
     const  list = [];
+    const  titleList = [];
     if(!this.isEmptyObject(data)){
       var materialsFalg = false;//材料标志falg
       var trackFalg = false;//轨迹标志falg
@@ -61,14 +63,16 @@ export default class ReviewApproveDetail extends Component {
         if(el.name == '流程轨迹'){
           trackFalg = true;
         }
+        titleList.push(el);
       })
-      if(!materialsFalg){
-        data.push({name:'材料提交',fields:[]})
-      }
       if(!trackFalg){
-        data.push({name:'流程轨迹',fields:[]})
+        titleList.unshift({name:'流程轨迹',fields:[]})
       }
-      data.map((item,index)=>{
+      if(!materialsFalg){
+        titleList.push({name:'材料提交',fields:[]})
+      }
+
+      titleList.map((item,index)=>{
         var btnClass = classNames({
           'active': this.state.index == index,
         });
@@ -98,13 +102,9 @@ export default class ReviewApproveDetail extends Component {
     let {actions} = this.props;
     console.log(this.props)
 
-    actions.getTrackDetail({
-      proInstId : this.props.params.proInstId
-    });
-
-    actions.getLoadMaterialDetails({
-      loanId: this.props.params.loanId
-    });
+    // actions.getTrackDetail({
+    //   proInstId : this.props.params.proInstId
+    // });
 
     actions.getDetail(this.props.params.loanId);
 
@@ -126,6 +126,7 @@ export default class ReviewApproveDetail extends Component {
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
+    // const trackDetail = this.props.trackDetail || {};
     const init = this.field.init;
     return (
       <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle' style={styles.bg}>
@@ -140,6 +141,9 @@ export default class ReviewApproveDetail extends Component {
                   </div>
 
                   <div className="rcontent-edito modify-form">
+
+                    <EntryTrack {...this.props} ></EntryTrack>
+
                     <IceFormBinderWrapper
                       value={this.state.value}
                       onChange={this.formChange}
@@ -153,10 +157,10 @@ export default class ReviewApproveDetail extends Component {
                       </Form>
                     </IceFormBinderWrapper>
 
-                    <EntryTrack {...this.props}></EntryTrack>
-                    {/*<Detail dataSource={details.list} ></Detail>*/}
-                    {/*<MaterialSubmit {...this.props}></MaterialSubmit>*/}
-
+                    <div className='review-detail' id='材料提交'>
+                      <span  className='name'>材料提交</span>
+                      <MaterialSubmit {...this.props}></MaterialSubmit>
+                    </div>
                     <div className='botton-box'>
                       <Button className='botton' onClick={this.back}>返回</Button>
                     </div>

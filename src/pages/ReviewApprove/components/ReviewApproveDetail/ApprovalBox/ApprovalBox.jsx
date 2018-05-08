@@ -11,7 +11,7 @@ const dataSource = [
 ]
 const formItemLayout = {
   labelCol: { span: 8 },
-  wrapperCol: { span: 18 }
+  wrapperCol: { span: 10 }
 };
 export default class ApprovalBox extends Component {
   static displayName = 'ApprovalBox';

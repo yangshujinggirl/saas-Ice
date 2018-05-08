@@ -17,81 +17,41 @@ export default class EntryTrack extends Component {
       value: {},
       Component :[],
       dataSource: [],
-      trackList:[
-        {
-          "taskId" : "123",  // 任务id
-          "taskName" : "任务名称",
-          "taskAlias" : "任务别名",
-          "status" : "通过",  // 任务状态
-          "approveMsg" : "审核意见",
-          "changeFields" : {  // 进件变更字段
-            "salesman" : "张三",
-            "nationality" : "中国",
-            "housePropertyNumber" : "195345421",
-          },
-          "operatorName" : "张三",
-          "operatorNum" : "操作人账号",
-          "approveDate" : "2018-12-22 12:22:33"
-        },
-        {
-          "taskId" : "234",  // 任务id
-          "taskName" : "任务名称",
-          "taskAlias" : "任务别名",
-          "status" : "拒绝",  // 任务状态
-          "approveMsg" : "审核意见",
-          "changeFields" : {  // 进件变更字段
-            "salesman" : "张三",
-            "nationality" : "中国",
-            "housePropertyNumber" : "195345421",
-          },
-          "operatorName" : "张三",
-          "operatorNum" : "操作人账号",
-          "approveDate" : "2018-12-22 12:22:33"
-        },
-        {
-          "taskId" : "432",  // 任务id
-          "taskName" : "任务名称",
-          "taskAlias" : "任务别名",
-          "status" : "退回中行审查",  // 任务状态
-          "approveMsg" : "审核意见",
-          "changeFields" : {  // 进件变更字段
-            "salesman" : "张三",
-            "nationality" : "中国",
-            "housePropertyNumber" : "195345421",
-          },
-          "operatorName" : "张三",
-          "operatorNum" : "操作人账号",
-          "approveDate" : "2018-12-22 12:22:33"
-        },
-      ]
+      trackList:[]
     };
   }
   componentDidMount(){
-    // this.getLoanUpload(this.props.params.id);
+    let {actions} = this.props;
     console.log(this.props)
-  }
-  //获取上传资料列表
-  getLoanUpload(id) {
 
-  }
-  renderTrack(trackList){
+    Req.getTrackDetail({
+      proInstId : this.props.params.proInstId,
+      isApproveInfo :true
+    }).then((res)=>{
+      if(res.data && res.code == 200){
+        this.setState({
+          trackList : res.data.proTrack ? res.data.proTrack : []
+        })
+      }else {
 
+      }
+    });
   }
   render() {
     let { trackList } = this.state;
     console.log(trackList)
     return (
       <div className="part-same part-process info review-detail" id='流程轨迹'>
-                  {/*<span  className='name'>流程轨迹</span>*/}
+                  <span  className='name'>流程轨迹</span>
                   <div className="process-action">
                         {
 
                           trackList.map((item,index)=>{
                             var status = classNames({
-                              'circle status-error': item.status,
-                              'circle status-success': item.status,
-                              'circle status-return': item.status,
-                              'circle status-manpower': item.status,
+                              'circle status-error': item.status == '拒绝',
+                              'circle status-success': item.status == '通过',
+                              'circle status-return': item.status == '退回中行审查',
+                              'circle status-manpower': item.status == '',
                             });
 
                             return (

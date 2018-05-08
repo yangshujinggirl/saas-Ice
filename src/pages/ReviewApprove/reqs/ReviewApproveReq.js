@@ -47,11 +47,11 @@ class ReviewApproveReq extends CurdReq{
     return super.fetchData(options);
   }
 
-  //点击点击签收
+  //轨迹详情
   getTrackDetail(data) {
     let options = {
       // url: this._loanHost + `  /process/${data.proInstId}/track`,
-      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/loans',
+      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/process/15698/track',
       method: 'Get',
     }
     return super.fetchData(options);
