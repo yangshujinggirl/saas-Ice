@@ -54,6 +54,7 @@ export const search = (condition) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
+      if(!res || res.code != 200) return;
       dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -68,7 +69,7 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
-      dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+      dispatch(fetchSuccess({ formData: {} }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -82,7 +83,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ formData: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
