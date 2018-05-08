@@ -49,18 +49,6 @@ class ProcessReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-
-	//
-	getProcessPowerDetails(id){
-		let options = {
-			url: 'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/processPowerdetails',
-			// url: this._host + '/task_types',
-			method: 'get',
-			contentType: 'application/x-www-form-urlencoded',
-			params:id
-		}
-		return super.fetchData(options);
-	}
 }
 
 export default new ProcessReq();

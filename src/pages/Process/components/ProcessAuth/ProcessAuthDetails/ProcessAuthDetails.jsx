@@ -48,19 +48,20 @@ export default class ProcessAuthDetails extends Component  {
      */
     render() {
         const dataSource = [{power:'总部'},{power:'总部科技部'},{power:'总部测试'}];
-        const {data=[], visible, changeView} = this.props;
+        const {data=[], visible, changeView,pageAuthDetail} = this.props;
+        let {list=[]} = pageAuthDetail || {}
         return (
             <IceContainer className="pch-container" style={{display: visible ? '' : 'none'}}>
                 <Title title="查看权限配置详情" />
                 <div className="pc-form">
                     <FilterForm onSubmit={this.fetchData} />
-                    <Table className="table-list" dataSource={dataSource}>
-                        <Table.Column title="权限" dataIndex="power" align="center"/>
+                    <Table className="table-list" dataSource={list}>
+                        <Table.Column title="权限" dataIndex="processName" align="center"/>
                     </Table>
                     {/* <Button type="primary" className="return-btn">返回</Button> */}
                     <div className="container">
                         <div className="next-btn-box pch-form-buttons">
-                        <Button type="primary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.EDITAUTH)}>
+                        <Button type="primary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.DETAIL)}>
                          返回
                         </Button>
                         </div>
