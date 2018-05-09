@@ -190,7 +190,7 @@ export default class EnhanceTable extends Component {
         <Link to={`/font/view?id=${record.id}`} className='operate-btn'>
           详情
         </Link>
-        <Link to={`/font/set?id=${record.id}`}  className='operate-btn'>
+        <Link to={`/font/set/${record.id}`}  className='operate-btn'>
           编辑
         </Link>
       </div>
