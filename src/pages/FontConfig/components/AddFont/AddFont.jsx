@@ -74,7 +74,7 @@ export default class AdFont extends Component {
             FontConfigReq.changPageName(reqDate,this.state.id).then((data) => {
                 let res = data.data;
                 if (data.code == 200) {
-                    this.props.router.push(`/font/set?id=${this.state.id}`)  
+                    this.props.router.push(`/font/set/${this.state.id}`)  
                 } else {
                     Dialog.alert({
                         content: res.msg,
@@ -88,7 +88,7 @@ export default class AdFont extends Component {
             FontConfigReq.save(reqDate).then((data) => {
                 let res = data.data;
                 if (data.code == 200) {
-                    this.props.router.push(`/font/set?id=${res.id}&pageName=${pageName}`)
+                    this.props.router.push(`/font/set/${res.id}?pageName=${pageName}`)
                 } else {
                     Dialog.alert({
                         content: res.msg,

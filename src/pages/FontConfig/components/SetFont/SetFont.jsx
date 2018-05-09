@@ -6,12 +6,14 @@ import { Balloon } from "@icedesign/base";
 import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
-import Tools from './../../../../base/utils/Tools'
+import { Tools } from 'utils'
+import { Title, BtnAddRow } from 'components';
+import SetFontAddDialog from './SetFontAddDialog';
+import SetFontEditDialog from './SetFontEditDialog';
 
-const { Group: CheckboxGroup } = Checkbox;
-const { Group: RadioGroup } = Radio;
-const { MonthPicker, YearPicker, RangePicker } = DatePicker;
-
+const {Group: CheckboxGroup} = Checkbox;
+const {Group: RadioGroup} = Radio;
+const {MonthPicker, YearPicker, RangePicker} = DatePicker;
 
 export default class setFont extends Component {
     static displayName = 'SetFont';
@@ -27,31 +29,37 @@ export default class setFont extends Component {
             rightActive: '',
             subTitle: '',
             fields: {
-                fieldsetOrder:1,
-                hasAttachedFields:false,
-                isCustom:true,
-                isRepeatable:false,
-                isRequired:false,
-                label:"",
-                name:"",
-                orderId:43,
-                screenSchemeId:'',
+                fieldsetOrder: 1,
+                hasAttachedFields: false,
+                isCustom: true,
+                isRepeatable: false,
+                isRequired: false,
+                label: "",
+                name: "",
+                orderId: 43,
+                screenSchemeId: '',
                 type: "",
-                options: [{value: '',label: ""}],
+                options: [{
+                    value: '',
+                    label: ""
+                }],
                 length: 30,
             },
             fieldsEdite: {
-                fieldsetOrder:1,
-                hasAttachedFields:false,
-                isCustom:true,
-                isRepeatable:false,
-                isRequired:false,
-                label:"",
-                name:"",
-                orderId:43,
-                screenSchemeId:'',
+                fieldsetOrder: 1,
+                hasAttachedFields: false,
+                isCustom: true,
+                isRepeatable: false,
+                isRequired: false,
+                label: "",
+                name: "",
+                orderId: 43,
+                screenSchemeId: '',
                 type: "",
-                options: [{value: '',label: ""}],                
+                options: [{
+                    value: '',
+                    label: ""
+                }],
                 length: 30,
             },
             arraList: [5, 6, 7, 8, 9],
@@ -59,7 +67,7 @@ export default class setFont extends Component {
             dialogTwo: false,
             boolDate: false,
             boolSelect: false,
-            value: [],//添加字段时候字段的熟悉，例如只读
+            value: [], //添加字段时候字段的熟悉，例如只读
             listDate: ["yyyy"],
             editeCodeIndex: {
                 index: 0,
@@ -81,6 +89,14 @@ export default class setFont extends Component {
         });
     }
 
+    changeFormData(data) {
+        let fields = this.state.fields;
+        fields = Object.assign(fields, data);
+        this.setState({
+            fields
+        })
+    }
+
     // handleAddElement = () => {
     //     this.setState({
     //         arraList: this.state.arraList.concat(Math.round(Math.random() * 1000))
@@ -88,30 +104,30 @@ export default class setFont extends Component {
     // }
 
     handleRemoveElement = (index, inj) => {
-        
-        let id = this.props.router.location.query.id        
-        const newArr = Object.assign({},this.state.resData);
+
+        let id = this.props.params.id
+        const newArr = Object.assign({}, this.state.resData);
         let deleteObj = newArr.fieldset[index].fields[inj];
         let fileId = deleteObj.id;
-        FontConfigReq.deleteCode(id,fileId).then((data) => {
+        FontConfigReq.deleteCode(id, fileId).then((data) => {
             if (data.code == 200) {
-                newArr.fieldset[index].fields.splice(inj, 1);                
+                newArr.fieldset[index].fields.splice(inj, 1);
                 this.setState({
                     resData: newArr
                 });
             }
         })
-        
+
     }
 
     handleRemoveModule = (index) => {
-        let id = this.props.router.location.query.id        
-        const newArr = this.state.resData;     
+        let id = this.props.params.id
+        const newArr = this.state.resData;
         let deleteObj = newArr.fieldset[index].name;
-        
-        FontConfigReq.deleteModelCode(id,encodeURIComponent(deleteObj)).then((data) => {
+
+        FontConfigReq.deleteModelCode(id, encodeURIComponent(deleteObj)).then((data) => {
             if (data.code == 200) {
-                newArr.fieldset.splice(index,1)
+                newArr.fieldset.splice(index, 1)
                 this.setState({
                     resData: newArr
                 });
@@ -122,16 +138,16 @@ export default class setFont extends Component {
                 })
             }
         })
-        
+
     }
     // 上一页
     upPage = () => {
-        let id =  this.props.router.location.query.id
+        let id = this.props.params.id
         this.props.router.push(`font/add?id=${id}`)
-    } 
+    }
     // 下一页
     downPage = () => {
-        let id = this.props.router.location.query.id;
+        let id = this.props.params.id;
         let resData = this.state.resData;
         // 空区块删除
         let tts = resData.fieldset.every((item) => {
@@ -145,8 +161,10 @@ export default class setFont extends Component {
                 return true
             }
         })
-        if (!tts) { return }
-        
+        if (!tts) {
+            return
+        }
+
         let pageName = {
             name: this.state.pageValue,
         }
@@ -163,8 +181,8 @@ export default class setFont extends Component {
         //     })
         // })
         // console.log(pageName);
-        
-        FontConfigReq.changPageName(pageName,id).then((data) => {
+
+        FontConfigReq.changPageName(pageName, id).then((data) => {
             if (data.code == 200) {
                 this.props.router.push(`font/view?id=${id}`)
             }
@@ -174,7 +192,7 @@ export default class setFont extends Component {
     cancelPage = () => {
         this.props.router.push('font/list')
     }
-    menuNav = (archer,index) => {
+    menuNav = (archer, index) => {
         this.scrollToAnchor(archer)
         this.setState({
             leftActive: index,
@@ -194,9 +212,14 @@ export default class setFont extends Component {
             })
         }
     }
-    // 修改页面标题
+    /**
+     * 修改区域标题
+     * @param  {[type]} index [description]
+     * @param  {[type]} view  [description]
+     * @return {[type]}       [description]
+     */
     handleGroupTitle = (index, view) => {
-        let id = this.props.router.location.query.id;
+        let id = this.props.params.id;
         let copyDate = this.state.resData;
         copyDate.fieldset[index].name = view
         copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
@@ -207,14 +230,17 @@ export default class setFont extends Component {
             resData: copyDate
         })
     }
-    
+
     handleGroupTitleSubmint = (index, view) => {
-        let id = this.props.router.location.query.id;
+        let id = this.props.params.id;
         let copyDate = this.state.resData;
         let obj = {}
         obj.fields = copyDate.fieldset[index].fields
-        FontConfigReq.changPageName( obj,id).then((data) => {
+        FontConfigReq.changPageName(obj, id).then((data) => {
             if (data.code == 200) {
+                this.setState({
+                    subTitle: ''
+                })
             }
         })
     }
@@ -224,231 +250,131 @@ export default class setFont extends Component {
             // 找到锚点
             let anchorElement = document.getElementById(anchorName);
             // 如果对应id的锚点存在，就跳转到锚点
-            if(anchorElement) { anchorElement.scrollIntoView(); }
-        }
-      }
-
-    componentDidMount() {
-        let id = this.props.router.location.query.id
-        let pageName = this.props.router.location.query.pageName
-        
-        FontConfigReq.getCode(id).then((data) => {
-            if (data.code == 200) {
-                let res = data.data
-            this.setState({
-                resData: res,
-                pageValue: pageName||res&&res.name
-            })
-            for (const key in this.state.resData.fieldset) {
-                if (this.state.resData.fieldset[key].name == '基本信息') {
-                    let allDate = this.state.resData
-                    let first = allDate.fieldset.splice(key, 1)
-                    allDate.fieldset.unshift(...first)
-                    this.setState({
-                        resData: allDate
-                    })
-                }
+            if (anchorElement) {
+                anchorElement.scrollIntoView();
             }
-            }
-            
-        })
-        // 固定左侧菜单
-        window.onscroll = function () {
-            let scrollFix = document.querySelector('.scrollFix');
-                if (!scrollFix) {
-                    return
-                }
-                if (window.scrollY > 130) {
-                    scrollFix.style.cssText += 'position:fixed;top:50px;'
-                } else {
-                    scrollFix.style.cssText += 'position:static;top:auto;'                    
-                }
         }
     }
 
-    render() {
-        console.log(this.state.resData);
-        const { init, setValue, getValue } = this.field;
-        const list = [
-            {
-                value: "true",
-                label: "必须填"
-            },
-            {
-                value: "unique",
-                label: "值唯一"
-            },
-            {
-                value: "readonly",
-                label: "只读"
-            },
-            {
-                value: "nowrap",
-                label: "独占一行"
-            }
-        ];
+    componentDidMount() {
+        let id = this.props.params.id
+        let pageName = this.props.router.location.query.pageName
 
-        const listDate = [
-            {
-                value: "yyyy",
-                label: "年"
-            },
-            {
-                value: "MM",
-                label: "月"
-            },
-            {
-                value: "dd",
-                label: "日"
-            },
-            {
-                value: "HH",
-                label: "时"
-            },
-            {
-                value: "tt",
-                label: "分"
-            },
-            {
-                value: "ss",
-                label: "秒"
-            }
-        ];
-        // 关闭修改字段弹窗
-        const onClose = () => {
-            this.setState({
-                dialogOne: false,
-                dialogTwo: false
-            })
-        }
-        // 添加自定义字段
-        const handleSubmitCode = () => {
-            let reqData = { ...this.state.fields };
-            let resData = this.state.resData;
-           
-            if (reqData.label == "") {
-                Dialog.alert({
-                    title: '提示',
-                    content: '字段名称不能为空'
+        FontConfigReq.getCode(id).then((data) => {
+            if (data.code == 200) {
+                let res = data.data
+                this.setState({
+                    resData: res,
+                    pageValue: pageName || res && res.name
                 })
-                return 
-            }
-            if (reqData.type == "") {
-                Dialog.alert({
-                    title: '提示',
-                    content: '字段类型不能为空'
-                })
-                return 
-            }
-            // 删除下拉框的单选框复选框空置值
-            reqData.options.map((item,index) => {
-                if (item.label == '') {
-                    reqData.options.splice(index,1)
-                }
-            })
-            
-            let id = this.props.router.location.query.id
-            // console.log(this.state.resData);
-            this.setState({
-                dialogOne: false
-            })
-             // 判断是不是新的模块 ，新添加的模块会多一个new属性做呢判断 是不是新添加的模块
-            //  if (resData.fieldset[reqData.fieldsetOrder].new) {
-            
-            if (false) {
-                //  批量提交字段，目前这一块先放这里，后台接口在调整
-                 resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                 if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题名称') {
-                     Dialog.alert({
-                         title: "提示",
-                         content: '请输入标题名称'
-                     })
-                     
-                     return 
-                } 
-                 
-                delete resData.fieldset[reqData.fieldsetOrder].new
-                reqData = resData.fieldset[reqData.fieldsetOrder];
-                FontConfigReq.changPageName(reqData,id).then((data) => {
-                    if (data.code == 200) {
+                for (const key in this.state.resData.fieldset) {
+                    if (this.state.resData.fieldset[key].name == '基本信息') {
+                        let allDate = this.state.resData
+                        let first = allDate.fieldset.splice(key, 1)
+                        allDate.fieldset.unshift(...first)
                         this.setState({
-                            boolSelect: false,
-                            resData,
+                            resData: allDate
                         })
                     }
+                }
+            }
+
+        })
+        // 固定左侧菜单
+        window.onscroll = function() {
+            let scrollFix = document.querySelector('.scrollFix');
+            if (!scrollFix) {
+                return
+            }
+            if (window.scrollY > 130) {
+                scrollFix.style.cssText += 'position:fixed;top:50px;'
+            } else {
+                scrollFix.style.cssText += 'position:static;top:auto;'
+            }
+        }
+    }
+
+    handleSubmitFormData() {
+        let reqData = this.state.fields;
+        let id = this.props.params.id
+        let resData = this.state.resData;
+
+        FontConfigReq.submitCustomeCode(reqData, id).then((data) => {
+            if (data.code == 200) {
+                let allData = this.state.resData
+                reqData.id = data.data.id
+                resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
+                this.setState({
+                    resData,
+                    dialogOne: false
                 })
             } else {
-                FontConfigReq.submitCustomeCode(reqData,id).then((data) => {
-                    if (data.code == 200) {
-                        let allData = this.state.resData
-                        reqData.id= data.data.id
-                        resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                        this.setState({
-                            resData
-                        })
-                    } else {
-                        console.log("添加字段",data.msg);
-                        
-                    }                 
+                console.log("添加字段", data.msg);
+            }
+        })
+    }
+
+    handleSubmitPreFormData() {
+        let fields = this.state.fieldsEdite;
+        let id = this.props.params.id
+        let resData = this.state.resData;
+        let index = this.state.editeCodeIndex.index;
+        let inj = this.state.editeCodeIndex.inj;
+
+        FontConfigReq.submitModifyCode(fields, id, fields.id).then((data) => {
+            if (data.code == 200) {
+                resData.fieldset[index].fields.splice(inj, 1, fields);
+                this.setState({
+                    resData,
+                    dialogTwo: false
                 })
             }
-        }
-        const handleEdite = () => { 
-            let resData = this.state.resData;
-            let fields = this.state.fieldsEdite;
-            let index = this.state.editeCodeIndex.index;
-            let inj = this.state.editeCodeIndex.inj;
-            fields.type = resData.fieldset[index].fields[inj].type
-            fields.fieldset = resData.fieldset[index].fields[inj].fieldset
-            fields.id = resData.fieldset[index].fields[inj].id
-            fields.fieldsetOrder = resData.fieldset[index].fields[inj].fieldsetOrder
-            fields.options = resData.fieldset[index].fields[inj].options
-            
-            let id = this.props.router.location.query.id
-            
-            let fileId = fields.id
-            console.log(fields);
-            if (!fields.label.length) {
-                Dialog.alert({
-                    title: "提示",
-                    content: '字段名称不能为空'
-                })
-                return 
-            }
+        })
+    }
+
+
+    /**
+     * 编辑字段
+     * 1.固定字段不能编辑，isFixed=true
+     * 2.可选字段只编辑名称，isOptional=true
+     * 3.自定义字段可编辑所有信息，isCustom=true
+     * @param  {[type]} item  [description]
+     * @param  {[type]} index [description]
+     * @param  {[type]} inj   [description]
+     * @return {[type]}       [description]
+     */
+    handleEditeCoce = (item, index, inj) => {
+        // let reqData = this.state.resData;
+        // reqData.fieldset[index].fields[inj].label
+        this.state.editeCodeIndex.index = index;
+        this.state.editeCodeIndex.inj = inj;
+        if (item.isCustom) {
             this.setState({
-                dialogTwo: false,
+                fields: item,
+                dialogOne: true
             })
-            FontConfigReq.submitModifyCode(fields,id,fileId).then((data) => {
-                if (data.code == 200) {
-                    resData.fieldset[index].fields.splice(inj, 1, fields);
-                    this.setState({
-                        resData
-                    })
-                }                  
+        } else {
+            this.setState({
+                fields: item,
+                dialogTwo: true,
             })
         }
-        
-        const footer = (
-            <div key='1'>
-                <Button type="primary" style={{ marginLeft: '10px' }} onClick={handleSubmitCode}>
-                    提交
-                </Button>
-                <Button type="secondary" style={{ marginLeft: '10px' }} onClick={onClose}>
-                    取消
-                </Button>
-            </div>
-        );
-        const footerTwo = (
-            <div key='1'>
-                <Button type="primary" style={{ marginLeft: '10px' }} onClick={handleEdite}>
-                    提交
-                </Button>
-                <Button type="secondary" style={{ marginLeft: '10px' }} onClick={onClose}>
-                    取消
-                </Button>
-            </div>
-        );
-        
+    }
+
+    /**
+     * 关闭修改字段弹窗
+     * @return {[type]} [description]
+     */
+    onClose = () => {
+        this.setState({
+            dialogOne: false,
+            dialogTwo: false
+        })
+    }
+
+    render() {
+        const {init, setValue, getValue} = this.field;
+
         const hover = (bool, item) => {
 
             if (bool) {
@@ -491,7 +417,7 @@ export default class setFont extends Component {
                 item.fieldsetOrder = index + 1;
             })
             newArr.fieldset[index].fields.map((item) => {
-                item.fieldsetOrder = index-1;
+                item.fieldsetOrder = index - 1;
             })
             this.setState({
                 resData: newArr
@@ -535,16 +461,28 @@ export default class setFont extends Component {
                         value: "2974",
                         label: "西安",
                         children: [
-                            { value: "2975", label: "西安市" },
-                            { value: "2976", label: "高陵县" }
+                            {
+                                value: "2975",
+                                label: "西安市"
+                            },
+                            {
+                                value: "2976",
+                                label: "高陵县"
+                            }
                         ]
                     },
                     {
                         value: "2980",
                         label: "铜川",
                         children: [
-                            { value: "2981", label: "铜川市" },
-                            { value: "2982", label: "宜君县" }
+                            {
+                                value: "2981",
+                                label: "铜川市"
+                            },
+                            {
+                                value: "2982",
+                                label: "宜君县"
+                            }
                         ]
                     }
                 ]
@@ -557,8 +495,14 @@ export default class setFont extends Component {
                         value: "3430",
                         label: "巴音郭楞蒙古自治州",
                         children: [
-                            { value: "3431", label: "库尔勒市" },
-                            { value: "3432", label: "和静县" }
+                            {
+                                value: "3431",
+                                label: "库尔勒市"
+                            },
+                            {
+                                value: "3432",
+                                label: "和静县"
+                            }
                         ]
                     }
                 ]
@@ -567,71 +511,54 @@ export default class setFont extends Component {
         //  根据type值渲染不同的输入框
         const handleFixed = (item) => {
             let inputType = <Input placeholder="" />
-            
+
             switch (item.type) {
                 case 'STRING':
-                    inputType = <Input placeholder=""  readOnly = { item.isReadonly ? true : false}  />
+                    inputType = <Input placeholder="" readOnly={item.isReadonly ? true : false} />
                     break;
                 case 'TEXT':
-                    inputType = <Input placeholder="" addonAfter={item.append}/>
+                    inputType = <Input placeholder="" addonAfter={item.append} />
                     // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
-                    inputType = <Input placeholder="" addonAfter={item.append}/>
+                    inputType = <Input placeholder="" addonAfter={item.append} />
                     break;
                 case 'DECIMAL':
-                    inputType = <Input placeholder="" addonAfter={item.append}/>
+                    inputType = <Input placeholder="" addonAfter={item.append} />
                     break;
                 case 'DATE':
-                    inputType = <RangePicker
-                        onChange={(val, str) => console.log(val, str)}
-                        onStartChange={(val, str) => console.log(val, str)} />
+                    inputType = <RangePicker onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
                     break;
                 case 'SELECT':
-                    inputType = <Select
-                        placeholder="请选择"
-                    >
-                        {item.options && item.options.map((item, index) => {
-                            return (
-                                <Option value={item.value} key={index}>{item.label}</Option>
-                            )
-                        })}
-
-                    </Select>
+                    inputType = <Select placeholder="请选择">
+                                    {item.options && item.options.map((item, index) => {
+                                         return (
+                                             <Option value={item.value} key={index}>
+                                                 {item.label}
+                                             </Option>
+                                         )
+                                     })}
+                                </Select>
                     break;
                 case 'CHECKBOX':
-                    inputType = <span className="addNewCheckbox">
-                        {
-                            <label>
-                                <CheckboxGroup
-                                dataSource={item.options}
-                                />
-                            </label>
-                        } 
-                    </span>
+                    inputType = <span className="addNewCheckbox">{<label>
+                                      <CheckboxGroup dataSource={item.options} />
+                                  </label>}</span>
                     break;
                 case 'RADIO':
-                    inputType = <span className="addNewRadio">
-                        {
-                            <label>
-                                <RadioGroup
-                                dataSource={item.options}
-                                />
-                            </label>
-                        }
-                    </span>
+                    inputType = <span className="addNewRadio">{<label>
+                                   <RadioGroup dataSource={item.options} />
+                               </label>}</span>
                     break;
                 case 'ADDRESS':
-                    inputType = <CascaderSelect
-                        dataSource={dataSource}
-                    />
+                    inputType = <CascaderSelect dataSource={dataSource} />
                     break;
                 default:
                     break;
             }
             return inputType
         }
-// 点击添加自定义字段执行的函数
+        // 点击添加自定义字段执行的函数
         const handleAddCode = (index) => {
             let data = this.state.fields;
             // 字段必填选项等设置为空
@@ -640,7 +567,10 @@ export default class setFont extends Component {
             data.name = this.state.resData.fieldset[index].name;
             // 下拉框初始化值
             data.type = '';
-            data.options = [{ label: '', value: '' }];
+            data.options = [{
+                label: '',
+                value: ''
+            }];
             data.fieldsetOrder = index;
             value = [];
             this.setState({
@@ -650,571 +580,165 @@ export default class setFont extends Component {
                 value
             })
         }
-        // 自定义字段添加下拉框执行的函数
-        const handleAddValue = (index) => {
-            let ds = this.state.fields;
-            if (index == 'add') {
-                ds.options.push({label: '',value: ''})
-                this.setState({
-                    fields: ds,
-                })
-            } else {
-                ds.options.splice(index, 1);
-                this.setState({
-                    fields: ds,
-                })
-            }
-        }
-
-        const codeName = (value) => {
-            console.log(value);
-            let data = this.state.fields;
-            data.label = value;
-            this.setState({
-                fields: data
-            })
-        }
-        const codeNameTwo = (value) => {
-            let data = this.state.fieldsEdite;
-            data.label = value
-            this.setState({
-                fieldsEdite: data
-            })
-        }
-
-        const codeSuffix = (value) => {
-            console.log(value);
-            let data = this.state.fields;
-            data.append = value;
-            this.setState({
-                fields: data
-            })
-        }
-        // 根据字段类型判断值的设置是否显示出来
-        const codeType = (value) => {
-            // console.log(value);
-            let data = this.state.fields;
-            data.type = value;
-            if (value == "SELECT"||value == "RADIO"||value == "CHECKBOX") {
-                this.setState({
-                    boolSelect: true,
-                })
-            } else {
-                this.setState({
-                    boolSelect: false,
-                })
-            }
-            if (value == "DATE") {
-                this.setState({
-                    boolDate: true,
-                })
-            } else {
-                this.setState({
-                    boolDate: false,
-                })
-            }
-            this.setState({
-                fields: data
-            })
-        }
-        // 自定义字段字段长度
-        const codeLength = (value) => {
-            console.log(value);
-            let data = this.state.fields;
-            data.length = value;
-            this.setState({
-                fields: data
-            })
-        }
-        const codeDate = (value) => {
-            let data = this.state.fields;
-            data.dateFormat = value.join()
-            this.setState({
-                listDate: value,
-                fields: data
-            })
-        }
-        // 字段必输值唯一选择执行的函数
-        const codeRequire = (value) => {
-            let data = this.state.fields;
-            data.isRequired = false
-            data.isUnique = false
-            data.isReadonly = false
-            data.line = 1
-            if (value.join().indexOf('true')!=-1) {
-                data.isRequired = true
-            }
-            if (value.join().indexOf('unique')!=-1) {
-                data.isUnique = true
-            }
-            if (value.join().indexOf('readonly')!=-1) {
-                data.isReadonly = true
-            }
-            if (value.join().indexOf('nowrap')!=-1) {
-                data.line = 1
-            }
-            if (data.type=='TEXT') {
-                data.line = 1
-            }
-            this.setState({
-                value: value,
-                fields: data
-            })
-        }
-
-        const codeRequireTwo = (value) => {
-            
-            let data = this.state.fieldsEdite;
-            data.isRequired = false
-            data.isUnique = false
-            data.isReadonly = false
-            data.line = 1
-            if (value.join().indexOf('true')!=-1) {
-                data.isRequired = true
-            }
-            if (value.join().indexOf('unique')!=-1) {
-                data.isUnique = true
-            }
-            if (value.join().indexOf('readonly')!=-1) {
-                data.isReadonly = true
-            }
-            if (value.join().indexOf('nowrap')!=-1) {
-                data.line = 1
-            }
-            this.setState({
-                value: value,
-                fieldsEdite: data
-            })
-        }
-        // 添加自定义字段，选择下拉框，下拉框输入值的时候触发的函数
-        const handleSelect = (index, value) => {
-            let data = this.state.fields;
-            data.options[index] = {label: value,value: value+index};
-            this.setState({
-                fields: data
-            })
-            console.log(this.state.fields);
-        }
-
-        const handleEditeCoce = (index, inj) => {
-            // let reqData = this.state.resData;
-            // reqData.fieldset[index].fields[inj].label
-            this.state.editeCodeIndex.index = index;
-            this.state.editeCodeIndex.inj = inj;
-            if (this.state.resData.fieldset[index].fields[inj].isCustom) { 
-                this.setState({
-                    dialogOne: true
-                })
-            } else {
-                this.setState({
-                    dialogTwo: true,
-                })
-            }
-            
-        }
 
         const handlePageName = (e) => {
-   
+
             this.setState({
-                pageValue : e.target.value
+                pageValue: e.target.value
             })
         }
+        const {resData = {}} = this.state;
+
         return (
-            <div className="setFont">
-                <IceContainer className='subtitle'>
+            <IceContainer className="pch-container setFont">
+                <Title title="进件模块页面字段编辑" />
+                <div className="pch-form">
                     <div className="pageName">
-                        <label>页面名称</label>
+                        <label>
+                            页面名称
+                        </label>
                         <input type="text" name='' onChange={handlePageName} value={this.state.pageValue} />
                     </div>
-                </IceContainer>
-                <div className="container">
-                    {/*渲染左边  */}
-                    <div className="container-left">
-                        <ul className='scrollFix'>
-                            {
-                                this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
-                                    return (
-                                        <li className={cx({ 'active': this.state.leftActive === index })} key={index}>
-                                            <a  onClick={this.menuNav.bind(this,item.name,index)}>{item.name}</a>
-                                        </li>
-                                    )
-                                })}
-
-                        </ul>
-                    </div>
-                    {/* 渲染右边 */}
-                    <div className="container-right">
-                        <div className="dynamic-demo">
-                            {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
-                                return (
-                                    <div key={index}>
-                                        {/*添加字段按钮和小标题  */}
-                                        <div className='baseDetail customer'>
-                                            <span className='active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
-                                                {
-                                                    this.state.subTitle == index + 1 ?
-                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={this.handleGroupTitleSubmint.bind(this, index)} className='moduleStr' />
-                                                        :
-                                                        <Input placeholder="" value={item.name} className='moduleStr' readOnly />
-                                                }
-
-                                            </span>
-                                            {
-
-                                                index == 0 ? <span className="addStr" onClick={handleAddCode.bind(this, index)}>自定义字段</span> :
-                                                    <span>
-                                                        <span className="addStr" onClick={handleAddCode.bind(this, index)}>自定义字段</span>
-                                                        <span className='icon down' onClick={moveDown.bind(this, index)}>&#xe629;</span>
-                                                        <span className='icon up' onClick={moveUp.bind(this, index)}>&#xe62b;</span>
-                                                        <span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}>&#xe625;</span>
-                                                    </span>
-                                            }
-
-                                        </div>
-                                        <div className='ui-sortable'>
-                                            {index == 0 ? item.fields.map((item, inj) => {
-                                                if (item.isCustom) {
-                                                    return (
-                                                        // 基本信息里面自定义字段
-                                                        <div onMouseLeave={hover.bind(this, 0)} onMouseEnter={hover.bind(this, 1, item.label)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false', { active: this.state.rightActive == item.label })} key={inj} data-row={item.line==1? true : ''}>
-                                                            <div className="clearfix">
-                                                                <label htmlFor="" className='label'>
-                                                                    <Balloon
-                                                                            type="primary"
-                                                                            trigger={ <span className='ellips' onDoubleClick={handleEditeCoce.bind(this, index, inj)} title={item.label}>
-                                                                            <span className='required' onClick={validaRequire.bind(this, index, inj)}>
-                                                                                {item.isRequired ? <span>*</span> : ''}
-                                                                            </span>    
-                                                                            {item.label}
-                                                                        </span>}
-                                                                            closable={false}
-                                                                            triggerType="hover">
-                                                                            {item.label}
-                                                                    </Balloon>    
-                                                                </label>
-                                                                {handleFixed(item)}
-                                                                <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
-                                                            </div>
-                                                            <span className="delete"
-                                                                onClick={this.handleRemoveElement.bind(this, index, inj)}>
-                                                                &times;
-                                                                </span>
-                                                        </div>
-                                                    )
-                                                } else {
-                                                    return (
-                                                        // 固定字段
-                                                        <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false')} key={inj} data-row={item.line == 1 ? true : ''}>
-                                                            <div className="clearfix">
-                                                                <label htmlFor="" className='label'>
-                                                                    <Balloon
-                                                                            type="primary"
-                                                                            trigger={ <span className='ellips'>
-                                                                            <span className='required'>*</span>  
-                                                                            {item.label}:
-                                                                            </span>}
-                                                                            closable={false}
-                                                                            triggerType="hover">
-                                                                            {item.label}
-                                                                    </Balloon>    
-                                                                </label>
-                                                                {handleFixed(item)}
-                                                                <span className='edite icon'>&#xe62a;</span>
-                                                            </div>
-                                                            <span className="delete"
-                                                                onClick={this.handleRemoveElement.bind(this, index)}>
-                                                                &times;
-                                                                </span>
-                                                        </div>
-                                                    )
-                                                }
-                                                
-                                            }) : ''
-                                                // item.fields.map((item, index) => {
-                                                //     return (
-                                                //         <div  className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                //             'false')} key={index}>
-                                                //             <div className="clearfix">
-                                                //                 <label htmlFor="">
-                                                //                     <span className='ellips' title={item.label}>{item.label}</span>
-                                                //                     <span className='required'>*</span>
-                                                //                 </label>
-                                                //                 {handleFixed(item)}
-                                                //                 <span className='edite icon'>&#xe62a;</span>
-                                                //             </div>
-                                                //             <span className="delete"
-                                                //                 onClick={this.handleRemoveElement.bind(this, index)}>
-                                                //                 &times;
-                                                //                 </span>
-                                                //         </div>
-                                                //     )
-                                                // })  
-                                            }
-                                            
-
-                                            {index == 0 ? '' : item.fields.map((item, inj) => {
-                                                return (
-                                                    <div key={inj} onMouseLeave={hover.bind(this, 0)} onMouseEnter={hover.bind(this, 1, item.label)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                        'false', {
-                                                            active: this.state.rightActive == item.label
-                                                        })} data-row={item.line == 1 ? true : ''}>
-                                                        <div className="clearfix">
-                                                            <label htmlFor=""  className='label'>
-                                                                <Balloon
-                                                                        type="primary"
-                                                                        trigger={ <span className='ellips' onDoubleClick={handleEditeCoce.bind(this, index, inj)} title={item.label}>
-                                                                        <span className='required' onClick={validaRequire.bind(this, index, inj)}>
-                                                                            {item.isRequired ? <span>*</span> : ''}
-                                                                        </span>    
-                                                                        {item.label}
-                                                                    </span>}
-                                                                        closable={false}
-                                                                        triggerType="hover">
-                                                                        {item.label}
-                                                                </Balloon> 
-                                                            </label>
-                                                            {handleFixed(item)}
-                                                            <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
-                                                        </div>
-                                                        <span className="delete"
-                                                            onClick={this.handleRemoveElement.bind(this, index, inj)}>
-                                                            &times;
-                                                        </span>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                    <div className="container">
+                        {/*渲染左边  */}
+                        <div className="container-left">
+                            <ul className='scrollFix'>
+                                {resData.fieldset && resData.fieldset.map((item, index) => {
+                                     return (
+                                         <li className={cx({
+                                                    'active': this.state.leftActive === index
+                                                })} key={index}>
+                                             <a onClick={this.menuNav.bind(this, item.name, index)}>
+                                                 {item.name}
+                                             </a>
+                                         </li>
+                                     )
+                                 })}
+                            </ul>
                         </div>
-                        <div className='addModule' onClick={handleAddModule}> <span className='icon'>&#xe626;</span>添加区域</div>
-                        <div className="dynamic-demo">
-                            <div className='baseDetail customer'>
-                                <span className='active'>
-                                    <Input placeholder="" value='材料提交' readOnly className='moduleStr' readOnly />
-                                </span>
+                        {/* 渲染右边 */}
+                        <div className="container-right">
+                            <div className="dynamic-demo">
+                                {resData.fieldset && resData.fieldset.map((item, index) => {
+                                     return (
+                                         <div key={index}>
+                                             {/*添加字段按钮和小标题  */}
+                                             <div className='base-detail customer clearfix'>
+                                                 <div className='base-detail-name active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
+                                                     <Input
+                                                         placeholder=""
+                                                         value={item.name}
+                                                         onChange={this.handleGroupTitle.bind(this, index)}
+                                                         onBlur={this.handleGroupTitleSubmint.bind(this, index)}
+                                                         className='moduleStr'
+                                                         readOnly={this.state.subTitle != index + 1} />
+                                                 </div>
+                                                 <div className="base-detail-opt">
+                                                     {index != 0 &&
+                                                      <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}></span> <span className='icon up' onClick={moveUp.bind(this, index)}></span> <span className='icon down'
+                                                          onClick={moveDown.bind(this, index)}></span></span>}
+                                                     <span className="addStr" onClick={handleAddCode.bind(this, index)}>自定义字段</span>
+                                                 </div>
+                                             </div>
+                                             <div className='ui-sortable'>
+                                                 {item.fields.map((item, inj) => {
+                                                      if (item.isFixed) {
+                                                          // 固定字段
+                                                          return (
+                                                              <div className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
+                                                                      'false')} key={inj} data-row={item.line == 1 ? true : ''}>
+                                                                  <div className="clearfix">
+                                                                      <label htmlFor="" className='label'>
+                                                                          <Balloon type="primary" trigger={<span className='ellips'><span className='required'>*</span>
+                                                                                                           {item.label}:</span>} closable={false} triggerType="hover">
+                                                                              {item.label}
+                                                                          </Balloon>
+                                                                      </label>
+                                                                      {handleFixed(item)}
+                                                                      <span className='edite icon'></span>
+                                                                  </div>
+                                                                  <span className="delete" onClick={this.handleRemoveElement.bind(this, index)}>×</span>
+                                                              </div>
+                                                          )
+                                                      } else {
+                                                          return (
+                                                              <div
+                                                                  onMouseLeave={hover.bind(this, 0)}
+                                                                  onMouseEnter={hover.bind(this, 1, item.label)}
+                                                                  className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
+                                                                                 'false', {
+                                                                                     active: this.state.rightActive == item.label
+                                                                                 })}
+                                                                  key={inj}
+                                                                  data-row={item.line == 1 ? true : ''}>
+                                                                  <div className="clearfix">
+                                                                      <label htmlFor="" className='label'>
+                                                                          <Balloon type="primary" trigger={<span className='ellips' onDoubleClick={this.handleEditeCoce.bind(this, item, index, inj)} title={item.label}><span className='required' onClick={validaRequire.bind(this, index, inj)}>{item.isRequired ? <span>*</span> : ''}</span>
+                                                                                                           {item.label}
+                                                                                                           </span>} closable={false} triggerType="hover">
+                                                                              {item.label}
+                                                                          </Balloon>
+                                                                      </label>
+                                                                      {handleFixed(item)}
+                                                                      <span className='edite icon' onClick={this.handleEditeCoce.bind(this, item, index, inj)}></span>
+                                                                  </div>
+                                                                  <span className="delete" onClick={this.handleRemoveElement.bind(this, index, inj)}>×</span>
+                                                              </div>
+                                                          )
+                                                      }
+                                                  })}
+                                             </div>
+                                         </div>
+                                     )
+                                 })}
                             </div>
-                        </div>
-                        <div className='submit'>
-                            <Button
-                                type="primary"
-                                style={{ marginLeft: '10px' }}
-                                onClick={this.upPage}>
-                                上一步
-                            </Button>
-                            <Button
-                                type="secondary"
-                                style={{ marginLeft: '10px' }}
-                                onClick={this.downPage}>
-                                提交
-                            </Button>
-                            <Button
-                                type="normal"
-                                onClick={this.cancelPage}
-                                style={{ marginLeft: '10px' }}>
-                                取消
-                            </Button>
+                            <div className="addModule">
+                                <BtnAddRow text="添加区域" onClick={handleAddModule} />
+                            </div>
+                            <div className="dynamic-demo">
+                                <div className='base-detail customer'>
+                                    <span className='active'><Input
+                                                                 placeholder=""
+                                                                 value='材料提交'
+                                                                 readOnly
+                                                                 className='moduleStr'
+                                                                 readOnly /></span>
+                                </div>
+                            </div>
+                            <div className='submit'>
+                                <Button type="primary" style={{
+                                                                  marginLeft: '10px'
+                                                              }} onClick={this.upPage}>
+                                    上一步
+                                </Button>
+                                <Button type="secondary" style={{
+                                                                    marginLeft: '10px'
+                                                                }} onClick={this.downPage}>
+                                    提交
+                                </Button>
+                                <Button type="normal" onClick={this.cancelPage} style={{
+                                                                                           marginLeft: '10px'
+                                                                                       }}>
+                                    取消
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <Dialog
+                <SetFontAddDialog
                     visible={this.state.dialogOne}
-                    onOk={handleSubmitCode}
-                    closable="esc,mask,close"
-                    onCancel={onClose}
-                    onClose={onClose}
-                    title="添加自定义字段"
-                    footer={footer}
-                    footerAlign='center'
-                >
-                    <div className='customerStr'>
-                        <div className='first'>
-                            <label htmlFor="">
-                                <span>字段名称</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeName} />
-                        </div>
-                        <div>
-                            <label htmlFor="">
-                                <span>字段后缀</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeSuffix}/>
-                        </div>
-                        <br />
-                        <div className='first'>
-                            <label htmlFor="">
-                                <span>字段类型</span>
-                            </label>
-                            <Select size="large" onChange ={codeType}>
-                                <Select.Option select value="STRING">输入文本</Select.Option>
-                                <Select.Option value="TEXT">文本域</Select.Option>
-                                <Select.Option value="RADIO">单选框</Select.Option>
-                                <Select.Option value="SELECT">下拉框</Select.Option>
-                                <Select.Option value="INT">输入数字</Select.Option>
-                                <Select.Option value="CHECKBOX">复选框</Select.Option>
-                                <Select.Option value="DATE">选择日期</Select.Option>
-                                <Select.Option value="ADDRESS">选择地址</Select.Option>
-                                <Select.Option value="DECIMAL">输入数字（含小数点）</Select.Option>
-                            </Select>
-                        </div>
-                        <div>
-                            <label htmlFor="">
-                                <span>字段长度</span>
-                            </label>
-                            <Input placeholder="请输入" onChange ={codeLength} />
-                        </div>
-                    </div>
-                    <div className='beautify'>
-                        <CheckboxGroup
-                            value={this.state.value}
-                            dataSource={list}
-                            onChange={codeRequire}
-                        />
-                    </div>
-                    {this.state.fields.type == "TEXT" ? <div>提示：字段类型为文本域，字段独占一行显示</div>:''}
-                    {/* <div className='beautify constraint'>
-                        <Checkbox />
-                        <span className='marv5'>显示约束</span>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                    </div> */}
-                    {/* <div className='beautify'>
-                        <label className='marr10'>值为计算所得</label>
-                        <RadioGroup
-                            dataSource={list}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div className='beautify constraint'>
-                        <Select size="small" className='marv5 mar0'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <span className='insert'>插入</span>
-                    </div>
-                    <div className='beautify'>
-                        <Input className="" placeholder="Medium" />
-                    </div> */}
-                    
-                    { this.state.boolSelect ? <div className='beautify constraint'>
-                        <label htmlFor="" className='changSet' >选择设置:</label><br />
-                        {this.state.fields.options.map((item, index) => {
-                            return (
-                                index == 0 ?
-                                    <div className='dropDown clearfix' key={index}>
-                                        <div>
-                                            {/* <Checkbox /> */}
-                                            <Input className="" placeholder="请输入值" onChange={handleSelect.bind(this,index)}/>
-                                            <div className='addReduce'>
-                                                <span onClick={handleAddValue.bind(this, 'add')}>+</span>
-                                            </div>
-                                        </div>
-                                    </div> :
-                                    <div className='dropDown' key={index}>
-                                        <div>
-                                            {/* <Checkbox /> */}
-                                            <Input className="" value={item.label} placeholder=" 请输入值" onChange={handleSelect.bind(this,index)}/>
-                                            <div className='addReduce'>
-                                                <span onClick={handleAddValue.bind(this, 'add')}>+</span>
-                                                <span onClick={handleAddValue.bind(this, index)}>-</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                            )
-
-                        })}
-
-                    </div>: ''}
-                    {this.state.boolDate ? 
-                    <div className='beautify'>
-                        <label htmlFor="" className='marr10'>日期格式</label>
-                        <CheckboxGroup
-                            value={this.state.listDate}
-                            dataSource={listDate}
-                            onChange={codeDate}
-                        /> 
-                    </div>: ""}
-
-                </Dialog>
-                <Dialog
+                    onClose={this.onClose}
+                    data={this.state.fields}
+                    changeFormData={this.changeFormData.bind(this)}
+                    submitFormData={this.handleSubmitFormData.bind(this)} />
+                <SetFontEditDialog
                     visible={this.state.dialogTwo}
-   
-                    closable="esc,mask,close"
+                    onClose={this.onClose}
+                    data={this.state.fields}
+                    changeFormData={this.changeFormData.bind(this)}
+                    submitFormData={this.handleSubmitFormData.bind(this)} />
+            </IceContainer>
 
-                    onClose={onClose}
-                    title="修改自定义字段"
-                    footer={footerTwo}
-                    footerAlign='center'
-                >
-                    <div className='customerStr customerEdite'>
-                        <div className='first'>
-                            <label htmlFor="">
-                                <span>字段名称</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeNameTwo}/>
-                        </div>
-                    </div>
-                    <div className='beautify'>
-                        <CheckboxGroup
-                            value={this.state.value}
-                            dataSource={list}
-                            onChange={codeRequireTwo}
-                        />
-                    </div>
-                    {this.state.fields.type == "TEXT" ? <div>提示：字段类型为文本域，字段独占一行显示</div>:''}                    
-                    {/* <div className='beautify constraint'>
-                        <Checkbox />
-                        <span className='marv5'>显示约束</span>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                    </div>
-                    <div className='beautify'>
-                        <label className='marr10'>值为计算所得</label>
-                        <RadioGroup
-                            dataSource={list}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div className='beautify constraint'>
-                        <Select size="small" className='marv5 mar0'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <span className='insert'>插入</span>
-                    </div>
-                    <div className='beautify'>
-                        <Input className="" placeholder="Medium" />
-                    </div> */}
-
-                </Dialog>
-            </div>
-
-        );
+            );
     }
 }

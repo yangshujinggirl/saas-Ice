@@ -1,11 +1,16 @@
 .setFont {
-    font-size: 14px;
-    color: #333333;
-    padding-left: 15px;
-    padding-right: 15px;
-    background: #fff;
+    // font-size: 14px;
+    // color: #333333;
+    // padding-left: 15px;
+    // padding-right: 15px;
+    // background: #fff;
     .subtitle {
-        padding-left: 0 !important;
+        // padding-left: 0 !important;
+    }
+    .pch-form{
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
     }
     .pageName {
         label {
@@ -61,7 +66,7 @@
             padding: 15px;
             padding-top: 25px;
             .dynamic-demo{
-                .baseDetail {
+                .base-detail {
                     border-bottom: 2px solid #d8d8d8;
                     padding-bottom: 6px;
                     margin-top: 15px !important;
@@ -72,13 +77,13 @@
                             border-bottom: 1px solid #d8d8d8;
                             border-radius: 0 !important;
                             &[readOnly] {
-                                border: none;
+                                border-bottom-color: #fff;
                             }
                         }
                         
                     }
-                    span:first-child {
-                        
+                    .base-detail-name{
+                        float: left;
                         &.active {
                             color: #FC9E25;
                         }
@@ -88,7 +93,11 @@
                             font-weight: bold;
                         }
                     }
-                    span.addStr {
+                    .base-detail-opt{
+                        float:right;
+                    }
+                    .addStr {
+                        display: inline-block;
                         background: #FC9E25;
                         border-radius: 4px;
                         height:30px;
@@ -96,14 +105,12 @@
                         width: 90px;
                         text-align: center;
                         color: #fff;
-                        float:right;
                         margin-top: -14px;
                         margin-left: 10px;
                         cursor: pointer;
                     }
                     .icon {
                         display: none;
-                        float: right;
                         cursor: pointer;
                         margin: -5px 10px 0 10px;
                         &.delete {
@@ -113,7 +120,7 @@
                     }
                     &.customer {
                         .icon {
-                            display: block;
+                            display: inline-block;
                         }
                     }
                 }
@@ -267,17 +274,8 @@
                 
             }
             .addModule {
-                text-align: center;
-                background: #FAFAFA;
-                border: 1px dotted #D8D8D8;
-                border-radius: 8px;
-                line-height: 50px;
                 margin-top: 30px;
                 margin-bottom: 30px;
-                cursor: pointer;
-                .icon {
-                    margin-right: 5px;
-                }
             }
             .submit {
                 text-align: center;
