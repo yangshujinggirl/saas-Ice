@@ -49,6 +49,36 @@ class ProcessReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//流程配置产品——产品类型
+	getProcessProdType(){
+		let options = {
+			url: this._host + `/product/data`,
+			method: 'get',
+			contentType: 'application/x-www-form-urlencoded',
+			// params:condition
+		}
+		return super.fetchData(options);
+	}
+	//流程配置产品左侧列表
+	getProcessProdList(condition){
+		let options = {
+			url: this._host + `/product/`,
+			method: 'get',
+			contentType: 'application/x-www-form-urlencoded',
+			params:condition
+		}
+		return super.fetchData(options);
+	}
+	//流程配置产品保存
+	ProcessProdSave(data){
+		let options = {
+			url: this._host + '/processes/product',
+			method: 'POST',
+			contentType: 'application/x-www-form-urlencoded',
+			data: data
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new ProcessReq();

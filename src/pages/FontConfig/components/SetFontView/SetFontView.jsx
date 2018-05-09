@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
 import { Balloon } from "@icedesign/base";
-import "./SetFont.scss"
+// import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
 import Tools from './../../../../base/utils/Tools'
