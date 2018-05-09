@@ -21,6 +21,7 @@ export default class CreditInformation extends BaseApp {
 
     fetchData = (condition) => {
         this._condition = Object.assign(this._condition, condition);
+        console.log(this._condition)
         this.props.actions.search(this._condition);
     }
 
@@ -30,6 +31,12 @@ export default class CreditInformation extends BaseApp {
     changePage = (currentPage) => {
         this._condition.page = currentPage;
         this.props.actions.search(this._condition);
+    }
+    //点击签收
+    signIN = (taskId)=>{
+      this.props.actions.signIn({
+        taskId: taskId
+      });
     }
 
     /**
@@ -46,7 +53,7 @@ export default class CreditInformation extends BaseApp {
             }
             // 签收
             case this.OPERATE_TYPE.OTHER1: {
-              hashHistory.push(`creditinformation/detail/${data.loanId}`)
+              this.signIN(data.taskId);
               break;
             }
             // 征信录入

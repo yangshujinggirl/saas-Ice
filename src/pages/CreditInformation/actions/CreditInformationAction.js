@@ -83,12 +83,27 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data}))
+      dispatch(fetchSuccess({ details: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
+
+// 获取轨迹详情
+export const getTrackDetail = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getTrackDetail(data).then((res) => {
+      dispatch(fetchSuccess({ trackDetail: res.data, view: 'form' }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 
 // 删除一条记录
 export const remove = (id) => {

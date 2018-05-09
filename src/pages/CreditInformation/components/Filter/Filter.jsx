@@ -36,6 +36,13 @@ export default class Filter extends Component {
     }
 
     handleSubmit() {
+        const {submitStart, submitEnd} = this.state.value;
+        if(submitStart && submitEnd){
+          if(submitEnd.getTime() <= submitStart.getTime()){
+            Toast.help("申请开始时间不能大于申请结束时间");
+            return;
+          }
+        }
         this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
 

@@ -128,6 +128,7 @@ export default class ReviewApproveDetail extends Component {
       tableList:data
     })
   }
+  //提交
   submit = (e,data)=>{
     e.preventDefault();
     this.field.validate((errors, values) => {
@@ -171,6 +172,7 @@ export default class ReviewApproveDetail extends Component {
       })
     });
   }
+  //是否为复选框
   isCheckBox(key) {
     let list = this.props.detail.list;
     for (var i = 0; i < list.length; i++) {
@@ -182,7 +184,7 @@ export default class ReviewApproveDetail extends Component {
     }
     return false;
   }
-
+  //渲染
   render() {
     const details = this.props.detail || {};
     const reviewList = this.props.trackDetail ? this.props.trackDetail.approveInfo  : {};

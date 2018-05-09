@@ -8,15 +8,16 @@ export default {
     path: 'add',
     component: CreditInformation.CreditInformationForm
   },{
-    path: 'edit/:id',
+    path: 'creditentry/:id',
     component: CreditInformation.CreditInformationForm
   },{
     path: 'detail/:id',
-    component: CreditInformation.CreditInformationDetail
+    component: CreditInformation.CreditInformationDetail,
+    name: '进件审查详情'
   }],
   component: Layout,
   indexRoute: {
     component: CreditInformation.CreditInformation,
-    name : '征信处理',
+    name : '进件审核',
   }
 }

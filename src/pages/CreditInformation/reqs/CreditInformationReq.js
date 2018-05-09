@@ -37,6 +37,43 @@ class CreditInformationReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //轨迹详情
+  getTrackDetail(data) {
+    let options = {
+      // url: this._loanHost + `  /process/${data.proInstId}/track`,
+      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/process/15698/track',
+      method: 'Get',
+    }
+    return super.fetchData(options);
+  }
+  //获取进件材料详情
+  getLoadMaterialDetails(data) {
+    let options = {
+      url: this._host + `/loans/${data.loanId}/collect`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //获取进件详情
+  getDetail(id) {
+    let options = {
+      url: this._host + `/loans/${id}/screen`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //提交审查审批
+  submitReview(data){
+    let options = {
+      // url: this._loanHost +  `/tasks/${data.taskId}`,
+      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/tasks/12311',
+      method: 'PUT',
+      data:data
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new CreditInformationReq();
