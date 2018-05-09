@@ -16,9 +16,14 @@ export default {
       component: Index.LoanModify
     },
     {
-      path: 'loanApplication(/:id)',
+      path: 'loanApplication/:id',
       name:'车贷申请',
       component: Index.LoanApplication
+    },
+    {
+      path: 'loanApplicationOne(/:id)',
+      name:'车贷申请',
+      component: Index.LoanApplicationOne
     }
   ],
   component: HeaderAsideFooterResponsiveLayout,

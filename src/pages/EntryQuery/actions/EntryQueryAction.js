@@ -62,6 +62,20 @@ export const search = (condition) => {
   }
 }
 
+// 获取第一页字段
+export const searchField = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.searchField(condition).then((res) => {
+      dispatch(fetchSuccess({ fieldList: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 // 保存表单
 export const save = (data) => {
   return (dispatch) => {
