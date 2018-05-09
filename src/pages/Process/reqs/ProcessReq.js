@@ -7,12 +7,12 @@ class ProcessReq extends CurdReq{
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
-            // retrieve: this._host + '/processes',
-            retrieve: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/processes',
-            delete: this._host + '/detail.json',
-            detail: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/processes/detail'
+            create: this._config.WF_HOST + '/filter-table-list.json',
+            update: this._config.WF_HOST + '/filter-table-list.json',
+            retrieve: this._config.WF_HOST + '/processes',
+            // retrieve: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/processes',
+            delete: this._config.WF_HOST + '/detail.json',
+            detail: this._config.WF_HOST + '/processes/:id'
         }
 	}
 
@@ -22,9 +22,8 @@ class ProcessReq extends CurdReq{
 	 */
 	getCustomMenuList(){
 		let options = {
-			// url: 'http://172.16.0.242:7300/mock/5a52d59e84e9091a31919312/example/process/search',
-			url: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/task/types',
-			// url: this._host + '/task_types',
+			// url: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/task/types',
+			url: this._config.WF_HOST + '/task/types',
 			method: 'GET',
 			contentType: 'application/x-www-form-urlencoded',
 			// params: 'mobile=13917538027&card=211224198612285536'

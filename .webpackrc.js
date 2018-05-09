@@ -1,4 +1,4 @@
-const LOAN_HOST = 'http://172.16.0.218:8080/';
+const SAAS_HOST = 'http://172.16.0.218:8080/';
 const CRM_HOST = 'http://172.16.0.211:8080/';
 // const CRM_HOST = 'http://172.16.0.190:8080/';
 
@@ -26,44 +26,40 @@ module.exports = {
     },
     devServer: {
         proxy: {
-            '/loan-ft1': {
-                target: LOAN_HOST,
+            '/saas': {
+                target: SAAS_HOST,
                 changeOrigin: true,
+                pathRewrite: { "^/saas": "" },
                 bypass: function(req, res, proxyOpt) {
-                    // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');
-                    res.set('X-ICE-PROXY-BY', LOAN_HOST);
+                    res.set('X-ICE-PROXY-BY', SAAS_HOST);
                 },
             },
-            '/loanApi': {
-                target: LOAN_HOST,
+            '/loan': {
+                target: SAAS_HOST,
                 changeOrigin: true,
-                pathRewrite: { "^/loanApi": "" },
+                pathRewrite: { "^/loan": "/loan-ft1" },
                 bypass: function(req, res, proxyOpt) {
-                    // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');
-                    res.set('X-ICE-PROXY-BY', LOAN_HOST);
-                },
-            },
-            '/processApi': {
-                target: ' http://172.16.0.218:8080/wf-dev',
-                changeOrigin: true,
-                pathRewrite:{"^/processApi" : ""},
-                bypass: function(req, res, proxyOpt) {
-                    // 添加 HTTP Header 标识 proxy 开启
-                    res.set('X-ICE-PROXY', 'on');
-                    res.set('X-ICE-PROXY-BY', ' http://172.16.0.218:8080/wf-dev');
+                    res.set('X-ICE-PROXY-BY', SAAS_HOST);
                 },
             },
             '/crm': {
                 target: CRM_HOST,
                 changeOrigin: true,
+                bypass: function(req, res, proxyOpt) {
+                    res.set('X-ICE-PROXY', 'on');
+                    res.set('X-ICE-PROXY-BY', CRM_HOST);
+                },
             },
-          // /loan/tasks?
-            '/loan': {
-              target: LOAN_HOST,
-              changeOrigin: true,
-              pathRewrite:{"^/loan" : ""},
+            '/wf': {
+                target: SAAS_HOST,
+                changeOrigin: true,
+                pathRewrite: { "^/wf": "/wf-ft1" },
+                bypass: function(req, res, proxyOpt) {
+                    res.set('X-ICE-PROXY', 'on');
+                    res.set('X-ICE-PROXY-BY', SAAS_HOST);
+                },
             },
         },
     },

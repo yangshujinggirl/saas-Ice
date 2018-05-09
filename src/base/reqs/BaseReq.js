@@ -13,6 +13,7 @@ class BaseReq {
     this._host = BaseConfig.HOST; //接口地址
     this._loanHost = BaseConfig.LOAN_HOST; //贷前接口
     this._pageSize = BaseConfig.PAGESIZE; //分页大小
+    this._config = BaseConfig;
   }
 
   fetchData(options) {

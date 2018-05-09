@@ -1,9 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect, Balloon } from '@icedesign/base';
-import "./SetFont.scss"
-import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
 import SetFont_ from './SetFont_';
 
