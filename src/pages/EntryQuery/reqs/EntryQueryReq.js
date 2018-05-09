@@ -54,6 +54,34 @@ class EntryQueryReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //获取第一页基本信息字段
+  searchField(data) {
+    let options = {
+      url: this._host + `/fields?isFixed=${data.isFixed}`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //获取产品编号
+  getProductNumApi(limit) {
+    let options = {
+      url: this._host + `/product?limit=${limit}&status=1`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //新增进件
+  addLoanApi(params) {
+    let options = {
+      url: this._host + '/loans',
+      method: 'POST',
+      contentType: 'application/json',
+      data:params
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new EntryQueryReq();

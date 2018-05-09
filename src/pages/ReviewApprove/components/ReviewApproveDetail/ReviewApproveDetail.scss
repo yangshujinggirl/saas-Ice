@@ -29,6 +29,7 @@
   .review-page{
     height: 800px;
     width: 15%;
+    max-width: 160px;
     box-sizing: border-box;
     .title{
       float: left;
@@ -71,7 +72,7 @@
   }
   .rcontent-edito{
     float: right;
-    width: 85%;
+    width: auto;
     box-sizing: border-box;
     overflow-y: scroll;
   }

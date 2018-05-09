@@ -138,3 +138,30 @@ export const changeHasProcess = (hasProcess) => {
     dispatch(change({hasProcess}))
   }
 }
+//流程配置产品左侧列表
+export const getProcessProdList = (condition) => {
+  return (dispatch) => {
+
+    Req.getProcessProdList(condition).then((res) => {
+      if(res.code == 200) {
+        dispatch(fetchSuccess({ formData: res.data }))
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//流程配置产品保存
+export const ProcessProdSave = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.ProcessProdSave(data).then((res) => {
+      // if (!res || res.code != 200) return;
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}

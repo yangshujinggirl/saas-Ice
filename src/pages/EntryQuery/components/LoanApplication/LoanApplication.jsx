@@ -128,6 +128,7 @@ export default class LoanApplication extends Component {
     }
     return false;
   }
+
   //新增列表一列传递的方法
   addColumn = (data)=>{
     this.setState({

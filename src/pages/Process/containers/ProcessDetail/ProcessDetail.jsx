@@ -31,7 +31,6 @@ export default class ProcessDetail extends Component {
      */
     componentDidMount() {
         let {actions, params} = this.props;
-        console.log(this.props)
         if (params.id) {
             actions.getDetail(params.id);
         }

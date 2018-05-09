@@ -165,7 +165,7 @@ export default class addThree extends Component {
                               </Col>
                               <Col xxs={24} xs={12} l={8} xl={6}>
                                  <FormItem {...formItemLayout} label="资方：">
-                                    <IceFormBinder name="zifang">
+                                    <IceFormBinder name="tenantId">
                                     <label className="process-lable">中国银行</label>
                                     </IceFormBinder>
                                  </FormItem>
