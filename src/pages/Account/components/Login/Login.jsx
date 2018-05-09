@@ -78,7 +78,7 @@ export default class Login extends Component {
           Storage.remove('REMEMBER');
         }
 
-        Cookie.set('PCTOKEN', res.data.token);
+        // Cookie.set('PCTOKEN', res.data.token);
         
         let fromUrl = this.props.params.from;
         if(fromUrl){

@@ -37,6 +37,7 @@ class BaseReq {
     let pctoken = Cookie.get('PCTOKEN');
     if(pctoken){
       header['Authorization'] = pctoken;
+      header['token'] = pctoken;
     }
 
     if (!options.method || options.method == 'get') {
@@ -120,6 +121,10 @@ class BaseReq {
     }
 
     if (res.data.code == 200) {
+      //处理请求头，获取token，存储cookie
+      if(res.headers.token){
+        Cookie.set('PCTOKEN', res.headers.token);
+      }
       // 请求成功响应格式
       // res.data = {
       //   code: 200,

@@ -7,7 +7,7 @@ import FoundationSymbol from 'foundation-symbol';
 import { Link, hashHistory } from 'react-router';
 import { headerNavs } from './../navs';
 import Logo from './Logo';
-import {Recrysuve, Storage} from '../base/utils';
+import {Recrysuve, Storage, Cookie} from '../base/utils';
 import AccountReq from '../pages/Account/reqs/AccountReq';
 
 export default class Header extends PureComponent {
@@ -21,7 +21,9 @@ export default class Header extends PureComponent {
     AccountReq.logout().then((res) => {
       Storage.remove('MENUS');
       Storage.remove('USERINFO');
-      hashHistory.push('/account');
+      Cookie.remove('PCTOKEN');
+      location.href = '/login'
+      // hashHistory.push('/account');
     })
   }
   render() {

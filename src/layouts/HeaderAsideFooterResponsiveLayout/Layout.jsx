@@ -57,12 +57,12 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
       }
     });
 
-    setInterval(function(){
-      CommonReq.getHeartToken().then(res => {
-        if (!res || res.code != 200) return;
-        Cookie.set('PCTOKEN', res.data.token);
-      })
-    }, 600000)
+    // setInterval(function(){
+    //   CommonReq.getHeartToken().then(res => {
+    //     if (!res || res.code != 200) return;
+    //     Cookie.set('PCTOKEN', res.data.token);
+    //   })
+    // }, 600000)
   }
 
   /**
