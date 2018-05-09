@@ -16,9 +16,9 @@ class ProcessFields extends Component {
     componentWillMount() {
         // this.props.actions.checkEssential('2')
     }
+
     render() {
         const {data=[], visible, changeView} = this.props;
-
         return (
             <IceContainer className="pch-container" style={{display: visible ? '' : 'none'}}>
                 <Title title="查看必要字段详情" />

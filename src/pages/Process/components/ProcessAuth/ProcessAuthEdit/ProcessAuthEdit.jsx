@@ -245,7 +245,7 @@ export default class ProcessAuthEdit extends BaseApp {
             <Button className="buttonsSure" size="large" onClick={this.handleSure}>
               确定
               </Button>
-              <Button type="primary" className="return-btn buttonsBack" onClick={changeView.bind(this, PROCESS_VIEW.DETAIL)}>
+              <Button type="primary" className="return-btn buttonsBack" onClick={changeView.bind(this, PROCESS_VIEW.EDITFORM)}>
                   返回
                 </Button>
           </div>

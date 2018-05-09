@@ -3,39 +3,41 @@ import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
-import FilterForm from './Filter';
-import  Req from '../../reqs/ReviewApproveReq'
+import FilterForm from '../../components/Filter';
 
-// import './Process.scss';
+import  './CreditInformation.scss'
 
-export default class ReviewApprove extends BaseApp {
+export default class CreditInformation extends BaseApp {
     constructor(props) {
         super(props);
     }
+
     /**
      * 初始化
      */
     componentDidMount() {
         this.fetchData();
     }
+
     fetchData = (condition) => {
-        console.log(condition)
-        this.props.actions.search(condition);
-    }
-    //点击分页
-    changePage = (currentPage) => {
-        this.props.actions.search({
-            page: currentPage
-        });
+        this._condition = Object.assign(this._condition, condition);
+        console.log(this._condition)
+        this.props.actions.search(this._condition);
     }
 
+    /**
+     * 点击分页
+     */
+    changePage = (currentPage) => {
+        this._condition.page = currentPage;
+        this.props.actions.search(this._condition);
+    }
     //点击签收
     signIN = (taskId)=>{
       this.props.actions.signIn({
         taskId: taskId
       });
     }
-
 
     /**
      * 处理行列表中操作栏的点击事件
@@ -44,15 +46,20 @@ export default class ReviewApprove extends BaseApp {
      */
     handleOperateClick(data, type) {
         switch (type) {
-            //签收
-            case this.OPERATE_TYPE.OTHER1: {
-                this.signIN(data.taskId);
+            // 详情
+            case this.OPERATE_TYPE.VIEW: {
+                hashHistory.push(`creditinformation/detail/${data.loanId}`)
                 break;
             }
-            //详情
-            case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`reviewApprove/detail/${data.loanId}/${data.proInstId}/${data.taskId}`)
-                break;
+            // 签收
+            case this.OPERATE_TYPE.OTHER1: {
+              this.signIN(data.taskId);
+              break;
+            }
+            // 征信录入
+            case this.OPERATE_TYPE.OTHER1: {
+              hashHistory.push(`creditinformation/detail/${data.loanId}`)
+              break;
             }
         }
     }
@@ -60,8 +67,7 @@ export default class ReviewApprove extends BaseApp {
      * 渲染
      */
     render() {
-        const {pageData ={}, columns} = this.props;
-        console.log(this.props)
+        const {pageData, columns} = this.props;
         return (
             <IceContainer className="pch-container">
                 <Title title="查询" />

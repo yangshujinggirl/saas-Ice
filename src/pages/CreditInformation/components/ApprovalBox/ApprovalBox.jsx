@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Loading, Select, Feedback} from '@icedesign/base';
 import { Field } from '@icedesign/base/index';
-import Req from '../../../reqs/ReviewApproveReq';
+import Req from '../../reqs/CreditInformationReq';
 import  './ApprovalBox.scss'
 const FormItem = Form.Item;
 const Toast = Feedback.toast;
@@ -51,17 +51,18 @@ export default class ApprovalBox extends Component {
       let { choose, approveMsg} = values;
 
       console.log(approveMsg)
-      if(approveMsg == 'undefined'  || approveMsg == undefined){
-        Toast.show({
-          type: "help",
-          content: "请填写审查意见～",
-        });
-        return;
-      }
+
       if(choose == 'undefined' || choose == undefined){
         Toast.show({
           type: "help",
           content: "请填写审查结果～",
+        });
+        return;
+      }
+      if(approveMsg == 'undefined'  || approveMsg == undefined){
+        Toast.show({
+          type: "help",
+          content: "请填写审查意见～",
         });
         return;
       }

@@ -10,7 +10,7 @@ export default {
     path: 'edit/:id',
     component: ReviewApprove.ReviewApproveForm
   },{
-    path: 'detail/:loanId/:proInstId',
+    path: 'detail/:loanId/:proInstId/:taskId',
     component: ReviewApprove.ReviewApproveDetail,
     name :'审查审批详情'
   }],

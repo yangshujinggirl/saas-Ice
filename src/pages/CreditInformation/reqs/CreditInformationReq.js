@@ -1,6 +1,6 @@
 import { CurdReq } from 'base';
 
-class ReviewApproveReq extends CurdReq{
+class CreditInformationReq extends CurdReq{
 	constructor(){
 		super();
 
@@ -11,7 +11,7 @@ class ReviewApproveReq extends CurdReq{
             update: this._host + '/filter-table-list.json',
             retrieve: this._host + '/filter-table-list.json',
             delete: this._host + '/detail.json',
-            detail: this._host + '/loans/:id/screen'
+            detail: this._host + '/detail.json'
         }
 	}
 
@@ -37,16 +37,6 @@ class ReviewApproveReq extends CurdReq{
     }
     return super.fetchData(options);
   }
-  //点击点击签收
-  signIn(data) {
-    let options = {
-      // url: this._loanHost + `/assignee/${data.taskId}`,
-      url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
-      method: 'PUT',
-    }
-    return super.fetchData(options);
-  }
-
   //轨迹详情
   getTrackDetail(data) {
     let options = {
@@ -86,4 +76,4 @@ class ReviewApproveReq extends CurdReq{
   }
 }
 
-export default new ReviewApproveReq();
+export default new CreditInformationReq();
