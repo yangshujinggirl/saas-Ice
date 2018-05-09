@@ -57,7 +57,7 @@ export default class CreditInformation extends BaseApp {
               break;
             }
             // 征信录入
-            case this.OPERATE_TYPE.OTHER1: {
+            case this.OPERATE_TYPE.OTHER2: {
               hashHistory.push(`creditinformation/detail/${data.loanId}`)
               break;
             }

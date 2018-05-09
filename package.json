@@ -29,7 +29,7 @@
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.1",
     "keymirror": "^0.1.1",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.9.0",
     "prop-types": "^15.6.1",
     "react-anything-sortable": "^1.7.4",
     "react-dnd": "^2.6.0",
