@@ -32,12 +32,8 @@ class ContractList extends BaseApp {
             this.dialogEvent(this.OPERATE_TYPE.CANCEL,record);
             break;
         }
-        case this.OPERATE_TYPE.RETURN: {
-            this.dialogEvent(this.OPERATE_TYPE.RETURN,record)
-            break;
-        }
         case this.OPERATE_TYPE.CHANGE: {
-            this.changeDialog(record.id)
+            this.changeDialog(record)
             break;
         }
     }
@@ -55,14 +51,14 @@ class ContractList extends BaseApp {
     this.setState({
       visible:true,
       dialogObj:{
-        status:3,
+        status,
         contractId:record.id,
         dataSource
       }
     })
   }
   //改纸质
-  changeDialog(id) {
+  changeDialog(record) {
     Dialog.confirm({
       content: "改为纸质后，将不再支持电子签名，您确定要改为纸质吗",
       locale: {
@@ -70,9 +66,16 @@ class ContractList extends BaseApp {
         cancel: "取消",
       },
       onOk:()=>{
-        alert('调用确认删除接口')
+        this.toggleContract(record.id,'paper',record.id)
       }
     });
+  }
+  //改纸质，改电子Api
+  toggleContract(id,to,contractId) {
+    Req.toggleContractApi(id,to,contractId)
+    .then((res) => {
+      console.log(res)
+    })
   }
   //查询
   fetchData =(condition)=> {
@@ -89,7 +92,7 @@ class ContractList extends BaseApp {
     .then((res) => {
       if(params.status == 2) {
         Toast.success("取消成功");
-      } else if(params.status == 2) {
+      } else if(params.status == 3) {
         Toast.success("退回成功");
       }
     },error => {

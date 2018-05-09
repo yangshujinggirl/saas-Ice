@@ -6,10 +6,11 @@ class ContractFileReq extends CurdReq{
 
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
+		this._host = 'contractApi';
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/contract/file',
+            retrieve: this._host + '/contract/contract/list/',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }

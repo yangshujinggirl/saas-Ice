@@ -29,7 +29,8 @@ const OPERATE_TYPE = {
     SWITCH:'switch',//启用开关
     BIND:'bind',//产品绑定
     RETURN:'return',//退回
-    SIGN:'sign'//签字
+    SIGN:'sign',//签字
+    COPY:'copy'//复制
 };
 
 export default OPERATE_TYPE;

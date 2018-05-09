@@ -47,13 +47,28 @@ function change(data) {
 }
 
 
-// 获取列表
+// 获取模板列表
 export const search = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
+      if (!res || res.code != 200) return;
+      dispatch(fetchSuccess({ pageData: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+// 获取产品列表
+export const searchProduct = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.seachProductListApi(condition).then((res) => {
+      if (!res || res.code != 200) return;
       dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -67,6 +82,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.templateDetailApi(id).then((res) => {
+      if (!res || res.code != 200) return;
       dispatch(fetchSuccess({ pageData: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

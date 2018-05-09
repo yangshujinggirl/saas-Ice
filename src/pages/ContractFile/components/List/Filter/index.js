@@ -38,21 +38,21 @@ class Filter extends Component {
                 <Row wrap>
                   <Col span={12}>
                     <FormItem {...formItemLayout} label="贷款编号:">
-                      <IceFormBinder name="loan_no">
+                      <IceFormBinder name="loanNo">
                           <Input size="large" />
                       </IceFormBinder>
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem {...formItemLayout} label="客户名称:">
-                      <IceFormBinder name="customer_name">
+                      <IceFormBinder name="name">
                           <Input size="large" />
                       </IceFormBinder>
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem {...formItemLayout} label="证件号码:">
-                      <IceFormBinder name="idcard">
+                      <IceFormBinder name="documentCode">
                           <Input size="large" />
                       </IceFormBinder>
                     </FormItem>

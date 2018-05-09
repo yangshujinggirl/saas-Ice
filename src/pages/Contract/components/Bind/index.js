@@ -19,7 +19,7 @@ import {
   Form,
   Upload
 } from '@icedesign/base';
-
+import Req from '../../reqs/ContractReq';
 import FormModule from './FormModule';
 import './index.scss'
 
@@ -30,17 +30,47 @@ class Bind extends BaseApp {
     super(props);
     this.state = {
       selectedRow:[],
+      bindProductData:[],
       dataSourceRight:[]
     }
   }
-  addItem() {
-    let dataSourceRight=[];
-
-    dataSourceRight.push(...this.state.selectedRow);
-    this.setState({
-      dataSourceRight
+  componentWillMount() {
+    this.seachBindProductList('2979');
+    this.props.actions.searchProduct();
+  }
+  //查询已绑定产品列表
+  seachBindProductList(id) {
+    Req.seachBindTemplateApi(id)
+    .then((res) => {
+      this.setState({
+        bindProductData:res.data,
+        dataSourceRight:res.data,
+      })
     })
   }
+  //添加
+  addItem() {
+    let arrayData = [];
+    let { selectedRow } = this.state;
+
+    for(var j=0; j<selectedRow.length; j++) {
+      var flag = true;
+      for(var i=0; i<arrayData.length;i++) {
+        if(arrayData[i].id == selectedRow[j].id ) {
+          flag = false;
+        }
+      }
+      if(flag) {
+        arrayData.push(selectedRow[i]);
+      }
+    }
+
+    let arra = [...this.state.bindProductData,...arrayData];
+    this.setState({
+      dataSourceRight:arra
+    })
+  }
+  //删除
   deleteItem(index) {
     let { dataSourceRight }=this.state;
     dataSourceRight.splice(index,1);
@@ -49,8 +79,15 @@ class Bind extends BaseApp {
     })
   }
   onChange =(selectedRowKeys,records)=> {
+    console.log(selectedRowKeys,records)
    let selectedRow=[];
-   selectedRow.push(...records);
+   selectedRow = records.map((ele) => (
+     {
+       productCategory:ele.productType,
+       productName:ele.name,
+       id:ele.id
+     }
+   ));
    this.setState({
      selectedRow
    })
@@ -66,21 +103,11 @@ class Bind extends BaseApp {
         </Button>
     );
   };
+  changePage =(currentPage)=> {
+    this.props.actions.searchProduct({page:currentPage});
+  }
   render() {
-    const { columns } = this.props;
-    const dataSourceOne =[
-      {
-        type:'1001',
-        name:'产品1',
-        id:0
-      },
-      {
-        type:'1002',
-        name:'产品2',
-        id:1
-      },
-    ]
-    console.log(this.state.selectedRow)
+    const { list=[] } = this.props.pageData;
     return(
       <IceContainer className="pch-container contract-bind-page">
           <IceFormBinderWrapper ref="form">
@@ -90,20 +117,22 @@ class Bind extends BaseApp {
                 labelAlign="left">
                 <Title title="选择产品" />
                 <div className="change-product">
-                  <Table
-                    primaryKey="id"
-                    dataSource={dataSourceOne}
-                    rowSelection={{ onChange: this.onChange }}
-                    className="part-left">
-                    <Table.Column title="产品类型" dataIndex="type" />
-                    <Table.Column title="产品名称" dataIndex="name" />
-                  </Table>
+                  <div className="product-list">
+                    <Table
+                      primaryKey="id"
+                      dataSource={list}
+                      rowSelection={{ onChange: this.onChange }}>
+                      <Table.Column title="产品类型" dataIndex="productType" />
+                      <Table.Column title="产品名称" dataIndex="name" />
+                    </Table>
+                    <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
+                  </div>
                   <div className="btn-wrap">
                     <Button className="add-btn" onClick={()=>this.addItem()}>>> </Button>
                   </div>
                   <Table dataSource={this.state.dataSourceRight} className="part-right">
-                    <Table.Column title="产品类型" dataIndex="type" />
-                    <Table.Column title="产品名称" dataIndex="name" />
+                    <Table.Column title="产品类型" dataIndex="productCategory" />
+                    <Table.Column title="产品名称" dataIndex="productName" />
                     <Table.Column title="操作" cell={this.renderOperator} />
                   </Table>
                 </div>

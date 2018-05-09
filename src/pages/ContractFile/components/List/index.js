@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Dialog, Button } from "@icedesign/base";
+import { Dialog, Button, Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 import DialogModule from './DialogModule';
 import SignDialogModule from './SignDialogModule';
+import Req from '../../reqs/ContractFileReq';
 
+const Toast = Feedback.toast;
 
 class ContractList extends BaseApp {
   constructor(props) {
@@ -21,6 +23,16 @@ class ContractList extends BaseApp {
   componentWillMount() {
     this.props.actions.search()
   }
+  //查询
+  fetchData =(condition)=> {
+    this.props.actions.search(condition)
+  }
+  //点击分页
+  changePage = (currentPage) => {
+      this.props.actions.search({
+          page: currentPage
+      });
+  }
   //表单操作
   handleOperateClick(record, type) {
     switch (type) {
@@ -29,7 +41,7 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CANCEL: {
-            this.dialogEvent();
+            this.cancelDialogEvent();
             break;
         }
         case this.OPERATE_TYPE.SIGN: {
@@ -42,7 +54,7 @@ class ContractList extends BaseApp {
         }
     }
   }
-  dialogEvent() {
+  cancelDialogEvent() {
     let dialogObj = {
       labelOne:'请选择作废原因',
       dataSource:['1','2','3'],
@@ -68,48 +80,41 @@ class ContractList extends BaseApp {
         cancel: "取消",
       },
       onOk:()=>{
-        alert('调用确认删除接口')
+        this.toggleContract(record.id,'paper',record.id)
       }
     });
   }
-  //查询
-  fetchData =(condition)=> {
-    this.props.actions.search(condition)
+  //改纸质，改电子Api
+  toggleContract(id,to,contractId) {
+    Req.toggleContractApi(id,to,contractId)
+    .then((res) => {
+      console.log(res)
+    })
   }
-  //点击分页
-  changePage = (currentPage) => {
-      this.props.actions.search({
-          cur_page: currentPage
-      });
+  //提交作废
+  submitCancel(params) {
+    Req.cancelContractApi(params)
+    .then((res) => {
+      Toast.success("作废成功");
+    },error => {
+      Toast.error(error);
+    })
   }
-  submitCancel() {
-    alert('1111')
-  }
-
-  submitSign() {
-    alert('2222')
+  //提交签字
+  submitSign(params) {
+    //签字api
   }
   render() {
     const { columns } = this.props;
+    const { list=[] } =this.props.pageData;
     const { dialogObj, visible, signVisible } =this.state;
-    const testList = [
-            {
-              'loanCode':'1001',
-              'contractCode':'1001',
-              'name':'邓超',
-              'idType':'身份证',
-              'identification':'333333',
-              'contractType':'自定义',
-              'status':'0',
-              'id':'10023'
-            },
-          ]
+
     return(
       <IceContainer className="pch-container">
           <Title title="合同编辑" />
           <FilterForm onSubmit={this.fetchData} />
-          <PchTable dataSource={testList} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={[]} onChange={this.changePage} />
+          <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
+          <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
             dialogObj={dialogObj}
             visible={visible}

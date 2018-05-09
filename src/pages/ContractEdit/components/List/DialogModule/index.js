@@ -100,8 +100,7 @@ class DialogModule extends Component {
           onCancel={()=>this.onClose()}
           onClose={()=>this.onClose()}
           className="contract-edit-dialog-wrap"
-          footer={[]}
-        >
+          footer={[]}>
           <div className="pch-form contract-edit-dialog-content">
             <IceFormBinderWrapper ref="form">
               <Form size="large" direction="hoz">

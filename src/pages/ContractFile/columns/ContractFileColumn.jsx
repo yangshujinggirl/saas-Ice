@@ -11,11 +11,11 @@ class ContractFileColumn extends BaseColumn {
 
         this._columns = [{
             title: '贷款编号',
-            dataIndex: 'loanCode',
+            dataIndex: 'loanNo',
             width: 120
         }, {
             title: '合同编号',
-            dataIndex: 'contractCode',
+            dataIndex: 'contractNo',
             width: 120
         }, {
             title: '姓名',
@@ -23,15 +23,15 @@ class ContractFileColumn extends BaseColumn {
             width: 100
         }, {
             title: '证件类型',
-            dataIndex: 'idType',
+            dataIndex: 'documentType',
             width: 100
         }, {
             title: '证件号码',
-            dataIndex: 'identification',
+            dataIndex: 'documentCode',
             width: 160
         }, {
             title: '合同类型',
-            dataIndex: 'contractType',
+            dataIndex: 'type',
             width: 120
         }, {
             title: '状态',

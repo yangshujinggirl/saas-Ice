@@ -7,8 +7,9 @@ import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 import DialogModule from './DialogModule';
 import Req from '../../reqs/ContractReq';
-
+import './index.scss'
 const Toast = Feedback.toast;
+
 class ContractList extends BaseApp {
   constructor(props) {
     super(props);
@@ -45,40 +46,54 @@ class ContractList extends BaseApp {
           hashHistory.push(`contract/bind/${record.id}`)
           break;
         }
+        case this.OPERATE_TYPE.COPY: {
+          this.copyTemplate(record.id)
+          break;
+        }
     }
+  }
+  //复制模板
+  copyTemplate(id) {
+    Req.copyTemplateApi(id)
+    .then((res) => {
+      const { id } =res.data;
+      hashHistory.push(`contract/add/${id}`)
+    },(error) => {
+
+    })
   }
   //表格操作
   dialogEvent(type,record) {
-    let status;
+    let actionStatus;
     if(type == this.OPERATE_TYPE.SWITCH) {
       if(record.status == 1) {
-        status = 1;
+        actionStatus = 2;//去停用
       } else if(record.status == 2){
-        status = 2;
+        actionStatus = 1;//去启用
       }
     } else if (type == this.OPERATE_TYPE.REMOVE) {
-        status = 999;
+        actionStatus = 999;
     }
     Req.isBindProductApi(record.id)
     .then((res) => {
       const { data } = res;
       if(data) {
-        this.seachBindProductList(record.id);
+        this.seachBindProductList(record.id,actionStatus);
+      } else {
+        this.setState({
+          templateObj:{
+            id:record.id,
+            actionStatus,
+            isBind:false,
+            productList:[]
+          }
+        })
       }
-      this.setState({
-        visible:true,
-        templateObj:{
-          id:record.id,
-          status,
-          isBind:false,
-          productList:[]
-        }
-      })
-
+      this.setState({visible:true})
     })
   }
   //查询绑定产品列表
-  seachBindProductList(id) {
+  seachBindProductList(id,actionStatus) {
     Req.seachBindTemplateApi(id)
     .then((res) => {
       let productList = res.data.map((ele,index) => ({
@@ -87,6 +102,8 @@ class ContractList extends BaseApp {
       }));
       this.setState({
         templateObj:{
+          id:id,
+          actionStatus,
           isBind:true,
           productList
         }
@@ -104,14 +121,14 @@ class ContractList extends BaseApp {
       });
   }
   //提交启用，停用，删除
-  submitOperate(id,status) {
-    Req.handleTemplateApi(id,status)
+  submitOperate(id,actionStatus) {
+    Req.handleTemplateApi(id,actionStatus)
     .then((res) => {
-      if(status == 1) {
+      if(actionStatus == 1) {
         Toast.success("启用成功");
-      } else if(status == 2) {
+      } else if(actionStatus == 2) {
         Toast.success("停用成功");
-      } else if(status == 999) {
+      } else if(actionStatus == 999) {
         Toast.success("删除成功");
       }
       location.reload()
@@ -124,7 +141,7 @@ class ContractList extends BaseApp {
     const { templateObj, visible, productList } =this.state;
     const { list=[] } = this.props.pageData;
     return(
-      <IceContainer className="pch-container">
+      <IceContainer className="pch-container contract-template-page">
           <Title title="合同管理" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />

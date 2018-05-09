@@ -43,9 +43,6 @@ class ContractEditColumn extends BaseColumn {
                         <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
                             取消
                         </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.RETURN)}>
-                            退回
-                        </button>
                         <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
                             改纸质
                         </button>

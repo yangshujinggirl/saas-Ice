@@ -25,6 +25,16 @@ class ContractReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//编辑模板
+	editTemplatesApi(params){
+		let options = {
+			url: this._host + '/contract/contract/template/edit',
+			method: 'POST',
+			ccontentType: 'application/json',
+			data:params
+		}
+		return super.fetchData(options);
+	}
 	//模板详情
 	templateDetailApi(id) {
 		let options = {
@@ -34,22 +44,16 @@ class ContractReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-	//绑定产品
-	goBindProductApi(template_id,product_category,product_name,template_content) {
+	//复制模板
+	copyTemplateApi(id) {
 		let options = {
-			url: this._host + `/contract`,
+			url: this._host + `/contract/contract/template/copy/${id}`,
 			method: 'GET',
-			contentType: 'application/json',
-			params:{
-				template_id,
-				product_category,
-				product_name,
-				template_content
-			}
+			contentType: 'application/json'
 		}
 		return super.fetchData(options);
 	}
-	//查询绑定产品
+	//查询是否绑定产品
 	isBindProductApi(id) {
 		let options = {
 			url: this._host + `/contract/contract/template/${id}/product`,
@@ -58,12 +62,23 @@ class ContractReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-	//查询绑定产品
+	//查询已绑定产品列表
 	seachBindTemplateApi(id) {
 		let options = {
 			url: this._host + `/contract/contract/template/bondProduct/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
+		}
+		return super.fetchData(options);
+	}
+	//查询产品列表
+	seachProductListApi(condition) {
+		this._host = 'loan-ft1';
+		let options = {
+			url: this._host + `/product`,
+			method: 'GET',
+			contentType: 'application/json',
+			params:condition
 		}
 		return super.fetchData(options);
 	}

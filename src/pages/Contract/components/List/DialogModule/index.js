@@ -49,7 +49,7 @@ class DialogModule extends Component {
     })
   }
   onOk() {
-    this.props.submit(this.props.templateObj.id,this.props.templateObj.status);
+    this.props.submit(this.props.templateObj.id,this.props.templateObj.actionStatus);
     this.setState({
       visible:false
     })
@@ -61,8 +61,8 @@ class DialogModule extends Component {
   }
   //渲染title
   dialogTitle (){
-    let { status, isBind } = this.props.templateObj;
-    switch(status) {
+    let { actionStatus, isBind } = this.props.templateObj;
+    switch(actionStatus) {
       case 1:
          if(isBind) {
            return '该模板已绑定以下产品，启用后均能生效，您确定要启用吗';
@@ -101,6 +101,7 @@ class DialogModule extends Component {
         :
         []
       )
+      console.log(templateObj)
 
       return (
         <Dialog

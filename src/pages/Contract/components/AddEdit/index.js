@@ -6,8 +6,6 @@ import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
-import { Base64 } from 'js-base64';
-// import htmlToDraft from 'html-to-draftjs';
 
 import {
   Input,
@@ -15,15 +13,18 @@ import {
   Select,
   Button,
   DatePicker,
-  Form
+  Form,
+  Feedback
 } from '@icedesign/base';
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+
 import { Title, PchTable, PchPagination } from 'components';
 import Req from '../../reqs/ContractReq';
+import Preview from './Preview';
 
 import './index.scss';
 const formItemLayout = {
@@ -37,12 +38,13 @@ const formItemLayout = {
 const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
-
+const Toast = Feedback.toast;
 
 class AddEit extends BaseApp {
   constructor(props) {
     super(props);
     this.state = {
+      moduleStatus:0,
       value: {
         templateName:''
       },
@@ -52,22 +54,24 @@ class AddEit extends BaseApp {
   componentWillMount() {
     this.initPage()
   }
-  onEditorStateChange: Function = (editorState) => {
-    this.setState({
-      editorState,
-    });
-  };
   initPage() {
     if(this.props.params.id) {
       this.getDetail(this.props.params.id);
     }
   }
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  };
   //编辑，调用详情api
   getDetail(id) {
     Req.templateDetailApi(id)
     .then((res) => {
       let { templateContent,templateName } = res.data;
-      templateContent = Base64.decode(templateContent);
+      if(templateContent=='') {
+        return
+      }
       const blocksFromHTML = convertFromHTML(templateContent);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
@@ -76,38 +80,73 @@ class AddEit extends BaseApp {
       this.setState({
         editorState:EditorState.createWithContent(state),
         value:{
-          templateName
+          templateName,
+          templateContent
         }
       })
     })
   }
+  //提交保存
   handleSubmit() {
     const { editorState } = this.state;
     let templateContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-    templateContent = Base64.encode(templateContent)
-
     this.refs.form.validateAll((errors, values) => {
       if(errors) {
         return
       }
       this.refs.form.setter('templateContent',templateContent);
-      Req.addTemplatesApi(values)
-      .then((res) => {
-        const { status } =res.data;
-        if(!status && status!=200) {
-          return
-        }
-        hashHistory.push(`contract`)
-      })
+      if(this.props.params.id) {
+        this.editTemplate(values)
+      } else {
+        this.addTemplate(values);
+      }
+
     });
   }
+  //新增api
+  addTemplate(params) {
+    Req.addTemplatesApi(params)
+    .then((res) => {
+      const { status,msg } =res.data;
+      if(status!=200) {
+        Toast.success(msg);
+        return;
+      }
+      hashHistory.push(`contract`)
+    })
+  }
+  //编辑api
+  editTemplate(params) {
+    params = Object.assign(params,{id:this.props.params.id})
+    Req.editTemplatesApi(params)
+    .then((res) => {
+      const { status,msg } =res.data;
+      if(status!=200) {
+        Toast.success(msg);
+        return;
+      }
+      hashHistory.push(`contract`)
+    })
+  }
+  //取消
+  cancelSubmit() {
+    hashHistory.push('contract')
+  }
+  //预览状态
+  previewStatus(moduleStatus) {
+    console.log(this.state)
+    this.setState({
+      moduleStatus
+    })
+  }
   render() {
-    const { columns } = this.props;
-    const { editorState, editorStateTwo } = this.state;
+    const { editorState } = this.state;
+    const { templateContent, templateName } = this.state.value;
     return(
       <IceContainer className="pch-container contract-edit-pages">
           <Title title="合同新增" />
           <div className="pch-form">
+          { this.state.moduleStatus == 0?
             <IceFormBinderWrapper  value={this.state.value} ref="form">
               <Form size="large">
                 <Row wrap justify="center">
@@ -140,7 +179,7 @@ class AddEit extends BaseApp {
                   <Col span={24}>
                     <div className="btns-wrap">
                       <Button
-                        onClick={this.handleSubmit.bind(this)}
+                        onClick={this.cancelSubmit.bind(this)}
                         type="secondary"
                         size="large">
                           取消
@@ -152,7 +191,7 @@ class AddEit extends BaseApp {
                           保存
                       </Button>
                       <Button
-                        onClick={this.handleSubmit.bind(this)}
+                        onClick={()=>this.previewStatus(1)}
                         type="secondary"
                         size="large">
                           预览
@@ -162,6 +201,9 @@ class AddEit extends BaseApp {
                 </Row>
               </Form>
             </IceFormBinderWrapper>
+            :
+            <Preview templateContent={templateContent} templateName={templateName} onClick={(moduleStatus)=>this.previewStatus(moduleStatus)}/>
+          }
           </div>
       </IceContainer>
     )

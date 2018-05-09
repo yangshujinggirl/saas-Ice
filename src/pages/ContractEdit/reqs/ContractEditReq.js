@@ -55,6 +55,19 @@ class ContractEditReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//改纸质，电子
+	toggleContractApi(id,to,contractId) {
+		let options = {
+			url: this._host + `/${id}/type`,
+			method: 'GET',
+			contentType: 'application/json',
+			params:{
+				to,//合同类型 electronic：改电子 paper：改纸质
+				contractId
+			}
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new ContractEditReq();
