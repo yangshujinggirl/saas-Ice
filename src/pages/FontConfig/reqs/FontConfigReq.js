@@ -88,7 +88,7 @@ class FontConfigReq extends CurdReq {
   }
 
   /**
-   * 提交自定义字段
+   * 添加单个字段（自定义）
    */
   submitCustomeCode(data, id) {
     let options = {
