@@ -166,12 +166,12 @@ export const getProcessProdList = (condition) => {
 }
 
 //流程配置产品保存
-export const ProcessProdSave = (data) => {
+export const saveProcessProd = (data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.ProcessProdSave(data).then((res) => {
+    Req.saveProcessProd(data).then((res) => {
       // if (!res || res.code != 200) return;
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

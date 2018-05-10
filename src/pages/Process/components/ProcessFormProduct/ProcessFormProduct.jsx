@@ -98,7 +98,7 @@ export default class ProcessFormProduct extends BaseApp {
    //保存
    handleSave = () => {
      let data = this.state.dataSourceRight
-      this.props.actions.ProcessProdSave(data)
+      this.props.actions.saveProcessProd(data)
    }
    /**
     * 渲染
