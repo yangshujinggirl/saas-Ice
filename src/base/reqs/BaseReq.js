@@ -35,8 +35,8 @@ class BaseReq {
 
     //追加请求头
     let pctoken = Cookie.get('PCTOKEN');
-    if(pctoken){
-      header['Authorization'] = pctoken;
+    if (pctoken) {
+      header['Authorization'] = pctoken + 1;
       header['token'] = pctoken;
     }
 
@@ -122,7 +122,7 @@ class BaseReq {
 
     if (res.data.code == 200) {
       //处理请求头，获取token，存储cookie
-      if(res.headers.token){
+      if (res.headers.token) {
         Cookie.set('PCTOKEN', res.headers.token);
       }
       // 请求成功响应格式
@@ -135,8 +135,7 @@ class BaseReq {
     } else {
       // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
       if (res.data.code == 103) {
-        // 未登陆跳转到登陆页，使用nginx重定向到单点登录页
-        location.href = '/login';
+        this._redirectToLogin();
       }
 
       this._showMsg('error', res.data.msg || res.data.message || '未知错误');
@@ -149,11 +148,8 @@ class BaseReq {
 
     let res = error.response || error.request;
 
-    if (res.status == 103) {
-      this._showMsg('error', 'Unauthorized未登录');
-      // 未登陆跳转到登陆页，使用nginx重定向到单点登录页
-      location.href = '/login';
-      // hashHistory.push('/account');
+    if ((res.status == 500 && res.data.message == 'Username or password error') || res.status == 103) {
+      this._redirectToLogin();
       return { status: 401, msg: 'Unauthorized未登录', data: { code: 401 } };
     }
 
@@ -200,6 +196,23 @@ class BaseReq {
       type: type,
       content: msg,
     });
+  }
+
+  /**
+   * 未登陆跳转到登陆页
+   * 1. 匹配包含域名pingchang666才跳转，否则不处理
+   * 2. 替换当前系统关键字成login，例如贷前daikuan->login
+   * @return {[type]} [description]
+   */
+  _redirectToLogin() {
+    let _host = location.host;
+    if(_host.indexOf('pingchang666') == -1){
+      return;
+    }
+
+    _host = _host.replace('daikuan', 'login');
+    location.href = '//' + _host + '?from=' + encodeURIComponent(location.href);
+    // hashHistory.push('/account');
   }
 }
 
