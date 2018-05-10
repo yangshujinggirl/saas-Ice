@@ -144,7 +144,7 @@ class BaseReq {
 
     let msg = 'RES_MESSAGE';
 
-    if (res.data && res.data.message) {
+    if (res.data && (res.data.msg || res.data.message)) {
       //接口返回错误格式
       // {
       //   error: "Internal Server Error",
@@ -154,7 +154,7 @@ class BaseReq {
       //   status: 500,
       //   timestamp: 1521861550469
       // }
-      msg = res.data.status + ' ' + res.data.message;
+      msg = res.data.code + ' ' + (res.data.msg || res.data.message);
     }
 
     if (res.status == 0) {

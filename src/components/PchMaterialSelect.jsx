@@ -34,7 +34,7 @@ export default class PchMaterialSelect extends Component {
         }
         this.searchTimeout = setTimeout(() => {
             let options = {
-                url: `/loan-ft1/product/collect`,
+                url: `/loan/product/collect`,
                 method: 'get',
                 contentType: 'application/x-www-form-urlencoded',
                 params: {

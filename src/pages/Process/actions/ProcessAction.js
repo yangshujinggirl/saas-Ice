@@ -1,6 +1,7 @@
 import T from '../constants/ProcessConstant'
 import Req from '../reqs/ProcessReq'
 import { Feedback } from "@icedesign/base";
+import { hashHistory } from 'react-router'
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
@@ -74,17 +75,21 @@ export const save = (data) => {
     Req.save(data).then((res) => {
       if (res.code != 200) {
         Feedback.toast.show({
-          type: 'prompt',
-          content: res.message,
+          type: 'error',
+          content: res.msg,
         });
         return;
       }
-      dispatch(fetchSuccess({ formData: {} }))
-      // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失
+
+      // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
       Feedback.toast.show({
-          type: 'success',
-          content: data.processName + '产品流程已提交成功',
-        });
+        type: 'success',
+        content: data.processName + '产品流程已提交成功',
+        afterClose: () => {
+          dispatch(fetchSuccess({ formData: {} }))
+          hashHistory.push('/process');
+        }
+      });
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -138,7 +143,15 @@ export const copyProcess = (id) => {
     dispatch(fetchStart())
 
     Req.copyProcess(id).then((res) => {
+      if(res.code != 200){
+        Feedback.toast.show({
+          type: 'error',
+          content: res.msg,
+        });
+        return;
+      }
       dispatch(fetchSuccess({ copy: true }))
+      hashHistory.push(`process/edit/${res.data.id}`);
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

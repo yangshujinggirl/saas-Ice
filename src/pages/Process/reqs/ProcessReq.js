@@ -38,13 +38,9 @@ class ProcessReq extends CurdReq{
 	 */
 	copyProcess(id){
 		let options = {
-			url: 'http://172.16.0.242:7300/mock/5a52d52384e9091a319192fb/api/task/types',
-			// url: this._host + '/task_types',
+			url: this._config.WF_HOST + `/processes/${id}/replication`,
 			method: 'POST',
-			contentType: 'application/x-www-form-urlencoded',
-			data: {
-				id: id
-			}
+			contentType: 'application/x-www-form-urlencoded'
 		}
 		return super.fetchData(options);
 	}
