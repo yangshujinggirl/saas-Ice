@@ -15,7 +15,7 @@ import { Pagination,
  */
 export default class PchPagination extends PureComponent {
     render() {
-        let {dataSource = {}, changePage} = this.props;
+        let {dataSource = {}, onChange} = this.props;
 
         if (!dataSource.list || dataSource.list.length == 0) {
             return null;
@@ -28,7 +28,7 @@ export default class PchPagination extends PureComponent {
                     current={dataSource.page}
                     pageSize={dataSource.limit}
                     total={dataSource.total}
-                    onChange={this.changePage} />
+                    onChange={onChange} />
             </div>
             );
     }

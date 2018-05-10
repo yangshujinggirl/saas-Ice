@@ -46,7 +46,7 @@ export default class Process extends BaseApp {
             }
             case this.OPERATE_TYPE.OTHER: {
                 // 产品
-                hashHistory.push(`process/detail/${data.id}`)
+                hashHistory.push(`process/config/${data.id}`)
                 break;
             }
             case this.OPERATE_TYPE.OTHER1: {
