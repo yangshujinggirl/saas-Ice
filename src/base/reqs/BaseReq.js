@@ -36,7 +36,7 @@ class BaseReq {
     //追加请求头
     let pctoken = Cookie.get('PCTOKEN');
     if (pctoken) {
-      header['Authorization'] = pctoken + 1;
+      header['Authorization'] = pctoken;
     }
 
     if (!options.method || options.method == 'get') {
@@ -210,7 +210,7 @@ class BaseReq {
     }
 
     _host = _host.replace('daikuan', 'login');
-    location.href = '//' + _host + '?from=' + encodeURIComponent(location.href);
+    location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
     // hashHistory.push('/account');
   }
 }

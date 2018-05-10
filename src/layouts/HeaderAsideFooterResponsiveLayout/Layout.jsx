@@ -53,7 +53,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     CommonReq.getUserInfo().then((res) => {
       if (res && res.code == 200) {
         Storage.set("USERINFO", res.data);
-        this.setState({USDRINFO: res.data});
+        this.setState({USERINFO: res.data});
       }
     });
 
@@ -307,7 +307,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           pathname={pathname}
           routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
-          userinfo={this.state.userinfo}
+          userinfo={this.state.USERINFO}
         />
 
 

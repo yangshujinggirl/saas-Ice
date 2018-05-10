@@ -83,11 +83,11 @@ export default class Login extends Component {
         let fromUrl = this.props.params.from;
         if(fromUrl){
           fromUrl = decodeURIComponent(fromUrl);
-          if(fromUrl.indexOf('?') != -1){
-            fromUrl += '&token=' + res.data.token;
-          }else{
-            fromUrl += '?token=' + res.data.token;
-          }
+          // if(fromUrl.indexOf('?') != -1){
+          //   fromUrl += '&token=' + res.data.token;
+          // }else{
+          //   fromUrl += '?token=' + res.data.token;
+          // }
 
           location.href = fromUrl;
         }else{

@@ -49,7 +49,7 @@ class AccountReq extends CurdReq{
 	 */
 	logout(){
 		let options = {
-			url: '/crm/saas/logout',
+			url: '/crm/logout',
 			method: 'GET',
 			contentType: 'application/json',
 		}

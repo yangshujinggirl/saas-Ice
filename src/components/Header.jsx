@@ -22,9 +22,25 @@ export default class Header extends PureComponent {
       Storage.remove('MENUS');
       Storage.remove('USERINFO');
       Cookie.remove('PCTOKEN');
-      location.href = '/login'
-      // hashHistory.push('/account');
+      
+      this._redirectToLogin();
     })
+  }
+  /**
+   * 未登陆跳转到登陆页
+   * 1. 匹配包含域名pingchang666才跳转，否则不处理
+   * 2. 替换当前系统关键字成login，例如贷前daikuan->login
+   * @return {[type]} [description]
+   */
+  _redirectToLogin() {
+    let _host = location.host;
+    if(_host.indexOf('pingchang666') == -1){
+      return;
+    }
+
+    _host = _host.replace('daikuan', 'login');
+    location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
+    // hashHistory.push('/account');
   }
   render() {
     let { width, theme, isMobile, menus, pathname, routes, userinfo } = this.props;
