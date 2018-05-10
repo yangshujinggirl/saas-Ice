@@ -40,7 +40,7 @@ export default class addThree extends Component {
       let { actions,params,formData } = this.props;
       let {product={}} = formData;
       //流程名称获取
-      Req._processList({tenantId:12}).then((data)=>{
+      Req._processList({tenantId:product.tenantId}).then((data)=>{
         let temp = this.state.processList;
             temp = data.data.list;
             this.setState({processList:temp},function(){})
