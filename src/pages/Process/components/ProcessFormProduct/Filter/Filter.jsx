@@ -27,8 +27,8 @@ export default class Filter extends Component {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-                tenantId:'',
-                productType:'',
+                tenantId:null,
+                productType:null,
                 name:''
             },
             prodType:[],
