@@ -93,8 +93,10 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
+      console.log(data)
+      console.log(res)
+      
       if (!res || res.code != 200) return;
-      // console.log(res)
       hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -116,12 +118,12 @@ export const productsave = (data, id) => {
   }
 }
 ////产品提交第三步保存
-export const prodHtmlSave = (data, id) => {
+export const saveProductAdd = (id, data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.prodHtmlSave(data, id).then((res) => {
+    Req.saveProductAdd(id, data).then((res) => {
       if (!res || res.code != 200) return;
       hashHistory.push('/product/search')
     }).catch((ex) => {

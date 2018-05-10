@@ -69,9 +69,9 @@ class ProcessReq extends CurdReq{
 		return super.fetchData(options);
 	}
 	//流程配置产品保存
-	ProcessProdSave(data){
+		saveProcessProd(data){
 		let options = {
-			url: this._host + '/processes/product',
+			url: this._config.WF_HOST + '/processes/product',
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data: data

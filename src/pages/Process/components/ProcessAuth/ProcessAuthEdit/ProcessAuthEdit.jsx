@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   Table,
+  Dialog,
   Pagination
 } from "@icedesign/base";
 
@@ -144,19 +145,19 @@ export default class ProcessAuthEdit extends BaseApp {
     })
   }
   onClose() {
+    const { visibled, changeView } = this.props;
     Dialog.confirm({
       content: "取消后本次操作将不被保存，您确定吗？",
       onOk: () => {
         this.setState({
           visible: false
         })
+        changeView(PROCESS_VIEW.EDITFORM);
       }
     });
   }
   onOk() {
-    this.setState({
-      visible: false
-    })
+   console.log('权限编辑保存。。。')
   }
 
   addItem() {
@@ -198,59 +199,60 @@ export default class ProcessAuthEdit extends BaseApp {
    */
   render() {
     const { dataSourceRight, current, visible } = this.state;
-    const { visibled, changeView} = this.props;
+    const { visibled, changeView } = this.props;
     return (
-      <IceContainer className="pch-container" style={{display: visibled ? '' : 'none'}}>
+      <IceContainer className="pch-container" style={{ display: visibled ? '' : 'none' }}>
         <Title title="权限编辑" />
-      <div className="edit-permission-dialog-content">
-        <div className='center'>审查&#10007;权限配置</div>
-        <div className="table-list">
-          <div className="part-l">
-            <Table
-              dataSource={data[0]}
-              primaryKey="key"
-              style={{ width: '100%' }}
-              isTree
-              rowSelection={{ ...this.rowSelection }}
-            >
-              <Table.Column title="机构" cell={this.renderLevel} />
-            </Table>
-            <Table
-              dataSource={data[1]}
-              primaryKey="key"
-              style={{ width: '100%' }}
-              isTree
-              rowSelection={{ ...this.rowSelectionTwo }}
-            >
-              <Table.Column title="其他机构" dataIndex="name" />
-            </Table>
+        <div className="edit-permission-dialog-content">
+          <div className='center'>审查&#10007;权限配置</div>
+          <div className="table-list">
+            <div className="part-l">
+              <Table
+                dataSource={data[0]}
+                primaryKey="key"
+                style={{ width: '100%' }}
+                isTree
+                rowSelection={{ ...this.rowSelection }}
+              >
+                <Table.Column title="机构" cell={this.renderLevel} />
+              </Table>
+              <Table
+                dataSource={data[1]}
+                primaryKey="key"
+                style={{ width: '100%' }}
+                isTree
+                rowSelection={{ ...this.rowSelectionTwo }}
+              >
+                <Table.Column title="其他机构" dataIndex="name" />
+              </Table>
+            </div>
+            <div className="btn-wrap">
+              <Button className="add-btn" onClick={() => this.addItem()}>>> </Button>
+            </div>
+            <div className="part-r">
+              <Table
+                dataSource={dataSourceRight}
+                fixedHeader
+                style={{ width: '100%' }}
+                maxBodyHeight={370}
+              >
+                <Table.Column title="权限" dataIndex="name" />
+                <Table.Column title="操作" cell={() => this.renderOperation()} />
+              </Table>
+            </div>
           </div>
-          <div className="btn-wrap">
-            <Button className="add-btn" onClick={() => this.addItem()}>>> </Button>
-          </div>
-          <div className="part-r">
-            <Table
-              dataSource={dataSourceRight}
-              fixedHeader
-              style={{ width: '100%' }}
-              maxBodyHeight={370}
-            >
-              <Table.Column title="权限" dataIndex="name" />
-              <Table.Column title="操作" cell={() => this.renderOperation()} />
-            </Table>
-          </div>
-        </div>
-        <div className="container">
-          <div className="next-btn-box pch-form-buttons">
-            <Button className="buttonsSure" size="large" onClick={this.handleSure}>
-              确定
+          <div className="container">
+            <div className="next-btn-box pch-form-buttons">
+              <Button className="buttonsSure" size="large" onClick={()=>this.onOk()}>
+                确定
               </Button>
-              <Button type="primary" className="return-btn buttonsBack" onClick={changeView.bind(this, PROCESS_VIEW.EDITFORM)}>
-                  返回
-                </Button>
+              {/* <Button type="primary" className="return-btn buttonsBack" onClick={changeView.bind(this, PROCESS_VIEW.EDITFORM)}> */}
+              <Button type="primary" className="return-btn buttonsBack" onClick={()=>this.onClose()}>
+                取消
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
       </IceContainer>
     )
   }

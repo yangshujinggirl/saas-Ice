@@ -7,13 +7,13 @@ class ProductReq extends CurdReq {
     //基本的curd接口
     //若有特殊定义的接口直接覆盖
     this.curd = {
-      create: this._host + '/product',
-      update: this._host + '/product/:id',
-      retrieve: this._host + '/product/',
-      delete: this._host + '/product/:id', //删除
-      detail: this._host + '/product/:id', //详情
-      filedeletedes: this._host + '/product/collect/detail/:id',
-      fileupdate: this._host + '/product/collect/:id'
+      create: this._config.LOAN_HOST + '/product',
+      update: this._config.LOAN_HOST + '/product/:id',
+      retrieve: this._config.LOAN_HOST + '/product/',
+      delete: this._config.LOAN_HOST + '/product/:id', //删除
+      detail: this._config.LOAN_HOST + '/product/:id', //详情
+      filedeletedes: this._config.LOAN_HOST + '/product/collect/detail/:id',
+      fileupdate: this._config.LOAN_HOST + '/product/collect/:id'
     }
   }
 
@@ -23,7 +23,7 @@ class ProductReq extends CurdReq {
    */
   postDemo() {
     let options = {
-      url: this._host + '/member/loginMobile',
+      url: this._config.LOAN_HOST + '/member/loginMobile',
       method: 'POST',
       contentType: 'application/x-www-form-urlencoded',
       params: 'mobile=13917538027&card=211224198612285536'
@@ -33,7 +33,7 @@ class ProductReq extends CurdReq {
   //产品初始数据
   prodActions(condition) {
     let options = {
-      url: this._host + '/product/data',
+      url: this._config.LOAN_HOST + '/product/data',
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       params: condition
@@ -42,12 +42,12 @@ class ProductReq extends CurdReq {
   }
 
   save(data) {
-    var url = this.formatUrl(this.curd.create);
-    if (data && data.id) {
-      url = this.formatUrl(this.curd.update, data.id);
-    }
+    // var url = this.formatUrl(this.curd.create);
+    // if (data && data.id) {
+    //   url = this.formatUrl(this.curd.update, data.id);
+    // }
     let options = {
-      url: url,
+      url: this._config.LOAN_HOST + '/product',
       method: 'POST',
       data: data,
       contentType: 'application/json'
@@ -57,7 +57,7 @@ class ProductReq extends CurdReq {
 
   //产品提交第二步保存
   productsave(data, id) {
-    var url = this._host + `/product/${id}/scope`;
+    var url = this._config.LOAN_HOST + `/product/${id}/scope`;
     let options = {
       url: url,
       method: 'POST',
@@ -67,8 +67,8 @@ class ProductReq extends CurdReq {
     return super.fetchData(options);
   }
   //产品提交第三步保存
-  prodHtmlSave(data, productId) {
-    var url = this._host + `/product/${productId}/screen`;
+  saveProductAdd( productId,data) {
+    var url = this._config.WF_HOST + `/processes/product`;
     let options = {
       url: url,
       method: 'POST',
@@ -77,24 +77,14 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-  //页面名称
-  htmlName(data) {
-    var url = this._host + `/screen-schemes`;
+
+  //流程名称
+  _processList(condition){
+    var url = this._config.WF_HOST + `/processes`;
     let options = {
       url: url,
       method: 'get',
-      params: data,
-      contentType: 'application/json'
-    }
-    return super.fetchData(options);
-  }
-  //流程配置
-  _processList(){
-    var url = this._host + `/processes`;
-    let options = {
-      url: url,
-      method: 'get',
-      // params: data,
+      params: condition,
       contentType: 'application/json'
     }
     return super.fetchData(options);
@@ -102,7 +92,7 @@ class ProductReq extends CurdReq {
   //产品修改
   prodedit(id) {
     let options = {
-      url: this._host + `/product/${id}/history`,
+      url: this._config.LOAN_HOST + `/product/${id}/history`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
     }
@@ -111,7 +101,7 @@ class ProductReq extends CurdReq {
 
   //产品修改后保存
   prodrevise(data) {
-    var url = this.formatUrl(this._host + `/product/${data.id}`);
+    var url = this.formatUrl(this._config.LOAN_HOST + `/product/${data.id}`);
     let options = {
       url: url,
       method: 'put',
@@ -126,7 +116,7 @@ class ProductReq extends CurdReq {
   //材料清单查询
   filesearch(condition) {
     let options = {
-      url: this._host + `/product/collect`,
+      url: this._config.LOAN_HOST + `/product/collect`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       params: condition
@@ -138,7 +128,7 @@ class ProductReq extends CurdReq {
   //资料清单明细
   fileDetail(id) {
     let options = {
-      url: this._host + `/product/collect/${id}`,
+      url: this._config.LOAN_HOST + `/product/collect/${id}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
     }
@@ -150,7 +140,7 @@ class ProductReq extends CurdReq {
   fileremove(id, callback, callbackError) {
     let options = {
       // url: this.formatUrl(this.curd.filedelete, id),
-      url: this._host + `/product/collect/${id}`,
+      url: this._config.LOAN_HOST + `/product/collect/${id}`,
       method: 'DELETE',
       contentType: this.contentType || 'application/json'
     }
@@ -161,7 +151,7 @@ class ProductReq extends CurdReq {
   fileRemoveDes(id, callback, callbackError) {
     let options = {
       // url: this.formatUrl(this.curd.filedeletedes, id),
-      url: this._host + `/product/collect/detail/${id}`,
+      url: this._config.LOAN_HOST + `/product/collect/detail/${id}`,
       method: 'DELETE',
       contentType: this.contentType || 'application/json'
     }
@@ -171,7 +161,7 @@ class ProductReq extends CurdReq {
 
   //材料编辑修改后确定
   fileEditSave(data, id) {
-    var url = this._host + '/product/collect/' + id
+    var url = this._config.LOAN_HOST + '/product/collect/' + id
     if (data) {
 
       let options = {
@@ -185,7 +175,7 @@ class ProductReq extends CurdReq {
   }
   //资料保存
   fileSave(data) {
-    var url = this._host + '/product/collect'
+    var url = this._config.LOAN_HOST + '/product/collect'
     if (data) {
       let options = {
         url: url,
@@ -205,8 +195,8 @@ class ProductReq extends CurdReq {
       page: page,
     }
     let options = {
-      // url: this._host + '/product/data
-      url: this._host + `/cars`,
+      // url: this._config.LOAN_HOST + '/product/data
+      url: this._config.LOAN_HOST + `/cars`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       params: condition
@@ -218,8 +208,8 @@ class ProductReq extends CurdReq {
   //查询产品名称是否重复
   productNameRepeat(condition) {
     let options = {
-      // url: this._host + '/product/data
-      url: this._host + `/product/name/exists?name=${condition}`,
+      // url: this._config.LOAN_HOST + '/product/data
+      url: this._config.LOAN_HOST + `/product/name/exists?name=${condition}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
     }
@@ -229,8 +219,8 @@ class ProductReq extends CurdReq {
   //查询材料名称是否重复
   fileNameRepeat(condition) {
     let options = {
-      // url: this._host + '/product/data
-      url: this._host + `/product/collect/exists?name=${condition}`,
+      // url: this._config.LOAN_HOST + '/product/data
+      url: this._config.LOAN_HOST + `/product/collect/exists?name=${condition}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
     }
