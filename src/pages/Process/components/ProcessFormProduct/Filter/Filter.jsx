@@ -76,7 +76,7 @@ export default class Filter extends Component {
     render() {
         let {prodType} = this.state
         return (
-            <div className="pch-condition">
+            <div className="pch-condition pch-condition-padding ">
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
                         <Row wrap>

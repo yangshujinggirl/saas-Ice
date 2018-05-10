@@ -64,6 +64,17 @@ class ProcessReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//流程配置产品右侧旧数据
+	getProcessProdOldList(){
+		let options = {
+			url: `https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/processes/product/123`,
+			method: 'get',
+			contentType: 'application/x-www-form-urlencoded',
+			// params:condition
+		}
+		return super.fetchData(options);
+	}
+
 	//流程配置产品保存
 		saveProcessConfigProduct(data){
 		let options = {

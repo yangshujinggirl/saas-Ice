@@ -56,14 +56,15 @@ export default class ProcessFormProduct extends BaseApp {
   }
   componentDidMount() {
     this.fetchData();
+    // this.fetchOldData();
   }
   fetchData = (condition) => {
     this._condition = Object.assign(this._condition, condition);
     this.props.actions.getProcessProdList(this._condition);
+    this.props.actions.getProcessProdOldList()
   }
   //点击分页
   changePage = (currentPage) => {
-    console.log(currentPage)
     this._condition.page = currentPage;
     this.props.actions.getProcessProdList(this._condition);
   }
@@ -74,8 +75,6 @@ export default class ProcessFormProduct extends BaseApp {
   }
   //右侧增加数据
   addItem() {
-
-
     for (var key in arrayRightData) {
       for (var i = 0; i < arrayRightData.length; i++) {
         var flag = true;
@@ -144,6 +143,9 @@ export default class ProcessFormProduct extends BaseApp {
   renderName(value, index, record) {
     return record.name
   }
+  handleCancel = () => {
+    hashHistory.push('/process')
+  }
   //保存
   handleSave = () => {
     let data = this.state.saveDataRight;
@@ -154,6 +156,7 @@ export default class ProcessFormProduct extends BaseApp {
    * 渲染
    */
   render() {
+    console.log(this.props)
     const { dataSourceRight, visible, productType } = this.state;
     let { formData, params } = this.props;
     return (
@@ -195,12 +198,13 @@ export default class ProcessFormProduct extends BaseApp {
               </Table>
             </div>
           </div>
-          <div className="container">
-            <div className="next-btn-box pch-form-buttons">
-              <Button type="primary" className="return-btn buttonsBack" onClick={this.handleSave}>
+          <div className="next-btn-box pch-form-buttons">
+              <Button type="normal" size="large" onClick={this.handleCancel}>
+                  返回
+              </Button>
+              <Button type="secondary" className="return-btn buttonsBack" onClick={this.handleSave}>
                 保存
-                     </Button>
-            </div>
+              </Button>
           </div>
         </div>
       </IceContainer>
