@@ -92,6 +92,8 @@ export default class Login extends Component {
           location.href = fromUrl;
         }else{
           Feedback.toast.success('登录成功');
+          //默认进入SAAS系统
+          location.href = '//' + location.host.replace('login', 'daikuan');
         }
 
         //Storage.set('MENUS', (res.data.leaf));
