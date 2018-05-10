@@ -159,7 +159,7 @@ export default class ProcessFormProduct extends BaseApp {
     return (
       <IceContainer className="pch-container">
         <FilterItem onSubmit={this.fetchData} typedata={productType} params={params} />
-        <div className="edit-permission-dialog-contents">
+        <div className="pch-form edit-permission-dialog-contents">
           <div className="table-list">
             <div className="part-l">
               <p>查询结果</p>
