@@ -143,7 +143,7 @@ export const copyProcess = (id) => {
     dispatch(fetchStart())
 
     Req.copyProcess(id).then((res) => {
-      if(res.code != 200){
+      if (res.code != 200) {
         Feedback.toast.show({
           type: 'error',
           content: res.msg,
@@ -187,6 +187,20 @@ export const saveProcessConfigProduct = (data) => {
     Req.saveProcessConfigProduct(data).then((res) => {
       console.log(res)
       // if (!res || res.code != 200) return;
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//获取必要字段
+export const getTasksFields = (taskTypeId) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+
+    Req.getTasksFields(taskTypeId).then((res) => {
+      if (res.code != 200) return;
+      dispatch(fetchSuccess({ tasksFields: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

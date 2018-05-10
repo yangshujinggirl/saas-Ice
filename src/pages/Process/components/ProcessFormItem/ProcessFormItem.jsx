@@ -83,10 +83,10 @@ export default class ProcessFormItem extends Component {
                     {item.haveCollection == '1' ? <a className="pch-target" href="/#/product/filelist" target="_blank">添加</a>: ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">
-                    {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.EDITAUTH)}>编辑</a> : '--'}
+                    {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.EDITAUTH, item)}>编辑</a> : '--'}
                 </Col>
                 <Col xxs="6" s="3" l="2">
-                    {item.haveRequiredField == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWFIELD)}>查看</a> : '--'}
+                    {item.haveRequiredField == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWFIELD, item)}>查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     <div className="pch-target-name">
