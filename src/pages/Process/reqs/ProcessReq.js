@@ -47,7 +47,7 @@ class ProcessReq extends CurdReq{
 	//流程配置产品——产品类型
 	getProcessProdType(){
 		let options = {
-			url: this._host + `/product/data`,
+			url: this._config.LOAN_HOST + `/product/data`,
 			method: 'get',
 			contentType: 'application/x-www-form-urlencoded',
 			// params:condition
@@ -57,7 +57,7 @@ class ProcessReq extends CurdReq{
 	//流程配置产品左侧列表
 	getProcessProdList(condition){
 		let options = {
-			url: this._host + `/product/`,
+			url: this._config.LOAN_HOST + `/product/`,
 			method: 'get',
 			contentType: 'application/x-www-form-urlencoded',
 			params:condition
@@ -65,11 +65,11 @@ class ProcessReq extends CurdReq{
 		return super.fetchData(options);
 	}
 	//流程配置产品保存
-		saveProcessProd(data){
+		saveProcessConfigProduct(data){
 		let options = {
 			url: this._config.WF_HOST + '/processes/product',
 			method: 'POST',
-			contentType: 'application/x-www-form-urlencoded',
+			contentType: 'application/json',
 			data: data
 		}
 		return super.fetchData(options);

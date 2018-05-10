@@ -179,12 +179,13 @@ export const getProcessProdList = (condition) => {
 }
 
 //流程配置产品保存
-export const saveProcessProd = (data) => {
+export const saveProcessConfigProduct = (data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.saveProcessProd(data).then((res) => {
+    Req.saveProcessConfigProduct(data).then((res) => {
+      console.log(res)
       // if (!res || res.code != 200) return;
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

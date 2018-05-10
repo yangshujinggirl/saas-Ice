@@ -84,7 +84,6 @@ export default class CarType extends Component {
 
   }
   componentDidMount() {
-    console.log(this.props)
     let { actions, addTwoData } = this.props;
     let val = this.props.data;
     this.state.type = val
@@ -144,7 +143,6 @@ export default class CarType extends Component {
 
     //右侧提交数据
     arra.map((item, i) => {
-      console.log(item)
       CarData.productScopes.push({
         relatedId: item.id,
         relatedName: item.type == '品牌' ? item.name : (item.type == '车系' ? item.name : item.name),
@@ -171,7 +169,6 @@ export default class CarType extends Component {
 //右侧删除一列
 deleteItem = (index) => {
   let data = this.state.dataSourceRight;
-  console.log(index);
 
   data.splice(index,1)
   this.setState({
@@ -196,7 +193,6 @@ changePage = (currentPage) => {
         list = list.list || [];
 
     let dataSource = this.renderDataWithCar(type, list);
-    console.log(this.props)
     return (
       <IceFormBinderWrapper
         ref={(formRef) => {
