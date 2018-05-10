@@ -30,27 +30,19 @@ export default class addThree extends Component {
       super(props);
       this.state = {
          value: {},
-         list: [],
          show:false,
          processList:[],
-         processId:'',//流程名称的Id
-
+         processDefId:'',//流程名称的Id
+         processData:[],
       };
    }
-   componentDidMount() {
-     console.log(this.props)
-      let { actions, htmlData,params } = this.props
-      //页面名称获取
-      Req.htmlName({ limit: 999 }).then((data) => {
-         let html = this.state.list
-         html = data.data.list
-         this.setState({ list: html }, function () {
-         })
-      });
+   componentWillMount() {
+      let { actions,params,formData } = this.props;
+      let {product={}} = formData;
       //流程名称获取
-      Req._processList().then((data)=>{
+      Req._processList({tenantId:product.tenantId}).then((data)=>{
         let temp = this.state.processList;
-            temp = data.data;
+            temp = data.data.list;
             this.setState({processList:temp},function(){})
       })
       //产品详情
@@ -64,7 +56,21 @@ export default class addThree extends Component {
       let { actions, params,formData } = this.props;
       let {product={}} = formData
       let id = params.id;
+      console.log(formData,product)
       this.formRef.validateAll((error, value) => {
+        this.state.processData.push(
+          {
+            productId: product.id,
+            productName: product.name,
+            productType: product.productType,
+            processDefId: value.processName,
+            status: product.status,
+            businessTypeId:1,
+            businessTypeName:"车贷业务",
+            tenantId: product.tenantId,
+            tenantName: "中行"
+          }
+        )
          if (error) {
             return;
          }
@@ -77,8 +83,11 @@ export default class addThree extends Component {
             boolean = false
          }
          if (!boolean) return
-         // 提交当前填写的数据
-         this.props.actions.prodHtmlSave(value, id);
+         //提交当前填写的数据
+         this.props.actions.saveProductAdd(id,this.state.processData);
+         this.setState({
+          processData:[]
+        })
       });
    }
 
@@ -90,7 +99,7 @@ export default class addThree extends Component {
    //流程名称的id值
    onChangeProcess(value){
       this.setState({
-         processId:value,
+         processDefId:value,
          show:true
       })
    }
@@ -100,7 +109,7 @@ export default class addThree extends Component {
    }
    //流程详情
    handleSubmitDetail() {
-      let id = this.state.processId;
+      let id = this.state.processDefId;
       if(id){
          hashHistory.push(`/process/detail/${id}`)
       }
@@ -108,8 +117,7 @@ export default class addThree extends Component {
    }
    render() {
      let {formData} = this.props;
-     let {product={}} = formData
-      let test =[{'name':1,'key':1},{'name':2,'key':2}];//流程名称数据
+     let {product={}} = formData;
       return (
          <IceFormBinderWrapper
             ref={(formRef) => {
@@ -123,36 +131,6 @@ export default class addThree extends Component {
                   <div className="pch-condition form ">
                      <Form
                         size="large" direction="hoz">
-                        <legend className="pch-legend">
-                           <span className="pch-legend-legline"></span>页面名称
-                        </legend>
-                        <div className="pch-form">
-                           <Row wrap>
-                              <Col xxs={24} xs={12} l={8} xl={6}>
-                                 <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>页面名称:</span>}>
-                                    <IceFormBinder
-                                       name="id"
-                                       className="select"
-                                       required
-								                        message="页面名称必选"
-                                    >
-                                    
-                                       <Select size="large" placeholder="请选择" className="select">
-                                          {
-                                             this.state.list.map((item, i) => {
-                                                return (
-                                                   <Option value={item.id} key={i} >{item.name}</Option>
-                                                )
-                                             })
-                                          }
-
-                                       </Select>
-                                    </IceFormBinder>
-                                    <div><IceFormError name="id" /></div>
-                                 </FormItem>
-                              </Col>
-                           </Row>
-                        </div>
                         <legend className="pch-legend">
                            <span className="pch-legend-legline"></span>流程设置
                            </legend>
@@ -194,9 +172,9 @@ export default class addThree extends Component {
                                           onChange={this.onChangeProcess.bind(this)}
                                           >
                                           {
-                                             test.map((item,i)=>{
+                                             this.state.processList.map((item,i)=>{
                                                 return (
-                                                   <Option value={item.name} key={i}>{item.name}</Option>
+                                                   <Option value={item.processDefId} key={i}>{item.processName}</Option>
                                                 )
                                              })
                                           }

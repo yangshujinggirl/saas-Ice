@@ -16,6 +16,10 @@ export default {
     path: 'detail/:id',
     name:'流程详情',
     component: Process.ProcessDetail
+  },{
+    path: 'config/:id',
+    name:'流程配置产品',
+    component:Process.ProcessConfig
   }],
   component: Layout,
   indexRoute: {

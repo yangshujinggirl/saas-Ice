@@ -1,4 +1,4 @@
-const SAAS_HOST = 'http://172.16.0.218:8080/';
+const SAAS_HOST = 'http://172.16.0.218:8080';
 const CRM_HOST = 'http://172.16.0.211:8080/';
 // const CRM_HOST = 'http://172.16.0.190:8080/';
 
