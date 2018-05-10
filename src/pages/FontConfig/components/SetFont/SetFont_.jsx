@@ -336,10 +336,10 @@ export default class setFont extends Component {
         }
 
         const {resData = {}} = this.state;
-        let id = this.props.id
+        let { id, visible } = this.props;
 
         return (
-            <IceContainer className="pch-container setFont">
+            <IceContainer className="pch-container setFont" style={{display: visible ? '' : 'none'}}>
                 <Title title="进件模块页面字段编辑" />
                 <div className="pch-form">
                     <div className="container">
