@@ -134,14 +134,25 @@ export default class ProcessForm extends Component {
 
     //保存
     handleSave = () => {
-
+        this.refs.form.validateAll((errors, values) => {
+            console.log('errors', errors, 'values', values);
+            if(errors){
+                return false;
+            }
+            // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
+            values.status = 0;
+            this.props.actions.save(values);
+        });
     }
 
     //提交
     handleSubmit = () => {
         this.refs.form.validateAll((errors, values) => {
             console.log('errors', errors, 'values', values);
-            return false;
+            if(errors){
+                return false;
+            }
+            this.props.actions.save(values);
         });
     }
 

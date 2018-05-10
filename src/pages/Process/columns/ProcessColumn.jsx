@@ -22,14 +22,6 @@ class ProcessColumn extends BaseColumn {
             dataIndex: 'tenantName',
             width: 140
         }, {
-            title: '产品类型',
-            dataIndex: 'productType',
-            width: 140
-        }, {
-            title: '产品名称',
-            dataIndex: 'productName',
-            width: 250
-        }, {
             title: '状态',
             dataIndex: 'status',
             width: 100,

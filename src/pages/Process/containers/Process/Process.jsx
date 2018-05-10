@@ -36,22 +36,22 @@ export default class Process extends BaseApp {
         switch (type) {
             case this.OPERATE_TYPE.EDIT: {
                 // 修改
-                hashHistory.push(`process/edit/${data.processDefId}`)
+                hashHistory.push(`process/edit/${data.id}`)
                 break;
             }
             case this.OPERATE_TYPE.VIEW: {
                 // 详情
-                hashHistory.push(`process/detail/${data.processDefId}`)
+                hashHistory.push(`process/detail/${data.id}`)
                 break;
             }
             case this.OPERATE_TYPE.OTHER: {
                 // 产品
-                hashHistory.push(`process/detail/${data.processDefId}`)
+                hashHistory.push(`process/detail/${data.id}`)
                 break;
             }
             case this.OPERATE_TYPE.OTHER1: {
                 // 复制，复制该流程进入流程修改页面
-                hashHistory.push(`process/edit/${data.processDefId}`)
+                hashHistory.push(`process/edit/${data.id}`)
                 break;
             }
         }

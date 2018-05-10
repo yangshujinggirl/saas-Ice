@@ -1,5 +1,6 @@
 import T from '../constants/ProcessConstant'
 import Req from '../reqs/ProcessReq'
+import { Feedback } from "@icedesign/base";
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
@@ -52,10 +53,10 @@ function change(data) {
 export const search = (condition) => {
   return (dispatch) => {
 
-    dispatch(fetchStart({formData: {}}))
+    dispatch(fetchStart({ formData: {} }))
 
     Req.search(condition).then((res) => {
-      if(res.code == 200) {
+      if (res.code == 200) {
         dispatch(fetchSuccess({ pageData: res.data }))
       }
     }).catch((ex) => {
@@ -71,7 +72,19 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
+      if (res.code != 200) {
+        Feedback.toast.show({
+          type: 'prompt',
+          content: res.message,
+        });
+        return;
+      }
       dispatch(fetchSuccess({ formData: {} }))
+      // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失
+      Feedback.toast.show({
+          type: 'success',
+          content: data.processName + '产品流程已提交成功',
+        });
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -82,7 +95,7 @@ export const save = (data) => {
 export const getDetail = (id) => {
   return (dispatch) => {
 
-    dispatch(fetchStart({formData: {}}))
+    dispatch(fetchStart({ formData: {} }))
 
     Req.getDetail(id).then((res) => {
       dispatch(fetchSuccess({ formData: res.data }))
@@ -95,7 +108,7 @@ export const getDetail = (id) => {
 // 获取左侧
 export const getCustomMenuList = (id) => {
   return (dispatch) => {
-    dispatch(fetchStart({customMenuList: []}))
+    dispatch(fetchStart({ customMenuList: [] }))
     Req.getCustomMenuList(id).then((res) => {
       dispatch(fetchSuccess({ customMenuList: res.data, view: 'view' }))
     }).catch((ex) => {
@@ -111,7 +124,7 @@ export const remove = (id) => {
     dispatch(fetchStart())
 
     Req.delete(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
+      dispatch(fetchSuccess({ delete: true }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -125,7 +138,7 @@ export const copyProcess = (id) => {
     dispatch(fetchStart())
 
     Req.copyProcess(id).then((res) => {
-      dispatch(fetchSuccess({copy: true}))
+      dispatch(fetchSuccess({ copy: true }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -135,7 +148,7 @@ export const copyProcess = (id) => {
 // 更改标志
 export const changeHasProcess = (hasProcess) => {
   return (dispatch) => {
-    dispatch(change({hasProcess}))
+    dispatch(change({ hasProcess }))
   }
 }
 //流程配置产品左侧列表
@@ -143,7 +156,7 @@ export const getProcessProdList = (condition) => {
   return (dispatch) => {
 
     Req.getProcessProdList(condition).then((res) => {
-      if(res.code == 200) {
+      if (res.code == 200) {
         dispatch(fetchSuccess({ formData: res.data }))
       }
     }).catch((ex) => {

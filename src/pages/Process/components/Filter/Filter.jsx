@@ -29,8 +29,8 @@ export default class Filter extends Component {
             value: {
                 businessTypeId: '10',
                 businessTypeName: '营业执照',
-                tenantId: 'small',
-                tenantName: 'Small',
+                tenantId: '10086',
+                tenantName: '中国银行',
                 processName: '',
             }
         };
@@ -86,14 +86,14 @@ export default class Filter extends Component {
                                 <FormItem {...formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">
                                         <Select size="large" placeholder="请选择" onChange={this.handleTenantChange.bind(this)}>
-                                            <Option value="small">
-                                                Small
+                                            <Option value="10086">
+                                                中国银行
                                             </Option>
-                                            <Option value="medium">
-                                                Medium
+                                            <Option value="100">
+                                                平安银行
                                             </Option>
-                                            <Option value="large">
-                                                Large
+                                            <Option value="101">
+                                                某银行
                                             </Option>
                                         </Select>
                                     </IceFormBinder>

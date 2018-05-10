@@ -56,14 +56,16 @@ class CurdReq extends BaseReq {
    * 更新
    */
   save(data) {
-    var url = this.formatUrl(this.curd.create);
+    let url = this.formatUrl(this.curd.create),
+      method = 'POST';
     if (data && data.id) {
       url = this.formatUrl(this.curd.update, data.id);
+      method = 'PUT';
     }
 
     let options = {
       url: url,
-      method: 'POST',
+      method: method,
       data: data,
       contentType: 'application/json'
     }

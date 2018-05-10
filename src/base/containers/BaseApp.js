@@ -13,7 +13,7 @@ class BaseApp extends Component {
 
         this._condition = {//列表的搜索条件
             page: 1,
-            limie: 10
+            limit: 10
         };
 
         this.OPERATE_TYPE = OperateTypeConstant;
