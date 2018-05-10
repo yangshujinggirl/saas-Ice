@@ -33,25 +33,32 @@ export default class Process extends BaseApp {
      * @param type 操作类型，根据不同类型处理不同事件
      */
     handleOperateClick(data, type) {
+        let id = data.processDefId;
+
         switch (type) {
             case this.OPERATE_TYPE.EDIT: {
                 // 修改
-                hashHistory.push(`process/edit/${data.id}`)
+                hashHistory.push(`process/edit/${id}`)
                 break;
             }
             case this.OPERATE_TYPE.VIEW: {
                 // 详情
-                hashHistory.push(`process/detail/${data.id}`)
+                hashHistory.push(`process/detail/${id}`)
                 break;
             }
             case this.OPERATE_TYPE.OTHER: {
                 // 产品
+<<<<<<< HEAD
                 hashHistory.push(`process/config/${data.id}`)
+=======
+                hashHistory.push(`process/detail/${id}`)
+>>>>>>> 6da4cb0a992c764f95d0963a2a56ae09f6052f3f
                 break;
             }
             case this.OPERATE_TYPE.OTHER1: {
                 // 复制，复制该流程进入流程修改页面
-                hashHistory.push(`process/edit/${data.id}`)
+                this.props.actions.copyProcess(id);
+                // hashHistory.push(`process/edit/${id}`)
                 break;
             }
         }
