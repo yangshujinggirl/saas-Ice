@@ -33,7 +33,7 @@ export default class Process extends BaseApp {
      * @param type 操作类型，根据不同类型处理不同事件
      */
     handleOperateClick(data, type) {
-        let id = data.processDefId;
+        let id = data.id;
 
         switch (type) {
             case this.OPERATE_TYPE.EDIT: {
