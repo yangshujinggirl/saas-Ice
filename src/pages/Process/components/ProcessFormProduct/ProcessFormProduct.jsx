@@ -40,9 +40,10 @@ export default class ProcessFormProduct extends BaseApp {
       onSelectAll: (selected, records) => {
       },
     }
+    let { formOldData=[] } = this.props
     this.state = {
       visible: this.props.visible,
-      dataSourceRight: [],
+      dataSourceRight: formOldData,
       saveDataRight:[],
       selectedRowKeys: [],
       selectedRowOne: [],
@@ -53,6 +54,7 @@ export default class ProcessFormProduct extends BaseApp {
 
 
   componentWillMount() {
+    this.props.actions.getProcessProdOldList()
   }
   componentDidMount() {
     this.fetchData();
@@ -61,7 +63,6 @@ export default class ProcessFormProduct extends BaseApp {
   fetchData = (condition) => {
     this._condition = Object.assign(this._condition, condition);
     this.props.actions.getProcessProdList(this._condition);
-    this.props.actions.getProcessProdOldList()
   }
   //点击分页
   changePage = (currentPage) => {
@@ -156,9 +157,10 @@ export default class ProcessFormProduct extends BaseApp {
    * 渲染
    */
   render() {
-    console.log(this.props)
     const { dataSourceRight, visible, productType } = this.state;
-    let { formData, params } = this.props;
+    console.log(dataSourceRight)
+    
+    let { formData,params } = this.props;
     return (
       <IceContainer className="pch-container">
         <FilterItem onSubmit={this.fetchData} typedata={productType} params={params} />

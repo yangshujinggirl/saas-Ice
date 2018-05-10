@@ -84,7 +84,7 @@ export const save = (data) => {
       // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
       Feedback.toast.show({
         type: 'success',
-        content: data.processName + '产品流程已提交成功',
+        content: data.processName + '产品流程已' + (data.status == 1 ? '提交': '保存') +'成功',
         afterClose: () => {
           dispatch(fetchSuccess({ formData: {} }))
           hashHistory.push('/process');
@@ -143,7 +143,7 @@ export const copyProcess = (id) => {
     dispatch(fetchStart())
 
     Req.copyProcess(id).then((res) => {
-      if(res.code != 200){
+      if (res.code != 200) {
         Feedback.toast.show({
           type: 'error',
           content: res.msg,
@@ -177,13 +177,13 @@ export const getProcessProdList = (condition) => {
     })
   }
 }
-//流程配置产品右侧旧数据 
+//流程配置产品右侧列表 
 export const getProcessProdOldList = (condition) => {
   return (dispatch) => {
 
     Req.getProcessProdOldList(condition).then((res) => {
       
-        dispatch(fetchSuccess({ formOldData: res.data }))
+        dispatch(fetchSuccess({ formOldData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -197,6 +197,20 @@ export const saveProcessConfigProduct = (data) => {
 
     Req.saveProcessConfigProduct(data).then((res) => {
       hashHistory.push('/process')
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//获取必要字段
+export const getTasksFields = (taskTypeId) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+
+    Req.getTasksFields(taskTypeId).then((res) => {
+      if (res.code != 200) return;
+      dispatch(fetchSuccess({ tasksFields: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

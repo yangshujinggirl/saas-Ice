@@ -198,10 +198,11 @@ export default class ProcessAuthEdit extends BaseApp {
    * 渲染
    */
   render() {
-    const { dataSourceRight, current, visible } = this.state;
-    const { visibled, changeView } = this.props;
+    const { dataSourceRight, current } = this.state;
+    const { visible, changeView } = this.props;
+
     return (
-      <IceContainer className="pch-container" style={{ display: visibled ? '' : 'none' }}>
+      <IceContainer className="pch-container" style={{ display: visible ? '' : 'none' }}>
         <Title title="权限编辑" />
         <div className="edit-permission-dialog-content">
           <div className='center'>审查&#10007;权限配置</div>

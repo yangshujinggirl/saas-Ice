@@ -61,7 +61,7 @@ export default class ProcessAuthDetails extends Component  {
                     {/* <Button type="primary" className="return-btn">返回</Button> */}
                     <div className="container">
                         <div className="next-btn-box pch-form-buttons">
-                        <Button type="primary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.DETAIL)}>
+                        <Button type="secondary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.DETAIL)}>
                          返回
                         </Button>
                         </div>

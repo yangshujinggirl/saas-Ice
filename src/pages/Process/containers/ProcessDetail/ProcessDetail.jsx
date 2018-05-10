@@ -57,6 +57,7 @@ export default class ProcessDetail extends Component {
      * @return {[type]} [description]
      */
     assignTaskItems(params, customMenuList, formData) {
+        console.log('ProcessForm assignTaskItems')
         if (params.id) {
             if (!formData || !formData.taskItems || formData.taskItems.length == 0 || !customMenuList || customMenuList.length == 0) {
                 return;
@@ -83,7 +84,8 @@ export default class ProcessDetail extends Component {
             formData.taskItems = [];
             formData.taskItems.push(Object.assign({
                 taskOrder: 0,
-                taskAlias: customMenuList[0].taskTypeName
+                taskAlias: customMenuList[0].taskTypeName,
+                taskTypeId: customMenuList[0].id
             }, customMenuList[0]));
 
             // 只处理一次
@@ -101,17 +103,38 @@ export default class ProcessDetail extends Component {
      * @param  {[type]} view [description]
      * @return {[type]}      [description]
      */
-    changeView(view){
-        console.log('changeView', view)
-        this.setState({view})
+    changeView(view, item) {
+        console.log('changeView', view);
+
+        if(!view || typeof view != 'string'){
+            // 默认返回当前编辑页，约定返回不传参数
+            view = PROCESS_VIEW.DETAIL;
+        }
+        
+        switch (view) {
+            case PROCESS_VIEW.VIEWFIELD: {
+                // 查看必要字段
+                this.props.actions.getTasksFields(item.taskTypeId);
+                break;
+            }
+            case PROCESS_VIEW.VIEWAUTH : {
+                // 查看权限传入当前已选的权限
+                this.setState({
+                    privilegeItems: item.privilegeItems
+                });
+            }
+        }
+
+        this.setState({
+            view
+        })
     }
 
     /**
      * 渲染
      */
     render() {
-        let {customMenuList, formData = {}, params} = this.props;
-        // this.assignTaskItems(params, customMenuList, formData);
+        let {customMenuList, formData = {}, params, tasksFields = {}} = this.props;
 
         return (
             <div className="">
@@ -134,8 +157,8 @@ export default class ProcessDetail extends Component {
                         </IceFormBinderWrapper>
                     </div>
                 </IceContainer>
-                <ProcessFields visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
-                <ProcessAuthDetails visible={this.state.view == PROCESS_VIEW.VIEWAUTH}  changeView={this.changeView.bind(this)} />
+                <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
+                <ProcessAuthDetails privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.VIEWAUTH}  changeView={this.changeView.bind(this)} />
                 
             </div>
             );

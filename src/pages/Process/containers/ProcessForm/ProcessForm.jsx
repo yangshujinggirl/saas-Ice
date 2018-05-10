@@ -40,14 +40,14 @@ export default class ProcessForm extends Component {
         actions.getCustomMenuList();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.actions.changeHasProcess(false);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         let {customMenuList, formData = {}, params, hasProcess} = nextProps;
 
-        if(!hasProcess){
+        if (!hasProcess) {
             this.assignTaskItems(params, customMenuList, formData);
         }
     }
@@ -75,7 +75,7 @@ export default class ProcessForm extends Component {
                 })
             // item.cid = i;
             })
-            
+
             // 只处理一次
             this.props.actions.changeHasProcess(true);
         } else {
@@ -90,7 +90,7 @@ export default class ProcessForm extends Component {
                 taskAlias: customMenuList[0].taskTypeName,
                 taskTypeId: customMenuList[0].id
             }, customMenuList[0]));
-            
+
             // 只处理一次
             this.props.actions.changeHasProcess(true);
         }
@@ -136,11 +136,14 @@ export default class ProcessForm extends Component {
     handleSave = () => {
         this.refs.form.validateAll((errors, values) => {
             console.log('errors', errors, 'values', values);
-            if(errors){
+            if (errors) {
                 return false;
             }
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 0;
+            if(this.props.params.id){
+                values.id = this.props.params.id;
+            }
             this.props.actions.save(values);
         });
     }
@@ -149,8 +152,11 @@ export default class ProcessForm extends Component {
     handleSubmit = () => {
         this.refs.form.validateAll((errors, values) => {
             console.log('errors', errors, 'values', values);
-            if(errors){
+            if (errors) {
                 return false;
+            }
+            if(this.props.params.id){
+                values.id = this.props.params.id;
             }
             this.props.actions.save(values);
         });
@@ -176,9 +182,32 @@ export default class ProcessForm extends Component {
      * @param  {[type]} view [description]
      * @return {[type]}      [description]
      */
-    changeView(view){
-        console.log('changeView', view)
-        this.setState({view})
+    changeView(view, item) {
+        console.log('changeView', view);
+
+        if(!view || typeof view != 'string'){
+            // 默认返回当前编辑页，约定返回不传参数
+            view = PROCESS_VIEW.EDITFORM;
+        }
+        
+        switch (view) {
+            case PROCESS_VIEW.VIEWFIELD: {
+                // 查看必要字段
+                this.props.actions.getTasksFields(item.taskTypeId);
+                break;
+            }
+            case PROCESS_VIEW.EDITAUTH : {
+                // TODO 获取权限编辑的列表
+                // 编辑权限传入当前已选的权限
+                this.setState({
+                    privilegeItems: item.privilegeItems
+                });
+            }
+        }
+
+        this.setState({
+            view
+        })
     }
 
     /**
@@ -186,12 +215,12 @@ export default class ProcessForm extends Component {
      */
     render() {
         const locationInfo = this.props.location.state;
-        let {customMenuList, formData = {}, params} = this.props;
+        let {customMenuList, formData = {}, params, tasksFields = {}} = this.props;
 
-        if(!params.id){
+        if (!params.id) {
             // 新增时使用传递的数据设置
             // 默认名称为"新流程-MMddhhmmss"
-            if(locationInfo && !locationInfo.processName){
+            if (locationInfo && !locationInfo.processName) {
                 locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
             }
             formData = Object.assign(formData, locationInfo);
@@ -199,7 +228,9 @@ export default class ProcessForm extends Component {
 
         return (
             <div className="">
-                <IceContainer className="pch-container pch-process" style={{display: this.state.view == PROCESS_VIEW.EDITFORM ? '' : 'none'}}>
+                <IceContainer className="pch-container pch-process" style={{
+                                                                               display: this.state.view == PROCESS_VIEW.EDITFORM ? '' : 'none'
+                                                                           }}>
                     <Title title="流程新增/修改" />
                     <div className="pch-form">
                         <IceFormBinderWrapper value={formData} onBlur={this.formChange} ref="form">
@@ -229,8 +260,8 @@ export default class ProcessForm extends Component {
                         </IceFormBinderWrapper>
                     </div>
                 </IceContainer>
-                <ProcessFields visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
-                <ProcessAuthEdit visibled={this.state.view == PROCESS_VIEW.EDITAUTH}  changeView={this.changeView.bind(this)} />
+                <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
+                <ProcessAuthEdit privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
                 <SetFont_ visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeVIew={this.changeView.bind(this)} />
             </div>
             );
