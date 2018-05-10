@@ -84,7 +84,7 @@ export const save = (data) => {
       // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
       Feedback.toast.show({
         type: 'success',
-        content: data.processName + '产品流程已提交成功',
+        content: data.processName + '产品流程已' + (data.status == 1 ? '提交': '保存') +'成功',
         afterClose: () => {
           dispatch(fetchSuccess({ formData: {} }))
           hashHistory.push('/process');

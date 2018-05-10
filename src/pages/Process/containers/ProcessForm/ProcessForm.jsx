@@ -141,6 +141,9 @@ export default class ProcessForm extends Component {
             }
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 0;
+            if(this.props.params.id){
+                values.id = this.props.params.id;
+            }
             this.props.actions.save(values);
         });
     }
@@ -151,6 +154,9 @@ export default class ProcessForm extends Component {
             console.log('errors', errors, 'values', values);
             if (errors) {
                 return false;
+            }
+            if(this.props.params.id){
+                values.id = this.props.params.id;
             }
             this.props.actions.save(values);
         });
@@ -179,7 +185,7 @@ export default class ProcessForm extends Component {
     changeView(view, item) {
         console.log('changeView', view);
 
-        if(!view){
+        if(!view || typeof view != 'string'){
             // 默认返回当前编辑页，约定返回不传参数
             view = PROCESS_VIEW.EDITFORM;
         }
@@ -191,6 +197,7 @@ export default class ProcessForm extends Component {
                 break;
             }
             case PROCESS_VIEW.EDITAUTH : {
+                // TODO 获取权限编辑的列表
                 // 编辑权限传入当前已选的权限
                 this.setState({
                     privilegeItems: item.privilegeItems
