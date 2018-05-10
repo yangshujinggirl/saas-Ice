@@ -3,4 +3,19 @@
     width: 100%;
     margin-top: 20px;
   }
+  Form{
+    margin-top: 20px;
+    .tip{
+      display: block;
+      line-height: 17px;
+    }
+    .balloon-box{
+      height: 120px;
+      width: 800px;
+    }
+  }
+  .next-overlay-wrapper .next-overlay-inner {
+    z-index: 1001;
+    max-width: 800px;
+  }
 }

@@ -5,7 +5,7 @@ export default {
   path: "/creditinformation",
   name :'审查审批',
   childRoutes: [{
-    path: 'add',
+    path: 'add/:id',
     component: CreditInformation.CreditInformationForm
   },{
     path: 'creditentry/:id',
