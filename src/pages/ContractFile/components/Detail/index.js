@@ -5,14 +5,11 @@ import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 
 class Detail extends BaseApp {
-  fetchData() {
-
+  constructor(props) {
+    super(props);
   }
-  handleOperateClick() {
-
-  }
-  changePage() {
-
+  componentWillMount() {
+    this.props.actions.getDetail(this.props.params.id)
   }
   render() {
     const { columns } = this.props;

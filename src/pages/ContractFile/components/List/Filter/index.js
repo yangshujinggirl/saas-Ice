@@ -16,7 +16,7 @@ const formItemLayout = {
         span: 8
     },
     wrapperCol: {
-        span: 12
+        span: 16
     }
 };
 
@@ -36,38 +36,40 @@ class Filter extends Component {
             <IceFormBinderWrapper ref="form">
               <Form size="large" direction="hoz">
                 <Row wrap>
-                  <Col span={12}>
+                  <Col span={5}>
                     <FormItem {...formItemLayout} label="贷款编号:">
                       <IceFormBinder name="loanNo">
-                          <Input size="large" />
+                          <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={12}>
+                  <Col span={5}>
                     <FormItem {...formItemLayout} label="客户名称:">
                       <IceFormBinder name="name">
-                          <Input size="large" />
+                          <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={12}>
+                  <Col span={5}>
                     <FormItem {...formItemLayout} label="证件号码:">
                       <IceFormBinder name="documentCode">
-                          <Input size="large" />
+                          <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={12}>
+                  <Col span={5}>
                     <FormItem {...formItemLayout} label="手机号码:">
                       <IceFormBinder name="phone">
-                          <Input size="large" />
+                          <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={24} offset="10">
-                    <Button type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
-                        查询
-                    </Button>
+                  <Col span={4}>
+                    <FormItem {...formItemLayout} label="">
+                      <Button type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
+                          查询
+                      </Button>
+                    </FormItem>
                   </Col>
                 </Row>
               </Form>

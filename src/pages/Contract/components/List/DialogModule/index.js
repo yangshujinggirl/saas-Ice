@@ -49,10 +49,8 @@ class DialogModule extends Component {
     })
   }
   onOk() {
-    this.props.submit(this.props.templateObj.id,this.props.templateObj.actionStatus);
-    this.setState({
-      visible:false
-    })
+    const { id, actionStatus } = this.props.templateObj;
+    this.props.submit(id,actionStatus);
   }
   onClose() {
     this.setState({

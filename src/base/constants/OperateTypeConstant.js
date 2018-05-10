@@ -30,7 +30,8 @@ const OPERATE_TYPE = {
     BIND:'bind',//产品绑定
     RETURN:'return',//退回
     SIGN:'sign',//签字
-    COPY:'copy'//复制
+    COPY:'copy',//复制
+    ONLOAD:'onload',//下载
 };
 
 export default OPERATE_TYPE;

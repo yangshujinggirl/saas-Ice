@@ -21,62 +21,6 @@ class ContractList extends BaseApp {
   componentWillMount() {
     this.props.actions.search()
   }
-  //表单操作
-  handleOperateClick(record, type) {
-    switch (type) {
-        case this.OPERATE_TYPE.EDIT: {
-            hashHistory.push(`contractedit/edit/${record.id}`)
-            break;
-        }
-        case this.OPERATE_TYPE.CANCEL: {
-            this.dialogEvent(this.OPERATE_TYPE.CANCEL,record);
-            break;
-        }
-        case this.OPERATE_TYPE.CHANGE: {
-            this.changeDialog(record)
-            break;
-        }
-    }
-  }
-  //取消，退回
-  dialogEvent(type,record) {
-    let status,dataSource;
-    if(type == this.OPERATE_TYPE.CANCEL) {
-      status = 2;
-      dataSource = ['1','2','3']
-    } else if(type == this.OPERATE_TYPE.RETURN) {
-      status = 3;
-      dataSource = ['第1步','第2步','第3步']
-    }
-    this.setState({
-      visible:true,
-      dialogObj:{
-        status,
-        contractId:record.id,
-        dataSource
-      }
-    })
-  }
-  //改纸质
-  changeDialog(record) {
-    Dialog.confirm({
-      content: "改为纸质后，将不再支持电子签名，您确定要改为纸质吗",
-      locale: {
-        ok: "确认",
-        cancel: "取消",
-      },
-      onOk:()=>{
-        this.toggleContract(record.id,'paper',record.id)
-      }
-    });
-  }
-  //改纸质，改电子Api
-  toggleContract(id,to,contractId) {
-    Req.toggleContractApi(id,to,contractId)
-    .then((res) => {
-      console.log(res)
-    })
-  }
   //查询
   fetchData =(condition)=> {
     this.props.actions.search(condition)
@@ -87,14 +31,97 @@ class ContractList extends BaseApp {
           page: currentPage
       });
   }
+  //表单操作
+  handleOperateClick(record, type) {
+    switch (type) {
+        case this.OPERATE_TYPE.EDIT: {
+            this.editDialogEvent(record.id);
+            break;
+        }
+        case this.OPERATE_TYPE.CANCEL: {
+            this.cancelDialog(this.OPERATE_TYPE.CANCEL,record);
+            break;
+        }
+        case this.OPERATE_TYPE.CHANGE: {
+            this.toPaperDialog(record)
+            break;
+        }
+    }
+  }
+  //编辑
+  editDialogEvent(id) {
+    // id = '88';//编辑中id
+    Req.goEditContractApi(id)
+    .then((res) => {
+      const { code, data, msg } = res;
+      if( code !== 200) {
+        if(code == 1000001) {
+          Toast.error('该合同正在编辑中，请稍后再试');
+        } else {
+          Toast.error(msg);
+        }
+        return;
+      }
+      let path = {
+          pathname: `contractedit/edit/${id}`,
+          state: data
+      }
+      hashHistory.push(path)
+    },error => {
+      Toast.error(error.msg);
+    })
+  }
+  //取消，退回
+  cancelDialog(type,record) {
+    this.setState({
+      visible:true,
+      dialogObj:{
+        status:'CANCEL',
+        contractId:record.id
+      }
+    })
+  }
+  //改纸质弹框
+  toPaperDialog(record) {
+    Dialog.confirm({
+      title:'温馨提示',
+      content: "改为纸质后，将不再支持电子签名，您确定要改为纸质吗",
+      locale: {
+        ok: "确认",
+        cancel: "取消",
+      },
+      onOk:()=>{
+        this.toggleContract('paper',record.id)
+      }
+    });
+  }
+  //改纸质，改电子Api
+  toggleContract(to,contractId) {
+    Req.toggleContractApi(to,contractId)
+    .then((res) => {
+      const { code, msg } = res;
+      if( code != 200) {
+        Toast.error(msg);
+        return
+      }
+      Toast.success("更改成功");
+    })
+  }
+
+  //提交取消api
   submitOperate(params) {
     Req.handleContractApi(params)
     .then((res) => {
-      if(params.status == 2) {
-        Toast.success("取消成功");
-      } else if(params.status == 3) {
-        Toast.success("退回成功");
+      const { code,msg } =res;
+      if(code != 200) {
+        Toast.error(msg);
+        return
       }
+      Toast.success("取消成功");
+      this.props.actions.search()
+      this.setState({
+        visible:false
+      })
     },error => {
       Toast.error(error);
     })
@@ -112,7 +139,7 @@ class ContractList extends BaseApp {
           <DialogModule
             dialogObj={dialogObj}
             visible={visible}
-            submit={this.submitOperate}/>
+            submit={this.submitOperate.bind(this)}/>
       </IceContainer>
     )
   }

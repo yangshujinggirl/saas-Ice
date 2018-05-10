@@ -68,7 +68,12 @@ class AddEit extends BaseApp {
   getDetail(id) {
     Req.templateDetailApi(id)
     .then((res) => {
-      let { templateContent,templateName } = res.data;
+      const { code, data, msg } = res;
+      if(code != 200 ) {
+        Toast.error(msg);
+        return;
+      }
+      let { templateContent,templateName } = data;
       if(templateContent=='') {
         return
       }
@@ -95,6 +100,7 @@ class AddEit extends BaseApp {
         return
       }
       this.refs.form.setter('templateContent',templateContent);
+      //新增or编辑
       if(this.props.params.id) {
         this.editTemplate(values)
       } else {
@@ -107,9 +113,9 @@ class AddEit extends BaseApp {
   addTemplate(params) {
     Req.addTemplatesApi(params)
     .then((res) => {
-      const { status,msg } =res.data;
-      if(status!=200) {
-        Toast.success(msg);
+      const { code, msg } =res;
+      if(code != 200) {
+        Toast.error(msg);
         return;
       }
       hashHistory.push(`contract`)
@@ -120,9 +126,9 @@ class AddEit extends BaseApp {
     params = Object.assign(params,{id:this.props.params.id})
     Req.editTemplatesApi(params)
     .then((res) => {
-      const { status,msg } =res.data;
-      if(status!=200) {
-        Toast.success(msg);
+      const { code, msg } =res;
+      if(code != 200) {
+        Toast.error(msg);
         return;
       }
       hashHistory.push(`contract`)
@@ -137,6 +143,57 @@ class AddEit extends BaseApp {
     console.log(this.state)
     this.setState({
       moduleStatus
+    })
+  }
+  //上传图片
+  uploadImageCallBack(file) {
+    // return new Promise(
+    //   (resolve, reject) => {
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.open('POST', 'http://172.16.0.218:8080/file/upload');
+    //     xhr.setRequestHeader('Authorization', 'Client-ID XXXXX');
+    //     const data = new FormData();
+    //     data.append('image', file);
+    //     xhr.send(data);
+    //     debugger
+    //     xhr.addEventListener('load', () => {
+    //       const response = JSON.parse(xhr.responseText);
+    //       resolve(response);
+    //     });
+    //     xhr.addEventListener('error', () => {
+    //       const error = JSON.parse(xhr.responseText);
+    //       reject(error);
+    //     });
+    //   }
+    // );
+    return new Promise(
+        (resolve, reject) => {
+            const formData = new FormData();
+            formData.append('pic-upload', file);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://172.16.0.218:8080/file/upload');
+            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            xhr.setRequestHeader('Access-Control-Allow-Headers', 'X-Requested-With');
+            xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+            xhr.send(formData);
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                if (xhr.status >= 200 || xhr.status < 300 || xhr.status === 304) {
+                    let result = JSON.parse(xhr.responseText)
+                    console.log(result);
+                    if(result.length == 0) {
+                      return
+                    }
+                    resolve({
+                        data: {
+                            link: result.data.link
+                        }
+                    });
+                } else {
+                    reject(xhr.status)
+                }
+              }
+            }
     })
   }
   render() {
@@ -161,8 +218,7 @@ class AddEit extends BaseApp {
                       <div><IceFormError name="templateName" /></div>
                     </FormItem>
                   </Col>
-                  <Col span={24}>
-                    <FormItem className="editor-wrap">
+                  <Col span={20}>
                       <IceFormBinder
                         name="templateContent"
                         required
@@ -171,10 +227,17 @@ class AddEit extends BaseApp {
                           editorState={editorState}
                           wrapperClassName="contract-template-add-wrapper"
                           editorClassName="contract-template-editor"
-                          onEditorStateChange={this.onEditorStateChange}/>
+                          onEditorStateChange={this.onEditorStateChange}
+                          toolbar={{
+                            image: {
+                              uploadEnabled:true,
+                              uploadCallback: this.uploadImageCallBack,
+                              alt: { present: true, mandatory: true },
+                              inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg'
+                            }
+                          }}/>
                       </IceFormBinder>
                       <div><IceFormError name="templateContent" /></div>
-                    </FormItem>
                   </Col>
                   <Col span={24}>
                     <div className="btns-wrap">

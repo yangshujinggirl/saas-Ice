@@ -19,22 +19,31 @@ class ContractFileReq extends CurdReq{
 	//合同详情
 	contractDetailApi(id){
 		let options = {
-			url: this._host + `/contract/${id}`,
+			url: this._host + `/contract/contract/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
 		return super.fetchData(options);
 	}
-	//合同作废
-	cancelContractApi(contract_id,reason,memo){
+	//作废
+	handleContractApi(data) {
 		let options = {
-			url: this._host + `/contract/file`,
-			method: 'GET',
+			url: this._host + `/contract/contract/status`,
+			method: 'POST',
 			contentType: 'application/json',
-			params:{
-				contract_id,
-				reason,
-				memo
+			data
+		}
+		return super.fetchData(options);
+	}
+	//改纸质，电子
+	toggleContractApi(to,contractId) {
+		let options = {
+			url: this._host + `/contract/contract/type`,
+			method: 'POST',
+			contentType: 'application/json',
+			data:{
+				to,//合同类型 electronic：改电子 paper：改纸质
+				contractId
 			}
 		}
 		return super.fetchData(options);

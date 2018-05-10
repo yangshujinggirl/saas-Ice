@@ -2,24 +2,21 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
-import { Title, PchTable, PchPagination } from 'components';
+import { Title } from 'components';
+import './index.scss';
 
 class AddEit extends BaseApp {
-  fetchData() {
-
-  }
-  handleOperateClick() {
-
-  }
-  changePage() {
-
-  }
   render() {
-    const { columns } = this.props;
+    const { contractContent } = this.props.location.state;
+    console.log(this.props)
     return(
-      <IceContainer className="pch-container">
+      <IceContainer className="pch-container contract-eidt-pages">
           <Title title="合同新增" />
-          <div>合同新增内容请在这里填写</div>
+          <div className="main-contract-main-action">
+            <div dangerouslySetInnerHTML={{
+              __html:contractContent
+            }} />
+          </div>
       </IceContainer>
     )
   }

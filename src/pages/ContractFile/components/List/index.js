@@ -41,7 +41,7 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CANCEL: {
-            this.cancelDialogEvent();
+            this.cancelDialogEvent(record.id);
             break;
         }
         case this.OPERATE_TYPE.SIGN: {
@@ -49,53 +49,68 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CHANGE: {
-            this.changeDialog(record.id)
+            this.changeDialog(record)
             break;
         }
     }
   }
-  cancelDialogEvent() {
-    let dialogObj = {
-      labelOne:'请选择作废原因',
-      dataSource:['1','2','3'],
-      labelTwo:'请输入(200字符)'
-    }
+  //作废
+  cancelDialogEvent(id) {
     this.setState({
       visible:true,
-      dialogObj,
-      signVisible:false
+      signVisible:false,
+      dialogObj:{
+        contractId:id
+      }
     })
   }
+  //签字
   signDialogEvent() {
     this.setState({
       signVisible:true,
       visible:false
     })
   }
-  changeDialog(id) {
+  //改纸质
+  changeDialog(record) {
     Dialog.confirm({
+      title:'温馨提示',
       content: "改为电子后，客户可在面签时采用电子签名？",
       locale: {
         ok: "确认",
         cancel: "取消",
       },
       onOk:()=>{
-        this.toggleContract(record.id,'paper',record.id)
+        this.toggleContract('electronic',record.id)
       }
     });
   }
-  //改纸质，改电子Api
-  toggleContract(id,to,contractId) {
-    Req.toggleContractApi(id,to,contractId)
+  //改电子Api
+  toggleContract(to,contractId) {
+    Req.toggleContractApi(to,contractId)
     .then((res) => {
-      console.log(res)
+      const { code, msg } = res;
+      if( code != 200) {
+        Toast.error(msg);
+        return
+      }
+      Toast.success("更改成功");
     })
   }
-  //提交作废
+  //提提交作废api
   submitCancel(params) {
-    Req.cancelContractApi(params)
+    Req.handleContractApi(params)
     .then((res) => {
+      const { code,msg } =res;
+      if(code != 200) {
+        Toast.error(msg);
+        return
+      }
       Toast.success("作废成功");
+      this.props.actions.search()
+      this.setState({
+        visible:false
+      })
     },error => {
       Toast.error(error);
     })
@@ -118,7 +133,7 @@ class ContractList extends BaseApp {
           <DialogModule
             dialogObj={dialogObj}
             visible={visible}
-            submit={this.submitCancel}/>
+            submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
             visible={signVisible}
             submit={this.submitSign}/>

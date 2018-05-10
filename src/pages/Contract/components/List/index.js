@@ -23,6 +23,16 @@ class ContractList extends BaseApp {
   componentWillMount() {
     this.props.actions.search()
   }
+  //查询
+  fetchData =(condition)=> {
+    this.props.actions.search(condition)
+  }
+  //点击分页
+  changePage = (currentPage) => {
+      this.props.actions.search({
+          page: currentPage
+      });
+  }
   //表单操作
   handleOperateClick(record, type) {
     switch (type) {
@@ -56,8 +66,12 @@ class ContractList extends BaseApp {
   copyTemplate(id) {
     Req.copyTemplateApi(id)
     .then((res) => {
-      const { id } =res.data;
-      hashHistory.push(`contract/add/${id}`)
+      const { code, msg, data } =res;
+      if(code != 200 ) {
+        Toast.error(msg);
+        return
+      }
+      hashHistory.push(`contract/add/${data.id}`)
     },(error) => {
 
     })
@@ -72,7 +86,7 @@ class ContractList extends BaseApp {
         actionStatus = 1;//去启用
       }
     } else if (type == this.OPERATE_TYPE.REMOVE) {
-        actionStatus = 999;
+        actionStatus = 999;//去删除
     }
     Req.isBindProductApi(record.id)
     .then((res) => {
@@ -110,16 +124,6 @@ class ContractList extends BaseApp {
       })
     })
   }
-  //查询
-  fetchData =(condition)=> {
-    this.props.actions.search(condition)
-  }
-  //点击分页
-  changePage = (currentPage) => {
-      this.props.actions.search({
-          page: currentPage
-      });
-  }
   //提交启用，停用，删除
   submitOperate(id,actionStatus) {
     Req.handleTemplateApi(id,actionStatus)
@@ -131,7 +135,10 @@ class ContractList extends BaseApp {
       } else if(actionStatus == 999) {
         Toast.success("删除成功");
       }
-      location.reload()
+      this.props.actions.search();
+      this.setState({
+        visible:false
+      })
     },(error) => {
 
     })
@@ -149,7 +156,7 @@ class ContractList extends BaseApp {
           <DialogModule
             templateObj={templateObj}
             visible={visible}
-            submit={this.submitOperate}/>
+            submit={this.submitOperate.bind(this)}/>
       </IceContainer>
     )
   }

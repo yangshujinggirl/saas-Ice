@@ -14,21 +14,14 @@ class ContractEditReq extends CurdReq{
             detail: this._host + '/detail.json'
         }
 	}
-	//详情
-	getDetailApi(id){
-		let options = {
-			url: this._host + `/contract/${id}/edit_status`,
-			method: 'GET',
-			contentType: 'application/json'
-		}
-		return super.fetchData(options);
-	}
+
 	//编辑
 	goEditContractApi(id){
 		let options = {
-			url: this._host + `/contract/${id}/edit_status`,
+			url: this._host + `/contract/contract/edit_status`,
 			method: 'GET',
-			contentType: 'application/json'
+			contentType: 'application/json',
+			params:{id}
 		}
 		return super.fetchData(options);
 	}
@@ -46,22 +39,22 @@ class ContractEditReq extends CurdReq{
 		return super.fetchData(options);
 	}
 	//取消，退回
-	handleContractApi(params) {
+	handleContractApi(data) {
 		let options = {
 			url: this._host + `/contract/contract/status`,
-			method: 'GET',
+			method: 'POST',
 			contentType: 'application/json',
-			params
+			data
 		}
 		return super.fetchData(options);
 	}
 	//改纸质，电子
-	toggleContractApi(id,to,contractId) {
+	toggleContractApi(to,contractId) {
 		let options = {
-			url: this._host + `/${id}/type`,
-			method: 'GET',
+			url: this._host + `/contract/contract/type`,
+			method: 'POST',
 			contentType: 'application/json',
-			params:{
+			data:{
 				to,//合同类型 electronic：改电子 paper：改纸质
 				contractId
 			}

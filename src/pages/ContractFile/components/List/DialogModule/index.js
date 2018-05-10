@@ -34,11 +34,19 @@ const label =(name) => (
   <span><span className="label-required">*</span>{name}:</span>
 );
 
+const dataSource = [
+        {label:'客户信息错误', value:'客户信息错误',type:'cancel'},
+        {label:'客户信息修改', value:'客户信息修改',type:'change'},
+        {label:'其他', value:'其他',type:'other'}
+      ]
+      
 class DialogModule extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible:this.props.visible
+      visible:this.props.visible,
+      otherReason:false,
+      value:{}
     };
   }
   componentWillReceiveProps(props) {
@@ -52,19 +60,30 @@ class DialogModule extends Component {
     })
   }
   onOk() {
+    const { contractId } = this.props.dialogObj;
     this.refs.form.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
       if(errors) {
         return
       };
-      this.props.submit();
-      this.setState({
-        visible:false
-      })
+      let params = Object.assign(values, { action:'INVALID',contractId });
+      this.props.submit(params);
     });
+  }
+  selectedEvent(value,option) {
+    if(option.type == 'other') {
+      this.setState({
+        otherReason:true
+      })
+    } else {
+      this.setState({
+        otherReason:false
+      })
+    }
   }
   render() {
       const { dialogObj } = this.props;
+      const { visible, otherReason } = this.state;
       return (
         <Dialog
           visible={this.state.visible}
@@ -73,31 +92,36 @@ class DialogModule extends Component {
           className="contract-edit-dialog-wrap"
           footer={[]}>
           <div className="pch-form contract-edit-dialog-content">
-            <IceFormBinderWrapper ref="form">
+            <IceFormBinderWrapper ref="form" value={this.state.value}>
               <Form size="large" direction="hoz">
                 <Row wrap>
                   <Col span={24}>
-                    <FormItem {...formItemLayout} label={label(dialogObj.labelOne)}>
+                    <FormItem {...formItemLayout} label={label('请选择作废原因')}>
                       <IceFormBinder
                         required
                         message="请选择取消原因"
-                        name="result">
-                          <Select dataSource={dialogObj.dataSource} size="large"/>
+                        name="reason">
+                          <Select
+                            dataSource={dataSource}
+                            size="large"
+                            onChange={this.selectedEvent.bind(this)}/>
                       </IceFormBinder>
-                      <div><IceFormError name="result" /></div>
+                      <div><IceFormError name="reason" /></div>
                     </FormItem>
                   </Col>
-                  <Col span={24}>
-                    <FormItem {...formItemLayout} label={label(dialogObj.labelTwo)}>
-                      <IceFormBinder
-                        required
-                        message="请输入字符"
-                        name="text">
-                          <Input size="large" multiple maxLength={200} hasLimitHint />
-                      </IceFormBinder>
-                      <div><IceFormError name="text" /></div>
-                    </FormItem>
-                  </Col>
+                  {
+                    otherReason && <Col span={24}>
+                                      <FormItem {...formItemLayout} label={label('请输入(200字符)')}>
+                                        <IceFormBinder
+                                          required
+                                          message="请输入具体原因"
+                                          name="memo">
+                                            <Input size="large" multiple maxLength={200} hasLimitHint />
+                                        </IceFormBinder>
+                                        <div><IceFormError name="memo" /></div>
+                                      </FormItem>
+                                    </Col>
+                  }
                   <Col span={24}>
                     <div className="btns-wrap">
                       <Button

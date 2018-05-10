@@ -1,6 +1,6 @@
 
 import { BaseColumn } from 'base';
-import { Dialog, Button, Feedback } from "@icedesign/base";
+import { Button,Switch } from "@icedesign/base";
 /**
  * 定义列表的表头
  */
@@ -27,10 +27,12 @@ class ContractColumn extends BaseColumn {
             width: 120,
             cell: (value, index, record) => {
                 return (
-                  <Button type="secondary" shape="text" >
-                      {record.status == 1?'已启用':'已停用'}
-                  </Button>
-                    );
+                    <Switch
+                      checkedChildren="启"
+                      unCheckedChildren="停"
+                      onChange={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}
+                      checked={record.status == 1?true:false}/>
+                );
             }
         }, {
             title: '操作',
@@ -39,7 +41,7 @@ class ContractColumn extends BaseColumn {
             width: 200,
             cell: (value, index, record) => {
                 return (
-                    <div className="handle-btn-list-wrap">
+                    <div className="contract-handle-btn-list-wrap">
                         {
                           record.status != 1 && record.templateType != 1 &&
                           <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
@@ -61,9 +63,9 @@ class ContractColumn extends BaseColumn {
                         <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.COPY)}>
                             复制
                         </Button>
-                        <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}>
+                        {/* <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}>
                           {record.status == 1?'停用':'启用'}
-                        </Button>
+                        </Button> */}
                     </div>
                     );
             }

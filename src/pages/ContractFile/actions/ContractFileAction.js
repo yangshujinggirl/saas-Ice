@@ -1,5 +1,8 @@
 import T from '../constants/ContractFileConstant'
-import Req from '../reqs/ContractFileReq'
+import Req from '../reqs/ContractFileReq';
+import { Dialog, Button, Feedback } from "@icedesign/base";
+
+const Toast = Feedback.toast;
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
@@ -68,9 +71,12 @@ export const getDetail = (id) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
-      if (!res || res.code != 200) return;
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+    Req.contractDetailApi(id).then((res) => {
+      if (!res || res.code != 200) {
+        Toast.error(res.msg);
+        return;
+      }
+      dispatch(fetchSuccess({ pageData: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
