@@ -75,7 +75,7 @@ class SignDialogModule extends Component {
                         <ImageUpload
                           listType="picture-card"
                           className='upload'
-                          action="/loanApi/file/upload"
+                          action="/contractApi/contract/signed_paper_file/upload"
                           data={{'path':'path/to/file'}}
                           formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
                           accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"

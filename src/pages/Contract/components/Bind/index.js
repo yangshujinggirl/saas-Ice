@@ -9,7 +9,7 @@ import {
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
-
+import FilterForm from './Filter';
 import {
   Input,
   Button,
@@ -37,6 +37,13 @@ class Bind extends BaseApp {
   componentWillMount() {
     this.seachBindProductList('2979');
     this.props.actions.searchProduct();
+  }
+  fetchData =(condition)=> {
+    this.props.actions.searchProduct(condition);
+  }
+  //分页
+  changePage =(currentPage)=> {
+    this.props.actions.searchProduct({page:currentPage});
   }
   //查询已绑定产品列表
   seachBindProductList(id) {
@@ -79,7 +86,6 @@ class Bind extends BaseApp {
     })
   }
   onChange =(selectedRowKeys,records)=> {
-    console.log(selectedRowKeys,records)
    let selectedRow=[];
    selectedRow = records.map((ele) => (
      {
@@ -103,19 +109,15 @@ class Bind extends BaseApp {
         </Button>
     );
   };
-  changePage =(currentPage)=> {
-    this.props.actions.searchProduct({page:currentPage});
-  }
+
   render() {
     const { list=[] } = this.props.pageData;
     return(
       <IceContainer className="pch-container contract-bind-page">
           <IceFormBinderWrapper ref="form">
             <div className="pch-form">
-              <Form
-                size="large"
-                labelAlign="left">
                 <Title title="选择产品" />
+                <FilterForm onSubmit={this.fetchData} />
                 <div className="change-product">
                   <div className="product-list">
                     <Table
@@ -140,7 +142,6 @@ class Bind extends BaseApp {
                 <div className="action-block">
                   <FormModule />
                 </div>
-              </Form>
             </div>
           </IceFormBinderWrapper>
       </IceContainer>

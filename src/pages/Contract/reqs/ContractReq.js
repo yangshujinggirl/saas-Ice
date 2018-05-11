@@ -82,6 +82,16 @@ class ContractReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//类型select
+	getSelectSourceApi() {
+		this._host = 'loan-ft1';
+		let options = {
+			url: this._host + `/product/data/`,
+			method: 'GET',
+			contentType: 'application/json'
+		}
+		return super.fetchData(options);
+	}
 	//模板启用，停用，删除
 	handleTemplateApi(id,status) {
 		let options = {

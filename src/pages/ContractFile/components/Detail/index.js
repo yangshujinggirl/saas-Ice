@@ -1,22 +1,75 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
+import { Button } from "@icedesign/base";
 import { hashHistory } from 'react-router';
-import { BaseApp } from 'base'
+import { BaseApp } from 'base';
+import Req from '../../reqs/ContractFileReq';
 import { Title, PchTable, PchPagination } from 'components';
+import './index.scss';
 
 class Detail extends BaseApp {
   constructor(props) {
     super(props);
+    this.state = {
+      lastDisabled:false,
+      nextDisabled:false
+    }
   }
   componentWillMount() {
     this.props.actions.getDetail(this.props.params.id)
   }
+
+  //上一份
+  lastContract() {
+  }
+
+  //下一份
+  firstContract() {
+
+  }
+  //返回
+  returnBack() {
+
+  }
+  //打印
+  printContract() {
+
+  }
   render() {
-    const { columns } = this.props;
+    const { contractContent } = this.props.formData
+    const { lastDisabled ,nextDisabled } = this.state;
     return(
-      <IceContainer className="pch-container">
+      <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
-          <div>合同归档详情内容请在这里填写</div>
+          <div>
+            <div dangerouslySetInnerHTML={{
+              __html:contractContent
+            }} />
+          </div>
+          <div className="handle-btn-list-wrap">
+            <Button
+              type="secondary"
+              disabled={lastDisabled}
+              onClick={this.lastContract.bind(this)}>
+                上一份
+             </Button>
+            <Button
+              type="secondary"
+              disabled={nextDisabled}
+              onClick={this.firstContract}>
+                下一份
+             </Button>
+            <Button
+              type="secondary"
+              onClick={this.returnBack}>
+                返回
+             </Button>
+            <Button
+              type="secondary"
+              onClick={this.printContract}>
+                打印
+             </Button>
+          </div>
       </IceContainer>
     )
   }
