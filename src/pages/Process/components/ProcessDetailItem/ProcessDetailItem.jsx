@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
-import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
+import {
+    FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import { PchMaterialSelect } from 'components';
 
-const {Row, Col} = Grid;
-const {Option} = Select;
+const { Row, Col } = Grid;
+const { Option } = Select;
 const FormItem = Form.Item;
 
 export default class ProcessDetailItem extends Component {
@@ -19,7 +20,7 @@ export default class ProcessDetailItem extends Component {
             execModeData: [{
                 value: 0,
                 name: '系统'
-            },{
+            }, {
                 value: 1,
                 name: '页面'
             }]
@@ -27,38 +28,38 @@ export default class ProcessDetailItem extends Component {
     }
 
     //select生成
-    renderSelect = (data) => {
-        return (
-            data && data.map((item, index) => {
-                return (
-                    <Select.Option key={index} value={`${item.value}`}>
-                        {item.name || '--'}
-                    </Select.Option>
-                    );
-            })
-        );
-    }
+    // renderSelect = (data) => {
+    //     return (
+    //         data && data.map((item, index) => {
+    //             return (
+    //                 <Select.Option key={index} value={`${item.value}`}>
+    //                     {item.name || '--'}
+    //                 </Select.Option>
+    //                 );
+    //         })
+    //     );
+    // }
 
     /**
      * 获取方式
      * @param  {[type]} execMode [description]
      * @return {[type]}          [description]
      */
-    getExecModeName(execMode){
-      let data = this.state.execModeData.filter((item) => item.value == execMode);
+    getExecModeName(execMode) {
+        let data = this.state.execModeData.filter((item) => item.value == execMode);
 
-      if(data.length > 0){
-        return data[0].name;
-      }else{
-        return '--';
-      }
+        if (data.length > 0) {
+            return data[0].name;
+        } else {
+            return '--';
+        }
     }
 
     render() {
-        const {index, item, selectData, setModule, changeView} = this.props;
+        const { index, item, selectData, setModule, changeView } = this.props;
 
         return (
-            <Row align="top" key={index} className={`container-right-tabRow ${index%2===0 ? '' : 'even'}`}>
+            <Row align="top" key={index} className={`container-right-tabRow ${index % 2 === 0 ? '' : 'even'}`}>
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
                 </Col>
                 <Col xxs="6" s="3" l="3" className="pch-moduleName">
@@ -69,23 +70,16 @@ export default class ProcessDetailItem extends Component {
                 </Col>
                 <Col xxs="6" s="2" l="6">
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
-                         return (
-                             <div className="pch-target-name" key={ind}>
-                                <Input disabled defaultValue={list.conditionName} size="large" />
-                                 {/* <Select disabled defaultValue={list.conditionName} size="large">
-                                     {this.renderSelect([{
-                                          name: list.conditionName,
-                                          value: list.conditionName,
-                                      }])}
-                                 </Select> */}
-                                 <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskOrder`}>
-                                     <Select size="large">
-                                         {this.renderSelect(selectData)}
-                                     </Select>
-                                 </IceFormBinder>
-                             </div>
-                             );
-                     })}
+                        return (
+                            <div className="pch-target-name" key={ind}>
+                                <Input className="input-bottom" disabled defaultValue={list.conditionName} size="large" />
+                                <i className="icon icon-arrow">&#xe603;</i>
+                                <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskOrder`}>
+                                    <Input disabled size="large" />
+                                </IceFormBinder>
+                            </div>
+                        );
+                    })}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     {item.pageId ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE)}>{item.pageName}</a> : '--'}
@@ -101,10 +95,10 @@ export default class ProcessDetailItem extends Component {
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     <div className="pch-target-name">
-                    {this.getExecModeName(item.execMode)}
+                        {this.getExecModeName(item.execMode)}
                     </div>
                 </Col>
             </Row>
-            );
+        );
     }
 }
