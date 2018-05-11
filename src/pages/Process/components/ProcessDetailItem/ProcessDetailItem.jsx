@@ -27,19 +27,6 @@ export default class ProcessDetailItem extends Component {
         };
     }
 
-    //select生成
-    // renderSelect = (data) => {
-    //     return (
-    //         data && data.map((item, index) => {
-    //             return (
-    //                 <Select.Option key={index} value={`${item.value}`}>
-    //                     {item.name || '--'}
-    //                 </Select.Option>
-    //                 );
-    //         })
-    //     );
-    // }
-
     /**
      * 获取方式
      * @param  {[type]} execMode [description]
@@ -72,9 +59,9 @@ export default class ProcessDetailItem extends Component {
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
                         return (
                             <div className="pch-target-name" key={ind}>
-                                <Input className="input-bottom" disabled defaultValue={list.conditionName} size="large" />
+                                <Input className="input-bottom" disabled defaultValue={list.conditionName} size="large" text={list.transToTaskName} />
                                 <i className="icon icon-arrow">&#xe603;</i>
-                                <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskOrder`}>
+                                <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskName`}>
                                     <Input disabled size="large" />
                                 </IceFormBinder>
                             </div>

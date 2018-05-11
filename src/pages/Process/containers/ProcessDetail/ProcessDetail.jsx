@@ -68,7 +68,7 @@ export default class ProcessDetail extends Component {
                 customMenuList.map((citem, j) => {
                     if (item.taskTypeId == citem.id) {
                         citem.limitedAddTimes--;
-                        item = Object.assign(item, citem);
+                        item = Object.assign(citem, item);
                     }
                 })
             // item.cid = i;
