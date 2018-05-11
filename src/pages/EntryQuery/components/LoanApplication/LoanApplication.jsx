@@ -32,7 +32,7 @@ export default class LoanApplication extends Component {
       tableList:[],
       visible:false,
       value:{},
-      dataSource:{}
+      dataSource:[]
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -166,7 +166,7 @@ export default class LoanApplication extends Component {
   render() {
     const details = this.props.detail || {};
     const init = this.field.init;
-    const { dataSource } = this.state  || [];
+    const { dataSource = [] } = this.state;
     return (
 
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
