@@ -39,7 +39,6 @@ export default class Filter extends Component {
         console.log(this.props)
         // let {params} = this.props
         Req.getProcessProdType().then((res)=>{ //{tenantId:tenantId}
-            console.log(res.data.productType)
             if(res.code==200){
                 let prodType=res.data.productType
                 this.setState({
@@ -47,7 +46,6 @@ export default class Filter extends Component {
                 })
             }
             })
-      
      }
     filterFormChange = (value) => {
         this.setState({
@@ -76,7 +74,7 @@ export default class Filter extends Component {
     render() {
         let {prodType} = this.state
         return (
-            <div className="pch-condition">
+            <div className="pch-condition pch-condition-padding ">
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
                         <Row wrap>

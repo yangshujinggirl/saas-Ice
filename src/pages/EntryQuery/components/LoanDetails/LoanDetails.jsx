@@ -14,19 +14,6 @@ import classNames from 'classnames';
 const { Row, Col } = Grid;
 
 
-@DataBinder({
-  details: {
-    // 详细请求配置请参见 https://github.com/axios/axios
-    url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/loan/derails',
-    defaultBindingData: {
-      list: [],
-      total: 100,
-      pageSize: 10,
-      currentPage: 1,
-    },
-  },
-})
-
 
 export default class LoanDetails extends Component {
   static displayName = 'LoanDetails';
@@ -62,22 +49,32 @@ export default class LoanDetails extends Component {
   //渲染标题
   renderTitle = (data) =>{
     const  list = [];
+    const  titleList = [];
     if(!this.isEmptyObject(data)){
-      var falg = false;
+      var materialsFalg = false;//材料标志falg
+      var trackFalg = false;//轨迹标志falg
       data.map((el,i)=>{
         if(el.name == '材料提交'){
-          falg = true;
+          materialsFalg = true;
         }
+        if(el.name == '流程轨迹'){
+          trackFalg = true;
+        }
+        titleList.push(el);
       })
-      if(!falg){
-        data.push({name:'材料提交',fields:[]})
+      if(!trackFalg){
+        titleList.unshift({name:'流程轨迹',fields:[]})
       }
-      data.map((item,index)=>{
+      if(!materialsFalg){
+        titleList.push({name:'材料提交',fields:[]})
+      }
+
+      titleList.map((item,index)=>{
         var btnClass = classNames({
           'active': this.state.index == index,
         });
         list.push(
-          <a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a>
+          <li><a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a></li>
         )
       })
     }
@@ -131,9 +128,12 @@ export default class LoanDetails extends Component {
                 </Col>
                 <Col span="21" className='modify-form'>
                   <div className="rcontent-edito">
-                    <Detail dataSource={details.list} ></Detail>
-                    <MaterialSubmit {...this.props}></MaterialSubmit>
                     <EntryTrack {...this.props}></EntryTrack>
+                    <Detail dataSource={details.list} ></Detail>
+                    <div className='info' id='材料提交'>
+                      <h4>材料提交</h4>
+                      <MaterialSubmit {...this.props}></MaterialSubmit>
+                    </div>
                     <div className='botton-box'>
                       <Button className='botton' onClick={this.back}>返回</Button>
                     </div>

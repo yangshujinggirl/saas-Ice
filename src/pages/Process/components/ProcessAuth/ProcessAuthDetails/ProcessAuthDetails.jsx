@@ -5,7 +5,6 @@ import { BaseApp } from 'base';
 import { Form, Icon, Input, Button, Table, Radio, Grid, Field, Dialog } from '@icedesign/base';
 const {Row, Col} = Grid;
 import { Title, PchTable, PchPagination } from 'components';
-import FilterForm from '../Filter';
 import { PROCESS_VIEW } from '../../../constants/ProcessViewConstant';
 // import ProcessPowerDetails from './ProcessPowerDetails'
 import './ProcessAuthDetails.scss'
@@ -48,20 +47,33 @@ export default class ProcessAuthDetails extends Component  {
      */
     render() {
         const dataSource = [{power:'总部'},{power:'总部科技部'},{power:'总部测试'}];
-        const {data=[], visible, changeView,pageAuthDetail} = this.props;
-        let {list=[]} = pageAuthDetail || {}
+        const {formData,data=[], visible, changeView,privilegeItems} = this.props;
+        
         return (
             <IceContainer className="pch-container" style={{display: visible ? '' : 'none'}}>
                 <Title title="查看权限配置详情" />
-                <div className="pc-form">
-                    <FilterForm onSubmit={this.fetchData} />
-                    <Table className="table-list" dataSource={list}>
-                        <Table.Column title="权限" dataIndex="processName" align="center"/>
+                <div className="pc-form pch-condition">
+                <Form size="large" direction="hoz">
+                        <Row className="row">
+                            <Col span={6}>
+                                业务类型:{formData.businessTypeName}
+                            </Col>
+                            <Col span={6}>
+                                资方:{formData.tenantName}
+                            </Col>
+                            <Col span={6}>
+                                流程名称:{formData.processName}
+                            </Col>
+                        </Row>
+                    </Form>
+                    <p className="title-p">审批-权限配置详情</p>
+                    <Table className="table-list" dataSource={privilegeItems}>
+                        <Table.Column title="权限" dataIndex="orgName"/>
                     </Table>
                     {/* <Button type="primary" className="return-btn">返回</Button> */}
                     <div className="container">
                         <div className="next-btn-box pch-form-buttons">
-                        <Button type="primary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.DETAIL)}>
+                        <Button type="secondary" className="return-btn" onClick={changeView.bind(this, PROCESS_VIEW.DETAIL)}>
                          返回
                         </Button>
                         </div>

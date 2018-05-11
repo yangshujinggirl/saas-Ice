@@ -1,5 +1,5 @@
 .edit-permission-dialog-contents {
-  // padding: 0px 0 40px;
+  padding-top: 0px !important;
   .table-list {
     width: 100%;
     text-align: center;
@@ -18,6 +18,7 @@
     width: 20%;
     .add-btn {
       width: 50px;
+      color:#E5B67A ;
     }
   }
   .part-r {
@@ -58,4 +59,7 @@
 }
 .buttonsSure {
   margin-right: 50px;
+}
+.pch-condition-padding  {
+  padding-bottom:0 !important; 
 }

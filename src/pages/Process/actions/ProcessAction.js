@@ -178,7 +178,20 @@ export const getProcessProdList = (condition) => {
     })
   }
 }
+//流程配置产品右侧列表 
+export const getProcessProdOldList = (condition) => {
+  return (dispatch) => {
 
+    Req.getProcessProdOldList(condition).then((res) => {
+      if(res.code==200){
+        dispatch(fetchSuccess({ formOldData: res.data }))
+
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
 //流程配置产品保存
 export const saveProcessConfigProduct = (data) => {
   return (dispatch) => {
@@ -186,8 +199,7 @@ export const saveProcessConfigProduct = (data) => {
     dispatch(fetchStart())
 
     Req.saveProcessConfigProduct(data).then((res) => {
-      console.log(res)
-      // if (!res || res.code != 200) return;
+      hashHistory.push('/process')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

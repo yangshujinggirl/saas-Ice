@@ -276,7 +276,7 @@ export default class ProcessForm extends Component {
                                         <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule.bind(this)} changeView={this.changeView.bind(this)} />
                                         <div className="next-btn-box pch-form-buttons">
                                             <Button type="normal" size="large" onClick={this.handleCancel}>
-                                                返回
+                                                取消
                                             </Button>
                                             <Button type="primary" size="large" onClick={this.handleSave}>
                                                 保存
@@ -292,7 +292,7 @@ export default class ProcessForm extends Component {
                     </div>
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
-                <ProcessAuthEdit privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
+                <ProcessAuthEdit formData={formData} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
                 <SetFont_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
             </div>
             );

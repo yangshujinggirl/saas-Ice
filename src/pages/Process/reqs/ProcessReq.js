@@ -63,7 +63,17 @@ class ProcessReq extends CurdReq {
       params: condition
     }
     return super.fetchData(options);
-  }
+	}
+	//流程配置产品右侧列表
+	getProcessProdOldList(condition){
+		let options = {
+			url: this._config.WF_HOST + `/processes/product/123`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      // params: condition
+    }
+    return super.fetchData(options);
+	}
   //流程配置产品保存
   saveProcessConfigProduct(data) {
     let options = {

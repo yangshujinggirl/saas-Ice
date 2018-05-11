@@ -62,21 +62,22 @@ export default class ProcessDetailItem extends Component {
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
                 </Col>
                 <Col xxs="6" s="3" l="3" className="pch-moduleName">
-                    <div className="pch-realname">
+                    {/* <div className="pch-realname">
                         {item.taskTypeName}
-                    </div>
-                    {item.taskAlias}
+                    </div> */}
+                    {item.taskTypeName} - {item.taskAlias}
                 </Col>
                 <Col xxs="6" s="2" l="6">
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
                          return (
                              <div className="pch-target-name" key={ind}>
-                                 <Select disabled defaultValue={list.conditionName} size="large">
+                                <Input disabled defaultValue={list.conditionName} size="large" />
+                                 {/* <Select disabled defaultValue={list.conditionName} size="large">
                                      {this.renderSelect([{
                                           name: list.conditionName,
                                           value: list.conditionName,
                                       }])}
-                                 </Select>
+                                 </Select> */}
                                  <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskOrder`}>
                                      <Select size="large">
                                          {this.renderSelect(selectData)}
