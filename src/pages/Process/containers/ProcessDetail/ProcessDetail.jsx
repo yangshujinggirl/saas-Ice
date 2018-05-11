@@ -15,7 +15,7 @@ import ProcessFormItemList from '../../components/ProcessFormItemList';
 import ProcessFields from '../../components/ProcessFields';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 
-import ProcessAuthDetails from '../../components/ProcessAuth/ProcessAuthDetails'
+import ProcessAuthDetails from '../../components/ProcessAuth/ProcessAuthDetails';
 export default class ProcessDetail extends Component {
     constructor(props) {
         super(props);
