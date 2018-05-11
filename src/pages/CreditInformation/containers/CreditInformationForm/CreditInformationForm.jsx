@@ -103,7 +103,7 @@ export default class CreditInformationForm extends Component {
         //
         // let AllValue = this.AllValue(value);
         // this.dataVerif(value);
-        // this.props.actions.save(AllValue);
+        this.props.actions.saveForm(value);
       });
     };
 
@@ -155,8 +155,12 @@ export default class CreditInformationForm extends Component {
         }
       callback();
     }
+    handleVisibleChange(visible) {
+      this.setState({ visible });
+    }
 
-    /**
+
+  /**
      * 渲染
      */
     render() {
@@ -173,7 +177,7 @@ export default class CreditInformationForm extends Component {
                       <DragUpload
                       className='upload-picture'
                       listType="picture-card"
-                      action="/loanApi/file/upload"
+                      action="/saas/file/upload"
                       data={{'path':'path/to/file'}}
                       defaultFileList={[
                         {
@@ -207,42 +211,38 @@ export default class CreditInformationForm extends Component {
                           <Col xxs={24} xs={12} l={8} >
                             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>姓名:</span>}>
                               <IceFormBinder
-                                name="na66me"
-                                required
+                                name="name"
                                 message="请输入"
-                                disabled
+                                defaultValue='时杏丽'
                               >
-                                <Input size="large" placeholder="最小提前还款金额" className="custom-input" />
+                                <Input  disabled size="large" placeholder="请输入" className="custom-input"  value='时杏丽'/>
                               </IceFormBinder>
-                              <div> <IceFormError name="na66me" /></div>
+                              <div> <IceFormError name="name" /></div>
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
                             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>证件号码:</span>}>
                               <IceFormBinder
-                                disabled
-                                name="name11"
-                                required
+                                name="credentialsNo"
                                 message="请输入"
+                                defaultValue='412725198907226148'
                               >
 
-                                <Input size="large" placeholder="最早提前还款期数" className="custom-input" />
+                                <Input disabled size="large" placeholder="请输入" className="custom-input"  value='412725198907226148'/>
                               </IceFormBinder>
-                              <div><IceFormError name="name11" /></div>
+                              <div><IceFormError name="credentialsNo" /></div>
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
                             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>手机号码:</span>}>
                               <IceFormBinder
-                                disabled
-                                name="name11"
-                                required
+                                name="mobilePhone"
                                 message="请输入"
-
+                                defaultValue='18337186154'
                               >
-                                <Input size="large" placeholder="最小提前还款金额" className="custom-input" />
+                                <Input disabled size="large" placeholder="请输入" className="custom-input"  value='18337186154' />
                               </IceFormBinder>
-                              <div> <IceFormError name="name11" /></div>
+                              <div> <IceFormError name="mobilePhone" /></div>
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
@@ -260,18 +260,27 @@ export default class CreditInformationForm extends Component {
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
-                            <FormItem {...formItemLayout} label={<span className='tip'> <span className="label-required">*</span>近3个月贷款审批或信用卡审批查询次数</span>}>
-                              <IceFormBinder
-                                name="threeMonApproveCount"
-                                required
-                                validator={this.isInteger}
-                              >
+                            <FormItem {...formItemLayout} label={<span className='tip'> <span className="label-required">*</span>近3个月贷款审批或信用卡审批查询次数</span>
+                            }>
+                              <Balloon onVisibleChange={this.handleVisibleChange.bind(this)}
+                                       style={styles.box}  visible={this.state.visible}
+                                       trigger={
+                                         <div>
+                                           <IceFormBinder
+                                             name="threeMonApproveCount"
+                                             required
+                                             validator={this.isInteger}
+                                           >
+                                             <Input size="large" htmlType='number' placeholder="请选择" className="custom-input" />
 
-                                <Balloon  style={styles.box}  trigger={ <Input size="large" htmlType='number' placeholder="请选择" className="custom-input" />} triggerType="focus">
-                                  <img src="/public/images/creditInformation/threeMonApproveCount.png" alt=""/>
-                                </Balloon>
-                              </IceFormBinder>
-                              <div><IceFormError name="threeMonApproveCount" /></div>
+                                           </IceFormBinder>
+                                           <div><IceFormError name="threeMonApproveCount" /></div>
+
+                                         </div>
+                                       } triggerType="hover">
+                                <img src="/public/images/creditInformation/threeMonApproveCount.png" alt=""/>
+                              </Balloon>
+
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >

@@ -74,6 +74,16 @@ class CreditInformationReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //提交征信表单
+  saveForm(data){
+    let options = {
+      url: this._config.WF_HOST + '/member/loginMobile',
+      method: 'POST',
+      contentType: 'application/x-www-form-urlencoded',
+      params: data
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new CreditInformationReq();
