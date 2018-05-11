@@ -205,7 +205,6 @@ export const saveProcessConfigProduct = (data) => {
     })
   }
 }
-
 //获取必要字段
 export const getTasksFields = (taskTypeId) => {
   return (dispatch) => {

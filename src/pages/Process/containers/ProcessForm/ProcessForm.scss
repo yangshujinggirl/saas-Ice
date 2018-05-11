@@ -69,6 +69,7 @@
         background: #fff; // display: table-cell;
         min-height: 500px;
         .container-right-tabRow {
+          border-top:1px solid #F6DCA9;
           position: relative;
           padding: 30px 20px;
           &.even {

@@ -301,7 +301,7 @@ export default class ProcessForm extends Component {
 
         return result.join(',');
     }
-
+    
     /**
      * 渲染
      */
