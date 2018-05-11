@@ -76,7 +76,7 @@ export const getDetail = (id) => {
         Toast.error(res.msg);
         return;
       }
-      dispatch(fetchSuccess({ pageData: res.data}))
+      dispatch(fetchSuccess({ formData: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
