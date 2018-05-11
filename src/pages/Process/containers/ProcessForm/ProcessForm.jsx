@@ -184,7 +184,7 @@ export default class ProcessForm extends Component {
      */
     changeView(view, item) {
         console.log('changeView', view);
-        let { actions } = this.props;
+        let { actions, formData = {} } = this.props;
 
         if(!view || typeof view != 'string'){
             // 默认返回当前编辑页，约定返回不传参数
@@ -208,7 +208,6 @@ export default class ProcessForm extends Component {
                 // 编辑页面
                 // 有页面id的直接获取页面详情（编辑）
                 // 没有id的获取页面字段（新增）
-                
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
                     this.setState({
@@ -217,7 +216,7 @@ export default class ProcessForm extends Component {
                     });
                 }else{
                     actions.getPageFields({
-                        step: 1,
+                        step: this.getStepFromData(formData.taskItems, item.taskOrder),
                         excludeScreens: ''
                     });
                     this.setState({
@@ -234,11 +233,46 @@ export default class ProcessForm extends Component {
         })
     }
 
+    /**
+     * 保存页面之后，设置页面id，跳转回编辑页
+     * @param  {[type]} pageId [description]
+     * @return {[type]}        [description]
+     */
     handleSavePage(pageId){
         let order = this.state.taskOrder;
         let formData = this.props.formData;
 
         formData.taskItems[order].pageId = pageId;
+        this.setState({
+            view: PROCESS_VIEW.EDITFORM
+        })
+    }
+
+    /**
+     * 获取进件页面配置的step参数
+     * 1. 默认从1开始
+     * 2. 当前编辑页面在列表的位置
+     * @param  {[type]} taskItems 整个模块列表
+     * @param  {[type]} taskOrder 当前点击编辑页面的模块序号、从0开始
+     * @return {[type]}           [description]
+     */
+    getStepFromData(taskItems, taskOrder){
+        if(taskOrder == 0){
+            return 1;
+        }
+
+        let count = 1;
+        taskItems.map((item, i) => {
+            if(i < taskOrder && item.haveConfigPage){
+                count++
+            }
+        })
+
+        return count;
+    }
+
+    getExcludeScreens(taskItems, taskOrder){
+        
     }
 
     /**

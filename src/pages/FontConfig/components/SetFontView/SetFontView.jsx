@@ -6,7 +6,8 @@ import { Balloon } from "@icedesign/base";
 // import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
-import Tools from './../../../../base/utils/Tools'
+import Tools from 'utils'
+import { Title } from 'components';
 
 const { Group: CheckboxGroup } = Checkbox;
 const { Group: RadioGroup } = Radio;
@@ -357,43 +358,6 @@ export default class setFont extends Component {
             })
         }
 
-        const validaRequire = (index, inj) => {
-            const newArr = this.state.resData;
-            newArr.fieldset[index].fields[inj].isRequired = !newArr.fieldset[index].fields[inj].isRequired
-            this.setState({
-                resData: newArr
-            });
-        }
-
-        const deleteData = (index) => {
-            const newArr = this.state.resData;
-            newArr.fieldset.splice(index, 1)
-            this.setState({
-                resData: newArr
-            });
-        }
-
-        const moveDown = (index) => {
-            const newArr = this.state.resData;
-            if ((newArr.fieldset.length - 1) == index) {
-                return
-            }
-            [newArr.fieldset[index + 1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index + 1]]
-            this.setState({
-                resData: newArr
-            });
-        }
-
-        const moveUp = (index) => {
-            const newArr = this.state.resData;
-            if (index == 1) {
-                return
-            }
-            [newArr.fieldset[index - 1], newArr.fieldset[index]] = [newArr.fieldset[index], newArr.fieldset[index - 1]]
-            this.setState({
-                resData: newArr
-            });
-        }
         const handleAddModule = () => {
             const newArr = this.state.resData;
             let add = {
@@ -678,56 +642,131 @@ export default class setFont extends Component {
         }
         return (
             <div className="setFont">
-                <IceContainer className='subtitle'>
-                    <div className="pageName">
-                        <label>页面名称</label>
-                        <input type="text" name='' onChange={handlePageName} value={this.state.pageValue} />
-                    </div>
-                </IceContainer>
-                <div className="container">
-                    {/*渲染左边  */}
-                    <div className="container-left">
-                        <ul className='scrollFix'>
-                            {
-                                this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
+                <IceContainer className='pch-container subtitle'>
+                    <Title title="预览页面" />
+                    <div className="container">
+                        {/*渲染左边  */}
+                        <div className="container-left">
+                            <ul className='scrollFix'>
+                                {
+                                    this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
+                                        return (
+                                            <li className={cx({ 'active': this.state.leftActive === index })} key={index}>
+                                                <a onClick={this.menuNav.bind(this, item.name, index)}>{item.name}</a>
+                                            </li>
+                                        )
+                                    })}
+
+                            </ul>
+                        </div>
+                        {/* 渲染右边 */}
+                        <div className="container-right">
+                            <div className="dynamic-demo">
+                                {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
                                     return (
-                                        <li className={cx({ 'active': this.state.leftActive === index })} key={index}>
-                                            <a onClick={this.menuNav.bind(this, item.name, index)}>{item.name}</a>
-                                        </li>
-                                    )
-                                })}
+                                        <div key={index}>
+                                            {/*添加字段按钮和小标题  */}
+                                            <div className='baseDetail customer'>
+                                                <span className='active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
+                                                    {
+                                                        this.state.subTitle == index + 1 ?
+                                                            <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={validEmpty} className='moduleStr' />
+                                                            :
+                                                            <Input placeholder="" value={item.name} className='moduleStr' readOnly />
+                                                    }
 
-                        </ul>
-                    </div>
-                    {/* 渲染右边 */}
-                    <div className="container-right">
-                        <div className="dynamic-demo">
-                            {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
-                                return (
-                                    <div key={index}>
-                                        {/*添加字段按钮和小标题  */}
-                                        <div className='baseDetail customer'>
-                                            <span className='active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
-                                                {
-                                                    this.state.subTitle == index + 1 ?
-                                                        <Input placeholder="" value={item.name} onChange={this.handleGroupTitle.bind(this, index)} onBlur={validEmpty} className='moduleStr' />
-                                                        :
-                                                        <Input placeholder="" value={item.name} className='moduleStr' readOnly />
+                                                </span>
+
+
+                                            </div>
+                                            <div className='ui-sortable'>
+                                                {index == 0 ? item.fields.map((item, inj) => {
+                                                    if (item.isCustom) {
+                                                        return (
+                                                            // 基本信息里面自定义字段
+                                                            <div onMouseLeave={hover.bind(this, 0)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
+                                                                'false')} key={inj} data-row={item.line==1? true : ''}>
+                                                                <div className="clearfix">
+                                                                    <label htmlFor="" className='label'>
+                                                                        <Balloon
+                                                                                type="primary"
+                                                                                trigger={ <span className='ellips'  title={item.label}>
+                                                                                <span className='required'>
+                                                                                    {item.isRequired ? <span>*</span> : ''}
+                                                                                </span>    
+                                                                                {item.label}
+                                                                            </span>}
+                                                                                closable={false}
+                                                                                triggerType="hover">
+                                                                                {item.label}
+                                                                        </Balloon>    
+                                                                    </label>
+                                                                    {handleFixed(item)}
+                                                                    <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
+                                                                </div>
+                                                                <span className="delete"
+                                                                    onClick={this.handleRemoveElement.bind(this, index, inj)}>
+                                                                    &times;
+                                                                    </span>
+                                                            </div>
+                                                        )
+                                                    } else {
+                                                        return (
+                                                            // 固定字段
+                                                            <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
+                                                                'false')} key={inj} data-row={item.line == 1 ? true : ''}>
+                                                                <div className="clearfix">
+                                                                    <label htmlFor="" className='label'>
+                                                                        <Balloon
+                                                                                type="primary"
+                                                                                trigger={ <span className='ellips'>
+                                                                                <span className='required'>*</span>  
+                                                                                {item.label}:
+                                                                                </span>}
+                                                                                closable={false}
+                                                                                triggerType="hover">
+                                                                                {item.label}
+                                                                        </Balloon>    
+                                                                    </label>
+                                                                    {handleFixed(item)}
+                                                                    <span className='edite icon'>&#xe62a;</span>
+                                                                </div>
+                                                                <span className="delete">
+                                                                    &times;
+                                                                    </span>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    
+                                                }) : ''
+                                                    // item.fields.map((item, index) => {
+                                                    //     return (
+                                                    //         <div  className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
+                                                    //             'false')} key={index}>
+                                                    //             <div className="clearfix">
+                                                    //                 <label htmlFor="">
+                                                    //                     <span className='ellips' title={item.label}>{item.label}</span>
+                                                    //                     <span className='required'>*</span>
+                                                    //                 </label>
+                                                    //                 {handleFixed(item)}
+                                                    //                 <span className='edite icon'>&#xe62a;</span>
+                                                    //             </div>
+                                                    //             <span className="delete"
+                                                    //                 onClick={this.handleRemoveElement.bind(this, index)}>
+                                                    //                 &times;
+                                                    //                 </span>
+                                                    //         </div>
+                                                    //     )
+                                                    // })  
                                                 }
+                                                
 
-                                            </span>
-
-
-                                        </div>
-                                        <div className='ui-sortable'>
-                                            {index == 0 ? item.fields.map((item, inj) => {
-                                                if (item.isCustom) {
+                                                {index == 0 ? '' : item.fields.map((item, inj) => {
                                                     return (
-                                                        // 基本信息里面自定义字段
-                                                        <div onMouseLeave={hover.bind(this, 0)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false')} key={inj} data-row={item.line==1? true : ''}>
+                                                        <div key={inj} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
+                                                            'false')} data-row={item.line == 1 ? true : ''}>
                                                             <div className="clearfix">
-                                                                <label htmlFor="" className='label'>
+                                                                <label htmlFor=""  className='label'>
                                                                     <Balloon
                                                                             type="primary"
                                                                             trigger={ <span className='ellips'  title={item.label}>
@@ -739,7 +778,7 @@ export default class setFont extends Component {
                                                                             closable={false}
                                                                             triggerType="hover">
                                                                             {item.label}
-                                                                    </Balloon>    
+                                                                    </Balloon> 
                                                                 </label>
                                                                 {handleFixed(item)}
                                                                 <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
@@ -747,302 +786,33 @@ export default class setFont extends Component {
                                                             <span className="delete"
                                                                 onClick={this.handleRemoveElement.bind(this, index, inj)}>
                                                                 &times;
-                                                                </span>
+                                                            </span>
                                                         </div>
-                                                    )
-                                                } else {
-                                                    return (
-                                                        // 固定字段
-                                                        <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                            'false')} key={inj} data-row={item.line == 1 ? true : ''}>
-                                                            <div className="clearfix">
-                                                                <label htmlFor="" className='label'>
-                                                                    <Balloon
-                                                                            type="primary"
-                                                                            trigger={ <span className='ellips'>
-                                                                            <span className='required'>*</span>  
-                                                                            {item.label}:
-                                                                            </span>}
-                                                                            closable={false}
-                                                                            triggerType="hover">
-                                                                            {item.label}
-                                                                    </Balloon>    
-                                                                </label>
-                                                                {handleFixed(item)}
-                                                                <span className='edite icon'>&#xe62a;</span>
-                                                            </div>
-                                                            <span className="delete">
-                                                                &times;
-                                                                </span>
-                                                        </div>
-                                                    )
-                                                }
-                                                
-                                            }) : ''
-                                                // item.fields.map((item, index) => {
-                                                //     return (
-                                                //         <div  className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                //             'false')} key={index}>
-                                                //             <div className="clearfix">
-                                                //                 <label htmlFor="">
-                                                //                     <span className='ellips' title={item.label}>{item.label}</span>
-                                                //                     <span className='required'>*</span>
-                                                //                 </label>
-                                                //                 {handleFixed(item)}
-                                                //                 <span className='edite icon'>&#xe62a;</span>
-                                                //             </div>
-                                                //             <span className="delete"
-                                                //                 onClick={this.handleRemoveElement.bind(this, index)}>
-                                                //                 &times;
-                                                //                 </span>
-                                                //         </div>
-                                                //     )
-                                                // })  
-                                            }
-                                            
-
-                                            {index == 0 ? '' : item.fields.map((item, inj) => {
-                                                return (
-                                                    <div key={inj} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                        'false')} data-row={item.line == 1 ? true : ''}>
-                                                        <div className="clearfix">
-                                                            <label htmlFor=""  className='label'>
-                                                                <Balloon
-                                                                        type="primary"
-                                                                        trigger={ <span className='ellips'  title={item.label}>
-                                                                        <span className='required'>
-                                                                            {item.isRequired ? <span>*</span> : ''}
-                                                                        </span>    
-                                                                        {item.label}
-                                                                    </span>}
-                                                                        closable={false}
-                                                                        triggerType="hover">
-                                                                        {item.label}
-                                                                </Balloon> 
-                                                            </label>
-                                                            {handleFixed(item)}
-                                                            <span className='edite icon' onClick={handleEditeCoce.bind(this,index,inj)}>&#xe62a;</span>
-                                                        </div>
-                                                        <span className="delete"
-                                                            onClick={this.handleRemoveElement.bind(this, index, inj)}>
-                                                            &times;
-                                                        </span>
-                                                    </div>
-                                                );
-                                            })}
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        <div className="dynamic-demo">
-                            <div className='baseDetail customer'>
-                                <span className='active'>
-                                    <Input placeholder="" value='材料提交' readOnly className='moduleStr' readOnly />
-                                </span>
+                                    )
+                                })}
+                            </div>
+                            <div className="dynamic-demo">
+                                <div className='baseDetail customer'>
+                                    <span className='active'>
+                                        <Input placeholder="" value='材料提交' readOnly className='moduleStr' readOnly />
+                                    </span>
+                                </div>
+                            </div>
+                            <div className='submit'>
+                                <Button
+                                    type="secondary"
+                                    style={{ marginLeft: '10px' }}
+                                    onClick={this.downPage}>
+                                    返回
+                                </Button>
                             </div>
                         </div>
-                        <div className='submit'>
-                            <Button
-                                type="secondary"
-                                style={{ marginLeft: '10px' }}
-                                onClick={this.downPage}>
-                                返回
-                            </Button>
-                        </div>
                     </div>
-                </div>
-
-                <Dialog
-                    visible={this.state.dialogOne}
-                    onOk={handleSubmit}
-                    closable="esc,mask,close"
-                    onCancel={onClose}
-                    onClose={onClose}
-                    title="添加自定义字段"
-                    footer={footer}
-                    footerAlign='center'
-                >
-                    <div className='customerStr'>
-                        <div className='first'>
-                            <label htmlFor="">
-                                <span>字段名称</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeName} />
-                        </div>
-                        <div>
-                            <label htmlFor="">
-                                <span>字段后缀</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeSuffix} />
-                        </div>
-                        <br />
-                        <div className='first'>
-                            <label htmlFor="">
-                                <span>字段类型</span>
-                            </label>
-                            <Select size="large" onChange={codeType}>
-                                <Select.Option select value="STRING">输入文本</Select.Option>
-                                <Select.Option value="TEXT">文本域</Select.Option>
-                                <Select.Option value="RADIO">单选框</Select.Option>
-                                <Select.Option value="SELECT">下拉框</Select.Option>
-                                <Select.Option value="INT">输入数字</Select.Option>
-                                <Select.Option value="CHECKBOX">复选框</Select.Option>
-                                <Select.Option value="DATE">选择日期</Select.Option>
-                                <Select.Option value="ADDRESS">选择地址</Select.Option>
-                                <Select.Option value="DECIMAL">输入数字（含小数点）</Select.Option>
-                            </Select>
-                        </div>
-                        <div>
-                            <label htmlFor="">
-                                <span>字段长度</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeLength} />
-                        </div>
-                    </div>
-                    <div className='beautify'>
-                        <CheckboxGroup
-                            value={this.state.value}
-                            dataSource={list}
-                            onChange={codeRequire}
-                        />
-                    </div>
-                    {/* <div className='beautify constraint'>
-                        <Checkbox />
-                        <span className='marv5'>显示约束</span>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                    </div> */}
-                    {/* <div className='beautify'>
-                        <label className='marr10'>值为计算所得</label>
-                        <RadioGroup
-                            dataSource={list}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div className='beautify constraint'>
-                        <Select size="small" className='marv5 mar0'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <span className='insert'>插入</span>
-                    </div>
-                    <div className='beautify'>
-                        <Input className="" placeholder="Medium" />
-                    </div> */}
-
-                    {this.state.boolSelect ? <div className='beautify constraint'>
-                        <label htmlFor="" className='changSet' >选择设置:</label><br />
-                        {this.state.addValue.map((item, index) => {
-                            return (
-                                index == 0 ?
-                                    <div className='dropDown clearfix' key={index}>
-                                        <div>
-                                            {/* <Checkbox /> */}
-                                            <Input className="" placeholder="请输入值" onChange={handleSelect.bind(this, index)} />
-                                            <div className='addReduce'>
-                                                <span onClick={handleAddValue.bind(this, 'add')}>+</span>
-                                            </div>
-                                        </div>
-                                    </div> :
-                                    <div className='dropDown' key={index}>
-                                        <div>
-                                            {/* <Checkbox /> */}
-                                            <Input className="" placeholder=" 请输入值" onChange={handleSelect.bind(this, index)} />
-                                            <div className='addReduce'>
-                                                <span onClick={handleAddValue.bind(this, 'add')}>+</span>
-                                                <span onClick={handleAddValue.bind(this, index)}>-</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                            )
-
-                        })}
-
-                    </div> : ''}
-                    {this.state.boolDate ?
-                        <div className='beautify'>
-                            <label htmlFor="" className='marr10'>日期格式</label>
-                            <CheckboxGroup
-                                value={this.state.listDate}
-                                dataSource={listDate}
-                                onChange={codeDate}
-                            />
-                        </div> : ""}
-
-                </Dialog>
-                <Dialog
-                    visible={this.state.dialogTwo}
-                    onOk={this.onClose}
-                    closable="esc,mask,close"
-                    onCancel={this.onClose}
-                    onClose={this.onClose}
-                    title="添加自定义字段"
-                    footer={footerTwo}
-                    footerAlign='center'
-                >
-                    <div className='customerStr customerEdite'>
-                        <div className='first'>
-                            <label htmlFor="">
-                                <span>字段名称</span>
-                            </label>
-                            <Input placeholder="请输入" onChange={codeNameTwo} />
-                        </div>
-                    </div>
-                    <div className='beautify'>
-                        <CheckboxGroup
-                            value={this.state.value}
-                            dataSource={list}
-                            onChange={codeRequireTwo}
-                        />
-                    </div>
-                    {/* <div className='beautify constraint'>
-                        <Checkbox />
-                        <span className='marv5'>显示约束</span>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <Input className="marv5" placeholder="Medium" size='small' />
-                        <Select size="small" className='marv5'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                    </div>
-                    <div className='beautify'>
-                        <label className='marr10'>值为计算所得</label>
-                        <RadioGroup
-                            dataSource={list}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                    <div className='beautify constraint'>
-                        <Select size="small" className='marv5 mar0'>
-                            <Select.Option value="option1">option1</Select.Option>
-                            <Select.Option value="option2">option2</Select.Option>
-                            <Select.Option disabled>disabled</Select.Option>
-                        </Select>
-                        <span className='insert'>插入</span>
-                    </div>
-                    <div className='beautify'>
-                        <Input className="" placeholder="Medium" />
-                    </div> */}
-
-                </Dialog>
+                </IceContainer>
             </div>
 
         );
