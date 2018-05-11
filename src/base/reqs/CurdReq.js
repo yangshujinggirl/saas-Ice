@@ -47,8 +47,6 @@ class CurdReq extends BaseReq {
       url: this.formatUrl(this.curd.retrieve),
       params: condition
     }
-    // console.log('CurdReq search ', options)
-
     return super.fetchData(options);
   }
 
@@ -71,6 +69,8 @@ class CurdReq extends BaseReq {
     }
     return super.fetchData(options);
   }
+
+
 
   /**
    * 获取详情
