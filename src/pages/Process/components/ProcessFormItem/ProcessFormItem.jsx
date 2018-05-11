@@ -72,8 +72,8 @@ export default class ProcessFormItem extends Component {
                     })}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE)}>预览</a> : '--'}
-                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE)}>编辑</a> : ''}
+                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
+                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE, item)}>编辑</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].file`}><PchMaterialSelect /></IceFormBinder></div> : '--'}

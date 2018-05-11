@@ -239,7 +239,7 @@ export const getPageDetail = (id) => {
   return (dispatch) => {
     dispatch(fetchStart())
 
-    FontConfigReq.getCode(id).then((data) => {
+    FontConfigReq.getCode(id).then((res) => {
       if (res.code != 200) return;
       dispatch(fetchSuccess({ pageFields: res.data }))
     }).catch((ex) => {

@@ -100,10 +100,6 @@ export default class setFont extends Component {
         }
     }
 
-    field = new Field(this, {
-        parseName: true,
-        scrollToFirstError: true
-    })
     toggleCompont = () => {
         console.log(324)
         this.props.router.push('/font/view')
@@ -173,12 +169,6 @@ export default class setFont extends Component {
             })
             return
         }
-        // resData.fieldset.map((item) => {
-        //     item.fields.map((item) => {
-        //         pageName.fields.push(item) 
-        //     })
-        // })
-        // console.log(pageName);
 
         FontConfigReq.changPageName(pageName, id).then((data) => {
             if (data.code == 200) {
@@ -204,33 +194,21 @@ export default class setFont extends Component {
         let id = this.props.id;
         let resData = this.state.resData;
 
-        let reqDate = {
+        let reqData = {
             "name": '',
             "businessType": "货款业务",
             "functionType": "进件",
             "fields": []
         }
-        
-        // if(!this.state.id){
-        //     reqDate.fields = this.state.isFixed[0].fields;
-        // }
-        // let data = this.state.resDate;
-        //     for (const index in data) {
-        //         for (const key in data[index].fields) {
-        //             if (data[index].fields[key].checked) {
-        //                 reqDate.fields.push(data[index].fields[key])
-        //             }
-        //         }
-                
-        //     }
             
+        // 转换fieldset到fields
         resData.fieldset.map((item) => {
             item.fields.map((item) => {
                 reqData.fields.push(item) 
             })
         })
         
-        reqDate.fields.map((item) => {
+        reqData.fields.map((item) => {
             let fieldId = item.id;
             delete item.id;
             item.fieldId = fieldId;
@@ -238,14 +216,14 @@ export default class setFont extends Component {
 
          // 如果id存在就更新字段
         if (id) {
-            FontConfigReq.changPageName(reqDate,id).then((data) => {
-                let res = data.data;
-                if (data.code == 200) {
+            FontConfigReq.changPageName(reqData,id).then((res) => {
+                let data = res.data;
+                if (res.code == 200) {
                     if(this.props.onSave){
                         this.props.onSave(id);
                         return
                     }
-                    this.props.router.push(`/font/set/${this.state.id}`)  
+                    this.props.router.push(`/font/set/${id}`)  
                 } else {
                     Dialog.alert({
                         content: res.msg,
@@ -256,14 +234,14 @@ export default class setFont extends Component {
             })
         } else {
             // 提交字段
-            FontConfigReq.save(reqDate).then((data) => {
-                let res = data.data;
-                if (data.code == 200) {
+            FontConfigReq.save(reqData).then((res) => {
+                let data = res.data;
+                if (res.code == 200) {
                     if(this.props.onSave){
                         this.props.onSave(data.id);
                         return
                     }
-                    this.props.router.push(`/font/set/${res.id}?pageName=${pageName}`)
+                    this.props.router.push(`/font/set/${data.id}?pageName=${pageName}`)
                 } else {
                     Dialog.alert({
                         content: res.msg,
@@ -407,8 +385,6 @@ export default class setFont extends Component {
     }
 
     render() {
-        const {init, setValue, getValue} = this.field;
-
         const validEmpty = (e) => {
             if (!e.target.value.length) {
                 Dialog.alert({
@@ -461,7 +437,7 @@ export default class setFont extends Component {
                                 </Button>
                                 <Button type="secondary" style={{
                                                                     marginLeft: '10px'
-                                                                }} onClick={this.downPage}>
+                                                                }} onClick={this.submit}>
                                     提交
                                 </Button>
                             </div>

@@ -76,6 +76,20 @@ export const save = (data) => {
   }
 }
 
+// 获取列表
+export const saveForm = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.saveForm(condition).then((res) => {
+      dispatch(fetchSuccess({ saveForm: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 // 获取详情
 export const getDetail = (id) => {
   return (dispatch) => {

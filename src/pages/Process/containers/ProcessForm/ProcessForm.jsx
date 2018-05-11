@@ -19,6 +19,7 @@ import ProcessFields from '../../components/ProcessFields';
 import ProcessAuthEdit from '../../components/ProcessAuth/ProcessAuthEdit';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import SetFont_ from '../../../FontConfig/components/SetFont/SetFont_';
+import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
 
 export default class ProcessForm extends Component {
     constructor(props) {
@@ -184,7 +185,7 @@ export default class ProcessForm extends Component {
      */
     changeView(view, item) {
         console.log('changeView', view);
-        let { actions } = this.props;
+        let { actions, formData = {} } = this.props;
 
         if(!view || typeof view != 'string'){
             // 默认返回当前编辑页，约定返回不传参数
@@ -208,7 +209,6 @@ export default class ProcessForm extends Component {
                 // 编辑页面
                 // 有页面id的直接获取页面详情（编辑）
                 // 没有id的获取页面字段（新增）
-                
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
                     this.setState({
@@ -217,14 +217,25 @@ export default class ProcessForm extends Component {
                     });
                 }else{
                     actions.getPageFields({
-                        step: 1,
-                        excludeScreens: ''
+                        step: this.getStepFromData(formData.taskItems, item.taskOrder),
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, item.taskOrder)
                     });
                     this.setState({
                         pageId: item.pageId,
                         taskOrder: item.taskOrder
                     });
                 }
+                break;
+            }
+            case PROCESS_VIEW.PREVIEWPAGE : {
+                if(!item.pageId){
+                    return;
+                }
+
+                actions.getPageDetail(item.pageId);
+                this.setState({
+                    pageId: item.pageId,
+                });
                 break;
             }
         }
@@ -234,11 +245,61 @@ export default class ProcessForm extends Component {
         })
     }
 
+    /**
+     * 保存页面之后，设置页面id，跳转回编辑页
+     * @param  {[type]} pageId [description]
+     * @return {[type]}        [description]
+     */
     handleSavePage(pageId){
         let order = this.state.taskOrder;
         let formData = this.props.formData;
 
         formData.taskItems[order].pageId = pageId;
+        this.setState({
+            view: PROCESS_VIEW.EDITFORM
+        })
+    }
+
+    /**
+     * 获取进件页面配置的step参数
+     * 1. 默认从1开始
+     * 2. 当前编辑页面在列表的位置
+     * @param  {[type]} taskItems 整个模块列表
+     * @param  {[type]} taskOrder 当前点击编辑页面的模块序号、从0开始
+     * @return {[type]}           [description]
+     */
+    getStepFromData(taskItems, taskOrder){
+        if(taskOrder == 0){
+            return 1;
+        }
+
+        let count = 1;
+        taskItems.map((item, i) => {
+            if(i < taskOrder && item.haveConfigPage){
+                count++
+            }
+        })
+
+        return count;
+    }
+
+    /**
+     * 获取排除的页面IDS
+     * 例: 已有页面配置id为1, 里面包含10个字段, 需要查询除了已配置的这10个字段之外的其它字段时,
+     * 设置此参数, 多个id以逗号分隔
+     * @param  {[type]} taskItems [description]
+     * @param  {[type]} taskOrder [description]
+     * @return {[type]}           [description]
+     */
+    getExcludeScreens(taskItems, taskOrder){
+        let result = [];
+        taskItems.map((item, i) => {
+            if(i != taskOrder && item.haveConfigPage && item.pageId){
+                result.push(item.pageId);
+            }
+        })
+
+        return result.join(',');
     }
     
     /**
@@ -294,6 +355,7 @@ export default class ProcessForm extends Component {
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
                 <ProcessAuthEdit formData={formData} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
                 <SetFont_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
+                <SetFontView_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.PREVIEWPAGE} changeView={this.changeView.bind(this)}  />
             </div>
             );
     }
