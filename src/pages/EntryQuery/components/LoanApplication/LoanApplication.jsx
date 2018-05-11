@@ -31,20 +31,48 @@ export default class LoanApplication extends Component {
       index : 0,
       tableList:[],
       visible:false,
-      value:{}
+      value:{},
+      dataSource:{}
     };
     // 请求参数缓存
     this.queryCache = {};
   }
-  componentDidMount() {
+  componentWillMount() {
     this.queryCache.id = this.props.params.id;
     this.fetchData();
   }
   //请求数据
   fetchData = (flag) => {
     let {actions} = this.props;
+
+    this.getProductNum();
     actions.getDetail(this.props.params.id);
   };
+  //获取产品列表
+  getProductNum() {
+    const limit = 990;
+    Req.getProductNumApi(limit)
+      .then((res) => {
+        if(res.data && res.code == '200'){
+          console.log(res)
+          const { data } = res;
+          const { list } = data;
+          let dataSource = list.map((el) => {
+            return {
+              id : el.id,
+              label:el.name,
+              value:el.productCode,
+            }
+          });
+          console.log(dataSource)
+          this.setState({
+            dataSource
+          })
+        }
+      },(error) => {
+
+      })
+  }
   //标题点击
   titleClick = (index,name)=>{
     // e.preventDefault();
@@ -138,6 +166,7 @@ export default class LoanApplication extends Component {
   render() {
     const details = this.props.detail || {};
     const init = this.field.init;
+    const { dataSource } = this.state  || [];
     return (
 
           <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
@@ -149,7 +178,7 @@ export default class LoanApplication extends Component {
                   </ul>
                 </div>
               </Col>
-              <Col span="21" className='modify-form pch-form'>
+              <Col span="21" className='modify-form'>
                 <IceFormBinderWrapper
                   value={this.state.value}
                   onChange={this.formChange}
@@ -159,7 +188,7 @@ export default class LoanApplication extends Component {
                   field={this.field}
                   size="large"
                 >
-                  <FormRender {...this.props} data={details.list} init = {init} field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
+                  <FormRender {...this.props} data={details.list}  productList={ dataSource  } init = {init} field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
                   <div className='info' id='material'>
                     <div className='button-box'>
 

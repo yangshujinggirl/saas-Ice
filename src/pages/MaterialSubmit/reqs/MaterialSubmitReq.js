@@ -21,7 +21,7 @@ class MaterialSubmitReq extends CurdReq{
 	 */
 	postDemo(){
 		let options = {
-			url: this._host + '/member/loginMobile',
+			url: this._config.LOAN_HOST + '/member/loginMobile',
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			params: 'mobile=13917538027&card=211224198612285536'
@@ -31,7 +31,7 @@ class MaterialSubmitReq extends CurdReq{
   //获取进件详情
   getLoanUploadApi(id) {
     let options = {
-      url: this._host + `/loans/${id}/collect`,
+      url: this._config.LOAN_HOST + `/loans/${id}/collect`,
       method: 'Get',
       contentType: 'application/json'
     }
@@ -40,7 +40,7 @@ class MaterialSubmitReq extends CurdReq{
   //保存表单
   saveFrom(data){
     let options = {
-      url: this._host + '/loans/'+data.id,
+      url: this._config.LOAN_HOST+ '/loans/'+data.id,
       method: 'PUT',
       data:data
     }
@@ -50,7 +50,7 @@ class MaterialSubmitReq extends CurdReq{
   //保存材料
   saveMaterial(id, data){
     let options = {
-      url: this._host + '/loans/' + id + '/collect',
+      url: this._config.LOAN_HOST + '/loans/' + id + '/collect',
       method: 'POST',
       data:data
     }

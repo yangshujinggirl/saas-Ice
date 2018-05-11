@@ -85,9 +85,10 @@ class EntryQueryReq extends CurdReq{
   //轨迹详情
   getTrackDetail(data) {
     let options = {
-      url: this._config.WF_HOST+ `/process/${data.proInstId}/track`,
+      url: this._config.WF_HOST+ `/tasks/track?businessId=${data.businessId}&isApproveInfo=${data.isApproveInfo}`,
       // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/process/15698/track',
       method: 'Get',
+      data:data
     }
     return super.fetchData(options);
   }

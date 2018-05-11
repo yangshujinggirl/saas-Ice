@@ -41,13 +41,13 @@ export default class EnhanceTable extends Component {
       currentPage: 1,
       statusList:[
         {key:'DRAFT',value:'待提交'},
-        {key:'RETURN',value:'退回'},
-        {key:'SUBMIT',value:'已提交'},
-        {key:'CREDIT',value:'征信'},
+        {key:'RETURNED',value:'退回'},
+        {key:'SUBMIT',value:'提交'},
+        // {key:'CREDIT',value:'征信'},
         {key:'AUDIT',value:'审查审批'},
         {key:'MAKEUP',value:'补录'},
-        {key:'REJECT',value:'审批拒绝'},
-        {key:'INTERVIEW',value:'面签'},
+        {key:'REJECTED',value:'审批拒绝'},
+        // {key:'INTERVIEW',value:'面签'},
         {key:'LENDING_APPLY',value:'出账申请'},
         {key:'LENDING_AUDIT',value:'出账审核'},
         {key:'LENDING',value:'已放款'}
@@ -96,7 +96,7 @@ export default class EnhanceTable extends Component {
         style={styles.filterTableOperation}
       >
         {
-          record.status  && (record.status == 'DRAFT' || record.status == 'RETURN')  ? (
+          record.status  && (record.status == 'DRAFT' || record.status == 'RETURNED' || record.status == 'MAKEUP')  ? (
             <a
             href="#"
             target="_blank"
@@ -106,7 +106,8 @@ export default class EnhanceTable extends Component {
             修改
           </a>) : (<span></span>)
         }
-
+        {
+          record.status  && record.status != 'DRAFT'  ? (
             <a
               href="#"
               target="_blank"
@@ -114,7 +115,9 @@ export default class EnhanceTable extends Component {
               onClick={this.detal.bind(this, record)}
             >
               详情
-            </a>
+            </a>) : (<span></span>)
+        }
+
 
       </div>
     );

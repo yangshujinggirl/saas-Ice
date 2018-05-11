@@ -162,6 +162,23 @@ export default class FormRenderFormRender extends Component {
                </FormItem>
              )
       }
+      if(el.name == 'productCode'){
+        <FormItem  key={el.id} className='item' label={this.label(el.label)}
+                   {...formItemLayout}>
+          <Select
+            defaultValue={el.value}
+            disabled={el.isFixed || el.isReadonly }
+            placeholder={"请选择"+el.label}
+            style={{width:"100%"}}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+            })}
+            dataSource={el.options}
+          >
+          </Select>
+        </FormItem>
+      }
       return(
         <FormItem  key={el.id} className='item' label={this.label(el.label)}
                    {...formItemLayout}>
