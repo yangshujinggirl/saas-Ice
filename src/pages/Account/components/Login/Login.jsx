@@ -69,7 +69,6 @@ export default class Login extends Component {
           isLoging: false
         });
         if (!res || res.code != 200) return;
-        // Feedback.toast.success('登录成功');
 
         if (values.checkbox) {
           //记住账号
@@ -78,22 +77,26 @@ export default class Login extends Component {
           Storage.remove('REMEMBER');
         }
 
-        // Cookie.set('PCTOKEN', res.data.token);
-        
         let fromUrl = this.props.params.from;
-        if(fromUrl){
-          fromUrl = decodeURIComponent(fromUrl);
-          // if(fromUrl.indexOf('?') != -1){
-          //   fromUrl += '&token=' + res.data.token;
-          // }else{
-          //   fromUrl += '?token=' + res.data.token;
-          // }
+        let isSameSystem = false;
+        let system = res.data.type;
 
+        if(system){
+          system = system.toLowerCase();
+        }
+
+        // 判断登录账号的所属系统和当前跳转地址的系统是否同一个
+        if(fromUrl && system){
+          isSameSystem = fromUrl.indexOf(system) != -1;
+        }
+        
+        if(isSameSystem && fromUrl){
+          fromUrl = decodeURIComponent(fromUrl);
           location.href = fromUrl;
         }else{
           Feedback.toast.success('登录成功');
           //默认进入SAAS系统
-          location.href = '//' + location.host.replace('login', 'daikuan');
+          location.href = '//' + location.host.replace('login', system || 'daikuan');
         }
 
         //Storage.set('MENUS', (res.data.leaf));
