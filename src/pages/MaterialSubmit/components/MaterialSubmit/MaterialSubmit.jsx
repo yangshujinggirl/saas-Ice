@@ -176,7 +176,7 @@ class MaterialSubmit extends Component {
   //提交
   submit = () => {
     this.state.queryCache.id = this.props.params.id;
-    this.state.queryCache.status = 1;
+    this.state.queryCache.status = 'SUBMIT';
 
     let { originData, tableList, dataSource } = this.state;
     let data = [];
@@ -212,6 +212,7 @@ class MaterialSubmit extends Component {
   }
   //保存
   save =  () =>{
+
     Toast.success('保存成功，请提交～');
   }
   render() {

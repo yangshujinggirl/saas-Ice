@@ -70,16 +70,16 @@ class LoanApplicationOne extends Component {
     }
   }
 
-  changeInfomation(productId) {
-
+  changeInfomation(loadId) {
+    let {actions} = this.props;
+    actions.getDetail(this.props.params.id);
   }
-
+  //获取产品列表
   getProductNum() {
     const limit = 990;
     Req.getProductNumApi(limit)
     .then((res) => {
       if(res.data && res.code == '200'){
-        console.log(res)
         const { data } = res;
         const { list } = data;
         let dataSource = list.map((el) => {
@@ -89,7 +89,6 @@ class LoanApplicationOne extends Component {
             value:el.productCode,
           }
         });
-        console.log(dataSource)
         this.setState({
           dataSource
         })
@@ -206,14 +205,14 @@ class LoanApplicationOne extends Component {
         for(var key in values){
           if(values[key] != undefined){
             if(values[key] != 'undefined'){
-              if(this.isCheckBox(key)){
-                console.log("多选")
-                console.log(values[key])
-                // alert("123")
-                if(typeof (values[key]) == 'object'){
-                  values[key] = values[key].join(',');
-                }
-              }
+              // if(this.isCheckBox(key)){
+              //   console.log("多选")
+              //   console.log(values[key])
+              //   // alert("123")
+              //   if(typeof (values[key]) == 'object'){
+              //     values[key] = values[key].join(',');
+              //   }
+              // }
               this.queryCache[key] = values[key];
             }
           }
@@ -235,37 +234,66 @@ class LoanApplicationOne extends Component {
   }
   //判断是否为CheckBox
   isCheckBox(key){
-    console.log(this.props.fieldList.list)
-    const { list =[] } = this.props.fieldList || [];
-    for(var i =0 ; i<list.length;i++){
-      for(var j=0; j<list[i].fields.length;j++){
-        if(list[i].fields[j].type== 'CHECKBOX'&& list[i].fields[j].name == key){
-          return true;
-        }
+    // console.log(this.props.fieldList.list)
+    if(this.props.params.id){
+      var { list =[] } =   this.props.detail  ;
+      list = !this.isEmptyObject(list) ? this.takeFixedField(list) : [];
+    }else{
+      var { list =[] } = this.props.fieldList  ;
+    }
+    if(list.length >0){
+      for(var i =0 ; i<list.length;i++){
+          console.log(list[i])
+          // for(var j=0; j<list[i].fields.length;j++){
+          //   if(list[i].fields[j].type== 'CHECKBOX'&& list[i].fields[j].name == key){
+          //     return true;
+          //   }
+          // }
+
       }
     }
+
     return false;
   }
-
+  //处理数据
+  takeFixedField = (list)=>{
+    for(var i in list){
+      for(var index=0 ;index < list[i].fields.length; index++){
+        var item = list[i].fields[index];
+        if(!item.isFixed){
+          list[i].fields.splice(index, 1);
+          index--;
+        }
+      }
+      if(list[i].fields.length == 0){
+        delete list[i];
+      }
+    }
+    return list
+  }
   render() {
-    const { list =[] } = this.props.fieldList || [];
+    if(this.props.params.id){
+      var { list =[] } =   this.props.detail  || [];
+      list = !this.isEmptyObject(list) ? this.takeFixedField(list) : [];
+    }else{
+      var { list =[] } = this.props.fieldList   || [];
+    }
     const { init } = this.field;
     const { loadId } = this.state;
     const { dataSource } = this.state;
     console.log(list)
     return (
-      !loadId ?
         <IceContainer className="pch-container">
-          <legend className="pch-legend" >
+          <legend className="pch-legend"  >
             <span className="pch-legend-legline"></span>车贷申请
           </legend>
-          <IceFormBinderWrapper value={value} onChange={this.formChange} className='loan' >
+          <IceFormBinderWrapper value={value} onChange={this.formChange} className='loan'  >
             <Row>
               <Col  className='review-form'>
                 <div className='review-page'>
                   <div className='title'>
                     <ul>
-                      {this.renderTitle(list)}
+                      {this.renderTitle(list || true)}
                     </ul>
                   </div>
                 </div>
@@ -279,7 +307,7 @@ class LoanApplicationOne extends Component {
                       field={this.field}
                       size="large"
                     >
-                      <FormRender {...this.props} data={list} init = {init}  productList={ dataSource  }  field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
+                      <FormRender {...this.props} data={list || true} init = {init}  productList={ dataSource  }  field={this.field} addColumn ={this.addColumn.bind(this)} ></FormRender>
                     </Form>
                   </IceFormBinderWrapper>
                   <div className='botton-box'>
@@ -289,7 +317,7 @@ class LoanApplicationOne extends Component {
               </Col>
             </Row>
           </IceFormBinderWrapper>
-        </IceContainer> : <div>接口未提供暂时未开发</div>
+        </IceContainer>
     );
   }
 }
