@@ -147,7 +147,7 @@ class BaseReq {
 
     let res = error.response || error.request;
 
-    if ((res.status == 500 && res.data.message == 'Username or password error') || res.status == 103) {
+    if ((res.status == 500 && res.data.code == 401) || (res.status == 500 && res.data.message == 'Username or password error') || res.status == 103) {
       this._redirectToLogin();
       return { status: 401, msg: 'Unauthorized未登录', data: { code: 401 } };
     }
