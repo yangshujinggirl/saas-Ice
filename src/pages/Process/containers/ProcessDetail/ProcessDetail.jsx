@@ -14,6 +14,7 @@ import ProcessFormName from '../../components/ProcessFormName';
 import ProcessFormItemList from '../../components/ProcessFormItemList';
 import ProcessFields from '../../components/ProcessFields';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
+import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
 
 import ProcessAuthDetails from '../../components/ProcessAuth/ProcessAuthDetails';
 export default class ProcessDetail extends Component {
@@ -105,6 +106,7 @@ export default class ProcessDetail extends Component {
      */
     changeView(view, item) {
         console.log('changeView', view);
+        let { actions, formData = {} } = this.props;
 
         if(!view || typeof view != 'string'){
             // 默认返回当前编辑页，约定返回不传参数
@@ -114,7 +116,7 @@ export default class ProcessDetail extends Component {
         switch (view) {
             case PROCESS_VIEW.VIEWFIELD: {
                 // 查看必要字段
-                this.props.actions.getTasksFields(item.taskTypeId);
+                actions.getTasksFields(item.taskTypeId);
                 break;
             }
             case PROCESS_VIEW.VIEWAUTH : {
@@ -125,6 +127,7 @@ export default class ProcessDetail extends Component {
                 break;
             }
             case PROCESS_VIEW.PREVIEWPAGE : {
+                // 预览页面
                 if(!item.pageId){
                     return;
                 }

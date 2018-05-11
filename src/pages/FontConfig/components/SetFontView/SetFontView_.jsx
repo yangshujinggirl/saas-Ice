@@ -81,6 +81,7 @@ export default class SetFontView_ extends Component {
     handleCancel = () => {
     	if(this.props.changeView){
     		this.props.changeView();
+    		return;
     	}
         this.props.router.push(`font`)
     }

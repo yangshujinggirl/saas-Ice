@@ -82,7 +82,7 @@ export default class ProcessDetailItem extends Component {
                     })}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.pageId ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE)}>{item.pageName}</a> : '--'}
+                    {item.pageId ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
                     {item.file ? <div className="pch-target-name">{item.file}</div> : '--'}
