@@ -43,7 +43,7 @@ export default class ProcessFormProduct extends BaseApp {
     let { formOldData=[] } = this.props
     this.state = {
       visible: this.props.visible,
-      dataSourceRight: formOldData,
+      dataSourceRight: [],
       saveDataRight:[],
       selectedRowKeys: [],
       selectedRowOne: [],
@@ -74,7 +74,8 @@ export default class ProcessFormProduct extends BaseApp {
   }
   componentWillReceiveProps(props) {
     this.setState({
-      visible: this.props.visible
+      visible: props.visible,
+      dataSourceRight: props.formOldData
     })
   }
   //右侧增加数据
