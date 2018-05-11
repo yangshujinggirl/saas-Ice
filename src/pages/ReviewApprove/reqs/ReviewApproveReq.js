@@ -31,8 +31,8 @@ class ReviewApproveReq extends CurdReq{
   //获取列表数据
   getListData() {
     let options = {
-      // url: this._loanHost + `/tasks`,
-      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/tasks#!method=get',
+      url: this._config.WF_HOST + `/tasks`,
+      // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/tasks#!method=get',
       method: 'Get',
     }
     return super.fetchData(options);
@@ -40,8 +40,8 @@ class ReviewApproveReq extends CurdReq{
   //点击点击签收
   signIn(data) {
     let options = {
-      // url: this._loanHost + `/assignee/${data.taskId}`,
-      url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
+      url: this._loanHost + `/assignee/${data.taskId}`,
+      // url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
       method: 'PUT',
     }
     return super.fetchData(options);
@@ -50,8 +50,8 @@ class ReviewApproveReq extends CurdReq{
   //轨迹详情
   getTrackDetail(data) {
     let options = {
-      // url: this._loanHost + `  /process/${data.proInstId}/track`,
-      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/process/15698/track',
+      url: this._config.WF_HOST+ `/process/${data.proInstId}/track`,
+      // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/process/15698/track',
       method: 'Get',
     }
     return super.fetchData(options);

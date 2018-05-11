@@ -34,13 +34,6 @@ export default class Filter extends Component {
         };
     }
 
-    handleAdd() {
-        let path = {
-            pathname: 'process/add',
-            state: this.state.value
-        }
-        hashHistory.push(path)
-    }
 
     filterFormChange = (value) => {
         this.setState({
@@ -54,18 +47,11 @@ export default class Filter extends Component {
                 Toast.help("申请开始时间不能大于申请结束时间");
                 return;
           }
-          // else{
-          //   this.setState({
-          //     submitStart : submitStart.getFullYear()+"-"+parseInt(submitStart.getMonth()+1)+'-'+submitStart.getDay(),
-          //     submitEnd: submitEnd.getFullYear()+"-"+parseInt(submitEnd.getMonth()+1)+'-'+submitEnd.getDay(),
-          //   });
-          // }
         }
         this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
 
     render() {
-      const init = this.field.init;
         return (
             <div className="pch-condition">
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>

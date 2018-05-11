@@ -14,7 +14,7 @@ const Toast = Feedback.toast;
 
 const formItemLayout = {
   labelCol: {
-    span: 8
+    span: 10
   },
   wrapperCol: {
     span: 12
@@ -24,67 +24,44 @@ const formItemLayout = {
 export default class Filter extends Component {
   static displayName = 'Filter';
   field = new Field(this);
+  constructor() {
+    super();
+
+    // 搜索框表单的对应的值，可以设置默认值
+    this.state = {
+      value: {
+        limit : 10,
+      }
+    };
+  }
 
   submit = () =>{
-    // this.props.onSubmit();
-    // console.log(this.props.field)
-    // let {endTime, startTime } = this.props.field
-    // console.log(endTime)
-    // console.log(startTime)
-    // if(endTime && startTime){
-    //   if(endTime.getTime() <= startTime.getTime()){
-    //     Toast.help("申请开始时间不能大于申请结束时间");
-    //   }
-    // }
-    // e.preventDefault();
-    this.field.validate((errors, values) => {
-      if (errors) {
-        console.log("Errors in form!!!");
-        return;
-      }
-      console.log("Submit!!!");
-      // console.log(values);
-      for(var key in values){
-        if(values[key] != undefined){
-          if(values[key] != 'undefined'){
-            this.queryCache[key] = values[key];
-          }
-        }
-      }
-      this.queryCache.status = 'submit'
-      console.log(this.queryCache)
-      this.props.actions.saveFrom(this.queryCache);
+
+    this.props.onSubmit && this.props.onSubmit(this.state.value);
+
+  }
+  filterFormChange = (value) => {
+    this.setState({
+      value: value,
     });
   }
-  onChange = (val, str)=>{
-    console.log(val)
-    console.log(str)
-    return str;
-  }
   render() {
-    const init = this.field.init;
     return (
-      <IceFormBinderWrapper
-        value={this.props.value}
-        onChange={this.props.onChange}
-      >
-        <div className="pch-condition">
-          <Form
-            size="large"
-            direction="hoz"
-            >
+      <div className="pch-condition">
+        <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
+          <Form size="large" direction="hoz">
             <Row wrap>
-              <Col s="8" l="8">
+              <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="贷款编号：">
                   <IceFormBinder
-                    name="productCode"
+                    name="code"
                   >
                     <Input size="large" placeholder="贷款编号" />
                   </IceFormBinder>
                 </FormItem>
 
               </Col>
-              <Col s="8" l="8">
+              <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="主贷人姓名：">
                   <IceFormBinder
                     name="borrowerName"
@@ -93,72 +70,62 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="8">
+              <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="申请开始时间：">
                   <IceFormBinder
-                    name="startTime"
+                    name="submitStart"
                   >
                     <DatePicker
-                      format={"YYYY-MM-DD"}
                       size="large"
                       style={{width:"100%"}}
                       placeholder="申请开始时间"
-                      {...init('startTime', {
-                        getValueFromEvent: this.onChange
-                      })}
                     />
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="8">
+              <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="申请结束时间：">
                   <IceFormBinder
-                    name="endTime"
+                    name="submitEnd"
                   >
                     <DatePicker
-                      format={"YYYY-MM-DD"}
                       size="large"
                       style={{width:"100%"}}
-                      // onChange={this.onChange}
                       placeholder="申请结束时间" />
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="8">
+              <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="贷款状态：">
                   <IceFormBinder
-                    name="borrowerMobile"
+                    name="exhibitionHallName"
                   >
                     <Input size="large" placeholder="贷款状态" />
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="8">
+              <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="展厅名称：">
                   <IceFormBinder
-                    name="borrowerName"
+                    name="exhibitionHallName"
                   >
                     <Input size="large" placeholder="展厅名称" />
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="8">
-
+              <Col s="8" l="6">
               </Col>
-              <Col s="8" l="8">
-
-              </Col>
-              <Col s="8" l="8">
-                <FormItem {...formItemLayout} label="&nbsp;">
-                  <Button type="secondary" htmlType='submit' onClick={this.submit}>
+              <Col s="8" l="6">
+                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                  <Button onClick={this.submit.bind(this)} type="secondary">
                     查询
                   </Button>
                 </FormItem>
               </Col>
             </Row>
           </Form>
-        </div>
-      </IceFormBinderWrapper>
+        </IceFormBinderWrapper>
+      </div>
     );
   }
 }

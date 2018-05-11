@@ -69,7 +69,8 @@ export default class CreditInformationForm extends Component {
               "label": "已结清",
               "value": "CLEAR"
             }
-          ]
+          ],
+          formData :{}
 
         };
         this.field = new Field(this);
@@ -206,45 +207,42 @@ export default class CreditInformationForm extends Component {
                           <Col xxs={24} xs={12} l={8} >
                             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>姓名:</span>}>
                               <IceFormBinder
-                                name="name"
+                                name="na66me"
                                 required
                                 message="请输入"
                                 disabled
-                                validator={this.prepaymentAmountMinChange}
-
                               >
                                 <Input size="large" placeholder="最小提前还款金额" className="custom-input" />
                               </IceFormBinder>
-                              <div> <IceFormError name="name" /></div>
+                              <div> <IceFormError name="na66me" /></div>
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
                             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>证件号码:</span>}>
                               <IceFormBinder
                                 disabled
-                                name="name"
+                                name="name11"
                                 required
                                 message="请输入"
                               >
 
                                 <Input size="large" placeholder="最早提前还款期数" className="custom-input" />
                               </IceFormBinder>
-                              <div><IceFormError name="name" /></div>
+                              <div><IceFormError name="name11" /></div>
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
                             <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>手机号码:</span>}>
                               <IceFormBinder
                                 disabled
-                                name="name"
+                                name="name11"
                                 required
                                 message="请输入"
-                                validator={this.prepaymentAmountMinChange}
 
                               >
                                 <Input size="large" placeholder="最小提前还款金额" className="custom-input" />
                               </IceFormBinder>
-                              <div> <IceFormError name="name" /></div>
+                              <div> <IceFormError name="name11" /></div>
                             </FormItem>
                           </Col>
                           <Col xxs={24} xs={12} l={8} >
@@ -340,8 +338,8 @@ export default class CreditInformationForm extends Component {
                               <IceFormBinder
                                 name="loanAccountStatus"
                                 required
+                                type="string"
                                 message="请输入"
-                                validator={this.prepaymentPeriodsLimitChange}
                               >
                                 <Balloon  align ='rb'  style={styles.box}  trigger={ <Select size="large" placeholder="请选择" className="custom-input"
                                                                                              dataSource={this.state.dataList} /> } triggerType="click">
@@ -386,6 +384,7 @@ export default class CreditInformationForm extends Component {
                               <IceFormBinder
                                 name="twoMonApproveCount"
                                 required
+                                type="string"
                                 validator={this.isInteger}
                               >
 
@@ -401,6 +400,7 @@ export default class CreditInformationForm extends Component {
                               <IceFormBinder
                                 name="guaranteedCompensatory"
                                 required
+                                type="string"
                                 validator={this.priceRange}
                               >
                                 <Balloon    style={styles.box}  trigger={ <Input size="large" htmlType='number' placeholder="请选择" className="custom-input" />} triggerType="focus">
@@ -508,6 +508,7 @@ export default class CreditInformationForm extends Component {
                               <IceFormBinder
                                 name="twoIsLoanRecord"
                                 required
+                                type="string"
                                 message="请输入"
                               >
 
@@ -524,8 +525,8 @@ export default class CreditInformationForm extends Component {
                               <IceFormBinder
                                 name="customNonExistEnforce"
                                 required
+                                type="string"
                                 message="请输入"
-                                validator={this.prepaymentPeriodsLimitChange}
                               >
                                 <Balloon  align ='lb'  style={styles.box}  trigger={ <Select size="large" placeholder="请选择" className="custom-input"
                                                                                              dataSource={this.state.opption} /> } triggerType="click">
@@ -908,7 +909,7 @@ export default class CreditInformationForm extends Component {
                           <Col>
                             <div className='button-box'>
 
-                              <Button onClick={this.submit}>完成</Button>
+                              <Button   onClick={this.submit}>完成</Button>
 
                             </div>
                           </Col>

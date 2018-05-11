@@ -9,9 +9,11 @@
       display: block;
       line-height: 17px;
     }
-    .balloon-box{
-      height: 120px;
-      width: 800px;
+    .button-box{
+      .button{
+        width: 120px;
+        height: 40px;
+      }
     }
   }
   .next-overlay-wrapper .next-overlay-inner {
