@@ -65,10 +65,9 @@ class ProcessReq extends CurdReq {
     return super.fetchData(options);
 	}
 	//流程配置产品右侧列表
-	getProcessProdOldList(){
+	getProcessProdOldList(condition){
 		let options = {
-			// url: this._config.LOAN_HOST + `/product/`,
-			url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/processes/product/123',
+			url: this._config.WF_HOST + `/processes/product/123`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       // params: condition

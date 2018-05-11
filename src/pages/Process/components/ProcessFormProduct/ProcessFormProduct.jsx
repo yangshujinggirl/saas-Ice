@@ -55,14 +55,17 @@ export default class ProcessFormProduct extends BaseApp {
 
   componentWillMount() {
     this.props.actions.getProcessProdOldList()
+    
   }
   componentDidMount() {
     this.fetchData();
     // this.fetchOldData();
   }
+  
   fetchData = (condition) => {
     this._condition = Object.assign(this._condition, condition);
     this.props.actions.getProcessProdList(this._condition);
+    
   }
   //点击分页
   changePage = (currentPage) => {
@@ -76,6 +79,8 @@ export default class ProcessFormProduct extends BaseApp {
   }
   //右侧增加数据
   addItem() {
+    let { params } = this.props;
+    
     for (var key in arrayRightData) {
       for (var i = 0; i < arrayRightData.length; i++) {
         var flag = true;
@@ -92,16 +97,9 @@ export default class ProcessFormProduct extends BaseApp {
     }
 
     //去重后渲染
-    let arra = testarray
-    this.setState({
-      dataSourceRight: arra
-    })
-
-    let { params } = this.props;
-    let saveArry = this.state.saveDataRight
-    //右侧提交数据
-    arra.map((item, i) => {
-      saveArry.push({
+    let arra = [];
+    testarray.map((item,i)=>{
+      arra.push({
         productId: item.id,
         productName: item.name,
         productType: item.productType,
@@ -114,7 +112,8 @@ export default class ProcessFormProduct extends BaseApp {
       })
     })
     this.setState({
-      saveDataRight:saveArry
+      dataSourceRight: arra,
+      saveDataRight:arra
     })
   }
   //删除
@@ -158,7 +157,6 @@ export default class ProcessFormProduct extends BaseApp {
    */
   render() {
     const { dataSourceRight, visible, productType } = this.state;
-    console.log(dataSourceRight)
     
     let { formData,params } = this.props;
     return (
@@ -194,8 +192,8 @@ export default class ProcessFormProduct extends BaseApp {
                 style={{ width: '100%' }}
                 maxBodyHeight={370}
               >
-                <Table.Column title="编码" dataIndex="productCode" />
-                <Table.Column title="名称" dataIndex="name" />
+                <Table.Column title="编码" dataIndex="productId" />
+                <Table.Column title="名称" dataIndex="productName" />
                 <Table.Column title="操作" cell={() => this.renderOperation()} />
               </Table>
             </div>

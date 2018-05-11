@@ -10,7 +10,8 @@ import {
   Grid,
   Table,
   Dialog,
-  Pagination
+  Pagination,
+  Form
 } from "@icedesign/base";
 
 const { Row, Col } = Grid;
@@ -157,7 +158,7 @@ export default class ProcessAuthEdit extends BaseApp {
     });
   }
   onOk() {
-   console.log('权限编辑保存。。。')
+    console.log('权限编辑保存。。。')
   }
 
   addItem() {
@@ -199,13 +200,26 @@ export default class ProcessAuthEdit extends BaseApp {
    */
   render() {
     const { dataSourceRight, current } = this.state;
-    const { visible, changeView } = this.props;
+    const { visible, changeView, formData } = this.props;
 
     return (
       <IceContainer className="pch-container" style={{ display: visible ? '' : 'none' }}>
         <Title title="权限编辑" />
-        <div className="edit-permission-dialog-content">
-          <div className='center'>审查&#10007;权限配置</div>
+        <div className="pch-form edit-permission-dialog-content pch-condition">
+          <Form size="large" direction="hoz">
+            <Row className="row">
+              <Col span={6}>
+                业务类型:{formData.businessTypeName}
+              </Col>
+              <Col span={6}>
+                资方:{formData.tenantName}
+              </Col>
+              <Col span={6}>
+                流程名称:{formData.processName}
+              </Col>
+            </Row>
+          </Form>
+          <div className='center'>审查-权限配置</div>
           <div className="table-list">
             <div className="part-l">
               <Table
@@ -244,12 +258,13 @@ export default class ProcessAuthEdit extends BaseApp {
           </div>
           <div className="container">
             <div className="next-btn-box pch-form-buttons">
-              <Button className="buttonsSure" size="large" onClick={()=>this.onOk()}>
-                确定
-              </Button>
+
               {/* <Button type="primary" className="return-btn buttonsBack" onClick={changeView.bind(this, PROCESS_VIEW.EDITFORM)}> */}
-              <Button type="primary" className="return-btn buttonsBack" onClick={()=>this.onClose()}>
+              <Button type="normal" className="return-btn buttonsBack" onClick={() => this.onClose()}>
                 取消
+              </Button>
+              <Button type="secondary" className="buttonsSure" onClick={() => this.onOk()}>
+                确定
               </Button>
             </div>
           </div>

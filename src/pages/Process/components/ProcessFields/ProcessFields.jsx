@@ -28,28 +28,7 @@ class ProcessFields extends Component {
         return (
             <IceContainer className="pch-container" style={{ display: visible ? '' : 'none' }}>
                 <Title title="查看必要字段详情" />
-
-                {/* <div className="">
-                    <Row className="row">
-                        <Col span={6}>
-                            业务类型:{formData.businessTypeName}
-                        </Col>
-                        <Col span={6}>
-                            资方:{formData.tenantName}
-                        </Col>
-                        <Col span={6}>
-                            流程名称:{formData.processName}
-                        </Col>
-                    </Row>
-                    <Table dataSource={data} className="table-list">
-                        <Table.Column title="序号" dataIndex="orderId" width={120} />
-                        <Table.Column title="名称" dataIndex="fieldValue" />
-                    </Table>
-                    <Button type="primary" className="return-btn" onClick={changeView.bind(this)}>
-                        返回
-                    </Button>
-                </div> */}
-                <div className="pch-condition">
+                <div className="pch-condition pch-form">
                     <Form size="large" direction="hoz">
                         <Row className="row">
                             <Col span={6}>
@@ -63,22 +42,25 @@ class ProcessFields extends Component {
                             </Col>
                         </Row>
                     </Form>
-                </div>
-                <Table dataSource={data} className="table-list">
-                    <Table.Column title="序号" dataIndex="orderId" width={120} />
-                    <Table.Column title="名称" dataIndex="fieldValue" />
-                </Table>
-                <div className="container">
-                    <div className="next-btn-box pch-form-buttons">
-                        <Button type="secondary" className="return-btn" onClick={changeView.bind(this)}>
-                            返回
-                    </Button>
+                    <p className="title-p">秒批决策-必要数据</p>
+                    <div >
+                        <Table dataSource={data} className="table-list">
+                            <Table.Column title="序号" dataIndex="orderId" width={120} />
+                            <Table.Column title="名称" dataIndex="fieldValue" />
+                        </Table>
+                    </div>
+                    <div className="container">
+                        <div className="next-btn-box pch-form-buttons">
+                            <Button type="secondary" className="return-btn" onClick={changeView.bind(this)}>
+                                返回
+                            </Button>
+                        </div>
                     </div>
                 </div>
+
             </IceContainer>
         );
     }
 }
-
 
 export default ProcessFields;

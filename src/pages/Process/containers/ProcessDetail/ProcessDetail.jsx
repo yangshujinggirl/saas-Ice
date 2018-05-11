@@ -135,6 +135,7 @@ export default class ProcessDetail extends Component {
      */
     render() {
         let {customMenuList, formData = {}, params, tasksFields = {}} = this.props;
+        let {privilegeItems} = this.state;
 
         return (
             <div className="">
@@ -148,7 +149,7 @@ export default class ProcessDetail extends Component {
                                 <div className="container">
                                     <ProcessFormItemList taskItems={formData.taskItems} changeView={this.changeView.bind(this)} editable={false} />
                                     <div className="next-btn-box pch-form-buttons">
-                                        <Button type="normal" size="large" onClick={this.handleCancel}>
+                                        <Button type="secondary" size="large" onClick={this.handleCancel}>
                                             返回
                                         </Button>
                                     </div>
@@ -158,7 +159,7 @@ export default class ProcessDetail extends Component {
                     </div>
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
-                <ProcessAuthDetails privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.VIEWAUTH}  changeView={this.changeView.bind(this)} />
+                <ProcessAuthDetails formData={formData} data={privilegeItems} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.VIEWAUTH}  changeView={this.changeView.bind(this)} />
                 
             </div>
             );

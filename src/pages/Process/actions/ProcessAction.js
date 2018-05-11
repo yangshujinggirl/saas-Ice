@@ -182,8 +182,10 @@ export const getProcessProdOldList = (condition) => {
   return (dispatch) => {
 
     Req.getProcessProdOldList(condition).then((res) => {
-      
-        dispatch(fetchSuccess({ formOldData: res }))
+      if(res.code==200){
+        dispatch(fetchSuccess({ formOldData: res.data }))
+
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
