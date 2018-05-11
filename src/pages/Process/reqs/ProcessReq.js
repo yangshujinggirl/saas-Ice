@@ -84,7 +84,6 @@ class ProcessReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-
   /**
    * 获取必要字段
    * @param  {[type]} taskTypeId [description]
