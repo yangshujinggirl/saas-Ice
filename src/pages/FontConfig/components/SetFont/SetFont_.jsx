@@ -100,10 +100,6 @@ export default class setFont extends Component {
         }
     }
 
-    field = new Field(this, {
-        parseName: true,
-        scrollToFirstError: true
-    })
     toggleCompont = () => {
         console.log(324)
         this.props.router.push('/font/view')
@@ -389,8 +385,6 @@ export default class setFont extends Component {
     }
 
     render() {
-        const {init, setValue, getValue} = this.field;
-
         const validEmpty = (e) => {
             if (!e.target.value.length) {
                 Dialog.alert({

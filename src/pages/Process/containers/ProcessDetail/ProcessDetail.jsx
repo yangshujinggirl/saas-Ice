@@ -122,6 +122,18 @@ export default class ProcessDetail extends Component {
                 this.setState({
                     privilegeItems: item.privilegeItems
                 });
+                break;
+            }
+            case PROCESS_VIEW.PREVIEWPAGE : {
+                if(!item.pageId){
+                    return;
+                }
+                
+                actions.getPageDetail(item.pageId);
+                this.setState({
+                    pageId: item.pageId,
+                });
+                break;
             }
         }
 
@@ -134,7 +146,7 @@ export default class ProcessDetail extends Component {
      * 渲染
      */
     render() {
-        let {customMenuList, formData = {}, params, tasksFields = {}} = this.props;
+        let {customMenuList, formData = {}, params, tasksFields = {}, pageFields = {}} = this.props;
         let {privilegeItems} = this.state;
 
         return (
@@ -160,7 +172,7 @@ export default class ProcessDetail extends Component {
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
                 <ProcessAuthDetails formData={formData} data={privilegeItems} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.VIEWAUTH}  changeView={this.changeView.bind(this)} />
-                
+                <SetFontView_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.PREVIEWPAGE} changeView={this.changeView.bind(this)}  />
             </div>
             );
     }

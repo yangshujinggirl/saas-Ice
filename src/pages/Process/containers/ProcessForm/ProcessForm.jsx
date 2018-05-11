@@ -19,6 +19,7 @@ import ProcessFields from '../../components/ProcessFields';
 import ProcessAuthEdit from '../../components/ProcessAuth/ProcessAuthEdit';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import SetFont_ from '../../../FontConfig/components/SetFont/SetFont_';
+import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
 
 export default class ProcessForm extends Component {
     constructor(props) {
@@ -217,13 +218,24 @@ export default class ProcessForm extends Component {
                 }else{
                     actions.getPageFields({
                         step: this.getStepFromData(formData.taskItems, item.taskOrder),
-                        excludeScreens: ''
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, item.taskOrder)
                     });
                     this.setState({
                         pageId: item.pageId,
                         taskOrder: item.taskOrder
                     });
                 }
+                break;
+            }
+            case PROCESS_VIEW.PREVIEWPAGE : {
+                if(!item.pageId){
+                    return;
+                }
+
+                actions.getPageDetail(item.pageId);
+                this.setState({
+                    pageId: item.pageId,
+                });
                 break;
             }
         }
@@ -271,8 +283,23 @@ export default class ProcessForm extends Component {
         return count;
     }
 
+    /**
+     * 获取排除的页面IDS
+     * 例: 已有页面配置id为1, 里面包含10个字段, 需要查询除了已配置的这10个字段之外的其它字段时,
+     * 设置此参数, 多个id以逗号分隔
+     * @param  {[type]} taskItems [description]
+     * @param  {[type]} taskOrder [description]
+     * @return {[type]}           [description]
+     */
     getExcludeScreens(taskItems, taskOrder){
-        
+        let result = [];
+        taskItems.map((item, i) => {
+            if(i != taskOrder && item.haveConfigPage && item.pageId){
+                result.push(item.pageId);
+            }
+        })
+
+        return result.join(',');
     }
 
     /**
@@ -328,6 +355,7 @@ export default class ProcessForm extends Component {
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
                 <ProcessAuthEdit formData={formData} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
                 <SetFont_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
+                <SetFontView_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.PREVIEWPAGE} changeView={this.changeView.bind(this)}  />
             </div>
             );
     }
