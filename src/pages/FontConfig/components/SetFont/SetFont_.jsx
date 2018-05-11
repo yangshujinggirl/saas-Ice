@@ -95,6 +95,7 @@ export default class setFont extends Component {
 
     componentWillReceiveProps(nextProps){
         if(nextProps.resData){
+            console.log(nextProps.resData)
             this.setState({resData: nextProps.resData})
         }
     }
@@ -187,7 +188,91 @@ export default class setFont extends Component {
     }
     //取消
     cancelPage = () => {
+        if(this.props.changeView){
+            this.props.changeView();
+            return;
+        }
         this.props.router.push('font/list')
+    }
+
+    /**
+     * 保存页面字段
+     * @return {[type]} [description]
+     */
+    submit = () => {
+
+        let id = this.props.id;
+        let resData = this.state.resData;
+
+        let reqDate = {
+            "name": '',
+            "businessType": "货款业务",
+            "functionType": "进件",
+            "fields": []
+        }
+        
+        // if(!this.state.id){
+        //     reqDate.fields = this.state.isFixed[0].fields;
+        // }
+        // let data = this.state.resDate;
+        //     for (const index in data) {
+        //         for (const key in data[index].fields) {
+        //             if (data[index].fields[key].checked) {
+        //                 reqDate.fields.push(data[index].fields[key])
+        //             }
+        //         }
+                
+        //     }
+            
+        resData.fieldset.map((item) => {
+            item.fields.map((item) => {
+                reqData.fields.push(item) 
+            })
+        })
+        
+        reqDate.fields.map((item) => {
+            let fieldId = item.id;
+            delete item.id;
+            item.fieldId = fieldId;
+        })
+
+         // 如果id存在就更新字段
+        if (id) {
+            FontConfigReq.changPageName(reqDate,id).then((data) => {
+                let res = data.data;
+                if (data.code == 200) {
+                    if(this.props.onSave){
+                        this.props.onSave(id);
+                        return
+                    }
+                    this.props.router.push(`/font/set/${this.state.id}`)  
+                } else {
+                    Dialog.alert({
+                        content: res.msg,
+                        closable: false,
+                        title: "提示",
+                    });
+                }
+            })
+        } else {
+            // 提交字段
+            FontConfigReq.save(reqDate).then((data) => {
+                let res = data.data;
+                if (data.code == 200) {
+                    if(this.props.onSave){
+                        this.props.onSave(data.id);
+                        return
+                    }
+                    this.props.router.push(`/font/set/${res.id}?pageName=${pageName}`)
+                } else {
+                    Dialog.alert({
+                        content: res.msg,
+                        closable: false,
+                        title: "提示",
+                    });
+                }
+            })
+        }
     }
 
     /**
@@ -359,30 +444,25 @@ export default class setFont extends Component {
                                 <BtnAddRow text="添加区域" onClick={this.handleAddModule} />
                             </div>
                             <div className="dynamic-demo">
-                                <div className='base-detail customer'>
-                                    <span className='active'><Input
+                                <div className="base-detail customer">
+                                    <span className="active"><Input
                                                                  placeholder=""
-                                                                 value='材料提交'
+                                                                 value="材料提交"
                                                                  readOnly
-                                                                 className='moduleStr'
+                                                                 className="moduleStr"
                                                                  readOnly /></span>
                                 </div>
                             </div>
-                            <div className='submit'>
-                                <Button type="primary" style={{
-                                                                  marginLeft: '10px'
-                                                              }} onClick={this.upPage}>
-                                    上一步
+                            <div className="submit">
+                                <Button type="normal" onClick={this.cancelPage} style={{
+                                                                                           marginLeft: '10px'
+                                                                                       }}>
+                                    返回
                                 </Button>
                                 <Button type="secondary" style={{
                                                                     marginLeft: '10px'
                                                                 }} onClick={this.downPage}>
                                     提交
-                                </Button>
-                                <Button type="normal" onClick={this.cancelPage} style={{
-                                                                                           marginLeft: '10px'
-                                                                                       }}>
-                                    取消
                                 </Button>
                             </div>
                         </div>

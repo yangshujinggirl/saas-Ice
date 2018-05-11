@@ -53,7 +53,7 @@ export default class SetFont1 extends Component {
         let id = this.props.params.id
 
         return (
-            <SetFont_ id={id} resData={resData} />
+            <SetFont_ id={id} resData={resData} visible={true} />
             );
     }
 }
