@@ -184,6 +184,7 @@ export default class ProcessForm extends Component {
      */
     changeView(view, item) {
         console.log('changeView', view);
+        let { actions } = this.props;
 
         if(!view || typeof view != 'string'){
             // 默认返回当前编辑页，约定返回不传参数
@@ -191,9 +192,9 @@ export default class ProcessForm extends Component {
         }
         
         switch (view) {
-            case PROCESS_VIEW.VIEWFIELD: {
+            case PROCESS_VIEW.VIEWFIELD : {
                 // 查看必要字段
-                this.props.actions.getTasksFields(item.taskTypeId);
+                actions.getTasksFields(item.taskTypeId);
                 break;
             }
             case PROCESS_VIEW.EDITAUTH : {
@@ -203,6 +204,29 @@ export default class ProcessForm extends Component {
                     privilegeItems: item.privilegeItems
                 });
             }
+            case PROCESS_VIEW.EDITPAGE : {
+                // 编辑页面
+                // 有页面id的直接获取页面详情（编辑）
+                // 没有id的获取页面字段（新增）
+                
+                if(item.pageId){
+                    actions.getPageDetail(item.pageId);
+                    this.setState({
+                        pageId: item.pageId,
+                        taskOrder: item.taskOrder
+                    });
+                }else{
+                    actions.getPageFields({
+                        step: 1,
+                        excludeScreens: ''
+                    });
+                    this.setState({
+                        pageId: item.pageId,
+                        taskOrder: item.taskOrder
+                    });
+                }
+                break;
+            }
         }
 
         this.setState({
@@ -210,12 +234,19 @@ export default class ProcessForm extends Component {
         })
     }
 
+    handleSavePage(pageId){
+        let order = this.state.taskOrder;
+        let formData = this.props.formData;
+
+        formData.taskItems[order].pageId = pageId;
+    }
+
     /**
      * 渲染
      */
     render() {
         const locationInfo = this.props.location.state;
-        let {customMenuList, formData = {}, params, tasksFields = {}} = this.props;
+        let {customMenuList, formData = {}, params, tasksFields = {}, pageFields} = this.props;
 
         if (!params.id) {
             // 新增时使用传递的数据设置
@@ -262,7 +293,7 @@ export default class ProcessForm extends Component {
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
                 <ProcessAuthEdit formData={formData} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
-                <SetFont_ visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeVIew={this.changeView.bind(this)} />
+                <SetFont_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
             </div>
             );
     }

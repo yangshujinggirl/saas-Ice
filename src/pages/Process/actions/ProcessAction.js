@@ -2,6 +2,7 @@ import T from '../constants/ProcessConstant'
 import Req from '../reqs/ProcessReq'
 import { Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router'
+import FontConfigReq from '../../FontConfig/reqs/FontConfigReq';
 
 /*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
 
@@ -213,6 +214,35 @@ export const getTasksFields = (taskTypeId) => {
     Req.getTasksFields(taskTypeId).then((res) => {
       if (res.code != 200) return;
       dispatch(fetchSuccess({ tasksFields: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+
+//获取页面配置字段
+export const getPageFields = (options) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+
+    FontConfigReq.getDetail(options).then((res) => {
+      if (res.code != 200) return;
+      dispatch(fetchSuccess({ pageFields: {fieldset: res.data.list} }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//获取页面配置详情
+export const getPageDetail = (id) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+
+    FontConfigReq.getCode(id).then((data) => {
+      if (res.code != 200) return;
+      dispatch(fetchSuccess({ pageFields: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

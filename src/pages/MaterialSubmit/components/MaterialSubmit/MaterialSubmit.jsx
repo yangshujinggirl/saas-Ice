@@ -223,7 +223,7 @@ class MaterialSubmit extends Component {
           <ImageUpload
             className='upload-picture'
             listType="picture-card"
-            action="/loanApi/file/upload"
+            action="/saas/file/upload"
             data={{'path':'path/to/file'}}
             formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"

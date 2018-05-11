@@ -222,8 +222,11 @@ class LoanApplicationOne extends Component {
         // this.queryCache.status = 'save'
         Req.addLoanApi(this.queryCache).then((res)=>{
           console.log(res)
-          if(res && res.code == 200){
-            hashHistory.push('/entryQuery/loanApplication/'+this.props.params.id);
+          if(res &&  res.data && res.code == 200){
+            // hashHistory.push('/entryQuery/loanApplication/'+ res.data.id);
+            hashHistory.push({
+              pathname: '/entryQuery/loanApplication/'+ res.data.id
+            })
           }
         }).catch((errors)=>{
           console.log(errors);

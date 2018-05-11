@@ -50,19 +50,12 @@ export default class FormRender extends Component {
       dataSource:[]
     };
   }
-  //请求数据
-  fetchData = (flag) => {
-    let {actions} = this.props;
-    actions.getDetail(this.props.params.id);
-    console.log(this.props.params.id)
-  };
   componentWillMount(){
     // this.fetchData()
     this.SelectList();
   }
   //渲染表单
   renderForm = (data)=>{
-    // console.log(data)
     const  formList = [];
     if(data){
       data.map((item,index)=>{
@@ -118,16 +111,15 @@ export default class FormRender extends Component {
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <IceFormBinder
-            name={`${el.value}`}
-            required ={true}
-          >
-            <Input
-
-              placeholder={"请输入"+el.label}
-              disabled={el.isFixed || el.isReadonly}
-            />
-          </IceFormBinder>
+          <Input
+            defaultValue={el.value}
+            placeholder={"请输入"+el.label}
+            disabled={el.isFixed || el.isReadonly}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+            })}
+          />
         </FormItem>
       )
     }else if(el.type == "SELECT"){
@@ -155,6 +147,23 @@ export default class FormRender extends Component {
                    />
                </FormItem>
              )
+      }
+      else if(el.name == 'productCode'){
+       return(<FormItem  key={el.id} className='item' label={this.label(el.label)}
+                         {...formItemLayout}>
+         <Select
+           defaultValue={el.value}
+           disabled={ el.isReadonly }
+           placeholder={"请选择"+el.label}
+           style={{width:"100%"}}
+           {...init(el.name, {
+             initValue: el.value,
+             rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+           })}
+           dataSource={ this.props.productList || []}
+         >
+         </Select>
+       </FormItem>);
       }
       return(
         <FormItem  key={el.id} className='item' label={this.label(el.label)}
@@ -276,12 +285,11 @@ export default class FormRender extends Component {
       }
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
-      console.log(el.value)
+      // console.log(el.value)
       var str = el.value
       if(str && str.indexOf(",") >= 0){
          el.value =  str.split(',');
       }
-      console.log(el.value)
       return(
 
         <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
@@ -302,7 +310,7 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'DATE'){
-      console.log(el.value)
+      // console.log(el.value)
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
@@ -338,8 +346,8 @@ export default class FormRender extends Component {
   }
   //改变value
   onChange =(value,option)=>{
-    console.log(value)
-    console.log(option)
+    // console.log(value)
+    // console.log(option)
   }
   onInputUpdate = (value)=>{
     const  productCode = this.props.field.getValue('productCode');
@@ -347,7 +355,7 @@ export default class FormRender extends Component {
       productCode : productCode,
       name : value
     }
-    console.log(carList)
+    // console.log(carList)
     Req.getSelectList(carList).then((res)=>{
       if(res && res.code == 200){
         const dataSource =  res.data.list.map((item,index)=>{
@@ -420,8 +428,7 @@ export default class FormRender extends Component {
     return str;
   }
   render() {
-    console.log(this.props.data)
-    const { data, init } = this.props;
+    const { data, init, productList} = this.props;
     return (
       this.renderForm(data)
   );

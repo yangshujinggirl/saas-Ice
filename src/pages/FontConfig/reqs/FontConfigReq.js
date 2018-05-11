@@ -6,21 +6,22 @@ class FontConfigReq extends CurdReq {
     //基本的curd接口
     //若有特殊定义的接口直接覆盖
     this.curd = {
-      create: this._host + '/screen-schemes',
-      update: this._host + '/screen-schemes',
-      retrieve: this._host + '/screen-schemes',
-      delete: this._host + '/detail.json',
+      create: this._config.LOAN_HOST + '/screen-schemes',
+      update: this._config.LOAN_HOST + '/screen-schemes',
+      retrieve: this._config.LOAN_HOST + '/screen-schemes',
+      delete: this._config.LOAN_HOST + '/detail.json',
     }
   }
 
   /**
    * 获取字段
    */
-  getDetail(query = '') {
+  getDetail(query) {
     let data = {};
 
     let options = {
-      url: this._host + '/fields?' + query,
+      url: this._config.LOAN_HOST + '/fields',
+      params: query
     }
     return super.fetchData(options);
   }
@@ -30,7 +31,7 @@ class FontConfigReq extends CurdReq {
    */
   fontCode(data, callback, callbackError) {
     let options = {
-      url: this._host + '/screen-schemes',
+      url: this._config.LOAN_HOST + '/screen-schemes',
       data: data,
       method: 'post',
       contentType: 'application/json'
@@ -43,7 +44,7 @@ class FontConfigReq extends CurdReq {
    */
   getCode(id) {
     let options = {
-      url: this._host + '/screen-schemes/' + id,
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id,
       contentType: 'application/json'
     }
     return super.fetchData(options);
@@ -54,7 +55,7 @@ class FontConfigReq extends CurdReq {
    */
   changPageName(data, id) {
     let options = {
-      url: this._host + '/screen-schemes/' + id,
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id,
       contentType: 'application/json',
       method: 'put',
       data: data
@@ -67,7 +68,7 @@ class FontConfigReq extends CurdReq {
    */
   deleteCode(id, fieldId) {
     let options = {
-      url: this._host + '/screen-schemes/' + id + '/fields/' + fieldId,
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id + '/fields/' + fieldId,
       method: 'delete',
       contentType: 'application/json'
     }
@@ -80,7 +81,7 @@ class FontConfigReq extends CurdReq {
    */
   deleteModelCode(id, fieldsetName) {
     let options = {
-      url: this._host + '/screen-schemes/' + id + '/fieldset/' + fieldsetName,
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id + '/fieldset/' + fieldsetName,
       method: 'delete',
       contentType: 'application/json'
     }
@@ -92,7 +93,7 @@ class FontConfigReq extends CurdReq {
    */
   submitCustomeCode(data, id) {
     let options = {
-      url: this._host + '/screen-schemes/' + id + '/fields',
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id + '/fields',
       method: 'post',
       data: data,
       contentType: 'application/json'
@@ -105,7 +106,7 @@ class FontConfigReq extends CurdReq {
    */
   submitModifyCode(data, id, fieldId) {
     let options = {
-      url: this._host + '/screen-schemes/' + id + '/fields/' + fieldId,
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id + '/fields/' + fieldId,
       method: 'put',
       data: data,
       contentType: 'application/json'
@@ -119,7 +120,7 @@ class FontConfigReq extends CurdReq {
    */
   postDemo() {
     let options = {
-      url: this._host + '/member/loginMobile',
+      url: this._config.LOAN_HOST + '/member/loginMobile',
       method: 'POST',
       contentType: 'application/x-www-form-urlencoded',
       params: 'mobile=13917538027&card=211224198612285536'

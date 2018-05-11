@@ -25,8 +25,8 @@ export default class EntryTrack extends Component {
     console.log(this.props)
 
     Req.getTrackDetail({
-      proInstId : this.props.params.proInstId,
-      isApproveInfo :true
+      businessId : this.props.params.id,
+      isApproveInfo :false
     }).then((res)=>{
       if(res.data && res.code == 200){
         this.setState({

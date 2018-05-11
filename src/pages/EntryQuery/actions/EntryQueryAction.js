@@ -153,6 +153,18 @@ export const getSelectList = () => {
   }
 }
 
+// 获取产品列表
+export const getProductList = () => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.getProductNumApi(id).then((res) => {
+      dispatch(fetchSuccess({data: res.data}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 export function changeViewToForm() {
   return dispatch({ view: 'form' });
 }
