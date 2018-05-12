@@ -47,7 +47,7 @@ export default class ProcessFormItem extends Component {
                 <Col xxs="6" s="6" l="6">
                     <FormItem {...formItemLayout} label="流程名称：">
                         {editable ? 
-                        <IceFormBinder name="processName" required message="流程名称必填">
+                        <IceFormBinder name="processName" required message="流程名称不能为空">
                             <Input placeholder="流程名称" size="large" />
                         </IceFormBinder>: 
                         <p className="next-form-text-align">

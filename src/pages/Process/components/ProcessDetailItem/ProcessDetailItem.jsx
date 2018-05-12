@@ -46,13 +46,10 @@ export default class ProcessDetailItem extends Component {
         const { index, item, selectData, setModule, changeView } = this.props;
 
         return (
-            <Row align="top" key={index} className={`container-right-tabRow ${index % 2 === 0 ? '' : 'even'}`}>
+            <Row align="top" key={index} className={`container-right-tabRow`}>
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
                 </Col>
                 <Col xxs="6" s="3" l="3" className="pch-moduleName">
-                    {/* <div className="pch-realname">
-                        {item.taskTypeName}
-                    </div> */}
                     {item.taskTypeName} - {item.taskAlias}
                 </Col>
                 <Col xxs="6" s="2" l="6">

@@ -75,6 +75,9 @@
           &.even {
             background: #FBFAFA;
           }
+          &:last-child{
+            border-bottom: 1px solid #F6DCA9;
+          }
           .pch-icon-setting {
             i {
               position: absolute;
@@ -121,6 +124,15 @@
               display: block;
               &+.pch-target {
                 margin: 3px 0 0 0;
+              }
+            }
+            &.pch-task-page{
+              a{
+                margin-right: 14px;
+
+                &.disabled{
+                  color: #999;
+                }
               }
             }
           }
