@@ -267,8 +267,8 @@ export const getPrivilegeOrgs = () => {
     dispatch(fetchStart())
 
     Req.getPrivilegeOrgs().then((res) => {
-      console.log(res)
-      
+      // if (res.code != 200) return;
+      dispatch(fetchSuccess({ orgsData: res }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

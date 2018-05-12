@@ -9,12 +9,14 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     constructor(props) {
         super(props);
 
+        this.state = {};
+
         // 弹框的底部按钮
         this.footerDom = (
             <div key='1'>
                 <Button type="secondary" style={{
-                                                  marginRight: '10px'
-                                              }} onClick={this.handleSubmitCode}>
+                                                    marginRight: '10px'
+                                                }} onClick={this.handleSubmitCode}>
                     提交
                 </Button>
                 <Button type="normal" onClick={this.handleClose.bind(this)}>
@@ -24,10 +26,17 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
         );
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.allPageFields) {
+            this.setState({
+                allPageFields: nextProps.allPageFields
+            })
+        }
+    }
+
     // 添加自定义字段
     handleSubmitCode = () => {
         let reqData = this.props.data;
-        // let resData = this.props.resData;
 
         if (!reqData.label) {
             Feedback.toast.show({
@@ -50,61 +59,15 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             }
         })
 
-        this.props.submitFormData();
-        return;
-
-        let id = this.props.router.location.query.id
-        // console.log(this.state.resData);
-        this.setState({
-            dialogOne: false
-        })
-        // 判断是不是新的模块 ，新添加的模块会多一个new属性做呢判断 是不是新添加的模块
-        //  if (resData.fieldset[reqData.fieldsetOrder].new) {
-
-        if (false) {
-            //  批量提交字段，目前这一块先放这里，后台接口在调整
-            resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-            if (resData.fieldset[reqData.fieldsetOrder].name == '请输入标题名称') {
-                Dialog.alert({
-                    title: "提示",
-                    content: '请输入标题名称'
-                })
-
-                return
-            }
-
-            delete resData.fieldset[reqData.fieldsetOrder].new
-            reqData = resData.fieldset[reqData.fieldsetOrder];
-            FontConfigReq.changPageName(reqData, id).then((data) => {
-                if (data.code == 200) {
-                    this.setState({
-                        boolSelect: false,
-                        resData,
-                    })
-                }
-            })
-        } else {
-            FontConfigReq.submitCustomeCode(reqData, id).then((data) => {
-                if (data.code == 200) {
-                    let allData = this.state.resData
-                    reqData.id = data.data.id
-                    resData.fieldset[reqData.fieldsetOrder].fields.push(reqData);
-                    this.setState({
-                        resData
-                    })
-                } else {
-                    console.log("添加字段", data.msg);
-                }
-            })
-        }
+        this.props.submitFormData(this.state.allPageFields);
     }
 
     /**
      * 显示下拉框的字段编辑内容
      * @return {[type]} [description]
      */
-    showSelectForm(){
-        let { data } = this.props;
+    showSelectForm() {
+        let {data} = this.props;
 
         return data.type == "SELECT" || data.type == "RADIO" || data.type == "CHECKBOX";
     }
@@ -113,37 +76,47 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
      * 显示日期类型的字段编辑内容
      * @return {[type]} [description]
      */
-    showDateForm(){
-        let { data } = this.props;
+    showDateForm() {
+        let {data} = this.props;
 
         return data.type == "DATE";
     }
 
-    selected = (index,all) => {
+    /**
+     * 字段的全选、反选操作
+     * @param  {[type]} index [description]
+     * @param  {[type]} all   [description]
+     * @return {[type]}       [description]
+     */
+    selected = (index, all) => {
+        let data = this.state.allPageFields;
+
         if (!all) {
-            let data = this.state.resDate;
             for (const key in data[index].fields) {
                 data[index].fields[key].checked = !data[index].fields[key].checked;
             }
-            this.setState({
-                resDate: data
-            })
         } else {
-            let data = this.state.resDate;
             for (const key in data[index].fields) {
                 data[index].fields[key].checked = true;
             }
-            this.setState({
-                resDate: data
-            })
-        }   
+        }
+
+        this.setState({
+            allPageFields: data
+        })
     }
 
+    /**
+     * 字段的点击操作
+     * @param  {[type]} index    [description]
+     * @param  {[type]} subindex [description]
+     * @return {[type]}          [description]
+     */
     addClass = (index, subindex) => {
-        let data = this.state.resDate;
+        let data = this.state.allPageFields;
         data[index].fields[subindex].checked = !data[index].fields[subindex].checked;
         this.setState({
-            resDate:data
+            allPageFields: data
         })
     }
 
@@ -185,16 +158,16 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             })
         }
 
-        let {data, visible, onClose, allPageFields = []} = this.props;
+        let {data, visible, onClose} = this.props;
+        let { allPageFields = [] } = this.state;
 
-        if(!data.options || data.options.length == 0){
+        if (!data.options || data.options.length == 0) {
             data.options = [{
                 label: '',
                 value: ''
             }]
         }
 
-        console.log(allPageFields)
 
         return (
             <Dialog
@@ -206,26 +179,40 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                 title={(data.id ? "编辑" : "添加") + "自定义字段"}
                 footer={this.footerDom}
                 footerAlign='center'>
-                <div className="pch-form">
-                    {allPageFields.map((item, index) => {
-                        return (
-                            <div className='subDif' key={index}>
-                                <div>{item.name}</div>
-                                <div className="select">
-                                    <span onClick={this.selected.bind(this,index,true)}> 全选</span>
-                                    <span onClick={this.selected.bind(this,index,false)}>反选</span>
-                                </div>
-                                {item.fields.map((item, subindex) => {
-                                    return (
-                                        <div className={cx('listCode',{'selectCode': item.checked})} onClick={this.addClass.bind(this,index,subindex)} key={subindex}>
-                                            {item.label}
-                                            <span className="icon">&#xe62c;</span>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        )
-                    })}
+                <div className="pch-form" style={{
+                                                     width: 800
+                                                 }}>
+                    <div className="serfont-custom-dialog-title">
+                        可选字段
+                    </div>
+                    <div className="addFont">
+                        {allPageFields.map((item, index) => {
+                             return (
+                                 <div className='subDif' key={index}>
+                                     <div>
+                                         {item.name}
+                                     </div>
+                                     <div className="select">
+                                         <span onClick={this.selected.bind(this, index, true)}>全选</span>
+                                         <span onClick={this.selected.bind(this, index, false)}>反选</span>
+                                     </div>
+                                     {item.fields.map((item, subindex) => {
+                                          return (
+                                              <div className={cx('listCode', {
+                                                          'selectCode': item.checked
+                                                      })} onClick={this.addClass.bind(this, index, subindex)} key={subindex}>
+                                                  {item.label}
+                                                  <span className="icon"></span>
+                                              </div>
+                                          )
+                                      })}
+                                 </div>
+                             )
+                         })}
+                    </div>
+                    <div className="serfont-custom-dialog-title">
+                        自定义字段
+                    </div>
                     <div className='customerStr'>
                         <div className='first'>
                             <label htmlFor="">
@@ -244,7 +231,12 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                             <label htmlFor="">
                                 <span>字段类型</span>
                             </label>
-                            <Select size="large" placeholder="请选择" disabled={!!data.id} value={data.type} onChange={this.changeFormData.bind(this, 'type')}>
+                            <Select
+                                size="large"
+                                placeholder="请选择"
+                                disabled={!!data.id}
+                                value={data.type}
+                                onChange={this.changeFormData.bind(this, 'type')}>
                                 <Select.Option select value="STRING">
                                     输入文本
                                 </Select.Option>
@@ -295,12 +287,12 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                                                  {data.options && data.options.map((item, index) => {
                                                       return (
                                                           <div className='dropDown' key={index}>
-                                                          <div>
-                                                              <Input value={item.label} placeholder=" 请输入值" onChange={handleSelect.bind(this, index)} />
-                                                              <div className='addReduce'>
-                                                                  <span onClick={handleAddValue.bind(this, 'add')}>+</span>
-                                                                  {index != 0 && <span onClick={handleAddValue.bind(this, index)}>-</span>}
-                                                              </div>
+                                                              <div>
+                                                                  <Input value={item.label} placeholder=" 请输入值" onChange={handleSelect.bind(this, index)} />
+                                                                  <div className='addReduce'>
+                                                                      <span onClick={handleAddValue.bind(this, 'add')}>+</span>
+                                                                      {index != 0 && <span onClick={handleAddValue.bind(this, index)}>-</span>}
+                                                                  </div>
                                                               </div>
                                                           </div>
                                                       )

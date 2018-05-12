@@ -208,7 +208,7 @@ export default class setFont extends Component {
      * 保存字段
      * @return {[type]} [description]
      */
-    saveFields() {
+    saveFields(selectedFields) {
         let fields = this.state.fields;
         let id = this.props.id
         let resData = this.state.resData;
@@ -216,6 +216,8 @@ export default class setFont extends Component {
         let inj = this.state.editeCodeIndex.inj;
 
         console.log('saveFields', fields);
+
+        this.addSelectedFieldsToPage(selectedFields);
 
         if (fields.id) {
             if(id){
@@ -274,6 +276,55 @@ export default class setFont extends Component {
             resData,
             dialogOne: false,
             dialogTwo: false
+        })
+    }
+
+    /**
+     * 添加选中的字段到页面中，从自定义字段中选中的字段
+     * @param {[type]} selectedFields [description]
+     */
+    addSelectedFieldsToPage(selectedFields){
+        if(!selectedFields || selectedFields.length == 0){
+            return;
+        }
+
+        let resData = this.state.resData;
+        let checkedFields = [];
+
+        selectedFields.map(item => {
+            let fieldsArr = [];
+            item.fields.map((sitem) => {
+                if(sitem.checked){
+                    fieldsArr.push(sitem);
+                }
+            });
+
+            if(fieldsArr.length > 0){
+                checkedFields.push({
+                    name: item.name,
+                    fields: fieldsArr
+                });
+            }
+        });
+
+        if(checkedFields.length == 0){
+            return;
+        }
+
+        let existFieldset = false;
+        checkedFields.map((item, i) => {
+            let fieldset = item.fields[0].fieldset;
+
+            resData.fieldset.map((oitem, j) => {
+                if(oitem.fields[0].fieldset == fieldset){
+                    oitem.fields = oitem.fields.concat(item.fields);
+                    existFieldset = true;
+                }
+            })
+
+            if(!existFieldset){
+                resData.fieldset.push(item);
+            }
         })
     }
 

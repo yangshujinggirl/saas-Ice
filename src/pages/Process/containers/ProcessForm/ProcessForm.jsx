@@ -191,6 +191,8 @@ export default class ProcessForm extends Component {
             // 默认返回当前编辑页，约定返回不传参数
             view = PROCESS_VIEW.EDITFORM;
         }
+
+        let idx = formData.taskItems.indexOf(item);
         
         switch (view) {
             case PROCESS_VIEW.VIEWFIELD : {
@@ -201,8 +203,10 @@ export default class ProcessForm extends Component {
             case PROCESS_VIEW.EDITAUTH : {
                 // TODO 获取权限编辑的列表
                 // 编辑权限传入当前已选的权限
+                actions.getPrivilegeOrgs()
                 this.setState({
-                    privilegeItems: item.privilegeItems
+                    privilegeItems: item.privilegeItems,
+                    taskOrder: idx
                 });
             }
             case PROCESS_VIEW.EDITPAGE : {
@@ -213,17 +217,17 @@ export default class ProcessForm extends Component {
                     actions.getPageDetail(item.pageId);
                     this.setState({
                         pageId: item.pageId,
-                        taskOrder: item.taskOrder
+                        taskOrder: idx
                     });
                 }else{
                     actions.getPageFields({
-                        step: this.getStepFromData(formData.taskItems, item.taskOrder),
-                        excludeScreens: this.getExcludeScreens(formData.taskItems, item.taskOrder)
+                        step: this.getStepFromData(formData.taskItems, idx),
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     actions.getAllPageFields();
                     this.setState({
                         pageId: item.pageId,
-                        taskOrder: item.taskOrder
+                        taskOrder: idx
                     });
                 }
                 break;
@@ -245,7 +249,17 @@ export default class ProcessForm extends Component {
             view
         })
     }
+    //保存权限编辑之后，返回编辑页面
+    authSave(privilegeItems){
+        console.log(privilegeItems)
+        let order = this.state.taskOrder;
+        let formData = this.props.formData;
 
+        formData.taskItems[order].privilegeItems = privilegeItems;
+        this.setState({
+            view: PROCESS_VIEW.EDITFORM
+        })
+    }
     /**
      * 保存页面之后，设置页面id，跳转回编辑页
      * @param  {[type]} pageId [description]
@@ -308,7 +322,8 @@ export default class ProcessForm extends Component {
      */
     render() {
         const locationInfo = this.props.location.state;
-        let {customMenuList, formData = {}, params, tasksFields = {}, pageFields, allPageFields} = this.props;
+        let {customMenuList, formData = {}, params, tasksFields = {}, pageFields, allPageFields, orgsData={}} = this.props;
+        let {privilegeItems} = this.state;
 
         if (!params.id) {
             // 新增时使用传递的数据设置
@@ -354,8 +369,8 @@ export default class ProcessForm extends Component {
                     </div>
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
-                <ProcessAuthEdit formData={formData} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
                 <SetFont_ id={this.state.pageId} resData={pageFields} allPageFields={allPageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
+                <ProcessAuthEdit formData={formData}  orgsData={orgsData} data={privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} onSave={this.authSave.bind(this)} />
                 <SetFontView_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.PREVIEWPAGE} changeView={this.changeView.bind(this)}  />
             </div>
             );
