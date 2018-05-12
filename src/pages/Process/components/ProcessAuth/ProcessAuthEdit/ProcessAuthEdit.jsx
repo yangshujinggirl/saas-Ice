@@ -17,106 +17,13 @@ import {
 const { Row, Col } = Grid;
 
 import './ProcessAuthEdit.scss';
-const data = [
-  [
-    {
-      key: 1,
-      name: "总部-上海分公司",
-      age: 32,
-      children: []
-    },
-    {
-      key: 2,
-      name: "浦东营业部",
-      age: 32,
-      children: [
-        {
-          key: 21,
-          name: "浦东营业部-角色1",
-          secondName: "浦东营业部-角色1",
-          age: 33,
-        },
-        {
-          key: 22,
-          name: "浦东营业部-角色2",
-          secondName: "浦东营业部-角色2",
-          age: 33,
-        }
-      ]
-    },
-    {
-      key: 3,
-      name: "浦西营业部",
-      age: 32,
-      children: [
-        {
-          key: 31,
-          name: "浦西营业部-角色1",
-          secondName: "浦西营业部-角色1",
-          age: 33,
-        },
-        {
-          key: 32,
-          name: "浦西营业部-角色2",
-          secondName: "浦西营业部-角色2",
-          age: 33,
-        }
-      ]
-    }
-  ],
-  [
-    {
-      key: 4,
-      name: "总部-深圳分公司",
-      age: 32,
-      children: []
-    },
-    {
-      key: 5,
-      name: "龙华营业部",
-      age: 32,
-      children: [
-        {
-          key: 51,
-          name: "龙华营业部-角色1",
-          secondName: "龙华营业部-角色1",
-          age: 33,
-        },
-        {
-          key: 52,
-          name: "龙华营业部-角色2",
-          secondName: "龙华营业部-角色2",
-          age: 33,
-        }
-      ]
-    },
-    {
-      key: 6,
-      name: "南山营业部",
-      age: 32,
-      children: [
-        {
-          key: 61,
-          name: "角色1",
-          secondName: "南山营业部-角色1",
-          age: 33,
-        },
-        {
-          key: 62,
-          name: "角色2",
-          secondName: "南山营业部-角色2",
-          age: 33,
-        }
-      ]
-    }
-  ]
-];
+
 export default class ProcessAuthEdit extends BaseApp {
   constructor(props) {
     super(props);
     this.state = {
       visible: this.props.visible,
-      dataSourceRight: [],
+      dataSourceRight:this.props.data,
       selectedRowOne: [],
       selectedRowTwo: [],
       current: 1
@@ -140,9 +47,12 @@ export default class ProcessAuthEdit extends BaseApp {
       }
     }
   }
+  componentDidMount(){
+  }
   componentWillReceiveProps(props) {
     this.setState({
-      visible: this.props.visible
+      visible: this.props.visible,
+      dataSourceRight:this.props.data
     })
   }
   onClose() {
@@ -157,8 +67,21 @@ export default class ProcessAuthEdit extends BaseApp {
       }
     });
   }
-  onOk() {
-    console.log('权限编辑保存。。。')
+  //确定
+  submit(){
+    let dataArry =  this.state.dataSourceRight
+    let datatemp = [];
+    for (var key in dataArry){
+      datatemp.push({
+        roleId: dataArry[key].roleId,
+        orgId: dataArry[key].orgId,
+        orgName: dataArry[key].orgName,
+        roleName: dataArry[key].roleName,
+        departmentId: dataArry[key].departmentId,
+        departmentName:dataArry[key].departmentName
+      })
+    }
+    this.props.onSave(datatemp)
   }
 
   addItem() {
@@ -187,7 +110,7 @@ export default class ProcessAuthEdit extends BaseApp {
     );
   }
   renderLevel(value, index, record) {
-    return record.name
+    return record.departmentName
   }
   changePage(current) {
     this.setState({
@@ -200,8 +123,7 @@ export default class ProcessAuthEdit extends BaseApp {
    */
   render() {
     const { dataSourceRight, current } = this.state;
-    const { visible, changeView, formData } = this.props;
-
+    const { visible, changeView, formData,orgsData } = this.props;
     return (
       <IceContainer className="pch-container" style={{ display: visible ? '' : 'none' }}>
         <Title title="权限编辑" />
@@ -223,7 +145,7 @@ export default class ProcessAuthEdit extends BaseApp {
           <div className="table-list">
             <div className="part-l">
               <Table
-                dataSource={data[0]}
+                dataSource={orgsData.departments}
                 primaryKey="key"
                 style={{ width: '100%' }}
                 isTree
@@ -232,13 +154,13 @@ export default class ProcessAuthEdit extends BaseApp {
                 <Table.Column title="机构" cell={this.renderLevel} />
               </Table>
               <Table
-                dataSource={data[1]}
-                primaryKey="key"
+                dataSource={orgsData.otherOrgs}
+                // primaryKey="key"
                 style={{ width: '100%' }}
                 isTree
                 rowSelection={{ ...this.rowSelectionTwo }}
               >
-                <Table.Column title="其他机构" dataIndex="name" />
+                <Table.Column title="其他机构" dataIndex="departmentName" />
               </Table>
             </div>
             <div className="btn-wrap">
@@ -251,7 +173,7 @@ export default class ProcessAuthEdit extends BaseApp {
                 style={{ width: '100%' }}
                 maxBodyHeight={370}
               >
-                <Table.Column title="权限" dataIndex="name" />
+                <Table.Column title="权限" dataIndex="orgName" />
                 <Table.Column title="操作" cell={() => this.renderOperation()} />
               </Table>
             </div>
@@ -263,7 +185,7 @@ export default class ProcessAuthEdit extends BaseApp {
               <Button type="normal" className="return-btn buttonsBack" onClick={() => this.onClose()}>
                 取消
               </Button>
-              <Button type="secondary" className="buttonsSure" onClick={() => this.onOk()}>
+              <Button type="secondary" className="buttonsSure" onClick={() => this.submit()}>
                 确定
               </Button>
             </div>

@@ -100,10 +100,13 @@ class ProcessReq extends CurdReq {
   //权限编辑机构／角色
   getPrivilegeOrgs(){
     let options = {
-      url:this._config.WF_HOST + '/processes/privilege/orgs',
+      // url:this._config.WF_HOST + '/processes/privilege/orgs',
+      url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/processes/privilege/orgs',
+      contentType: 'application/x-www-form-urlencoded',
       method:'GET',
       // params:condition
     }
+    return super.fetchData(options);
   }
 }
 
