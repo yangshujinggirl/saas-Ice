@@ -68,7 +68,7 @@ export const getDetail = (id) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
+    Req.goEditContractApi(id).then((res) => {
       if (!res || res.code != 200) return;
       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
     }).catch((ex) => {

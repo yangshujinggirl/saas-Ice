@@ -15,7 +15,7 @@ class ContractEditReq extends CurdReq{
         }
 	}
 
-	//编辑
+	//编辑详情
 	goEditContractApi(id){
 		let options = {
 			url: this._host + `/contract/contract/edit_status`,
@@ -43,7 +43,7 @@ class ContractEditReq extends CurdReq{
 		let options = {
 			url: this._host + `/contract/contract/status`,
 			method: 'POST',
-			contentType: 'application/json',
+			contentType: 'application/x-www-form-urlencoded',
 			data
 		}
 		return super.fetchData(options);

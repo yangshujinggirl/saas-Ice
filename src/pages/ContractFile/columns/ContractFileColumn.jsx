@@ -97,6 +97,7 @@ class ContractFileColumn extends BaseColumn {
                         }
 
                         {
+                          record.type == 2 &&
                           record.status !=5 && <Button
                                                   type="secondary"
                                                   shape="text"

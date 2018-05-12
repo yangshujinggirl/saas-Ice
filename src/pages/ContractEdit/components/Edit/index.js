@@ -6,8 +6,14 @@ import { Title } from 'components';
 import './index.scss';
 
 class AddEit extends BaseApp {
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    this.props.actions.getDetail(this.props.params.id)
+  }
   render() {
-    const { contractContent } = this.props.location.state;
+    const { contractContent } = this.props.formData;
     console.log(this.props)
     return(
       <IceContainer className="pch-container contract-eidt-pages">

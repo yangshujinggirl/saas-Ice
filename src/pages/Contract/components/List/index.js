@@ -3,7 +3,7 @@ import IceContainer from '@icedesign/container';
 import { Dialog, Button, Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
-import { Title, PchTable, PchPagination } from 'components';
+import { Title, PchTable, PchPagination, PchDialog } from 'components';
 import FilterForm from './Filter';
 import DialogModule from './DialogModule';
 import Req from '../../reqs/ContractReq';
@@ -153,6 +153,10 @@ class ContractList extends BaseApp {
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
+          {/* <DialogModule
+            templateObj={templateObj}
+            visible={visible}
+            submit={this.submitOperate.bind(this)}/> */}
           <DialogModule
             templateObj={templateObj}
             visible={visible}

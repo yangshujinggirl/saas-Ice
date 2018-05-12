@@ -10,14 +10,13 @@ import {
   Form,
   Checkbox
 } from '@icedesign/base';
+import { PchDialog } from 'components';
 
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-
-import './index.scss'
 
 const {Row, Col} = Grid;
 const {Option} = Select;
@@ -92,64 +91,42 @@ class DialogModule extends Component {
       const { templateObj, productList } = this.props;
       //初始化checked
       const defaultValue =()=> (
-        templateObj.productList.length>0 ?
         templateObj.productList.map((ele) => (
             ele.value
         ))
-        :
-        []
       )
-      console.log(templateObj)
 
       return (
-        <Dialog
+        <PchDialog
+          title={this.dialogTitle()}
           visible={this.state.visible}
-          onCancel={()=>this.onClose()}
+          onOk={()=>this.onOk()}
           onClose={()=>this.onClose()}
-          className="contract-template-dialog-wrap"
           footer={[]}>
-          <div className="pch-form contract-template-dialog-content">
-            <IceFormBinderWrapper ref="form">
-              <Form size="large" direction="hoz">
-                <h2 className="title">{this.dialogTitle()}</h2>
-                <Row wrap>
-                  <Col span={24}>
-                    <FormItem {...formItemLayout}>
-                      <IceFormBinder
-                        name="result">
-                        <CheckboxGroup
-                          className="check-group-style"
-                          value={defaultValue()}
-                          dataSource={templateObj.productList}
-                          disabled>
-                        </CheckboxGroup>
-                      </IceFormBinder>
-                      <div><IceFormError name="result" /></div>
-                    </FormItem>
-                  </Col>
-                  <Col span={24}>
-                    <div className="btns-wrap">
-                      <Button
-                        type="secondary"
-                        size="large"
-                        onClick={()=>this.onOk()}
-                        className="dialog-btn">
-                          确认
-                      </Button>
-                      <Button
-                        type="secondary"
-                        size="large"
-                        onClick={()=>this.onClose()}
-                        className="dialog-btn">
-                          取消
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            </IceFormBinderWrapper>
-          </div>
-        </Dialog>
+          {
+            templateObj.productList.length>0 &&
+              <div className="pch-form contract-template-dialog-content">
+                <IceFormBinderWrapper ref="form">
+                  <Form size="large" direction="hoz">
+                    <Row wrap>
+                        <Col span={24}>
+                          <FormItem {...formItemLayout}>
+                            <IceFormBinder >
+                              <CheckboxGroup
+                                className="check-group-style"
+                                value={defaultValue()}
+                                dataSource={templateObj.productList}
+                                disabled>
+                              </CheckboxGroup>
+                            </IceFormBinder>
+                          </FormItem>
+                        </Col>
+                    </Row>
+                  </Form>
+                </IceFormBinderWrapper>
+              </div>
+            }
+        </PchDialog>
     );
   }
 }

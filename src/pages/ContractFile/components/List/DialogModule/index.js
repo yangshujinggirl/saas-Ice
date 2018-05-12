@@ -16,7 +16,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import './index.scss'
+import { PchDialog } from 'components';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
@@ -39,7 +39,7 @@ const dataSource = [
         {label:'客户信息修改', value:'客户信息修改',type:'change'},
         {label:'其他', value:'其他',type:'other'}
       ]
-      
+
 class DialogModule extends Component {
   constructor(props) {
     super(props);
@@ -83,23 +83,23 @@ class DialogModule extends Component {
   }
   render() {
       const { dialogObj } = this.props;
-      const { visible, otherReason } = this.state;
+      const { visible, otherReason, value } = this.state;
       return (
-        <Dialog
-          visible={this.state.visible}
-          onCancel={()=>this.onClose()}
+        <PchDialog
+          title={'合同作废'}
+          visible={visible}
+          onOk={()=>this.onOk()}
           onClose={()=>this.onClose()}
-          className="contract-edit-dialog-wrap"
           footer={[]}>
-          <div className="pch-form contract-edit-dialog-content">
-            <IceFormBinderWrapper ref="form" value={this.state.value}>
+          <div className="pch-form">
+            <IceFormBinderWrapper ref="form" value={value}>
               <Form size="large" direction="hoz">
                 <Row wrap>
                   <Col span={24}>
                     <FormItem {...formItemLayout} label={label('请选择作废原因')}>
                       <IceFormBinder
                         required
-                        message="请选择取消原因"
+                        message="请选择作废原因"
                         name="reason">
                           <Select
                             dataSource={dataSource}
@@ -122,29 +122,11 @@ class DialogModule extends Component {
                                       </FormItem>
                                     </Col>
                   }
-                  <Col span={24}>
-                    <div className="btns-wrap">
-                      <Button
-                        type="secondary"
-                        size="large"
-                        onClick={()=>this.onOk()}
-                        className="dialog-btn">
-                          确认
-                      </Button>
-                      <Button
-                        type="secondary"
-                        size="large"
-                        onClick={()=>this.onClose()}
-                        className="dialog-btn">
-                          取消
-                      </Button>
-                    </div>
-                  </Col>
                 </Row>
               </Form>
             </IceFormBinderWrapper>
           </div>
-        </Dialog>
+        </PchDialog>
     );
   }
 }

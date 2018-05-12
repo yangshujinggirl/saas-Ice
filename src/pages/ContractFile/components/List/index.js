@@ -45,7 +45,7 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.SIGN: {
-            this.signDialogEvent()
+            this.signDialogEvent(record.id)
             break;
         }
         case this.OPERATE_TYPE.CHANGE: {
@@ -65,10 +65,11 @@ class ContractList extends BaseApp {
     })
   }
   //签字
-  signDialogEvent() {
+  signDialogEvent(id) {
     this.setState({
       signVisible:true,
-      visible:false
+      visible:false,
+      contract_id:id
     })
   }
   //改纸质
@@ -117,12 +118,23 @@ class ContractList extends BaseApp {
   }
   //提交签字
   submitSign(params) {
-    //签字api
+    Req.signContractApi(params)
+    .then((res) => {
+      const { code, msg } =res;
+      if ( code != 200) {
+        Toast.error(msg);
+        return;
+      }
+      Toast.success("上传成功");
+      this.setState({
+        signVisible:false
+      })
+    })
   }
   render() {
     const { columns } = this.props;
     const { list=[] } =this.props.pageData;
-    const { dialogObj, visible, signVisible } =this.state;
+    const { dialogObj, visible, signVisible, contract_id } =this.state;
 
     return(
       <IceContainer className="pch-container">
@@ -135,8 +147,9 @@ class ContractList extends BaseApp {
             visible={visible}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
+            contractId ={contract_id}
             visible={signVisible}
-            submit={this.submitSign}/>
+            submit={this.submitSign.bind(this)}/>
       </IceContainer>
     )
   }
