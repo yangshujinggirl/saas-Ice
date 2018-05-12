@@ -179,10 +179,10 @@ export const getProcessProdList = (condition) => {
   }
 }
 //流程配置产品右侧列表 
-export const getProcessProdOldList = (condition) => {
+export const getProcessProdOldList = (id) => {
   return (dispatch) => {
 
-    Req.getProcessProdOldList(condition).then((res) => {
+    Req.getProcessProdOldList(id).then((res) => {
       if(res.code==200){
         dispatch(fetchSuccess({ formOldData: res.data }))
 
@@ -242,6 +242,19 @@ export const getPageDetail = (id) => {
     FontConfigReq.getCode(id).then((res) => {
       if (res.code != 200) return;
       dispatch(fetchSuccess({ pageFields: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+//权限编辑机构／角色
+export const getPrivilegeOrgs = () => {
+  return (dispatch)=>{
+    dispatch(fetchStart())
+
+    Req.getPrivilegeOrgs().then((res) => {
+      console.log(res)
+      
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
