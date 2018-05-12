@@ -54,7 +54,11 @@ export default class ProcessFormProduct extends BaseApp {
 
 
   componentWillMount() {
-    this.props.actions.getProcessProdOldList()
+    let {params} = this.props
+    if(params.id){
+      this.props.actions.getProcessProdOldList(params.id)
+
+    }
     
   }
   componentDidMount() {
@@ -74,7 +78,9 @@ export default class ProcessFormProduct extends BaseApp {
   }
   componentWillReceiveProps(props) {
     this.setState({
-      visible: this.props.visible
+      visible: this.props.visible,
+      dataSourceRight: this.props.formOldData,
+
     })
   }
   //右侧增加数据

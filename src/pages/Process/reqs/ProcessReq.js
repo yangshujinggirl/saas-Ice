@@ -57,7 +57,7 @@ class ProcessReq extends CurdReq {
   //流程配置产品左侧列表
   getProcessProdList(condition) {
     let options = {
-      url: this._config.LOAN_HOST + `/product/`,
+      url: this._config.LOAN_HOST + `/product`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       params: condition
@@ -65,8 +65,9 @@ class ProcessReq extends CurdReq {
     return super.fetchData(options);
 	}
 	//流程配置产品右侧列表
-	getProcessProdOldList(condition){
+	getProcessProdOldList(id){
 		let options = {
+			// url: this._config.WF_HOST + `/processes/product/${id}`,
 			url: this._config.WF_HOST + `/processes/product/123`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
@@ -95,6 +96,14 @@ class ProcessReq extends CurdReq {
       method: 'GET',
     }
     return super.fetchData(options);
+  }
+  //权限编辑机构／角色
+  getPrivilegeOrgs(){
+    let options = {
+      url:this._config.WF_HOST + '/processes/privilege/orgs',
+      method:'GET',
+      // params:condition
+    }
   }
 }
 
