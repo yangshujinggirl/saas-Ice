@@ -406,13 +406,6 @@ export default class SetFontView_ extends Component {
                                     )
                                 })}
                             </div>
-                            <div className="dynamic-demo">
-                                <div className='baseDetail customer'>
-                                    <span className='active'>
-                                        <Input placeholder="" value='材料提交' readOnly className='moduleStr' readOnly />
-                                    </span>
-                                </div>
-                            </div>
                             <div className='submit'>
                                 <Button
                                     type="normal"

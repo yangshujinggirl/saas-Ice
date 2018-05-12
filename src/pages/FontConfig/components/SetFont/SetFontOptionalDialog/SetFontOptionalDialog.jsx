@@ -75,20 +75,19 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
                 title="修改预定义字段"
                 footer={this.footerDom}
                 footerAlign='center'>
-                <div className='customerStr customerEdite'>
-                    <div className='first'>
-                        <label htmlFor="">
-                            <span>字段名称</span>
-                        </label>
-                        <Input placeholder="请输入" value={data.label} onChange={this.changeFormData.bind(this, 'label')} />
+                <div className="pch-form">
+                    <div className='customerStr customerEdite'>
+                        <div className='first'>
+                            <label htmlFor="">
+                                <span>字段名称</span>
+                            </label>
+                            <Input placeholder="请输入" value={data.label} onChange={this.changeFormData.bind(this, 'label')} />
+                        </div>
+                    </div>
+                    <div className='beautify'>
+                        <CheckboxGroup value={this.getValueForCheckbox()} dataSource={this.PROP_LIST} onChange={this.codeRequire} />
                     </div>
                 </div>
-                <div className='beautify'>
-                    <CheckboxGroup value={this.getValueForCheckbox()} dataSource={this.PROP_LIST} onChange={this.codeRequire} />
-                </div>
-                {data.type == "TEXT" ? <div>
-                                           提示：字段类型为文本域，字段独占一行显示
-                                       </div> : ''}
             </Dialog>
         )
     }

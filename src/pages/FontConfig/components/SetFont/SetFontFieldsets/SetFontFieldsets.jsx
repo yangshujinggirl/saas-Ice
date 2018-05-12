@@ -57,6 +57,15 @@ export default class SetFontFieldsets extends Component {
         let copyDate = this.props.resData;
         let obj = {}
         obj.fields = copyDate.fieldset[index].fields
+
+        if(!id){
+            //新增时直接更改数据
+            this.setState({
+                subTitle: ''
+            });
+            return;
+        }
+
         FontConfigReq.changPageName(obj, id).then((data) => {
             if (data.code == 200) {
                 this.setState({
@@ -130,6 +139,14 @@ export default class SetFontFieldsets extends Component {
         const newArr = Object.assign({}, this.props.resData);
         let deleteObj = newArr.fieldset[index].fields[inj];
         let fileId = deleteObj.id;
+
+        if(!id){
+            //新增时直接更改数据
+            newArr.fieldset[index].fields.splice(inj, 1);
+            this.props.changeData(newArr);
+            return;
+        }
+
         FontConfigReq.deleteCode(id, fileId).then((data) => {
             if (data.code == 200) {
                 newArr.fieldset[index].fields.splice(inj, 1);
@@ -141,22 +158,36 @@ export default class SetFontFieldsets extends Component {
 
     /**
      * 删除一个字段区域
+     * 点击弹出确认框“是否确认删除xxx区域？”，不能删除含“*”的区域
      * @param  {[type]} index [description]
      * @return {[type]}       [description]
      */
     handleRemoveModule = (index) => {
+
         let id = this.props.id
         const newArr = this.props.resData;
         let deleteObj = newArr.fieldset[index].name;
 
-        FontConfigReq.deleteModelCode(id, encodeURIComponent(deleteObj)).then((data) => {
-            if (data.code == 200) {
-                newArr.fieldset.splice(index, 1)
-                this.props.changeData(newArr);
-            } else {
-                Dialog.alert({
-                    title: '提示',
-                    content: data.msg
+        Dialog.confirm({
+            content: `是否确认删除${deleteObj}区域？`,
+            onOk: () => {
+                if(!id){
+                    //新增时直接更改数据
+                    newArr.fieldset.splice(index, 1);
+                    this.props.changeData(newArr);
+                    return;
+                }
+
+                FontConfigReq.deleteModelCode(id, encodeURIComponent(deleteObj)).then((data) => {
+                    if (data.code == 200) {
+                        newArr.fieldset.splice(index, 1);
+                        this.props.changeData(newArr);
+                    } else {
+                        Dialog.alert({
+                            title: '提示',
+                            content: data.msg
+                        })
+                    }
                 })
             }
         })
@@ -236,27 +267,27 @@ export default class SetFontFieldsets extends Component {
 
         //  根据type值渲染不同的输入框
         const handleFixed = (item) => {
-            let inputType = <Input placeholder="" />
+            let inputType = <Input size="large" placeholder="" />
 
             switch (item.type) {
                 case 'STRING':
-                    inputType = <Input placeholder="" readOnly={item.isReadonly ? true : false} />
+                    inputType = <Input size="large" placeholder="" readOnly={item.isReadonly ? true : false} />
                     break;
                 case 'TEXT':
-                    inputType = <Input placeholder="" addonAfter={item.append} />
+                    inputType = <Input size="large" placeholder="" addonAfter={item.append} />
                     // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
-                    inputType = <Input placeholder="" addonAfter={item.append} />
+                    inputType = <Input size="large" placeholder="" addonAfter={item.append} />
                     break;
                 case 'DECIMAL':
-                    inputType = <Input placeholder="" addonAfter={item.append} />
+                    inputType = <Input size="large" placeholder="" addonAfter={item.append} />
                     break;
                 case 'DATE':
-                    inputType = <RangePicker onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
+                    inputType = <RangePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
                     break;
                 case 'SELECT':
-                    inputType = <Select placeholder="请选择">
+                    inputType = <Select size="large" placeholder="请选择">
                                     {item.options && item.options.map((item, index) => {
                                          return (
                                              <Option value={item.value} key={index}>
@@ -268,16 +299,16 @@ export default class SetFontFieldsets extends Component {
                     break;
                 case 'CHECKBOX':
                     inputType = <span className="addNewCheckbox">{<label>
-                                      <CheckboxGroup dataSource={item.options} />
+                                      <CheckboxGroup size="large" dataSource={item.options} />
                                   </label>}</span>
                     break;
                 case 'RADIO':
                     inputType = <span className="addNewRadio">{<label>
-                                   <RadioGroup dataSource={item.options} />
+                                   <RadioGroup size="large" dataSource={item.options} />
                                </label>}</span>
                     break;
                 case 'ADDRESS':
-                    inputType = <CascaderSelect dataSource={dataSource} />
+                    inputType = <CascaderSelect size="large" dataSource={dataSource} />
                     break;
                 default:
                     break;
@@ -288,15 +319,16 @@ export default class SetFontFieldsets extends Component {
         let {resData, handleEditeCoce, handleAddCode} = this.props;
 
         return (
-            <div className="dynamic-demo">
+            <div className="setfont-fieldsets">
                 {resData.fieldset && resData.fieldset.map((item, index) => {
                      return (
-                         <div key={index}>
+                         <div key={index} className="setfont-field">
                              {/*添加字段按钮和小标题  */}
-                             <div className='base-detail customer clearfix'>
+                             <div className='base-detail clearfix'>
                                  <div className='base-detail-name active' onClick={this.titleState.bind(this, index + 1)} id={item.name}>
                                      <Input
-                                         placeholder=""
+                                         placeholder="区域名称"
+                                         maxLength={35}
                                          value={item.name}
                                          onChange={this.handleGroupTitle.bind(this, index)}
                                          onBlur={this.handleGroupTitleSubmint.bind(this, index)}
@@ -307,7 +339,7 @@ export default class SetFontFieldsets extends Component {
                                      {index != 0 &&
                                       <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}></span> <span className='icon up' onClick={this.moveUp.bind(this, index)}></span> <span className='icon down'
                                           onClick={this.moveDown.bind(this, index)}></span></span>}
-                                     <span className="addStr" onClick={handleAddCode.bind(this, index)}>自定义字段</span>
+                                     <span className="addStr" onClick={handleAddCode.bind(this, index)}>添加字段</span>
                                  </div>
                              </div>
                              <div className='ui-sortable'>
@@ -343,7 +375,7 @@ export default class SetFontFieldsets extends Component {
                                                   data-row={item.line == 1 ? true : ''}>
                                                   <div className="clearfix">
                                                       <label htmlFor="" className='label'>
-                                                          <Balloon type="primary" trigger={<span className='ellips' onDoubleClick={handleEditeCoce.bind(this, item, index, inj)} title={item.label}><span className='required' onClick={this.validaRequire.bind(this, index, inj)}>{item.isRequired ? <span>*</span> : ''}</span>
+                                                          <Balloon type="primary" trigger={<span className='ellips' onDoubleClick={handleEditeCoce.bind(this, item, index, inj)} title={item.label}><span className='required' onClick={this.validaRequire.bind(this, index, inj)}>{item.isRequired ? '*' : ''}</span>
                                                                                            {item.label}
                                                                                            </span>} closable={false} triggerType="hover">
                                                               {item.label}
@@ -357,6 +389,7 @@ export default class SetFontFieldsets extends Component {
                                           )
                                       }
                                   })}
+                                 {item.fields.length == 0 && <div className="ui-sortable-empty">还没有字段哦</div>}
                              </div>
                          </div>
                      )

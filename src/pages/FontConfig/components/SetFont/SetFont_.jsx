@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect, Balloon } from '@icedesign/base';
+import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Feedback, Checkbox, Radio, CascaderSelect, Balloon } from '@icedesign/base';
 import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
@@ -146,8 +146,8 @@ export default class setFont extends Component {
         // 空区块删除
         let tts = resData.fieldset.every((item) => {
             if (!item.fields.length) {
-                Dialog.alert({
-                    title: '提示',
+                Feedback.toast.show({
+                    type: 'error',
                     content: `${item.name}里面没有定义字段，请删除！`
                 })
                 return false
@@ -200,6 +200,24 @@ export default class setFont extends Component {
             "functionType": "进件",
             "fields": []
         }
+
+        // 校验是否有已命名空区域，有则弹出提示框“xxxx区域未添加字段，请添加后提交或删除该区域后提交”
+        // 空区块删除
+        let tts = resData.fieldset.every((item) => {
+            if (!item.fields.length) {
+                Feedback.toast.show({
+                    type: 'error',
+                    content: `${item.name}区域未添加字段，请添加后提交或删除该区域后提交！`
+                })
+                return false
+            } else {
+                return true
+            }
+        })
+        if (!tts) {
+            return
+        }
+
             
         // 转换fieldset到fields
         resData.fieldset.map((item) => {
@@ -402,7 +420,7 @@ export default class setFont extends Component {
         const newArr = this.state.resData;
         let add = {
             new: 1,
-            name: '请输入标题名称',
+            name: '新区域',
             fields: []
         }
         newArr.fieldset.push(add)
@@ -444,17 +462,7 @@ export default class setFont extends Component {
                                 handleEditeCoce={this.handleEditeCoce}
                                 handleAddCode={this.handleAddCode} />
                             <div className="addModule">
-                                <BtnAddRow text="添加区域" onClick={this.handleAddModule} />
-                            </div>
-                            <div className="dynamic-demo">
-                                <div className="base-detail customer">
-                                    <span className="active"><Input
-                                                                 placeholder=""
-                                                                 value="材料提交"
-                                                                 readOnly
-                                                                 className="moduleStr"
-                                                                 readOnly /></span>
-                                </div>
+                                <BtnAddRow text="添加新区域" onClick={this.handleAddModule} />
                             </div>
                             <div className="submit">
                                 <Button type="normal" onClick={this.cancelPage} style={{

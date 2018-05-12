@@ -1,7 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import "./SetFont.scss"
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
 import SetFontView_ from './SetFontView_';
