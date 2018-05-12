@@ -43,7 +43,7 @@ export default class ProcessFormProduct extends BaseApp {
     let { formOldData=[] } = this.props
     this.state = {
       visible: this.props.visible,
-      dataSourceRight: [],
+      dataSourceRight: formOldData,
       saveDataRight:[],
       selectedRowKeys: [],
       selectedRowOne: [],
@@ -54,16 +54,16 @@ export default class ProcessFormProduct extends BaseApp {
 
 
   componentWillMount() {
-    let {params} = this.props
-    if(params.id){
-      this.props.actions.getProcessProdOldList(params.id)
-
-    }
     
   }
   componentDidMount() {
     this.fetchData();
     // this.fetchOldData();
+    let {params} = this.props
+    if(params.id){
+      this.props.actions.getProcessProdOldList(params.id)
+
+    }
   }
   
   fetchData = (condition) => {
@@ -79,7 +79,7 @@ export default class ProcessFormProduct extends BaseApp {
   componentWillReceiveProps(props) {
     this.setState({
       visible: this.props.visible,
-      dataSourceRight: this.props.formOldData,
+      dataSourceRight: this.props.formOldData|| [],
 
     })
   }
@@ -162,9 +162,10 @@ export default class ProcessFormProduct extends BaseApp {
    * 渲染
    */
   render() {
-    const { dataSourceRight, visible, productType } = this.state;
+    let { dataSourceRight=[], visible, productType } = this.state;
     
     let { formData,params } = this.props;
+    let {list=[]} = formData
     return (
       <IceContainer className="pch-container">
         <FilterItem onSubmit={this.fetchData} typedata={productType} params={params} />
@@ -173,7 +174,7 @@ export default class ProcessFormProduct extends BaseApp {
             <div className="part-l">
               <p>查询结果</p>
               <Table
-                dataSource={formData.list}
+                dataSource={list}
                 // primaryKey="key"
                 style={{ width: '100%' }}
                 isTree
