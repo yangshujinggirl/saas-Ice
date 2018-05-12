@@ -43,7 +43,7 @@ export default class ProcessFormProduct extends BaseApp {
     let { formOldData=[] } = this.props
     this.state = {
       visible: this.props.visible,
-      dataSourceRight: formOldData,
+      dataSourceRight: [],
       saveDataRight:[],
       selectedRowKeys: [],
       selectedRowOne: [],

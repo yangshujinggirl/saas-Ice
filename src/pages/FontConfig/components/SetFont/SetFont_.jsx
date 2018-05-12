@@ -267,33 +267,60 @@ export default class setFont extends Component {
         console.log('saveFields', fields);
 
         if (fields.id) {
-            FontConfigReq.submitModifyCode(fields, id, fields.id).then((data) => {
-                if (data.code == 200) {
-                    resData.fieldset[index].fields.splice(inj, 1, fields);
-                    this.setState({
-                        resData,
-                        dialogOne: false,
-                        dialogTwo: false
-                    })
-                }
-            })
+            if(id){
+                FontConfigReq.submitModifyCode(fields, id, fields.id).then((data) => {
+                    if (data.code == 200) {
+                        // resData.fieldset[index].fields.splice(inj, 1, fields);
+                        // this.setState({
+                        //     resData,
+                        //     dialogOne: false,
+                        //     dialogTwo: false
+                        // })
+                        this.removeField(resData, index, inj, fields);
+                    }
+                })
+            }else{
+                this.removeField(resData, index, inj, fields);
+            }
         } else {
+            if(id){
+                FontConfigReq.submitCustomeCode(fields, id).then((data) => {
+                    if (data.code == 200) {
+                        fields.id = data.data.id
+                        // resData.fieldset[fields.fieldsetOrder].fields.push(fields);
+                        // this.setState({
+                        //     resData,
+                        //     dialogOne: false,
+                        //     dialogTwo: false
+                        // })
 
-            FontConfigReq.submitCustomeCode(fields, id).then((data) => {
-                if (data.code == 200) {
-                    let allData = this.state.resData
-                    fields.id = data.data.id
-                    resData.fieldset[fields.fieldsetOrder].fields.push(fields);
-                    this.setState({
-                        resData,
-                        dialogOne: false,
-                        dialogTwo: false
-                    })
-                } else {
-                    console.log("添加字段", data.msg);
-                }
-            })
+                        this.addField(resData, fields.fieldsetOrder, fields);
+                    } else {
+                        console.log("添加字段", data.msg);
+                    }
+                })
+            }else{
+                this.addField(resData, fields.fieldsetOrder, fields);
+            }
         }
+    }
+
+    removeField(resData, i, j, fields){
+        resData.fieldset[i].fields.splice(j, 1, fields);
+        this.setState({
+            resData,
+            dialogOne: false,
+            dialogTwo: false
+        })
+    }
+
+    addField(resData, i, fields){
+        resData.fieldset[i].fields.push(fields);
+        this.setState({
+            resData,
+            dialogOne: false,
+            dialogTwo: false
+        })
     }
 
     /**

@@ -70,6 +70,7 @@ export default class ProcessFormItemList extends Component {
                              key={index}
                              index={index}
                              item={item}
+                             taskItems={taskItems}
                              selectData={this.getSelectList(item.taskOrder)}
                              setModule={setModule}
                              changeView={changeView} />

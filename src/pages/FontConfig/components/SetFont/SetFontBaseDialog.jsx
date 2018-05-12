@@ -56,21 +56,19 @@ export default class SetFontBaseDialog extends Component {
         // 弹框的底部按钮
         this.footerDom = (
             <div key='1'>
-                <Button type="primary" style={{
-                                                  marginLeft: '10px'
-                                              }} onClick={this.handleSubmitCode.bind(this)}>
+                <Button type="secondary" style={{
+                                                  marginRight: '10px'
+                                              }} onClick={this.handleSubmitCode}>
                     提交
                 </Button>
-                <Button type="secondary" style={{
-                                                    marginLeft: '10px'
-                                                }} onClick={this.handleClose.bind(this)}>
+                <Button type="normal" onClick={this.handleClose.bind(this)}>
                     取消
                 </Button>
             </div>
         );
     }
 
-    handleSubmitCode(){}
+    // handleSubmitCode(){}
 
     /**
      * 关闭弹框

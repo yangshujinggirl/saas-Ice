@@ -3,7 +3,9 @@ import { hashHistory } from 'react-router';
 import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
 import {
-    FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
+    FormBinderWrapper as IceFormBinderWrapper, 
+    FormBinder as IceFormBinder,
+    FormError as IceFormError
 } from '@icedesign/form-binder';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import { PchMaterialSelect } from 'components';
@@ -40,11 +42,33 @@ export default class ProcessFormItem extends Component {
         );
     }
 
+    /**
+     * 校验模块别名，名称必填且不能重复
+     * @param  {[type]}   rule     [description]
+     * @param  {[type]}   value    [description]
+     * @param  {Function} callback [description]
+     * @return {[type]}            [description]
+     */
+    validatorTaskAlias = (rule, value, callback) => {
+        if (rule.required && !value) {
+            callback('模块名称不能为空');
+            return;
+        }
+
+        let { taskItems = [], item } = this.props;
+        taskItems.map((task) => {
+            if(task.taskAlias == value && task.taskOrder != item.taskOrder){
+                callback('模块别名不能重复');
+            }
+        })
+        callback();
+    }
+
     render() {
         const { index, item, selectData, setModule, changeView } = this.props;
 
         return (
-            <Row align="top" key={index} className={`container-right-tabRow ${index % 2 === 0 ? '' : 'even'}`}>
+            <Row align="top" key={index} className="container-right-tabRow">
                 <Col xxs="6" s="2" l="2" className="pch-icon-setting">
                     {index != 0 && <i onClick={() => setModule(item, 'minus', index)} className="icon"></i>}
                 </Col>
@@ -52,9 +76,10 @@ export default class ProcessFormItem extends Component {
                     <div className="pch-realname">
                         {item.taskTypeName}
                     </div>
-                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required max={10} message="模块名称">
-                        <Input onChange={this.moduleChange} size="large" />
+                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required max={10} validator={this.validatorTaskAlias} >
+                        <Input size="large" />
                     </IceFormBinder>
+                    <div><IceFormError name={`taskItems[${index}].taskAlias`} /></div>
                 </Col>
                 <Col xxs="6" s="2" l="6">
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
@@ -71,8 +96,8 @@ export default class ProcessFormItem extends Component {
                         );
                     })}
                 </Col>
-                <Col xxs="6" s="2" l="3">
-                    {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
+                <Col xxs="6" s="2" l="3" className="pch-task-page">
+                    {item.haveConfigPage ? <a className={'pch-target' + (item.pageId ? '' : ' disabled')} onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
                     {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE, item)}>编辑</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="3">
