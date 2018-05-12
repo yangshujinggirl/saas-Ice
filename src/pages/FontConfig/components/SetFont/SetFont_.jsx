@@ -56,29 +56,6 @@ export default class setFont extends Component {
 
 
     componentDidMount() {
-        let id = this.props.id
-        // let pageName = this.props.router.location.query.pageName
-
-        // FontConfigReq.getCode(id).then((data) => {
-        //     if (data.code == 200) {
-        //         let res = data.data
-        //         this.setState({
-        //             resData: res,
-        //             pageValue: pageName || res && res.name
-        //         })
-        //         for (const key in this.state.resData.fieldset) {
-        //             if (this.state.resData.fieldset[key].name == '基本信息') {
-        //                 let allDate = this.state.resData
-        //                 let first = allDate.fieldset.splice(key, 1)
-        //                 allDate.fieldset.unshift(...first)
-        //                 this.setState({
-        //                     resData: allDate
-        //                 })
-        //             }
-        //         }
-        //     }
-
-        // })
         // 固定左侧菜单
         window.onscroll = function() {
             let scrollFix = document.querySelector('.scrollFix');
@@ -98,16 +75,6 @@ export default class setFont extends Component {
             console.log(nextProps.resData)
             this.setState({resData: nextProps.resData})
         }
-    }
-
-    toggleCompont = () => {
-        console.log(324)
-        this.props.router.push('/font/view')
-    }
-    handleSort = (sortedArray) => {
-        this.setState({
-            arraList: sortedArray
-        });
     }
 
     /**
@@ -139,44 +106,10 @@ export default class setFont extends Component {
         let id = this.props.id
         this.props.router.push(`font/add?id=${id}`)
     }
-    // 下一页
-    downPage = () => {
-        let id = this.props.id;
-        let resData = this.state.resData;
-        // 空区块删除
-        let tts = resData.fieldset.every((item) => {
-            if (!item.fields.length) {
-                Feedback.toast.show({
-                    type: 'error',
-                    content: `${item.name}里面没有定义字段，请删除！`
-                })
-                return false
-            } else {
-                return true
-            }
-        })
-        if (!tts) {
-            return
-        }
-
-        let pageName = {
-            name: this.state.pageValue,
-        }
-        if (!pageName.name.length) {
-            Dialog.alert({
-                title: '提示',
-                content: '页面名称不能为空'
-            })
-            return
-        }
-
-        FontConfigReq.changPageName(pageName, id).then((data) => {
-            if (data.code == 200) {
-                this.props.router.push(`font/view?id=${id}`)
-            }
-        })
-    }
-    //取消
+    /**
+     * 取消，如果是组件中使用依据传入的回调否则跳转到默认页面配置页
+     * @return {[type]} [description]
+     */
     cancelPage = () => {
         if(this.props.changeView){
             this.props.changeView();
@@ -312,13 +245,16 @@ export default class setFont extends Component {
                         //     dialogTwo: false
                         // })
 
-                        this.addField(resData, fields.fieldsetOrder, fields);
+                        this.addField(resData, index, fields);
                     } else {
                         console.log("添加字段", data.msg);
                     }
                 })
+            }else if(fields.tempId){
+                this.removeField(resData, index, inj, fields);
             }else{
-                this.addField(resData, fields.fieldsetOrder, fields);
+                fields.tempId = 1;
+                this.addField(resData, index, fields);
             }
         }
     }
@@ -352,17 +288,19 @@ export default class setFont extends Component {
      * @return {[type]}       [description]
      */
     handleEditeCoce = (item, index, inj) => {
-        // let reqData = this.state.resData;
-        // reqData.fieldset[index].fields[inj].label
-        this.state.editeCodeIndex.index = index;
-        this.state.editeCodeIndex.inj = inj;
+        let editeCodeIndex = {
+            index,
+            inj
+        }
         if (item.isCustom) {
             this.setState({
+                editeCodeIndex,
                 fields: item,
                 dialogOne: true
             })
         } else {
             this.setState({
+                editeCodeIndex,
                 fields: item,
                 dialogTwo: true,
             })
@@ -429,6 +367,44 @@ export default class setFont extends Component {
         });
     }
 
+    /**
+     * 获取页面剩余的未配置字段，从所有字段中过滤当前页面中的字段
+     * @return {[type]} [description]
+     */
+    getOtherFields(){
+        let {allPageFields = {}, resData = {}} = this.props;
+
+        if(!allPageFields.fieldset || !resData.fieldset){
+            return [];
+        }
+
+        return allPageFields.fieldset.filter((fieldset, i) => {
+            let re = fieldset.fields.filter((field, j) => {
+                return this._existsInFields(resData.fieldset, field)
+            });
+            return re.length > 0;
+        })
+    }
+
+    _existsInFields(fields, field){
+        let flag = false;
+
+        fields.map((item, i) => {
+            item.fields.map(sitem => {
+                if(sitem.id = field.id){
+                    flag = true;
+                    return;
+                }
+            })
+
+            if(flag){
+                return;
+            }
+        })
+
+        return flag;
+    }
+
     render() {
         const validEmpty = (e) => {
             if (!e.target.value.length) {
@@ -483,6 +459,7 @@ export default class setFont extends Component {
                     visible={this.state.dialogOne}
                     onClose={this.onClose}
                     data={this.state.fields}
+                    allPageFields={this.getOtherFields()}
                     changeFormData={this.changeFormData.bind(this)}
                     submitFormData={this.saveFields.bind(this)} />
                 <SetFontOptionalDialog

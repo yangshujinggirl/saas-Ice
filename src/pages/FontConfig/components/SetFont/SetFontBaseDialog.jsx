@@ -100,7 +100,7 @@ export default class SetFontBaseDialog extends Component {
         data.isRequired = 0;
         data.isUnique = 0;
         data.isReadonly = 0;
-        data.line = 1;
+        data.line = 0;
 
         if (value.join().indexOf('required') != -1) {
             data.isRequired = 1
@@ -114,9 +114,9 @@ export default class SetFontBaseDialog extends Component {
         if (value.join().indexOf('nowrap') != -1) {
             data.line = 1
         }
-        if (data.type == 'TEXT') {
-            data.line = 1
-        }
+        // if (data.type == 'TEXT') {
+        //     data.line = 1
+        // }
 
         this.props.changeFormData(data)
     }
@@ -133,13 +133,13 @@ export default class SetFontBaseDialog extends Component {
             res.push('required');
         }
         if (data.isUnique) {
-            res.push('union');
+            res.push('unique');
         }
         if (data.isReadonly) {
             res.push('readonly');
         }
         if (data.line == '1') {
-            res.push('line');
+            res.push('nowrap');
         }
 
         return res;

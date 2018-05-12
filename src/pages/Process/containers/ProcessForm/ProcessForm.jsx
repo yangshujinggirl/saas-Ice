@@ -220,6 +220,7 @@ export default class ProcessForm extends Component {
                         step: this.getStepFromData(formData.taskItems, item.taskOrder),
                         excludeScreens: this.getExcludeScreens(formData.taskItems, item.taskOrder)
                     });
+                    actions.getAllPageFields();
                     this.setState({
                         pageId: item.pageId,
                         taskOrder: item.taskOrder
@@ -307,7 +308,7 @@ export default class ProcessForm extends Component {
      */
     render() {
         const locationInfo = this.props.location.state;
-        let {customMenuList, formData = {}, params, tasksFields = {}, pageFields} = this.props;
+        let {customMenuList, formData = {}, params, tasksFields = {}, pageFields, allPageFields} = this.props;
 
         if (!params.id) {
             // 新增时使用传递的数据设置
@@ -354,7 +355,7 @@ export default class ProcessForm extends Component {
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
                 <ProcessAuthEdit formData={formData} privilegeItems={this.state.privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} />
-                <SetFont_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
+                <SetFont_ id={this.state.pageId} resData={pageFields} allPageFields={allPageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
                 <SetFontView_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.PREVIEWPAGE} changeView={this.changeView.bind(this)}  />
             </div>
             );

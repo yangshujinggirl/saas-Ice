@@ -234,6 +234,20 @@ export const getPageFields = (options) => {
   }
 }
 
+//获取页面所有的配置字段
+export const getAllPageFields = (options) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+
+    FontConfigReq.getDetail(options).then((res) => {
+      if (res.code != 200) return;
+      dispatch(fetchSuccess({ allPageFields: {fieldset: res.data.list} }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 //获取页面配置详情
 export const getPageDetail = (id) => {
   return (dispatch) => {

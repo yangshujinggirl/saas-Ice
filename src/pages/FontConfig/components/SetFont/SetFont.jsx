@@ -38,7 +38,6 @@ export default class SetFont1 extends Component {
                     }
                 }
             }
-
         })
     }
 

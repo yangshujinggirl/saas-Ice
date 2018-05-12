@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Input, Select, Dialog, Checkbox, Radio } from '@icedesign/base';
+import { Button, Input, Select, Dialog, Feedback, Checkbox, Radio } from '@icedesign/base';
+import cx from 'classnames';
 import FontConfigReq from './../../../reqs/FontConfigReq.js';
 import SetFontBaseDialog from '../SetFontBaseDialog';
 const {Group: CheckboxGroup} = Checkbox;
@@ -26,18 +27,18 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     // 添加自定义字段
     handleSubmitCode = () => {
         let reqData = this.props.data;
-        let resData = this.state.resData;
+        // let resData = this.props.resData;
 
         if (!reqData.label) {
-            Dialog.alert({
-                title: '提示',
+            Feedback.toast.show({
+                type: 'error',
                 content: '字段名称不能为空'
             })
             return
         }
         if (!reqData.type) {
-            Dialog.alert({
-                title: '提示',
+            Feedback.toast.show({
+                type: 'error',
                 content: '字段类型不能为空'
             })
             return
@@ -118,6 +119,34 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
         return data.type == "DATE";
     }
 
+    selected = (index,all) => {
+        if (!all) {
+            let data = this.state.resDate;
+            for (const key in data[index].fields) {
+                data[index].fields[key].checked = !data[index].fields[key].checked;
+            }
+            this.setState({
+                resDate: data
+            })
+        } else {
+            let data = this.state.resDate;
+            for (const key in data[index].fields) {
+                data[index].fields[key].checked = true;
+            }
+            this.setState({
+                resDate: data
+            })
+        }   
+    }
+
+    addClass = (index, subindex) => {
+        let data = this.state.resDate;
+        data[index].fields[subindex].checked = !data[index].fields[subindex].checked;
+        this.setState({
+            resDate:data
+        })
+    }
+
     render() {
         const codeDate = (value) => {
             let data = this.state.fields;
@@ -156,7 +185,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             })
         }
 
-        let {data, visible, onClose} = this.props;
+        let {data, visible, onClose, allPageFields = []} = this.props;
 
         if(!data.options || data.options.length == 0){
             data.options = [{
@@ -164,6 +193,8 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                 value: ''
             }]
         }
+
+        console.log(allPageFields)
 
         return (
             <Dialog
@@ -176,6 +207,25 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                 footer={this.footerDom}
                 footerAlign='center'>
                 <div className="pch-form">
+                    {allPageFields.map((item, index) => {
+                        return (
+                            <div className='subDif' key={index}>
+                                <div>{item.name}</div>
+                                <div className="select">
+                                    <span onClick={this.selected.bind(this,index,true)}> 全选</span>
+                                    <span onClick={this.selected.bind(this,index,false)}>反选</span>
+                                </div>
+                                {item.fields.map((item, subindex) => {
+                                    return (
+                                        <div className={cx('listCode',{'selectCode': item.checked})} onClick={this.addClass.bind(this,index,subindex)} key={subindex}>
+                                            {item.label}
+                                            <span className="icon">&#xe62c;</span>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    })}
                     <div className='customerStr'>
                         <div className='first'>
                             <label htmlFor="">

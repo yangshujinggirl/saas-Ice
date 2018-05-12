@@ -81,11 +81,11 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
                             <label htmlFor="">
                                 <span>字段名称</span>
                             </label>
-                            <Input placeholder="请输入" value={data.label} onChange={this.changeFormData.bind(this, 'label')} />
+                            <Input size="large" placeholder="请输入" value={data.label} onChange={this.changeFormData.bind(this, 'label')} />
                         </div>
                     </div>
                     <div className='beautify'>
-                        <CheckboxGroup value={this.getValueForCheckbox()} dataSource={this.PROP_LIST} onChange={this.codeRequire} />
+                        <CheckboxGroup size="large" value={this.getValueForCheckbox()} dataSource={this.PROP_LIST} onChange={this.codeRequire} />
                     </div>
                 </div>
             </Dialog>

@@ -39,7 +39,7 @@ class BaseReq {
       if(!options.params){
         options.params = {};
       }
-      options.params.t = new Date().getTime().toString(32);
+      // options.params.t = new Date().getTime().toString(32);
     }
 
     return axios({
