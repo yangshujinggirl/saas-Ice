@@ -1,3 +1,36 @@
+.material-files-upload{
+	background-color: #fbfafa;
+	padding: 14px 0 22px;
+	margin-top: 14px;
+
+	.material-files-upload-upload{
+		display: block;
+		width: 397px;
+		height: 134px;
+		margin: 0 auto;
+		background-color: #fff;
+		border: 1px solid #dadada;
+		border-radius: 10px;
+	}
+
+	.material-files-upload-button-icon{
+		width: 40px;
+		height: 30px;
+		margin: 38px auto 0;
+	}
+	.material-files-upload-button-text{
+
+		margin-top: 12px;
+		color: #99A9BF;
+		line-height: 16px;
+		text-align: center;
+
+		em{
+			font-style: normal;
+			color: #fc9e25;
+		}
+	}
+}
 .material-files{
 	min-height: 150px;
 	margin: 20px 0;

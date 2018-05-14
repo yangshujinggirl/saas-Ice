@@ -10,6 +10,7 @@ import { hashHistory } from 'react-router';
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
 import { Feedback } from "@icedesign/base";
+import {Title} from 'components';
 
 const Toast = Feedback.toast;
 const cardTarget = {
@@ -232,18 +233,25 @@ class MaterialSubmit extends Component {
     let { fileList, tableList, dataSource } = this.state;
     return (
       <div>
-        <IceContainer title="材料提交" className='subtitle'>
-          <ImageUpload
-            className='upload-picture'
-            listType="picture-card"
-            action="/saas/file/upload"
-            data={{'path':'path/to/file'}}
-            formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
-            accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-            fileList={fileList}
-            showUploadList={false}
-            onChange={this.handleFileChange.bind(this)}
-          />
+        <IceContainer className='pch-container subtitle'>
+          <Title title="材料提交"/>
+          <div className="material-files-upload">
+            <Upload
+              className='material-files-upload-upload'
+              action="/saas/file/upload"
+              data={{'path':'path/to/file'}}
+              formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
+              accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+              fileList={fileList}
+              showUploadList={false}
+              onChange={this.handleFileChange.bind(this)}
+            >
+            <div className="material-files-upload-button">
+              <div className="material-files-upload-button-icon"></div>
+              <p className="material-files-upload-button-text">将文件拖到此处，或<em>点击上传</em></p>
+            </div>
+            </Upload>
+          </div>
           <div
             className="material-files"
             >
