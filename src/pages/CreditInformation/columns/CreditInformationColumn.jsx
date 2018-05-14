@@ -55,7 +55,7 @@ class CreditInformationColumn extends BaseColumn {
                   <div>
                     {
                       record.status  && record.status == 'claim'  ?
-                        (<button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                        (<button className="editbtn searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
                           签收
                         </button>)
                         :(<span></span> )

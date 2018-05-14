@@ -9,7 +9,7 @@ class CreditInformationReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/filter-table-list.json',
+            retrieve: this._config.WF_HOST + '/tasks',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }
@@ -29,11 +29,11 @@ class CreditInformationReq extends CurdReq{
 		return super.fetchData(options);
 	}
   //获取列表数据
-  getListData() {
+  getListData(data) {
     let options = {
-      // url: this._loanHost + `/tasks`,
-      url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/tasks#!method=get',
+      url: this._config.WF_HOST + `/tasks`,
       method: 'Get',
+      data:data
     }
     return super.fetchData(options);
   }
@@ -81,6 +81,15 @@ class CreditInformationReq extends CurdReq{
       method: 'POST',
       contentType: 'application/x-www-form-urlencoded',
       params: data
+    }
+    return super.fetchData(options);
+  }
+  //点击点击签收
+  signIn(data) {
+    let options = {
+      url: this._config.WF_HOST + `/tasks/${data.taskId}/assignee`,
+      // url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
+      method: 'PUT',
     }
     return super.fetchData(options);
   }

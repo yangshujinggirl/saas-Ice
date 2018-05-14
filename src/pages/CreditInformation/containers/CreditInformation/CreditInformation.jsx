@@ -4,7 +4,7 @@ import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from '../../components/Filter';
-
+import Req from '../../reqs/CreditInformationReq';
 import  './CreditInformation.scss'
 
 export default class CreditInformation extends BaseApp {
@@ -34,9 +34,16 @@ export default class CreditInformation extends BaseApp {
     }
     //点击签收
     signIN = (taskId)=>{
-      this.props.actions.signIn({
+      Req.signIn({
         taskId: taskId
+      }).then((res)=>{
+        if(res && res.code==200){
+          this.fetchData();
+        }
+      }).catch((error)=>{
+
       });
+
     }
 
     /**

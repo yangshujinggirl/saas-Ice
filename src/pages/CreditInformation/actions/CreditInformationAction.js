@@ -53,7 +53,7 @@ export const search = (condition) => {
 
     dispatch(fetchStart())
 
-    Req.getListData(condition).then((res) => {
+    Req.search(condition).then((res) => {
       if(!res || res.code != 200) return;
       dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
@@ -112,6 +112,19 @@ export const getTrackDetail = (data) => {
 
     Req.getTrackDetail(data).then((res) => {
       dispatch(fetchSuccess({ trackDetail: res.data, view: 'form' }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+// 签收
+export const signIn = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.signIn(condition).then((res) => {
+      dispatch(fetchSuccess({ signIn: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
