@@ -52,12 +52,6 @@ export default class FormRenderFormRender extends Component {
       dataSource:[]
     };
   }
-  //请求数据
-  fetchData = (flag) => {
-    let {actions} = this.props;
-    actions.getDetail(this.props.params.id);
-    console.log(this.props.params.id)
-  };
   componentWillMount(){
     // this.fetchData()
     this.SelectList();

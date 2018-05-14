@@ -29,7 +29,7 @@ export default class MaterialSubmit extends Component {
   //获取上传资料列表
   getLoanUpload(id) {
     Req.getLoadMaterialDetails({
-      loanId: this.props.params.loanId
+      loanId: this.props.params.id
     })
       .then((res) => {
         if(!res || res.code != 200){
@@ -43,6 +43,7 @@ export default class MaterialSubmit extends Component {
         if(list && list.length > 0 && list[0].collectionDetails){
           dataSource = list[0].collectionDetails;
         }
+        console.log(dataSource)
 
         list.map((el) => {
           var _josn = {}
@@ -66,6 +67,7 @@ export default class MaterialSubmit extends Component {
           dataSource:dataSource,
           originData: list
         })
+        console.log(this.state.dataSource)
       },(error) => {
         console.log(error)
       })
@@ -82,6 +84,8 @@ export default class MaterialSubmit extends Component {
   }
   render() {
     let { fileList, tableList, dataSource } = this.state;
+    console.log(tableList)
+    console.log(dataSource)
     return (
       <div className='info'  id='材料提交' style={styles.center}>
         <Table dataSource={dataSource} className="basic-table" style={styles.width}>

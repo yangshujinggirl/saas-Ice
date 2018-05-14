@@ -108,11 +108,11 @@ export default class ReviewApproveDetail extends Component {
     console.log(this.props)
 
     actions.getTrackDetail({
-      proInstId : this.props.params.proInstId,
+      businessId : this.props.params.id,
       isApproveInfo : true
     });
 
-    actions.getDetail(this.props.params.loanId);
+    actions.getDetail(this.props.params.id);
 
   };
   //判断Json是否为kong
@@ -187,24 +187,26 @@ export default class ReviewApproveDetail extends Component {
   //渲染
   render() {
     const details = this.props.detail || {};
-    const reviewList = this.props.trackDetail ? this.props.trackDetail.approveInfo  : {};
+    const chooseMap = this.props.trackDetail ? this.props.trackDetail.chooseMap  : {};
     const init = this.field.init;
-    console.log(reviewList)
     return (
       <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle' style={styles.bg}>
             <Row>
                 <Col span="19" className='review-form'>
                   <div className='review-page'>
                     <div className='title'>
-                      <ul>
+                      <ul style={styles.titleWidth}>
                         {this.renderTitle(details.list)}
                       </ul>
                     </div>
                   </div>
 
                   <div className="rcontent-edito modify-form">
+                    <div className='review-detail' id='流程轨迹'>
+                      <span  className='name'>流程轨迹</span>
+                      <EntryTrack {...this.props} ></EntryTrack>
+                    </div>
 
-                    <EntryTrack {...this.props} ></EntryTrack>
 
                     <IceFormBinderWrapper
                       value={this.state.value}
@@ -229,7 +231,7 @@ export default class ReviewApproveDetail extends Component {
                   </div>
                 </Col>
                 <Col span="5" className='audit-information'>
-                  <ApprovalBox {...this.props}  reviewList={ reviewList.choose} submit={this.submit.bind(this)} ></ApprovalBox>
+                  <ApprovalBox {...this.props}  reviewList={ chooseMap} submit={this.submit.bind(this)} ></ApprovalBox>
                 </Col>
             </Row>
 
@@ -248,5 +250,9 @@ const styles = {
   },
   width:{
     width:'100%'
+  },
+  titleWidth:{
+    maxHeight : '135px',
+    width :'120px'
   }
 };

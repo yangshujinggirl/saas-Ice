@@ -11,7 +11,7 @@ class ReviewApproveReq extends CurdReq{
             update: this._host + '/filter-table-list.json',
             retrieve: this._host + '/filter-table-list.json',
             delete: this._host + '/detail.json',
-            detail: this._host + '/loans/:id/screen'
+            detail: this._config.LOAN_HOST + '/loans/:id/screen'
         }
 	}
 
@@ -40,7 +40,7 @@ class ReviewApproveReq extends CurdReq{
   //点击点击签收
   signIn(data) {
     let options = {
-      url: this._loanHost + `/assignee/${data.taskId}`,
+      url: this._config.WF_HOST + `/tasks/${data.taskId}/assignee`,
       // url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
       method: 'PUT',
     }
@@ -49,17 +49,24 @@ class ReviewApproveReq extends CurdReq{
 
   //轨迹详情
   getTrackDetail(data) {
-    let options = {
-      url: this._config.WF_HOST+ `/process/${data.proInstId}/track`,
-      // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/process/15698/track',
-      method: 'Get',
+    console.log(data)
+    if(!data.isApproveInfo){
+      var options = {
+        url: this._config.WF_HOST + `/tasks/track?businessId=${data.businessId}&isApproveInfo=${data.isApproveInfo}`,
+        method: 'Get',
+      }
+    }else {
+      var options = {
+        url: this._config.WF_HOST + `/tasks/track?businessId=${data.businessId}`,
+        method: 'Get',
+      }
     }
     return super.fetchData(options);
   }
   //获取进件材料详情
   getLoadMaterialDetails(data) {
     let options = {
-      url: this._host + `/loans/${data.loanId}/collect`,
+      url: this._config.LOAN_HOST + `/loans/${data.loanId}/collect`,
       method: 'Get',
       contentType: 'application/json'
     }
@@ -68,7 +75,7 @@ class ReviewApproveReq extends CurdReq{
   //获取进件详情
   getDetail(id) {
     let options = {
-      url: this._host + `/loans/${id}/screen`,
+      url: this._config.LOAN_HOST + `/loans/${id}/screen`,
       method: 'Get',
       contentType: 'application/json'
     }

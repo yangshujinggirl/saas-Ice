@@ -29,12 +29,19 @@ export default class ReviewApprove extends BaseApp {
         });
     }
 
-    //点击签收
-    signIN = (taskId)=>{
-      this.props.actions.signIn({
-        taskId: taskId
-      });
-    }
+  //点击签收
+  signIN = (taskId)=>{
+    Req.signIn({
+      taskId: taskId
+    }).then((res)=>{
+      if(res && res.code==200){
+        this.fetchData();
+      }
+    }).catch((error)=>{
+
+    });
+
+  }
 
 
     /**
