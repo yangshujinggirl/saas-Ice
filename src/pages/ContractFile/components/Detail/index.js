@@ -7,11 +7,16 @@ import Req from '../../reqs/ContractFileReq';
 import { Title, PchTable, PchPagination } from 'components';
 import './index.scss';
 
-const testData= {
-      "contractContent": "ZGRk",
-      "contractExtendSource": ['第一条','第二条'],
-      "contractNo": "001"
-      }
+const testData= [
+        {
+          "content": "wererew",
+          "templateId": 2973
+        },
+        {
+          "content": "wererew",
+          "templateId": 2979
+        },
+      ]
 
 class Detail extends BaseApp {
   constructor(props) {
@@ -44,7 +49,7 @@ class Detail extends BaseApp {
   }
   render() {
     // const { contractContent } = this.props.formData;
-    const contractContent = testData.contractExtendSource[0];
+    const contractContent = testData[0];
     const { lastDisabled ,nextDisabled } = this.state;
 
     return(

@@ -91,6 +91,9 @@ class ContractList extends BaseApp {
         return
       }
       Toast.success("更改成功");
+      this.setState({
+        elecVisbile:false
+      })
     })
   }
   //提提交作废api
