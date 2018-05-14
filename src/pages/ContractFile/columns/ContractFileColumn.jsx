@@ -12,9 +12,10 @@ import { Button } from "@icedesign/base";
  const statusTrans = {
    1:'待确认',
    2:'已取消',
-   3:'已退回',
    4:'已作废',
-   5:'已签字'
+   5:'已签字',
+   6:'签署中',
+   7:'未签字',
  }
 class ContractFileColumn extends BaseColumn {
     constructor() {

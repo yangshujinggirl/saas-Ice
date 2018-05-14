@@ -42,11 +42,11 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CANCEL: {
-            this.cancelDialogEvent(record.id);
+            this.cancelDialog(record.id);
             break;
         }
         case this.OPERATE_TYPE.SIGN: {
-            this.signDialogEvent(record.id)
+            this.signDialog(record.id)
             break;
         }
         case this.OPERATE_TYPE.CHANGE: {
@@ -56,7 +56,7 @@ class ContractList extends BaseApp {
     }
   }
   //作废
-  cancelDialogEvent(id) {
+  cancelDialog(id) {
     this.setState({
       visible:true,
       signVisible:false,
@@ -64,7 +64,7 @@ class ContractList extends BaseApp {
     })
   }
   //签字
-  signDialogEvent(id) {
+  signDialog(id) {
     this.setState({
       signVisible:true,
       visible:false,
@@ -91,12 +91,13 @@ class ContractList extends BaseApp {
         return
       }
       Toast.success("更改成功");
+      this.props.actions.search()
       this.setState({
         elecVisbile:false
       })
     })
   }
-  //提提交作废api
+  //提交作废api
   submitCancel(values) {
     let params = Object.assign(values, { action:'INVALID',contractId:this.state.contractId });
     Req.handleContractApi(params)

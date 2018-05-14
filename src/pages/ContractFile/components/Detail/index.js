@@ -101,7 +101,7 @@ class Detail extends BaseApp {
     return(
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
-          <div id="section-to-print">
+          <div id="section-to-print" className="main-content">
             <div dangerouslySetInnerHTML={{
               __html:Module()
             }} />
