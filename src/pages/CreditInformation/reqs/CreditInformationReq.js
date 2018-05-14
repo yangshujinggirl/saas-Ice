@@ -83,11 +83,12 @@ class CreditInformationReq extends CurdReq{
   }
   //提交征信表单
   saveForm(data){
+	  console.log(data)
+	  console.log(data.flag)
     let options = {
-      url: this._config.WF_HOST + '/member/loginMobile',
+      url: this._config.WF_HOST + `/pbc/credit/12313/${data.flag}`,
       method: 'POST',
-      contentType: 'application/x-www-form-urlencoded',
-      params: data
+      data: data
     }
     return super.fetchData(options);
   }
