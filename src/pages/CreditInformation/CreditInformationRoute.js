@@ -11,7 +11,7 @@ export default {
     path: 'creditentry/:id',
     component: CreditInformation.CreditInformationForm
   },{
-    path: 'detail/:id',
+    path: 'detail/:id/:taskId/:proInstId',
     component: CreditInformation.CreditInformationDetail,
     name: '进件审查详情'
   }],

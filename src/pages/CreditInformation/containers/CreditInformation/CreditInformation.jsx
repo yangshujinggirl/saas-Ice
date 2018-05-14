@@ -20,6 +20,7 @@ export default class CreditInformation extends BaseApp {
     }
 
     fetchData = (condition) => {
+        this._condition.type = 10;
         this._condition = Object.assign(this._condition, condition);
         console.log(this._condition)
         this.props.actions.search(this._condition);
@@ -55,7 +56,7 @@ export default class CreditInformation extends BaseApp {
         switch (type) {
             // 详情
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`creditinformation/detail/${data.loanId}`)
+                hashHistory.push(`creditinformation/detail/${data.loanId}/${data.taskId}/${data.proInstId}`)
                 break;
             }
             // 签收

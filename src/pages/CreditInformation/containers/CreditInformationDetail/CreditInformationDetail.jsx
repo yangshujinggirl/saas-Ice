@@ -15,7 +15,7 @@ import FormRender from  '../../components/FormRender'
 import MaterialSubmit from  '../../components/MaterialSubmit'
 import ApprovalBox from  '../../components/ApprovalBox'
 import classNames from 'classnames';
-import Req from '../../../ReviewApprove/reqs/ReviewApproveReq';
+import Req from '../../reqs/CreditInformationReq';
 import { Feedback } from '@icedesign/base/index';
 
 export default class CreditInformationDetail extends Component {
@@ -125,14 +125,14 @@ export default class CreditInformationDetail extends Component {
         for(var key in values){
           if(values[key] != undefined){
             if(values[key] != 'undefined'){
-              if(this.isCheckBox(key)){
-                console.log("多选")
-                console.log(values[key])
-                // alert("123")
-                if(typeof (values[key]) == 'object'){
-                  values[key] = values[key].join(',');
-                }
-              }
+              // if(this.isCheckBox(key)){
+              //   console.log("多选")
+              //   console.log(values[key])
+              //   // alert("123")
+              //   if(typeof (values[key]) == 'object'){
+              //     values[key] = values[key].join(',');
+              //   }
+              // }
               this.queryCache[key] = values[key];
             }
           }
@@ -141,16 +141,18 @@ export default class CreditInformationDetail extends Component {
         var dataJson = {
           "choose"     : data.choose,
           "approveMsg" : data.approveMsg,
-          "loanDetail" : this.queryCache,
+          // "loanDetail" : this.queryCache,
           "proInstId"  : this.props.params.proInstId,
           "taskId"     : this.props.params.taskId,
         }
+        console.log(dataJson)
         Req.submitReview(dataJson).then((res)=>{
           if(res && res.code == 200){
             Toast.show({
               type: "success",
               content: "提交成功～",
             });
+            hashHistory.push(`creditinformation`)
           }
         }).catch((error)=>{
           console.log(error)
@@ -175,24 +177,26 @@ export default class CreditInformationDetail extends Component {
      */
     render() {
     const details = this.props.details || {};
-    const reviewList = this.props.trackDetail ? this.props.trackDetail.approveInfo  : {};
+    const chooseMap = this.props.trackDetail ? this.props.trackDetail.chooseMap  : {};
+    console.log(chooseMap)
     const init = this.field.init;
         return (
-          <IceContainer title="进件审批查询-征信详情" className='subtitle' style={styles.bg}>
+          <IceContainer title="进件审批查询-征信详情" className='subtitle credit-informartion' style={styles.bg}>
             <Row>
               <Col span="19" className='review-form'>
                 <div className='review-page'>
                   <div className='title'>
-                    <ul>
+                    <ul style={styles.titleWidth}>
                       {this.renderTitle(details.list)}
                     </ul>
                   </div>
                 </div>
 
                 <div className="rcontent-edito modify-form">
-
-                  <EntryTrack {...this.props} ></EntryTrack>
-
+                  <div className='review-detail' id='流程轨迹'>
+                    <span  className='name'>流程轨迹</span>
+                    <EntryTrack {...this.props} ></EntryTrack>
+                  </div>
                   <IceFormBinderWrapper
                     value={this.state.value}
                     onChange={this.formChange}
@@ -216,7 +220,7 @@ export default class CreditInformationDetail extends Component {
                 </div>
               </Col>
               <Col span="5" className='audit-information'>
-                {/*<ApprovalBox {...this.props}  reviewList={ reviewList.choose} submit={this.submit.bind(this)} ></ApprovalBox>*/}
+                <ApprovalBox {...this.props}  reviewList={ chooseMap } submit={this.submit.bind(this)} ></ApprovalBox>
               </Col>
             </Row>
 
@@ -234,5 +238,9 @@ const styles = {
   },
   width:{
     width:'100%'
+  },
+  titleWidth:{
+    maxHeight : '135px',
+    width :'120px'
   }
 };

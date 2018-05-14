@@ -7,12 +7,14 @@ import { Form, Icon, Input, Button, Checkbox, Select, Switch, Balloon, Grid, Fie
 const {Row, Col} = Grid;
 const { DragUpload } = Upload;
 const FormItem = Form.Item;
+const Toast = Feedback.toast;
 
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
 import { Title } from 'components';
 import  './CreditInformationForm.scss'
 import { Feedback } from '@icedesign/base/index';
+import  Req from '../../reqs/CreditInformationReq'
 
 const formItemLayout = {
   labelCol: {
@@ -103,17 +105,32 @@ export default class CreditInformationForm extends Component {
         //
         // let AllValue = this.AllValue(value);
         // this.dataVerif(value);
-        this.props.actions.saveForm(value);
+        value['flag'] = 'submit';
+        console.log(value)
+
+        const dialog = Dialog.confirm({
+          content: "确认提交数据？",
+          onOk: () => {
+            return new Promise(resolve => {
+              Req.saveForm(value).then((res)=>{
+                if(res && res.code == 200){
+                  dialog.hide()
+                  Toast.show({
+                    type: "success",
+                    content: "提交成功～",
+                  });
+                  hashHistory.push(`creditinformation`)
+                }
+              }).catch((error)=>{
+                console.log(error)
+              });
+            });
+          }
+        });
+
+
       });
     };
-
-    //提交
-    handleSubmit = () => {
-        this.refs.form.validateAll((errors, values) => {
-            console.log('errors', errors, 'values', values);
-            return false;
-        });
-    }
 
     // 取消
     handleCancel() {}
