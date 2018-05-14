@@ -21,7 +21,7 @@ class ContractList extends BaseApp {
     }
   }
   componentWillMount() {
-    this.props.actions.search()
+    this.props.actions.search({lineType:1})
   }
   //查询
   fetchData =(condition)=> {

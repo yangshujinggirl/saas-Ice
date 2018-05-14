@@ -4,11 +4,13 @@ import { BaseColumn } from 'base';
 /**
  * 定义列表的表头
  */
+ const typeTrans = {
+   1:'电子',
+   2:'纸质'
+ }
  const statusTrans = {
    1:'待确认',
    2:'已取消',
-   3:'已退回',
-   4:'已作废',
    5:'已签字'
  }
 class ContractEditColumn extends BaseColumn {
@@ -77,12 +79,18 @@ class ContractEditColumn extends BaseColumn {
                         <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
                             编辑
                         </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
-                            取消
-                        </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
-                            改纸质
-                        </button>
+                        {
+                          record.status != 2 &&
+                          <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
+                              取消
+                          </button>
+                        }
+                        {
+                          record.type != 2 &&
+                          <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
+                              改纸质
+                          </button>
+                        }
                     </div>
                     );
             }
