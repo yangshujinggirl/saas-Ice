@@ -3,7 +3,7 @@ import IceContainer from '@icedesign/container';
 import { Dialog, Button, Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
-import { Title, PchTable, PchPagination } from 'components';
+import { Title, PchTable, PchPagination, PchDialog } from 'components';
 import FilterForm from './Filter';
 import DialogModule from './DialogModule';
 import SignDialogModule from './SignDialogModule';
@@ -16,7 +16,8 @@ class ContractList extends BaseApp {
     super(props);
     this.state = {
       visible:false,
-      dialogObj:{},
+      elecVisbile:false,
+      contractId:'',
       signVisible:false
     }
   }
@@ -59,9 +60,7 @@ class ContractList extends BaseApp {
     this.setState({
       visible:true,
       signVisible:false,
-      dialogObj:{
-        contractId:id
-      }
+      contractId:id
     })
   }
   //签字
@@ -69,26 +68,22 @@ class ContractList extends BaseApp {
     this.setState({
       signVisible:true,
       visible:false,
-      contract_id:id
+      contractId:id
     })
   }
   //改纸质
   changeDialog(record) {
-    Dialog.confirm({
-      title:'温馨提示',
-      content: "改为电子后，客户可在面签时采用电子签名？",
-      locale: {
-        ok: "确认",
-        cancel: "取消",
-      },
-      onOk:()=>{
-        this.toggleContract('electronic',record.id)
-      }
-    });
+    this.setState({
+      elecVisbile:true,
+      visible:false,
+      signVisible:false,
+      contractId:record.id
+    })
   }
   //改电子Api
-  toggleContract(to,contractId) {
-    Req.toggleContractApi(to,contractId)
+  submitChangelec() {
+    const { contractId } = this.state;
+    Req.toggleContractApi(contractId)
     .then((res) => {
       const { code, msg } = res;
       if( code != 200) {
@@ -96,10 +91,14 @@ class ContractList extends BaseApp {
         return
       }
       Toast.success("更改成功");
+      this.setState({
+        elecVisbile:false
+      })
     })
   }
   //提提交作废api
-  submitCancel(params) {
+  submitCancel(values) {
+    let params = Object.assign(values, { action:'INVALID',contractId:this.state.contractId });
     Req.handleContractApi(params)
     .then((res) => {
       const { code,msg } =res;
@@ -117,7 +116,8 @@ class ContractList extends BaseApp {
     })
   }
   //提交签字
-  submitSign(params) {
+  submitSign(files) {
+    let params = Object.assign({files}, {contractId:this.state.contractId });
     Req.signContractApi(params)
     .then((res) => {
       const { code, msg } =res;
@@ -134,7 +134,7 @@ class ContractList extends BaseApp {
   render() {
     const { columns } = this.props;
     const { list=[] } =this.props.pageData;
-    const { dialogObj, visible, signVisible, contract_id } =this.state;
+    const { visible, signVisible, elecVisbile, contractId } =this.state;
 
     return(
       <IceContainer className="pch-container">
@@ -143,13 +143,15 @@ class ContractList extends BaseApp {
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
-            dialogObj={dialogObj}
             visible={visible}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
-            contractId ={contract_id}
             visible={signVisible}
             submit={this.submitSign.bind(this)}/>
+          <PchDialog
+            title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
+            visible={elecVisbile}
+            onOk={this.submitChangelec.bind(this)}/>
       </IceContainer>
     )
   }

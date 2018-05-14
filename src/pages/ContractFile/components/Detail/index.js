@@ -7,11 +7,22 @@ import Req from '../../reqs/ContractFileReq';
 import { Title, PchTable, PchPagination } from 'components';
 import './index.scss';
 
+const testData= [
+        {
+          "content": "wererew",
+          "templateId": 2973
+        },
+        {
+          "content": "wererew",
+          "templateId": 2979
+        },
+      ]
+
 class Detail extends BaseApp {
   constructor(props) {
     super(props);
     this.state = {
-      lastDisabled:false,
+      lastDisabled:true,
       nextDisabled:false
     }
   }
@@ -21,6 +32,7 @@ class Detail extends BaseApp {
 
   //上一份
   lastContract() {
+
   }
 
   //下一份
@@ -36,8 +48,10 @@ class Detail extends BaseApp {
 
   }
   render() {
-    const { contractContent } = this.props.formData
+    // const { contractContent } = this.props.formData;
+    const contractContent = testData[0];
     const { lastDisabled ,nextDisabled } = this.state;
+
     return(
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />

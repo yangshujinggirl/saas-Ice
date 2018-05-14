@@ -49,11 +49,7 @@ class SignDialogModule extends Component {
       if(errors) {
         return
       };
-      let params = {
-        files:this.state.uploadList,
-        contractId:this.props.contractId
-      }
-      this.props.submit(params);
+      this.props.submit(this.state.uploadList);
     });
   }
   //上传成功回调
