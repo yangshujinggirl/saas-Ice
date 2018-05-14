@@ -79,18 +79,12 @@ class ContractEditColumn extends BaseColumn {
                         <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
                             编辑
                         </button>
-                        {
-                          record.status != 2 &&
-                          <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
-                              取消
-                          </button>
-                        }
-                        {
-                          record.type != 2 &&
-                          <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
-                              改纸质
-                          </button>
-                        }
+                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
+                            取消
+                        </button>
+                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
+                            改纸质
+                        </button>
                     </div>
                     );
             }
