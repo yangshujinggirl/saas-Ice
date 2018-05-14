@@ -51,7 +51,8 @@ function change(data) {
 
 
 // 获取列表
-export const search = (condition) => {
+export const search = (condition={}) => {
+  condition = Object.assign(condition,{lineType:1})
   return (dispatch) => {
 
     dispatch(fetchStart())

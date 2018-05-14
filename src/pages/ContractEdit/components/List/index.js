@@ -35,7 +35,7 @@ class ContractList extends BaseApp {
   handleOperateClick(record, type) {
     switch (type) {
         case this.OPERATE_TYPE.EDIT: {
-            this.editDialogEvent(record.id);
+            hashHistory.push(`contractedit/edit/${record.id}`)
             break;
         }
         case this.OPERATE_TYPE.CANCEL: {
@@ -47,29 +47,6 @@ class ContractList extends BaseApp {
             break;
         }
     }
-  }
-  //编辑
-  editDialogEvent(id) {
-    // id = '88';//编辑中id
-    Req.goEditContractApi(id)
-    .then((res) => {
-      const { code, data, msg } = res;
-      if( code !== 200) {
-        if(code == 1000001) {
-          Toast.error('该合同正在编辑中，请稍后再试');
-        } else {
-          Toast.error(msg);
-        }
-        return;
-      }
-      let path = {
-          pathname: `contractedit/edit/${id}`,
-          state: data
-      }
-      hashHistory.push(path)
-    },error => {
-      Toast.error(error.msg);
-    })
   }
   //取消，退回
   cancelDialog(type,record) {

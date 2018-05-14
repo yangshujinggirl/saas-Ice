@@ -4,11 +4,13 @@ import { BaseColumn } from 'base';
 /**
  * 定义列表的表头
  */
+ const typeTrans = {
+   1:'电子',
+   2:'纸质'
+ }
  const statusTrans = {
    1:'待确认',
    2:'已取消',
-   3:'已退回',
-   4:'已作废',
    5:'已签字'
  }
 class ContractEditColumn extends BaseColumn {

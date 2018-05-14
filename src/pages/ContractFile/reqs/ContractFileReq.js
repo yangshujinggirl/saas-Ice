@@ -30,7 +30,7 @@ class ContractFileReq extends CurdReq{
 		let options = {
 			url: this._host + `/contract/contract/status`,
 			method: 'POST',
-			contentType: 'application/json',
+			contentType: 'application/x-www-form-urlencoded',
 			data
 		}
 		return super.fetchData(options);
@@ -45,6 +45,18 @@ class ContractFileReq extends CurdReq{
 				to,//合同类型 electronic：改电子 paper：改纸质
 				contractId
 			}
+		}
+		return super.fetchData(options);
+	}
+	//上传文件
+	signContractApi(params) {
+		let options = {
+			url: this._host + `/contract/contract/signed_paper_file`,
+			// url: 'http://172.16.0.210:8080/contract/contract/signed_paper_file',
+			method: 'POST',
+			contentType:'application/x-www-form-urlencoded',
+			// contentType: 'application/form-data',
+			data:params//files,contract_id
 		}
 		return super.fetchData(options);
 	}

@@ -48,7 +48,8 @@ function change(data) {
 
 
 // 获取列表
-export const search = (condition) => {
+export const search = (condition={}) => {
+  condition = Object.assign(condition,{lineType:0})
   return (dispatch) => {
 
     dispatch(fetchStart())
@@ -68,7 +69,7 @@ export const getDetail = (id) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
+    Req.goEditContractApi(id).then((res) => {
       if (!res || res.code != 200) return;
       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
     }).catch((ex) => {

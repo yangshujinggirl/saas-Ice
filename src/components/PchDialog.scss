@@ -1,0 +1,40 @@
+
+.pch-components-dialog-modules {
+  text-align: center;
+  width: 500px;
+  .pch-form {
+    padding: 0;
+    text-align: left;
+  }
+  .components-dialog-title {
+    font-size: 18px;
+    color: #000;
+    padding: 24px 0;
+  }
+  .components-dialog-content {
+
+  }
+  .components-handle-btns-wrap {
+    text-align: center;
+    padding-top: 24px;
+    .dialog-btn {
+      border-radius: 4px;
+      margin-right:10px;
+    }
+    .next-btn-secondary.next-btn {
+      background-color: #FC9E25;
+    }
+  }
+  .next-dialog-close {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    right: -10px;
+    top: -10px;
+    background-color: #fff;
+  }
+  &.next-dialog .next-dialog-close .next-icon:before {
+    color: #333;
+  }
+}

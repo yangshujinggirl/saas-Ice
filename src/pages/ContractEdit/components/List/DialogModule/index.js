@@ -9,14 +9,13 @@ import {
   DatePicker,
   Form
 } from '@icedesign/base';
-
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import './index.scss'
+import { PchDialog } from 'components';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
@@ -24,7 +23,7 @@ const FormItem = Form.Item;
 
 const formItemLayout = {
     labelCol: {
-        span: 10
+        span: 8
     },
     wrapperCol: {
         span: 14
@@ -81,16 +80,16 @@ class DialogModule extends Component {
   }
   render() {
       const { dialogObj } = this.props;
-      const { visible, otherReason } = this.state;
+      const { visible, otherReason, value } = this.state;
       return (
-        <Dialog
-          visible={this.state.visible}
-          onCancel={()=>this.onClose()}
+        <PchDialog
+          title={'合同取消'}
+          visible={visible}
+          onOk={()=>this.onOk()}
           onClose={()=>this.onClose()}
-          className="contract-edit-dialog-wrap"
           footer={[]}>
-          <div className="pch-form contract-edit-dialog-content">
-            <IceFormBinderWrapper ref="form" value={this.state.value}>
+          <div className="pch-form">
+            <IceFormBinderWrapper ref="form" value={value}>
               <Form size="large" direction="hoz">
                 <Row wrap>
                   <Col span={24}>
@@ -120,30 +119,11 @@ class DialogModule extends Component {
                                       </FormItem>
                                     </Col>
                   }
-
-                  <Col span={24}>
-                    <div className="btns-wrap">
-                      <Button
-                        type="secondary"
-                        size="large"
-                        onClick={()=>this.onOk()}
-                        className="dialog-btn">
-                          确认
-                      </Button>
-                      <Button
-                        type="secondary"
-                        size="large"
-                        onClick={()=>this.onClose()}
-                        className="dialog-btn">
-                          取消
-                      </Button>
-                    </div>
-                  </Col>
                 </Row>
               </Form>
             </IceFormBinderWrapper>
           </div>
-        </Dialog>
+        </PchDialog>
     );
   }
 }
