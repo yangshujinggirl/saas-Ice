@@ -60,14 +60,11 @@ class DialogModule extends Component {
     })
   }
   onOk() {
-    const { contractId } = this.props.dialogObj;
     this.refs.form.validateAll((errors, values) => {
-      console.log('errors', errors, 'values', values);
       if(errors) {
         return
       };
-      let params = Object.assign(values, { action:'INVALID',contractId });
-      this.props.submit(params);
+      this.props.submit(values);
     });
   }
   selectedEvent(value,option) {

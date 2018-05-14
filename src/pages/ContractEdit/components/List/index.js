@@ -3,7 +3,7 @@ import IceContainer from '@icedesign/container';
 import { Dialog, Button, Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
-import { Title, PchTable, PchPagination } from 'components';
+import { Title, PchTable, PchPagination, PchDialog } from 'components';
 import FilterForm from './Filter';
 import DialogModule from './DialogModule';
 import Req from '../../reqs/ContractEditReq';
@@ -15,7 +15,8 @@ class ContractList extends BaseApp {
     super(props);
     this.state = {
       visible:false,
-      dialogObj:{}
+      paperVisbile:false,
+      contractId:'',
     }
   }
   componentWillMount() {
@@ -52,29 +53,22 @@ class ContractList extends BaseApp {
   cancelDialog(type,record) {
     this.setState({
       visible:true,
-      dialogObj:{
-        status:'CANCEL',
-        contractId:record.id
-      }
+      paperVisbile:false,
+      contractId:record.id
     })
   }
   //改纸质弹框
   toPaperDialog(record) {
-    Dialog.confirm({
-      title:'温馨提示',
-      content: "改为纸质后，将不再支持电子签名，您确定要改为纸质吗",
-      locale: {
-        ok: "确认",
-        cancel: "取消",
-      },
-      onOk:()=>{
-        this.toggleContract('paper',record.id)
-      }
-    });
+    this.setState({
+      visible:false,
+      paperVisbile:true,
+      contractId:record.id
+    })
   }
-  //改纸质，改电子Api
-  toggleContract(to,contractId) {
-    Req.toggleContractApi(to,contractId)
+  //改纸质，Api
+  submitChangePaper() {
+    const { contractId } = this.state;
+    Req.toggleContractApi(contractId)
     .then((res) => {
       const { code, msg } = res;
       if( code != 200) {
@@ -84,9 +78,9 @@ class ContractList extends BaseApp {
       Toast.success("更改成功");
     })
   }
-
   //提交取消api
-  submitOperate(params) {
+  submitOperate(values) {
+    let params = Object.assign(values,{action:'CANCEL',contractId:this.state.contractId});
     Req.handleContractApi(params)
     .then((res) => {
       const { code,msg } =res;
@@ -105,7 +99,7 @@ class ContractList extends BaseApp {
   }
   render() {
     const { columns } = this.props;
-    const { dialogObj, visible } =this.state;
+    const { visible, paperVisbile } =this.state;
     const { list=[] } = this.props.pageData;
     return(
       <IceContainer className="pch-container">
@@ -114,9 +108,12 @@ class ContractList extends BaseApp {
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
           <DialogModule
-            dialogObj={dialogObj}
             visible={visible}
             submit={this.submitOperate.bind(this)}/>
+          <PchDialog
+            title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
+            visible={paperVisbile}
+            onOk={this.submitChangePaper.bind(this)}/>
       </IceContainer>
     )
   }

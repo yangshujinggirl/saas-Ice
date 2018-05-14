@@ -36,13 +36,13 @@ class ContractFileReq extends CurdReq{
 		return super.fetchData(options);
 	}
 	//改纸质，电子
-	toggleContractApi(to,contractId) {
+	toggleContractApi(contractId) {
 		let options = {
 			url: this._host + `/contract/contract/type`,
 			method: 'POST',
 			contentType: 'application/json',
 			data:{
-				to,//合同类型 electronic：改电子 paper：改纸质
+				to:'electronic',//合同类型 electronic：改电子 paper：改纸质
 				contractId
 			}
 		}

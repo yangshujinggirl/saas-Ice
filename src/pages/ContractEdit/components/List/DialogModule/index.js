@@ -53,13 +53,11 @@ class DialogModule extends Component {
     })
   }
   onOk() {
-    const { status, contractId } = this.props.dialogObj;
     this.refs.form.validateAll((errors, values) => {
       if(errors) {
         return
       }
-      let params = Object.assign(values, { action:status,contractId });
-      this.props.submit(params);
+      this.props.submit(values);
     });
   }
   onClose() {
