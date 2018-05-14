@@ -41,17 +41,17 @@
         border-radius: 50%;
         color: #fff;
         margin-right: 25px;
-        &.status-error {
-          background-color: #FF6666;
+        &.status-red {
+          background: #FF6666;
         }
-        &.status-success {
-          background-color:#66CC99;
-        }
-        &.status-return {
-          background: #66CCFF;
-        }
-        &.status-manpower {
+        &.status-orange {
           background: #FFCC66;
+        }
+        &.status-green {
+          background: #66CC99;
+        }
+        &.status-gray {
+          background: #CCCCCC;
         }
       }
       .status-title {

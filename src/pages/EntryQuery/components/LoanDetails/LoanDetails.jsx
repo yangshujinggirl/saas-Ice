@@ -128,7 +128,11 @@ export default class LoanDetails extends Component {
                 </Col>
                 <Col span="21" className='modify-form'>
                   <div className="rcontent-edito">
-                    <EntryTrack {...this.props}></EntryTrack>
+                    <div className='info' id='流程轨迹'>
+                      <h4 >流程轨迹</h4>
+                      <EntryTrack {...this.props} dataSource={details.list}></EntryTrack>
+                    </div>
+
                     <Detail dataSource={details.list} ></Detail>
                     <div className='info' id='材料提交'>
                       <h4>材料提交</h4>

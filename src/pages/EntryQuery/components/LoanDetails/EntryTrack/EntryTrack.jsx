@@ -30,42 +30,57 @@ export default class EntryTrack extends Component {
     }).then((res)=>{
       if(res.data && res.code == 200){
         this.setState({
-          trackList : res.data.proTrack ? res.data.proTrack : []
+          trackList : res.data.trackList ? res.data.trackList : []
         })
       }else {
 
       }
     });
   }
+  //判断Json是否为kong
+  isEmptyObject(e) {
+    var t;
+    for (t in e)
+      return false;
+    return true;
+  }
+  //获取变更字段
+  changeFile = (data)=>{
+    var list = [];
+    if(data.length >0){
+      data.map((item)=>{
+        list.push( <span key={i}>{item.name}: <i>({item.value})</i></span>)
+      })
+    }
+    return list;
+  }
   render() {
     let { trackList } = this.state;
     console.log(trackList)
     return (
       <div className="part-same part-process info review-detail" id='流程轨迹'>
-                  <span  className='name'>流程轨迹</span>
+
                   <div className="process-action">
                         {
 
                           trackList.map((item,index)=>{
                             var status = classNames({
-                              'circle status-error': item.status == '拒绝',
-                              'circle status-success': item.status == '通过',
-                              'circle status-return': item.status == '退回中行审查',
-                              'circle status-manpower': item.status == '',
+                              'circle status-red'    : item.choose == undefined || item.choose == 'REJECT',
+                              'circle status-orange' : item.choose == 'SUBMIT',
+                              'circle status-green'  : item.choose == 'PASS' ,
+                              'circle status-gray'   : item.choose == 'BACK',
                             });
 
                             return (
                               <div className="item" key={index}>
-                                <div className={status}>{item.status}</div>
+                                <div className={status}>{item.taskAlias}</div>
                                   <div className="status-title"><b>{item.taskName}</b></div>
                                 <div className="status-desc">
-                                  <span>申请金额:10000 <i>(7000)</i></span>
-                                  <span>申请金额:10000 <i>(7000)</i></span>
-                                  <span>审查意见:驰名商标是否具有明确含义的，并且与汉字形成一一对应的关系</span>
+                                  {
+                                    item.changeFields ? this.changeFile(item.changeFields) : (<span></span>)
+                                  }
+                                  <span>审查意见:{item.approveMsg}</span>
                                 </div>
-                                {/*<div className="content">*/}
-                                  {/*<p className="opinion">评审意见:<span>{item.approveMsg}</span></p>*/}
-                                {/*</div>*/}
                                 <div className="content">
                                   <p><b>办理人:</b>&nbsp;&nbsp;{item.operatorName}（{item.operatorNum}）</p>
                                 </div>

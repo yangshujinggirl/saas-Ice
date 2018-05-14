@@ -37,11 +37,13 @@ export default class CreditInformationDetail extends Component {
 
         if (params.id) {
             actions.getDetail(params.id);
+            actions.getTrackDetail({
+              businessId : this.props.routeParams.id,
+              isApproveInfo : true
+            });
         }
-        actions.getTrackDetail({
-          proInstId : this.props.params.proInstId,
-          isApproveInfo : true
-        });
+        console.log(this.props.params.id)
+
     }
 
     // 取消
@@ -214,7 +216,7 @@ export default class CreditInformationDetail extends Component {
                 </div>
               </Col>
               <Col span="5" className='audit-information'>
-                <ApprovalBox {...this.props}  reviewList={ reviewList.choose} submit={this.submit.bind(this)} ></ApprovalBox>
+                {/*<ApprovalBox {...this.props}  reviewList={ reviewList.choose} submit={this.submit.bind(this)} ></ApprovalBox>*/}
               </Col>
             </Row>
 
