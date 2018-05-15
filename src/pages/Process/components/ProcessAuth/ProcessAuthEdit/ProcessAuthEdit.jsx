@@ -80,7 +80,7 @@ export default class ProcessAuthEdit extends BaseApp {
         roleName: dataArry[key].name,
         orgId: dataArry[key].organizationId,
         orgName: formData.tenantName,
-        departmentId: dataArry[key].departmentId,
+        departmentId: dataArry[key].departmentId||dataArry[key].id,
         departmentName:dataArry[key].departmentName
 
         // roleId: dataArry[key].id,

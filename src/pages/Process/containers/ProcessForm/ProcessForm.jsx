@@ -188,7 +188,6 @@ export default class ProcessForm extends Component {
      */
     changeView(view, item) {
         console.log('changeView', view);
-        console.log(item)
         let { actions, formData = {} } = this.props;
 
         if(!view || typeof view != 'string'){
