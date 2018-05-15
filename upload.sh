@@ -32,6 +32,7 @@ if [[ ! -d .git ]]; then
     cd release
 fi
 
+# 分支不存在则创建
 if [[ $(git branch -a | grep $param -c) -lt 1 ]]; then
 	git branch $param
 fi
@@ -42,12 +43,13 @@ git fetch origin
 git merge master
 git push origin $param
 
+cd ../
+
 # 执行构建
 npm run prod
 
 # 拷贝打包后的代码
-cd ../
-cp -r dist/* release
+cp -r build/* release
 
 # 提交本次更改
 cd release
@@ -60,14 +62,3 @@ if [[ $noup != '-no' ]]; then
 	npm run $param
 fi
 
-
-# cd release
-# git pull release master
-# cd ../
-# npm run prod
-# cp -r dist/* release/
-# cd release
-# git status
-# git add .
-# git commit -m 'update'
-# git push release master

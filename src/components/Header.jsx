@@ -7,7 +7,7 @@ import FoundationSymbol from 'foundation-symbol';
 import { Link, hashHistory } from 'react-router';
 import { headerNavs } from './../navs';
 import Logo from './Logo';
-import {Recrysuve, Storage} from '../base/utils';
+import {Recrysuve, Storage, Cookie} from '../base/utils';
 import AccountReq from '../pages/Account/reqs/AccountReq';
 
 export default class Header extends PureComponent {
@@ -21,15 +21,33 @@ export default class Header extends PureComponent {
     AccountReq.logout().then((res) => {
       Storage.remove('MENUS');
       Storage.remove('USERINFO');
-      hashHistory.push('/account');
+      Cookie.remove('PCTOKEN');
+      
+      this._redirectToLogin();
     })
   }
+  /**
+   * 未登陆跳转到登陆页
+   * 1. 匹配包含域名pingchang666才跳转，否则不处理
+   * 2. 替换当前系统关键字成login，例如贷前daikuan->login
+   * @return {[type]} [description]
+   */
+  _redirectToLogin() {
+    let _host = location.host;
+    if(_host.indexOf('pingchang666') == -1){
+      return;
+    }
+
+    _host = _host.replace('daikuan', 'login');
+    location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
+    // hashHistory.push('/account');
+  }
   render() {
-    let { width, theme, isMobile, menus, pathname, routes } = this.props;
+    let { width, theme, isMobile, menus, pathname, routes, userinfo } = this.props;
     // let data = this.getBreadCrumb(menus, pathname);
     // let result = data ? [data.parentNode, data.node] : [{name: '未知页面'}];
 
-    if(routes && routes.length > 0 && routes[0].path == '/dashboard'){
+    if(routes && routes.length > 0 && (routes[0].path == '/' || routes[0].path == '/dashboard')){
       // 特殊处理默认首页的路由名称
         routes[0].name = 'DASHBOARD';
         routes = [routes[0]];
@@ -37,7 +55,7 @@ export default class Header extends PureComponent {
 
     let nickname = '--';
     //获取登陆用户信息
-    let userinfo = Storage.get('USERINFO');
+    // let userinfo = Storage.get('USERINFO');
     if(userinfo){
       nickname = userinfo.realName || userinfo.userName;
     }

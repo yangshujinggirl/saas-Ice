@@ -60,6 +60,7 @@
     "prod": "export NODE_ENV=production && node generate && ice build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
     "copy": "cp -R ./build/ ../saas-pro",
+    "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
     "up": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
     "build": "ice build"
   },

@@ -12,7 +12,7 @@ const backgroundImage = require('./admin-login-bg.png');
 const adminLogo = require('./admin-logo.png');
 
 import { hashHistory } from 'react-router';
-import { Storage, Cookie } from 'utils';
+import { Storage, Cookie, Tools } from 'utils';
 import AccountReq from '../../reqs/AccountReq';
 
 export default class Login extends Component {
@@ -69,7 +69,6 @@ export default class Login extends Component {
           isLoging: false
         });
         if (!res || res.code != 200) return;
-        // Feedback.toast.success('登录成功');
 
         if (values.checkbox) {
           //记住账号
@@ -78,14 +77,36 @@ export default class Login extends Component {
           Storage.remove('REMEMBER');
         }
 
-        Storage.set('MENUS', (res.data.leaf));
+        let fromUrl = this.props.params.from;
+        let isSameSystem = false;
+        let system = res.data.type;
 
-        AccountReq.getUserInfo().then((res) => {
-          if (res || res.code == 200) {
-            Storage.set("USERINFO", res.data);
-            hashHistory.push('/dashboard') //跳转首页
-          }
-        })
+        if(system){
+          system = system.toLowerCase();
+        }
+
+        // 判断登录账号的所属系统和当前跳转地址的系统是否同一个
+        if(fromUrl && system){
+          isSameSystem = fromUrl.indexOf(system) != -1;
+        }
+        
+        if(isSameSystem && fromUrl){
+          fromUrl = decodeURIComponent(fromUrl);
+          location.href = fromUrl;
+        }else{
+          Feedback.toast.success('登录成功');
+          //默认进入SAAS系统
+          location.href = '//' + location.host.replace('login', system || 'daikuan');
+        }
+
+        //Storage.set('MENUS', (res.data.leaf));
+
+        // AccountReq.getUserInfo().then((res) => {
+        //   if (res || res.code == 200) {
+        //     Storage.set("USERINFO", res.data);
+        //     hashHistory.push('/dashboard') //跳转首页
+        //   }
+        // })
       });
     });
   };
@@ -94,9 +115,8 @@ export default class Login extends Component {
     let {isLoging} = this.state;
 
     return (
-      <div style={styles.userLogin} className="user-login">
-        <div style={{
-        ...styles.userLoginBg,
+      <div className="user-login">
+        <div className="user-login-bg" style={{
         backgroundImage: `url(${backgroundImage})`
       }}/>
         <div className="pch-login-form">
@@ -107,9 +127,9 @@ export default class Login extends Component {
         </div>
         <IceFormBinderWrapper value={this.state.value} onChange={this.formChange} ref="form">
           <form className="layui-form layui-form-pane" onSubmit={this.handleSubmit}>
-              <Row style={styles.formItem} className="layui-form-item">
+              <Row className="layui-form-item">
                   <Col className="layui-input-block">
-                    <IceIcon className="layui-input-icon" type="person" style={styles.inputIcon}/>
+                    <IceIcon className="layui-input-icon" type="person"/>
                     <IceFormBinder name="userName" required message="请输入账号">
                       <Input maxLength={20} autoComplete="off" className="layui-input" placeholder="请输入账号(手机号码)" autoFocus={true} />
                     </IceFormBinder>
@@ -118,9 +138,9 @@ export default class Login extends Component {
                     <IceFormError name="userName" />
                   </Col>
               </Row>
-              <Row style={styles.formItem} className="layui-form-item">
+              <Row className="layui-form-item">
                   <Col className="layui-input-block">
-                    <IceIcon className="layui-input-icon lx-iconfont" type="lock" style={styles.inputIcon} />
+                    <IceIcon className="layui-input-icon lx-iconfont input-icon" type="lock" />
                     <IceFormBinder name="password" required message="请输入密码">
                       <Input className="layui-input" autoComplete="off" htmlType="password" placeholder="请输入密码" />
                     </IceFormBinder>
@@ -129,15 +149,15 @@ export default class Login extends Component {
                     <IceFormError name="password" />
                   </Col>
                 </Row>
-              <Row style={styles.formItem} className="layui-form-item">
+              <Row className="layui-form-item">
                   <Col>
                     <IceFormBinder name="checkbox">
-                      <Checkbox style={styles.checkbox} checked={this.state.value.checkbox}>记住账号</Checkbox>
+                      <Checkbox checked={this.state.value.checkbox}>记住账号</Checkbox>
                     </IceFormBinder>
                   </Col>
                 </Row>
               <div className="layui-form-item">
-                  <Button className="layui-btn layui-btn-sm" htmlType="submit" style={styles.submitBtn} disabled={isLoging}>
+                  <Button className="layui-btn layui-btn-sm submit-btn" htmlType="submit" disabled={isLoging}>
                       {isLoging ? '登录中' : '登录'}
                   </Button>
               </div>
@@ -150,7 +170,7 @@ export default class Login extends Component {
 }
 
 const styles = {
-  userLogin: {
+  userLogin1: {
     position: 'relative',
     height: '100vh',
   },

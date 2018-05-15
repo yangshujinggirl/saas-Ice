@@ -1,6 +1,6 @@
 const SAAS_HOST = 'http://172.16.0.218:8080';
-const CRM_HOST = 'http://172.16.0.211:8080/';
-// const CRM_HOST = 'http://172.16.0.190:8080/';
+// const CRM_HOST = 'http://172.16.0.211:8080/';
+const CRM_HOST = 'http://172.16.0.92:8080/';
 
 const { resolve } = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -8,6 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
 var NODE_ENV = (process.env.NODE_ENV || 'DEVELOPMENT').toUpperCase();
 var __DEV__ = NODE_ENV !== 'PRODUCTION';
+
 
 module.exports = {
     // output: {
