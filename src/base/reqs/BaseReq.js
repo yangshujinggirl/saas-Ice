@@ -58,43 +58,6 @@ class BaseReq {
     return (isJava ? Config.JAVA_HOST : Config.PHP_HOST) + url;
   }
 
-  _processOptions(options) {
-    if (typeof options == 'string') {
-      let url = options;
-      options = {};
-      options.url = url;
-    }
-    return options;
-  }
-
-  /**
-   * 处理接口响应，当接口响应错误只记录日志不继续处理
-   */
-  _processResponse2(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response.data;
-    } else {
-      var error = new Error('接口异常')
-      error.response = response
-      throw error;
-    }
-  }
-
-  /**
-   * 处理数据正确性，数据验证错误抛出异常
-   */
-  _processData(data) {
-    if (data.code == 200) {
-      return data;
-    } else if (data.status == 401) {
-      return;
-    } else {
-      var error = new Error(data.message || '接口逻辑错误');
-      error.data = data;
-      throw error;
-    }
-  }
-
   /**
    * 约定接口统一返回格式，约定只有200正确
    * {
@@ -131,6 +94,11 @@ class BaseReq {
 
   }
 
+  /**
+   * 统一错误处理
+   * @param  {[type]} error [description]
+   * @return {[type]}       [description]
+   */
   _processError(error) {
     console.log('_processError', error);
 

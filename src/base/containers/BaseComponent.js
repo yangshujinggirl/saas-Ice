@@ -9,9 +9,12 @@ class BaseComponent extends Component {
   constructor(props, store, action) {
     super(props);
 
+    // 配置信息
+    this._config = BaseConfig;
+
     // 上传配置，用于上传组件使用
     this.UPLOAD_CONFIG = {
-      action: BaseConfig.SAAS_HOST + '/file/upload',
+      action: this._config.SAAS_HOST + '/file/upload',
       data: {
         'path': 'path/to/file'
       },
