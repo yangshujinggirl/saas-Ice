@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ProductActions from './actions/ProductAction.js'
-import ProductSearch from './ProdSearch'
+import ProductSearch from './containers/Product'
 import SearchEdit from './components/ProdSearch/SearchEdit'
 import ProductDetail from './components/ProdSearch/ProdDetail'
 import ProductAdd from './ProdAdd'

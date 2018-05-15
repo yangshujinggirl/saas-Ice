@@ -1,18 +1,11 @@
 import T from '../constants/ProductConstant'
+import PRODUCT_COLUMNS from '../columns/ProductColumn';
 
 const index = (state = {
   isFetching: false,
   pageData: {}, //列表分页数据
-  formData: { //表单数据
-    title: '',
-    area: 'location1',
-    time: [],
-    delivery: false,
-    type: ['地推活动'],
-    resource: '线下场地免费',
-    extra: '',
-  },
-  view: 'list' //展示界面类型，list列表、form表单、view详情等
+  formData: {}, //表单数据
+  columns: PRODUCT_COLUMNS
 }, action) => {
   switch (action.type) {
     case T.FETCH_START:
