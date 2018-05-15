@@ -5,7 +5,7 @@ import { hashHistory } from 'react-router';
 import { Form, Icon, Input, Button, Checkbox, Select, Switch, Balloon, Grid, Field, Dialog, Upload } from '@icedesign/base';
 
 const {Row, Col} = Grid;
-const { DragUpload } = Upload;
+const { DragUpload , ImageUpload } = Upload;
 const FormItem = Form.Item;
 const Toast = Feedback.toast;
 
@@ -15,6 +15,7 @@ import { Title } from 'components';
 import  './CreditInformationForm.scss'
 import { Feedback } from '@icedesign/base/index';
 import  Req from '../../reqs/CreditInformationReq'
+import {BaseComponent} from 'base';
 
 const formItemLayout = {
   labelCol: {
@@ -25,7 +26,7 @@ const formItemLayout = {
   }
 };
 
-export default class CreditInformationForm extends Component {
+export default class CreditInformationForm extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -72,7 +73,9 @@ export default class CreditInformationForm extends Component {
               "value": "CLEAR"
             }
           ],
-          formData :{}
+          formData :{},
+          fileList: [],
+          upLoadList:[]
 
         };
         this.field = new Field(this);
@@ -123,6 +126,15 @@ export default class CreditInformationForm extends Component {
         // let AllValue = this.AllValue(value);
         // this.dataVerif(value);
         value['flag'] = 'submit';
+        value['baseDocuments'] =[]
+        this.state.fileList.map(item =>{
+          value.baseDocuments.push({
+            description :'',
+            size:'',
+            fileName : item.fileName,
+            location : item.fileURL
+          })
+        })
         console.log(value)
 
         const dialog = Dialog.confirm({
@@ -224,6 +236,22 @@ export default class CreditInformationForm extends Component {
       }
 
     }
+    handleFileChange(info){
+      console.log(info)
+      // var _list = Object.assign(this.state.fileList,info.fileList)
+      //  var _list = [];
+      info.fileList.map(item=>{
+        if(item.status == 'done'){
+          item.downloadURL = item.imgURL;
+          item.fileURL = item.imgURL;
+        }
+      })
+
+      // console.log(_list)
+      this.setState(
+        {fileList: info.fileList}
+        )
+    }
 
 
   /**
@@ -231,7 +259,9 @@ export default class CreditInformationForm extends Component {
      */
     render() {
       let { list = {} } = this.props.details || {};
-      // console.log(list)
+      let { fileList, tableList, dataSource } = this.state;
+
+    // console.log(list)
 
       // let {formData = {}} = this.props;
       return (
@@ -241,37 +271,27 @@ export default class CreditInformationForm extends Component {
             this.formRef = formRef;
           }}>
             <div>
-              <DragUpload
-                className='upload-picture'
+
+              <div className="material-files-upload">
+                <Upload
+                  {...this.UPLOAD_CONFIG}
+                  listType="text"
+                  className='material-files-upload-upload'
+                  fileList={fileList}
+                  showUploadList={false}
+                  url="/saas/file/upload"
+                  onChange={this.handleFileChange.bind(this)}
+                >
+                  <div className="material-files-upload-button">
+                    <div className="icon material-files-upload-button-icon">&#xe628;</div>
+                    <p className="material-files-upload-button-text">将文件拖到此处，或<em>点击上传</em></p>
+                  </div>
+                </Upload>
+              </div>
+              <ImageUpload
+                className='upload-picture  upload-picture-list'
                 listType="picture-card"
-                action="/saas/file/upload"
-                data={{'path':'path/to/file'}}
-                defaultFileList={[
-                  {
-                    name: "IMG.png",
-                    status: "done",
-                    size: 1024,
-                    downloadURL:
-                      "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-                    fileURL:
-                      "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-                    imgURL:
-                      "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
-                  },
-                  {
-                    name: "IMG.png",
-                    status: "done",
-                    size: 1024,
-                    downloadURL:
-                      "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-                    fileURL:
-                      "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-                    imgURL:
-                      "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
-                  }
-                ]}
-                // onDragOver={onDragOver}
-                // onDrop={onDrop}
+                fileList={fileList}
               />
               <Form>
                 <Row wrap>
