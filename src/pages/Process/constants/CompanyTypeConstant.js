@@ -1,13 +1,5 @@
 export const COMPANY_TYPE = [{
-    "label": "营业执照",
-    "value": '10'
-  },
-  {
-    "label": "税务登记证",
-    "value": '20'
-  },
-  {
-    "label": "组织机构代码证",
-    "value": '30'
+    "label": "贷款业务",
+    "value": '1'
   }
 ];
