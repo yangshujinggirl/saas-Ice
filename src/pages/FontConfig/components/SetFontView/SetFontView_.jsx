@@ -191,28 +191,28 @@ export default class SetFontView_ extends Component {
             }
         ];
         const handleFixed = (item) => {
-            let inputType = <Input placeholder="" />
+            let inputType = <Input size="large" placeholder="" />
             switch (item.type) {
                 case 'STRING':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input size="large" placeholder="" />
                     break;
                 case 'TEXT':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input size="large" placeholder="" />
                     // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input size="large" placeholder="" />
                     break;
                 case 'DECIMAL':
-                    inputType = <Input placeholder="" />
+                    inputType = <Input size="large" placeholder="" />
                     break;
                 case 'DATE':
-                    inputType = <RangePicker
+                    inputType = <RangePicker size="large"
                         onChange={(val, str) => console.log(val, str)}
                         onStartChange={(val, str) => console.log(val, str)} />
                     break;
                 case 'SELECT':
-                    inputType = <Select
+                    inputType = <Select size="large"
                         placeholder="请选择"
                     >
                         {item.options && item.options.map((item, index) => {
@@ -227,7 +227,7 @@ export default class SetFontView_ extends Component {
                     inputType = <span className="addNewCheckbox">
                         {
                             <label>
-                                <CheckboxGroup
+                                <CheckboxGroup size="large"
                                     dataSource={item.options}
                                 />
                             </label>
@@ -238,7 +238,7 @@ export default class SetFontView_ extends Component {
                     inputType = <span className="addNewRadio">
                         {
                             <label>
-                                <RadioGroup
+                                <RadioGroup size="large"
                                     dataSource={item.options}
                                 />
                             </label>
@@ -246,7 +246,7 @@ export default class SetFontView_ extends Component {
                     </span>
                     break;
                 case 'ADDRESS':
-                    inputType = <CascaderSelect
+                    inputType = <CascaderSelect size="large"
                         dataSource={dataSource}
                     />
                     break;
@@ -281,14 +281,19 @@ export default class SetFontView_ extends Component {
                         {/* 渲染右边 */}
                         <div className="container-right">
                             <div className="dynamic-demo">
-                                {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
+                                {resData.fieldset && resData.fieldset.map((item, index) => {
                                     return (
                                         <div key={index}>
                                             {/*添加字段按钮和小标题  */}
-                                            <div className='baseDetail customer'>
-                                                <span className='active' id={item.name}>
-                                                    <Input placeholder="" value={item.name} className='moduleStr' readOnly />
-                                                </span>
+                                            <div className='base-detail clearfix'>
+                                                <div className='base-detail-name active' id={item.name}>
+                                                 <Input
+                                                     placeholder="区域名称"
+                                                     maxLength={35}
+                                                     value={item.name}
+                                                     className='moduleStr'
+                                                     readOnly />
+                                                </div>
                                             </div>
                                             <div className='ui-sortable'>
                                                 {index == 0 ? item.fields.map((item, inj) => {
@@ -409,7 +414,6 @@ export default class SetFontView_ extends Component {
                             <div className='submit'>
                                 <Button
                                     type="normal"
-                                    style={{ marginLeft: '10px' }}
                                     onClick={this.handleCancel}>
                                     返回
                                 </Button>

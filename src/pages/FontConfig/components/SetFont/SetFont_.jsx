@@ -151,11 +151,11 @@ export default class setFont extends Component {
             return
         }
 
-            
-        // 转换fieldset到fields
-        resData.fieldset.map((item) => {
-            item.fields.map((item) => {
-                reqData.fields.push(item) 
+        // 转换fieldset到fields，并追加上fieldsetOrder排序字段
+        resData.fieldset.map((item, i) => {
+            item.fields.map((field) => {
+                field.fieldsetOrder = i;
+                reqData.fields.push(field) 
             })
         })
         
