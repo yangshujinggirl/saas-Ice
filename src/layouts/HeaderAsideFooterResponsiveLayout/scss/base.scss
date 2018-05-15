@@ -83,7 +83,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     transition: all .2s ease-out;
-    font-size: 16px;
 }
 
 .next-breadcrumb .next-breadcrumb-item .next-breadcrumb-separator {
@@ -130,13 +129,11 @@
 }
 
 .next-breadcrumb .next-breadcrumb-text {
-    color: #666666;
     color: rgba(255, 255, 255, 0.8);
 }
 
 .next-breadcrumb .next-breadcrumb-text.activated {
-    color: #333333;
-    color: rgba(255, 255, 255, 1);
+    color: #fff;
 }
 
 .next-breadcrumb .next-breadcrumb-text-ellipsis {

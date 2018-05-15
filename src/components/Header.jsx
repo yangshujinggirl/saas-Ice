@@ -35,6 +35,7 @@ export default class Header extends PureComponent {
   _redirectToLogin() {
     let _host = location.host;
     if(_host.indexOf('pingchang666') == -1){
+      hashHistory.push('/account');
       return;
     }
 
@@ -127,7 +128,7 @@ export default class Header extends PureComponent {
                       <a href="/">设置</a>
                     </Menu.Item>*/}
                     <Menu.Item>
-                      <a href="#" onClick={this.logout}>退出</a>
+                      <a href="#" onClick={this.logout.bind(this)}>退出</a>
                     </Menu.Item>
                   </Menu>
                 </div>

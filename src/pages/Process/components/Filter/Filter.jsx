@@ -19,18 +19,21 @@ const formItemLayout = {
 };
 //获取下拉
 import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant'
+import SP_DATASOURCE from '../../constants/SpDataSourceConstant'
 
 export default class Filter extends Component {
     constructor() {
         super();
 
         // 搜索框表单的对应的值，可以设置默认值
+        // 业务类型默认选中“贷款业务”
+        // 资方数据受登录用户权限限制，即获取当前登录用户的资方信息，只展示一条数据
         this.state = {
             value: {
                 businessTypeId: '1',
                 businessTypeName: '营业执照',
-                tenantId: '10086',
-                tenantName: '中国银行',
+                tenantId: SP_DATASOURCE[0].value,
+                tenantName: SP_DATASOURCE[0].label,
                 processName: '',
             }
         };
@@ -77,25 +80,14 @@ export default class Filter extends Component {
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="业务类型：">
                                     <IceFormBinder name="businessTypeId">
-                                        <Select size="large" placeholder="请选择" dataSource={COMPANY_TYPE} onChange={this.handleBusinessTypeChange.bind(this)}>
-                                        </Select>
+                                        <Select size="large" placeholder="请选择" dataSource={COMPANY_TYPE} onChange={this.handleBusinessTypeChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">
-                                        <Select size="large" placeholder="请选择" onChange={this.handleTenantChange.bind(this)}>
-                                            <Option value="10086">
-                                                中国银行
-                                            </Option>
-                                            <Option value="100">
-                                                平安银行
-                                            </Option>
-                                            <Option value="101">
-                                                某银行
-                                            </Option>
-                                        </Select>
+                                    <Select size="large" placeholder="请选择" dataSource={SP_DATASOURCE} onChange={this.handleTenantChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
