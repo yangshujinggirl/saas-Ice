@@ -442,7 +442,7 @@ export default class setFont extends Component {
 
         fields.map((item, i) => {
             item.fields.map(sitem => {
-                if(sitem.id = field.id){
+                if(sitem.id == field.id){
                     flag = true;
                     return;
                 }
