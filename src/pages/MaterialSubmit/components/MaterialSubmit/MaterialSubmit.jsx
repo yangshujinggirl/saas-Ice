@@ -10,6 +10,7 @@ import { hashHistory } from 'react-router';
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
 import { Feedback } from "@icedesign/base";
+import {BaseComponent} from 'base';
 import {Title} from 'components';
 
 const Toast = Feedback.toast;
@@ -17,7 +18,7 @@ const cardTarget = {
   drop() {},
 }
 
-class MaterialSubmit extends Component {
+class MaterialSubmit extends BaseComponent {
   static displayName = 'MaterialSubmit';
 
   static propTypes = {};
@@ -237,10 +238,8 @@ class MaterialSubmit extends Component {
           <Title title="材料提交"/>
           <div className="material-files-upload">
             <Upload
+              {...this.UPLOAD_CONFIG}
               className='material-files-upload-upload'
-              action="/saas/file/upload"
-              data={{'path':'path/to/file'}}
-              formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
               accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
               fileList={fileList}
               showUploadList={false}
