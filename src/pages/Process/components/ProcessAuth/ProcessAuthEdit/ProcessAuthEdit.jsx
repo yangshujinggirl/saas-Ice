@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
-import { BaseApp } from 'base'
+import { BaseApp } from 'base';
+import { Feedback } from "@icedesign/base";
+
 import { Title, PchTable, PchPagination } from 'components';
 import { PROCESS_VIEW } from '../../../constants/ProcessViewConstant';
 
@@ -54,7 +56,7 @@ export default class ProcessAuthEdit extends BaseApp {
   componentWillReceiveProps(props) {
     this.setState({
       visible: this.props.visible,
-      dataSourceRight:this.props.data
+      dataSourceRight:props.data
     })
   }
   onClose() {
@@ -82,26 +84,23 @@ export default class ProcessAuthEdit extends BaseApp {
         orgName: formData.tenantName,
         departmentId: dataArry[key].departmentId||dataArry[key].id,
         departmentName:dataArry[key].departmentName
-
-        // roleId: dataArry[key].id,
-        // roleName:'',
-        // orgId: dataArry[key].organizationId,
-        // orgName: dataArry[key].name,
-        // departmentId: dataArry[key].departmentId,
-        // departmentName:dataArry[key].departmentName
       })
     }
-    
-    this.props.onSave(datatemp)
+    //保存成功提示
+    Feedback.toast.show({
+      type: 'success',
+      content: '保存成功！',
+      afterClose: () => {
+           this.props.onSave(datatemp)
+      }
+    });
   }
-
   addItem() {
     let dataSourceRight = [];
     dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne)
     dataSourceRight.map((item)=>{
       item.name?item.roleName=item.name:''
     })
-    // console.log(dataSourceRight)
     this.setState({
       dataSourceRight
     })
@@ -143,21 +142,8 @@ export default class ProcessAuthEdit extends BaseApp {
     return data;
   }
   orgNameShow(value, index, record){
-  
-    // return record.orgName?record.orgName:(record.name?record.departmentName+'-'+record.name:record.departmentName)
     return record.roleName?`${record.departmentName}-${record.roleName}`:`${record.departmentName}`
   }
-  //权限
-  // orgsGrade(data){
-  //   data&&data.map((item)=>{
-  //     if(item.orgName){
-  //       return;
-  //     }else{
-  //       item.orgName=item.departmentName || item.name;
-  //     }
-  //   })
-  //   return data    
-  // }
   /**
    * 渲染
    */
@@ -181,7 +167,7 @@ export default class ProcessAuthEdit extends BaseApp {
               </Col>
             </Row>
           </Form>
-          <div className='center'>审查-权限配置</div>
+          <div className='center'>中行进件-权限配置</div>
           <div className="table-list">
             <div className="part-l">
               <Table

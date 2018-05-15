@@ -162,6 +162,7 @@ export default class ReviewApproveDetail extends Component {
       }
       Req.submitReview(dataJson).then((res)=>{
         if(res && res.code == 200){
+          hashHistory.push(`reviewApprove`)
           Toast.show({
             type: "success",
             content: "提交成功～",

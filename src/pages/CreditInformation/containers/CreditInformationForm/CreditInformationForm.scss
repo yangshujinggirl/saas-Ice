@@ -2,6 +2,13 @@
   .upload-picture{
     width: 100%;
     margin-top: 20px;
+    .next-upload-list-picture-card {
+      display: inline-flex;
+      align-items: center;
+      .next-upload-select-picture-card{
+        display: none;
+      }
+    }
   }
   Form{
     margin-top: 20px;
@@ -19,5 +26,8 @@
   .next-overlay-wrapper .next-overlay-inner {
     z-index: 1001;
     max-width: 800px;
+  }upload-picture-list
+  .upload-picture-list{
+
   }
 }
