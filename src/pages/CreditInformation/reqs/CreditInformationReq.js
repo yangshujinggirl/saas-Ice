@@ -65,7 +65,8 @@ class CreditInformationReq extends CurdReq{
   //获取进件详情
   getDetail(id) {
     let options = {
-      url: this._config.LOAN_HOST + `/loans/${id}/screen`,
+      // url: this._config.LOAN_HOST + `/loans/${id}/screen`,
+      url: this._config.WF_HOST + `/audit/loans/${id}`,
       method: 'Get',
       contentType: 'application/json'
     }
@@ -86,7 +87,7 @@ class CreditInformationReq extends CurdReq{
 	  console.log(data)
 	  console.log(data.flag)
     let options = {
-      url: this._config.WF_HOST + `/pbc/credit/12313/${data.flag}`,
+      url: this._config.WF_HOST + `/pbc/credit/${data.flag}`,
       method: 'POST',
       data: data
     }
@@ -98,6 +99,16 @@ class CreditInformationReq extends CurdReq{
       url: this._config.WF_HOST + `/tasks/${data.taskId}/assignee`,
       // url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
       method: 'PUT',
+    }
+    return super.fetchData(options);
+  }
+
+  //获取征信详情
+  getCreditDetail(id) {
+    let options = {
+      url: this._config.WF_HOST + `/pbc/credit/${id}`,
+      method: 'Get',
+      contentType: 'application/json'
     }
     return super.fetchData(options);
   }

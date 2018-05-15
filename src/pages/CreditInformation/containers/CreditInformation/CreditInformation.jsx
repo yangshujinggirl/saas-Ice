@@ -20,7 +20,7 @@ export default class CreditInformation extends BaseApp {
     }
 
     fetchData = (condition) => {
-        this._condition.type = 10;
+        this._condition.taskTypeKey = 10;
         this._condition = Object.assign(this._condition, condition);
         console.log(this._condition)
         this.props.actions.search(this._condition);

@@ -20,6 +20,18 @@ const formItemLayout = {
     span: 12
   }
 };
+const dataSource = [
+  {label:'待提交', value:'DRAFT'},
+  {label:'退回', value:'RETURNED'},
+  {label:'提交', value:'SUBMIT'},
+  {label:'审查审批', value:'AUDIT'},
+  {label:'补录', value:'MAKEUP'},
+  {label:'审批拒绝', value:'REJECTED'},
+  {label:'面签', value:'INTERVIEW'},
+  {label:'出账申请', value:'LENDING_APPLY'},
+  {label:'出账审核', value:'LENDING_AUDIT'},
+  {label:'已放款', value:'LENDING'},
+]
 
 export default class Filter extends Component {
   static displayName = 'Filter';
@@ -98,9 +110,9 @@ export default class Filter extends Component {
               <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="贷款状态：">
                   <IceFormBinder
-                    name="exhibitionHallName"
+                    name="status"
                   >
-                    <Input size="large" placeholder="贷款状态" />
+                    <Select dataSource={dataSource}></Select>
                   </IceFormBinder>
                 </FormItem>
               </Col>
