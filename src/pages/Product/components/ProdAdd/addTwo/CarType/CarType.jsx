@@ -233,6 +233,8 @@ changePage = (currentPage) => {
                     ...this.rowSelection,
                     selectedRowKeys: this.state.selectedRowKeys,
                   }}
+                  fixedHeader={true}
+                  maxBodyHeight={400}
                 >
 
                   <Table.Column title="类型" dataIndex="type" width={50} />

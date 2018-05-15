@@ -79,18 +79,18 @@ export default class addTwo extends Component {
     actions.productsave(this.state.value,id);
   }
 
-  onFormChange=()=>{
+  onFormChange=() => {
     this.setState({
       value
     })
   }
-  onTypeChange=(value)=> {
+  onTypeChange=(value) => {
     this.setState({
       type: value
     });
     this.getCarList(value, this.state.value.name)
   }
-  onNestChange=(value)=>{
+  onNestChange=(value) =>{
     this.setState({
       value2: value
     });

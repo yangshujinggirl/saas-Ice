@@ -177,7 +177,7 @@ export default class addThree extends Component {
                                           onChange={this.onChangeProcess.bind(this)}
                                           >
                                           {
-                                             this.state.processList.map((item,i)=>{
+                                             this.state.processList.map((item,i) =>{
                                                 return (
                                                    <Option value={item.id} key={i}>{item.processName}</Option>
                                                 )
@@ -216,26 +216,3 @@ export default class addThree extends Component {
       );
    }
 }
-const styles = {
-   filterTool: {
-      width: '200px',
-   },
-   filterCol: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: '20px',
-   },
-
-   btns: {
-      width: '90px',
-      height: '30px',
-      lineHeight: '30px',
-      border: 'none',
-      fontSize: '16px',
-      borderRadius: 'none !important',
-      background: '#ec9d00',
-      color: '#fff',
-      marginLeft: '20px'
-
-   },
-};
