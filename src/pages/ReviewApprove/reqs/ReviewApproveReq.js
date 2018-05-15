@@ -75,7 +75,7 @@ class ReviewApproveReq extends CurdReq{
   //获取进件详情
   getDetail(id) {
     let options = {
-      url: this._config.LOAN_HOST + `/loans/${id}/screen`,
+      url: this._config.WF_HOST + `/audit/loans/${id}`,
       method: 'Get',
       contentType: 'application/json'
     }

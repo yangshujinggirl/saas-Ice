@@ -148,11 +148,12 @@ export default class CreditInformationDetail extends Component {
         console.log(dataJson)
         Req.submitReview(dataJson).then((res)=>{
           if(res && res.code == 200){
+
+            hashHistory.push(`creditinformation`)
             Toast.show({
               type: "success",
               content: "提交成功～",
             });
-            hashHistory.push(`creditinformation`)
           }
         }).catch((error)=>{
           console.log(error)
