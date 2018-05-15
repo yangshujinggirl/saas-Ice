@@ -67,8 +67,8 @@ class ProcessReq extends CurdReq {
 	//流程配置产品右侧列表
 	getProcessProdOldList(id){
 		let options = {
-			// url: this._config.WF_HOST + `/processes/product/${id}`,
-			url: this._config.WF_HOST + `/processes/product/123`,
+			url: this._config.WF_HOST + `/processes/product/${id}`,
+			// url: this._config.WF_HOST + `/processes/product/123`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       // params: condition
