@@ -337,11 +337,12 @@ export default class SetFontFieldsets extends Component {
                                  </div>
                                  <div className="base-detail-opt">
                                      {index != 0 &&
-                                      <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}></span> <span className='icon up' onClick={this.moveUp.bind(this, index)}></span> <span className='icon down'
-                                          onClick={this.moveDown.bind(this, index)}></span></span>}
+                                      <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}>&#xe625;</span> <span className={cx('icon up', {'disabled': index == 1})} onClick={this.moveUp.bind(this, index)}>&#xe62b;</span> <span className={cx('icon down', {'disabled': index == resData.fieldset.length - 1})}
+                                          onClick={this.moveDown.bind(this, index)}>&#xe629;</span></span>}
                                      <span className="addStr" onClick={handleAddCode.bind(this, index)}>添加字段</span>
                                  </div>
                              </div>
+
                              <div className='ui-sortable'>
                                  {item.fields.map((item, inj) => {
                                       if (item.isFixed) {
