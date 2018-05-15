@@ -57,13 +57,13 @@ class ContractList extends BaseApp {
           break;
         }
         case this.OPERATE_TYPE.COPY: {
-          this.copyTemplate(record.id)
+          this.copyEvent(record.id)
           break;
         }
     }
   }
   //复制模板
-  copyTemplate(id) {
+  copyEvent(id) {
     Req.copyTemplateApi(id)
     .then((res) => {
       const { code, msg, data } =res;
@@ -153,10 +153,6 @@ class ContractList extends BaseApp {
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
-          {/* <DialogModule
-            templateObj={templateObj}
-            visible={visible}
-            submit={this.submitOperate.bind(this)}/> */}
           <DialogModule
             templateObj={templateObj}
             visible={visible}

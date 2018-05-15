@@ -45,26 +45,24 @@ class AddEit extends BaseApp {
     super(props);
     this.state = {
       moduleStatus:0,
-      value: {
-        templateName:''
-      },
+      value: {},
       editorState: EditorState.createEmpty()
     }
   }
   componentWillMount() {
     this.initPage()
   }
-  initPage() {
-    if(this.props.params.id) {
-      this.getDetail(this.props.params.id);
-    }
-  }
   onEditorStateChange: Function = (editorState) => {
     this.setState({
       editorState,
     });
   };
-  //编辑，调用详情api
+  initPage() {
+    if(this.props.params.id) {
+      this.getDetail(this.props.params.id);
+    }
+  }
+  //编辑api
   getDetail(id) {
     Req.templateDetailApi(id)
     .then((res) => {
@@ -109,7 +107,7 @@ class AddEit extends BaseApp {
 
     });
   }
-  //新增api
+  //提交新增api
   addTemplate(params) {
     Req.addTemplatesApi(params)
     .then((res) => {
@@ -121,7 +119,7 @@ class AddEit extends BaseApp {
       hashHistory.push(`contract`)
     })
   }
-  //编辑api
+  //提交编辑api
   editTemplate(params) {
     params = Object.assign(params,{id:this.props.params.id})
     Req.editTemplatesApi(params)
@@ -140,7 +138,6 @@ class AddEit extends BaseApp {
   }
   //预览状态
   previewStatus(moduleStatus) {
-    console.log(this.state)
     this.setState({
       moduleStatus
     })
@@ -171,7 +168,7 @@ class AddEit extends BaseApp {
             const formData = new FormData();
             formData.append('pic-upload', file);
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://172.16.0.218:8080/file/upload');
+            xhr.open('POST', 'http://172.16.0.210:8080/contract/contract/signed_paper_file/upload');
             xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
             xhr.setRequestHeader('Access-Control-Allow-Headers', 'X-Requested-With');
             xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
@@ -197,14 +194,14 @@ class AddEit extends BaseApp {
     })
   }
   render() {
-    const { editorState } = this.state;
+    const { editorState, value, moduleStatus } = this.state;
     const { templateContent, templateName } = this.state.value;
     return(
       <IceContainer className="pch-container contract-edit-pages">
           <Title title="合同新增" />
           <div className="pch-form">
-          { this.state.moduleStatus == 0?
-            <IceFormBinderWrapper  value={this.state.value} ref="form">
+          { moduleStatus == 0?
+            <IceFormBinderWrapper  value={value} ref="form">
               <Form size="large">
                 <Row wrap justify="center">
                   <Col span={6}>

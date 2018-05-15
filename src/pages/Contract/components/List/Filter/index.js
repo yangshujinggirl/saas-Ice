@@ -64,14 +64,14 @@ class Filter extends Component {
                   <Col xxs={24} xs={12} l={8} xl={8}>
                     <FormItem {...formItemLayout} label="模板编号:">
                       <IceFormBinder name="templateCode">
-                          <Input size="large" />
+                          <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
                   <Col xxs={24} xs={12} l={8} xl={8}>
                     <FormItem {...formItemLayout} label="模板名称:">
                       <IceFormBinder name="templateName">
-                          <Input size="large" />
+                          <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
