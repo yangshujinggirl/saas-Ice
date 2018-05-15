@@ -30,6 +30,7 @@ export default class ProcessAuthEdit extends BaseApp {
     }
     this.rowSelection = {
       onChange: (selectedRowKeys, records) => {
+        console.log(records)
         let selectedRowOne = [];
         selectedRowOne.push(...records);
         this.setState({
@@ -39,6 +40,7 @@ export default class ProcessAuthEdit extends BaseApp {
     }
     this.rowSelectionTwo = {
       onChange: (selectedRowKeys, records) => {
+        console.log(records)
         let selectedRowTwo = [];
         selectedRowTwo.push(...records);
         this.setState({
@@ -69,27 +71,41 @@ export default class ProcessAuthEdit extends BaseApp {
   }
   //确定
   submit(){
-    let dataArry =  this.state.dataSourceRight
+    let { formData} = this.props
+    let dataArry =  this.state.dataSourceRight;
     let datatemp = [];
     for (var key in dataArry){
       datatemp.push({
-        roleId: dataArry[key].roleId,
-        orgId: dataArry[key].orgId,
-        orgName: dataArry[key].orgName,
-        roleName: dataArry[key].roleName,
-        departmentId: dataArry[key].departmentId,
+        roleId: dataArry[key].id,
+        roleName: dataArry[key].name,
+        orgId: dataArry[key].organizationId,
+        orgName: formData.tenantName,
+        departmentId: dataArry[key].departmentId||dataArry[key].id,
         departmentName:dataArry[key].departmentName
+
+        // roleId: dataArry[key].id,
+        // roleName:'',
+        // orgId: dataArry[key].organizationId,
+        // orgName: dataArry[key].name,
+        // departmentId: dataArry[key].departmentId,
+        // departmentName:dataArry[key].departmentName
       })
     }
+    
     this.props.onSave(datatemp)
   }
 
   addItem() {
     let dataSourceRight = [];
     dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne)
+    dataSourceRight.map((item)=>{
+      item.name?item.roleName=item.name:''
+    })
+    // console.log(dataSourceRight)
     this.setState({
       dataSourceRight
     })
+    console.log(dataSourceRight)
   }
   deleteEvent(index) {
     const { dataSourceRight } = this.state;
@@ -109,15 +125,39 @@ export default class ProcessAuthEdit extends BaseApp {
         </Button>
     );
   }
+  //机构=部门=角色
   renderLevel(value, index, record) {
-    return record.departmentName
+    return record.name ? record.name:record.departmentName ;
   }
   changePage(current) {
     this.setState({
       current
     })
   }
+  //角色
+  changeRoleToChildren(data){
+    data && data.map((item) => {
+      item.children = item.roles;
+    })
 
+    return data;
+  }
+  orgNameShow(value, index, record){
+  
+    // return record.orgName?record.orgName:(record.name?record.departmentName+'-'+record.name:record.departmentName)
+    return record.roleName?`${record.departmentName}-${record.roleName}`:`${record.departmentName}`
+  }
+  //权限
+  // orgsGrade(data){
+  //   data&&data.map((item)=>{
+  //     if(item.orgName){
+  //       return;
+  //     }else{
+  //       item.orgName=item.departmentName || item.name;
+  //     }
+  //   })
+  //   return data    
+  // }
   /**
    * 渲染
    */
@@ -145,8 +185,8 @@ export default class ProcessAuthEdit extends BaseApp {
           <div className="table-list">
             <div className="part-l">
               <Table
-                dataSource={orgsData.departments}
-                primaryKey="key"
+                dataSource={this.changeRoleToChildren(orgsData.deprtments)}
+                primaryKey="id"
                 style={{ width: '100%' }}
                 isTree
                 rowSelection={{ ...this.rowSelection }}
@@ -168,12 +208,13 @@ export default class ProcessAuthEdit extends BaseApp {
             </div>
             <div className="part-r">
               <Table
+                // dataSource={this.orgsGrade(dataSourceRight)}
                 dataSource={dataSourceRight}
                 fixedHeader
                 style={{ width: '100%' }}
                 maxBodyHeight={370}
               >
-                <Table.Column title="权限" dataIndex="orgName" />
+                <Table.Column title="权限" cell={this.orgNameShow}/>
                 <Table.Column title="操作" cell={() => this.renderOperation()} />
               </Table>
             </div>

@@ -156,6 +156,9 @@ export default class ProcessForm extends Component {
             if (errors) {
                 return false;
             }
+            // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
+            values.status = 1;
+            values.processType = 'LOAN';
             if(this.props.params.id){
                 values.id = this.props.params.id;
             }

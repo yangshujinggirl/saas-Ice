@@ -184,7 +184,7 @@ export const getProcessProdOldList = (id) => {
 
     Req.getProcessProdOldList(id).then((res) => {
       if(res.code==200){
-        dispatch(fetchSuccess({ formOldData: res.data }))
+        dispatch(fetchSuccess({ formLeftData: res.data }))
 
       }
     }).catch((ex) => {

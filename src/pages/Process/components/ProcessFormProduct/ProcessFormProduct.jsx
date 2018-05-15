@@ -40,10 +40,11 @@ export default class ProcessFormProduct extends BaseApp {
       onSelectAll: (selected, records) => {
       },
     }
-    let { formOldData=[] } = this.props
+    let { formLeftData={} } = this.props
+    let {list} = formLeftData
     this.state = {
       visible: this.props.visible,
-      dataSourceRight: formOldData,
+      dataSourceRight: list,
       saveDataRight:[],
       selectedRowKeys: [],
       selectedRowOne: [],
@@ -77,16 +78,17 @@ export default class ProcessFormProduct extends BaseApp {
     this.props.actions.getProcessProdList(this._condition);
   }
   componentWillReceiveProps(props) {
+    let { formLeftData={} } = this.props
+    let {list} = formLeftData
     this.setState({
       visible: this.props.visible,
-      dataSourceRight: this.props.formOldData|| [],
+      dataSourceRight: list,
 
     })
   }
   //右侧增加数据
   addItem() {
     let { params } = this.props;
-    
     for (var key in arrayRightData) {
       for (var i = 0; i < arrayRightData.length; i++) {
         var flag = true;
@@ -106,9 +108,10 @@ export default class ProcessFormProduct extends BaseApp {
     let arra = [];
     testarray.map((item,i)=>{
       arra.push({
+        productCode:item.productCode,
         productId: item.id,
         productName: item.name,
-        productType: item.productType,
+        productType: this.productTypeKey(item.productType),
         processDefId: params.id,
         status: item.status,
         businessTypeId: 1,
@@ -121,6 +124,17 @@ export default class ProcessFormProduct extends BaseApp {
       dataSourceRight: arra,
       saveDataRight:arra
     })
+  }
+  //产品类型的Key值
+  productTypeKey(type){
+    switch(type){
+      case '新车贷款':return 'NEW_CAR_LOAN' ;break;
+      case '新车租赁':return 'NEW_CAR_RENTAL' ;break;
+      case '二手车贷款':return 'SECONDHAND_CAR_LOAN' ;break;
+      case '二手车租赁':return 'SECONDHAND_CAR_RENTAL' ;break;
+      case '汽车抵押贷款':return 'CAR_MORTGAGE_LOAN' ;break;
+      case '消费贷款':return 'CONSUMER_LOAN' ;break;
+    }
   }
   //删除
   deleteEvent(index) {
@@ -165,7 +179,7 @@ export default class ProcessFormProduct extends BaseApp {
     let { dataSourceRight=[], visible, productType } = this.state;
     
     let { formData,params } = this.props;
-    let {list=[]} = formData
+    // let {list=[]} = formData
     return (
       <IceContainer className="pch-container">
         <FilterItem onSubmit={this.fetchData} typedata={productType} params={params} />
@@ -174,7 +188,7 @@ export default class ProcessFormProduct extends BaseApp {
             <div className="part-l">
               <p>查询结果</p>
               <Table
-                dataSource={list}
+                dataSource={formData.list}
                 // primaryKey="key"
                 style={{ width: '100%' }}
                 isTree
@@ -199,7 +213,7 @@ export default class ProcessFormProduct extends BaseApp {
                 style={{ width: '100%' }}
                 maxBodyHeight={370}
               >
-                <Table.Column title="编码" dataIndex="productId" />
+                <Table.Column title="编码" dataIndex="productCode" />
                 <Table.Column title="名称" dataIndex="productName" />
                 <Table.Column title="操作" cell={() => this.renderOperation()} />
               </Table>
