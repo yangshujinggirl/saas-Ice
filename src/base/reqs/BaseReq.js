@@ -156,6 +156,13 @@ class BaseReq {
     }
   }
 
+  /**
+   * 统一错误消息提示
+   * @param  {[type]} type [description]
+   * @param  {[type]} msg  [description]
+   * @param  {[type]} tick [description]
+   * @return {[type]}      [description]
+   */
   _showMsg(type, msg, tick) {
     if (!msg) {
       return;
