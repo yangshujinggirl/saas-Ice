@@ -1,5 +1,3 @@
-import Product from './Product'
-// import ProductForm from './ProductForm'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ProductActions from './actions/ProductAction.js'
@@ -23,11 +21,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         actions: bindActionCreators(ProductActions, dispatch)
     }
 }
-
-let ProductObj = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Product);
 
 //查询
 let productSearch = connect(
@@ -85,7 +78,6 @@ let fileedit = connect(
 )(Fileedit);
 
 export default {
-    Product: ProductObj,
     ProductSearch: productSearch,
     ProductAdd: productAdd,
     FileList: fileList,

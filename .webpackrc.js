@@ -6,7 +6,7 @@ const { resolve } = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
-var NODE_ENV = process.env.NODE_ENV || 'DEVELOPMENT';
+var NODE_ENV = (process.env.NODE_ENV || 'DEVELOPMENT').toUpperCase();
 var __DEV__ = NODE_ENV !== 'PRODUCTION';
 
 module.exports = {
@@ -70,7 +70,7 @@ module.exports = {
             allChunks: true,
         }),
         new HtmlWebpackPlugin({
-            title: package.title + (__DEV__ ? ' DEV ' : ' ') + package.version,
+            title: package.title + ' ' + NODE_ENV + ' ' + package.version,
             template: __DEV__ ? './public/index.dev.ejs' : './public/index.ejs',
             filename: './index.html',
             name: package.name,

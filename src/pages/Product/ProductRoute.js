@@ -49,6 +49,6 @@ export default {
   ],
   component: Layout,
   indexRoute: {
-    component: Product.Product
+    component: Product.ProductSearch
   }
 }
