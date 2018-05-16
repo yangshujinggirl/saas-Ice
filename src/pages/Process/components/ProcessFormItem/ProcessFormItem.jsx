@@ -110,7 +110,7 @@ export default class ProcessFormItem extends Component {
                 <Col xxs="6" s="3" l="2">
                     {item.haveRequiredField == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWFIELD, item)}>查看</a> : '--'}
                 </Col>
-                <Col xxs="6" s="2" l="3">
+                {/* <Col xxs="6" s="2" l="3">
                     <div className="pch-target-name">
                         <IceFormBinder name={`taskItems[${index}].execMode`}>
                             <Select className="pch-type-name" size="large">
@@ -118,7 +118,7 @@ export default class ProcessFormItem extends Component {
                             </Select>
                         </IceFormBinder>
                     </div>
-                </Col>
+                </Col> */}
             </Row>
         );
     }

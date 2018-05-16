@@ -68,7 +68,10 @@ export default class ProcessDetail extends Component {
                 customMenuList.map((citem, j) => {
                     if (item.taskTypeId == citem.id) {
                         citem.limitedAddTimes--;
-                        item = Object.assign(citem, item);
+                        // 是否有必要数据需要使用模块列表的数据，其余使用默认
+                        item = Object.assign(item, {
+                            haveRequiredField: citem.haveRequiredFields,
+                        });
                     }
                 })
             // item.cid = i;

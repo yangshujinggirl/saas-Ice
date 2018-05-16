@@ -59,9 +59,9 @@ export default class ProcessFormItemList extends Component {
                     <Col xxs="6" s="3" l="2">
                         必要数据
                     </Col>
-                    <Col xxs="6" s="2" l="3">
+                    {/* <Col xxs="6" s="2" l="3">
                         方式
-                    </Col>
+                    </Col> */}
                 </Row>
                 {taskItems.map((item, index) => {
                     if(editable){
