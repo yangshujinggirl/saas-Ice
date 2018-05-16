@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Select } from "@icedesign/base";
-import CommonReq from '../base/reqs/CurdReq';
+import { BaseComponent } from 'base';
+import CommonReq from '../base/reqs/CommonReq';
 
-export default class PchMaterialSelect extends Component {
+/**
+ * 材料列表的搜索下拉框
+ */
+export default class PchMaterialSelect extends BaseComponent {
     state = {
         dataSource: []
     };
@@ -34,14 +38,14 @@ export default class PchMaterialSelect extends Component {
         }
         this.searchTimeout = setTimeout(() => {
             let options = {
-                url: `/loan/product/collect`,
+                url: `${this._config.LOAN_HOST}/product/collect`,
                 method: 'get',
                 contentType: 'application/x-www-form-urlencoded',
                 params: {
                     name: value
                 }
             }
-            new CommonReq().fetchData(options).then(data => {
+            CommonReq.fetchData(options).then(data => {
                 if (!data || data.code != 200) return;
 
                 const dataSource = data.data.list.map(item => {
