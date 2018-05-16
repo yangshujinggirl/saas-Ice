@@ -19,7 +19,7 @@ const formItemLayout = {
 };
 //获取下拉
 import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant'
-import SP_DATASOURCE from '../../constants/SpDataSourceConstant'
+import SpDataSource from '../../utils/SpDataSource'
 
 export default class Filter extends Component {
     constructor() {
@@ -32,8 +32,8 @@ export default class Filter extends Component {
             value: {
                 businessTypeId: '1',
                 businessTypeName: '营业执照',
-                tenantId: SP_DATASOURCE[0].value,
-                tenantName: SP_DATASOURCE[0].label,
+                tenantId: SpDataSource.defaultValue,
+                tenantName: SpDataSource.defaultLabel,
                 processName: '',
             }
         };
@@ -87,7 +87,7 @@ export default class Filter extends Component {
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">
-                                    <Select size="large" placeholder="请选择" dataSource={SP_DATASOURCE} onChange={this.handleTenantChange.bind(this)} />
+                                    <Select size="large" placeholder="请选择" dataSource={SpDataSource.dataSource} onChange={this.handleTenantChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
