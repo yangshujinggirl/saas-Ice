@@ -34,11 +34,15 @@ class ContractEditColumn extends BaseColumn {
             width: 100
         }, {
             title: '证件类型',
-            dataIndex: 'documentType',
+            dataIndex: 'cardType',
             width: 160
         }, {
             title: '证件号码',
-            dataIndex: 'documentCode',
+            dataIndex: 'cardNo',
+            width: 160
+        }, {
+            title: '手机号',
+            dataIndex: 'phone',
             width: 160
         }, {
             title: '合同时间',

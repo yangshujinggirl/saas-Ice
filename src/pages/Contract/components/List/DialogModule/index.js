@@ -52,6 +52,7 @@ class DialogModule extends Component {
     this.props.submit(id,actionStatus);
   }
   onClose() {
+    this.props.visible = false;
     this.setState({
       visible:false
     })

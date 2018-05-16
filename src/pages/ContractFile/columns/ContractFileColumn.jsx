@@ -35,11 +35,11 @@ class ContractFileColumn extends BaseColumn {
             width: 100
         }, {
             title: '证件类型',
-            dataIndex: 'documentType',
+            dataIndex: 'cardType',
             width: 100
         }, {
             title: '证件号码',
-            dataIndex: 'documentCode',
+            dataIndex: 'cardNo',
             width: 160
         }, {
             title: '合同类型',
@@ -49,13 +49,20 @@ class ContractFileColumn extends BaseColumn {
               return typeTrans[record.type]
             }
         }, {
+            title: '状态',
+            dataIndex: 'status',
+            width: 120,
+            cell:(value, index, record)=> {
+              return statusTrans[record.status]
+            }
+        }, {
             title: '合同时间',
             dataIndex: 'contractTime',
             width: 160
         }, {
-            title: '资方',
-            dataIndex: 'capital',
-            width: 120
+            title: '手机号码',
+            dataIndex: 'phone',
+            width: 160
         }, {
             title: '产品类型',
             dataIndex: 'productType',
@@ -69,12 +76,9 @@ class ContractFileColumn extends BaseColumn {
             dataIndex: 'customerManagerName',
             width: 120
         }, {
-            title: '状态',
-            dataIndex: 'status',
-            width: 120,
-            cell:(value, index, record)=> {
-              return statusTrans[record.status]
-            }
+          title: '资方',
+          dataIndex: 'capital',
+          width: 120
         }, {
             title: '操作',
             dataIndex: 'visible',

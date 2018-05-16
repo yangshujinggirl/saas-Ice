@@ -19,7 +19,11 @@ class ContractColumn extends BaseColumn {
             width: 160
         }, {
             title: '模板类型',
-            dataIndex: 'typeName',
+            dataIndex: 'templateTypeName',
+            width: 160
+        }, {
+            title: '最后修改时间',
+            dataIndex: 'updatedAt',
             width: 160
         }, {
             title: '状态',
