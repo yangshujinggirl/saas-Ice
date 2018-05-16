@@ -88,14 +88,14 @@ export default class CreditInformationForm extends BaseComponent {
         let {actions, params} = this.props;
 
         if (params.id) {
-            Req.getDetail(params.id).then((res)=>{
-              if(res && res.code == 200 && res.data && res.data.list) {
-                var list = res.data.list;
-                this.findFied(list);
-              }
-            }).catch(error=>{
-              console.log(error)
-            });
+            // Req.getDetail(params.id).then((res)=>{
+            //   if(res && res.code == 200 && res.data && res.data.list) {
+            //     var list = res.data.list;
+            //     this.findFied(list);
+            //   }
+            // }).catch(error=>{
+            //   console.log(error)
+            // });
             Req.getCreditDetail(params.id).then((res)=>{
               if(res && res.code == 200) {
                 res.data = Object.assign(this.state.formData,res.data)
@@ -242,8 +242,18 @@ export default class CreditInformationForm extends BaseComponent {
       //  var _list = [];
       info.fileList.map(item=>{
         if(item.status == 'done'){
-          item.downloadURL = item.imgURL;
-          item.fileURL = item.imgURL;
+          console.log(item.type)
+          console.log(item.type.indexOf('image') == 0)
+          if(item.type.indexOf('image') == 0){
+            console.log("www")
+            item.size = item.originFileObj.size;
+            item.downloadURL = item.imgURL;
+            item.fileURL = item.imgURL;
+          }
+            item.size = item.originFileObj.size;
+            item.downloadURL = item.imgURL;
+            item.fileURL = '/public/images/creditInformation/file.png';
+
         }
       })
 
