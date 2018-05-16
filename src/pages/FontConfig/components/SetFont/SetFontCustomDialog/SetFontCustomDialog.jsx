@@ -83,6 +83,77 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     }
 
     /**
+     * 获取日期格式复选框的值，从日期格式yyyy-MM-dd HH:mm:ss解析成数组
+     * @return {[type]} [description]
+     */
+    getDateValue(){
+      let {data} = this.props;
+      let format = data.dateFormat;
+      let value = [];
+
+      if(!format){
+        return [];
+      }
+
+      let formatArr = format.split(' ');
+      formatArr.map((item) => {
+        if(item.indexOf('-') != -1){
+          value = value.concat(item.split('-'));
+        } else if(item.indexOf(':') != -1){
+          value = value.concat(item.split(':'));
+        }else{
+          value.push(item);
+        }
+      })
+
+      return value;
+    }
+
+    /**
+     * 点击改变日期格式复选框后
+     * @param  {[type]} value [description]
+     * @return {[type]}       [description]
+     */
+    changeDate = (value) => {
+      let str = value.join(',');
+      let datePart = [];
+      let timePart = [];
+
+      if(str.indexOf('yyyy') != -1){
+        datePart.push('yyyy');
+      }
+      if(str.indexOf('MM') != -1){
+        datePart.push('MM');
+      }
+      if(str.indexOf('dd') != -1){
+        datePart.push('dd');
+      }
+
+      if(str.indexOf('HH') != -1){
+        timePart.push('HH');
+      }
+      if(str.indexOf('mm') != -1){
+        timePart.push('mm');
+      }
+      if(str.indexOf('ss') != -1){
+        timePart.push('ss');
+      }
+
+      let result = [];
+
+      if(datePart.length > 0){
+        result.push(datePart.join('-'));
+      }
+      if(timePart.length > 0){
+        result.push(timePart.join(':'));
+      }
+
+      this.props.changeFormData({
+          dateFormat: result.join(' ')
+      })
+    }
+
+    /**
      * 字段的全选、反选操作
      * @param  {[type]} index [description]
      * @param  {[type]} all   [description]
@@ -121,13 +192,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     }
 
     render() {
-        const codeDate = (value) => {
-            let data = this.state.fields;
-            data.dateFormat = value.join()
-            this.props.changeFormData({
-                dateFormat: value.join()
-            })
-        }
+        
 
         // 添加自定义字段，选择下拉框，下拉框输入值的时候触发的函数
         const handleSelect = (index, value) => {
@@ -158,13 +223,27 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             })
         }
 
+        const handleChecked = (index) => {
+          let data = this.props.data;
+
+          data.options.map((item, i) => {
+            item.checked = index == i;
+          })
+
+            this.props.changeFormData({
+                options: data.options
+            })
+        }
+
         let {data, visible, onClose} = this.props;
         let { allPageFields = [] } = this.state;
 
         if (!data.options || data.options.length == 0) {
+          // 默认第一个选项为默认值
             data.options = [{
                 label: '',
-                value: ''
+                value: '',
+                checked: true
             }]
         }
 
@@ -288,7 +367,8 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                                                       return (
                                                           <div className='dropDown' key={index}>
                                                               <div>
-                                                                  <Input value={item.label} placeholder=" 请输入值" onChange={handleSelect.bind(this, index)} />
+                                                                <Radio size="large" checked={item.checked} onChange={handleChecked.bind(this, index)}></Radio>
+                                                                  <Input size="large" value={item.label} placeholder="请输入值" onChange={handleSelect.bind(this, index)} />
                                                                   <div className='addReduce'>
                                                                       <span onClick={handleAddValue.bind(this, 'add')}>+</span>
                                                                       {index != 0 && <span onClick={handleAddValue.bind(this, index)}>-</span>}
@@ -304,7 +384,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                          <label htmlFor="" className='marr10'>
                              日期格式
                          </label>
-                         <CheckboxGroup value={this.state.listDate} dataSource={this.DATE_FORMATS} onChange={codeDate} />
+                         <CheckboxGroup value={this.getDateValue()} dataSource={this.DATE_FORMATS} onChange={this.changeDate} />
                      </div> : ""}
                 </div>
             </Dialog>

@@ -386,7 +386,8 @@ export default class setFont extends Component {
             type: null,
             options: [{
                 label: '',
-                value: ''
+                value: '',
+                checked: true
             }],
             orderId: currentFieldSet.fields.length + 1
         };

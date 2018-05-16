@@ -44,7 +44,7 @@ export default class SetFontBaseDialog extends Component {
                 label: "时"
             },
             {
-                value: "tt",
+                value: "mm",
                 label: "分"
             },
             {
