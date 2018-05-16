@@ -10,7 +10,7 @@ class ContractFileReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/contract/contract/list/',
+            retrieve: this._host + '/contract/contract/',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }
@@ -48,15 +48,31 @@ class ContractFileReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-	//上传文件
+	//提交文件
 	signContractApi(params) {
 		let options = {
-			url: this._host + `/contract/contract/signed_paper_file`,
-			// url: 'http://172.16.0.210:8080/contract/contract/signed_paper_file',
-			method: 'POST',
-			contentType:'application/x-www-form-urlencoded',
-			// contentType: 'application/form-data',
+			url: this._host + `/contract/contract/signed-paper-file`,
+			method: 'PUT',
+			contentType:'application/json',
 			data:params//files,contract_id
+		}
+		return super.fetchData(options);
+	}
+	//保存文件
+	saveFilesApi(params) {
+		let options = {
+			url: this._host + `/contract/contract/signed-paper-file`,
+			method: 'POST',
+			contentType:'application/json',
+			data:params//files,contract_id
+		}
+		return super.fetchData(options);
+	}
+	//已保存文件列表
+	searchFilesApi(id) {
+		let options = {
+			url: this._host + `/contract/contract/signed-paper-file/${id}`,
+			method: 'GET',
 		}
 		return super.fetchData(options);
 	}

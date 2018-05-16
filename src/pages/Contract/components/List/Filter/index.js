@@ -77,7 +77,7 @@ class Filter extends Component {
                   </Col>
                   <Col xxs={24} xs={12} l={8} xl={8}>
                     <FormItem className="pch-condition-operate">
-                      <Button onClick={this.handleSubmit.bind(this)} type="secondary">
+                      <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                           查询
                       </Button>
                       <Button onClick={this.resetSubmit.bind(this)} type="secondary">

@@ -51,8 +51,7 @@ class DialogModule extends Component {
     const { id, actionStatus } = this.props.templateObj;
     this.props.submit(id,actionStatus);
   }
-  onClose() {
-    this.props.visible = false;
+  onCancel() {
     this.setState({
       visible:false
     })
@@ -100,9 +99,11 @@ class DialogModule extends Component {
       return (
         <PchDialog
           title={this.dialogTitle()}
+          submitText="确认"
+          cancelText="取消"
           visible={this.state.visible}
           onOk={()=>this.onOk()}
-          onClose={()=>this.onClose()}
+          onCancel={()=>this.onCancel()}
           footer={[]}>
           {
             templateObj.productList.length>0 &&

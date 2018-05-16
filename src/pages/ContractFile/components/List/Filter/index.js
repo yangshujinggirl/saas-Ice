@@ -23,6 +23,9 @@ const formItemLayout = {
 class Filter extends Component {
   constructor() {
     super();
+    this.state = {
+      value:{}
+    }
   }
   handleSubmit() {
     this.refs.form.validateAll((errors, values) => {
@@ -33,7 +36,7 @@ class Filter extends Component {
   render() {
       return (
         <div className="pch-condition">
-            <IceFormBinderWrapper ref="form">
+            <IceFormBinderWrapper ref="form" value={this.state.value}>
               <Form size="large" direction="hoz">
                 <Row wrap>
                   <Col span={5}>
@@ -52,7 +55,7 @@ class Filter extends Component {
                   </Col>
                   <Col span={5}>
                     <FormItem {...formItemLayout} label="证件号码:">
-                      <IceFormBinder name="documentCode">
+                      <IceFormBinder name="cardNo">
                           <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
@@ -66,7 +69,7 @@ class Filter extends Component {
                   </Col>
                   <Col span={4}>
                     <FormItem {...formItemLayout} label="">
-                      <Button type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
+                      <Button type="secondary" size="large" onClick={this.handleSubmit.bind(this)} htmlType="submit">
                           查询
                       </Button>
                     </FormItem>

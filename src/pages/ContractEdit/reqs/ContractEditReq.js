@@ -9,7 +9,7 @@ class ContractEditReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/contract/contract/list',
+            retrieve: this._host + '/contract/contract/',
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }

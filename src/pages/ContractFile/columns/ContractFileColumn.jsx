@@ -102,8 +102,10 @@ class ContractFileColumn extends BaseColumn {
                         }
 
                         {
-                          record.type == 2 &&
-                          record.status !=5 && <Button
+                          // record.type == 2 &&
+                          // record.status != 4 &&
+                          // record.status !=5 &&
+                          <Button
                                                   type="secondary"
                                                   shape="text"
                                                   onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
@@ -112,6 +114,7 @@ class ContractFileColumn extends BaseColumn {
                         }
                         {
                           record.type == 2 &&
+                          record.status != 4 &&
                           record.status !=5 && <Button
                                                 type="secondary"
                                                 shape="text"

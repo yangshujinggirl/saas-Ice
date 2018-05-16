@@ -101,6 +101,11 @@ class ContractList extends BaseApp {
       Toast.error(error);
     })
   }
+  onCancel() {
+    this.setState({
+      paperVisbile:false
+    })
+  }
   render() {
     const { columns } = this.props;
     const { visible, paperVisbile } =this.state;
@@ -116,6 +121,9 @@ class ContractList extends BaseApp {
             submit={this.submitOperate.bind(this)}/>
           <PchDialog
             title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
+            submitText="确认"
+            cancelText="取消"
+            onCancel={()=>this.onCancel()}
             visible={paperVisbile}
             onOk={this.submitChangePaper.bind(this)}/>
       </IceContainer>

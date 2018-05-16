@@ -18,7 +18,8 @@ class ContractList extends BaseApp {
       visible:false,
       elecVisbile:false,
       contractId:'',
-      signVisible:false
+      signVisible:false,
+      fileList:[]
     }
   }
   componentWillMount() {
@@ -65,11 +66,26 @@ class ContractList extends BaseApp {
   }
   //签字
   signDialog(id) {
-    this.setState({
-      signVisible:true,
-      visible:false,
-      contractId:id
+    Req.searchFilesApi(id)
+    .then((res) => {
+      const { data } =res;
+      let fileList = data.map((el) => {
+        return {
+          fileName:el.fileName,
+          imgURL: el.location,
+          fileURL: el.location,
+          type:el.type
+        }
+      })
+      this.setState({
+        signVisible:true,
+        visible:false,
+        elecVisbile:false,
+        contractId:id,
+        fileList
+      })
     })
+
   }
   //改纸质
   changeDialog(record) {
@@ -116,6 +132,22 @@ class ContractList extends BaseApp {
       Toast.error(error);
     })
   }
+  //保存签字
+  saveSign(files) {
+    let params = Object.assign({files}, {contractId:this.state.contractId });
+    Req.saveFilesApi(params)
+    .then((res) => {
+      const { code, msg } =res;
+      if ( code != 200) {
+        Toast.error(msg);
+        return;
+      }
+      Toast.success("保存成功");
+      this.setState({
+        signVisible:false
+      })
+    })
+  }
   //提交签字
   submitSign(files) {
     let params = Object.assign({files}, {contractId:this.state.contractId });
@@ -132,6 +164,11 @@ class ContractList extends BaseApp {
       })
     })
   }
+  onCancel() {
+    this.setState({
+      visible:false
+    })
+  }
   render() {
     const { columns } = this.props;
     const { list=[] } =this.props.pageData;
@@ -139,15 +176,18 @@ class ContractList extends BaseApp {
 
     return(
       <IceContainer className="pch-container">
-          <Title title="合同编辑" />
+          <Title title="合同归档" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
+          <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
           <DialogModule
             visible={visible}
+            onCancel={()=>this.onCancel()}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
+            fileList={this.state.fileList}
             visible={signVisible}
+            cancel = {this.saveSign.bind(this)}
             submit={this.submitSign.bind(this)}/>
           <PchDialog
             title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
