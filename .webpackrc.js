@@ -1,7 +1,5 @@
 const SAAS_HOST = 'http://172.16.0.218:8080';
-// const CRM_HOST = 'http://172.16.0.211:8080/';
-// const CRM_HOST = 'http://172.16.0.92:8080/';
-const CRM_HOST = 'http://172.16.0.190:8080/';
+const CRM_HOST = 'http://172.16.0.218:8080/';
 const CONTRACT_HOST = 'http://172.16.0.210:8080';
 
 const { resolve } = require('path');

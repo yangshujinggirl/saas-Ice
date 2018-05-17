@@ -212,6 +212,7 @@ export default class ProcessForm extends Component {
                     privilegeItems: item.privilegeItems,
                     taskOrder: idx
                 });
+                break;
             }
             case PROCESS_VIEW.EDITPAGE : {
                 // 编辑页面
