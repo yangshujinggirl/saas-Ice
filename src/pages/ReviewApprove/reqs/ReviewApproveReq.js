@@ -9,7 +9,7 @@ class ReviewApproveReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/filter-table-list.json',
+            retrieve: this._config.WF_HOST + '/tasks',
             delete: this._host + '/detail.json',
             detail: this._config.LOAN_HOST + '/loans/:id/screen'
         }

@@ -37,8 +37,9 @@ export default class Filter extends Component {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-                limit : 10,
-            }
+              limit:20
+            },
+            endOpen: false
         };
     }
 
@@ -49,14 +50,49 @@ export default class Filter extends Component {
         });
     }
     handleSubmit() {
-        const {submitStart, submitEnd} = this.state.value;
-        if(submitStart && submitEnd){
-          if(submitEnd.getTime() <= submitStart.getTime()){
-                Toast.help("申请开始时间不能大于申请结束时间");
-                return;
-          }
-        }
+        // const {submitStart, submitEnd} = this.state.value;
+        // if(submitStart && submitEnd){
+        //   if(submitEnd.getTime() <= submitStart.getTime()){
+        //         Toast.help("申请开始时间不能大于申请结束时间");
+        //         return;
+        //   }
+        // }
         this.props.onSubmit && this.props.onSubmit(this.state.value);
+    }
+    onStartChange(value) {
+      this.onChange("submitStart", value);
+    }
+    onEndChange(value) {
+      this.onChange("submitEnd", value);
+    }
+    onChange(field, value) {
+      let d = this.state.value;
+      d[field] = value
+      this.setState({
+        value: d
+      });
+    }
+    handleEndOpenChange(open) {
+      this.setState({ endOpen: open });
+    }
+    handleStartOpenChange(open) {
+      if (!open) {
+        this.setState({ endOpen: true });
+      }
+    }
+    disabledEndDate(submitEnd) {
+      const { submitStart } = this.state.value;
+      if (!submitEnd || !submitStart) {
+        return false;
+      }
+      return submitEnd.valueOf() <= submitStart.valueOf();
+    }
+    disabledStartDate(submitStart) {
+      const { submitEnd } = this.state.value;
+      if (!submitStart || !submitEnd) {
+        return false;
+      }
+      return submitStart.valueOf() > submitEnd.valueOf();
     }
 
     render() {
@@ -88,11 +124,16 @@ export default class Filter extends Component {
                           <FormItem {...formItemLayout} label="申请开始时间：">
                             <IceFormBinder
                               name="submitStart"
+                              // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
+                              valueFormatter={(date, dateStr) => dateStr}
                             >
                               <DatePicker
+                                disabledDate={this.disabledStartDate.bind(this)}
+                                showTime
                                 size="large"
-                                style={{width:"100%"}}
                                 placeholder="申请开始时间"
+                                onChange={this.onStartChange.bind(this)}
+                                onOpenChange={this.handleStartOpenChange.bind(this)}
                               />
                             </IceFormBinder>
                           </FormItem>
@@ -101,11 +142,16 @@ export default class Filter extends Component {
                           <FormItem {...formItemLayout} label="申请结束时间：">
                             <IceFormBinder
                               name="submitEnd"
+                              // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
+                              valueFormatter={(date, dateStr) => dateStr}
                             >
                               <DatePicker
-                                size="large"
-                                style={{width:"100%"}}
-                                placeholder="申请结束时间" />
+                                disabledDate={this.disabledEndDate.bind(this)}
+                                showTime
+                                placeholder="申请结束时间"
+                                onChange={this.onEndChange.bind(this)}
+                                onOpenChange={this.handleEndOpenChange.bind(this)}
+                              />
                             </IceFormBinder>
                           </FormItem>
                         </Col>

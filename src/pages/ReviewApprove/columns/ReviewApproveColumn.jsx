@@ -61,24 +61,22 @@ class ReviewApproveColumn extends BaseColumn {
                           :(<span></span> )
                       }
                       {
-                        record.status  && record.status == 'SIGNED' && (record.taskTypeKey == '3' ||record.taskTypeKey == '4')?
-                          ( <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                        record.status  && record.status == 'SIGNED' ?
+
+                          record.taskTypeKey == '10' ? ( <div className='list-button-box'>
+                              <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER3)}>
+                                详情
+                              </button>
+                              <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER4)}>
+                                征信录入
+                              </button>
+                            </div>) :( <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
                             详情
                           </button>)
+
                           :(<span></span> )
                       }
-                      {
-                        record.status  && record.status == 'SIGNED' && record.taskTypeKey == '10' ?
-                          ( <div className='list-button-box'>
-                            <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
-                              详情
-                            </button>
-                            <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
-                              征信录入
-                            </button>
-                          </div>)
-                          :(<span></span> )
-                      }
+
                     </div>
                     );
             }
