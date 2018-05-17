@@ -4,3 +4,15 @@
     margin-right: 16px;
   }
 }
+.contract-switch {
+  width: 55px;
+  &.next-switch-on {
+    background-color: #FC9E25;
+  }
+  &.next-switch-medium > .next-switch-trigger {
+    left: 28px;
+  }
+  &.next-switch-off > .next-switch-trigger {
+    left: 0;
+  }
+}

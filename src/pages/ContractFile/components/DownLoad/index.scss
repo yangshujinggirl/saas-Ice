@@ -1,0 +1,31 @@
+.contractfile-down-load-page {
+  background: #fff;
+  .contractfile-down-load-wrap {
+    padding: 20px;
+    .down-load-list {
+      padding: 20px 0 40px;
+      text-align: center;
+      cursor: pointer;
+      .item {
+        display: inline-block;
+        width: 80%;
+      }
+      .text-wrap {
+        height: 220px;
+        border: 1px solid #eee;
+        background-color: #f2f2f2;
+        width: 100%;
+        .contract-name {
+          display: inline-block;
+          padding: 50px 10px 20px;
+          border-bottom:1px solid #ccc;
+          text-align: center;
+        }
+      }
+      .down-btn {
+        display: block;
+        padding: 20px 0;
+      }
+    }
+  }
+}

@@ -40,7 +40,7 @@ export default class ProcessFormProduct extends BaseApp {
         let {list} = formLeftData
         this.state = {
             visible: this.props.visible,
-            dataSourceRight: [],
+            dataSourceRight: list,
             selectedRowKeys: [],
             selectedRowOne: [],
             productType: [],
@@ -86,22 +86,17 @@ export default class ProcessFormProduct extends BaseApp {
         let { dataSourceRight } = this.state;
         let tempArr = [];//新增到右侧表格中的数据
 
-        for (var key in arrayRightData) {
-            var flag = true;
-            for (var j = 0; j < dataSourceRight.length; j++) {
-                if (arrayRightData[key].id == dataSourceRight[j].id) {
-                    flag = false;
+        for(var i=0;i<arrayRightData.length-1;i++){
+            for (var j=i+1;j<arrayRightData.length;j++){
+                if(arrayRightData[i].productCode==arrayRightData[j].productCode){
+                    arrayRightData.splice(j,1)
                 }
             }
-
-            if (flag) {
-                tempArr.push(arrayRightData[key]);
-            }
         }
-
+                
         //去重后渲染
-        tempArr.map((item, i) => {
-            dataSourceRight.push({
+        arrayRightData.map((item, i) => {
+            tempArr.push({
                 productCode: item.productCode,
                 productId: item.id,
                 productName: item.name|| item.productName,
@@ -114,7 +109,7 @@ export default class ProcessFormProduct extends BaseApp {
             })
         })
         this.setState({
-            dataSourceRight
+            dataSourceRight:tempArr
         })
     }
     //产品类型的Key值

@@ -8,7 +8,13 @@ export default {
     path: 'detail/:id',
     name:'合同归档详情',
     component: ContractFile.ContractFileDetail
-  }],
+  },
+  {
+    path: 'downList/:id',
+    name:'合同下载',
+    component: ContractFile.ContractFileDownLoad
+  }
+],
   component: Layout,
   indexRoute: {
     component: ContractFile.ContractFileList

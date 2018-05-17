@@ -83,3 +83,20 @@ export const getDetail = (id) => {
     })
   }
 }
+// 获取下载列表
+export const getDownLoadList = (id) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.searchFilesApi(id).then((res) => {
+      if (!res || res.code != 200) {
+        Toast.error(res.msg);
+        return;
+      }
+      dispatch(fetchSuccess({ pageData: res}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}

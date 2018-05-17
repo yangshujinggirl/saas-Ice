@@ -3,7 +3,7 @@ import { Router, Route, Link ,hashHistory} from 'react-router';
 import axios from 'axios';
 import IceContainer from '@icedesign/container';
 import DataBinder from '@icedesign/data-binder';
-
+import Req from '../../../reqs/ProductReq'
 import './SearchEdit.scss';
 
 import {
@@ -53,6 +53,8 @@ export default class SearchEdit extends Component {
     // 请求参数缓存
     this.queryCache = {};
     this.state = {
+      processList: [], 
+      processDefId:'',
       values:{
         
       }
@@ -63,14 +65,21 @@ export default class SearchEdit extends Component {
   
   }
   componentDidMount() {
-    let {actions,prodInfo, params} = this.props;
-    this.props.actions.edit(params.id);
+    let {actions,prodInfo, params,formData} = this.props;
+    let { product = {} } = formData;
+    actions.edit(params.id);
     actions.getDetail(params.id);
-    console.log(this.props)
-    
+    //流程名称获取
+    Req._processList({ tenantId: product.tenantId,limit:99999 }).then((data) => {
+      let temp = this.state.processList;
+      temp = data.data.list;
+      this.setState({ processList: temp }, function () { });
+      console.log('')
+    })
   }
   upData=()=>{
     let {actions,pageData,params} = this.props;
+    console.log(this.state.processName)
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
       if (error) {
@@ -79,12 +88,29 @@ export default class SearchEdit extends Component {
       }
       // 提交当前填写的数据
       value.effectiveDate=value.time[0]
-      value.expirationDate=value.time[1]
+      value.expirationDate=value.time[1];
+      value.processDefId = this.state.processDefId
       this.props.actions.prodrevise(value);//
-      location.reload ()
+      // location.reload ()
     });
   }
+  onFormChange=(value)=>{
+    this.setState({
+      value
+    })
+  }
+   //流程名称的id值
+   onChangeProcess=(value,option)=> {
+     console.log(option)
+    this.setState({
+      processDefId: option.processId,
+      show: true
+    })
+  }
+
+
   render() {
+    
     let prodInfo = this.props.prodInfo;
     let {formData} = this.props
     let name = formData.product|| {}
@@ -129,6 +155,7 @@ export default class SearchEdit extends Component {
                     name:name,
                     id:this.props.params.id,
                     status:undefined}}
+            onChange={this.onFormChange}
           >
             <div className="pch-form">
               <Form
@@ -137,18 +164,19 @@ export default class SearchEdit extends Component {
                 labelAlign="left">
                 <Row wrap>
                   <Col s={12} l={12}>
-                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品名称</span>}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品名称:</span>}>
                     <IceFormBinder
                       name="name"
                       message="产品名称必填"
                     >
-                      <Input size="large" placeholder="产品名称" value={name} className="custom-input" />
+                    <span className="pch-from-searchedit-name">{name}</span>
+                      {/* <Input size="large" placeholder="产品名称" value={name} className="custom-input" /> */}
                     </IceFormBinder>
                     <div><IceFormError name="name" /></div>
                     </FormItem>
                   </Col>
                   <Col s={12} l={12}>
-                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限</span>}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限:</span>}>
                     <IceFormBinder
                       name="time"
                       required
@@ -161,27 +189,32 @@ export default class SearchEdit extends Component {
                    </FormItem>
                   </Col>
                   <Col s={12} l={12}>
-                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>流程名称</span>}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>流程名称:</span>}>
                     <IceFormBinder
-                        name="lineName"
+                        name="processName"
                         required
                         message="流程名称必填"
                       >
-                        <Select
-                          placeholder="请选择"
-                          className="custom-select"
-                          hasClear={true}
-                          size="large"
-                        >
-                          <Option value="ONE">1</Option>
-                          <Option value="TWO">2</Option>
-                        </Select>
+                         <Select
+                              size="large"
+                              placeholder="请选择"
+                              className="custom-select"
+                              onChange={this.onChangeProcess}
+                            >
+                              {
+                                this.state.processList.map((item, i) => {
+                                  return (
+                                    <Option value={item.processName} key={i} processId={item.id}>{item.processName}</Option>
+                                  )
+                                })
+                              }
+                            </Select>
                       </IceFormBinder>
-                      <div><IceFormError name="lineName" /></div>
+                      <div><IceFormError name="processName" /></div>
                       </FormItem>
                   </Col>
                   <Col s={12} l={12}>
-                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>状态</span>}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>状态:</span>}>
                     <IceFormBinder
                         name="status"
                         required
@@ -219,7 +252,7 @@ export default class SearchEdit extends Component {
                   <Table.Column title="版本" dataIndex="id" width={120} />
                   <Table.Column title="生效期限" dataIndex="temptime" width={250} />
                   <Table.Column title="状态" dataIndex="status" width={160} />
-                  <Table.Column title="流程" dataIndex="template" width={100} />
+                  <Table.Column title="流程" dataIndex="processName" width={100} />
                   <Table.Column title="时间" dataIndex="operateAt" width={120} />
                   <Table.Column title="操作人" dataIndex="operateName" width={120} />
               </Table>
