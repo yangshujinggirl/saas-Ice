@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 param=$1
-noup=$2
+upcmd=$2
 repository=http://www1.pingchang666.com:81/web/pingchang-config-server-pro.git
 
 if [[ $param == '' ]]; then
@@ -58,7 +58,7 @@ git commit -am 'update'
 git push origin $param
 
 # 执行上传到服务器命令
-if [[ $noup != '-no' ]]; then
+if [[ $upcmd != '-up' ]]; then
 	npm run $param
 fi
 

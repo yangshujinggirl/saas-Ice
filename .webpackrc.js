@@ -50,16 +50,17 @@ module.exports = {
             '/crm': {
                 target: CRM_HOST,
                 changeOrigin: true,
+                pathRewrite: { "^/crm": "/crm-ft1" },
                 bypass: function(req, res, proxyOpt) {
                     res.set('X-ICE-PROXY', 'on');
                     res.set('X-ICE-PROXY-BY', CRM_HOST);
                 },
             },
             
-            '/contractApi': {
+            '/contract': {
                 target: CONTRACT_HOST,
                 changeOrigin: true,
-                pathRewrite:{"^/contractApi" : ""},
+                pathRewrite: { "^/contract": "/contract-ft1" },
                 bypass: function(req, res, proxyOpt) {
                     // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');
