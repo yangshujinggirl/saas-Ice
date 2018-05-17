@@ -1,0 +1,54 @@
+.loan-config-content {
+  .config-page{
+    width: 100%;
+    border: 1px solid #F6DCA9;
+  }
+  .subMenu-wrap{
+    height: 100%;
+    opacity: 0.6;
+    background: #FDF4E3;
+    border-right: 1px solid #F6DCA9;
+    padding-left: 35px;
+    padding-top: 20px;
+    // box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+    // -webkit-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+    // -moz-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+    p {
+      margin: 0;
+    }
+    .title {
+      color: #FC9E25;
+    }
+    .menu-list {
+      font-size: 14px;
+      line-height: 34px;
+      color: #000;
+    }
+  }
+  .main-form{
+    padding: 0 20px;
+    .part-same{
+      .action-name {
+        font-family: PingFangSC-Medium;
+        font-size: 15px;
+        //color: #FC9E25;
+        letter-spacing: 0;
+        height: 30px;
+        border-bottom:  1px #D8D8D8 solid;
+        margin: 0 0 20px 0;
+      }
+      .rows {
+        display: flex;
+        .cols {
+          width: 25%;
+        }
+      }
+      .upload{
+        width: 100%;
+      }
+    }
+    .upload-list {
+      margin-top: 20px;
+    }
+  }
+}

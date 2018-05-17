@@ -1,6 +1,8 @@
 const SAAS_HOST = 'http://172.16.0.218:8080';
 // const CRM_HOST = 'http://172.16.0.211:8080/';
-const CRM_HOST = 'http://172.16.0.92:8080/';
+// const CRM_HOST = 'http://172.16.0.92:8080/';
+const CRM_HOST = 'http://172.16.0.190:8080/';
+const CONTRACT_HOST = 'http://172.16.0.210:8080';
 
 const { resolve } = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -51,6 +53,17 @@ module.exports = {
                 bypass: function(req, res, proxyOpt) {
                     res.set('X-ICE-PROXY', 'on');
                     res.set('X-ICE-PROXY-BY', CRM_HOST);
+                },
+            },
+            
+            '/contractApi': {
+                target: CONTRACT_HOST,
+                changeOrigin: true,
+                pathRewrite:{"^/contractApi" : ""},
+                bypass: function(req, res, proxyOpt) {
+                    // 添加 HTTP Header 标识 proxy 开启
+                    res.set('X-ICE-PROXY', 'on');
+                    res.set('X-ICE-PROXY-BY', CONTRACT_HOST);
                 },
             },
             '/wf': {

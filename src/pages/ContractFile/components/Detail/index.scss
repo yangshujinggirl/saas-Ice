@@ -1,0 +1,28 @@
+.contract-file-pages {
+  .main-content {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+  .handle-btn-list-wrap {
+    text-align: center;
+    padding: 30px 0;
+    button {
+      background-color: #FC9E25;
+      margin-right: 10px;
+    }
+    .next-btn.disabled, .next-btn[disabled] {
+      background-color: #F4F4F4;
+      border-color: #DCDEE3;
+    }
+  }
+}
+
+@media print {
+    body{
+        visibility: hidden;
+    }
+    #section-to-print {
+      visibility: visible;
+    }
+}
