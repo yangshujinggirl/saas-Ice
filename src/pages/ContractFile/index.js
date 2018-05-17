@@ -1,5 +1,6 @@
 import ContractFileList from './ContractFileList'
 import ContractFileDetail from './ContractFileDetail'
+import ContractFileDownLoad from './ContractFileDownLoad'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ContractFileActions from './actions/ContractFileAction.js'
@@ -25,7 +26,13 @@ let ContractFileDetailObj = connect(
     mapDispatchToProps
 )(ContractFileDetail);
 
+let ContractFileDownLoadObj = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ContractFileDownLoad);
+
 export default {
 	ContractFileList: ContractFileListObj,
-	ContractFileDetail: ContractFileDetailObj
+	ContractFileDetail: ContractFileDetailObj,
+	ContractFileDownLoad: ContractFileDownLoadObj,
 }

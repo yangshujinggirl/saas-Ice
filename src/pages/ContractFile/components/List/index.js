@@ -55,30 +55,14 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.DOWNLOAD: {
-            this.downloadEvent(record.id)
+            this.downloadEvent(record)
             break;
         }
     }
   }
   //下载
-  downloadEvent(id) {
-    let popup = window.open('about:blank', '_blank');
-    Req.downloadFilesApi(id)
-    .then(res => {
-      const { data, code, msg } = res;
-      if(code != 200 && data == null ) {
-        Toast.error(msg);
-        return
-      }
-      let url ;
-      if(data.location) {
-        url = data.location;
-      } else {
-        url = 'https://www.baidu.com/';
-      }
-
-      popup.location = url;
-    })
+  downloadEvent(record) {
+    hashHistory.push(`contractfile/downList/${record.id}/?type=${record.type}`);
   }
   //作废
   cancelDialog(id) {

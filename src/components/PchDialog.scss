@@ -26,8 +26,8 @@
     }
   }
   .next-dialog-close {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: 1px solid #ccc;
     right: -10px;
@@ -36,5 +36,6 @@
   }
   &.next-dialog .next-dialog-close .next-icon:before {
     color: #333;
+    font-size: 14px;
   }
 }
