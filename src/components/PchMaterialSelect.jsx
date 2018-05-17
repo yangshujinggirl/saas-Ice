@@ -28,6 +28,7 @@ export default class PchMaterialSelect extends BaseComponent {
                 size="large"
                 dataSource={this.state.dataSource}
                 onSearch={this.onSearch}
+                onChange={this.props.onChange}
                 filterLocal={false}/>
             );
     }

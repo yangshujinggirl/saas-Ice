@@ -72,7 +72,13 @@ export default class ProcessForm extends Component {
                 customMenuList.map((citem, j) => {
                     if (item.taskTypeId == citem.id) {
                         citem.limitedAddTimes--;
-                        item = Object.assign(item, citem);
+                        // 编辑是需要模块的数据，只更新需要的数据，有些值是已经编辑过的，如果全部更新会替换已编辑过的数据
+                        item = Object.assign(item, {
+                            canPrivilegeEditable: citem.canPrivilegeEditable,
+                            haveConfigPage: citem.haveConfigPage,
+                            haveRequiredField: citem.haveRequiredField,
+                            haveCollection: citem.haveCollection
+                        });
                     }
                 })
             // item.cid = i;

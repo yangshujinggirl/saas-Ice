@@ -64,6 +64,16 @@ export default class ProcessFormItem extends Component {
         callback();
     }
 
+    /**
+     * 更改材料清单下拉框
+     * @param  {[type]} value [description]
+     * @param  {[type]} data  [description]
+     * @return {[type]}       [description]
+     */
+    handleCollectionChange(value, data){
+        this.props.item.productCollectionId = value;
+    }
+
     render() {
         const { index, item, selectData, setModule, changeView } = this.props;
 
@@ -81,7 +91,7 @@ export default class ProcessFormItem extends Component {
                     </IceFormBinder>
                     <div><IceFormError name={`taskItems[${index}].taskAlias`} /></div>
                 </Col>
-                <Col xxs="6" s="2" l="6">
+                <Col xxs="6" s="2" l="8">
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
                         return (
                             <div className="pch-target-name" key={ind}>
@@ -100,8 +110,8 @@ export default class ProcessFormItem extends Component {
                     {item.haveConfigPage ? <a className={'pch-target' + (item.pageId ? '' : ' disabled')} onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
                     {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE, item)}>编辑</a> : ''}
                 </Col>
-                <Col xxs="6" s="2" l="3">
-                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].file`}><PchMaterialSelect /></IceFormBinder></div> : '--'}
+                <Col xxs="6" s="2" l="4">
+                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].productCollectionId`}><PchMaterialSelect onChange={this.handleCollectionChange} /></IceFormBinder></div> : '--'}
                     {item.haveCollection == '1' ? <a className="pch-target" href="/#/product/filelist" target="_blank">添加</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">

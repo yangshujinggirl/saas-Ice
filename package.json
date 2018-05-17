@@ -74,7 +74,10 @@
   },
   "buildConfig": {
     "theme": "@icedesign/skin",
-    "entry": "src/index.js"
+    "entry1": "src/index.js",
+    "entry": {
+      "app": "./src/index.js"
+    }
   },
   "scaffoldConfig": {
     "name": "ice-design-pro",

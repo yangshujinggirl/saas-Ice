@@ -44,13 +44,13 @@ export default class ProcessFormItemList extends Component {
                     <Col xxs="6" s="3" l="3">
                         模块
                     </Col>
-                    <Col xxs="6" s="2" l="6" className="pch-target-name">
+                    <Col xxs="6" s="2" l="8" className="pch-target-name">
                         <span>条件</span><span>跳转</span>
                     </Col>
                     <Col xxs="6" s="2" l="3">
                         页面
                     </Col>
-                    <Col xxs="6" s="2" l="3">
+                    <Col xxs="6" s="2" l="4">
                         材料清单
                     </Col>
                     <Col xxs="6" s="2" l="2">
