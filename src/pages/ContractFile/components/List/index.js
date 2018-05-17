@@ -15,11 +15,11 @@ class ContractList extends BaseApp {
   constructor(props) {
     super(props);
     this.state = {
-      visible:false,
-      elecVisbile:false,
-      contractId:'',
-      signVisible:false,
-      fileList:[]
+      visible:false,//作废
+      elecVisbile:false,//改电子
+      signVisible:false,//签字
+      fileList:[],
+      contractId:''
     }
   }
   componentWillMount() {
@@ -31,9 +31,9 @@ class ContractList extends BaseApp {
   }
   //点击分页
   changePage = (currentPage) => {
-      this.props.actions.search({
-          page: currentPage
-      });
+    this.props.actions.search({
+        page: currentPage
+    });
   }
   //表单操作
   handleOperateClick(record, type) {
@@ -51,10 +51,34 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CHANGE: {
-            this.changeDialog(record)
+            this.elecDialog(record)
+            break;
+        }
+        case this.OPERATE_TYPE.DOWNLOAD: {
+            this.downloadEvent(record.id)
             break;
         }
     }
+  }
+  //下载
+  downloadEvent(id) {
+    let popup = window.open('about:blank', '_blank');
+    Req.downloadFilesApi(id)
+    .then(res => {
+      const { data, code, msg } = res;
+      if(code != 200 && data == null ) {
+        Toast.error(msg);
+        return
+      }
+      let url ;
+      if(data.location) {
+        url = data.location;
+      } else {
+        url = 'https://www.baidu.com/';
+      }
+
+      popup.location = url;
+    })
   }
   //作废
   cancelDialog(id) {
@@ -87,8 +111,8 @@ class ContractList extends BaseApp {
     })
 
   }
-  //改纸质
-  changeDialog(record) {
+  //改电子
+  elecDialog(record) {
     this.setState({
       elecVisbile:true,
       visible:false,
@@ -113,7 +137,7 @@ class ContractList extends BaseApp {
       })
     })
   }
-  //提交作废api
+  //作废api
   submitCancel(values) {
     let params = Object.assign(values, { action:'INVALID',contractId:this.state.contractId });
     Req.handleContractApi(params)
@@ -166,10 +190,17 @@ class ContractList extends BaseApp {
       })
     })
   }
-  onCancel() {
-    this.setState({
-      visible:false
-    })
+  //关闭弹框
+  onCancel(type) {
+    if(type == 'sign') {
+      this.setState({
+        visible:false
+      })
+    } else if(type == 'elec') {
+      this.setState({
+        elecVisbile:false
+      })
+    }
   }
   render() {
     const { columns } = this.props;
@@ -184,16 +215,19 @@ class ContractList extends BaseApp {
           <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
           <DialogModule
             visible={visible}
-            onCancel={this.onCancel.bind(this)}
+            onCancel={()=>this.onCancel('sign')}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
             fileList={fileList}
             visible={signVisible}
-            cancel = {this.saveSign.bind(this)}
+            save = {this.saveSign.bind(this)}
             submit={this.submitSign.bind(this)}/>
           <PchDialog
-            title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
+            title={'改为电子后，客户可在面签时采用电子签名？'}
+            submitText="确认"
+            cancelText="取消"
             visible={elecVisbile}
+            onCancel={()=>this.onCancel('elec')}
             onOk={this.submitChangelec.bind(this)}/>
       </IceContainer>
     )

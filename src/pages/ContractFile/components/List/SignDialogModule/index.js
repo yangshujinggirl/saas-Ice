@@ -66,7 +66,7 @@ class SignDialogModule extends Component {
       if(type == 'submit') {
         this.props.submit(params);
       } else if (type == 'save') {
-        this.props.cancel(params);
+        this.props.save(params);
       }
     });
   }
