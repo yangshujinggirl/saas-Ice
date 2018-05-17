@@ -193,12 +193,12 @@ export const getProcessProdOldList = (id) => {
   }
 }
 //流程配置产品保存
-export const saveProcessConfigProduct = (data) => {
+export const saveProcessConfigProduct = (data,id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.saveProcessConfigProduct(data).then((res) => {
+    Req.saveProcessConfigProduct(data,id).then((res) => {
       hashHistory.push('/process')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -268,7 +268,7 @@ export const getPrivilegeOrgs = () => {
 
     Req.getPrivilegeOrgs().then((res) => {
       // if (res.code != 200) return;
-      dispatch(fetchSuccess({ orgsData: res }))
+      dispatch(fetchSuccess({ orgsData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

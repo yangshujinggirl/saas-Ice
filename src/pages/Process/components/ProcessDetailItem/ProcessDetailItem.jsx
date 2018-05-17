@@ -32,15 +32,15 @@ export default class ProcessDetailItem extends Component {
      * @param  {[type]} execMode [description]
      * @return {[type]}          [description]
      */
-    getExecModeName(execMode) {
-        let data = this.state.execModeData.filter((item) => item.value == execMode);
+    // getExecModeName(execMode) {
+    //     let data = this.state.execModeData.filter((item) => item.value == execMode);
 
-        if (data.length > 0) {
-            return data[0].name;
-        } else {
-            return '--';
-        }
-    }
+    //     if (data.length > 0) {
+    //         return data[0].name;
+    //     } else {
+    //         return '--';
+    //     }
+    // }
 
     render() {
         const { index, item, selectData, setModule, changeView } = this.props;
@@ -69,19 +69,19 @@ export default class ProcessDetailItem extends Component {
                     {item.pageId ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="3">
-                    {item.file ? <div className="pch-target-name">{item.file}</div> : '--'}
+                    {item.productCollectionId ? <div className="pch-target-name">{item.productCollectionName}</div> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="2">
-                    {item.canPrivilegeEditable == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWAUTH, item)}>查看</a> : '--'}
+                    {item.privilegeItems ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWAUTH, item)}>查看</a> : '--'}
                 </Col>
                 <Col xxs="6" s="3" l="2">
                     {item.haveRequiredField == '1' ? <a className="pch-target" onClick={changeView.bind(this, PROCESS_VIEW.VIEWFIELD, item)}>查看</a> : '--'}
                 </Col>
-                <Col xxs="6" s="2" l="3">
+                {/* <Col xxs="6" s="2" l="3">
                     <div className="pch-target-name">
                         {this.getExecModeName(item.execMode)}
                     </div>
-                </Col>
+                </Col> */}
             </Row>
         );
     }

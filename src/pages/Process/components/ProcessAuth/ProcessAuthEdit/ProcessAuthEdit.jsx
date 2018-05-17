@@ -25,7 +25,7 @@ export default class ProcessAuthEdit extends BaseApp {
     super(props);
     this.state = {
       visible: this.props.visible,
-      dataSourceRight:this.props.data,
+      dataSourceRight:[],
       selectedRowOne: [],
       selectedRowTwo: [],
       current: 1
@@ -44,6 +44,9 @@ export default class ProcessAuthEdit extends BaseApp {
       onChange: (selectedRowKeys, records) => {
         console.log(records)
         let selectedRowTwo = [];
+        for (var i in records){
+          records[i].departmentName= records[i].name
+        }
         selectedRowTwo.push(...records);
         this.setState({
           selectedRowTwo
@@ -96,11 +99,22 @@ export default class ProcessAuthEdit extends BaseApp {
     });
   }
   addItem() {
-    let dataSourceRight = [];
-    dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne)
+    let dataSourceRight = this.state.dataSourceRight;
+    let tempArr = [];
+    dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne);
+    console.log(dataSourceRight)
     dataSourceRight.map((item)=>{
       item.name?item.roleName=item.name:''
     })
+    for(var i= 0; i<dataSourceRight.length-1;i++){
+      for(var j=i+1;j<dataSourceRight.length;j++){
+        if(dataSourceRight[i].departmentName==dataSourceRight[j].departmentName){
+          dataSourceRight.splice(j,1)
+        }
+      }
+    }
+   
+    
     this.setState({
       dataSourceRight
     })
@@ -137,17 +151,18 @@ export default class ProcessAuthEdit extends BaseApp {
   changeRoleToChildren(data){
     data && data.map((item) => {
       item.children = item.roles;
+      item.id = item.departmentId
     })
-
     return data;
   }
   orgNameShow(value, index, record){
-    return record.roleName?`${record.departmentName}-${record.roleName}`:`${record.departmentName}`
+    return record.roleName==record.departmentName?record.roleName:(record.roleName?`${record.departmentName}-${record.roleName}`:`${record.departmentName}`)
   }
   /**
    * 渲染
    */
   render() {
+    console.log(this.props)
     const { dataSourceRight, current } = this.state;
     const { visible, changeView, formData,orgsData } = this.props;
     return (
@@ -186,7 +201,7 @@ export default class ProcessAuthEdit extends BaseApp {
                 isTree
                 rowSelection={{ ...this.rowSelectionTwo }}
               >
-                <Table.Column title="其他机构" dataIndex="departmentName" />
+                <Table.Column title="其他机构" dataIndex="name" />
               </Table>
             </div>
             <div className="btn-wrap">
@@ -201,7 +216,7 @@ export default class ProcessAuthEdit extends BaseApp {
                 maxBodyHeight={370}
               >
                 <Table.Column title="权限" cell={this.orgNameShow}/>
-                <Table.Column title="操作" cell={() => this.renderOperation()} />
+                <Table.Column title="操作" cell={this.renderOperation.bind(this)} />
               </Table>
             </div>
           </div>

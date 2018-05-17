@@ -39,6 +39,7 @@ export default class ProcessForm extends Component {
             actions.getDetail(params.id);
         }
         actions.getCustomMenuList();
+        console.log(this.props,';')
     }
 
     componentWillUnmount() {

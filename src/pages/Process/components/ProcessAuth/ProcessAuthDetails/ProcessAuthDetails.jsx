@@ -35,7 +35,10 @@ export default class ProcessAuthDetails extends Component  {
         console.log('返回。。。')
         
     }
-
+    orgDetails(value, index, record){
+        //record.roleName?`${record.orgName}-${record.departmentName}-${record.roleName}`:record.departmentName
+    return record.roleName==record.departmentName?record.roleName:(record.roleName?`${record.orgName}-${record.departmentName}-${record.roleName}`:`${record.departmentName}`)
+    }
     /**
      * 处理行列表中操作栏的点击事件
      * @param data 传递给对应事件的行记录数据，okey一般为当前记录的主键
@@ -68,7 +71,7 @@ export default class ProcessAuthDetails extends Component  {
                     </Form>
                     <p className="title-p">审批-权限配置详情</p>
                     <Table className="table-list" dataSource={privilegeItems}>
-                        <Table.Column title="权限" dataIndex="orgName"/>
+                        <Table.Column title="权限" cell={this.orgDetails}/>
                     </Table>
                     {/* <Button type="primary" className="return-btn">返回</Button> */}
                     <div className="container">

@@ -50,12 +50,13 @@ export default class [MODULE] extends BaseApp {
      */
     render() {
         const {pageData, columns} = this.props;
+        console.log(this.props)
         return (
             <IceContainer className="pch-container">
                 <Title title="xx查询" />
                 <FilterForm onSubmit={this.fetchData} />
                 <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-                <PchPagination dataSource={pageData} onChange={this.changePage} />
+                <PchPagination dataSource={pageData} changePage={this.changePage} />
             </IceContainer>
         )
     }

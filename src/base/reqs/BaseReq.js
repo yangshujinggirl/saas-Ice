@@ -4,6 +4,7 @@ import Cookie from '../utils/Cookie'
 import Storage from '../utils/Storage'
 import Tools from '../utils/Tools'
 import { hashHistory } from 'react-router'
+import qs from 'qs';
 
 import { Feedback } from "@icedesign/base";
 
@@ -25,14 +26,16 @@ class BaseReq {
 
     if ('contentType' in options) {
       if (options.contentType != 'multipart/form-data') {
-        header['Content-type'] = options.contentType
+        header['Content-Type'] = options.contentType
       }
     } else {
-      header['Content-type'] = 'application/json';
+      header['Content-Type'] = 'application/json';
     }
 
-    if (header['Content-type'] == 'application/json') {
+    if (header['Content-Type'] == 'application/json') {
       options.data = JSON.stringify(options.data);
+    }else{
+      options.data = qs.stringify(options.data);
     }
 
     //追加请求头
@@ -47,6 +50,8 @@ class BaseReq {
       }
       // options.params.t = new Date().getTime().toString(32);
     }
+
+    console.log(options.url, typeof options.data)
 
     return axios({
         url: options.url,

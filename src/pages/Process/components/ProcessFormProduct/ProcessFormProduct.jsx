@@ -19,7 +19,8 @@ export default class ProcessFormProduct extends BaseApp {
 
         this.rowSelection = {
             onChange: (selectedRowKeys, records) => {
-                arrayRightData = [...records];
+                arrayRightData=[...records];
+                arrayRightData.push(...this.state.dataSourceRight)
                 console.log(arrayRightData)
 
                 // let selectedRowOne = [];
@@ -82,39 +83,38 @@ export default class ProcessFormProduct extends BaseApp {
     //右侧增加数据
     addItem() {
         let {params} = this.props;
-        for (var key in arrayRightData) {
-            for (var i = 0; i < arrayRightData.length; i++) {
-                var flag = true;
-                for (var j = 0; j < testarray.length; j++) {
-                    if (arrayRightData[key].id == testarray[j].id) {
-                        flag = false;
-                    }
-                }
+        let { dataSourceRight } = this.state;
+        let tempArr = [];//新增到右侧表格中的数据
 
-                if (flag) {
-                    testarray.push(arrayRightData[key]);
+        for (var key in arrayRightData) {
+            var flag = true;
+            for (var j = 0; j < dataSourceRight.length; j++) {
+                if (arrayRightData[key].id == dataSourceRight[j].id) {
+                    flag = false;
                 }
+            }
+
+            if (flag) {
+                tempArr.push(arrayRightData[key]);
             }
         }
 
         //去重后渲染
-        let arra = [];
-        testarray.map((item, i) => {
-            arra.push({
+        tempArr.map((item, i) => {
+            dataSourceRight.push({
                 productCode: item.productCode,
                 productId: item.id,
-                productName: item.name,
+                productName: item.name|| item.productName,
                 productType: this.productTypeKey(item.productType),
                 processDefId: params.id,
                 status: item.status,
                 businessTypeId: 1,
                 businessTypeName: "贷款业务",
                 tenantId: 123,
-
             })
         })
         this.setState({
-            dataSourceRight: arra
+            dataSourceRight
         })
     }
     //产品类型的Key值
@@ -169,8 +169,9 @@ export default class ProcessFormProduct extends BaseApp {
     //保存
     handleSave = () => {
         let data = this.state.dataSourceRight;
+        let {params} =this.props;
         console.log(data)
-        this.props.actions.saveProcessConfigProduct(data)
+        this.props.actions.saveProcessConfigProduct(data,params.id)
     }
     /**
      * 渲染
@@ -214,7 +215,7 @@ export default class ProcessFormProduct extends BaseApp {
                                                                                    }} maxBodyHeight={370}>
                                 <Table.Column title="编码" dataIndex="productCode" />
                                 <Table.Column title="名称" dataIndex="productName" />
-                                <Table.Column title="操作" cell={() => this.renderOperation()} />
+                                <Table.Column title="操作" cell={this.renderOperation.bind(this)} />
                             </Table>
                         </div>
                     </div>
