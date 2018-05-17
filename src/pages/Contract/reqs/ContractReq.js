@@ -80,15 +80,43 @@ class ContractReq extends CurdReq{
 			contentType: 'application/json',
 			params:condition
 		}
+		this._host = 'contractApi';
 		return super.fetchData(options);
 	}
-	//类型select
+	//获取产品类型select
 	getSelectSourceApi() {
 		this._host = 'loan-ft1';
 		let options = {
-			url: this._host + `/product/data/`,
+			url: this._host + `/product/data`,
 			method: 'GET',
 			contentType: 'application/json'
+		}
+		this._host = 'contractApi';
+		return super.fetchData(options);
+	}
+	//获取产品列表字段
+	getProductNameAPi(data, query) {
+		this._host = 'loan-ft1';
+		let url = this._host + '/screen-schemes/fileds';
+		if(query){
+			url += "?fieldName=" + query;
+		}
+		let options = {
+			url,
+			method: 'post',
+			contentType: 'application/json',
+			data: [...data]
+		}
+		this._host = 'contractApi';
+		return super.fetchData(options);
+	}
+	//绑定产品字段到合同模版
+	saveProductNamesToContractTemplate(data){
+		let options = {
+			url: this._host + '/contract/contract/template/editBond',
+			method: 'POST',
+			contentType: 'application/json',
+			data
 		}
 		return super.fetchData(options);
 	}
