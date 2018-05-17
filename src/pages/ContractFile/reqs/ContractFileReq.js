@@ -76,6 +76,14 @@ class ContractFileReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//下载文件
+	downloadFilesApi(id) {
+		let options = {
+			url: this._host + `/contract/contract/${id}/pdf`,
+			method: 'GET',
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new ContractFileReq();

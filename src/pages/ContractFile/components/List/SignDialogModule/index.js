@@ -42,37 +42,12 @@ class SignDialogModule extends Component {
       }
     })
   }
-  //保存文件
-  onSave() {
-    this.refs.form.validateAll((errors, values) => {
-      if(errors) {
-        return
-      };
-      let getValues = this.refs.form.getter('fileIds');
-      let fileList=[];
-      debugger
-      if(getValues.fileList) {
-        fileList = getValues.fileList;
-      } else {
-        fileList = getValues;
-      }
-      let params = fileList.map((el) => {
-        return {
-          fileName:el.fileName,
-          type:el.type,
-          location:el.imgURL
-        }
-      })
-      this.props.cancel(params);
-    });
-  }
   //上传文件
-  onOk() {
+  onOk(type) {
     this.refs.form.validateAll((errors, values) => {
       if(errors) {
         return
       };
-      debugger
       let getValues = this.refs.form.getter('fileIds');
       let fileList=[];
       if(getValues.fileList) {
@@ -87,11 +62,21 @@ class SignDialogModule extends Component {
           location:el.imgURL
         }
       })
-      this.props.submit(params);
+      //提交 or 保存
+      if(type == 'submit') {
+        this.props.submit(params);
+      } else if (type == 'save') {
+        this.props.save(params);
+      }
     });
   }
-  onRemove(file,fileList) {
-    console.log(fileList)
+  onChange(files) {
+    const { fileList } =files;
+    if(fileList.length == 0) {
+      this.setState({
+        value:{fileIds:null}
+      })
+    }
   }
   render() {
     const { value, visible } = this.state;
@@ -101,8 +86,8 @@ class SignDialogModule extends Component {
           submitText="提交"
           cancelText="保存"
           visible={visible}
-          onOk={()=>this.onOk()}
-          onCancel={()=>this.onSave()}
+          onOk={()=>this.onOk('submit')}
+          onCancel={()=>this.onOk('save')}
           footer={[]}>
           <div className="contract-sign-dialog-content">
             <div className="pch-form">
@@ -119,8 +104,7 @@ class SignDialogModule extends Component {
                             listType="picture-card"
                             className='upload'
                             action="/contractApi/contract/contract/signed-paper-file/picture"
-                            // onSuccess={(res)=>this.upLoadSuccess(res)}
-                            onRemove={this.onRemove}
+                            onChange={this.onChange.bind(this)}
                             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
                             defaultFileList={value.fileIds}
                             formatter={(res) => {

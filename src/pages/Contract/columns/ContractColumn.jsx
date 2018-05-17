@@ -32,6 +32,7 @@ class ContractColumn extends BaseColumn {
             cell: (value, index, record) => {
                 return (
                     <Switch
+                      className="contract-switch"
                       checkedChildren="启"
                       unCheckedChildren="停"
                       onChange={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}
@@ -67,9 +68,6 @@ class ContractColumn extends BaseColumn {
                         <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.COPY)}>
                             复制
                         </Button>
-                        {/* <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}>
-                          {record.status == 1?'停用':'启用'}
-                        </Button> */}
                     </div>
                     );
             }

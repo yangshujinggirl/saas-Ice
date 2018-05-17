@@ -11,6 +11,7 @@ import {
   Checkbox
 } from '@icedesign/base';
 import { PchDialog } from 'components';
+import './index.scss';
 
 import {
   FormBinderWrapper as  IceFormBinderWrapper,
@@ -62,21 +63,21 @@ class DialogModule extends Component {
     switch(actionStatus) {
       case 1:
          if(isBind) {
-           return '该模板已绑定以下产品，启用后均能生效，您确定要启用吗';
+           return '该模板已绑定以下产品，启用后均能生效，您确定要启用吗?';
          } else {
            return '您确定要启用该模板吗?';
          }
          break;
       case 2:
          if(isBind) {
-           return '该模板已绑定以下产品，您确定要停用吗';
+           return '该模板已绑定以下产品，您确定要停用吗?';
          } else {
            return '您确定要停用该模板吗?';
          }
          break;
       case 999:
          if(isBind) {
-           return '该模板目前已被以下产品绑定，您确定删除吗？';
+           return '该模板目前已被以下产品绑定，您确定删除吗?';
          } else {
            return '您确定删除该模板吗？';
          }
@@ -88,14 +89,13 @@ class DialogModule extends Component {
   }
 
   render() {
-      const { templateObj, productList } = this.props;
+      const { templateObj } = this.props;
       //初始化checked
       const defaultValue =()=> (
         templateObj.productList.map((ele) => (
             ele.value
         ))
       )
-
       return (
         <PchDialog
           title={this.dialogTitle()}
@@ -108,24 +108,16 @@ class DialogModule extends Component {
           {
             templateObj.productList.length>0 &&
               <div className="pch-form contract-template-dialog-content">
-                <IceFormBinderWrapper ref="form">
-                  <Form size="large" direction="hoz">
-                    <Row wrap>
-                        <Col span={24}>
-                          <FormItem {...formItemLayout}>
-                            <IceFormBinder >
-                              <CheckboxGroup
-                                className="check-group-style"
-                                value={defaultValue()}
-                                dataSource={templateObj.productList}
-                                disabled>
-                              </CheckboxGroup>
-                            </IceFormBinder>
-                          </FormItem>
-                        </Col>
-                    </Row>
-                  </Form>
-                </IceFormBinderWrapper>
+                  <Row wrap className="check-group-list">
+                    <Col span={24}>
+                      <CheckboxGroup
+                        className="check-group-style"
+                        value={defaultValue()}
+                        dataSource={templateObj.productList}
+                        disabled>
+                      </CheckboxGroup>
+                    </Col>
+                  </Row>
               </div>
             }
         </PchDialog>

@@ -17,6 +17,14 @@ import { Button } from "@icedesign/base";
    6:'签署中',
    7:'未签字',
  }
+ const cardTrans = {
+   1:'身份证',
+   2:'港澳通行证',
+   3:'军官证',
+   4:'护照',
+   5:'台湾通行证',
+   6:'其他',
+ }
 class ContractFileColumn extends BaseColumn {
     constructor() {
         super();
@@ -36,7 +44,10 @@ class ContractFileColumn extends BaseColumn {
         }, {
             title: '证件类型',
             dataIndex: 'cardType',
-            width: 100
+            width: 100,
+            cell:(value, index, record)=> {
+              return cardTrans[record.cardType]
+            }
         }, {
             title: '证件号码',
             dataIndex: 'cardNo',
@@ -102,10 +113,10 @@ class ContractFileColumn extends BaseColumn {
                         }
 
                         {
-                          // record.type == 2 &&
-                          // record.status != 4 &&
-                          // record.status !=5 &&
-                          <Button
+                          record.type == 2 &&
+                          record.status != 4 &&
+                          record.status !=5 &&
+                                                <Button
                                                   type="secondary"
                                                   shape="text"
                                                   onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
@@ -126,7 +137,7 @@ class ContractFileColumn extends BaseColumn {
                           record.status ==5 && <Button
                                                 type="secondary"
                                                 shape="text"
-                                                onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.ONLOAD)}>
+                                                onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWNLOAD)}>
                                                   下载
                                                </Button>
                         }
