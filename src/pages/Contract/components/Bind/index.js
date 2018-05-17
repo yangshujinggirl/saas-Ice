@@ -40,7 +40,7 @@ class Bind extends BaseApp {
 
       bindProductNames: {
         templateId: this.props.params.id,
-        templateproducts: [
+        templateProducts: [
           /*
           {
             "productName": "12",
@@ -164,14 +164,14 @@ class Bind extends BaseApp {
   bindProductName(){
     let dom = this.refs.FormModule.refs.ProductNameForm.cloneNode(true);
     let inputs = [...dom.querySelectorAll('.product-name-select')];
-    let templateproducts = []; 
+    let templateProducts = []; 
     let templateExtends = [];
     let content = "";
     inputs.forEach(select=>{
       let input = select.querySelector('.select-input');
       let realName = input.getAttribute('data-value');
       let value = input.value;
-      let templateproduct = {
+      let templateProduct = {
         productName: realName,
         //"productId": "1",
         contractTemplateId: this.props.params.id,
@@ -187,30 +187,27 @@ class Bind extends BaseApp {
         templateExtends.push(templateExtend);
         if(value.length <= 0)value = 'null'
       }else{
-        templateproducts.push(templateproduct)
+        templateproducts.push(templateProduct)
         value = 'null';
       }
-      let newNode = document.createElement('pre');
-      newNode.className = 'blank-pre'
+      let newNode = document.createElement('em');
+      newNode.className = 'blank-em'
       newNode.innerHTML = "_BLANK_"+realName+"_"+value+"_BLANK_";
       select.parentNode.replaceChild(newNode, select)
     })
     content = dom.innerHTML;
-    this.setState({
-      bindProductNames: {
+
+    // 发起绑定产品字段的api请求
+    Req.saveProductNamesToContractTemplate({
         ...this.state.bindProductNames,
         content: dom.innerHTML,
-        templateproducts,
+        templateProducts,
         templateExtends
-      }
-    }, function(){
-      // 发起绑定产品字段的api请求
-      Req.saveProductNamesToContractTemplate(this.state.bindProductNames).then(res=>{
-        if(res.code!=200)return Feedback.toast.success(res.msg || "绑定失败")
-        Feedback.toast.success(res.msg || "绑定成功")
-        setTimeout(()=>hashHistory.push("/contract"), 3000)
-      }).catch(err=>err)
-    })
+      }).then(res=>{
+      if(res.code!=200)return Feedback.toast.success(res.msg || "绑定失败")
+      Feedback.toast.success(res.msg || "绑定成功")
+      setTimeout(()=>hashHistory.push("/contract"), 3000)
+    }).catch(err=>err)
   }
   //操作
   renderOperator = (value, index, record) => {
@@ -254,7 +251,7 @@ class Bind extends BaseApp {
                 </div>
                 <Title title="选择字段" />
                 <div className="action-block">
-                  <FormModule html={this.state.contractTemplateHTML} productNames={this.state.productNames} ref="FormModule" />
+                  <FormModule contractid={this.props.params.id} html={this.state.contractTemplateHTML} productNames={this.state.productNames} ref="FormModule" />
                 </div>
                 <div style={{'textAlign': 'center'}}>
                   <Button size="large" type="secondary" onClick={this.bindProductName.bind(this)}> 保存 </Button>

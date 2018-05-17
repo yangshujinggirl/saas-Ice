@@ -135,10 +135,31 @@ class FormModule extends BaseApp {
   parseHTML(){
     let html = this.props.html;
     let kindex = 0;
-    html = html.replace(/_{3,}/g, (s, pos)=>{
-      let i = kindex++;
-      return `<span data-pos='${pos}' data-length='${s.length}' class='product-name-select'>
-                <input class='select-input' name='productname${i}' data-value='productname${i}' placeholder='请选择' data-parent='product-name-select'>
+    if(html.length <= 0)return html;
+    let keyVales = [], keyValesIndex = 0;
+    if(html.indexOf('_BLANK_productname') > -1){
+      let div = document.createElement('div');
+      div.innerHTML = html;
+      let emList = [...div.querySelectorAll('.blank-em')];
+      emList.forEach(p=>{
+        let line = document.createTextNode("******");
+        keyVales.push(p.innerHTML.match(/_BLANK_(productname\d+c\d+)_(.+)_BLANK_/));
+        p.parentNode.replaceChild(line, p);
+      })
+      html = div.innerHTML;
+      kindex = keyVales.length
+    }
+    html = html.replace(/_{3,}|\*{6}/g, (s, pos)=>{
+      let i = 0, val = '';
+      if(s.indexOf("_") > -1){
+        i = kindex++;
+      }else{
+        val = keyVales[keyValesIndex][2];
+        val = val == 'null' ? '' : val;
+        i = keyValesIndex++
+      }
+      return `<span class='product-name-select'>
+                <input class='select-input' name='productname${i}c${this.props.contractid}' data-value='productname${i}c${this.props.contractid}' placeholder='请选择' data-parent='product-name-select' value='${val}'>
                 <i class='arrow' data-parent='product-name-select'></i>
               </span>`
     })
