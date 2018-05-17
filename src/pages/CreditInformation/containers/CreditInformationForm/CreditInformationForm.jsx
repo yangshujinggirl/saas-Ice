@@ -97,10 +97,25 @@ export default class CreditInformationForm extends BaseComponent {
             //   console.log(error)
             // });
             Req.getCreditDetail(params.id).then((res)=>{
-              if(res && res.code == 200) {
-                res.data = Object.assign(this.state.formData,res.data)
+              if(res && res.code == 200 && res.data) {
+                // res.data = Object.assign(this.state.formData,res.data)
                 this.setState({
                   formData : res.data
+                })
+                res.data.baseDocuments.map(item=>{
+                  console.log(item.type.indexOf('image') == 0)
+                  if(item.type.indexOf('image') == 0){
+                    item.downloadURL = item.location;
+                    item.fileURL = item.location;
+                    item.imgURL = item.location;
+                  }else{
+                    item.downloadURL = item.location;
+                    item.fileURL = item.location;
+                    item.imgURL = '/public/images/creditInformation/filed.png';
+                  }
+                })
+                this.setState({
+                  fileList : res.data.baseDocuments
                 })
               }
             }).catch(error=>{
@@ -130,9 +145,10 @@ export default class CreditInformationForm extends BaseComponent {
         this.state.fileList.map(item =>{
           value.baseDocuments.push({
             description :'',
-            size:'',
+            size:item.size,
             fileName : item.fileName,
-            location : item.fileURL
+            location : item.downloadURL,
+            type: item.type
           })
         })
         console.log(value)
@@ -238,26 +254,23 @@ export default class CreditInformationForm extends BaseComponent {
     }
     handleFileChange(info){
       console.log(info)
-      // var _list = Object.assign(this.state.fileList,info.fileList)
-      //  var _list = [];
       info.fileList.map(item=>{
         if(item.status == 'done'){
           console.log(item.type)
           console.log(item.type.indexOf('image') == 0)
+          console.log(111)
           if(item.type.indexOf('image') == 0){
-            console.log("www")
             item.size = item.originFileObj.size;
             item.downloadURL = item.imgURL;
             item.fileURL = item.imgURL;
-          }
+          }else{
             item.size = item.originFileObj.size;
             item.downloadURL = item.imgURL;
-            item.fileURL = '/public/images/creditInformation/file.png';
-
+            item.imgURL = '/public/images/creditInformation/filed.png';
+            item.fileURL = item.imgURL;
+          }
         }
       })
-
-      // console.log(_list)
       this.setState(
         {fileList: info.fileList}
         )
@@ -281,7 +294,6 @@ export default class CreditInformationForm extends BaseComponent {
             this.formRef = formRef;
           }}>
             <div>
-
               <div className="material-files-upload">
                 <Upload
                   {...this.UPLOAD_CONFIG}
@@ -310,7 +322,6 @@ export default class CreditInformationForm extends BaseComponent {
                       <IceFormBinder
                         name="name"
                         message="请输入"
-                        defaultValue='时杏丽'
                       >
                         <Input  disabled size="large" placeholder="请输入" className="custom-input"  />
                       </IceFormBinder>
@@ -322,7 +333,6 @@ export default class CreditInformationForm extends BaseComponent {
                       <IceFormBinder
                         name="credentialsNo"
                         message="请输入"
-                        defaultValue='412725198907226148'
                       >
 
                         <Input disabled size="large" placeholder="请输入" className="custom-input"  />
@@ -335,7 +345,6 @@ export default class CreditInformationForm extends BaseComponent {
                       <IceFormBinder
                         name="mobilePhone"
                         message="请输入"
-                        defaultValue='18337186154'
                       >
                         <Input disabled size="large" placeholder="请输入" className="custom-input"   />
                       </IceFormBinder>
