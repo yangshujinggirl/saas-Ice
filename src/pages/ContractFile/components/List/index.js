@@ -143,6 +143,7 @@ class ContractList extends BaseApp {
         return;
       }
       Toast.success("保存成功");
+      this.props.actions.search()
       this.setState({
         signVisible:false
       })
@@ -159,6 +160,7 @@ class ContractList extends BaseApp {
         return;
       }
       Toast.success("上传成功");
+      this.props.actions.search()
       this.setState({
         signVisible:false
       })
@@ -172,7 +174,7 @@ class ContractList extends BaseApp {
   render() {
     const { columns } = this.props;
     const { list=[] } =this.props.pageData;
-    const { visible, signVisible, elecVisbile, contractId } =this.state;
+    const { visible, signVisible, fileList, elecVisbile, contractId } =this.state;
 
     return(
       <IceContainer className="pch-container">
@@ -182,10 +184,10 @@ class ContractList extends BaseApp {
           <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
           <DialogModule
             visible={visible}
-            onCancel={()=>this.onCancel()}
+            onCancel={this.onCancel.bind(this)}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
-            fileList={this.state.fileList}
+            fileList={fileList}
             visible={signVisible}
             cancel = {this.saveSign.bind(this)}
             submit={this.submitSign.bind(this)}/>
