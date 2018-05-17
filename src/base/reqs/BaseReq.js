@@ -41,7 +41,7 @@ class BaseReq {
     //追加请求头
     let pctoken = Cookie.get('PCTOKEN');
     if (pctoken) {
-      // header['Authorization'] = pctoken;
+      header['Authorization'] = 'PCHTOKEN ' +  pctoken;
     }
 
     if (!options.method || options.method == 'get') {

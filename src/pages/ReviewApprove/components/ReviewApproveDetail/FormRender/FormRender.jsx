@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
-// import Req from '../../../reqs/EntryQueryReq';
+import Req from '../../../reqs/ReviewApproveReq';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-import  './FormRender.scss'
 const { Group: CheckboxGroup } = Checkbox;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Combobox } = Select;
-const { Row, Col } = Grid;
 
 const formItemLayout = {
   labelCol: { span: 11 },
   wrapperCol: { span: 13 }
 };
 const formItemLayoutR = {
-  labelCol: { span: 3 },
-  wrapperCol: { span: 21 }
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 }
 };
 const formItemLayoutCombobox = {
-  labelCol: { span: 3 },
+  labelCol: { span: 4 },
   wrapperCol: { span: 15 }
 };
 const formItemLayoutTEXT = {
@@ -33,9 +31,30 @@ const formItemLayoutTEXT = {
 const formItemLayoutCHECKBOX = {
   labelCol: { span: 6},
   wrapperCol: { span: 21 }
-}
+};
+const  List = [
+  {value:'productCode', name:'产品名称'},
+  {value:'borrowerName', name:'主贷款人姓名'},
+  {value:'borrowerIdType', name:'主贷款人证件类型'},
+  {value:'borrowerIdNo', name:'主贷款人证件号码'},
+  {value:'exhibitionHallName', name:'展厅名称'},
+  {value:'lenderId', name:'资方'},
+  {value:'car.id', name:'品牌/车系/车型'},
+  {value:'hasCoBorrower', name:'是否有共同贷款人'},
+  {value:'coBorrower.name', name:'共同贷款人姓名'},
+  {value:'coBorrower.idType', name:'共同贷款人证件类型'},
+  {value:'coBorrower.idNo', name:'共同贷款人证件号码'},
+  {value:'coBorrower.mobile', name:'共同贷款人手机号码'},
+  {value:'coBorrower.relationshipWithBorrower', name:'共同贷款人与主贷人关系'},
+  {value:'hasGuarantor', name:'是否有担保人'},
+  {value:'guarantor.idType', name:'担保人证件类型'},
+  {value:'guarantor.idNo', name:'担保人证件号码'},
+  {value:'guarantor.mobile', name:'担保人手机号码'},
+  {value:'guarantor.relationshipWithBorrower', name:'担保人与主贷人关系'},
+]
 
-export default class FormRenderFormRender extends Component {
+
+export default class FormRender extends Component {
   static displayName = 'FormRender';
 
   static propTypes = {};
@@ -49,7 +68,27 @@ export default class FormRenderFormRender extends Component {
       value: {},
       Component :[],
       list:[],
-      dataSource:[]
+      dataSource:[],
+      filedList:[
+        {value:'productCode', name:'产品名称'},
+        {value:'borrowerName', name:'主贷款人姓名'},
+        {value:'borrowerIdType', name:'主贷款人证件类型'},
+        {value:'borrowerIdNo', name:'主贷款人证件号码'},
+        {value:'exhibitionHallName', name:'展厅名称'},
+        {value:'lenderId', name:'资方'},
+        {value:'car.id', name:'品牌/车系/车型'},
+        {value:'hasCoBorrower', name:'是否有共同贷款人'},
+        {value:'coBorrower.name', name:'共同贷款人姓名'},
+        {value:'coBorrower.idType', name:'共同贷款人证件类型'},
+        {value:'coBorrower.idNo', name:'共同贷款人证件号码'},
+        {value:'coBorrower.mobile', name:'共同贷款人手机号码'},
+        {value:'coBorrower.relationshipWithBorrower', name:'共同贷款人与主贷人关系'},
+        {value:'hasGuarantor', name:'是否有担保人'},
+        {value:'guarantor.idType', name:'担保人证件类型'},
+        {value:'guarantor.idNo', name:'担保人证件号码'},
+        {value:'guarantor.mobile', name:'担保人手机号码'},
+        {value:'guarantor.relationshipWithBorrower', name:'担保人与主贷人关系'},
+      ]
     };
   }
   componentWillMount(){
@@ -58,7 +97,6 @@ export default class FormRenderFormRender extends Component {
   }
   //渲染表单
   renderForm = (data)=>{
-    // console.log(data)
     const  formList = [];
     if(data){
       data.map((item,index)=>{
@@ -66,10 +104,6 @@ export default class FormRenderFormRender extends Component {
           <div className='info' key={index} id={item.name}>
             <span className='title-text'>{item.name}</span>
             <div className='info-row'>
-              {/*<Row wrap>*/}
-                {/*<Col span="24">*/}
-
-
               {
                 item.fields.map((el,i)=>{
                   return(
@@ -77,8 +111,6 @@ export default class FormRenderFormRender extends Component {
                   )
                 })
               }
-                {/*</Col>*/}
-              {/*</Row>*/}
             </div>
           </div>
         )
@@ -88,6 +120,12 @@ export default class FormRenderFormRender extends Component {
   }
   //区块分类渲染
   FromRender = (el,outIndex,inIndex)=>{
+    console.log(el)
+    this.state.filedList.map(item=>{
+      if (el.name == item.value){
+        el.isReadonly = true;
+      }
+    })
     if(el.hasAttachedFields){
       return (<div className="subsidiary-field" key={el.name}>
         {this.RenderField(el,outIndex,inIndex)}
@@ -109,6 +147,12 @@ export default class FormRenderFormRender extends Component {
   SelectList = ()=>{
 
   }
+  isFixedCheck = (isFixed,isReadonly)=>{
+    if(isFixed){
+      isReadonly = true;
+    }
+    return isReadonly;
+  }
 
   //渲染字段
   RenderField = (el,outIndex,inIndex)=>{
@@ -117,73 +161,77 @@ export default class FormRenderFormRender extends Component {
     var   disabled ;
     // console.log(el)
     if(el.type == "STRING"){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-            <Input
-              placeholder={"请输入"+el.label}
-              disabled={el.isFixed || el.isReadonly}
-              {...init(el.name, {
-                initValue: el.value,
-                rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
-              })}
-            />
+          <Input
+            defaultValue={el.value}
+            placeholder={"请输入"+el.label}
+            disabled={el.isReadonly}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+            })}
+          />
         </FormItem>
       )
     }else if(el.type == "SELECT"){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       if(el.name == 'car.id'){
-       return(
-               <FormItem  key={el.id} className='item half' label={this.label(el.label)}
-                          {...formItemLayoutCombobox}>
+        return(
+          <FormItem  key={el.id} className='item half' label={this.label(el.label)}
+                     {...formItemLayoutCombobox}>
 
-               <Combobox
-                     // onInputUpdate={this.onInputUpdate.bind(this)}
-                     fillProps={el.label}
-                     // filterLocal={true}
-                     placeholder={"请输入"+el.label}
-                     style={{width:"100%"}}
-                     autoWidth
-                     hasClear
-                     // onChange={this.onChange}
-                     dataSource={this.state.list}
-                     // onSearch ={this.onSearch}
-                     onInputUpdate={this.onInputUpdate.bind(this)}
-                     {...init(el.name, {
-                       initValue: el.value,
-                       rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
-                     })}
-                   />
-               </FormItem>
-             )
+            <Combobox
+              // onInputUpdate={this.onInputUpdate.bind(this)}
+              fillProps={el.label}
+              // filterLocal={true}
+              placeholder={"请输入"+el.label}
+              style={{width:"100%"}}
+              autoWidth
+              hasClear
+              disabled={el.isReadonly}
+              // onChange={this.onChange}
+              dataSource={this.state.list}
+              // onSearch ={this.onSearch}
+              onInputUpdate={this.onInputUpdate.bind(this)}
+              {...init(el.name, {
+                initValue: el.value,
+                rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]
+              })}
+            />
+          </FormItem>
+        )
       }
-      if(el.name == 'productCode'){
-        <FormItem  key={el.id} className='item' label={this.label(el.label)}
-                   {...formItemLayout}>
+      else if(el.name == 'productCode'){
+        return(<FormItem  key={el.id} className='item' label={this.label(el.label)}
+                          {...formItemLayout}>
           <Select
             defaultValue={el.value}
-            disabled={el.isFixed || el.isReadonly }
+            disabled={ el.isReadonly }
             placeholder={"请选择"+el.label}
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
             })}
-            dataSource={el.options}
+            dataSource={ this.props.productList || []}
           >
           </Select>
-        </FormItem>
+        </FormItem>);
       }
       return(
         <FormItem  key={el.id} className='item' label={this.label(el.label)}
                    {...formItemLayout}>
           <Select
             defaultValue={el.value}
-            disabled={el.isFixed || el.isReadonly }
+            disabled={ el.isReadonly }
             placeholder={"请选择"+el.label}
             style={{width:"100%"}}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]
             })}
             dataSource={el.options}
           >
@@ -192,21 +240,17 @@ export default class FormRenderFormRender extends Component {
       );
     }
     else if(el.type == 'DECIMAL'){
-      if(el.isFixed){
-        disabled = true
-      }else{
-        disabled = false
-      }
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
             defaultValue={el.value}
-            disabled={el.isFixed || el.isReadonly}
+            disabled={ el.isReadonly }
             htmlType="number"
             {...init(el.name,{
               initValue: el.value,
-              rules: [{ required: el.isRequired, message: "请填写"+el.label}]
+              rules: [{ required: el.isRequired, message: el.label +"不能为空"}]
             })}
             placeholder={"请输入"+el.label}
           />
@@ -214,11 +258,12 @@ export default class FormRenderFormRender extends Component {
       )
     }
     else if(el.type == 'INT' || el.type ==  'LONG'){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <NumberPicker
-            disabled={el.isFixed || el.isReadonly}
+            disabled={ el.isReadonly }
             defaultValue={el.value ? parseInt(el.value) : el.value}
             min={0}
             max={el.maxValue}
@@ -226,7 +271,7 @@ export default class FormRenderFormRender extends Component {
             {...init(el.name, {
               initValue: el.value ? parseInt(el.value) : el.value,
               rules: [
-                { required: el.isRequired,message: "请填写"+el.label}
+                { required: el.isRequired,message: el.label +"不能为空"}
               ]
             })}
           />
@@ -234,6 +279,7 @@ export default class FormRenderFormRender extends Component {
       )
     }
     else if(el.type == 'RADIO'){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       var Fields  =[];
       var Default =''
       if(el.options){
@@ -254,7 +300,7 @@ export default class FormRenderFormRender extends Component {
             defaultValue ={value+''}
             {...init(el.name, {
               initValue: value+'',
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }],
+              rules: [{ required: el.isRequired, message: el.label +"不能为空" }],
               props:{
                 onChange:()=> {
                   this.isChange(outIndex,inIndex);
@@ -278,14 +324,14 @@ export default class FormRenderFormRender extends Component {
         // console.log(Default)
         // console.log(setValue)
         Fields.push(<FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
-                              {...formItemLayoutTEXT}>
+                              {...formItemLayoutR}>
           <RadioGroup
             defaultValue ={setValue+''}
             disabled={el.isReadonly}
             dataSource={el.options}
             {...init(el.name, {
               initValue: setValue+'',
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required: el.isRequired, message: el.label +"不能为空"}]
             })}
           >
           </RadioGroup>
@@ -293,12 +339,12 @@ export default class FormRenderFormRender extends Component {
       }
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
-      console.log(el.value)
+      // console.log(el.value)
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       var str = el.value
       if(str && str.indexOf(",") >= 0){
-         el.value =  str.split(',');
+        el.value =  str.split(',');
       }
-      console.log(el.value)
       return(
 
         <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
@@ -310,7 +356,7 @@ export default class FormRenderFormRender extends Component {
             disabled={ el.isReadonly}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required: el.isRequired, message: "请选择"+el.label }]
+              rules: [{ required: el.isRequired, message: el.label +"不能为空" }]
             })}
             dataSource = {el.options}
           >
@@ -319,7 +365,8 @@ export default class FormRenderFormRender extends Component {
       )
     }
     else if(el.type == 'DATE'){
-      console.log(el.value)
+      // console.log(el.value)
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
@@ -332,12 +379,13 @@ export default class FormRenderFormRender extends Component {
               initValue: el.value,
               getValueFromEvent: this.formater
             },{
-              rules: [{ required: true, message: "请选择"+el.label }]
+              rules: [{ required: true, message: el.label +"不能为空" }]
             })}
           />
         </FormItem>
       )
     }else if(el.type == 'TEXT'){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} style={{width:'90%'}} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
@@ -346,7 +394,7 @@ export default class FormRenderFormRender extends Component {
                  disabled={ el.isReadonly}
                  {...init(el.name, {
                    initValue: el.value,
-                   rules: [{ required: el.isRequired, message: "请填写"+el.label }]
+                   rules: [{ required: el.isRequired, message: el.label +"不能为空" }]
                  })}
           />
         </FormItem>
@@ -355,8 +403,8 @@ export default class FormRenderFormRender extends Component {
   }
   //改变value
   onChange =(value,option)=>{
-    console.log(value)
-    console.log(option)
+    // console.log(value)
+    // console.log(option)
   }
   onInputUpdate = (value)=>{
     const  productCode = this.props.field.getValue('productCode');
@@ -364,7 +412,7 @@ export default class FormRenderFormRender extends Component {
       productCode : productCode,
       name : value
     }
-    console.log(carList)
+    // console.log(carList)
     Req.getSelectList(carList).then((res)=>{
       if(res && res.code == 200){
         const dataSource =  res.data.list.map((item,index)=>{
@@ -437,10 +485,9 @@ export default class FormRenderFormRender extends Component {
     return str;
   }
   render() {
-    console.log(this.props.data)
-    const { data, init } = this.props;
+    const { data, init, productList} = this.props;
     return (
       this.renderForm(data)
-  );
+    );
   }
 }

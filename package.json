@@ -61,7 +61,7 @@
   },
   "scripts": {
     "start": "ice dev",
-    "prod": "export NODE_ENV=production && node generate && ice build",
+    "prod": "export NODE_ENV=production && node generate && ice build && scp -r public build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
     "copy": "cp -R ./build/ ../saas-pro",
     "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",

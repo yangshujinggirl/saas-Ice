@@ -1,7 +1,5 @@
 const SAAS_HOST = 'http://172.16.0.218:8080';
-// const CRM_HOST = 'http://172.16.0.211:8080/';
-// const CRM_HOST = 'http://172.16.0.92:8080/';
-const CRM_HOST = 'http://172.16.0.190:8080/';
+const CRM_HOST = 'http://172.16.0.218:8080/';
 const CONTRACT_HOST = 'http://172.16.0.210:8080';
 
 const { resolve } = require('path');
@@ -50,16 +48,17 @@ module.exports = {
             '/crm': {
                 target: CRM_HOST,
                 changeOrigin: true,
+                pathRewrite: { "^/crm": "/crm-ft1" },
                 bypass: function(req, res, proxyOpt) {
                     res.set('X-ICE-PROXY', 'on');
                     res.set('X-ICE-PROXY-BY', CRM_HOST);
                 },
             },
             
-            '/contractApi': {
+            '/contract': {
                 target: CONTRACT_HOST,
                 changeOrigin: true,
-                pathRewrite:{"^/contractApi" : ""},
+                pathRewrite: { "^/contract": "/contract-ft1" },
                 bypass: function(req, res, proxyOpt) {
                     // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');
