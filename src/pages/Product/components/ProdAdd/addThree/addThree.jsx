@@ -84,9 +84,8 @@ export default class addThree extends Component {
         boolean = false
       }
       if (!boolean) return
-      
       //提交当前填写的数据
-      this.props.actions.saveProductAdd(id, this.state.processData);
+      this.props.actions.saveProductAdd(id, this.state.processData,value.processName);
      this.setState({
         processData: []
       })

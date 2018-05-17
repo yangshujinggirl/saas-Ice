@@ -184,13 +184,10 @@ changePage = (currentPage) => {
   actions.addTwoList(val, name,currentPage)
 };
   render() {
+    console.log(this.props)
     let addTwoData = this.props.addTwoData || {};
     let type = this.props.data;
-    let list = addTwoData.data || {};
-    let page = list.page;
-    let limit = list.limit ;
-    let total = list.total;
-        list = list.list || [];
+    let {list=[],page,limit,total} = addTwoData
 
     let dataSource = this.renderDataWithCar(type, list);
     return (

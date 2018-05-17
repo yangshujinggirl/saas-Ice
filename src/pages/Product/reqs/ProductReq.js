@@ -67,8 +67,9 @@ class ProductReq extends CurdReq {
     return super.fetchData(options);
   }
   //产品提交第三步保存
-  saveProductAdd( productId,data) {
-    var url = this._config.WF_HOST + `/processes/product`;
+  saveProductAdd( productId,data,processDefId) {
+    console.log(data)
+    var url = this._config.WF_HOST + `/processes/product/${processDefId}`;
     let options = {
       url: url,
       method: 'POST',
@@ -197,6 +198,7 @@ class ProductReq extends CurdReq {
     let options = {
       // url: this._config.LOAN_HOST + '/product/data
       url: this._config.LOAN_HOST + `/cars`,
+      // url:'/cars',
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
       params: condition

@@ -209,7 +209,7 @@ export default class ProcessForm extends Component {
                 // 编辑权限传入当前已选的权限
                 actions.getPrivilegeOrgs()
                 this.setState({
-                    privilegeItems: item.privilegeItems,
+                    privilegeItems: item.privilegeItems || [],
                     taskOrder: idx
                 });
             }

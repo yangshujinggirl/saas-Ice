@@ -118,12 +118,12 @@ export const productsave = (data, id) => {
   }
 }
 ////产品提交第三步保存
-export const saveProductAdd = (id, data) => {
+export const saveProductAdd = (id, data,processDefId) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.saveProductAdd(id, data).then((res) => {
+    Req.saveProductAdd(id, data,processDefId).then((res) => {
       if (!res || res.code != 200) return;
       hashHistory.push('/product/search')
     }).catch((ex) => {
@@ -279,7 +279,7 @@ export const addTwoList = (data, formData, page) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.addTwoList(data, formData, page).then((res) => {
-      dispatch(fetchSuccess({ addTwoData: res }))
+      dispatch(fetchSuccess({ addTwoData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

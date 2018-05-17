@@ -102,7 +102,6 @@ export default class ProcessAuthEdit extends BaseApp {
     let dataSourceRight = this.state.dataSourceRight;
     let tempArr = [];
     dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne);
-    console.log(dataSourceRight)
     dataSourceRight.map((item)=>{
       item.name?item.roleName=item.name:''
     })
@@ -118,7 +117,6 @@ export default class ProcessAuthEdit extends BaseApp {
     this.setState({
       dataSourceRight
     })
-    console.log(dataSourceRight)
   }
   deleteEvent(index) {
     const { dataSourceRight } = this.state;
@@ -205,7 +203,7 @@ export default class ProcessAuthEdit extends BaseApp {
               </Table>
             </div>
             <div className="btn-wrap">
-              <Button className="add-btn" onClick={() => this.addItem()}>>> </Button>
+              <Button className="add-btn" onClick={this.addItem.bind(this)}>>> </Button>
             </div>
             <div className="part-r">
               <Table
