@@ -111,7 +111,7 @@ export default class ProcessFormItem extends Component {
                     {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE, item)}>编辑</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="4">
-                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].productCollectionId`}><PchMaterialSelect onChange={this.handleCollectionChange} /></IceFormBinder></div> : '--'}
+                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].productCollectionId`}><PchMaterialSelect onChange={this.handleCollectionChange.bind(this)} /></IceFormBinder></div> : '--'}
                     {item.haveCollection == '1' ? <a className="pch-target" href="/#/product/filelist" target="_blank">添加</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">
