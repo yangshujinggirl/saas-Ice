@@ -61,28 +61,58 @@ export const search = (condition) => {
   }
 }
 
-// 保存表单
-export const save = (data) => {
+
+// 签收
+export const signIn = (condition) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.save(data).then((res) => {
-      dispatch(fetchSuccess({ formData: {}, view: 'list' }))
+    Req.signIn(condition).then((res) => {
+      dispatch(fetchSuccess({ signIn: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
 
-// 获取详情
+
+// 获取进件详情
 export const getDetail = (id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ detail: res.data, view: 'form' }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+// 获取轨迹详情
+export const getTrackDetail = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getTrackDetail(data).then((res) => {
+      dispatch(fetchSuccess({ trackDetail: res.data, view: 'form' }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//获取进件材料详情
+export const getLoadMaterialDetails = (data) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getLoadMaterialDetails(data).then((res) => {
+      dispatch(fetchSuccess({ loadMaterialDetails: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

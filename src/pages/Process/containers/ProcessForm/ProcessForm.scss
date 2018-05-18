@@ -1,0 +1,179 @@
+.default-font {
+  font-size: 13px;
+  color: #127FD8;
+  letter-spacing: 0;
+}
+
+.pch-process {
+  .container {
+    // display: table;
+    position: relative;
+    width: 100%;
+    border: 1px solid #F6DCA9;
+    background: #fff;
+    font-size: 0;
+    line-height: 0;
+    .container-left {
+      // display: table-cell;
+      position: absolute;
+      width: 150px;
+      height: 100%;
+    
+    .con {
+      color: #666;
+      line-height: 30px;
+      background: #FDF4E3;
+      border-right: 1px solid #F6DCA9;
+      padding: 15px 0 15px 20px;
+      height: 100%;
+      font-size: 14px;
+      color: #4A4A4A;
+    }
+
+      .container-left-uls {
+        li {
+          position: relative;
+          height: 40px;
+          line-height: 40px;
+          .texts {
+            width: 90px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            display: block;
+          }
+          .icons {
+            i {
+              color: #FC9E25;
+              position: absolute;
+              right: 10px;
+              top: 0;
+              font-style: normal;
+              font-size: 20px;
+              cursor: pointer;
+            }
+
+            &.disabled{
+              i {
+                color: #666;
+              }
+            }
+          }
+        }
+      }
+    }
+    .container-right {
+      padding: 0 0 15px 150px;
+    }
+      .container-right-con {
+        background: #fff; // display: table-cell;
+        min-height: 500px;
+        .container-right-tabRow {
+          border-top:1px solid #F6DCA9;
+          position: relative;
+          padding: 30px 20px;
+          &.even {
+            background: #FBFAFA;
+          }
+          &:last-child{
+            border-bottom: 1px solid #F6DCA9;
+          }
+          .pch-icon-setting {
+            i {
+              position: absolute;
+              top: 50%;
+              left: 50px;
+              margin:-10px 0 0 0;
+              font-size: 20px;
+              cursor: pointer;
+              color: #DADADA;
+              font-style: normal;
+            }
+          }
+          .next-col {
+            .next-input,
+            .pch-page-name {
+              width: 110px;
+            }
+            &.pch-moduleName {
+              position: relative;
+              .pch-realname {
+                position: absolute;
+                top: -22px;
+                left: 0;
+                font-size: 12px;
+                color: #888888;
+                letter-spacing: 0;
+              }
+            }
+            .pch-target-name,
+            .pch-type-name {
+              .next-select {
+                width: 110px;
+                margin-left: 20px;
+                &:first-child {
+                  margin-left: 0;
+                }
+              }
+            }
+            .pch-target {
+              @extend .default-font;
+              cursor: pointer;
+            }
+            .pch-page-name {
+              display: block;
+              &+.pch-target {
+                margin: 3px 0 0 0;
+              }
+            }
+            &.pch-task-page{
+              a{
+                margin-right: 14px;
+
+                &.disabled{
+                  color: #999;
+                }
+              }
+            }
+          }
+        }
+        .container-right-title {
+          background: #FEF9EE;
+          height: 46px;
+          line-height: 46px;
+          font-size: 14px;
+          color: #333333;
+          padding: 0 20px; // text-align: center;
+          .pch-target-name {
+            span {
+              &:first-child {
+                width: 130px;
+              }
+              float:left;
+              &:last-child {
+                text-align: left;
+              }
+            }
+          }
+        }
+      
+    }
+  }
+}
+.title-p{
+  font-family: PingFangSC-Medium;
+font-size: 14px;
+color: #1B2630;
+}
+.select-middle{
+  vertical-align: middle;
+  margin-left: 0px !important;
+}
+.input-bottom{
+  margin-bottom:5px;
+}
+.icon-arrow{
+  color: #B4B4B4;
+  font-size: 12px;
+  margin: 0 5px;
+}

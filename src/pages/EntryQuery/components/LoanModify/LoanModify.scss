@@ -5,7 +5,6 @@
     float: left;
     width: 80%;
     height: 100%;
-    opacity: 0.6;
     background: #FDF4E3;
     box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
     -webkit-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
@@ -110,18 +109,21 @@
 .modify-form::-webkit-scrollbar {
   display: none;
 }
-
-.next-form-left.next-form-large .next-form-item-label {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.item {
+  .info-row .next-form-left.next-form-large .next-form-item-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
-.next-form-left.next-form-medium .next-form-item-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  -webkit-text-overflow: ellipsis;
-  white-space: nowrap;
+.item {
+  .next-form-left.next-form-medium .next-form-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .item .next-col-21 .next-form-item-explain{
   top: 0px;

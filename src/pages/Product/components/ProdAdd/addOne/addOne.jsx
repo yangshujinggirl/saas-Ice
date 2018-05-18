@@ -173,7 +173,7 @@ export default class CreateActivityForm extends Component {
 			// 提交当前填写的数据
 			value.effectiveDate = value.time[0];
 			value.expirationDate = value.time[1]
-
+			let boolean = true;
 			// 执行年利率范围 和 最小、最大执行年利率比较
 			value.ratesSetting && value.ratesSetting.map((item) => {
 				console.log(item);
@@ -198,6 +198,18 @@ export default class CreateActivityForm extends Component {
 					}
 				}
 			})
+			
+			//提前还款方式设置中的 最大、最小期限不能小于最早提前还款期数
+			value.prepaymentSetting && value.prepaymentSetting.map((item,i)=>{
+				if(item.loanTermMin < Number(value.prepaymentPeriodsLimit) || item.loanTermMax < Number(value.prepaymentPeriodsLimit)){
+					Feedback.toast.show({
+						type: 'error',
+						content: '最大、最小期限不能小于最早提前还款期数',
+					});
+					boolean = false
+				}
+			})
+
 			if (!boolean) return
 			//
 			let AllValue = this.AllValue(value);
@@ -372,187 +384,190 @@ export default class CreateActivityForm extends Component {
 		})
 	};
 
-//还款周期全选
-repaymentPeriodFrequency = (data,e) => {
-  let values = this.state.value
-  if (e.target.value == 'ALL_CHOICE') {
-    values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
-    if (data.length > 5) {
-    values.repaymentPeriodFrequency = ["MONTH"]
-    }
-      this.setState({
-        value:values
-      })
-  } else {
-    let index = data.findIndex((data) => data == "ALL_CHOICE")
-    index != -1 ? data.splice(index, 1) : '';
-   
-    values.repaymentPeriodFrequency = data
-      this.setState({
-          value:values
-      })
-  }
-    let allDate = [...values.repaymentPeriodFrequency];
-    let index = allDate.findIndex((data) => data == "ALL_CHOICE");
-      index!=-1 ? allDate.splice(index,1) :''
-      this.state.value.repaymentPeriodFrequencySubmit = allDate
-  console.log(this.state.value.repaymentPeriodFrequencySubmit);
-}
-checkOnChange=(value,e) =>{
-  
-}
+	//还款周期全选
+	repaymentPeriodFrequency = (data, e) => {
+		let values = this.state.value
+		if (e.target.value == 'ALL_CHOICE') {
+			values.repaymentPeriodFrequency = ["ALL_CHOICE", "MONTH", "SEASON", "YEAR", "ONCE", "TWO_WEEK", "HALF_YEAR"]
+			if (data.length > 5) {
+				values.repaymentPeriodFrequency = ["MONTH"]
+			}
+			this.setState({
+				value: values
+			})
+		} else {
+			let index = data.findIndex((data) => data == "ALL_CHOICE")
+			index != -1 ? data.splice(index, 1) : '';
 
-//产品名称是否已存在
-prdNameChange = (rule, value, callback) => {
-	if (rule.required && !value) {
-		callback('产品名称必填')
-		return;
-	}
-	ProductReq.productNameRepeat(value).then((res) => {
-		if (res.data) {
-			callback("产品名已存在")
+			values.repaymentPeriodFrequency = data
+			this.setState({
+				value: values
+			})
 		}
-		callback()
-	})
-}
+		let allDate = [...values.repaymentPeriodFrequency];
+		let index = allDate.findIndex((data) => data == "ALL_CHOICE");
+		index != -1 ? allDate.splice(index, 1) : ''
+		this.state.value.repaymentPeriodFrequencySubmit = allDate
+		console.log(this.state.value.repaymentPeriodFrequencySubmit);
+	}
+	checkOnChange = (value, e) => {
 
-//申请金额范围 
-principalAmountMinChange = (rule, value, callback) => {
-	if (rule.required && !value) {
-		callback('申请金额必填');
-		return;
 	}
-	if (value < 0) {
-		callback('申请金额不能小于0')
-	}
-	callback();
-}
-principalAmountMaxChange = (rule, value, callback) => {
-	let min = this.state.value;
 
-	if (rule.required && !value) {
-		callback('申请金额必填');
-		return;
+	//产品名称是否已存在
+	prdNameChange = (rule, value, callback) => {
+		if (rule.required && !value) {
+			callback('产品名称必填')
+			return;
+		}
+		ProductReq.productNameRepeat(value).then((res) => {
+			if (res.data) {
+				callback("产品名已存在")
+			}
+			callback()
+		})
 	}
-	if (value < 0) {
-		callback('申请金额不能小于0')
-	}
-	if(Number(value ) < min.principalAmountMin){
-		callback('必须大于前者')
-	}
-	callback();
-}
 
-//期限范围
-loanTermRangeMinChange = (rule, value, callback) => {
-	if (rule.required && !value) {
-		callback('期限范围必填');
-		return;
+	//申请金额范围 
+	principalAmountMinChange = (rule, value, callback) => {
+		if (rule.required && !value) {
+			callback('申请金额必填');
+			return;
+		}
+		if (value < 0) {
+			callback('申请金额不能小于0')
+		}
+		callback();
 	}
-	if (value < 0) {
-		callback('期限范围不能小于0')
-	}
-	callback();
-}
-loanTermRangeMaxChange = (rule, value, callback) => {
-	if (rule.required && !value) {
-		callback('期限范围必填');
-		return;
-	}
-	if (value < 0) {
-		callback('期限范围不能小于0')
-	}
-	callback();
-}
+	principalAmountMaxChange = (rule, value, callback) => {
+		let min = this.state.value;
 
-// 贷款比率
-loanPercentageMinChange = (rule, value, callback) => {
-	if (rule.required && !value) {
-		callback('贷款比率必填');
-		return;
+		if (rule.required && !value) {
+			callback('申请金额必填');
+			return;
+		}
+		if (value < 0) {
+			callback('申请金额不能小于0')
+		}
+		if (Number(value) < min.principalAmountMin) {
+			callback('必须大于前者')
+		}
+		callback();
 	}
-	if (value < 0) {
-		callback('比率范围0～100内')
-	}
-	callback();
-}
-loanPercentageMaxChange = (rule, value, callback) => {
-	let min = this.state.value
-	if (rule.required && !value) {
-		callback('贷款比率必填');
-		return;
-	}
-	if (value < 0 || value > 100) {
-		callback('比率范围0～100内')
-	}
-	if(Number(value ) < min.loanPercentageMin){
-		callback('必须大于前者')
-	}
-	callback();
-}
 
-//最小提前还款金额
-prepaymentAmountMinChange = (rule, value, callback) => {
-	if (rule.required && !value) {
-		callback('最小提前还款金额必填');
-		return;
+	//期限范围
+	loanTermRangeMinChange = (rule, value, callback) => {
+		if (rule.required && !value) {
+			callback('期限范围必填');
+			return;
+		}
+		if (value < 0) {
+			callback('期限范围不能小于0')
+		}
+		callback();
 	}
-	if (value < 0) {
-		callback('最小提前还款金额不能小于0');
+	loanTermRangeMaxChange = (rule, value, callback) => {
+		let min = this.state.value;
+		if (rule.required && !value) {
+			callback('期限范围必填');
+			return;
+		}
+		if (value < 0) {
+			callback('期限范围不能小于0')
+		}
+		if (Number(value) < min.loanTermRangeMin) {
+			callback('必须大于前者')
+		}
+		callback();
 	}
-	callback();
-}
 
-//最早提前还款期数
-prepaymentPeriodsLimitChange = (rule, value, callback) => {
-	let min = this.state.value;
-	this.setState({
-		value:min
-	})
-	if (rule.required && !value) {
-		callback('最早提前还款期数必填');
-		return;
+	// 贷款比率
+	loanPercentageMinChange = (rule, value, callback) => {
+		if (rule.required && !value) {
+			callback('贷款比率必填');
+			return;
+		}
+		if (value < 0) {
+			callback('比率范围0～100内')
+		}
+		callback();
 	}
-	if (value < 0) {
-		callback('最早提前还款期数小于0');
+	loanPercentageMaxChange = (rule, value, callback) => {
+		let min = this.state.value
+		if (rule.required && !value) {
+			callback('贷款比率必填');
+			return;
+		}
+		if (value < 0 || value > 100) {
+			callback('比率范围0～100内')
+		}
+		if (Number(value) < min.loanPercentageMin) {
+			callback('必须大于前者')
+		}
+		callback();
 	}
-	callback();
-}
 
-//执行年利率
-interestRatesRangeMinChange=(rule, value, callback)=>{
-	if (rule.required && !value) {
-		callback('执行年利率必填');
-		return;
+	//最小提前还款金额
+	prepaymentAmountMinChange = (rule, value, callback) => {
+		if (rule.required && !value) {
+			callback('最小提前还款金额必填');
+			return;
+		}
+		if (value < 0) {
+			callback('最小提前还款金额不能小于0');
+		}
+		callback();
 	}
-	if (value < 0 || value > 100) {
-		callback('利率范围0～100内');
-	}
-	callback();
-}
-interestRatesRangeMaxChange=(rule, value, callback)=>{
-	let allValues = this.state.value;
 
-	if (rule.required && !value) {
-		callback('执行年利率必填');
-		return;
+	//最早提前还款期数
+	prepaymentPeriodsLimitChange = (rule, value, callback) => {
+		let min = this.state.value;
+		this.setState({
+			value: min
+		})
+		if (rule.required && !value) {
+			callback('最早提前还款期数必填');
+			return;
+		}
+		if (value < 0) {
+			callback('最早提前还款期数小于0');
+		}
+		callback();
 	}
-	if (value < 0 || value > 100) {
-		callback('利率范围0～100内');
-	}
-	if(Number(value ) < allValues.interestRatesRangeMin){
-		callback('必须大于前者');
-	}
-	callback();
-}
-  
-  render() {
-    let data = this.props.prodActions || {}
-    let fileData = this.props.fileData || {}
-    fileData = fileData.data || {}
-    fileData = fileData.list || []
-    let collData = this.Option(fileData);
 
+	//执行年利率
+	interestRatesRangeMinChange = (rule, value, callback) => {
+		if (rule.required && !value) {
+			callback('执行年利率必填');
+			return;
+		}
+		if (value < 0 || value > 100) {
+			callback('利率范围0～100内');
+		}
+		callback();
+	}
+	interestRatesRangeMaxChange = (rule, value, callback) => {
+		let allValues = this.state.value;
+
+		if (rule.required && !value) {
+			callback('执行年利率必填');
+			return;
+		}
+		if (value < 0 || value > 100) {
+			callback('利率范围0～100内');
+		}
+		if (Number(value) < allValues.interestRatesRangeMin) {
+			callback('必须大于前者');
+		}
+		callback();
+	}
+
+	render() {
+		let data = this.props.prodActions || {}
+		let fileData = this.props.fileData || {}
+		fileData = fileData.data || {}
+		fileData = fileData.list || []
+		let collData = this.Option(fileData);
 		return (
 			<IceContainer className="pch-container">
 				<legend className="pch-legend">
@@ -908,7 +923,7 @@ interestRatesRangeMaxChange=(rule, value, callback)=>{
 														required
 														validator={this.loanPercentageMinChange}
 													>
-														<Input size="large" style={{width: '100%', height: '34px' }} />
+														<Input size="large" style={{ width: '100%', height: '34px' }} />
 													</IceFormBinder>
 													<div><IceFormError name="loanPercentageMin" /></div>
 												</div>
@@ -1037,235 +1052,235 @@ interestRatesRangeMaxChange=(rule, value, callback)=>{
 											</div>
 										</FormItem>
 									</Col>
-										<Col xxs={24} xs={12} l={8} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>利率基准日:</span>}>
-												<IceFormBinder
+									<Col xxs={24} xs={12} l={8} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>利率基准日:</span>}>
+											<IceFormBinder
+												name="interestRateBaseDate"
+												required
+												message="利率基准日必填"
+											>
+												<Select
+													size="large"
 													name="interestRateBaseDate"
-													required
-													message="利率基准日必填"
+													placeholder="请选择"
+													style={styles.filterTool}
+													className="custom-select"
 												>
-													<Select
-														size="large"
-														name="interestRateBaseDate"
-														placeholder="请选择"
-														style={styles.filterTool}
-														className="custom-select"
-													>
-														{data.interestRateBaseDate && data.interestRateBaseDate.map((val, i) => {
-															return (
-																<Option value={val.value} key={i}>{val.desc}</Option>
-															)
-														})}
-													</Select>
-												</IceFormBinder>
-												<div><IceFormError name="interestRateBaseDate" /></div>
-											</FormItem>
-										</Col>
+													{data.interestRateBaseDate && data.interestRateBaseDate.map((val, i) => {
+														return (
+															<Option value={val.value} key={i}>{val.desc}</Option>
+														)
+													})}
+												</Select>
+											</IceFormBinder>
+											<div><IceFormError name="interestRateBaseDate" /></div>
+										</FormItem>
+									</Col>
 								</Row>
-									<Chanpinlilv
-										styles={styles}
-										items={this.state.value.ratesSetting}
-										addItem={this.addNewItem.bind(this, 'ratesSetting')}
-										removeItem={this.removeItem.bind(this, 'ratesSetting')}
-									/>
+								<Chanpinlilv
+									styles={styles}
+									items={this.state.value.ratesSetting}
+									addItem={this.addNewItem.bind(this, 'ratesSetting')}
+									removeItem={this.removeItem.bind(this, 'ratesSetting')}
+								/>
 							</div>
-								<legend className="pch-legend">
-									<span className="pch-legend-legline"></span>还款设置
+							<legend className="pch-legend">
+								<span className="pch-legend-legline"></span>还款设置
               </legend>
-								<div className="pch-product-sep">
-									<Row wrap>
-										<Col xxs={24} xs={12} l={12} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款账户变更:</span>}>
-												<IceFormBinder name="repaymentAccountChange" >
-													<CheckboxGroup
-														className="next-form-text-align"
-													>
-														{data.repaymentAccountChange && data.repaymentAccountChange.map((val, i) => {
-															return (
-																<Checkbox value={val.value} key={i} onChange={this.repaymentAccountChange(this.state.value.repaymentAccountChange)}>{val.desc}</Checkbox>
-															)
-														})}
-													</CheckboxGroup>
-												</IceFormBinder>
-												<div>
-													<IceFormError name="repaymentAccountChange" />
-												</div>
-											</FormItem>
-										</Col>
-									</Row>
-									<Row wrap>
-										<Col xxs={24} xs={12} l={12} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款周期:</span>}>
-
+							<div className="pch-product-sep">
+								<Row wrap>
+									<Col xxs={24} xs={12} l={12} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款账户变更:</span>}>
+											<IceFormBinder name="repaymentAccountChange" >
 												<CheckboxGroup
 													className="next-form-text-align"
-													onChange={this.repaymentPeriodFrequency}
-													value={this.state.value.repaymentPeriodFrequency}
 												>
-
-													{data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
+													{data.repaymentAccountChange && data.repaymentAccountChange.map((val, i) => {
 														return (
-															<Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+															<Checkbox value={val.value} key={i} onChange={this.repaymentAccountChange(this.state.value.repaymentAccountChange)}>{val.desc}</Checkbox>
 														)
 													})}
 												</CheckboxGroup>
+											</IceFormBinder>
+											<div>
+												<IceFormError name="repaymentAccountChange" />
+											</div>
+										</FormItem>
+									</Col>
+								</Row>
+								<Row wrap>
+									<Col xxs={24} xs={12} l={12} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款周期:</span>}>
 
-												<div>
-													<IceFormError name="repaymentPeriodFrequency" />
-												</div>
-											</FormItem>
-										</Col>
-									</Row>
+											<CheckboxGroup
+												className="next-form-text-align"
+												onChange={this.repaymentPeriodFrequency}
+												value={this.state.value.repaymentPeriodFrequency}
+											>
 
-									<Row wrap>
-										<Col xxs={24} xs={12} l={8} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款日变更:</span>}>
-												<IceFormBinder name="repaymentDateChange" >
-													<RadioGroup
-														className="next-form-text-align"
-														dataSource={[
-															{ label: '是', value: 'true' },
-															{ label: '否', value: 'false' },
-														]}
-													/>
-												</IceFormBinder>
-												<div>
-													<IceFormError name="repaymentDateChange" />
-												</div>
-											</FormItem>
-										</Col>
-									</Row>
-									<Row wrap>
-										<Col xxs={24} xs={12} l={8} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>宽限期变更:</span>}>
-												<IceFormBinder name="gracePeriodChange" >
-													<RadioGroup
-														className="next-form-text-align"
-														dataSource={[
-															{ label: '是', value: 'true' },
-															{ label: '否', value: 'false' },
-														]}
-													/>
-												</IceFormBinder>
-												<div>
-													<IceFormError name="gracePeriodChange" />
-												</div>
-											</FormItem>
-										</Col>
-									</Row>
-									<Row wrap>
-										<Col xxs={24} xs={12} l={8} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款方式变更:</span>}>
-												<IceFormBinder name="repaymentMethodChange" >
-													<RadioGroup
-														className="next-form-text-align"
-														dataSource={[
-															{ label: '是', value: 'true' },
-															{ label: '否', value: 'false' },
-														]}
-													/>
-												</IceFormBinder>
-												<div>
-													<IceFormError name="repaymentMethodChange" />
-												</div>
-											</FormItem>
-										</Col>
-									</Row>
-									<Huankuanfangshi
-										styles={styles}
-										items={this.state.value.repaymentMethodsSetting}
-										data={this.props.prodActions && this.props.prodActions.data}
-										addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
-										removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
-									/>
-									<Row wrap>
-										<Col xxs={24} xs={12} l={8} >
-											<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>提前还款:</span>}>
-												<IceFormBinder name="isEarlyRepaymentAllowed" >
-													<RadioGroup
-														className="next-form-text-align"
-														dataSource={[
-															{ label: '是', value: 'true' },
-															{ label: '否', value: 'false' },
-														]}
-													/>
-												</IceFormBinder>
-												<div>
-													<IceFormError name="isEarlyRepaymentAllowed" />
-												</div>
-											</FormItem>
-										</Col>
-									</Row>
-									{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
+												{data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.map((val, i) => {
+													return (
+														<Checkbox value={val.value} key={i}>{val.desc}</Checkbox>
+													)
+												})}
+											</CheckboxGroup>
 
-									<div className="next-btn-box">
-										<Button type="secondary" size="large" onClick={this.submit}>下一步</Button>
-									</div>
+											<div>
+												<IceFormError name="repaymentPeriodFrequency" />
+											</div>
+										</FormItem>
+									</Col>
+								</Row>
+
+								<Row wrap>
+									<Col xxs={24} xs={12} l={8} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款日变更:</span>}>
+											<IceFormBinder name="repaymentDateChange" >
+												<RadioGroup
+													className="next-form-text-align"
+													dataSource={[
+														{ label: '是', value: 'true' },
+														{ label: '否', value: 'false' },
+													]}
+												/>
+											</IceFormBinder>
+											<div>
+												<IceFormError name="repaymentDateChange" />
+											</div>
+										</FormItem>
+									</Col>
+								</Row>
+								<Row wrap>
+									<Col xxs={24} xs={12} l={8} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>宽限期变更:</span>}>
+											<IceFormBinder name="gracePeriodChange" >
+												<RadioGroup
+													className="next-form-text-align"
+													dataSource={[
+														{ label: '是', value: 'true' },
+														{ label: '否', value: 'false' },
+													]}
+												/>
+											</IceFormBinder>
+											<div>
+												<IceFormError name="gracePeriodChange" />
+											</div>
+										</FormItem>
+									</Col>
+								</Row>
+								<Row wrap>
+									<Col xxs={24} xs={12} l={8} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款方式变更:</span>}>
+											<IceFormBinder name="repaymentMethodChange" >
+												<RadioGroup
+													className="next-form-text-align"
+													dataSource={[
+														{ label: '是', value: 'true' },
+														{ label: '否', value: 'false' },
+													]}
+												/>
+											</IceFormBinder>
+											<div>
+												<IceFormError name="repaymentMethodChange" />
+											</div>
+										</FormItem>
+									</Col>
+								</Row>
+								<Huankuanfangshi
+									styles={styles}
+									items={this.state.value.repaymentMethodsSetting}
+									data={data}
+									addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
+									removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
+								/>
+								<Row wrap>
+									<Col xxs={24} xs={12} l={8} >
+										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>提前还款:</span>}>
+											<IceFormBinder name="isEarlyRepaymentAllowed" >
+												<RadioGroup
+													className="next-form-text-align"
+													dataSource={[
+														{ label: '是', value: 'true' },
+														{ label: '否', value: 'false' },
+													]}
+												/>
+											</IceFormBinder>
+											<div>
+												<IceFormError name="isEarlyRepaymentAllowed" />
+											</div>
+										</FormItem>
+									</Col>
+								</Row>
+								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
+
+								<div className="next-btn-box">
+									<Button type="secondary" size="large" onClick={this.submit}>下一步</Button>
 								</div>
+							</div>
 						</Form>
 					</div>
 				</IceFormBinderWrapper>
 			</IceContainer>
-				);
-			}
-		}
-	
-		
+		);
+	}
+}
+
+
 const styles = {
-					container: {
-					paddingBottom: 0,
-			},
+	container: {
+		paddingBottom: 0,
+	},
 	formItem: {
-					height: '28px',
-				lineHeight: '28px',
-				marginBottom: '25px',
-			},
+		height: '28px',
+		lineHeight: '28px',
+		marginBottom: '25px',
+	},
 	formLabel: {
-					textAlign: 'right',
-			},
+		textAlign: 'right',
+	},
 	btns: {
-					margin: '25px 0',
-			},
+		margin: '25px 0',
+	},
 	resetBtn: {
-					marginLeft: '20px',
-			},
-		
-		
+		marginLeft: '20px',
+	},
+
+
 	filterTitle: {
-					width: '140px',
-				textAlign: 'right',
-				marginRight: '12px',
-				fontSize: '14px',
-			},
-		
+		width: '140px',
+		textAlign: 'right',
+		marginRight: '12px',
+		fontSize: '14px',
+	},
+
 	filterTool: {
-					width: '200px',
-			},
+		width: '200px',
+	},
 	addNew: {
-					marginTop: '10px',
-				textAlign: 'right',
-			},
+		marginTop: '10px',
+		textAlign: 'right',
+	},
 	addNewItem: {
-					hiegth: '30px',
-				borderRadius: 0,
-				border: 'none',
-				background: '#FC9E25',
-				color: '#fff',
-			},
+		hiegth: '30px',
+		borderRadius: 0,
+		border: 'none',
+		background: '#FC9E25',
+		color: '#fff',
+	},
 	batchBtn: {
-					// marginRight: '10px',
-					float: 'none',
-			},
+		// marginRight: '10px',
+		float: 'none',
+	},
 	removeBtn: {
-					marginLeft: 10,
-				border: 'none',
-				background: '#ec9d00',
-				color: '#fff',
-		
-			},
+		marginLeft: 10,
+		border: 'none',
+		background: '#ec9d00',
+		color: '#fff',
+
+	},
 	pagination: {
-					textAlign: 'right',
-				paddingTop: '26px',
-			},
-		};
-		
+		textAlign: 'right',
+		paddingTop: '26px',
+	},
+};
+

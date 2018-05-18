@@ -111,17 +111,21 @@
   display: none;
 }
 
-.next-form-left.next-form-large .next-form-item-label {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.item {
+  .info-row .next-form-left.next-form-large .next-form-item-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
-.next-form-left.next-form-medium .next-form-item-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  -webkit-text-overflow: ellipsis;
-  white-space: nowrap;
+.item {
+  .next-form-left.next-form-medium .next-form-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .item .next-col-21 .next-form-item-explain{
   top: 0px;

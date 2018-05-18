@@ -32,7 +32,7 @@
     "is-hotkey": "^0.1.1",
     "js-base64": "^2.4.3",
     "keymirror": "^0.1.1",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.9.0",
     "prop-types": "^15.6.1",
     "react-anything-sortable": "^1.7.4",
     "react-dnd": "^2.6.0",
@@ -61,7 +61,7 @@
   },
   "scripts": {
     "start": "ice dev",
-    "prod": "export NODE_ENV=production && node generate && ice build",
+    "prod": "export NODE_ENV=production && node generate && ice build && scp -r public build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
     "copy": "cp -R ./build/ ../saas-pro",
     "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
@@ -74,7 +74,10 @@
   },
   "buildConfig": {
     "theme": "@icedesign/skin",
-    "entry": "src/index.js"
+    "entry1": "src/index.js",
+    "entry": {
+      "app": "./src/index.js"
+    }
   },
   "scaffoldConfig": {
     "name": "ice-design-pro",

@@ -21,6 +21,9 @@ class PchDialog extends Component {
   onOk() {
     this.props.onOk();
   }
+  onCancel() {
+    this.props.onCancel();
+  }
   onClose() {
     this.setState({
       visible:false
@@ -28,11 +31,10 @@ class PchDialog extends Component {
   }
 
   render() {
-
+    const { submitText, cancelText } = this.props;
       return (
         <Dialog
           visible={this.state.visible}
-          onCancel={()=>this.onClose()}
           onClose={()=>this.onClose()}
           className="pch-components-dialog-modules"
           footer={[]}>
@@ -46,14 +48,14 @@ class PchDialog extends Component {
               size="large"
               onClick={()=>this.onOk()}
               className="dialog-btn">
-                确认
+                {submitText}
             </Button>
             <Button
               type="normal"
               size="large"
-              onClick={()=>this.onClose()}
+              onClick={()=>this.onCancel()}
               className="dialog-btn">
-                取消
+                {cancelText}
             </Button>
           </div>
         </Dialog>

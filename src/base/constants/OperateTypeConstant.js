@@ -31,7 +31,7 @@ const OPERATE_TYPE = {
     RETURN:'return',//退回
     SIGN:'sign',//签字
     COPY:'copy',//复制
-    ONLOAD:'onload',//下载
+    DOWNLOAD:'download',//下载
 };
 
 export default OPERATE_TYPE;

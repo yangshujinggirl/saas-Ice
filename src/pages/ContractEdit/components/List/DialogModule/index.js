@@ -60,7 +60,7 @@ class DialogModule extends Component {
       this.props.submit(values);
     });
   }
-  onClose() {
+  onCancel() {
     this.setState({
       visible:false
     })
@@ -82,9 +82,11 @@ class DialogModule extends Component {
       return (
         <PchDialog
           title={'合同取消'}
+          submitText="确认"
+          cancelText="取消"
           visible={visible}
           onOk={()=>this.onOk()}
-          onClose={()=>this.onClose()}
+          onCancel={()=>this.onCancel()}
           footer={[]}>
           <div className="pch-form">
             <IceFormBinderWrapper ref="form" value={value}>

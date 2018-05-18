@@ -50,19 +50,12 @@ export default class FormRender extends Component {
       dataSource:[]
     };
   }
-  //请求数据
-  fetchData = (flag) => {
-    let {actions} = this.props;
-    actions.getDetail(this.props.params.id);
-    console.log(this.props.params.id)
-  };
   componentWillMount(){
     // this.fetchData()
     this.SelectList();
   }
   //渲染表单
   renderForm = (data)=>{
-    // console.log(data)
     const  formList = [];
     if(data){
       data.map((item,index)=>{
@@ -107,6 +100,12 @@ export default class FormRender extends Component {
   SelectList = ()=>{
 
   }
+  isFixedCheck = (isFixed,isReadonly)=>{
+    if(isFixed){
+      isReadonly = true;
+    }
+    return isReadonly;
+  }
 
   //渲染字段
   RenderField = (el,outIndex,inIndex)=>{
@@ -115,22 +114,23 @@ export default class FormRender extends Component {
     var   disabled ;
     // console.log(el)
     if(el.type == "STRING"){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <IceFormBinder
-            name={`${el.value}`}
-            required ={true}
-          >
-            <Input
-
-              placeholder={"请输入"+el.label}
-              disabled={el.isFixed || el.isReadonly}
-            />
-          </IceFormBinder>
+          <Input
+            defaultValue={el.value}
+            placeholder={"请输入"+el.label}
+            disabled={el.isReadonly}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+            })}
+          />
         </FormItem>
       )
     }else if(el.type == "SELECT"){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       if(el.name == 'car.id'){
        return(
                <FormItem  key={el.id} className='item half' label={this.label(el.label)}
@@ -144,6 +144,7 @@ export default class FormRender extends Component {
                      style={{width:"100%"}}
                      autoWidth
                      hasClear
+                     disabled={el.isReadonly}
                      // onChange={this.onChange}
                      dataSource={this.state.list}
                      // onSearch ={this.onSearch}
@@ -156,12 +157,29 @@ export default class FormRender extends Component {
                </FormItem>
              )
       }
+      else if(el.name == 'productCode'){
+       return(<FormItem  key={el.id} className='item' label={this.label(el.label)}
+                         {...formItemLayout}>
+         <Select
+           defaultValue={el.value}
+           disabled={ el.isReadonly }
+           placeholder={"请选择"+el.label}
+           style={{width:"100%"}}
+           {...init(el.name, {
+             initValue: el.value,
+             rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+           })}
+           dataSource={ this.props.productList || []}
+         >
+         </Select>
+       </FormItem>);
+      }
       return(
         <FormItem  key={el.id} className='item' label={this.label(el.label)}
                    {...formItemLayout}>
           <Select
             defaultValue={el.value}
-            disabled={el.isFixed || el.isReadonly }
+            disabled={ el.isReadonly }
             placeholder={"请选择"+el.label}
             style={{width:"100%"}}
             {...init(el.name, {
@@ -175,17 +193,13 @@ export default class FormRender extends Component {
       );
     }
     else if(el.type == 'DECIMAL'){
-      if(el.isFixed){
-        disabled = true
-      }else{
-        disabled = false
-      }
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
             defaultValue={el.value}
-            disabled={el.isFixed || el.isReadonly}
+            disabled={ el.isReadonly }
             htmlType="number"
             {...init(el.name,{
               initValue: el.value,
@@ -197,11 +211,12 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'INT' || el.type ==  'LONG'){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <NumberPicker
-            disabled={el.isFixed || el.isReadonly}
+            disabled={ el.isReadonly }
             defaultValue={el.value ? parseInt(el.value) : el.value}
             min={0}
             max={el.maxValue}
@@ -217,6 +232,7 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'RADIO'){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       var Fields  =[];
       var Default =''
       if(el.options){
@@ -276,12 +292,12 @@ export default class FormRender extends Component {
       }
       return(Fields)
     }else if(el.type == 'CHECKBOX'){
-      console.log(el.value)
+      // console.log(el.value)
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       var str = el.value
       if(str && str.indexOf(",") >= 0){
          el.value =  str.split(',');
       }
-      console.log(el.value)
       return(
 
         <FormItem key={el.id} style={{width:'100%'}} label={this.label(el.label)}
@@ -302,7 +318,8 @@ export default class FormRender extends Component {
       )
     }
     else if(el.type == 'DATE'){
-      console.log(el.value)
+      // console.log(el.value)
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
@@ -321,6 +338,7 @@ export default class FormRender extends Component {
         </FormItem>
       )
     }else if(el.type == 'TEXT'){
+      el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} style={{width:'90%'}} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
@@ -338,8 +356,8 @@ export default class FormRender extends Component {
   }
   //改变value
   onChange =(value,option)=>{
-    console.log(value)
-    console.log(option)
+    // console.log(value)
+    // console.log(option)
   }
   onInputUpdate = (value)=>{
     const  productCode = this.props.field.getValue('productCode');
@@ -347,7 +365,7 @@ export default class FormRender extends Component {
       productCode : productCode,
       name : value
     }
-    console.log(carList)
+    // console.log(carList)
     Req.getSelectList(carList).then((res)=>{
       if(res && res.code == 200){
         const dataSource =  res.data.list.map((item,index)=>{
@@ -420,8 +438,7 @@ export default class FormRender extends Component {
     return str;
   }
   render() {
-    console.log(this.props.data)
-    const { data, init } = this.props;
+    const { data, init, productList} = this.props;
     return (
       this.renderForm(data)
   );

@@ -13,11 +13,11 @@ export default {
     name: '字段配置新增',
     component: Font.addFont
   },{
-    path: 'set',
+    path: 'set/:id',
     name: '字段配置新增',
     component: Font.setFont
   },{
-    path: 'view',
+    path: 'view/:id',
     name: '字段配置详情',
     component: Font.setFontView
   }],

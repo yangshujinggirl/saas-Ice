@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 param=$1
-noup=$2
+upcmd=$2
 repository=http://www1.pingchang666.com:81/web/pingchang-config-server-pro.git
 
 if [[ $param == '' ]]; then
@@ -32,6 +32,7 @@ if [[ ! -d .git ]]; then
     cd release
 fi
 
+# 分支不存在则创建
 if [[ $(git branch -a | grep $param -c) -lt 1 ]]; then
 	git branch $param
 fi
@@ -42,11 +43,12 @@ git fetch origin
 git merge master
 git push origin $param
 
+cd ../
+
 # 执行构建
 npm run prod
 
 # 拷贝打包后的代码
-cd ../
 cp -r build/* release
 
 # 提交本次更改
@@ -56,18 +58,7 @@ git commit -am 'update'
 git push origin $param
 
 # 执行上传到服务器命令
-if [[ $noup != '-no' ]]; then
+if [[ $upcmd != '-up' ]]; then
 	npm run $param
 fi
 
-
-# cd release
-# git pull release master
-# cd ../
-# npm run prod
-# cp -r dist/* release/
-# cd release
-# git status
-# git add .
-# git commit -m 'update'
-# git push release master

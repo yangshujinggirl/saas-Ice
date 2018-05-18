@@ -10,8 +10,9 @@ export default {
     path: 'edit/:id',
     component: ReviewApprove.ReviewApproveForm
   },{
-    path: 'detail/:id',
-    component: ReviewApprove.ReviewApproveDetail
+    path: 'detail/:id/:proInstId/:taskId',
+    component: ReviewApprove.ReviewApproveDetail,
+    name :'审查审批详情'
   }],
   component: Layout,
   indexRoute: {

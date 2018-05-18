@@ -17,6 +17,14 @@ import { Button } from "@icedesign/base";
    6:'签署中',
    7:'未签字',
  }
+ const cardTrans = {
+   1:'身份证',
+   2:'港澳通行证',
+   3:'军官证',
+   4:'护照',
+   5:'台湾通行证',
+   6:'其他',
+ }
 class ContractFileColumn extends BaseColumn {
     constructor() {
         super();
@@ -35,11 +43,14 @@ class ContractFileColumn extends BaseColumn {
             width: 100
         }, {
             title: '证件类型',
-            dataIndex: 'documentType',
-            width: 100
+            dataIndex: 'cardType',
+            width: 100,
+            cell:(value, index, record)=> {
+              return cardTrans[record.cardType]
+            }
         }, {
             title: '证件号码',
-            dataIndex: 'documentCode',
+            dataIndex: 'cardNo',
             width: 160
         }, {
             title: '合同类型',
@@ -49,13 +60,20 @@ class ContractFileColumn extends BaseColumn {
               return typeTrans[record.type]
             }
         }, {
+            title: '状态',
+            dataIndex: 'status',
+            width: 120,
+            cell:(value, index, record)=> {
+              return statusTrans[record.status]
+            }
+        }, {
             title: '合同时间',
             dataIndex: 'contractTime',
             width: 160
         }, {
-            title: '资方',
-            dataIndex: 'capital',
-            width: 120
+            title: '手机号码',
+            dataIndex: 'phone',
+            width: 160
         }, {
             title: '产品类型',
             dataIndex: 'productType',
@@ -69,12 +87,9 @@ class ContractFileColumn extends BaseColumn {
             dataIndex: 'customerManagerName',
             width: 120
         }, {
-            title: '状态',
-            dataIndex: 'status',
-            width: 120,
-            cell:(value, index, record)=> {
-              return statusTrans[record.status]
-            }
+          title: '资方',
+          dataIndex: 'capital',
+          width: 120
         }, {
             title: '操作',
             dataIndex: 'visible',
@@ -99,7 +114,9 @@ class ContractFileColumn extends BaseColumn {
 
                         {
                           record.type == 2 &&
-                          record.status !=5 && <Button
+                          record.status != 4 &&
+                          record.status !=5 &&
+                                                <Button
                                                   type="secondary"
                                                   shape="text"
                                                   onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
@@ -108,6 +125,7 @@ class ContractFileColumn extends BaseColumn {
                         }
                         {
                           record.type == 2 &&
+                          record.status != 4 &&
                           record.status !=5 && <Button
                                                 type="secondary"
                                                 shape="text"
@@ -119,7 +137,7 @@ class ContractFileColumn extends BaseColumn {
                           record.status ==5 && <Button
                                                 type="secondary"
                                                 shape="text"
-                                                onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.ONLOAD)}>
+                                                onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWNLOAD)}>
                                                   下载
                                                </Button>
                         }

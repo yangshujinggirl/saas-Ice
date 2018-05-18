@@ -6,6 +6,7 @@ import DataBinder from '@icedesign/data-binder';
 import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
 import {browserHistory, hashHistory} from 'react-router';
+import { Title, PchTable, PchPagination } from 'components';
 
 @DataBinder({
   tableData: {
@@ -38,23 +39,35 @@ export default class EnhanceTable extends Component {
       total: 100,
       pageSize: 10,
       currentPage: 1,
+      statusList:[
+        {key:'DRAFT',value:'待提交'},
+        {key:'RETURNED',value:'退回'},
+        {key:'SUBMIT',value:'提交'},
+        // {key:'CREDIT',value:'征信'},
+        {key:'AUDIT',value:'审查审批'},
+        {key:'MAKEUP',value:'补录'},
+        {key:'REJECTED',value:'审批拒绝'},
+        // {key:'INTERVIEW',value:'面签'},
+        {key:'LENDING_APPLY',value:'出账申请'},
+        {key:'LENDING_AUDIT',value:'出账审核'},
+        {key:'LENDING',value:'已放款'}
+      ]
     };
   }
 
   componentDidMount() {
-    this.queryCache.page = 1;
-    this.queryCache.pageSize = 10;
     this.fetchData();
   }
 
-  fetchData = () => {
-    let {actions} = this.props;
-    actions.search(this.queryCache);
-    // this.props.updateBindingData('tableData', {
-    //   data: this.queryCache,
-    // });
-  };
+  // fetchData = () => {
+  //   let {actions} = this.props;
+  //   actions.search(this.queryCache);
+  // };
 
+  fetchData = (condition) => {
+    console.log(condition)
+    this.props.actions.search(condition);
+  }
   renderTitle = (value, index, record) => {
     return (
       <div style={styles.titleWrapper}>
@@ -69,7 +82,7 @@ export default class EnhanceTable extends Component {
     console.log(record);
     console.log(this.props)
     // this.props.code(record);
-    hashHistory.push('/loanapplication/fixed/'+record.id);
+    hashHistory.push('/entryQuery/loanapplicationOne/'+record.id);
   };
   detal = (record, e)=>{
     e.preventDefault();
@@ -82,22 +95,30 @@ export default class EnhanceTable extends Component {
         className="filter-table-operation"
         style={styles.filterTableOperation}
       >
-        <a
-          href="#"
-          target="_blank"
-          onClick={this.editItem.bind(this, record)}
-          className='operate-btn operate-btn-two'
-        >
-          修改
-        </a>
-        <a
-          href="#"
-          target="_blank"
-          className='operate-btn'
-           onClick={this.detal.bind(this, record)}
-        >
-          详情
-        </a>
+        {
+          record.status  && (record.status == 'DRAFT' || record.status == 'RETURNED' || record.status == 'MAKEUP')  ? (
+            <a
+            href="#"
+            target="_blank"
+            onClick={this.editItem.bind(this, record)}
+            className='operate-btn operate-btn-two'
+          >
+            修改
+          </a>) : (<span></span>)
+        }
+        {
+          record.status  && record.status != 'DRAFT'  ? (
+            <a
+              href="#"
+              target="_blank"
+              className='operate-btn'
+              onClick={this.detal.bind(this, record)}
+            >
+              详情
+            </a>) : (<span></span>)
+        }
+
+
       </div>
     );
   };
@@ -109,12 +130,12 @@ export default class EnhanceTable extends Component {
       </IceLabel>
     );
   };
-  //改变页码
+  //点击分页
   changePage = (currentPage) => {
-    this.queryCache.page = currentPage;
-
-    this.fetchData();
-  };
+    this.props.actions.search({
+      page: currentPage
+    });
+  }
 
   filterFormChange = (value) => {
     this.setState({
@@ -138,10 +159,20 @@ export default class EnhanceTable extends Component {
       filterFormValue: {},
     });
   };
+  renderStatus = (value, index, record) => {
+    var  statusText = ''
+    this.state.statusList.map((item,index)=>{
+      if(item.key == record.status){
+        statusText = item.value;
+      }
+    })
+    return statusText;
+  };
 
   render() {
     // const tableData = this.props.bindingData.tableData;
     const tableData = this.props.pageData || {};
+    const {pageData ={}, columns} = this.props;
     const { filterFormValue } = this.state;
 
     return (
@@ -149,12 +180,7 @@ export default class EnhanceTable extends Component {
         <legend className="pch-legend" >
           <span className="pch-legend-legline"></span>车贷查询
         </legend>
-        <FilterForm
-          value={filterFormValue}
-          onChange={this.filterFormChange}
-          onSubmit={this.filterTables}
-          onReset={this.resetFilter}
-        />
+        <FilterForm onSubmit={this.fetchData} />
           <Table
             dataSource={tableData.list}
             isLoading={this.props.isFetching}
@@ -169,16 +195,16 @@ export default class EnhanceTable extends Component {
             />
             <Table.Column
               title="贷款状态"
-              dataIndex=""
+              // dataIndex="status"
               width={150}
               align={'left'}
+              cell={this.renderStatus}
             />
             <Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'left'}/>
             <Table.Column
               title="证件号码"
               dataIndex="borrowerIdNo"
               width={150}
-              cell={this.renderStatus}
               align={'left'}
             />
 
@@ -186,35 +212,30 @@ export default class EnhanceTable extends Component {
               title="手机号"
               dataIndex="borrowerMobile"
               width={150}
-              cell={this.renderStatus}
               align={'left'}
             />
             <Table.Column
               title="申请金额"
               dataIndex="principalAmount"
               width={150}
-              cell={this.renderStatus}
               align={'left'}
             />
             <Table.Column
               title="贷款产品"
               dataIndex="productName"
               width={150}
-              cell={this.renderStatus}
               align={'left'}
             />
             <Table.Column
               title="展厅名称"
               dataIndex=""
               width={150}
-              cell={this.renderStatus}
               align={'left'}
             />
             <Table.Column
               title="申请时间"
               dataIndex="createdAt"
               width={150}
-              cell={this.renderStatus}
               align={'left'}
             />
             <Table.Column
@@ -227,12 +248,7 @@ export default class EnhanceTable extends Component {
             />
           </Table>
           <div style={styles.paginationWrapper}>
-            <Pagination
-              current={tableData.page}
-              pageSize={tableData.limit}
-              total={tableData.total}
-              onChange={this.changePage}
-            />
+            <PchPagination dataSource={pageData} onChange={this.changePage} />
           </div>
         </IceContainer>
     );

@@ -19,7 +19,11 @@ class ContractColumn extends BaseColumn {
             width: 160
         }, {
             title: '模板类型',
-            dataIndex: 'typeName',
+            dataIndex: 'templateTypeName',
+            width: 160
+        }, {
+            title: '最后修改时间',
+            dataIndex: 'updatedAt',
             width: 160
         }, {
             title: '状态',
@@ -28,6 +32,7 @@ class ContractColumn extends BaseColumn {
             cell: (value, index, record) => {
                 return (
                     <Switch
+                      className="contract-switch"
                       checkedChildren="启"
                       unCheckedChildren="停"
                       onChange={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}
@@ -63,9 +68,6 @@ class ContractColumn extends BaseColumn {
                         <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.COPY)}>
                             复制
                         </Button>
-                        {/* <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SWITCH)}>
-                          {record.status == 1?'停用':'启用'}
-                        </Button> */}
                     </div>
                     );
             }

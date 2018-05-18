@@ -79,18 +79,18 @@ export default class addTwo extends Component {
     actions.productsave(this.state.value,id);
   }
 
-  onFormChange=()=>{
+  onFormChange=() => {
     this.setState({
       value
     })
   }
-  onTypeChange=(value)=> {
+  onTypeChange=(value) => {
     this.setState({
       type: value
     });
     this.getCarList(value, this.state.value.name)
   }
-  onNestChange=(value)=>{
+  onNestChange=(value) =>{
     this.setState({
       value2: value
     });
@@ -110,7 +110,6 @@ export default class addTwo extends Component {
   }
 
   render() {
-    console.log(this.state.value)
     return (
       <IceFormBinderWrapper
         ref={(formRef) => {
@@ -146,7 +145,7 @@ export default class addTwo extends Component {
                     </IceFormBinder>
                     <IceFormError name="CarTypeBrand" />
                 </Row>
-                {/*<legend className="pch-legend">
+                {/* <legend className="pch-legend">
                 <span className="pch-legend-legline"></span>按集团/渠道/厅店
               </legend>
               <div className="pch-condition">
@@ -164,7 +163,7 @@ export default class addTwo extends Component {
                 <Row wrap style={{marginBottom:"30px"}} >
                 <OrgType {...this.props} data={this.state.value2}/> 
                 </Row>
-              </div>*/}
+              </div> */}
             
             
               <div className="next-btn-box">

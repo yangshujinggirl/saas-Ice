@@ -187,10 +187,10 @@ export default class EnhanceTable extends Component {
         className="filter-table-operation"
         style={styles.filterTableOperation}
       >
-        <Link to={`/font/view?id=${record.id}`} className='operate-btn'>
+        <Link to={`/font/view/${record.id}`} className='operate-btn'>
           详情
         </Link>
-        <Link to={`/font/set?id=${record.id}`}  className='operate-btn'>
+        <Link to={`/font/set/${record.id}`}  className='operate-btn'>
           编辑
         </Link>
       </div>

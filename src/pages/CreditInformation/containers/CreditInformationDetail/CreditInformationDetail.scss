@@ -1,0 +1,81 @@
+
+
+.credit-informartion{
+  .review-form{
+  background: #FFFEFB;
+  border: 1px solid #F6DCA9;
+  border-left: none ;
+  border-radius: 1px;
+  display: inline-flex;
+  height: 800px;
+  .review-page{
+    height: 800px;
+    width: 15%;
+    max-width: 160px;
+    box-sizing: border-box;
+    .title{
+      float: left;
+      width: 100%;
+      height: 100%;
+      background: #FFF3E4;
+      box-sizing: border-box;
+      border: 1px solid #F6DCA9;
+      border-top: none;
+      ul{
+        padding-left: 25px;
+        a{
+          display: block;
+          color: rgb(102, 102, 102);
+          font-family: PingFangSC-Medium;
+          font-size: 15px;
+          letter-spacing: 0;
+          line-height: 48px;
+          text-align: left;
+        }
+        a.active {
+          position: relative;
+          color: #FC9E25;
+          text-decoration: none;
+          &::after {
+            content: '*';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -11px;
+            font-size: 12px;
+          }
+        }
+        li:hover{
+          cursor:pointer;
+        }
+      }
+
+    }
+  }
+  .rcontent-edito{
+    float: right;
+    width: auto;
+    box-sizing: border-box;
+    overflow-y: scroll;
+  }
+  .rcontent-edito::-webkit-scrollbar {
+    display: none;
+  }
+  .review-detail{
+    margin-bottom: 20px;
+    .name{
+      display: block;
+      height: 44px;
+      background: #FFF3E4;
+      border-bottom: 1px solid #F6DCA9;
+      border-radius: 1px;
+      line-height: 44px;
+      font-family: PingFangSC-Medium;
+      font-size: 14px;
+      color: #000000;
+      letter-spacing: 0;
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+  }
+}}

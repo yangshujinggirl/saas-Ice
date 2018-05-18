@@ -15,8 +15,8 @@ class ReviewApproveColumn extends BaseColumn {
             width: 160
         }, {
             title: '贷款状态',
-            dataIndex: '',
-            width: 150
+            dataIndex: 'loanStatus',
+            width: 160
         }, {
             title: '主贷人姓名',
             dataIndex: 'borrowerName',
@@ -24,7 +24,7 @@ class ReviewApproveColumn extends BaseColumn {
         }, {
             title: '证件号码',
             dataIndex: 'borrowerIdNo',
-            width: 150
+            width: 180
         }, {
             title: '手机号',
             dataIndex: 'borrowerMobile',
@@ -39,12 +39,12 @@ class ReviewApproveColumn extends BaseColumn {
           width: 150
         },{
           title: '展厅名称',
-          dataIndex: '',
-          width: 150
+          dataIndex: 'exhibitionHallName',
+          width: 160
         }, {
           title: '申请时间',
-          dataIndex: 'createdAt',
-          width: 150
+          dataIndex: 'submitAt',
+          width: 160
         },{
             title: '操作',
             dataIndex: 'visible',
@@ -53,12 +53,30 @@ class ReviewApproveColumn extends BaseColumn {
             cell: (value, index, record) => {
                 return (
                     <div>
-                        <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
-                            编辑
-                        </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
-                            查看
-                        </button>
+                      {
+                        record.status  && record.status == 'CLAIM'  ?
+                          (<button className="editbtn searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                          签收
+                        </button>)
+                          :(<span></span> )
+                      }
+                      {
+                        record.status  && record.status == 'SIGNED' ?
+
+                          record.taskTypeKey == '10' ? ( <div className='list-button-box'>
+                              <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER3)}>
+                                详情
+                              </button>
+                              <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER4)}>
+                                征信录入
+                              </button>
+                            </div>) :( <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                            详情
+                          </button>)
+
+                          :(<span></span> )
+                      }
+
                     </div>
                     );
             }

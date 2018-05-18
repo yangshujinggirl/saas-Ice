@@ -1,0 +1,33 @@
+
+.pch-interview{
+  width: 100%;
+  overflow: hidden;
+}
+.interview-left{
+  width: 60%;
+  float: left;
+}
+.interview-right{
+  width: 35%;
+  float: right;
+}
+.interviewTable{
+  width: 700px !important;
+}
+.id{
+  text-decoration: underline;
+}
+.id:hover{
+  color: #1AA8F0;
+}
+.see {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.upload{
+  margin-right: 20px;
+}
+.see ,.upload,.sign,.id{
+  color: #1AA8F0;
+  cursor: pointer;
+}

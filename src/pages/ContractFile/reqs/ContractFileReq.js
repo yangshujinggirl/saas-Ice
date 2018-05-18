@@ -6,20 +6,19 @@ class ContractFileReq extends CurdReq{
 
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
-		this._host = 'contractApi';
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/contract/contract/list/',
-            delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
+            create: this._config.CONTRACT_HOST + '/filter-table-list.json',
+            update: this._config.CONTRACT_HOST + '/filter-table-list.json',
+            retrieve: this._config.CONTRACT_HOST + '/contract/contract/',
+            delete: this._config.CONTRACT_HOST + '/detail.json',
+            detail: this._config.CONTRACT_HOST + '/detail.json'
         }
 	}
 
 	//合同详情
 	contractDetailApi(id){
 		let options = {
-			url: this._host + `/contract/contract/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
@@ -28,7 +27,7 @@ class ContractFileReq extends CurdReq{
 	//作废
 	handleContractApi(data) {
 		let options = {
-			url: this._host + `/contract/contract/status`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/status`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data
@@ -38,7 +37,7 @@ class ContractFileReq extends CurdReq{
 	//改电子
 	toggleContractApi(contractId) {
 		let options = {
-			url: this._host + `/contract/contract/type`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/type`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data:{
@@ -48,15 +47,39 @@ class ContractFileReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
-	//上传文件
+	//提交文件
 	signContractApi(params) {
 		let options = {
-			url: this._host + `/contract/contract/signed_paper_file`,
-			// url: 'http://172.16.0.210:8080/contract/contract/signed_paper_file',
-			method: 'POST',
-			contentType:'application/x-www-form-urlencoded',
-			// contentType: 'application/form-data',
+			url: this._config.CONTRACT_HOST + `/contract/contract/signed-paper-file`,
+			method: 'PUT',
+			contentType:'application/json',
 			data:params//files,contract_id
+		}
+		return super.fetchData(options);
+	}
+	//保存文件
+	saveFilesApi(params) {
+		let options = {
+			url: this._config.CONTRACT_HOST + `/contract/contract/signed-paper-file`,
+			method: 'POST',
+			contentType:'application/json',
+			data:params//files,contract_id
+		}
+		return super.fetchData(options);
+	}
+	//已保存文件列表
+	searchFilesApi(id) {
+		let options = {
+			url: this._config.CONTRACT_HOST + `/contract/contract/signed-file/${id}`,
+			method: 'GET',
+		}
+		return super.fetchData(options);
+	}
+	//下载文件
+	downloadFilesApi(id) {
+		let options = {
+			url: this._config.CONTRACT_HOST + `/contract/contract/${id}/pdf`,
+			method: 'GET',
 		}
 		return super.fetchData(options);
 	}

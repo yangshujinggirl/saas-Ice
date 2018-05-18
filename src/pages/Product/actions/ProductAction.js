@@ -93,8 +93,10 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
+      console.log(data)
+      console.log(res)
+      
       if (!res || res.code != 200) return;
-      // console.log(res)
       hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -116,12 +118,12 @@ export const productsave = (data, id) => {
   }
 }
 ////产品提交第三步保存
-export const prodHtmlSave = (data, id) => {
+export const saveProductAdd = (id, data,processDefId) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.prodHtmlSave(data, id).then((res) => {
+    Req.saveProductAdd(id, data,processDefId).then((res) => {
       if (!res || res.code != 200) return;
       hashHistory.push('/product/search')
     }).catch((ex) => {
@@ -135,7 +137,9 @@ export const getDetail = (id) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data }))
+      if(res.code==200){
+        dispatch(fetchSuccess({ formData: res.data }))
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -275,7 +279,7 @@ export const addTwoList = (data, formData, page) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.addTwoList(data, formData, page).then((res) => {
-      dispatch(fetchSuccess({ addTwoData: res }))
+      dispatch(fetchSuccess({ addTwoData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

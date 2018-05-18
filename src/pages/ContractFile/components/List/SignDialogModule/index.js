@@ -19,6 +19,7 @@ import {
 
 import './index.scss'
 import { PchDialog } from 'components';
+import Req from '../../../reqs/ContractFileReq';
 
 const {Row, Col} = Grid;
 
@@ -30,45 +31,63 @@ class SignDialogModule extends Component {
     super(props);
     this.state = {
       visible:this.props.visible,
-      value:{},
-      uploadList:[]
+      value:{}
     };
   }
   componentWillReceiveProps(props) {
     this.setState({
-      visible:props.visible
+      visible:props.visible,
+      value:{
+        fileIds:props.fileList
+      }
     })
   }
-  onClose() {
-    this.setState({
-      visible:false
-    })
-  }
-  onOk() {
+  //上传文件
+  onOk(type) {
     this.refs.form.validateAll((errors, values) => {
       if(errors) {
         return
       };
-      this.props.submit(this.state.uploadList);
+      let getValues = this.refs.form.getter('fileIds');
+      let fileList=[];
+      if(getValues.fileList) {
+        fileList = getValues.fileList;
+      } else {
+        fileList = getValues;
+      }
+      let params = fileList.map((el) => {
+        return {
+          fileName:el.fileName,
+          type:el.type,
+          location:el.imgURL
+        }
+      })
+      //提交 or 保存
+      if(type == 'submit') {
+        this.props.submit(params);
+      } else if (type == 'save') {
+        this.props.save(params);
+      }
     });
   }
-  //上传成功回调
-  upLoadSuccess(values) {
-    let { uploadList } = this.state;
-    let uploadFile = `${values.fileName}@@@${values.fileURL}@@@${values.fileType}`;
-    uploadList.push(uploadFile);
-    this.setState({
-      uploadList
-    })
+  onChange(files) {
+    const { fileList } =files;
+    if(fileList.length == 0) {
+      this.setState({
+        value:{fileIds:null}
+      })
+    }
   }
   render() {
     const { value, visible } = this.state;
       return (
         <PchDialog
           title={'上传签字文件'}
+          submitText="提交"
+          cancelText="保存"
           visible={visible}
-          onOk={()=>this.onOk()}
-          onClose={()=>this.onClose()}
+          onOk={()=>this.onOk('submit')}
+          onCancel={()=>this.onOk('save')}
           footer={[]}>
           <div className="contract-sign-dialog-content">
             <div className="pch-form">
@@ -84,20 +103,19 @@ class SignDialogModule extends Component {
                           <ImageUpload
                             listType="picture-card"
                             className='upload'
-                            action="/contractApi/contract/contract/signed_paper_file/upload"
-                            onSuccess={(res)=>this.upLoadSuccess(res)}
+                            action="/contractApi/contract/contract/signed-paper-file/picture"
+                            onChange={this.onChange.bind(this)}
+                            accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                            defaultFileList={value.fileIds}
                             formatter={(res) => {
                               return {
                                   code: res.code==200?'0':'1',
                                   fileName:res.filename,
                                   imgURL: res.fileUrl,
                                   fileURL: res.fileUrl,
-                                  fileType:res.fileType,
-                                  downloadURL:"https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
+                                  type:res.fileType,
                                 }
-                             }}
-                            accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                            />
+                             }}/>
                         </IceFormBinder>
                         <div><IceFormError name="fileIds" /></div>
                       </FormItem>

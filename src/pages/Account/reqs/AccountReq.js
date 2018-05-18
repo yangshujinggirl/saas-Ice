@@ -35,7 +35,7 @@ class AccountReq extends CurdReq{
 	 */
 	login(data){
 		let options = {
-			url: '/crm/saas/login',
+			url: '/crm/login',
 			method: 'POST',
 			contentType: 'application/json',
 			data: data
@@ -49,7 +49,7 @@ class AccountReq extends CurdReq{
 	 */
 	logout(){
 		let options = {
-			url: '/crm/saas/logout',
+			url: '/crm/logout',
 			method: 'GET',
 			contentType: 'application/json',
 		}
@@ -61,10 +61,24 @@ class AccountReq extends CurdReq{
 	 * @return {[type]} [description]
 	 * {"id":66582,"userName":"18811110001","realName":"","ownerId":66579}
 	 */
-	getUserInfo(data){
+	getUserInfo(){
 		
 		let options = {
 			url: '/crm/ext/user/getUserInfo',
+			method: 'GET'
+		}
+		return super.fetchData(options);
+	}
+
+	/**
+	 * 获取菜单信息
+	 * @return {[type]} [description]
+	 * type = 类型，CRM=CRM系统，SAAS=SAAS系统
+	 */
+	getSaasMenu(){
+		
+		let options = {
+			url: '/crm/resource/SAAS',
 			method: 'GET'
 		}
 		return super.fetchData(options);

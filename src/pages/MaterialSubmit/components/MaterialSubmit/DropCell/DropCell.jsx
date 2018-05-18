@@ -15,19 +15,19 @@ class DropCell extends Component {
 
         return connectDropTarget(
             <div className={cx('material-file-cell', {'can-drop': canDrop})}>
-                <div className="material-file-content">
-                    <Icon
-                        className="material-file-cell-close"
-                        type="close"
-                        size="small"
-                        onClick={onRemoveClick.bind(this, index, data.sourceId, type, data[type])} />
-                    {data[type] ?
-                     <IceImg
-                         height={44}
-                         width={44}
-                         src={data[type]} />
-                     : '请拖动图片'}
-                </div>
+                {data[type] ? 
+                    <div className="material-file-content">
+                        <Icon
+                            className="material-file-cell-close"
+                            type="close"
+                            size="small"
+                            onClick={onRemoveClick.bind(this, index, data.sourceId, type, data[type])} />
+                        
+                         <IceImg
+                             height={44}
+                             width={44}
+                             src={data[type]} />
+                    </div> : <div className="material-file-text">请拖动图片</div>}
             </div>
         )
     }
@@ -35,17 +35,25 @@ class DropCell extends Component {
 
 const cardTarget = {
     canDrop(props, monitor) {
-        console.log('dropcell candrop', props);
+        // console.log('dropcell candrop', props);
+        if(props.data[props.type]){
+            // 已经拖动过则不在拖放
+            return false;
+        }
         return true;
     },
     hover(props, monitor, component) {
-        // console.log('DropCell hover', props,monitor.getItem())
+        console.log('DropCell hover', props,monitor.getItem())
         const {lastTargetIndex, id: sourceId} = monitor.getItem()
         const {index: targetIndex, type} = props
 
         // Don't replace items with themselves
         if (lastTargetIndex === targetIndex) {
             return
+        }
+        if(props.data[props.type]){
+            // 已经拖动过则不在拖放
+            return false;
         }
 
         // Time to actually perform the action

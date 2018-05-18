@@ -15,10 +15,11 @@ class ContractList extends BaseApp {
   constructor(props) {
     super(props);
     this.state = {
-      visible:false,
-      elecVisbile:false,
-      contractId:'',
-      signVisible:false
+      visible:false,//作废
+      elecVisbile:false,//改电子
+      signVisible:false,//签字
+      fileList:[],
+      contractId:''
     }
   }
   componentWillMount() {
@@ -30,9 +31,9 @@ class ContractList extends BaseApp {
   }
   //点击分页
   changePage = (currentPage) => {
-      this.props.actions.search({
-          page: currentPage
-      });
+    this.props.actions.search({
+        page: currentPage
+    });
   }
   //表单操作
   handleOperateClick(record, type) {
@@ -50,10 +51,18 @@ class ContractList extends BaseApp {
             break;
         }
         case this.OPERATE_TYPE.CHANGE: {
-            this.changeDialog(record)
+            this.elecDialog(record)
+            break;
+        }
+        case this.OPERATE_TYPE.DOWNLOAD: {
+            this.downloadEvent(record)
             break;
         }
     }
+  }
+  //下载
+  downloadEvent(record) {
+    hashHistory.push(`contractfile/downList/${record.id}/?type=${record.type}`);
   }
   //作废
   cancelDialog(id) {
@@ -65,14 +74,29 @@ class ContractList extends BaseApp {
   }
   //签字
   signDialog(id) {
-    this.setState({
-      signVisible:true,
-      visible:false,
-      contractId:id
+    Req.searchFilesApi(id)
+    .then((res) => {
+      const { data } =res;
+      let fileList = data.map((el) => {
+        return {
+          fileName:el.fileName,
+          imgURL: el.location,
+          fileURL: el.location,
+          type:el.type
+        }
+      })
+      this.setState({
+        signVisible:true,
+        visible:false,
+        elecVisbile:false,
+        contractId:id,
+        fileList
+      })
     })
+
   }
-  //改纸质
-  changeDialog(record) {
+  //改电子
+  elecDialog(record) {
     this.setState({
       elecVisbile:true,
       visible:false,
@@ -97,7 +121,7 @@ class ContractList extends BaseApp {
       })
     })
   }
-  //提交作废api
+  //作废api
   submitCancel(values) {
     let params = Object.assign(values, { action:'INVALID',contractId:this.state.contractId });
     Req.handleContractApi(params)
@@ -116,6 +140,23 @@ class ContractList extends BaseApp {
       Toast.error(error);
     })
   }
+  //保存签字
+  saveSign(files) {
+    let params = Object.assign({files}, {contractId:this.state.contractId });
+    Req.saveFilesApi(params)
+    .then((res) => {
+      const { code, msg } =res;
+      if ( code != 200) {
+        Toast.error(msg);
+        return;
+      }
+      Toast.success("保存成功");
+      this.props.actions.search()
+      this.setState({
+        signVisible:false
+      })
+    })
+  }
   //提交签字
   submitSign(files) {
     let params = Object.assign({files}, {contractId:this.state.contractId });
@@ -127,31 +168,50 @@ class ContractList extends BaseApp {
         return;
       }
       Toast.success("上传成功");
+      this.props.actions.search()
       this.setState({
         signVisible:false
       })
     })
   }
+  //关闭弹框
+  onCancel(type) {
+    if(type == 'sign') {
+      this.setState({
+        visible:false
+      })
+    } else if(type == 'elec') {
+      this.setState({
+        elecVisbile:false
+      })
+    }
+  }
   render() {
     const { columns } = this.props;
     const { list=[] } =this.props.pageData;
-    const { visible, signVisible, elecVisbile, contractId } =this.state;
+    const { visible, signVisible, fileList, elecVisbile, contractId } =this.state;
 
     return(
       <IceContainer className="pch-container">
-          <Title title="合同编辑" />
+          <Title title="合同归档" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
+          <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
           <DialogModule
             visible={visible}
+            onCancel={()=>this.onCancel('sign')}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
+            fileList={fileList}
             visible={signVisible}
+            save = {this.saveSign.bind(this)}
             submit={this.submitSign.bind(this)}/>
           <PchDialog
-            title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
+            title={'改为电子后，客户可在面签时采用电子签名？'}
+            submitText="确认"
+            cancelText="取消"
             visible={elecVisbile}
+            onCancel={()=>this.onCancel('elec')}
             onOk={this.submitChangelec.bind(this)}/>
       </IceContainer>
     )

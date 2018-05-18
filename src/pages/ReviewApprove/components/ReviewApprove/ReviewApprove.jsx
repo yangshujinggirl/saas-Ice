@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
+import  Req from '../../reqs/ReviewApproveReq'
 
 // import './Process.scss';
 
@@ -18,6 +19,7 @@ export default class ReviewApprove extends BaseApp {
         this.fetchData();
     }
     fetchData = (condition) => {
+        console.log(condition)
         this.props.actions.search(condition);
     }
     //点击分页
@@ -27,6 +29,21 @@ export default class ReviewApprove extends BaseApp {
         });
     }
 
+  //点击签收
+  signIN = (taskId)=>{
+    Req.signIn({
+      taskId: taskId
+    }).then((res)=>{
+      if(res && res.code==200){
+        this.fetchData();
+      }
+    }).catch((error)=>{
+
+    });
+
+  }
+
+
     /**
      * 处理行列表中操作栏的点击事件
      * @param data 传递给对应事件的行记录数据，okey一般为当前记录的主键
@@ -34,13 +51,25 @@ export default class ReviewApprove extends BaseApp {
      */
     handleOperateClick(data, type) {
         switch (type) {
-            case this.OPERATE_TYPE.EDIT: {
-                hashHistory.push(`process/detail/${record.id}`)
+            //签收
+            case this.OPERATE_TYPE.OTHER1: {
+                this.signIN(data.taskId);
                 break;
             }
+            //审查审批详情
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`process/detail/${record.id}`)
+                hashHistory.push(`reviewApprove/detail/${data.loanId}/${data.proInstId}/${data.taskId}`)
                 break;
+            }
+            // 征信详情
+            case this.OPERATE_TYPE.OTHER3: {
+              hashHistory.push(`creditinformation/detail/${data.loanId}/${data.taskId}/${data.proInstId}`)
+              break;
+            }
+            // 征信录入
+            case this.OPERATE_TYPE.OTHER4: {
+              hashHistory.push(`creditinformation/add/${data.loanId}`)
+              break;
             }
         }
     }

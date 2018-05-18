@@ -90,7 +90,11 @@ class ContractList extends BaseApp {
     }
     Req.isBindProductApi(record.id)
     .then((res) => {
-      const { data } = res;
+      const { data, code, msg } = res;
+      if(code !=200 || data == null) {
+        Toast.error(msg);
+        return;
+      }
       if(data) {
         this.seachBindProductList(record.id,actionStatus);
       } else {
@@ -100,17 +104,22 @@ class ContractList extends BaseApp {
             actionStatus,
             isBind:false,
             productList:[]
-          }
+          },
+          visible:true
         })
       }
-      this.setState({visible:true})
     })
   }
   //查询绑定产品列表
   seachBindProductList(id,actionStatus) {
     Req.seachBindTemplateApi(id)
     .then((res) => {
-      let productList = res.data.map((ele,index) => ({
+      const { data, code, msg} =res;
+      if( code !=200 || data == null) {
+        Toast.error(msg);
+        return;
+      }
+      let productList = data.templateProductList.map((ele,index) => ({
         value:ele.id,
         label:ele.productName
       }));
@@ -120,7 +129,8 @@ class ContractList extends BaseApp {
           actionStatus,
           isBind:true,
           productList
-        }
+        },
+        visible:true
       })
     })
   }
@@ -129,6 +139,11 @@ class ContractList extends BaseApp {
     //debugger
     Req.handleTemplateApi(id,actionStatus)
     .then((res) => {
+      const { data, code, msg} =res;
+      if(code !=200 || data == null) {
+        Toast.error(msg);
+        return;
+      }
       if(actionStatus == 1) {
         Toast.success("启用成功");
       } else if(actionStatus == 2) {
@@ -153,7 +168,7 @@ class ContractList extends BaseApp {
           <Title title="合同管理" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
+        <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
             templateObj={templateObj}
             visible={visible}

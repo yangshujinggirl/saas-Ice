@@ -21,10 +21,10 @@ const { Group: RadioGroup } = Radio;
 
 //存储选中的数据
 let arrayRightData = {
-    chexing:[],
-    chexi:[],
-    pinpai:[]
-  };//全局
+  chexing: [],
+  chexi: [],
+  pinpai: []
+};//全局
 const testarray = []; //右侧即将要渲染的数据
 
 const CARTYPES = {
@@ -50,18 +50,18 @@ export default class CarType extends Component {
     // 表格可以勾选配置项
     this.rowSelection = {
       // 表格发生勾选状态变化时触发
-      onChange: (ids,array) => {
+      onChange: (ids, array) => {
         let types = this.props.data;
         let arra = [];
 
-        if(types=='1'){
+        if (types == '1') {
           arrayRightData.pinpai = [...array]
-        }else if(types=='2'){
+        } else if (types == '2') {
           arrayRightData.chexi = [...array]
-        }else{
+        } else {
           arrayRightData.cehxing = [...array]
         }
-        
+
         this.setState({
           selectDate: arrayRightData
         })
@@ -77,14 +77,13 @@ export default class CarType extends Component {
     this.state = {
       value: {},
       type: '',
-      dataSourceRight:[],//存储选中的数据，渲染右侧
+      dataSourceRight: [],//存储选中的数据，渲染右侧
       selectedRowKeys: [],//选中的复选框
       selectDate: []
     };
 
   }
   componentDidMount() {
-    console.log(this.props)
     let { actions, addTwoData } = this.props;
     let val = this.props.data;
     this.state.type = val
@@ -97,9 +96,9 @@ export default class CarType extends Component {
     const tempData = []
     list.map((item, i) => {
       tempData.push({
-        type:carType.name,
-        id:item.id,
-        name:item.name
+        type: carType.name,
+        id: item.id,
+        name: item.name
       });
     })
     return tempData;
@@ -118,20 +117,20 @@ export default class CarType extends Component {
     })
   }
   //向右移动
-  onRight(){
+  onRight() {
     let CarData = this.props.CarData || {};
     CarData.productScopes = []
     for (var key in arrayRightData) {
-      for (var i = 0; i < arrayRightData[key].length; i++) {　　
-        var flag = true;　　
+      for (var i = 0; i < arrayRightData[key].length; i++) {
+        var flag = true;
         for (var j = 0; j < testarray.length; j++) {
           if (arrayRightData[key][i].id == testarray[j].id) {
             flag = false;
           }
         }
-        　
+
         if (flag) {
-          testarray.push(arrayRightData[key][i]);　　
+          testarray.push(arrayRightData[key][i]);
         }
       }
     }
@@ -144,7 +143,6 @@ export default class CarType extends Component {
 
     //右侧提交数据
     arra.map((item, i) => {
-      console.log(item)
       CarData.productScopes.push({
         relatedId: item.id,
         relatedName: item.type == '品牌' ? item.name : (item.type == '车系' ? item.name : item.name),
@@ -168,35 +166,30 @@ export default class CarType extends Component {
       </div>
     );
   };
-//右侧删除一列
-deleteItem = (index) => {
-  let data = this.state.dataSourceRight;
-  console.log(index);
+  //右侧删除一列
+  deleteItem = (index) => {
+    let data = this.state.dataSourceRight;
 
-  data.splice(index,1)
-  this.setState({
-    dataSourceRight: data
-  })
-};
-//分页
-changePage = (currentPage) => {
-  let { actions, addTwoData } = this.props;
-  let { name } = this.state.value;
-  let val = this.props.data;
-  this.state.type = val
-  actions.addTwoList(val, name,currentPage)
-};
+    data.splice(index, 1)
+    this.setState({
+      dataSourceRight: data
+    })
+  };
+  //分页
+  changePage = (currentPage) => {
+    let { actions, addTwoData } = this.props;
+    let { name } = this.state.value;
+    let val = this.props.data;
+    this.state.type = val
+    actions.addTwoList(val, name, currentPage)
+  };
   render() {
+    console.log(this.props)
     let addTwoData = this.props.addTwoData || {};
     let type = this.props.data;
-    let list = addTwoData.data || {};
-    let page = list.page;
-    let limit = list.limit ;
-    let total = list.total;
-        list = list.list || [];
+    let { list = [], page, limit, total } = addTwoData
 
     let dataSource = this.renderDataWithCar(type, list);
-    console.log(this.props)
     return (
       <IceFormBinderWrapper
         ref={(formRef) => {
@@ -206,20 +199,20 @@ changePage = (currentPage) => {
         onChange={this.onFormChange.bind(this)}
       >
         <div>
-            <Row wrap style={styles.formItem}>
-              <Col s="4" l="4" xxs={24} xs={12} l={8}>
-                <IceFormBinder
-                  name="name"
-                >
-                  <Input size="large" style={{ width: '175px' }} placeholder="请输入查询名称" />
-                </IceFormBinder>
-                <IceFormError name="name" />
-                <Button size="large" htmlType="submit" type="secondary" onClick={this.searchCar.bind(this)} style={{marginLeft: 12}}>
-                  查询
+          <Row wrap style={styles.formItem}>
+            <Col s="4" l="4" xxs={24} xs={12} l={8}>
+              <IceFormBinder
+                name="name"
+              >
+                <Input size="large" style={{ width: '175px' }} placeholder="请输入查询名称" />
+              </IceFormBinder>
+              <IceFormError name="name" />
+              <Button size="large" htmlType="submit" type="secondary" onClick={this.searchCar.bind(this)} style={{ marginLeft: 12 }}>
+                查询
                 </Button>
-              </Col>
-            </Row>
-            {/* <Row wrap style={{marginBottom:"30px"}} >
+            </Col>
+          </Row>
+          {/* <Row wrap style={{marginBottom:"30px"}} >
                 <Transfer
                   titles={['选项',' 选项']}
                   dataSource={dataSource}
@@ -229,50 +222,51 @@ changePage = (currentPage) => {
                 >
                 </Transfer>
               </Row>*/}
-            <div className="table-center">
-              <div className="table-left">
-                <Table
-                  dataSource={dataSource}
-                  rowSelection={{
-                    ...this.rowSelection,
-                    selectedRowKeys: this.state.selectedRowKeys,
-                  }}
-                >
+          <div className="table-center">
+            <div className="table-left">
+              <Table
+                dataSource={dataSource}
+                rowSelection={{
+                  ...this.rowSelection,
+                  selectedRowKeys: this.state.selectedRowKeys,
+                }}
+                fixedHeader={true}
+                maxBodyHeight={400}
+              >
 
-                  <Table.Column title="类型" dataIndex="type" width={50} />
-                  <Table.Column title="名称" dataIndex="name" width={200} />
-                </Table>
-                <div style={styles.pagination}>
-                  <Pagination
-                    current={page}
-                    pageSize={limit}
-                    total={total}
-                    onChange={this.changePage}
-                    />
-                </div>
-              </div>
-
-              <div className="table-center-btn">
-                  <button onClick={this.onRight.bind(this)}>>></button>
-              </div>
-
-              <div className="table-right">
-                <Table
-                  dataSource={this.state.dataSourceRight}
-                  fixedHeader={true}
-                  maxBodyHeight={400}
-                >
-                  <Table.Column title="类型" dataIndex="type" width={50} />
-                  <Table.Column title="名称" dataIndex="name" width={300} />
-                  <Table.Column
-                    title="操作"
-                    cell={this.renderOperator}
-                    lock="right"
-                    width={50}
-                  />
-                </Table>
+                <Table.Column title="类型" dataIndex="type" width={50} />
+                <Table.Column title="名称" dataIndex="name" width={200} />
+              </Table>
+              <div style={styles.pagination}>
+                <Pagination
+                  current={page}
+                  pageSize={limit}
+                  total={total}
+                  onChange={this.changePage}
+                />
               </div>
             </div>
+            <div className="btn-wrap">
+              <Button className="table-center-btn add-btn" onClick={this.onRight.bind(this)}>>> </Button>
+            </div>
+
+            <div className="table-right">
+              <Table
+                dataSource={this.state.dataSourceRight}
+                fixedHeader={true}
+                maxBodyHeight={400}
+              >
+                <Table.Column title="类型" dataIndex="type" width={50} />
+                <Table.Column title="名称" dataIndex="name" width={300} />
+                <Table.Column
+                  title="操作"
+                  cell={this.renderOperator}
+                  lock="right"
+                  width={50}
+                />
+              </Table>
+            </div>
+          </div>
         </div>
       </IceFormBinderWrapper>
     );
@@ -280,7 +274,7 @@ changePage = (currentPage) => {
 }
 
 const styles = {
-  removeBtn:{
+  removeBtn: {
     background: '#fff',
     color: '#1AA8F0 ',
     cursor: 'pointer'
@@ -320,7 +314,7 @@ const styles = {
     marginLeft: '20px'
 
   },
-  pagination:{
-    marginTop:'10px'
+  pagination: {
+    marginTop: '10px'
   }
 };

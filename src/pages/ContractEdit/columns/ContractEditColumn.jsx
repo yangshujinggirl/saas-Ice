@@ -16,6 +16,14 @@ import { BaseColumn } from 'base';
    6:'签署中',
    7:'未签字',
  }
+ const cardTrans = {
+   1:'身份证',
+   2:'港澳通行证',
+   3:'军官证',
+   4:'护照',
+   5:'台湾通行证',
+   6:'其他',
+ }
 class ContractEditColumn extends BaseColumn {
 
     constructor() {
@@ -34,20 +42,30 @@ class ContractEditColumn extends BaseColumn {
             width: 100
         }, {
             title: '证件类型',
-            dataIndex: 'documentType',
-            width: 160
+            dataIndex: 'cardType',
+            width: 160,
+            cell:(value, index, record)=> {
+              return cardTrans[record.cardType]
+            }
         }, {
             title: '证件号码',
-            dataIndex: 'documentCode',
+            dataIndex: 'cardNo',
+            width: 160
+        }, {
+            title: '手机号',
+            dataIndex: 'phone',
             width: 160
         }, {
             title: '合同时间',
             dataIndex: 'contractTime',
             width: 160
         }, {
-            title: '贷款金额',
-            dataIndex: 'loanAmount',
-            width: 160
+            title: '状态',
+            dataIndex: 'visible',
+            width: 120,
+            cell:(value, index, record)=> {
+              return statusTrans[record.status]
+            }
         }, {
             title: '资方',
             dataIndex: 'capital',
@@ -65,12 +83,9 @@ class ContractEditColumn extends BaseColumn {
             dataIndex: 'customerManagerName',
             width: 120
         }, {
-            title: '状态',
-            dataIndex: 'visible',
-            width: 120,
-            cell:(value, index, record)=> {
-              return statusTrans[record.status]
-            }
+            title: '贷款金额',
+            dataIndex: 'loanAmount',
+            width: 160
         }, {
             title: '操作',
             dataIndex: 'visible',

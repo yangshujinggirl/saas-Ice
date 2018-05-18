@@ -11,9 +11,10 @@ import Header from './../../components/Header';
 import Footer from './../../components/Footer';
 import Logo from './../../components/Logo';
 import { asideNavs } from './../../navs';
-import { Storage } from '../../base/utils';
+import { Storage, Cookie } from '../../base/utils';
 import './scss/light.scss';
 // import './scss/dark.scss';
+import CommonReq from '../../base/reqs/CommonReq';
 
 const logoImg = require('./img/logo.svg');
 
@@ -29,18 +30,39 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   constructor(props) {
     super(props);
 
-    const openKeys = this.getOpenKeys();
     this.state = {
       collapse: false,
       openDrawer: false,
       isScreen: undefined,
       openKeys,
     };
+    const openKeys = this.getOpenKeys();
     this.openKeysCache = openKeys;
   }
 
   componentDidMount() {
     this.enquireScreenRegister();
+
+    CommonReq.getSaasMenu().then((res) => {
+      if (res && res.code == 200) {
+        Storage.set('MENUS', res.data.leaf);
+        this.setState({MENUS: res.data.leaf})
+      }
+    });
+
+    CommonReq.getUserInfo().then((res) => {
+      if (res && res.code == 200) {
+        Storage.set("USERINFO", res.data);
+        this.setState({USERINFO: res.data});
+      }
+    });
+
+    // setInterval(function(){
+    //   CommonReq.getHeartToken().then(res => {
+    //     if (!res || res.code != 200) return;
+    //     Cookie.set('PCTOKEN', res.data.token);
+    //   })
+    // }, 600000)
   }
 
   /**
@@ -130,7 +152,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     let openKeys = [];
     let allAsideNav = asideNavs || [];
 
-    let leafs = Storage.get('MENUS') || [];
+    // let leafs = Storage.get('MENUS') || [];
+    let leafs = this.state.MENUS || [];
     allAsideNav = allAsideNav.concat(leafs);
 
     allAsideNav &&
@@ -145,7 +168,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   };
 
   processLinkWithOwnerId(link){
-    let userInfo = Storage.get('USERINFO');
+    // let userInfo = Storage.get('USERINFO');
+    let userInfo = this.state.USERINFO;
     if(userInfo && userInfo.ownerId){
       link += (link.indexOf('?') >= 0 ? '&' : '?' )+ 'ownerId=' + userInfo.ownerId;
       link += '&userId=' + userInfo.id;
@@ -159,7 +183,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     const { pathname } = location;
     let allAsideNav = asideNavs || [];
 
-    let leafs = Storage.get('MENUS') || [];
+    // let leafs = Storage.get('MENUS') || [];
+    let leafs = this.state.MENUS || [];
     allAsideNav = allAsideNav.concat(leafs);
 
     return (
@@ -282,6 +307,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           pathname={pathname}
           routes={routes}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
+          userinfo={this.state.USERINFO}
         />
 
 

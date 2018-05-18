@@ -10,13 +10,15 @@ import { hashHistory } from 'react-router';
 const { DragUpload, ImageUpload } = Upload;
 require('./index.scss')
 import { Feedback } from "@icedesign/base";
+import {BaseComponent} from 'base';
+import {Title} from 'components';
 
 const Toast = Feedback.toast;
 const cardTarget = {
   drop() {},
 }
 
-class MaterialSubmit extends Component {
+class MaterialSubmit extends BaseComponent {
   static displayName = 'MaterialSubmit';
 
   static propTypes = {};
@@ -35,18 +37,30 @@ class MaterialSubmit extends Component {
         {id:'fileName',title: '材料名称'},
         {id:'fileSize',title:'限制大小'}],
       fileList: [
-      // {
-      //   id: 1,
-      //   fileName: "IMG.png",
-      //   status: "done",
-      //   size: 1024,
-      //   downloadURL:
-      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-      //   fileURL:
-      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-      //   imgURL:
-      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
-      // }
+      {
+        id: 1,
+        fileName: "IMG.png",
+        status: "done",
+        size: 1024,
+        downloadURL:
+          "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
+        fileURL:
+          "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
+        imgURL:
+          "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
+      },
+      {
+        id: 2,
+        fileName: "IMG.png",
+        status: "done",
+        size: 1024,
+        downloadURL:
+          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg",
+        fileURL:
+          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg",
+        imgURL:
+          "http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg"
+      }
       ],
       upLoadList:[]
     };
@@ -118,7 +132,7 @@ class MaterialSubmit extends Component {
       />
     )
   }
-  findFile(id){
+  findFileById(id){
     const { fileList } = this.state
     const file = fileList.filter(c => c.id === id)[0]
 
@@ -130,30 +144,30 @@ class MaterialSubmit extends Component {
   moveCard(targetIndex, sourceId, isCancel, lastTargetIndex, type) {
     // console.log('moveCard', arguments);
     let { dataSource, fileList} = this.state
-    let dragCard = this.findFile(sourceId);
+    let dragFile = this.findFileById(sourceId);
     let d = dataSource[targetIndex];
 
     if(isCancel){
       d[type] = undefined;
-      dragCard.file.isUsed = false;
+      dragFile.file.isUsed = false;
     }else{
       if(typeof lastTargetIndex != 'undefined'){
         dataSource[lastTargetIndex][type] = undefined;
       }
       if(typeof d.sourceId != 'undefined'){
-        let lastDragCard = this.findFile(d.sourceId);
-        lastDragCard.file.isUsed = false;
+        // let lastdragFile = this.findFileById(d.sourceId);
+        // lastdragFile.file.isUsed = false;
       }
-      dragCard.file.isUsed = true;
-      d[type] = dragCard.file.imgURL;
-      d.sourceIndex = dragCard.index;
+      dragFile.file.isUsed = true;
+      d[type] = dragFile.file.imgURL;
+      d.sourceIndex = dragFile.index;
       d.sourceId = sourceId;
     }
     this.setState({dataSource,fileList})
   }
   handleRemoveClick(index, sourceId, type, imgURL){
     let { dataSource, fileList} = this.state;
-    let dragCard = this.findFile(sourceId);
+    let dragFile = this.findFileById(sourceId);
     let d = dataSource[index];
 
     if(!sourceId){
@@ -163,7 +177,7 @@ class MaterialSubmit extends Component {
         status: 'done'
       })
     }else{
-      dragCard.file.isUsed = false;
+      dragFile.file.isUsed = false;
     }
     d[type] = undefined;
     this.setState({dataSource,fileList})
@@ -176,7 +190,7 @@ class MaterialSubmit extends Component {
   //提交
   submit = () => {
     this.state.queryCache.id = this.props.params.id;
-    this.state.queryCache.status = 1;
+    this.state.queryCache.status = 'SUBMIT';
 
     let { originData, tableList, dataSource } = this.state;
     let data = [];
@@ -212,31 +226,37 @@ class MaterialSubmit extends Component {
   }
   //保存
   save =  () =>{
+
     Toast.success('保存成功，请提交～');
   }
   render() {
     const { connectDropTarget  } = this.props
     let { fileList, tableList, dataSource } = this.state;
-    return connectDropTarget(
+    return (
       <div>
-        <IceContainer title="材料提交" className='subtitle'>
-          <ImageUpload
-            className='upload-picture'
-            listType="picture-card"
-            action="/loanApi/file/upload"
-            data={{'path':'path/to/file'}}
-            formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
-            accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-            fileList={this.state.fileList}
-            showUploadList={false}
-            onChange={this.handleFileChange.bind(this)}
-          />
+        <IceContainer className='pch-container subtitle'>
+          <Title title="材料提交"/>
+          <div className="material-files-upload">
+            <Upload
+              {...this.UPLOAD_CONFIG}
+              className='material-files-upload-upload'
+              accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+              fileList={fileList}
+              showUploadList={false}
+              onChange={this.handleFileChange.bind(this)}
+            >
+            <div className="material-files-upload-button">
+              <div className="icon material-files-upload-button-icon">&#xe628;</div>
+              <p className="material-files-upload-button-text">将文件拖到此处，或<em>点击上传</em></p>
+            </div>
+            </Upload>
+          </div>
           <div
             className="material-files"
             >
             {fileList.map((item, idx) => {
               return(
-                <DragFile
+                <div
                   key={idx}
                   id={item.id}
                   index={idx}
@@ -268,7 +288,8 @@ class MaterialSubmit extends Component {
   }
 }
 
-MaterialSubmit = DropTarget('CARD', cardTarget, connect => ({
-  connectDropTarget: connect.dropTarget(),
-}))(MaterialSubmit)
+// MaterialSubmit = DropTarget('CARD', cardTarget, connect => ({
+//   connectDropTarget: connect.dropTarget(),
+// }))(MaterialSubmit)
 export default DragDropContext(HTML5Backend)(MaterialSubmit);
+// export default MaterialSubmit;

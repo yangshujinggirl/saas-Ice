@@ -3,22 +3,21 @@ import { CurdReq } from 'base';
 class ContractEditReq extends CurdReq{
 	constructor(){
 		super();
-		this._host = 'contractApi';
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/contract/contract/list',
-            delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
+            create: this._config.CONTRACT_HOST + '/filter-table-list.json',
+            update: this._config.CONTRACT_HOST + '/filter-table-list.json',
+            retrieve: this._config.CONTRACT_HOST + '/contract/contract/',
+            delete: this._config.CONTRACT_HOST + '/detail.json',
+            detail: this._config.CONTRACT_HOST + '/detail.json'
         }
 	}
 
 	//编辑详情
 	goEditContractApi(id){
 		let options = {
-			url: this._host + `/contract/contract/edit_status`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/edit_status`,
 			method: 'GET',
 			contentType: 'application/json',
 			params:{id}
@@ -28,7 +27,7 @@ class ContractEditReq extends CurdReq{
 	//提交编辑
 	submitEditContractApi(id,contract_content){
 		let options = {
-			url: this._host + `/contract/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/${id}`,
 			method: 'PUT',
 			contentType: 'application/json',
 			params:{
@@ -41,7 +40,7 @@ class ContractEditReq extends CurdReq{
 	//取消，退回
 	handleContractApi(data) {
 		let options = {
-			url: this._host + `/contract/contract/status`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/status`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data
@@ -51,7 +50,7 @@ class ContractEditReq extends CurdReq{
 	//改纸质
 	toggleContractApi(contractId) {
 		let options = {
-			url: this._host + `/contract/contract/type`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/type`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data:{
