@@ -37,8 +37,10 @@ export default class Filter extends Component {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-              limit:20
+              limit:20,
             },
+            submitStart: null,
+            submitEnd: null,
             endOpen: false
         };
     }
@@ -50,45 +52,62 @@ export default class Filter extends Component {
         });
     }
     handleSubmit() {
-        // const {submitStart, submitEnd} = this.state.value;
-        // if(submitStart && submitEnd){
-        //   if(submitEnd.getTime() <= submitStart.getTime()){
-        //         Toast.help("申请开始时间不能大于申请结束时间");
-        //         return;
-        //   }
-        // }
+        const {submitStart, submitEnd} = this.state.value;
+        if(submitStart){
+          var value = this.formatDateTime(submitStart)
+          this.onChange1("submitStart", value);
+        }
+        if(submitEnd){
+          var value = this.formatDateTime(submitEnd)
+          this.onChange1("submitEnd", value);
+        }
         this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
+    formatDateTime =(inputTime)=> {
+      var date = new Date(inputTime);
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? ('0' + m) : m;
+      var d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      var h = date.getHours();
+      h = h < 10 ? ('0' + h) : h;
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      minute = minute < 10 ? ('0' + minute) : minute;
+      second = second < 10 ? ('0' + second) : second;
+      return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+    };
     onStartChange(value) {
       this.onChange("submitStart", value);
     }
     onEndChange(value) {
       this.onChange("submitEnd", value);
     }
-    onChange(field, value) {
+    onChange1(field, value) {
       let d = this.state.value;
       d[field] = value
       this.setState({
         value: d
       });
+      console.log(this.state.value)
     }
-    handleEndOpenChange(open) {
-      this.setState({ endOpen: open });
-    }
-    handleStartOpenChange(open) {
-      if (!open) {
-        this.setState({ endOpen: true });
-      }
+    onChange(field, value) {
+      this.setState({
+        [field]: value
+      });
     }
     disabledEndDate(submitEnd) {
-      const { submitStart } = this.state.value;
+      const { submitStart } = this.state;
+      console.log(submitStart)
+      console.log(submitStart.valueOf())
       if (!submitEnd || !submitStart) {
         return false;
       }
       return submitEnd.valueOf() <= submitStart.valueOf();
     }
     disabledStartDate(submitStart) {
-      const { submitEnd } = this.state.value;
+      const { submitEnd } = this.state;
       if (!submitStart || !submitEnd) {
         return false;
       }
@@ -96,6 +115,7 @@ export default class Filter extends Component {
     }
 
     render() {
+      const { submitStart, submitEnd } = this.state.value;
         return (
             <div className="pch-condition">
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
@@ -125,15 +145,17 @@ export default class Filter extends Component {
                             <IceFormBinder
                               name="submitStart"
                               // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
-                              valueFormatter={(date, dateStr) => dateStr}
+                              // valueFormatter={(date, dateStr) => dateStr}
                             >
                               <DatePicker
+                                format={'YYYY-MM-DD HH:mm:ss'}
                                 disabledDate={this.disabledStartDate.bind(this)}
-                                showTime
                                 size="large"
+                                showTime
+                                value={submitStart}
                                 placeholder="申请开始时间"
                                 onChange={this.onStartChange.bind(this)}
-                                onOpenChange={this.handleStartOpenChange.bind(this)}
+                                // onOpenChange={this.handleStartOpenChange.bind(this)}
                               />
                             </IceFormBinder>
                           </FormItem>
@@ -143,14 +165,16 @@ export default class Filter extends Component {
                             <IceFormBinder
                               name="submitEnd"
                               // 使用 RangePicker 组件输出的第二个参数字符串格式的日期
-                              valueFormatter={(date, dateStr) => dateStr}
+                              // valueFormatter={(date, dateStr) => dateStr}
                             >
                               <DatePicker
-                                disabledDate={this.disabledEndDate.bind(this)}
+                                format={'YYYY-MM-DD HH:mm:ss'}
                                 showTime
+                                disabledDate={this.disabledEndDate.bind(this)}
                                 placeholder="申请结束时间"
+                                value={submitEnd}
                                 onChange={this.onEndChange.bind(this)}
-                                onOpenChange={this.handleEndOpenChange.bind(this)}
+                                // onOpenChange={this.handleEndOpenChange.bind(this)}
                               />
                             </IceFormBinder>
                           </FormItem>

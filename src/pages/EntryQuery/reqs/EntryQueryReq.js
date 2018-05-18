@@ -57,7 +57,7 @@ class EntryQueryReq extends CurdReq{
   //获取第一页基本信息字段
   searchField(data) {
     let options = {
-      url: this._config.LOAN_HOST + `/fields?isFixed=${data.isFixed}`,
+      url: this._config.LOAN_HOST + `/fields?step=${data.step}`,
       method: 'Get',
       contentType: 'application/json'
     }
@@ -95,6 +95,15 @@ class EntryQueryReq extends CurdReq{
         url: this._config.WF_HOST + `/tasks/track?businessId=${data.businessId}`,
         method: 'Get',
       }
+    }
+    return super.fetchData(options);
+  }
+  //获取进件详情
+  getDetail(id) {
+    let options = {
+      url: this._config.LOAN_HOST + `/loans/${id}/screen`,
+      method: 'Get',
+      contentType: 'application/json'
     }
     return super.fetchData(options);
   }

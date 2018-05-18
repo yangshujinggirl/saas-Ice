@@ -8,7 +8,7 @@ class ContractEditReq extends CurdReq{
 		this.curd = {
             create: this._config.CONTRACT_HOST + '/filter-table-list.json',
             update: this._config.CONTRACT_HOST + '/filter-table-list.json',
-            retrieve: this._config.CONTRACT_HOST + '/contract/contract/',
+            retrieve: this._config.CONTRACT_HOST + '/contract/',
             delete: this._config.CONTRACT_HOST + '/detail.json',
             detail: this._config.CONTRACT_HOST + '/detail.json'
         }
@@ -17,7 +17,7 @@ class ContractEditReq extends CurdReq{
 	//编辑详情
 	goEditContractApi(id){
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/edit_status`,
+			url: this._config.CONTRACT_HOST + `/contract/edit_status`,
 			method: 'GET',
 			contentType: 'application/json',
 			params:{id}
@@ -40,7 +40,7 @@ class ContractEditReq extends CurdReq{
 	//取消，退回
 	handleContractApi(data) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/status`,
+			url: this._config.CONTRACT_HOST + `/contract/status`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data
@@ -50,7 +50,7 @@ class ContractEditReq extends CurdReq{
 	//改纸质
 	toggleContractApi(contractId) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/type`,
+			url: this._config.CONTRACT_HOST + `/contract/type`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data:{

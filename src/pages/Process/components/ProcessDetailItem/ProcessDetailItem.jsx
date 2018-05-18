@@ -41,9 +41,24 @@ export default class ProcessDetailItem extends Component {
     //         return '--';
     //     }
     // }
+    
+    getTransToTaskName(v){
+        let d = this.props.selectData;
+        let name;
+
+        d.map((item) => {
+            if(item.value == v){
+                name = item.name;
+                return;
+            }
+        });
+
+        return name || '--';
+    }
 
     render() {
         const { index, item, selectData, setModule, changeView } = this.props;
+        console.log(selectData, item.transToTaskOrder, selectData[item.transToTaskOrder])
 
         return (
             <Row align="top" key={index} className={`container-right-tabRow`}>
@@ -52,15 +67,13 @@ export default class ProcessDetailItem extends Component {
                 <Col xxs="6" s="3" l="3" className="pch-moduleName">
                     {item.taskTypeName} - {item.taskAlias}
                 </Col>
-                <Col xxs="6" s="2" l="6">
+                <Col xxs="6" s="2" l="8">
                     {item.transitionItems && item.transitionItems.map((list, ind) => {
                         return (
                             <div className="pch-target-name" key={ind}>
                                 <Input className="input-bottom" disabled defaultValue={list.conditionName} size="large" text={list.transToTaskName} />
                                 <i className="icon icon-arrow">&#xe603;</i>
-                                <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskName`}>
-                                    <Input disabled size="large" />
-                                </IceFormBinder>
+                                <Input disabled size="large" defaultValue={this.getTransToTaskName(list.transToTaskOrder)} />
                             </div>
                         );
                     })}
@@ -68,7 +81,7 @@ export default class ProcessDetailItem extends Component {
                 <Col xxs="6" s="2" l="3">
                     {item.pageId ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.PREVIEWPAGE, item)}>预览</a> : '--'}
                 </Col>
-                <Col xxs="6" s="2" l="3">
+                <Col xxs="6" s="2" l="4">
                     {item.productCollectionId ? <div className="pch-target-name">{item.productCollectionName}</div> : '--'}
                 </Col>
                 <Col xxs="6" s="2" l="2">

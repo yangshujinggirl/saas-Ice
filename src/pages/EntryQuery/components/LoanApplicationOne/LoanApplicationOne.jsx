@@ -50,7 +50,8 @@ class LoanApplicationOne extends Component {
       loadId:this.props.params.id,
       dataSource:[],
       month:1,
-      index : 0
+      index : 0,
+      filedList:[]
     };
     this.field = new Field(this);
     // 请求参数缓存
@@ -66,13 +67,20 @@ class LoanApplicationOne extends Component {
     if(loadId) {
       this.changeInfomation(loadId)
     } else {
-      this.props.actions.searchField({isFixed:true});
+      this.props.actions.searchField({step:0});
     }
   }
 
   changeInfomation(loadId) {
     let {actions} = this.props;
-    actions.getDetail(this.props.params.id);
+    Req.getDetail(this.props.params.id).then((res)=>{
+      if(res && res.code == 200){
+        console.log(res)
+        this.setState({
+          filedList : res.data
+        })
+      }
+    });
   }
   //获取产品列表
   getProductNum() {
@@ -269,12 +277,16 @@ class LoanApplicationOne extends Component {
         delete list[i];
       }
     }
+    console.log(list)
     return list
   }
   render() {
+    console.log(JSON.stringify(this.state.filedList))
     if(this.props.params.id){
-      var { list =[] } =   this.props.detail  || [];
-      list = !this.isEmptyObject(list) ? this.takeFixedField(list) : [];
+      var {  filedList ={} } =   this.state;
+      console.log(filedList)
+      console.log(!this.isEmptyObject(filedList))
+      list = !this.isEmptyObject(filedList) ? this.takeFixedField(filedList.list) : [];
     }else{
       var { list =[] } = this.props.fieldList   || [];
     }

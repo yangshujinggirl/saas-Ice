@@ -9,7 +9,7 @@ class ContractFileReq extends CurdReq{
 		this.curd = {
             create: this._config.CONTRACT_HOST + '/filter-table-list.json',
             update: this._config.CONTRACT_HOST + '/filter-table-list.json',
-            retrieve: this._config.CONTRACT_HOST + '/contract/contract/',
+            retrieve: this._config.CONTRACT_HOST + '/contract/',
             delete: this._config.CONTRACT_HOST + '/detail.json',
             detail: this._config.CONTRACT_HOST + '/detail.json'
         }
@@ -18,7 +18,7 @@ class ContractFileReq extends CurdReq{
 	//合同详情
 	contractDetailApi(id){
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
@@ -27,7 +27,7 @@ class ContractFileReq extends CurdReq{
 	//作废
 	handleContractApi(data) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/status`,
+			url: this._config.CONTRACT_HOST + `/contract/status`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data
@@ -37,7 +37,7 @@ class ContractFileReq extends CurdReq{
 	//改电子
 	toggleContractApi(contractId) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/type`,
+			url: this._config.CONTRACT_HOST + `/contract/type`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
 			data:{
@@ -50,7 +50,7 @@ class ContractFileReq extends CurdReq{
 	//提交文件
 	signContractApi(params) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/signed-paper-file`,
+			url: this._config.CONTRACT_HOST + `/contract/signed-paper-file`,
 			method: 'PUT',
 			contentType:'application/json',
 			data:params//files,contract_id
@@ -60,7 +60,7 @@ class ContractFileReq extends CurdReq{
 	//保存文件
 	saveFilesApi(params) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/signed-paper-file`,
+			url: this._config.CONTRACT_HOST + `/contract/signed-paper-file`,
 			method: 'POST',
 			contentType:'application/json',
 			data:params//files,contract_id
@@ -70,7 +70,7 @@ class ContractFileReq extends CurdReq{
 	//已保存文件列表
 	searchFilesApi(id) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/signed-file/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/signed-file/${id}`,
 			method: 'GET',
 		}
 		return super.fetchData(options);
@@ -78,7 +78,7 @@ class ContractFileReq extends CurdReq{
 	//下载文件
 	downloadFilesApi(id) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/contract/${id}/pdf`,
+			url: this._config.CONTRACT_HOST + `/contract/${id}/pdf`,
 			method: 'GET',
 		}
 		return super.fetchData(options);

@@ -90,6 +90,9 @@ export default class Login extends Component {
           isSameSystem = fromUrl.indexOf(system) != -1;
         }
         
+        // 跳转规则
+        // 1. 有来源且系统相同则往来源地址跳转
+        // 2. 否则往默认地址跳转
         if(isSameSystem && fromUrl){
           fromUrl = decodeURIComponent(fromUrl);
           location.href = fromUrl;
