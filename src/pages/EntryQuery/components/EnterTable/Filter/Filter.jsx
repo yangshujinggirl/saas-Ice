@@ -68,7 +68,7 @@ export default class Filter extends Component {
       value: value,
     });
   }
-  formatDateTime =(inputTime)=> {
+  formatDateTime =(inputTime) => {
     var date = new Date(inputTime);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
@@ -147,6 +147,7 @@ export default class Filter extends Component {
                     name="from"
                   >
                     <DatePicker
+                      size="large"
                       format={'YYYY-MM-DD HH:mm:ss'}
                       disabledDate={this.disabledStartDate.bind(this)}
                       showTime
@@ -164,6 +165,7 @@ export default class Filter extends Component {
                     name="to"
                   >
                     <DatePicker
+                      size="large"
                       format={'YYYY-MM-DD HH:mm:ss'}
                       showTime
                       disabledDate={this.disabledEndDate.bind(this)}
@@ -180,7 +182,7 @@ export default class Filter extends Component {
                   <IceFormBinder
                     name="status"
                   >
-                    <Select dataSource={dataSource}></Select>
+                    <Select size="large" dataSource={dataSource}></Select>
                   </IceFormBinder>
                 </FormItem>
               </Col>

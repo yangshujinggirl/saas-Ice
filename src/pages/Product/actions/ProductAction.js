@@ -177,6 +177,8 @@ export const prodrevise = (condition) => {
     dispatch(fetchStart())
     Req.prodrevise(condition).then((res) => {
       if (!res || res.code != 200) return;
+
+      edit(condition.id)(dispatch);
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -316,16 +318,4 @@ export const fileNameRepeat = (condition) => {
       dispatch(fetchFailed(ex))
     })
   }
-}
-
-export function changeViewToForm() {
-  return change({ view: 'form' });
-}
-
-export function changeViewToList() {
-  return change({ view: 'list' });
-}
-
-export function changeViewToView() {
-  return change({ view: 'view' });
 }
