@@ -24,7 +24,7 @@ class DownLoad extends Component {
                 </div>
       } else {
         return <div className="text-wrap">
-                  <p className="contract-name">合同1</p>
+                  <p className="contract-name">{el.fileName}</p>
                </div>
       }
     }

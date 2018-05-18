@@ -67,7 +67,8 @@ module.exports = {
             '/contract': {
                 target: CONTRACT_HOST,
                 changeOrigin: true,
-                pathRewrite: { "^/contract": "/contract-ft1" },
+                // pathRewrite: { "^/contract": "/contract-ft1" },
+                pathRewrite: { "^/contract": "" },
                 bypass: function(req, res, proxyOpt) {
                     // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');

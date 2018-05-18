@@ -75,6 +75,7 @@ class AddEit extends BaseApp {
       if(templateContent=='') {
         return
       }
+      //debugger;
       const blocksFromHTML = convertFromHTML(templateContent);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
@@ -89,22 +90,32 @@ class AddEit extends BaseApp {
       })
     })
   }
-  //提交保存
-  handleSubmit() {
-    const { editorState } = this.state;
-    let templateContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  //校验表单
+  validEditor(callback){
     this.refs.form.validateAll((errors, values) => {
       if(errors) {
         return
       }
+      
+      'function' == typeof callback && callback(values)
+
+    });
+  }
+  //提交保存
+  handleSubmit() {
+    this.validEditor(values=>{
+      const { editorState } = this.state;
+      let templateContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+      templateContent = templateContent.replace(/(<script[\s\S]*?<\/script>)/i,'');
       this.refs.form.setter('templateContent',templateContent);
       //新增or编辑
       if(this.props.params.id) {
+        //debugger
         this.editTemplate(values)
       } else {
+        //debugger
         this.addTemplate(values);
       }
-
     });
   }
   //提交新增api
@@ -138,8 +149,15 @@ class AddEit extends BaseApp {
   }
   //预览状态
   previewStatus(moduleStatus) {
-    this.setState({
-      moduleStatus
+    if(!moduleStatus){
+      return this.setState({
+        moduleStatus
+      })
+    }
+    this.validEditor(values=>{
+      this.setState({
+        moduleStatus
+      })
     })
   }
   //上传图片
@@ -204,7 +222,7 @@ class AddEit extends BaseApp {
             <IceFormBinderWrapper  value={value} ref="form">
               <Form size="large">
                 <Row wrap justify="center">
-                  <Col span={6}>
+                  <Col span="6">
                     <FormItem {...formItemLayout} label="合同名称:">
                       <IceFormBinder
                         name="templateName"

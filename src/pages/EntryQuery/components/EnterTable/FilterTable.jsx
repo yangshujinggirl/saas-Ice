@@ -7,22 +7,6 @@ import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
 import {browserHistory, hashHistory} from 'react-router';
 import { Title, PchTable, PchPagination } from 'components';
-
-@DataBinder({
-  tableData: {
-    // 详细请求配置请参见 https://github.com/axios/axios
-    url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/loans/lists',
-    params: {
-      page: 1,
-    },
-    defaultBindingData: {
-      list: [],
-      total: 100,
-      pageSize: 10,
-      currentPage: 1,
-    },
-  },
-})
 export default class EnhanceTable extends Component {
   static displayName = 'EnhanceTable';
 
@@ -47,7 +31,7 @@ export default class EnhanceTable extends Component {
         {key:'AUDIT',value:'审查审批'},
         {key:'MAKEUP',value:'补录'},
         {key:'REJECTED',value:'审批拒绝'},
-        // {key:'INTERVIEW',value:'面签'},
+        {key:'INTERVIEW',value:'面签'},
         {key:'LENDING_APPLY',value:'出账申请'},
         {key:'LENDING_AUDIT',value:'出账审核'},
         {key:'LENDING',value:'已放款'}

@@ -43,11 +43,22 @@ export default class Filter extends Component {
     this.state = {
       value: {
         limit : 10,
-      }
+      },
+      to : null,
+      from : null
     };
   }
 
   submit = () =>{
+    const {to, from} = this.state.value;
+    if(to){
+      var value = this.formatDateTime(to)
+      this.onChange1("to", value);
+    }
+    if(from){
+      var value = this.formatDateTime(from)
+      this.onChange1("from", value);
+    }
 
     this.props.onSubmit && this.props.onSubmit(this.state.value);
 
@@ -56,6 +67,54 @@ export default class Filter extends Component {
     this.setState({
       value: value,
     });
+  }
+  formatDateTime =(inputTime)=> {
+    var date = new Date(inputTime);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h = h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    second = second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+  };
+  onStartChange(value) {
+    this.onChange("from", value);
+  }
+  onEndChange(value) {
+    this.onChange("submitEnd", value);
+  }
+  onChange1(field, value) {
+    let d = this.state.value;
+    d[field] = value
+    this.setState({
+      value: d
+    });
+    console.log(this.state.value)
+  }
+  onChange(field, value) {
+    this.setState({
+      [field]: value
+    });
+  }
+  disabledEndDate(to) {
+    const { from } = this.state;
+    if (!to || !from) {
+      return false;
+    }
+    return to.valueOf() <= from.valueOf();
+  }
+  disabledStartDate(from) {
+    const { to } = this.state;
+    if (!from || !to) {
+      return false;
+    }
+    return from.valueOf() > to.valueOf();
   }
   render() {
     return (
@@ -85,12 +144,17 @@ export default class Filter extends Component {
               <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="申请开始时间：">
                   <IceFormBinder
-                    name="submitStart"
+                    name="from"
                   >
                     <DatePicker
+                      format={'YYYY-MM-DD HH:mm:ss'}
+                      disabledDate={this.disabledStartDate.bind(this)}
                       size="large"
+                      showTime
                       style={{width:"100%"}}
                       placeholder="申请开始时间"
+                      onChange={this.onStartChange.bind(this)}
+                      // onOpenChange={this.handleStartOpenChange.bind(this)}
                     />
                   </IceFormBinder>
                 </FormItem>
@@ -98,12 +162,17 @@ export default class Filter extends Component {
               <Col s="8" l="6">
                 <FormItem {...formItemLayout} label="申请结束时间：">
                   <IceFormBinder
-                    name="submitEnd"
+                    name="to"
                   >
                     <DatePicker
-                      size="large"
+                      format={'YYYY-MM-DD HH:mm:ss'}
+                      showTime
+                      disabledDate={this.disabledEndDate.bind(this)}
+                      placeholder="申请结束时间"
                       style={{width:"100%"}}
-                      placeholder="申请结束时间" />
+                      onChange={this.onEndChange.bind(this)}
+                      // onOpenChange={this.handleEndOpenChange.bind(this)}
+                    />
                   </IceFormBinder>
                 </FormItem>
               </Col>
