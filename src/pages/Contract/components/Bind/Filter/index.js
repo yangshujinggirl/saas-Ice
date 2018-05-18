@@ -61,9 +61,7 @@ class Filter extends Component {
                   <Col xxs={24} xs={12} l={6} xl={6}>
                     <FormItem {...formItemLayout} label="资方:">
                       <IceFormBinder name="tenantId">
-                        <Select size="large">
-                          <div>中国银行</div>
-                        </Select>
+                          <Input size="large" value="中国银行" readonly/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>

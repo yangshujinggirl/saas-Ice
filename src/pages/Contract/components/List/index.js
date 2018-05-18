@@ -136,6 +136,7 @@ class ContractList extends BaseApp {
   }
   //提交启用，停用，删除
   submitOperate(id,actionStatus) {
+    //debugger
     Req.handleTemplateApi(id,actionStatus)
     .then((res) => {
       const { data, code, msg} =res;
