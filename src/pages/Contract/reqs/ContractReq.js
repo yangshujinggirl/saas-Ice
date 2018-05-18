@@ -73,7 +73,7 @@ class ContractReq extends CurdReq{
 	//查询产品列表
 	seachProductListApi(condition) {
 		let options = {
-			url: this._host + `/product`,
+			url: this._config.LOAN_HOST + `/product`,
 			method: 'GET',
 			contentType: 'application/json',
 			params:condition
@@ -83,7 +83,7 @@ class ContractReq extends CurdReq{
 	//类型select
 	getSelectSourceApi() {
 		let options = {
-			url: this._host + `/product/data/`,
+			url: this._config.LOAN_HOST + `/product/data`,
 			method: 'GET',
 			contentType: 'application/json'
 		}

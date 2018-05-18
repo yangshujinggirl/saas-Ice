@@ -167,7 +167,7 @@ class ContractList extends BaseApp {
           <Title title="合同管理" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
+        <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
             templateObj={templateObj}
             visible={visible}
