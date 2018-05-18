@@ -65,7 +65,7 @@ export default class SearchEdit extends Component {
     }
 
     /**
-     * 提交保存产品
+     * 编辑产品
      * @return {[type]} [description]
      */
     upData = () => {
