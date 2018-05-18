@@ -5,8 +5,8 @@ import BaseConfig from '../../config/BaseConfig';
  * 组件的基类
  * 1. 提供上传组件的通用配置，地址、请求头、响应格式等
  */
-class BaseComponent extends Component {
-  constructor(props, store, action) {
+export default class BaseComponent extends Component {
+  constructor(props) {
     super(props);
 
     // 配置信息
@@ -43,5 +43,3 @@ class BaseComponent extends Component {
 
   }
 }
-
-export default BaseComponent;

@@ -6,7 +6,7 @@ import OperateTypeConstant from '../constants/OperateTypeConstant';
  * 1. 定义列表的搜索条件
  * 2. 定义列表的行操作类型
  */
-class BaseApp extends Component {
+export default class BaseApp extends Component {
     constructor(props, store, action) {
         super(props);
 
@@ -37,5 +37,3 @@ class BaseApp extends Component {
         
     }
 }
-
-export default BaseApp;

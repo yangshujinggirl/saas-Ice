@@ -6,69 +6,56 @@ import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
 
-const formItemLayout = {
-    labelCol: {
-        span: 8
-    },
-    wrapperCol: {
-        span: 16
-    }
-};
-
-class Filter extends Component {
+class Filter extends BaseCondition {
   constructor() {
     super();
     this.state = {
       value:{}
     }
   }
-  handleSubmit() {
-    this.refs.form.validateAll((errors, values) => {
-      this.props.onSubmit && this.props.onSubmit(values);
-    });
-  }
 
   render() {
       return (
         <div className="pch-condition">
-            <IceFormBinderWrapper ref="form" value={this.state.value}>
+            <IceFormBinderWrapper ref="form" value={this.state.value} onChange={this.filterFormChange.bind(this)}>
               <Form size="large" direction="hoz">
                 <Row wrap>
-                  <Col span={5}>
-                    <FormItem {...formItemLayout} label="贷款编号:">
+                  <Col {...this.colspans}>
+                    <FormItem {...this.formItemLayout} label="贷款编号:">
                       <IceFormBinder name="loanNo">
                           <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={5}>
-                    <FormItem {...formItemLayout} label="客户名称:">
+                  <Col {...this.colspans}>
+                    <FormItem {...this.formItemLayout} label="客户名称:">
                       <IceFormBinder name="name">
                           <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={5}>
-                    <FormItem {...formItemLayout} label="证件号码:">
+                  <Col {...this.colspans}>
+                    <FormItem {...this.formItemLayout} label="证件号码:">
                       <IceFormBinder name="cardNo">
                           <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={5}>
-                    <FormItem {...formItemLayout} label="手机号码:">
+                  <Col {...this.colspans}>
+                    <FormItem {...this.formItemLayout} label="手机号码:">
                       <IceFormBinder name="phone">
                           <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
-                  <Col span={4}>
-                    <FormItem {...formItemLayout} label="">
+                  <Col {...this.colspans}>
+                    <FormItem {...this.formItemLayout} label="">
                       <Button type="secondary" size="large" onClick={this.handleSubmit.bind(this)} htmlType="submit">
                           查询
                       </Button>
