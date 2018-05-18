@@ -230,7 +230,7 @@ class AddEit extends BaseApp {
                         message="合同名称不为空">
                           <Input size="large" placeholder="合同名称"/>
                       </IceFormBinder>
-                      <div><IceFormError name="templateName" /></div>
+                      <IceFormError name="templateName" />
                     </FormItem>
                   </Col>
                   <Col span={20}>
@@ -252,7 +252,8 @@ class AddEit extends BaseApp {
                             }
                           }}/>
                       </IceFormBinder>
-                      <div><IceFormError name="templateContent" /></div>
+                      <IceFormError name="templateContent" />
+                      <textarea style={{'width':'100%', 'resize':'vertical'}} disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))}/>
                   </Col>
                   <Col span={24}>
                     <div className="btns-wrap">
