@@ -121,7 +121,7 @@ export default class Filter extends Component {
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
                       <Row wrap>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="贷款编号：">
                             <IceFormBinder
                               name="code"
@@ -131,7 +131,7 @@ export default class Filter extends Component {
                           </FormItem>
 
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="主贷人姓名：">
                             <IceFormBinder
                               name="borrowerName"
@@ -140,7 +140,7 @@ export default class Filter extends Component {
                             </IceFormBinder>
                           </FormItem>
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="申请开始时间：">
                             <IceFormBinder
                               name="submitStart"
@@ -160,7 +160,7 @@ export default class Filter extends Component {
                             </IceFormBinder>
                           </FormItem>
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="申请结束时间：">
                             <IceFormBinder
                               name="submitEnd"
@@ -179,7 +179,7 @@ export default class Filter extends Component {
                             </IceFormBinder>
                           </FormItem>
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="展厅名称：">
                             <IceFormBinder
                               name="exhibitionHallName"
@@ -188,7 +188,7 @@ export default class Filter extends Component {
                             </IceFormBinder>
                           </FormItem>
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="状态：">
                             <IceFormBinder
                               name="status"
@@ -197,10 +197,13 @@ export default class Filter extends Component {
                             </IceFormBinder>
                           </FormItem>
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
 
                         </Col>
-                        <Col s="6" l="6">
+                        <Col s="8" l="8">
+
+                        </Col>
+                        <Col s="8" l="8">
                           <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
                             <Button onClick={this.handleSubmit.bind(this)} type="secondary">
                               查询
