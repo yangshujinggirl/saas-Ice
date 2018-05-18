@@ -19,12 +19,13 @@ module.exports = {
     //     chunkFilename: "[id].[hash].js",
     //     pathinfo: true
     // },
-    output: {
-        path: resolve("build/assets"),
-        publicPath: "/assets/",
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[id].[chunkhash].js'
-    },
+    // output: {
+    //     path: resolve("build/assets"),
+    //     publicPath: "/build/assets/",
+    //     filename: '[name].[hash].js',
+    //     chunkFilename: '[id].[hash].js',
+    //     pathinfo: true
+    // },
     resolve: {
         alias: {
             '@': resolve('src/pages'),
@@ -93,7 +94,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: package.title + ' ' + NODE_ENV + ' ' + package.version,
             template: __DEV__ ? './public/index.dev.ejs' : './public/index.ejs',
-            filename: '../index.html',
+            // filename: '../index.html',
+            filename: 'index.html',
             name: package.name,
             description: package.description,
             version: package.version,
