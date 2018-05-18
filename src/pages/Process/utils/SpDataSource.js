@@ -17,15 +17,12 @@ class SpDataSource {
 
   init() {
     let userinfo = Storage.get('USERINFO');
-    // TODO 加入资方的key
-    if (userinfo) {
+    // ownerId 资方ID
+    // organizationName 资方名称
+    if (userinfo && userinfo.identity) {
       this.dataSource.push({
-        label: '中国银行',
-        value: '10086'
-      });
-      this.dataSource.push({
-        label: '平安银行',
-        value: '100'
+        label: userinfo.identity.organizationName,
+        value: userinfo.identity.ownerId
       });
 
       this.defaultValue = this.dataSource[0].value;

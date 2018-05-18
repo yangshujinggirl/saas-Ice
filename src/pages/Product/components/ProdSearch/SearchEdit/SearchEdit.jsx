@@ -63,7 +63,7 @@ export default class SearchEdit extends Component {
         if (nextProps.formData && nextProps.formData.product && nextProps.formData.product.tenantId && (!temp || temp.length == 0)) {
             //流程名称获取
             Req._processList({
-                tenantId: nextProps.formData.product.tenantId, //测试可写：10086
+                // tenantId: nextProps.formData.product.tenantId, //测试可写：10086
                 limit: 99999
             }).then((data) => {
                 let temp = this.state.processList;

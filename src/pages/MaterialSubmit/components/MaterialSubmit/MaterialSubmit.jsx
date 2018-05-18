@@ -256,7 +256,7 @@ class MaterialSubmit extends BaseComponent {
             >
             {fileList.map((item, idx) => {
               return(
-                <div
+                <DragFile
                   key={idx}
                   id={item.id}
                   index={idx}
