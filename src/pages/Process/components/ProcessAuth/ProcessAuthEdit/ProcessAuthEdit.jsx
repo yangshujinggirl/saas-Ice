@@ -102,7 +102,7 @@ export default class ProcessAuthEdit extends BaseApp {
     let dataSourceRight = this.state.dataSourceRight;
     let tempArr = [];
     dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne);
-    dataSourceRight.map((item)=>{
+    dataSourceRight.map((item) =>{
       item.name?item.roleName=item.name:''
     })
     for(var i= 0; i<dataSourceRight.length-1;i++){
