@@ -55,7 +55,7 @@ export default class SearchEdit extends Component {
     this.state = {
       processList: [], 
       processDefId:'',
-      values:{
+      value:{
         
       }
     };
@@ -69,17 +69,26 @@ export default class SearchEdit extends Component {
     let { product = {} } = formData;
     actions.edit(params.id);
     actions.getDetail(params.id);
-    //流程名称获取
-    Req._processList({ tenantId: product.tenantId,limit:99999 }).then((data) => {
-      let temp = this.state.processList;
-      temp = data.data.list;
-      this.setState({ processList: temp }, function () { });
-      console.log('')
+  }
+
+  componentWillReceiveProps(nextProps){
+    let temp = this.state.processList;
+    console.log(nextProps.formData)
+    if(nextProps.formData&&nextProps.formData.product&&nextProps.formData.product.tenantId && (!temp || temp.length == 0)){
+      //流程名称获取
+    Req._processList({ tenantId: nextProps.formData.product.tenantId,//测试可写：10086
+                    limit:99999 })
+                    .then((data) => {
+                      let temp = this.state.processList;
+                      temp = data.data.list;
+                      this.setState({ processList: temp }, function () { });
     })
+    }
   }
   upData=()=>{
-    let {actions,pageData,params} = this.props;
+    let {actions,pageData,params,formData} = this.props;
     console.log(this.state.processName)
+    let name = formData.product|| {}
     this.formRef.validateAll((error, value) => {
       console.log('error', error, 'value', value);
       if (error) {
@@ -89,7 +98,9 @@ export default class SearchEdit extends Component {
       // 提交当前填写的数据
       value.effectiveDate=value.time[0]
       value.expirationDate=value.time[1];
-      value.processDefId = this.state.processDefId
+      value.processId = this.state.processDefId;
+      value.id = params.id;
+      value.name = name.name;
       this.props.actions.prodrevise(value);//
       // location.reload ()
     });
@@ -102,9 +113,9 @@ export default class SearchEdit extends Component {
    //流程名称的id值
    onChangeProcess=(value,option)=> {
      console.log(option)
+    
     this.setState({
-      processDefId: option.processId,
-      show: true
+      processDefId:option.processId,
     })
   }
 
@@ -151,10 +162,7 @@ export default class SearchEdit extends Component {
             ref={(formRef) => {
               this.formRef = formRef;
             }}
-            value={{
-                    name:name,
-                    id:this.props.params.id,
-                    status:undefined}}
+            value={this.state.value}
             onChange={this.onFormChange}
           >
             <div className="pch-form">
@@ -246,7 +254,6 @@ export default class SearchEdit extends Component {
                 <Table
                   dataSource={dataSource}
                   isLoading={this.state.isLoading}
-                  style={{width:"80%"}}
                   sort={{id :'=desc'}}
                 >
                   <Table.Column title="版本" dataIndex="id" width={120} />
