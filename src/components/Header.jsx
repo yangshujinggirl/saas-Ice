@@ -35,7 +35,7 @@ export default class Header extends PureComponent {
   _redirectToLogin() {
     let _host = location.host;
     if(_host.indexOf('pingchang666') == -1){
-      hashHistory.push('/account');
+      hashHistory.push('/account/' + encodeURIComponent(location.href));
       return;
     }
 
