@@ -3,22 +3,21 @@ import { CurdReq } from 'base';
 class ContractReq extends CurdReq{
 	constructor(){
 		super();
-		this._host = 'contractApi';
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/contract/contract/template/',//模板列表
-            delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
+            create: this._config.CONTRACT_HOST + '/filter-table-list.json',
+            update: this._config.CONTRACT_HOST + '/filter-table-list.json',
+            retrieve: this._config.CONTRACT_HOST + '/contract/contract/template/',//模板列表
+            delete: this._config.CONTRACT_HOST + '/detail.json',
+            detail: this._config.CONTRACT_HOST + '/detail.json'
         }
 
 	}
 	//新增模板
 	addTemplatesApi(params){
 		let options = {
-			url: this._host + '/contract/contract/template/save',
+			url: this._config.CONTRACT_HOST + '/contract/contract/template/save',
 			method: 'POST',
 			ccontentType: 'application/json',
 			data:params
@@ -28,7 +27,7 @@ class ContractReq extends CurdReq{
 	//编辑模板
 	editTemplatesApi(params){
 		let options = {
-			url: this._host + '/contract/contract/template/edit',
+			url: this._config.CONTRACT_HOST + '/contract/contract/template/edit',
 			method: 'POST',
 			ccontentType: 'application/json',
 			data:params
@@ -38,7 +37,7 @@ class ContractReq extends CurdReq{
 	//模板详情
 	templateDetailApi(id) {
 		let options = {
-			url: this._host + `/contract/contract/template/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/template/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
@@ -47,7 +46,7 @@ class ContractReq extends CurdReq{
 	//复制模板
 	copyTemplateApi(id) {
 		let options = {
-			url: this._host + `/contract/contract/template/copy/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/template/copy/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
@@ -56,7 +55,7 @@ class ContractReq extends CurdReq{
 	//查询是否绑定产品
 	isBindProductApi(id) {
 		let options = {
-			url: this._host + `/contract/contract/template/${id}/product`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/template/${id}/product`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
@@ -65,7 +64,7 @@ class ContractReq extends CurdReq{
 	//查询已绑定产品列表
 	seachBindTemplateApi(id) {
 		let options = {
-			url: this._host + `/contract/contract/template/bondProduct/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/template/bondProduct/${id}`,
 			method: 'GET',
 			contentType: 'application/json'
 		}
@@ -73,7 +72,6 @@ class ContractReq extends CurdReq{
 	}
 	//查询产品列表
 	seachProductListApi(condition) {
-		this._host = 'loan-ft1';
 		let options = {
 			url: this._host + `/product`,
 			method: 'GET',
@@ -84,7 +82,6 @@ class ContractReq extends CurdReq{
 	}
 	//类型select
 	getSelectSourceApi() {
-		this._host = 'loan-ft1';
 		let options = {
 			url: this._host + `/product/data/`,
 			method: 'GET',
@@ -95,7 +92,7 @@ class ContractReq extends CurdReq{
 	//模板启用，停用，删除
 	handleTemplateApi(id,status) {
 		let options = {
-			url: this._host + `/contract/contract/template/oper`,
+			url: this._config.CONTRACT_HOST + `/contract/contract/template/oper`,
 			method: 'GET',
 			contentType: 'application/json',
 			params:{id,status}
