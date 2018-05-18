@@ -66,7 +66,7 @@ export default class EnhanceTable extends Component {
     console.log(record);
     console.log(this.props)
     // this.props.code(record);
-    hashHistory.push('/entryQuery/loanapplicationOne/'+record.id);
+    hashHistory.push('/entryQuery/loanapplication/'+record.id);
   };
   detal = (record, e)=>{
     e.preventDefault();

@@ -6,7 +6,7 @@ class BaseConfig {
     static WF_HOST = '/wf';//流程配置相关服务
     static CONTRACT_HOST = '/contract';//流程配置相关服务
     static PAGESIZE = 15;
-    static IS_AUTO_MENU_USED = true; //是否使用自动生成菜单
+    static IS_AUTO_MENU_USED = false; //是否使用自动生成菜单
 }
 
 export default BaseConfig;
