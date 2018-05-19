@@ -155,6 +155,7 @@ export default class FormRender extends Component {
                      {/*})}*/}
                    {/*/>*/}
                  <Select
+                   hasClear
                    showSearch
                    dataSource={this.state.list}
                    onSearch={this.onInputUpdate.bind(this)}
