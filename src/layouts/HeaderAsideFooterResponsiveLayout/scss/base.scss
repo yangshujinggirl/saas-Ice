@@ -1146,8 +1146,8 @@ body {
 .pch-load-jump .loader:after {
   background: #FC9E25;
   color: #FC9E25;
-  -webkit-animation: load1 1s infinite ease-in-out;
-  animation: load1 1s infinite ease-in-out;
+  -webkit-animation: pch-load-jump 1s infinite ease-in-out;
+  animation: pch-load-jump 1s infinite ease-in-out;
   width: 0.8em;
   height: 4em;
 }
