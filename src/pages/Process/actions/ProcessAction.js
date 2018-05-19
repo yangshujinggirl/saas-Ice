@@ -274,3 +274,9 @@ export const getPrivilegeOrgs = () => {
     })
   }
 }
+
+export const changeFormData = (data) => {
+  return (dispatch) => {
+    dispatch(change({formData: data}))
+  }
+}

@@ -87,6 +87,15 @@ export default class ProcessForm extends Component {
             // 只处理一次
             this.props.actions.changeHasProcess(true);
         } else {
+
+            // 新增时使用传递的数据设置
+            // 默认名称为"新流程-MMddhhmmss"
+            const locationInfo = this.props.location.state;
+            if (locationInfo && !locationInfo.processName) {
+                locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
+            }
+            formData = Object.assign(formData, locationInfo);
+
             if (!customMenuList || customMenuList.length == 0) {
                 return;
             }
@@ -94,7 +103,7 @@ export default class ProcessForm extends Component {
             customMenuList[0].limitedAddTimes--;
             formData.taskItems = [];
             formData.taskItems.push(Object.assign({
-                taskOrder: 0,
+                taskOrder: 1,
                 taskAlias: customMenuList[0].taskTypeName,
                 taskTypeId: customMenuList[0].id
             }, customMenuList[0]));
@@ -113,7 +122,7 @@ export default class ProcessForm extends Component {
             //添加模块
             data.limitedAddTimes--;
             taskItems.push(Object.assign({
-                taskOrder: taskItems.length,
+                taskOrder: taskItems.length + 1,
                 // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
                 taskAlias: data.taskTypeName + taskItems.length,
                 taskTypeId: data.id
@@ -137,7 +146,8 @@ export default class ProcessForm extends Component {
 
     //表单校验change
     formChange = value => {
-        this.props.formData = value;
+        // this.props.actions.changeFormData(value);
+        // this.props.formData = value;
     }
 
     //保存
@@ -216,7 +226,7 @@ export default class ProcessForm extends Component {
                 actions.getPrivilegeOrgs()
                 this.setState({
                     privilegeItems: item.privilegeItems || [],
-                    taskOrder: idx
+                    order: idx
                 });
                 break;
             }
@@ -228,7 +238,7 @@ export default class ProcessForm extends Component {
                     actions.getPageDetail(item.pageId);
                     this.setState({
                         pageId: item.pageId,
-                        taskOrder: idx
+                        order: idx
                     });
                 }else{
                     actions.getPageFields({
@@ -238,7 +248,7 @@ export default class ProcessForm extends Component {
                     actions.getAllPageFields();
                     this.setState({
                         pageId: item.pageId,
-                        taskOrder: idx
+                        order: idx
                     });
                 }
                 break;
@@ -263,7 +273,7 @@ export default class ProcessForm extends Component {
     //保存权限编辑之后，返回编辑页面
     authSave(privilegeItems){
         console.log(privilegeItems)
-        let order = this.state.taskOrder;
+        let order = this.state.order;
         let formData = this.props.formData;
 
         formData.taskItems[order].privilegeItems = privilegeItems;
@@ -277,7 +287,7 @@ export default class ProcessForm extends Component {
      * @return {[type]}        [description]
      */
     handleSavePage(pageId){
-        let order = this.state.taskOrder;
+        let order = this.state.order;
         let formData = this.props.formData;
 
         formData.taskItems[order].pageId = pageId;
@@ -291,17 +301,17 @@ export default class ProcessForm extends Component {
      * 1. 默认从1开始
      * 2. 当前编辑页面在列表的位置
      * @param  {[type]} taskItems 整个模块列表
-     * @param  {[type]} taskOrder 当前点击编辑页面的模块序号、从0开始
+     * @param  {[type]} order 当前点击编辑页面的模块序号、从0开始
      * @return {[type]}           [description]
      */
-    getStepFromData(taskItems, taskOrder){
-        if(taskOrder == 0){
+    getStepFromData(taskItems, order){
+        if(order == 0){
             return 1;
         }
 
         let count = 1;
         taskItems.map((item, i) => {
-            if(i < taskOrder && item.haveConfigPage){
+            if(i < order && item.haveConfigPage){
                 count++
             }
         })
@@ -314,13 +324,13 @@ export default class ProcessForm extends Component {
      * 例: 已有页面配置id为1, 里面包含10个字段, 需要查询除了已配置的这10个字段之外的其它字段时,
      * 设置此参数, 多个id以逗号分隔
      * @param  {[type]} taskItems [description]
-     * @param  {[type]} taskOrder [description]
+     * @param  {[type]} order [description]
      * @return {[type]}           [description]
      */
-    getExcludeScreens(taskItems, taskOrder){
+    getExcludeScreens(taskItems, order){
         let result = [];
         taskItems.map((item, i) => {
-            if(i != taskOrder && item.haveConfigPage && item.pageId){
+            if(i != order && item.haveConfigPage && item.pageId){
                 result.push(item.pageId);
             }
         })
@@ -336,14 +346,14 @@ export default class ProcessForm extends Component {
         let {customMenuList, formData = {}, params, tasksFields = {}, pageFields, allPageFields, orgsData={}} = this.props;
         let {privilegeItems} = this.state;
 
-        if (!params.id) {
-            // 新增时使用传递的数据设置
-            // 默认名称为"新流程-MMddhhmmss"
-            if (locationInfo && !locationInfo.processName) {
-                locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
-            }
-            formData = Object.assign(formData, locationInfo);
-        }
+        // if (!params.id) {
+        //     // 新增时使用传递的数据设置
+        //     // 默认名称为"新流程-MMddhhmmss"
+        //     if (!formData.processName && locationInfo && !locationInfo.processName) {
+        //         locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
+        //     }
+        //     formData = Object.assign(formData, locationInfo);
+        // }
 
         return (
             <div className="">
@@ -352,7 +362,7 @@ export default class ProcessForm extends Component {
                                                                            }}>
                     <Title title="流程新增/修改" />
                     <div className="pch-form">
-                        <IceFormBinderWrapper value={formData} onBlur={this.formChange} ref="form">
+                        <IceFormBinderWrapper value={formData} onChange={this.formChange} ref="form">
                             <Form size="large" labelAlign="left">
                                 <ProcessFormName info={formData} />
                                 {/*顶部结束*/}
