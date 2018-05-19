@@ -187,7 +187,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         allAsideNav = allAsideNav.concat(leafs);
 
         const tipLoader1 = (
-          <div className="load-container load1">
+          <div className="pch-load-container pch-load-jump">
             <div className="loader">loading...</div>
           </div>
         );
@@ -301,7 +301,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     {/* 主体内容 */}
                     <Layout.Main>
                         <Loading tip={tipLoader1}>
-                        {this.props.children}
+                            {this.props.children}
                         </Loading>
                     </Layout.Main>
                 </Layout.Section>
