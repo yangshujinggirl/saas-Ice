@@ -300,7 +300,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         userinfo={this.state.USERINFO} />
                     {/* 主体内容 */}
                     <Layout.Main>
-                        <Loading tip={tipLoader1}>
+                        <Loading tip={tipLoader1} visible={false}>
                             {this.props.children}
                         </Loading>
                     </Layout.Main>
