@@ -700,6 +700,9 @@ body {
         color: #7A756B !important;
         background: #f8f8f8
     }
+    .ice-menu-collapse-hide:hover{
+        color: #FC9E25;
+    }
     .ice-menu-submenu{
         .ice-menu-submenu-title{
             .icon-nav-more{
@@ -712,8 +715,8 @@ body {
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
                 float: right;
-                border-bottom: 5px solid #ccc;
-                border-top: none;
+                border-top: 5px solid #ccc;
+                border-bottom: none;
             }
         }
         
@@ -730,8 +733,8 @@ body {
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
                 float: right;
-                border-top: 5px solid #ccc;
-                border-bottom: none;
+                border-bottom: 5px solid #ccc;
+                border-top: none;
             }
         }
         
