@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 import Layout from '@icedesign/layout';
-import { Icon } from '@icedesign/base';
+import { Icon, Loading } from '@icedesign/base';
 import Menu, { SubMenu, Item as MenuItem } from '@icedesign/menu';
 import { Link } from 'react-router';
 import FoundationSymbol from 'foundation-symbol';
@@ -190,6 +190,12 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         let leafs = this.state.MENUS || [];
         allAsideNav = allAsideNav.concat(leafs);
 
+        const tipLoader1 = (
+          <div className="load-container load1">
+            <div className="loader">loading...</div>
+          </div>
+        );
+
         return (
             <Layout style={{
                    minHeight: '100vh'
@@ -298,7 +304,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         userinfo={this.state.USERINFO} />
                     {/* 主体内容 */}
                     <Layout.Main>
+                        <Loading tip={tipLoader1}>
                         {this.props.children}
+                        </Loading>
                     </Layout.Main>
                 </Layout.Section>
                 {/* <Footer /> */}
