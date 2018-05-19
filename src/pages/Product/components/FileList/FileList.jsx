@@ -39,13 +39,13 @@ export default class FileList extends Component {
 
     //操作
     renderTest = (value, index, record) => {
-        return <div>
-                   <Button className="edithbtn" onClick={() => this.open(record)}>
+        return <div className="pch-table-operation">
+                   <a href="javascript:;" onClick={() => this.open(record)}>
                        编辑
-                   </Button>
-                   <Button className="deletbtn" onClick={() => this.deleteRow(record.id)}>
+                   </a>
+                   <a href="javascript:;" onClick={() => this.deleteRow(record.id)}>
                        删除
-                   </Button>
+                   </a>
                </div>
     };
 
@@ -91,6 +91,7 @@ export default class FileList extends Component {
                 <Title title="材料查询" />
                 <FilterForm onSubmit={this.fetchData} />
                 <Table dataSource={dataSource.list} maxBodyHeight={800}>
+                    <Table.Column title="ID" dataIndex="id" />
                     <Table.Column title="清单类型" dataIndex="dataType" />
                     <Table.Column title="清单名称" dataIndex="name" />
                     <Table.Column title="材料名称" dataIndex="fileNamestr" />

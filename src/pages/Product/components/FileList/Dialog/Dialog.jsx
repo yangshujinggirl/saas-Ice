@@ -21,7 +21,17 @@ const CheckboxGroup = Checkbox.Group;
 const RadioGroup = Radio.Group;
 const { RangePicker } = DatePicker;
 
+const formItemLayout = {
+    labelCol: {
+        span: 8
+    },
+    wrapperCol: {
+        span: 12
+    }
+};
+
 import FileListDetail from './FileListDetail';
+import { Title, BtnAddRow } from 'components';
 
 export default class DiaLog extends Component {
   static displayName = 'Dialog';
@@ -250,13 +260,13 @@ export default class DiaLog extends Component {
   }
 
   //判断清单名称是否已存在
-  nameRepeat=(rule,value,callback)=>{
+  nameRepeat=(rule,value,callback) =>{
 
   if(rule.required && !value){
     callback('清单名称必填')
     return;
   }
-  ProductReq.fileNameRepeat(value).then((res)=>{
+  ProductReq.fileNameRepeat(value).then((res) =>{
     if(res.data){
       callback("该名已存在")
     }
@@ -318,10 +328,7 @@ export default class DiaLog extends Component {
 
     return (
       <IceContainer className="pch-container">
-        <legend className="pch-legend">
-          <span className="pch-legend-legline"></span>
-          {this.props.params.id?'材料编辑':'材料新增'} 
-        </legend>
+        <Title title={this.props.params.id?'材料编辑':'材料新增'} />
         <IceFormBinderWrapper
           ref={(formRef) => {
             this.formRef = formRef;
@@ -329,16 +336,17 @@ export default class DiaLog extends Component {
           value={data}
           >
           <div className="pch-form">
-            <Form size="large" className="dialog-form">
+            <Form size="large">
               <Row wrap>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}>清单类型：</label>
-                  {this.testType(this.props.params.id,data)}
+                <Col xxs={24} xs={12} l={8} xl={6}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>清单类型:</span>}>
+                      {this.testType(this.props.params.id,data)}
+                  </FormItem>
                 </Col>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}>清单名称：</label>
-                  {this.testName(this.props.params.id,data)}
-
+                <Col xxs={24} xs={12} l={8} xl={6}>
+                  <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>清单名称:</span>}>
+                      {this.testName(this.props.params.id,data)}
+                  </FormItem>
                 </Col>
               </Row>
               <FileListDetail
@@ -346,10 +354,9 @@ export default class DiaLog extends Component {
                 onRemove={this.removeRow.bind(this)}
                 onChangeType={this.handleChangeType.bind(this)}
               />
-              <div className="btns">
-                <Button type="secondary" onClick={this.onOk.bind(this,data.id)} className="sureBtn">提交</Button>
-                <Button type="secondary" onClick={this.addNewRow.bind(this)} className="addNewBtn">添加一行</Button>
-                
+              <BtnAddRow text="添加一行" onClick={this.addNewRow.bind(this)} style={{marginTop: 14}} />
+              <div className="filelist-btns">
+                <Button type="secondary" onClick={this.onOk.bind(this,data.id)}>提交</Button>
               </div>
             </Form>
           </div>
@@ -359,18 +366,3 @@ export default class DiaLog extends Component {
     )
   }
 }
-
-const styles = {
-  filterCol: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-
-  filterTitle: {
-    width: '140px',
-    textAlign: 'right',
-    marginRight: '12px',
-    fontSize: '14px',
-  },
-};
