@@ -51,16 +51,19 @@ export default class Details extends Component {
     }
 
     const valueTips =  <div >{value}</div>;
-    return(
-      <Balloon
-        type="primary"
-        trigger={valueTips}
-        closable={false}
-        align='t'
-      >
-        {value}
-      </Balloon>
-    )
+    if(value){
+      return(
+        <Balloon
+          type="primary"
+          trigger={valueTips}
+          closable={false}
+          align='t'
+        >
+          {value}
+        </Balloon>
+      )
+    }
+    return ;
   }
 
   render() {
