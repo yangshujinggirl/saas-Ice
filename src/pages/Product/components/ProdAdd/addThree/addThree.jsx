@@ -39,6 +39,11 @@ export default class addThree extends Component {
   componentWillMount() {
     let { actions, params, formData } = this.props;
     let { product = {} } = formData;
+    console.log(product)
+    //产品详情
+    if (params.id) {
+      actions.getDetail(params.id)
+    }
     //流程名称获取
     Req._processList({ tenantId: product.tenantId }).then((data) => {
       let temp = this.state.processList;
@@ -46,10 +51,7 @@ export default class addThree extends Component {
       this.setState({ processList: temp }, function () { });
       console.log(this.state.processList)
     })
-    //产品详情
-    if (params.id) {
-      actions.getDetail(params.id)
-    }
+    
 
   }
 
@@ -59,11 +61,13 @@ export default class addThree extends Component {
     let id = params.id;
     console.log(formData, product)
     this.formRef.validateAll((error, value) => {
+      console.log(value)
       this.state.processData.push(
         {
           productId: product.id,
           productName: product.name,
           productType: product.productType,
+          productCode:product.productCode,
           processDefId: value.processName,
           status: product.status,
           businessTypeId: 1,

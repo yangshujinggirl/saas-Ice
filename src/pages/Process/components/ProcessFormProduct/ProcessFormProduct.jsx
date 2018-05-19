@@ -108,7 +108,6 @@ export default class ProcessFormProduct extends BaseApp {
                 tenantId: item.tenantId,
             })
         })
-        // console.log(tempArr)
         this.setState({
             dataSourceRight:tempArr
         })
@@ -117,21 +116,27 @@ export default class ProcessFormProduct extends BaseApp {
     productTypeKey(type) {
         switch (type) {
             case '新车贷款':
+            case 'NEW_CAR_LOAN':
                 return 'NEW_CAR_LOAN';
                 break;
             case '新车租赁':
+            case 'NEW_CAR_RENTAL':
                 return 'NEW_CAR_RENTAL';
                 break;
             case '二手车贷款':
+            case 'SECONDHAND_CAR_LOAN':
                 return 'SECONDHAND_CAR_LOAN';
                 break;
             case '二手车租赁':
+            case 'SECONDHAND_CAR_RENTAL':
                 return 'SECONDHAND_CAR_RENTAL';
                 break;
             case '汽车抵押贷款':
+            case 'CAR_MORTGAGE_LOAN':
                 return 'CAR_MORTGAGE_LOAN';
                 break;
             case '消费贷款':
+            case 'CONSUMER_LOAN':
                 return 'CONSUMER_LOAN';
                 break;
         }

@@ -6,19 +6,19 @@ import DataBinder from '@icedesign/data-binder';
 import Req from '../../../reqs/ProductReq'
 import './SearchEdit.scss';
 
-import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
+import {
+    FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
 
-import { Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Pagination, Form,
+import {
+    Input, Button, Feedback, Select, DatePicker, Switch, Grid, Table, Pagination, Form,
 } from '@icedesign/base';
 import { Title } from 'components';
 
-const {Row, Col} = Grid;
+const { Row, Col } = Grid;
 
 // FormBinder 用于获取表单组件的数据，通过标准受控 API value 和 onChange 来双向操作数据
-const CheckboxGroup = Checkbox.Group;
-const RadioGroup = Radio.Group;
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 //组件引入
 // import SearchEditer from './searchEditer/searchEditer';
@@ -48,8 +48,8 @@ export default class SearchEdit extends Component {
     }
 
     componentDidMount() {
-        let {actions, prodInfo, params, formData} = this.props;
-        
+        let { actions, prodInfo, params, formData } = this.props;
+
         actions.edit(params.id);
         actions.getDetail(params.id);
 
@@ -69,7 +69,7 @@ export default class SearchEdit extends Component {
      * @return {[type]} [description]
      */
     upData = () => {
-        let {actions, pageData, params, formData} = this.props;
+        let { actions, pageData, params, formData } = this.props;
         console.log(this.state.processName)
         let prod = formData.product || {}
         this.formRef.validateAll((error, value) => {
@@ -85,8 +85,16 @@ export default class SearchEdit extends Component {
             value.id = params.id;
             value.name = prod.name;
             value.processName = this.state.processName;
-            actions.prodrevise(value);
-        // location.reload ()
+
+            //编辑成功提示
+            Feedback.toast.show({
+                type: 'success',
+                content: '编辑成功！',
+                afterClose: () => {
+                    actions.prodrevise(value);
+                    hashHistory.push('/product/search');
+                }
+            });
         });
     }
 
@@ -106,7 +114,7 @@ export default class SearchEdit extends Component {
 
 
     render() {
-        let {prodInfo, formData} = this.props;
+        let { prodInfo, formData } = this.props;
         let name = formData.product || {};
 
         name = name.name || ''
@@ -139,12 +147,12 @@ export default class SearchEdit extends Component {
             <IceContainer className="pch-container">
                 <Title title="产品编辑" />
                 <IceFormBinderWrapper ref={(formRef) => {
-                                               this.formRef = formRef;
-                                           }} value={this.state.value} onChange={this.onFormChange}>
+                    this.formRef = formRef;
+                }} value={this.state.value} onChange={this.onFormChange}>
                     <div className="pch-form">
                         <Form style={{
-                                         width: '80%'
-                                     }} size="large" labelAlign="left">
+                            width: '80%'
+                        }} size="large" labelAlign="left">
                             <Row wrap>
                                 <Col s={12} l={12}>
                                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品名称:</span>}>
@@ -172,12 +180,12 @@ export default class SearchEdit extends Component {
                                         <IceFormBinder name="processId" required message="流程名称必填">
                                             <Select size="large" placeholder="请选择" className="custom-select" onChange={this.onChangeProcess}>
                                                 {this.state.processList.map((item, i) => {
-                                                     return (
-                                                         <Option value={item.id.toString()} key={i} processId={item.id}>
-                                                             {item.processName}
-                                                         </Option>
-                                                     )
-                                                 })}
+                                                    return (
+                                                        <Option value={item.id.toString()} key={i} processId={item.id}>
+                                                            {item.processName}
+                                                        </Option>
+                                                    )
+                                                })}
                                             </Select>
                                         </IceFormBinder>
                                         <div>
@@ -205,26 +213,21 @@ export default class SearchEdit extends Component {
                                         </div>
                                     </FormItem>
                                 </Col>
-                                <Col s={12} l={12}></Col>
-                                <Col s={12} l={12}>
-                                    <FormItem {...formItemLayout} label="&nbsp;">
-                                        <Button type="secondary" onClick={this.upData}>
-                                            确定
-                                        </Button>
-                                        <Button onClick={() => {
+                                <div className="next-btn-box pch-form-buttons">
+                                    <Button type="normal" size="large" onClick={() => {
                                                              javascript:history.back(-1);
-                                                         }} style={{
-                                                                                                                                                                                                                                  marginLeft: 8
-                                                                                                                                                                                                                              }}>
-                                            返回
-                                        </Button>
-                                    </FormItem>
-                                </Col>
+                                                         }}>
+                                        返回
+                                    </Button>
+                                    <Button type="secondary" className="return-btn buttonsBack" onClick={this.upData}>
+                                        保存
+                                    </Button>
+                                </div>
                             </Row>
                         </Form>
                         <Table dataSource={dataSource} isLoading={this.state.isLoading} sort={{
-                                                                                                  id: '=desc'
-                                                                                              }}>
+                            id: '=desc'
+                        }}>
                             <Table.Column title="版本" dataIndex="id" width={120} />
                             <Table.Column title="生效期限" dataIndex="temptime" width={250} />
                             <Table.Column title="状态" dataIndex="status" width={160} />
@@ -235,6 +238,6 @@ export default class SearchEdit extends Component {
                     </div>
                 </IceFormBinderWrapper>
             </IceContainer>
-            );
+        );
     }
 }
