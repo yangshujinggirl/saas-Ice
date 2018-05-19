@@ -700,9 +700,12 @@ body {
         color: #7A756B !important;
         background: #f8f8f8
     }
-    .ice-menu-collapse-hide:hover{
-        color: #FC9E25;
-    }
+   .ice-menu-submenu-inline:hover{
+        .ice-menu-collapse-hide{
+            color: #FC9E25;
+        }
+   }
+    
     .ice-menu-submenu{
         .ice-menu-submenu-title{
             .icon-nav-more{
