@@ -33,8 +33,7 @@ export default class ProcessAuthEdit extends BaseApp {
     this.rowSelection = {
       onChange: (selectedRowKeys, records) => {
         console.log(records)
-        let selectedRowOne = [];
-        selectedRowOne.push(...records);
+        let selectedRowOne = records;
         this.setState({
           selectedRowOne
         });
@@ -79,45 +78,82 @@ export default class ProcessAuthEdit extends BaseApp {
     let { formData} = this.props
     let dataArry =  this.state.dataSourceRight;
     let datatemp = [];
-    for (var key in dataArry){
-      datatemp.push({
-        roleId: dataArry[key].id,
-        roleName: dataArry[key].name,
-        orgId: dataArry[key].organizationId,
-        orgName: formData.tenantName,
-        departmentId: dataArry[key].departmentId||dataArry[key].id,
-        departmentName:dataArry[key].departmentName
-      })
-    }
+    // for (var key in dataArry){
+    //   datatemp.push({
+    //     roleId: dataArry[key].,
+    //     roleName: dataArry[key].name,
+    //     orgId: dataArry[key].orgId,
+    //     orgName: formData.tenantName,
+    //     departmentId: dataArry[key].departmentId||dataArry[key].id,
+    //     departmentName:dataArry[key].departmentName
+    //   })
+    // }
     //保存成功提示
     Feedback.toast.show({
       type: 'success',
       content: '保存成功！',
       afterClose: () => {
-           this.props.onSave(datatemp)
+           this.props.onSave(dataArry)
       }
     });
   }
+  /**
+   * 合并两个表格的选择值
+   * 去除重复
+   */
   addItem() {
     let dataSourceRight = this.state.dataSourceRight;
     let tempArr = [];
-    dataSourceRight.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne);
-    dataSourceRight.map((item) =>{
-      item.name?item.roleName=item.name:''
+
+    tempArr.push(...this.state.selectedRowTwo, ...this.state.selectedRowOne);
+
+    tempArr.map((item) =>{
+      // 转换角色字段成保存需要的数据结构（）
+      item.orgId = item.organizationId;
+      item.roleId = item.id;
+      item.roleName = item.name;
+      // delete item.id;
+      // delete item.name;
+
+      // item.name?item.roleName=item.name:''
     })
-    for(var i= 0; i<dataSourceRight.length-1;i++){
+
+    // 连接处理后的数据到右侧框
+    dataSourceRight = dataSourceRight.concat(tempArr);
+
+    // 去除重复的数据，依据机构ID,部门ID,角色ID唯一标识
+    for(var i = 0; i<dataSourceRight.length-1;i++){
       for(var j=i+1;j<dataSourceRight.length;j++){
-        if(dataSourceRight[i].departmentName==dataSourceRight[j].departmentName){
+
+        if(this.getAKey(dataSourceRight[i]) == this.getAKey(dataSourceRight[j])){
           dataSourceRight.splice(j,1)
         }
       }
     }
-   
-    
+
+    // "roleId": 7, // 角色ID
+    // "roleName": "营业员", // 角色名称
+    // "orgId": "888", // 组织ID
+    // "orgName": "中国银行上海分公司", // 组织名称
+    // "departmentId": "8882", // 部门ID
+    // "departmentName": "浦东营业部" // 部门名称
     this.setState({
       dataSourceRight
     })
   }
+
+  getAKey(data){
+    let ret = [];
+
+    ret.push(data.orgId);
+    ret.push(data.departmentId);
+    if(data.roleId){
+      ret.push(data.roleId);
+    }
+
+    return ret.join(',');
+  }
+
   deleteEvent(index) {
     const { dataSourceRight } = this.state;
     dataSourceRight.splice(index, 1)
@@ -154,7 +190,8 @@ export default class ProcessAuthEdit extends BaseApp {
     return data;
   }
   orgNameShow(value, index, record){
-    return record.roleName==record.departmentName?record.roleName:(record.roleName?`${record.departmentName}-${record.roleName}`:`${record.departmentName}`)
+    return `${record.departmentName}-${record.roleName}`;
+    // return record.roleName==record.departmentName?record.roleName:(record.roleName?`${record.departmentName}-${record.roleName}`:`${record.departmentName}`)
   }
   /**
    * 渲染
@@ -194,7 +231,6 @@ export default class ProcessAuthEdit extends BaseApp {
               </Table>
               <Table
                 dataSource={orgsData.otherOrgs}
-                // primaryKey="key"
                 style={{ width: '100%' }}
                 isTree
                 rowSelection={{ ...this.rowSelectionTwo }}
@@ -207,7 +243,6 @@ export default class ProcessAuthEdit extends BaseApp {
             </div>
             <div className="part-r">
               <Table
-                // dataSource={this.orgsGrade(dataSourceRight)}
                 dataSource={dataSourceRight}
                 fixedHeader
                 style={{ width: '100%' }}
