@@ -15,7 +15,7 @@ class DownLoad extends Component {
   }
 
   render() {
-    const { data=[] } = this.props.pageData;
+    const { files=[] } = this.props.pageData;
     const contractType = this.props.location.query.type;
     const mod = (el) => {
       if(contractType == 2) {
@@ -34,7 +34,7 @@ class DownLoad extends Component {
           <Title title="下载列表" />
           <Row wrap className="down-load-list">
             {
-              data.length>0 && data.map((el,index) => (
+              files.length>0 && files.map((el,index) => (
                 <Col span={4} key={index}>
                   <div className="item">
                     {

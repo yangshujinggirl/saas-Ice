@@ -67,7 +67,7 @@ class ContractList extends BaseApp {
     Req.copyTemplateApi(id)
     .then((res) => {
       const { code, msg, data } =res;
-      if(code != 200 ) {
+      if(code != 200 || !data) {
         Toast.error(msg);
         return
       }
@@ -90,8 +90,8 @@ class ContractList extends BaseApp {
     }
     Req.isBindProductApi(record.id)
     .then((res) => {
-      const { data, code, msg } = res;
-      if(code !=200 || !data) {
+      const { code, msg, data } = res;
+      if(code !=200 ) {
         Toast.error(msg);
         return;
       }
@@ -139,8 +139,8 @@ class ContractList extends BaseApp {
     //debugger
     Req.handleTemplateApi(id,actionStatus)
     .then((res) => {
-      const { data, code, msg} =res;
-      if(code !=200 || !data) {
+      const { code, msg} =res;
+      if(code !=200 ) {
         Toast.error(msg);
         return;
       }

@@ -58,7 +58,7 @@ export const search = (condition={}) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      if (!res || res.code != 200) return;
+      if (!res || res.code != 200 || !res.data) return;
       dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -73,7 +73,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.contractDetailApi(id).then((res) => {
-      if (!res || res.code != 200) {
+      if (!res || res.code != 200 || !res.data) {
         Toast.error(res.msg);
         return;
       }
@@ -90,11 +90,11 @@ export const getDownLoadList = (id) => {
     dispatch(fetchStart())
 
     Req.searchFilesApi(id).then((res) => {
-      if (!res || res.code != 200) {
+      if (!res || res.code != 200 || !res.data) {
         Toast.error(res.msg);
         return;
       }
-      dispatch(fetchSuccess({ pageData: res}))
+      dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

@@ -76,8 +76,12 @@ class ContractList extends BaseApp {
   signDialog(id) {
     Req.searchFilesApi(id)
     .then((res) => {
-      const { data } =res;
-      let fileList = data.map((el) => {
+      const { data, code, msg } =res;
+      if( code != 200 || !data) {
+        Toast.error(msg);
+        return
+      }
+      let fileList = data.files.map((el) => {
         return {
           fileName:el.fileName,
           imgURL: el.location,
@@ -109,8 +113,8 @@ class ContractList extends BaseApp {
     const { contractId } = this.state;
     Req.toggleContractApi(contractId)
     .then((res) => {
-      const { code, msg, data } = res;
-      if( code != 200 || !data) {
+      const { code, msg } = res;
+      if( code != 200 ) {
         Toast.error(msg);
         return
       }
@@ -126,8 +130,8 @@ class ContractList extends BaseApp {
     let params = Object.assign(values, { action:'INVALID',contractId:this.state.contractId });
     Req.handleContractApi(params)
     .then((res) => {
-      const { code,msg, data  } =res;
-      if(code != 200 || !data) {
+      const { code,msg, } =res;
+      if(code != 200 ) {
         Toast.error(msg);
         return
       }
@@ -145,8 +149,8 @@ class ContractList extends BaseApp {
     let params = Object.assign({files}, {contractId:this.state.contractId });
     Req.saveFilesApi(params)
     .then((res) => {
-      const { code, msg, data } =res;
-      if ( code != 200 || !data) {
+      const { code, msg } =res;
+      if ( code != 200 ) {
         Toast.error(msg);
         return;
       }
@@ -162,8 +166,8 @@ class ContractList extends BaseApp {
     let params = Object.assign({files}, {contractId:this.state.contractId });
     Req.signContractApi(params)
     .then((res) => {
-      const { code, msg, data } =res;
-      if ( code != 200 || !data) {
+      const { code, msg } =res;
+      if ( code != 200 ) {
         Toast.error(msg);
         return;
       }
