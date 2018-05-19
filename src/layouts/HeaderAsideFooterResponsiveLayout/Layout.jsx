@@ -177,10 +177,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         return link;
     }
 
-    changeIconArrow(){
-        console.log(this.ref)
-    }
-
     render() {
         const {location = {}, routes} = this.props;
         const {pathname} = location;
@@ -240,12 +236,12 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                              let navData = nav.value;
                              if (nav.leaf && nav.leaf.length > 0) {
                                  return (
-                                     <SubMenu key={index} title={<span onClick={this.changeIconArrow.bind(this)}>{navData.icon ? (
+                                     <SubMenu key={index} title={<span>{navData.icon ? (
                                                             <i className="icon icon-menu" dangerouslySetInnerHTML={{
                                                                                                                        __html: navData.icon
                                                                                                                    }}></i>
                                                             ) : null} <span className="ice-menu-collapse-hide">{navData.name}</span>
-                                                            <div className="icon-nav-more icon-nva-more-bottom" ref="iconChange" ></div></span>}>
+                                                            <div className="icon-nav-more icon-nav-more"></div></span>}>
                                          {nav.leaf.map((item) => {
                                               const linkProps = {};
                                               let itemData = item.value || {};
