@@ -162,7 +162,7 @@ class ContractList extends BaseApp {
   render() {
     const { columns } = this.props;
     const { templateObj, visible, productList } =this.state;
-    const { list=[] } = this.props.pageData;
+    const { list=[] } = this.props.pageData;// || {};
     return(
       <IceContainer className="pch-container contract-template-page">
           <Title title="合同管理" />
