@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SpDataSource from '../utils/SpDataSource';
 
 /**
  * 列表搜索组件的基类
@@ -31,6 +32,9 @@ export default class BaseCondition extends Component {
       l: 8,
       xl: 6
     };
+
+    // 搜索条件中的资方下拉框数据
+    this.SpDataSource = SpDataSource;
   }
 
   /**
