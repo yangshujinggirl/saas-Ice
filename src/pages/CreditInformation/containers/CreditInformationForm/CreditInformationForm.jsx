@@ -157,18 +157,27 @@ export default class CreditInformationForm extends BaseComponent {
           content: "确认提交数据？",
           onOk: () => {
             return new Promise(resolve => {
-              Req.saveForm(value).then((res)=>{
-                if(res && res.code == 200){
-                  dialog.hide()
-                  Toast.show({
-                    type: "success",
-                    content: "提交成功～",
-                  });
-                  hashHistory.push(`creditinformation`)
-                }
-              }).catch((error)=>{
-                console.log(error)
-              });
+              if(value.baseDocuments.length >0){
+                Req.saveForm(value).then((res)=>{
+                  if(res && res.code == 200){
+                    dialog.hide()
+                    Toast.show({
+                      type: "success",
+                      content: "提交成功～",
+                    });
+                    hashHistory.push(`creditinformation`)
+                  }
+                }).catch((error)=>{
+                  console.log(error)
+                });
+              }else{
+                dialog.hide()
+                Toast.show({
+                  type: "help",
+                  content: "请上传文件～",
+                });
+              }
+
             });
           }
         });
@@ -320,7 +329,7 @@ export default class CreditInformationForm extends BaseComponent {
                         name="name"
                         message="请输入"
                       >
-                        <Input  disabled size="large" placeholder="请输入" className="custom-input"  />
+                        <Input  disabled size="large" placeholder="请输入" className="custom-input"  value = '22'/>
                       </IceFormBinder>
                       <div> <IceFormError name="name" /></div>
                     </FormItem>
@@ -332,7 +341,7 @@ export default class CreditInformationForm extends BaseComponent {
                         message="请输入"
                       >
 
-                        <Input disabled size="large" placeholder="请输入" className="custom-input"  />
+                        <Input disabled size="large" placeholder="请输入"  className="custom-input"  value = '22'/>
                       </IceFormBinder>
                       <div><IceFormError name="credentialsNo" /></div>
                     </FormItem>
@@ -343,7 +352,7 @@ export default class CreditInformationForm extends BaseComponent {
                         name="mobilePhone"
                         message="请输入"
                       >
-                        <Input disabled size="large" placeholder="请输入" className="custom-input"   />
+                        <Input disabled size="large" placeholder="请输入" className="custom-input" value = '22'  />
                       </IceFormBinder>
                       <div> <IceFormError name="mobilePhone" /></div>
                     </FormItem>
@@ -357,7 +366,7 @@ export default class CreditInformationForm extends BaseComponent {
                             required
                             validator={this.priceRange}
                           >
-                            <Input size="large" htmlType='number' placeholder="请输入" className="custom-input" />
+                            <Input  state="error"  size="large" htmlType='number' placeholder="请输入" className="custom-input" />
 
                           </IceFormBinder>
                           <div><IceFormError name="customCreditScore" /></div>

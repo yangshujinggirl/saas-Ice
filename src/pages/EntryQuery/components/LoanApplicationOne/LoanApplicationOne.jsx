@@ -75,7 +75,11 @@ class LoanApplicationOne extends Component {
 
   changeInfomation(loadId) {
     let { actions } = this.props;
-    Req.getDetail(this.props.params.id)
+    var data ={
+      id : this.props.params.id,
+      step : 0
+    }
+    Req.getDetail(data)
       .then((res) => {
         if (res && res.code == 200) {
           console.log(res);

@@ -156,7 +156,7 @@ export default class ReviewApproveDetail extends Component {
       var dataJson = {
         "choose"     : data.choose,
         "approveMsg" : data.approveMsg,
-        "loanDetail" : this.queryCache,
+        "changeFields" : this.queryCache,
         "proInstId"  : this.props.params.proInstId,
         "taskId"     : this.props.params.taskId,
       }
