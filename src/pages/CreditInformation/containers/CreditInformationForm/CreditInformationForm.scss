@@ -17,10 +17,18 @@
       line-height: 17px;
     }
     .button-box{
+      //display: flex;
+      //justify-content: center;
+      tex
+
       .button{
         width: 120px;
         height: 40px;
+        background-color: #FC9E25;
       }
+    }
+    .pch-form-buttons{
+      padding: 30px 0;
     }
   }
   .next-overlay-wrapper .next-overlay-inner {
