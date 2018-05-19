@@ -8,6 +8,8 @@ import qs from 'qs';
 
 import { Feedback } from "@icedesign/base";
 
+let extractToast = false;
+let requests = [];
 class BaseReq {
 
   constructor() {
@@ -53,7 +55,7 @@ class BaseReq {
 
     console.log(options.url, typeof options.data)
 
-    return axios({
+    let promise = axios({
         url: options.url,
         method: options.method || 'get',
         headers: header,
@@ -62,7 +64,10 @@ class BaseReq {
         timeout: 5000
       })
       .then(this._processResponse.bind(this))
-      .catch(this._processError.bind(this))
+      .catch(this._processError.bind(this));
+    requests.push(promise);
+    console.log(promise);
+    return promise;
   }
 
   _processHost(url, isJava) {
@@ -80,35 +85,55 @@ class BaseReq {
    * @return {[type]}     [description]
    */
   _processResponse(res) {
-    console.log('_processResponse', res);
+    let response = {}, code = 0, msg = '网络不给力', data = {};
+    //console.log('_processResponse', res);
 
     if (!res.data) {
-      return {
+      /*return {
         code: 400,
         msg: '响应格式数据不正确'
-      };
+      };*/
+      code = 400;
+      msg = '响应格式数据不正确'
+    }else{
+      code = res.data.code;
+      if (code == 200) {
+        //处理请求头，获取token，存储cookie
+        if (res.headers.token) {
+          Cookie.set('PCTOKEN', res.headers.token);
+        }
+        // 请求成功响应格式
+        // res.data = {
+        //   code: 200,
+        //   data: {},
+        //   msg: ''
+        // }
+        //return res.data;
+        msg = res.data.msg || msg;
+        if(res.data.data instanceof Array){
+          data.list = res.data.data;
+        }else if(res.data.data && 'object' == typeof res.data.data){
+          data = {...res.data.data}
+        }else{
+          data = {
+            _data: res.data.data
+          }
+        }
+      } else {
+        // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
+        if (code == 103) {
+          this._redirectToLogin();
+        }
+        msg = res.data.msg || res.data.message || '未知错误';
+        this._showMsg('error', msg);
+        //return res.data;
+      }
     }
 
-    if (res.data.code == 200) {
-      //处理请求头，获取token，存储cookie
-      if (res.headers.token) {
-        Cookie.set('PCTOKEN', res.headers.token);
-      }
-      // 请求成功响应格式
-      // res.data = {
-      //   code: 200,
-      //   data: {},
-      //   msg: ''
-      // }
-      return res.data;
-    } else {
-      // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
-      if (res.data.code == 103) {
-        this._redirectToLogin();
-      }
-
-      this._showMsg('error', res.data.msg || res.data.message || '未知错误');
-      return res.data;
+    return {
+      code,
+      msg,
+      data
     }
   }
 
@@ -118,13 +143,13 @@ class BaseReq {
    * @return {[type]}       [description]
    */
   _processError(error) {
-    console.log('_processError', error);
-
+    //debugger;
+    //console.log('_processError', error);
     let res = error.response || error.request;
-
-    if ((res.status == 500 && res.data.code == 401) || (res.status == 500 && res.data.message == 'Username or password error') || res.status == 103) {
+    let existData = 'object' == typeof res.data && res.data;
+    if (res.status == 103 || res.status == 401 || res.status == 500 && existData && (existData.code == 401 || existData.message == 'Username or password error') || existData && existData.code == 103) {
       this._redirectToLogin();
-      return { status: 401, msg: 'Unauthorized未登录', data: { code: 401 } };
+      return { status: 401, msg: '未授权，请重新登录', data: { code: 401 } };
     }
 
     let msg = 'RES_MESSAGE';
@@ -168,7 +193,13 @@ class BaseReq {
    * @param  {[type]} tick [description]
    * @return {[type]}      [description]
    */
-  _showMsg(type, msg, tick) {
+  _showMsg(type, msg, ...rest) {
+    if(!extractToast){
+      Object.keys(Feedback.toast).forEach(k=>{
+        BaseReq.prototype['tip' + k[0].toUpperCase() + k.slice(1)] = Feedback.toast[k]
+      })
+      extractToast = true;
+    }
     if (!msg) {
       return;
     }
@@ -176,8 +207,12 @@ class BaseReq {
     Feedback.toast.show({
       type: type,
       content: msg,
+      duration: 300,
+      ...rest
     });
   }
+
+
 
   /**
    * 未登陆跳转到登陆页
@@ -186,8 +221,14 @@ class BaseReq {
    * @return {[type]} [description]
    */
   _redirectToLogin() {
+    //debugger;
     let _host = location.host;
-    if(_host.indexOf('pingchang666') == -1){
+    /*
+      由于获取菜单和获取登录用户信息会并列请求，未登录时会不分先后两次触发未登录重定向，
+      故判断需要判断当前页面是否已经是登录页面，是则不予处理，不是则重定向到登录页
+    */
+    let hash = location.hash.substring(2) || '';
+    if(/*_host.indexOf('pingchang666') == -1 || */hash.indexOf('account') == 0){
       return;
     }
 
