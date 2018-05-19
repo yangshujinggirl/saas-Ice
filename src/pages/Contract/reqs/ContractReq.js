@@ -119,9 +119,9 @@ class ContractReq extends CurdReq{
 	handleTemplateApi(id,status) {
 		let options = {
 			url: this._config.CONTRACT_HOST + `/contract/template/oper`,
-			method: 'GET',
-			contentType: 'application/json',
-			params:{id,status}
+			method: 'POST',
+			contentType: 'application/x-www-form-urlencoded',
+			data:{id,status}
 		}
 		return super.fetchData(options);
 	}
