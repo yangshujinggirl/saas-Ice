@@ -313,13 +313,13 @@ class LoanApplicationOne extends Component {
     const { dataSource } = this.state;
     console.log(list);
     return (
-      <IceContainer className="loanApplicationOne">
+      <IceContainer className="loanApplicationOne" style={styles.Bottom}>
         <legend className="pch-legend">
           <span className="pch-legend-legline"></span>车贷申请
         </legend>
         <div className='pch-form'>
           <IceFormBinderWrapper value={value} onChange={this.formChange}>
-            <Row style={styles.top}>
+            <Row>
               <Col className='review-form'>
                 <div className='review-page'>
                   <div className='title'>
@@ -371,9 +371,8 @@ const styles = {
   select: {
     width: '200px',
   },
-  top: {
-    maginTop: '20px',
-    maginBotton: '20px',
+  Bottom: {
+    marginBottom: '0px',
   },
 };
 
