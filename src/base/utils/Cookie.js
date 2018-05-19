@@ -41,7 +41,6 @@ class Cookie {
         } else {
             expires = days || this.getExpDate(7, 0, 0, 0);
         }
-        console.log(c_name + "=" + escape(value) + ((expires == null) ? "" : ";expires=" + expires) + "; path=/ ;" + domain)
 
         document.cookie = c_name + "=" + escape(value) + ((expires == null) ? "" : ";expires=" + expires) + "; path=/ ;" + domain;
     }

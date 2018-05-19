@@ -84,8 +84,6 @@ export default class Filter extends BaseCondition {
     }
     disabledEndDate(submitEnd) {
       const { submitStart } = this.state;
-      console.log(submitStart)
-      console.log(submitStart.valueOf())
       if (!submitEnd || !submitStart) {
         return false;
       }
@@ -155,6 +153,7 @@ export default class Filter extends BaseCondition {
                               <DatePicker
                                 format={'YYYY-MM-DD HH:mm:ss'}
                                 showTime
+                                size="large"
                                 disabledDate={this.disabledEndDate.bind(this)}
                                 placeholder="申请结束时间"
                                 value={submitEnd}

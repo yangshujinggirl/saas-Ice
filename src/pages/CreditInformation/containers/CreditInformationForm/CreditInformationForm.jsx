@@ -293,7 +293,7 @@ export default class CreditInformationForm extends BaseComponent {
           <IceFormBinderWrapper value={this.state.formData} onBlur={this.formChange} ref={(formRef) => {
             this.formRef = formRef;
           }}>
-            <div>
+            <div className='pch-form'>
               <div className="material-files-upload">
                 <Upload
                   {...this.UPLOAD_CONFIG}
@@ -315,7 +315,7 @@ export default class CreditInformationForm extends BaseComponent {
                 listType="picture-card"
                 fileList={fileList}
               />
-              <Form>
+              <Form >
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} >
                     <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>姓名:</span>}>
@@ -1154,9 +1154,9 @@ export default class CreditInformationForm extends BaseComponent {
               </Row>
               <Row>
                 <Col>
-                  <div className='button-box'>
+                  <div className='pch-form-buttons'>
 
-                    <Button   onClick={this.submit}>完成</Button>
+                    <Button  size="large" type="secondary"  onClick={this.submit}>完成</Button>
 
                   </div>
                 </Col>

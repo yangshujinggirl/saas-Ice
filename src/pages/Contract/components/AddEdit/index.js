@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
-import { BaseApp } from 'base';
+import { BaseComponent } from 'base';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import Cookie from '../../../../base/utils/Cookie';
 
 import {
   Input,
@@ -40,7 +41,7 @@ const {Option} = Select;
 const FormItem = Form.Item;
 const Toast = Feedback.toast;
 
-class AddEit extends BaseApp {
+class AddEit extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,7 +68,7 @@ class AddEit extends BaseApp {
     Req.templateDetailApi(id)
     .then((res) => {
       const { code, data, msg } = res;
-      if(code != 200 ) {
+      if(code != 200 || !data) {
         Toast.error(msg);
         return;
       }
@@ -75,7 +76,6 @@ class AddEit extends BaseApp {
       if(templateContent=='') {
         return
       }
-      //debugger;
       const blocksFromHTML = convertFromHTML(templateContent);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
@@ -96,7 +96,7 @@ class AddEit extends BaseApp {
       if(errors) {
         return
       }
-      
+
       'function' == typeof callback && callback(values)
 
     });
@@ -110,10 +110,8 @@ class AddEit extends BaseApp {
       this.refs.form.setter('templateContent',templateContent);
       //新增or编辑
       if(this.props.params.id) {
-        //debugger
         this.editTemplate(values)
       } else {
-        //debugger
         this.addTemplate(values);
       }
     });
@@ -162,54 +160,30 @@ class AddEit extends BaseApp {
   }
   //上传图片
   uploadImageCallBack(file) {
-    // return new Promise(
-    //   (resolve, reject) => {
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open('POST', 'http://172.16.0.218:8080/file/upload');
-    //     xhr.setRequestHeader('Authorization', 'Client-ID XXXXX');
-    //     const data = new FormData();
-    //     data.append('image', file);
-    //     xhr.send(data);
-    //     debugger
-    //     xhr.addEventListener('load', () => {
-    //       const response = JSON.parse(xhr.responseText);
-    //       resolve(response);
-    //     });
-    //     xhr.addEventListener('error', () => {
-    //       const error = JSON.parse(xhr.responseText);
-    //       reject(error);
-    //     });
-    //   }
-    // );
     return new Promise(
-        (resolve, reject) => {
-            const formData = new FormData();
-            formData.append('pic-upload', file);
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://172.16.0.210:8080/contract/contract/signed_paper_file/upload');
-            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-            xhr.setRequestHeader('Access-Control-Allow-Headers', 'X-Requested-With');
-            xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-            xhr.send(formData);
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4) {
-                if (xhr.status >= 200 || xhr.status < 300 || xhr.status === 304) {
-                    let result = JSON.parse(xhr.responseText)
-                    console.log(result);
-                    if(result.length == 0) {
-                      return
-                    }
-                    resolve({
-                        data: {
-                            link: result.data.link
-                        }
-                    });
-                } else {
-                    reject(xhr.status)
-                }
-              }
+      (resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/contract/contract/signed-paper-file/picture');
+        xhr.setRequestHeader('Authorization', `PCTOKEN ${Cookie.get('PCTOKEN')}`);
+        const data = new FormData();
+        data.append('file', file);
+        xhr.send(data);
+        xhr.addEventListener('load', () => {
+          const response = JSON.parse(xhr.responseText);
+          //处理返回数据
+          let formdata = {
+            data: {
+              link: response.data.fileUrl
             }
-    })
+          }
+          resolve(formdata)
+        });
+        xhr.addEventListener('error', () => {
+          const error = JSON.parse(xhr.responseText);
+          reject(error);
+        });
+      }
+    );
   }
   editorChange(e){
     console.log(e)
@@ -249,10 +223,13 @@ class AddEit extends BaseApp {
                           onChange={this.editorChange.bind(this)}
                           toolbar={{
                             image: {
-                              uploadEnabled:true,
+                              urlEnabled: true,
+                              uploadEnabled: true,
+                              alignmentEnabled: true,
                               uploadCallback: this.uploadImageCallBack,
-                              alt: { present: true, mandatory: true },
-                              inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg'
+                              previewImage: true,
+                              inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
+                              alt: { present: false, mandatory: false },
                             }
                           }}/>
                       </IceFormBinder>

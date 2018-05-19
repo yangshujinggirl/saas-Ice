@@ -234,7 +234,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                                                             <i className="icon icon-menu" dangerouslySetInnerHTML={{
                                                                                                                        __html: navData.icon
                                                                                                                    }}></i>
-                                                            ) : null} <span className="ice-menu-collapse-hide">{navData.name}</span></span>}>
+                                                            ) : null} <span className="ice-menu-collapse-hide">{navData.name}</span>
+                                                            <div className="icon-nav-more icon-nav-more"></div></span>}>
                                          {nav.leaf.map((item) => {
                                               const linkProps = {};
                                               let itemData = item.value || {};
