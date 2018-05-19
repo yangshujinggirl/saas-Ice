@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
 import { Form, Input, Grid, Select, Button, DatePicker,Feedback,Field} from '@icedesign/base';
 
-// form binder 详细用法请参见官方文档
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 const { Row, Col } = Grid;
 const { Option } = Select;
 const FormItem = Form.Item;
-const Toast = Feedback.toast;
 
-const formItemLayout = {
-  labelCol: {
-    span: 10
-  },
-  wrapperCol: {
-    span: 12
-  }
-};
 const dataSource = [
   {label:'待提交', value:'DRAFT'},
   {label:'退回', value:'RETURNED'},
@@ -33,7 +24,7 @@ const dataSource = [
   {label:'已放款', value:'LENDING'},
 ]
 
-export default class Filter extends Component {
+export default class Filter extends BaseCondition {
   static displayName = 'Filter';
   field = new Field(this);
   constructor() {
@@ -49,7 +40,7 @@ export default class Filter extends Component {
     };
   }
 
-  submit = () =>{
+  handleSubmit = () =>{
     const {to, from} = this.state.value;
     if(to){
       var value = this.formatDateTime(to)
@@ -63,12 +54,12 @@ export default class Filter extends Component {
     this.props.onSubmit && this.props.onSubmit(this.state.value);
 
   }
-  filterFormChange = (value) => {
-    this.setState({
-      value: value,
-    });
-  }
-  formatDateTime =(inputTime)=> {
+  // filterFormChange = (value) => {
+  //   this.setState({
+  //     value: value,
+  //   });
+  // }
+  formatDateTime =(inputTime) => {
     var date = new Date(inputTime);
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
@@ -119,21 +110,20 @@ export default class Filter extends Component {
   render() {
     return (
       <div className="pch-condition">
-        <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
+        <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange.bind(this)}>
           <Form size="large" direction="hoz">
             <Row wrap>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="贷款编号：">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="贷款编号：">
                   <IceFormBinder
                     name="code"
                   >
                     <Input size="large" placeholder="贷款编号" />
                   </IceFormBinder>
                 </FormItem>
-
               </Col>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="主贷人姓名：">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="主贷人姓名：">
                   <IceFormBinder
                     name="borrowerName"
                   >
@@ -141,15 +131,15 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="申请开始时间：">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="申请开始时间：">
                   <IceFormBinder
                     name="from"
                   >
                     <DatePicker
+                      size="large"
                       format={'YYYY-MM-DD HH:mm:ss'}
                       disabledDate={this.disabledStartDate.bind(this)}
-                      size="large"
                       showTime
                       style={{width:"100%"}}
                       placeholder="申请开始时间"
@@ -159,12 +149,13 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="申请结束时间：">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="申请结束时间：">
                   <IceFormBinder
                     name="to"
                   >
                     <DatePicker
+                      size="large"
                       format={'YYYY-MM-DD HH:mm:ss'}
                       showTime
                       disabledDate={this.disabledEndDate.bind(this)}
@@ -176,17 +167,17 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="贷款状态：">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="贷款状态：">
                   <IceFormBinder
                     name="status"
                   >
-                    <Select dataSource={dataSource}></Select>
+                    <Select size="large" dataSource={dataSource}></Select>
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="展厅名称：">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="展厅名称：">
                   <IceFormBinder
                     name="exhibitionHallName"
                   >
@@ -194,11 +185,9 @@ export default class Filter extends Component {
                   </IceFormBinder>
                 </FormItem>
               </Col>
-              <Col s="8" l="6">
-              </Col>
-              <Col s="8" l="6">
-                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
-                  <Button onClick={this.submit.bind(this)} type="secondary">
+              <Col {...this.colspans}>
+                <FormItem {...this.formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                  <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                     查询
                   </Button>
                 </FormItem>

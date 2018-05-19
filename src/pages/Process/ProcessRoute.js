@@ -23,6 +23,7 @@ export default {
   }],
   component: Layout,
   indexRoute: {
-    component: Process.Process
+    component: Process.Process,
+    name: '流程查询'
   }
 }

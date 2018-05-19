@@ -7,6 +7,7 @@ import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
 import {browserHistory, hashHistory} from 'react-router';
 import { Title, PchTable, PchPagination } from 'components';
+
 export default class EnhanceTable extends Component {
   static displayName = 'EnhanceTable';
 
@@ -52,13 +53,6 @@ export default class EnhanceTable extends Component {
     console.log(condition)
     this.props.actions.search(condition);
   }
-  renderTitle = (value, index, record) => {
-    return (
-      <div style={styles.titleWrapper}>
-        <span style={styles.title}>{record.title}</span>
-      </div>
-    );
-  };
 
   editItem = (record, e) => {
     e.preventDefault();
@@ -68,7 +62,7 @@ export default class EnhanceTable extends Component {
     // this.props.code(record);
     hashHistory.push('/entryQuery/loanapplication/'+record.id);
   };
-  detal = (record, e)=>{
+  detal = (record, e) =>{
     e.preventDefault();
     hashHistory.push('/entryQuery/detail/'+record.id);
   }
@@ -77,7 +71,6 @@ export default class EnhanceTable extends Component {
     return (
       <div
         className="filter-table-operation"
-        style={styles.filterTableOperation}
       >
         {
           record.status  && (record.status == 'DRAFT' || record.status == 'RETURNED' || record.status == 'MAKEUP')  ? (
@@ -145,7 +138,7 @@ export default class EnhanceTable extends Component {
   };
   renderStatus = (value, index, record) => {
     var  statusText = ''
-    this.state.statusList.map((item,index)=>{
+    this.state.statusList.map((item,index) =>{
       if(item.key == record.status){
         statusText = item.value;
       }
@@ -161,9 +154,7 @@ export default class EnhanceTable extends Component {
 
     return (
       <IceContainer className="pch-container">
-        <legend className="pch-legend" >
-          <span className="pch-legend-legline"></span>车贷查询
-        </legend>
+        <Title title="车贷查询"/>
         <FilterForm onSubmit={this.fetchData} />
           <Table
             dataSource={tableData.list}
@@ -173,13 +164,12 @@ export default class EnhanceTable extends Component {
           >
             <Table.Column
               title="贷款编号"
-              width={150}
+              width={200}
               align={'left'}
               dataIndex="code"
             />
             <Table.Column
               title="贷款状态"
-              // dataIndex="status"
               width={150}
               align={'left'}
               cell={this.renderStatus}
@@ -231,33 +221,8 @@ export default class EnhanceTable extends Component {
               align={'center'}
             />
           </Table>
-          <div style={styles.paginationWrapper}>
-            <PchPagination dataSource={pageData} onChange={this.changePage} />
-          </div>
+          <PchPagination dataSource={pageData} onChange={this.changePage} />
         </IceContainer>
     );
   }
 }
-
-const styles = {
-  filterTableOperation: {
-    lineHeight: '28px',
-  },
-  operationItem: {
-    marginRight: '12px',
-    textDecoration: 'none',
-    color: '#5485F7',
-  },
-  titleWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  title: {
-    marginLeft: '10px',
-    lineHeight: '20px',
-  },
-  paginationWrapper: {
-    textAlign: 'right',
-    paddingTop: '26px',
-  },
-};

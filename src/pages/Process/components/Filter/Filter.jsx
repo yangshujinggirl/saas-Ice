@@ -4,24 +4,17 @@ import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
 
-const formItemLayout = {
-    labelCol: {
-        span: 8
-    },
-    wrapperCol: {
-        span: 12
-    }
-};
 //获取下拉
 import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant'
 import SpDataSource from '../../utils/SpDataSource'
 
-export default class Filter extends Component {
+export default class Filter extends BaseCondition {
     constructor() {
         super();
 
@@ -47,16 +40,6 @@ export default class Filter extends Component {
         hashHistory.push(path)
     }
 
-    filterFormChange = (value) => {
-        this.setState({
-            value: value,
-        });
-    }
-
-    handleSubmit() {
-        this.props.onSubmit && this.props.onSubmit(this.state.value);
-    }
-
     handleBusinessTypeChange(v, data){
         let value  = this.state.value;
         value.businessTypeName = data.label;
@@ -74,32 +57,32 @@ export default class Filter extends Component {
     render() {
         return (
             <div className="pch-condition">
-                <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
+                <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange.bind(this)}>
                     <Form size="large" direction="hoz">
                         <Row wrap>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="业务类型：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="业务类型：">
                                     <IceFormBinder name="businessTypeId">
                                         <Select size="large" placeholder="请选择" dataSource={COMPANY_TYPE} onChange={this.handleBusinessTypeChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="资方：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">
                                     <Select size="large" placeholder="请选择" dataSource={SpDataSource.dataSource} onChange={this.handleTenantChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="流程名称：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="流程名称：">
                                     <IceFormBinder name="processName">
                                         <Input size="large" placeholder="流程名称" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="&nbsp;" className="pch-condition-operate">
                                     <Button onClick={this.handleSubmit.bind(this)} type="secondary">
                                         查询
                                     </Button>

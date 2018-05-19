@@ -231,7 +231,7 @@ export default class CarType extends Component {
                   selectedRowKeys: this.state.selectedRowKeys,
                 }}
                 fixedHeader={true}
-                maxBodyHeight={400}
+                maxBodyHeight={547}
               >
 
                 <Table.Column title="类型" dataIndex="type" width={50} />
@@ -243,6 +243,7 @@ export default class CarType extends Component {
                   pageSize={limit}
                   total={total}
                   onChange={this.changePage}
+                  shape="arrow-only"
                 />
               </div>
             </div>
@@ -254,7 +255,7 @@ export default class CarType extends Component {
               <Table
                 dataSource={this.state.dataSourceRight}
                 fixedHeader={true}
-                maxBodyHeight={400}
+                maxBodyHeight={547}
               >
                 <Table.Column title="类型" dataIndex="type" width={50} />
                 <Table.Column title="名称" dataIndex="name" width={300} />

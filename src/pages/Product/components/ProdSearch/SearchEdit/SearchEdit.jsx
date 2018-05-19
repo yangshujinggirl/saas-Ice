@@ -11,6 +11,7 @@ import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 
 import { Input, Button, Checkbox, Select, DatePicker, Switch, Radio, Grid, Table, Pagination, Form,
 } from '@icedesign/base';
+import { Title } from 'components';
 
 const {Row, Col} = Grid;
 
@@ -38,84 +39,77 @@ export default class SearchEdit extends Component {
     constructor(props) {
         super(props);
 
-        // 请求参数缓存
-        this.queryCache = {};
         this.state = {
             processList: [],
-            processDefId: '',
             value: {
 
             }
         };
-
     }
-    componentWillMount() {}
+
     componentDidMount() {
         let {actions, prodInfo, params, formData} = this.props;
-        let {product = {}} = formData;
+        
         actions.edit(params.id);
         actions.getDetail(params.id);
+
+        //流程名称获取
+        Req._processList({
+            limit: 99999
+        }).then((data) => {
+            let temp = data.data.list;
+            this.setState({
+                processList: temp
+            });
+        });
     }
 
-    componentWillReceiveProps(nextProps) {
-        let temp = this.state.processList;
-        console.log(nextProps.formData)
-        if (nextProps.formData && nextProps.formData.product && nextProps.formData.product.tenantId && (!temp || temp.length == 0)) {
-            //流程名称获取
-            Req._processList({
-                tenantId: nextProps.formData.product.tenantId, //测试可写：10086
-                limit: 99999
-            }).then((data) => {
-                let temp = this.state.processList;
-                temp = data.data.list;
-                this.setState({
-                    processList: temp
-                }, function() {});
-            });
-        }
-    }
+    /**
+     * 编辑产品
+     * @return {[type]} [description]
+     */
     upData = () => {
         let {actions, pageData, params, formData} = this.props;
         console.log(this.state.processName)
-        let name = formData.product || {}
+        let prod = formData.product || {}
         this.formRef.validateAll((error, value) => {
             console.log('error', error, 'value', value);
             if (error) {
                 // 处理表单报错
                 return;
             }
+
             // 提交当前填写的数据
             value.effectiveDate = value.time[0]
             value.expirationDate = value.time[1];
-            value.processId = this.state.processDefId;
             value.id = params.id;
-            value.name = name.name;
-            this.props.actions.prodrevise(value); //
+            value.name = prod.name;
+            value.processName = this.state.processName;
+            actions.prodrevise(value);
         // location.reload ()
         });
     }
+
     onFormChange = (value) => {
         this.setState({
             value
         })
     }
+
     //流程名称的id值
     onChangeProcess = (value, option) => {
-        console.log(option)
 
         this.setState({
-            processDefId: option.processId,
+            processName: option.label
         })
     }
 
 
     render() {
+        let {prodInfo, formData} = this.props;
+        let name = formData.product || {};
 
-        let prodInfo = this.props.prodInfo;
-        let {formData} = this.props
-        let name = formData.product || {}
         name = name.name || ''
-        console.log(name)
         let dataSource = [];
         if (prodInfo) {
             dataSource = prodInfo.data;
@@ -143,9 +137,7 @@ export default class SearchEdit extends Component {
 
         return (
             <IceContainer className="pch-container">
-                <legend className="pch-legend">
-                    <span className="pch-legend-legline"></span>产品编辑
-                </legend>
+                <Title title="产品编辑" />
                 <IceFormBinderWrapper ref={(formRef) => {
                                                this.formRef = formRef;
                                            }} value={this.state.value} onChange={this.onFormChange}>
@@ -167,7 +159,7 @@ export default class SearchEdit extends Component {
                                 </Col>
                                 <Col s={12} l={12}>
                                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限:</span>}>
-                                        <IceFormBinder name="time" required message="生效日期必填" valueFormatter={(date, dateStr) => dateStr}>
+                                        <IceFormBinder name="time" required message="生效期限必填" valueFormatter={(date, dateStr) => dateStr}>
                                             <RangePicker size="large" format={"YYYY-MM-DD"} className="custom-select" />
                                         </IceFormBinder>
                                         <div>
@@ -177,11 +169,11 @@ export default class SearchEdit extends Component {
                                 </Col>
                                 <Col s={12} l={12}>
                                     <FormItem {...formItemLayout} label={<span><span className="label-required">*</span>流程名称:</span>}>
-                                        <IceFormBinder name="processName" required message="流程名称必填">
+                                        <IceFormBinder name="processId" required message="流程名称必填">
                                             <Select size="large" placeholder="请选择" className="custom-select" onChange={this.onChangeProcess}>
                                                 {this.state.processList.map((item, i) => {
                                                      return (
-                                                         <Option value={item.processName} key={i} processId={item.id}>
+                                                         <Option value={item.id.toString()} key={i} processId={item.id}>
                                                              {item.processName}
                                                          </Option>
                                                      )
@@ -189,7 +181,7 @@ export default class SearchEdit extends Component {
                                             </Select>
                                         </IceFormBinder>
                                         <div>
-                                            <IceFormError name="processName" />
+                                            <IceFormError name="processId" />
                                         </div>
                                     </FormItem>
                                 </Col>

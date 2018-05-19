@@ -30,14 +30,14 @@ export default class ReviewApprove extends BaseApp {
     }
 
   //点击签收
-  signIN = (taskId)=>{
+  signIN = (taskId) =>{
     Req.signIn({
       taskId: taskId
-    }).then((res)=>{
+    }).then((res) =>{
       if(res && res.code==200){
         this.fetchData();
       }
-    }).catch((error)=>{
+    }).catch((error) =>{
 
     });
 

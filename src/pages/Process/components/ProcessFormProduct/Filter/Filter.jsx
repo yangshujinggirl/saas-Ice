@@ -5,29 +5,20 @@ import Req from '../../../reqs/ProcessReq'
 
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
 
-const formItemLayout = {
-    labelCol: {
-        span: 8
-    },
-    wrapperCol: {
-        span: 12
-    }
-};
-
-
-export default class Filter extends Component {
+export default class Filter extends BaseCondition {
     constructor() {
         super();
 
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-                tenantId:null,
+                tenantId:this.SpDataSource.defaultValue,
                 productType:null,
                 name:''
             },
@@ -47,15 +38,6 @@ export default class Filter extends Component {
             }
             })
      }
-    filterFormChange = (value) => {
-        this.setState({
-            value: value,
-        });
-    }
-
-    handleSubmit() {
-        this.props.onSubmit && this.props.onSubmit(this.state.value);
-    }
 
     handleBusinessTypeChange(v, data){
         let value  = this.state.value;
@@ -75,20 +57,18 @@ export default class Filter extends Component {
         let {prodType} = this.state
         return (
             <div className="pch-condition pch-condition-padding ">
-                <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
+                <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange.bind(this)}>
                     <Form size="large" direction="hoz">
                         <Row wrap>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="资方：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">
-                                        <Select size="large" placeholder="资方"  onChange={this.handleBusinessTypeChange.bind(this)}>
-                                        <Option value='china'>中国银行</Option>
-                                        </Select>
+                                        <Select size="large" placeholder="资方" dataSource={this.SpDataSource.dataSource} onChange={this.handleBusinessTypeChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="产品类型：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="产品类型：">
                                     <IceFormBinder name="productType">
                                         <Select size="large" placeholder="产品类型" onChange={this.handleTenantChange.bind(this)}>
                                             {
@@ -100,16 +80,16 @@ export default class Filter extends Component {
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="产品名称：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="产品名称：">
                                     <IceFormBinder name="name">
                                         <Input size="large" placeholder="产品名称" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
-                                    <Button onClick={this.handleSubmit.bind(this)} type="secondary">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                                    <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                                         查询
                                     </Button>
                                 </FormItem>

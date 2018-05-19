@@ -10,11 +10,11 @@
 
 @font-face {
   font-family: 'iconfont';  /* project id 593133 */
-  src: url('//at.alicdn.com/t/font_593133_8jnpzxnvs8rrudi.eot');
-  src: url('//at.alicdn.com/t/font_593133_8jnpzxnvs8rrudi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_593133_8jnpzxnvs8rrudi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_593133_8jnpzxnvs8rrudi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_593133_8jnpzxnvs8rrudi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_593133_ldgaddgzvqeka9k9.eot');
+  src: url('//at.alicdn.com/t/font_593133_ldgaddgzvqeka9k9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_593133_ldgaddgzvqeka9k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_593133_ldgaddgzvqeka9k9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_593133_ldgaddgzvqeka9k9.svg#iconfont') format('svg');
 }
 
 .icon {
@@ -783,7 +783,7 @@ body {
     }
 }
 .pch-condition{
-    padding: 20px 15px 30px;
+    padding: 30px 15px 30px;
 
     .next-form-left.next-form-large .next-form-item-label{
         line-height: 34px;
@@ -916,6 +916,7 @@ body {
     .next-form-item-control{}
 
     .pch-form-buttons{
+        text-align: center;
         button{
             margin: 0 5px;
         }

@@ -98,16 +98,17 @@ export default class ProcessFormProduct extends BaseApp {
         arrayRightData.map((item, i) => {
             tempArr.push({
                 productCode: item.productCode,
-                productId: item.id,
+                productId: item.productId || item.id,
                 productName: item.name|| item.productName,
                 productType: this.productTypeKey(item.productType),
                 processDefId: params.id,
                 status: item.status,
                 businessTypeId: 1,
                 businessTypeName: "贷款业务",
-                tenantId: 123,
+                tenantId: item.tenantId,
             })
         })
+        // console.log(tempArr)
         this.setState({
             dataSourceRight:tempArr
         })
