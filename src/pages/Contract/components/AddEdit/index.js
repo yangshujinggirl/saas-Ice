@@ -6,6 +6,7 @@ import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import Cookie from '../../../../base/utils/Cookie';
 
 import {
   Input,
@@ -162,15 +163,20 @@ class AddEit extends BaseComponent {
     return new Promise(
       (resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://172.16.0.218:8080/contract-ft1/contract/signed-paper-file/picture');
-        xhr.setRequestHeader('Content-Type', 'multipart/form-data;boundary=AaB03x');
+        xhr.open('POST', '/contract/contract/signed-paper-file/picture');
+        xhr.setRequestHeader('Authorization', `PCTOKEN ${Cookie.get('PCTOKEN')}`);
         const data = new FormData();
         data.append('file', file);
-        console.log(data.get('file'))
         xhr.send(data);
         xhr.addEventListener('load', () => {
           const response = JSON.parse(xhr.responseText);
-          resolve(response);
+          //处理返回数据
+          let formdata = {
+            data: {
+              link: response.data.fileUrl
+            }
+          }
+          resolve(formdata)
         });
         xhr.addEventListener('error', () => {
           const error = JSON.parse(xhr.responseText);
@@ -220,7 +226,7 @@ class AddEit extends BaseComponent {
                               uploadCallback: this.uploadImageCallBack,
                               previewImage: true,
                               inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
-                              alt: { present: true, mandatory: true },
+                              alt: { present: false, mandatory: false },
                             }
                           }}/>
                       </IceFormBinder>
