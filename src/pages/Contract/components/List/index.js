@@ -91,11 +91,11 @@ class ContractList extends BaseApp {
     Req.isBindProductApi(record.id)
     .then((res) => {
       const { data, code, msg } = res;
-      if(code !=200 || data == null) {
+      if(code !=200 || !data) {
         Toast.error(msg);
         return;
       }
-      if(data) {
+      if(data.result) {
         this.seachBindProductList(record.id,actionStatus);
       } else {
         this.setState({
@@ -115,7 +115,7 @@ class ContractList extends BaseApp {
     Req.seachBindTemplateApi(id)
     .then((res) => {
       const { data, code, msg} =res;
-      if( code !=200 || data == null) {
+      if( code !=200 || !data) {
         Toast.error(msg);
         return;
       }
@@ -140,7 +140,7 @@ class ContractList extends BaseApp {
     Req.handleTemplateApi(id,actionStatus)
     .then((res) => {
       const { data, code, msg} =res;
-      if(code !=200 || data == null) {
+      if(code !=200 || !data) {
         Toast.error(msg);
         return;
       }

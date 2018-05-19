@@ -19,6 +19,7 @@ import {
 
 import './index.scss'
 import { PchDialog } from 'components';
+import { BaseComponent } from 'base';
 import Req from '../../../reqs/ContractFileReq';
 
 const {Row, Col} = Grid;
@@ -26,7 +27,7 @@ const {Row, Col} = Grid;
 const FormItem = Form.Item;
 const { ImageUpload } = Upload;
 
-class SignDialogModule extends Component {
+class SignDialogModule extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -103,7 +104,7 @@ class SignDialogModule extends Component {
                           <ImageUpload
                             listType="picture-card"
                             className='upload'
-                            action="/contractApi/contract/contract/signed-paper-file/picture"
+                            action={`${this._config.CONTRACT_HOST}/contract/signed-paper-file/picture`}
                             onChange={this.onChange.bind(this)}
                             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
                             defaultFileList={value.fileIds}

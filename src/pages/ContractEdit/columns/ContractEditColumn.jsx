@@ -10,11 +10,7 @@ import { BaseColumn } from 'base';
  }
  const statusTrans = {
    1:'待确认',
-   2:'已取消',
-   4:'已作废',
-   5:'已签字',
    6:'签署中',
-   7:'未签字',
  }
  const cardTrans = {
    1:'身份证',
