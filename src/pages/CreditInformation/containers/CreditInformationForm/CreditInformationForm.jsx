@@ -140,7 +140,7 @@ export default class CreditInformationForm extends BaseComponent {
         //
         // let AllValue = this.AllValue(value);
         // this.dataVerif(value);
-        value['flag'] = 'submit';
+        value['loanId'] = this.props.params.id;
         value['baseDocuments'] =[]
         this.state.fileList.map(item =>{
           value.baseDocuments.push({
@@ -256,9 +256,6 @@ export default class CreditInformationForm extends BaseComponent {
       console.log(info)
       info.fileList.map(item=>{
         if(item.status == 'done'){
-          console.log(item.type)
-          console.log(item.type.indexOf('image') == 0)
-          console.log(111)
           if(item.type.indexOf('image') == 0){
             item.size = item.originFileObj.size;
             item.downloadURL = item.imgURL;
