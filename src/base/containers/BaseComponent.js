@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BaseConfig from '../../config/BaseConfig';
-
+import Cookie from '../utils/Cookie';
 /**
  * 组件的基类
  * 1. 提供上传组件的通用配置，地址、请求头、响应格式等
@@ -15,13 +15,30 @@ export default class BaseComponent extends Component {
     // 上传配置，用于上传组件使用
     this.UPLOAD_CONFIG = {
       action: this._config.SAAS_HOST + '/file/upload',
+      headers:{
+        'Authorization':`PCTOKEN ${Cookie.get('PCTOKEN')}`
+      },
       data: {
         'path': 'path/to/file'
       },
       formatter: (res) => {
-        return {
-          code: res.length > 0 ? '0' : '1',
-          imgURL: res[0].downloadUrl
+        let isArray = Object.prototype.toString.call(res) === '[object Array]';
+        if(isArray) {
+          return {
+            code: res.length > 0 ? '0' : '1',
+            imgURL: res[0].downloadUrl,
+          }
+        } else {
+          if(!res.data) {
+            return;
+          }
+          return {
+            code: res.code == 200 ? '0' : '1',
+            imgURL: res.data.fileUrl,
+            fileName:res.data.filename,
+            fileURL: res.data.fileUrl,
+            type:res.data.fileType,
+          }
         }
       }
     };

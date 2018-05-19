@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
+import Cookie from '../../../../../base/utils/Cookie';
 import {
   Dialog,
   Input,
@@ -81,6 +82,8 @@ class SignDialogModule extends BaseComponent {
   }
   render() {
     const { value, visible } = this.state;
+    const PCTOKEN = Cookie.get('PCTOKEN');
+    console.log(PCTOKEN)
       return (
         <PchDialog
           title={'上传签字文件'}
@@ -102,21 +105,13 @@ class SignDialogModule extends BaseComponent {
                           name="fileIds"
                           message="签字文件不能为空">
                           <ImageUpload
+                            {...this.UPLOAD_CONFIG}
                             listType="picture-card"
                             className='upload'
                             action={`${this._config.CONTRACT_HOST}/contract/signed-paper-file/picture`}
                             onChange={this.onChange.bind(this)}
                             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                            defaultFileList={value.fileIds}
-                            formatter={(res) => {
-                              return {
-                                  code: res.code==200?'0':'1',
-                                  fileName:res.filename,
-                                  imgURL: res.fileUrl,
-                                  fileURL: res.fileUrl,
-                                  type:res.fileType,
-                                }
-                             }}/>
+                            defaultFileList={value.fileIds}/>
                         </IceFormBinder>
                         <div><IceFormError name="fileIds" /></div>
                       </FormItem>
