@@ -109,24 +109,9 @@ class SignDialogModule extends BaseComponent {
                             listType="picture-card"
                             className='upload'
                             action={`${this._config.CONTRACT_HOST}/contract/signed-paper-file/picture`}
-                            // headers={{'X-Pingchang-UserId':'2'}}
-                            // headers={{'Authorization':`PCTOKEN ${PCTOKEN}`}}
                             onChange={this.onChange.bind(this)}
                             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                            defaultFileList={value.fileIds}
-                            // formatter={(res) => {
-                            //   if(!res.data) {
-                            //     return
-                            //   }
-                            //   return {
-                            //       code: res.code==200?'0':'1',
-                            //       fileName:res.data.filename,
-                            //       imgURL: res.data.fileUrl,
-                            //       fileURL: res.data.fileUrl,
-                            //       type:res.data.fileType,
-                            //     }
-                            //  }}
-                           />
+                            defaultFileList={value.fileIds}/>
                         </IceFormBinder>
                         <div><IceFormError name="fileIds" /></div>
                       </FormItem>
