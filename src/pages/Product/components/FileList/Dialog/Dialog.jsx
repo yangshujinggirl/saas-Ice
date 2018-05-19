@@ -66,9 +66,10 @@ export default class DiaLog extends Component {
     if(id){
       this.props.actions.fileDetail(this.props.params.id);
     }else{
+      // 先进入编辑后再进入添加页需要清除上次的表单数据
       this.props.actions.changeFileDetail({
-        fileType: null,
-        fileName: '',
+        dataType: null,
+        name: '',
         collectionDetails: [{
           dataName: '',
           fileSize: undefined,
@@ -308,7 +309,7 @@ export default class DiaLog extends Component {
             required
             message="清单类型必选"
           >
-            <Select name="dataType" size="large" placeholder="请选择" className="custom-select">
+            <Select size="large" placeholder="请选择" className="custom-select">
               <Select.Option value="产品进件">产品进件</Select.Option>
           </Select>
           </IceFormBinder>
