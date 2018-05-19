@@ -17,11 +17,11 @@ const formItemLayout = {
   wrapperCol: { span: 13 }
 };
 const formItemLayoutR = {
-  labelCol: { span: 3 },
-  wrapperCol: { span: 21 }
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 }
 };
 const formItemLayoutCombobox = {
-  labelCol: { span: 3 },
+  labelCol: { span: 4 },
   wrapperCol: { span: 15 }
 };
 const formItemLayoutTEXT = {
@@ -136,24 +136,44 @@ export default class FormRender extends Component {
                <FormItem  key={el.id} className='item half' label={this.label(el.label)}
                           {...formItemLayoutCombobox}>
 
-               <Combobox
-                     // onInputUpdate={this.onInputUpdate.bind(this)}
-                     fillProps={el.label}
-                     // filterLocal={true}
-                     placeholder={"请输入"+el.label}
-                     style={{width:"100%"}}
-                     autoWidth
-                     hasClear
-                     disabled={el.isReadonly}
-                     // onChange={this.onChange}
-                     dataSource={this.state.list}
-                     // onSearch ={this.onSearch}
-                     onInputUpdate={this.onInputUpdate.bind(this)}
-                     {...init(el.name, {
-                       initValue: el.value,
-                       rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]
-                     })}
-                   />
+               {/*<Combobox*/}
+                     {/*// onInputUpdate={this.onInputUpdate.bind(this)}*/}
+                     {/*fillProps={el.label}*/}
+                     {/*// filterLocal={true}*/}
+                     {/*placeholder={"请输入"+el.label}*/}
+                     {/*style={{width:"100%"}}*/}
+                     {/*autoWidth*/}
+                     {/*hasClear*/}
+                     {/*disabled={el.isReadonly}*/}
+                     {/*// onChange={this.onChange}*/}
+                     {/*dataSource={this.state.list}*/}
+                     {/*// onSearch ={this.onSearch}*/}
+                     {/*onInputUpdate={this.onInputUpdate.bind(this)}*/}
+                     {/*{...init(el.name, {*/}
+                       {/*initValue: el.value,*/}
+                       {/*rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]*/}
+                     {/*})}*/}
+                   {/*/>*/}
+                 <Select
+                   showSearch
+                   dataSource={this.state.list}
+                   onSearch={this.onInputUpdate.bind(this)}
+                   filterLocal={false}
+                   className="temp"
+
+
+                   value={el.value}
+                   disabled={ el.isReadonly }
+                   placeholder={"请选择"+el.label}
+                   style={{width:"100%"}}
+                   {...init(el.name, {
+                     initValue: el.value,
+                     rules: [{ required:  el.isRequired, message: "请选择"+el.label }]
+                   })}
+                   // dataSource={ this.props.productList || []}
+                 >
+                 </Select>
+
                </FormItem>
              )
       }

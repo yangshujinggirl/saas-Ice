@@ -94,7 +94,7 @@ export default class Details extends Component {
                     })
                   }
                   return list;
-                }else if(el.type == "TEXT" || el.type == "CHECKBOX" || el.type == "RADIO"){
+                }else if(el.type == "TEXT" || el.type == "CHECKBOX" || el.type == "RADIO" ||(el.type == "SELECT" && el.name == 'car.id')){
                   list.push( <div className='config-font colspan' key={el.id}>
                       {this.label(el.label)}
                       <span>:</span>
