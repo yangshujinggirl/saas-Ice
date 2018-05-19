@@ -178,7 +178,7 @@ export default class LoanApplication extends Component {
                   </ul>
                 </div>
               </Col>
-              <Col span="21" className='modify-form'>
+              <Col span="21" className='modify-form pch-form'>
                 <IceFormBinderWrapper
                   value={this.state.value}
                   onChange={this.formChange}
