@@ -55,7 +55,7 @@ export const search = (condition={}) => {
     dispatch(fetchStart())
 
     Req.search(condition).then((res) => {
-      if (!res || res.code != 200) return;
+      if (!res || res.code != 200 || !res.data) return;
       dispatch(fetchSuccess({ pageData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -70,7 +70,7 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.goEditContractApi(id).then((res) => {
-      if (!res || res.code != 200) return;
+      if (!res || res.code != 200 || !res.data) return;
       dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
