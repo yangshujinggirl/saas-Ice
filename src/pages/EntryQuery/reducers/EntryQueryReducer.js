@@ -1,17 +1,10 @@
 import T from '../constants/EntryQueryConstant'
-
+import EntryQuery_COLUMNS from '../columns/EntryQueryColumn';
 const index = (state = {
   isFetching: false,
   pageData: {}, //列表分页数据
-  formData: { //表单数据
-    title: '',
-    area: 'location1',
-    time: [],
-    delivery: false,
-    type: ['地推活动'],
-    resource: '线下场地免费',
-    extra: '',
-  },
+  formData: { },//表单数据
+  columns: EntryQuery_COLUMNS,
   view: 'list' //展示界面类型，list列表、form表单、view详情等
 }, action) => {
   switch (action.type) {
