@@ -17,6 +17,14 @@
     margin-right: 7px;
 }
 
+//上三角
+.icon-nva-more-top{
+    border-bottom: 5px solid #ccc;
+}
+//下三角
+.icon-nva-more-bottom{
+    
+}
 /**
  * 尺寸 基础尺寸
  * 命名能在语义的前提下简单就尽量简单, 这里可以是 size-2x, space-2x, size-base ...
@@ -688,6 +696,7 @@ body {
         margin: 0px auto;
         max-height: 34px;
     }
+    
 }
 
 .ice-menu {
@@ -700,7 +709,23 @@ body {
         color: #7A756B !important;
         background: #f8f8f8
     }
-
+    .ice-menu-submenu-open{
+        .ice-menu-submenu-title{
+            .icon-nav-more{
+                display: inline-block;
+                position: absolute;
+                width: 0;
+                height: 0;
+                right: 22px;
+                top: 18px;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                float: right;
+                border-top: 5px solid #ccc;
+            }
+        }
+        
+    }
 }
 
 .ice-menu .ice-menu-submenu-inline > .ice-menu-submenu-title::after {
