@@ -276,7 +276,7 @@ export default class DiaLog extends Component {
 
   testName=(id,data) =>{
     if(id){
-      return(<label>{data.name}</label>)
+      return(<p className="next-form-text-align">{data.name}</p>)
     }else{
       
       return(
@@ -299,7 +299,7 @@ export default class DiaLog extends Component {
   }
   testType=(id,data) =>{
     if(id){
-      return(<label>{data.dataType}</label>)
+      return(<p className="next-form-text-align">{data.dataType}</p>)
     }else{
       return(
         <span>

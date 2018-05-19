@@ -1,13 +1,4 @@
 /* GLOBAL */
-// @font-face {
-//   font-family: 'iconfont';  /* project id 593133 */
-//   src: url('//at.alicdn.com/t/font_593133_se1pk3f2ub359udi.eot');
-//   src: url('//at.alicdn.com/t/font_593133_se1pk3f2ub359udi.eot?#iefix') format('embedded-opentype'),
-//   url('//at.alicdn.com/t/font_593133_se1pk3f2ub359udi.woff') format('woff'),
-//   url('//at.alicdn.com/t/font_593133_se1pk3f2ub359udi.ttf') format('truetype'),
-//   url('//at.alicdn.com/t/font_593133_se1pk3f2ub359udi.svg#iconfont') format('svg');
-// }
-
 @font-face {
   font-family: 'iconfont';  /* project id 593133 */
   src: url('//at.alicdn.com/t/font_593133_ldgaddgzvqeka9k9.eot');
@@ -408,7 +399,6 @@ body {
             .ice-menu {
                 background: $ice-aside-menu-bg;
                 transition: all 0.3s ease;
-                box-shadow: 2px 0 0 #ddd;
                 &.ice-menu-inline .ice-icon-stable {
                     font-weight: normal;
                 }
