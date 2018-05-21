@@ -186,9 +186,7 @@ class AddEit extends BaseComponent {
       }
     );
   }
-  editorChange(e){
-    console.log(e)
-  }
+
   render() {
     const { editorState, value, moduleStatus } = this.state;
     const { templateContent, templateName } = this.state.value;
@@ -221,7 +219,6 @@ class AddEit extends BaseComponent {
                           wrapperClassName="contract-template-add-wrapper"
                           editorClassName="contract-template-editor"
                           onEditorStateChange={this.onEditorStateChange}
-                          onChange={this.editorChange.bind(this)}
                           toolbar={{
                             image: {
                               urlEnabled: true,
