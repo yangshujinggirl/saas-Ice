@@ -171,6 +171,7 @@ export default class ProcessForm extends Component {
             }
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 0;
+            values.processType = 'LOAN';
             if(this.props.params.id){
                 values.id = this.props.params.id;
             }
@@ -205,8 +206,7 @@ export default class ProcessForm extends Component {
                 cancel: "取消"
             },
             onOk() {
-                this.props.router.push('process');
-                // hashHistory.push('process');
+                hashHistory.push('process');
             }
         });
     }
@@ -249,6 +249,7 @@ export default class ProcessForm extends Component {
                 // 没有id的获取页面字段（新增）
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
+                    actions.getAllPageFields();
                     this.setState({
                         pageId: item.pageId,
                         order: idx
