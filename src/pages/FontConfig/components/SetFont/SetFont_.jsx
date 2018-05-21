@@ -429,32 +429,43 @@ export default class setFont extends Component {
      * @return {[type]} [description]
      */
     getOtherFields(){
-        let {allPageFields = {}, resData = {}} = this.props;
+        let {allPageFields = {}, resData1 = {}} = this.props;
+        let {resData = {}} = this.props;
 
         if(!allPageFields.fieldset || !resData.fieldset){
             return [];
         }
 
-        return allPageFields.fieldset.filter((fieldset, i) => {
+        let result = [];
+
+        allPageFields.fieldset.map((fieldset, i) => {
             let re = fieldset.fields.filter((field, j) => {
                 return this._existsInFields(resData.fieldset, field)
             });
-            return re.length > 0;
+
+            if(re.length > 0){
+                result.push({
+                    name: fieldset.name,
+                    fields: re
+                })
+            }
         })
+
+        return result;
     }
 
     _existsInFields(fields, field){
-        let flag = false;
+        let flag = true;
 
         fields.map((item, i) => {
             item.fields.map(sitem => {
                 if(sitem.id == field.id){
-                    flag = true;
+                    flag = false;
                     return;
                 }
             })
 
-            if(flag){
+            if(!flag){
                 return;
             }
         })

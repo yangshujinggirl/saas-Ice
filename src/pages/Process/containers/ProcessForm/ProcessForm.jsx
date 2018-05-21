@@ -249,7 +249,9 @@ export default class ProcessForm extends Component {
                 // 没有id的获取页面字段（新增）
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
-                    actions.getAllPageFields();
+                    actions.getAllPageFields({
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
+                    });
                     this.setState({
                         pageId: item.pageId,
                         order: idx
