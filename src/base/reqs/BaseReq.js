@@ -8,7 +8,6 @@ import qs from 'qs';
 
 import { Feedback } from "@icedesign/base";
 
-let extractToast = false;
 let requests = [];
 class BaseReq {
 
@@ -194,12 +193,6 @@ class BaseReq {
    * @return {[type]}      [description]
    */
   _showMsg(type, msg, ...rest) {
-    if(!extractToast){
-      Object.keys(Feedback.toast).forEach(k=>{
-        BaseReq.prototype['tip' + k[0].toUpperCase() + k.slice(1)] = Feedback.toast[k]
-      })
-      extractToast = true;
-    }
     if (!msg) {
       return;
     }
@@ -237,5 +230,33 @@ class BaseReq {
     // hashHistory.push('/account');
   }
 }
+
+Object.keys(Feedback.toast).forEach(k=>{
+  BaseReq.prototype['tip' + k[0].toUpperCase() + k.slice(1)] = function(content, duration, afterCloseCallback, ...rest){
+    let opts = {};
+    if('object' != typeof content){
+      opts.content = String(content);
+    }else{
+      opts = {...content, ...opts}
+    }
+    if('object' != typeof duration){
+      opts.duration = Number(duration);
+      opts.duration = isNaN(opts.duration) ? 300 : opts.duration;
+    }else{
+      opts = {...duration, ...opts}
+    }
+    if('function' == typeof afterCloseCallback){
+      opts.afterClose = afterCloseCallback
+    }else{
+      opts.afterClose = a=>a;
+    }
+    opts = {...opts, ...rest}
+    Feedback.toast[k]({
+      duration: 500,
+      content: '未知信息',
+      ...opts
+    })
+  }
+})
 
 export default BaseReq;

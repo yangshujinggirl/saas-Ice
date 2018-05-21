@@ -105,12 +105,13 @@ class Bind extends BaseApp {
     //查询绑定的产品列表字段
     Req.getProductNameAPi(data).then(res=>{
       if(!this.tip(res))return;
-      let data = res.data.map(p=>({
+      let names = res.data.map(p=>({
         name: p.name,
         label: p.label
       }))
+      console.log(names)
       this.setState({
-        productNames: res.data
+        productNames: names
       })
     }).catch(err=>err)
   }
@@ -204,8 +205,9 @@ class Bind extends BaseApp {
         templateProducts,
         templateExtends
       }).then(res=>{
-      if(res.code!=200)return Feedback.toast.success(res.msg || "绑定失败")
-      Feedback.toast.success(res.msg || "绑定成功")
+        debugger
+      if(res.code!=200)return Req.tipError(res.msg || "绑定失败")
+      Req.tipSuccess(res.msg || "绑定成功")
       setTimeout(()=>hashHistory.push("/contract"), 3000)
     }).catch(err=>err)
   }
