@@ -86,15 +86,17 @@ export default class SearchEdit extends Component {
             value.name = prod.name;
             value.processName = this.state.processName;
 
+            //保存
+            actions.prodrevise(value);
             //编辑成功提示
-            Feedback.toast.show({
-                type: 'success',
-                content: '编辑成功！',
-                afterClose: () => {
-                    actions.prodrevise(value);
-                    hashHistory.push('/product/search');
-                }
-            });
+            // Feedback.toast.show({
+            //     type: 'success',
+            //     content: '编辑成功！',
+            //     afterClose: () => {
+            //         actions.prodrevise(value);
+            //         hashHistory.push('/product/search');
+            //     }
+            // });
         });
     }
 
