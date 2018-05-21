@@ -20,6 +20,8 @@ import ProcessAuthEdit from '../../components/ProcessAuth/ProcessAuthEdit';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import SetFont_ from '../../../FontConfig/components/SetFont/SetFont_';
 import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
+import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant'
+import SpDataSource from '../../utils/SpDataSource'
 
 export default class ProcessForm extends Component {
     constructor(props) {
@@ -91,9 +93,18 @@ export default class ProcessForm extends Component {
 
             // 新增时使用传递的数据设置
             // 默认名称为"新流程-MMddhhmmss"
-            const locationInfo = this.props.location.state;
-            if (locationInfo && !locationInfo.processName) {
+            // 若不从列表页过来则初始默认的值
+            const locationInfo = this.props.location.state || {};
+            if (!locationInfo.processName) {
                 locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
+            }
+            if(!locationInfo.businessTypeId){
+                locationInfo.businessTypeId = COMPANY_TYPE[0].value;
+                locationInfo.businessTypeName = COMPANY_TYPE[0].label;
+            }
+            if(!locationInfo.tenantId){
+                locationInfo.tenantId = SpDataSource.defaultValue;
+                locationInfo.tenantName = SpDataSource.defaultLabel;
             }
             formData = Object.assign(formData, locationInfo);
 

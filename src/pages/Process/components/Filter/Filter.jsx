@@ -24,7 +24,7 @@ export default class Filter extends BaseCondition {
         this.state = {
             value: {
                 businessTypeId: '1',
-                businessTypeName: '营业执照',
+                businessTypeName: '贷款业务',
                 tenantId: SpDataSource.defaultValue,
                 tenantName: SpDataSource.defaultLabel,
                 processName: '',
