@@ -113,7 +113,12 @@ class BaseReq {
           // data = {
           //   _data: res.data.data
           // }
-          data = res.data.data || {}
+          // 其它可能返回的值为：null、''、boolean
+          if(res.data.data == null || res.data.data = ''){
+            data = {};
+          }else{
+            data = res.data.data;
+          }
         }
       } else {
         // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
