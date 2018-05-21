@@ -29,9 +29,9 @@ class ContractList extends BaseApp {
   }
   //点击分页
   changePage = (currentPage) => {
-      this.props.actions.search({
-          page: currentPage
-      });
+    this.props.actions.search({
+        page: currentPage
+    });
   }
   //表单操作
   handleOperateClick(record, type) {
@@ -78,7 +78,6 @@ class ContractList extends BaseApp {
   }
   //修改
   changeDialog(id) {
-    debugger
     this.isBindProduct(id,(result)=> {
       if(result) {
         Toast.error('您已绑定过产品，不可修改模板');
@@ -153,7 +152,6 @@ class ContractList extends BaseApp {
   }
   //提交启用，停用，删除
   submitOperate(id,actionStatus) {
-    //debugger
     Req.handleTemplateApi(id,actionStatus)
     .then((res) => {
       const { code, msg} =res;
