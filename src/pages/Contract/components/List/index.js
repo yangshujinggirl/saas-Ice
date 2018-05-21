@@ -37,7 +37,7 @@ class ContractList extends BaseApp {
   handleOperateClick(record, type) {
     switch (type) {
         case this.OPERATE_TYPE.CHANGE: {
-            hashHistory.push(`contract/add/${record.id}`)
+            this.changeDialog(record.id);
             break;
         }
         case this.OPERATE_TYPE.VIEW: {
@@ -76,6 +76,17 @@ class ContractList extends BaseApp {
 
     })
   }
+  //修改
+  changeDialog(id) {
+    debugger
+    this.isBindProduct(id,(result)=> {
+      if(result) {
+        Toast.error('您已绑定过产品，不可修改模板');
+      } else {
+        hashHistory.push(`contract/add/${id}`);
+      }
+    })
+  }
   //表格操作
   dialogEvent(type,record) {
     let actionStatus;
@@ -88,14 +99,8 @@ class ContractList extends BaseApp {
     } else if (type == this.OPERATE_TYPE.REMOVE) {
         actionStatus = 999;//去删除
     }
-    Req.isBindProductApi(record.id)
-    .then((res) => {
-      const { code, msg, data } = res;
-      if(code !=200 ) {
-        Toast.error(msg);
-        return;
-      }
-      if(data.result) {
+    this.isBindProduct(record.id,(result)=> {
+      if(result) {
         this.seachBindProductList(record.id,actionStatus);
       } else {
         this.setState({
@@ -108,6 +113,18 @@ class ContractList extends BaseApp {
           visible:true
         })
       }
+    })
+  }
+  //是否绑定产品
+  isBindProduct(id,callback) {
+    Req.isBindProductApi(id)
+    .then((res) => {
+      const { code, msg, data } = res;
+      if(code !=200 ) {
+        Toast.error(msg);
+        return;
+      }
+      'function' == typeof callback && callback(data.result);
     })
   }
   //查询绑定产品列表
