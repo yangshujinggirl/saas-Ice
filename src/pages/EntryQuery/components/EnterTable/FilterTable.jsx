@@ -86,14 +86,15 @@ export default class EnhanceTable extends BaseApp {
       }
       // 修改
       case this.OPERATE_TYPE.EDIT: {
-        if(data.status == 'DRAFT' ||  data.status == 'RETURNED' ){
           hashHistory.push('/entryQuery/loanapplicationOne/'+data.id);
-        }
-        if(data.status == 'MAKEUP'){
-          hashHistory.push('/entryQuery/loanapplicationOne/'+data.id);
-        }
-        break;
+          break;
       }
+      //补录
+      case this.OPERATE_TYPE.OTHER: {
+          hashHistory.push('/entryQuery/loanapplication/'+data.id);
+          break;
+      }
+
     }
   }
 
@@ -107,71 +108,6 @@ export default class EnhanceTable extends BaseApp {
       <IceContainer className="pch-container">
         <Title title="车贷查询"/>
         <FilterForm onSubmit={this.fetchData} />
-          {/*<Table*/}
-            {/*dataSource={tableData.list}*/}
-            {/*isLoading={this.props.isFetching}*/}
-            {/*className="basic-table"*/}
-            {/*hasBorder={false}*/}
-          {/*>*/}
-            {/*<Table.Column*/}
-              {/*title="贷款编号"*/}
-              {/*width={200}*/}
-              {/*align={'left'}*/}
-              {/*dataIndex="code"*/}
-            {/*/>*/}
-            {/*<Table.Column*/}
-              {/*title="贷款状态"*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-              {/*cell={this.renderStatus}*/}
-            {/*/>*/}
-            {/*<Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'left'}/>*/}
-            {/*<Table.Column*/}
-              {/*title="证件号码"*/}
-              {/*dataIndex="borrowerIdNo"*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-            {/*/>*/}
-
-            {/*<Table.Column*/}
-              {/*title="手机号"*/}
-              {/*dataIndex="borrowerMobile"*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-            {/*/>*/}
-            {/*<Table.Column*/}
-              {/*title="申请金额"*/}
-              {/*dataIndex="principalAmount"*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-            {/*/>*/}
-            {/*<Table.Column*/}
-              {/*title="贷款产品"*/}
-              {/*dataIndex="productName"*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-            {/*/>*/}
-            {/*<Table.Column*/}
-              {/*title="展厅名称"*/}
-              {/*dataIndex=""*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-            {/*/>*/}
-            {/*<Table.Column*/}
-              {/*title="申请时间"*/}
-              {/*dataIndex="createdAt"*/}
-              {/*width={150}*/}
-              {/*align={'left'}*/}
-            {/*/>*/}
-            {/*<Table.Column*/}
-              {/*lock="right"*/}
-              {/*title="操作"*/}
-              {/*dataIndex="operation"*/}
-              {/*width={150}*/}
-              {/*cell={this.renderOperations}*/}
-              {/*align={'center'}*/}
-            {/*/>*/}
-          {/*</Table>*/}
           <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={pageData} onChange={this.changePage} />
         </IceContainer>

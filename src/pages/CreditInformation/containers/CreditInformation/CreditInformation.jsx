@@ -65,7 +65,7 @@ export default class CreditInformation extends BaseApp {
             }
             // 征信录入
             case this.OPERATE_TYPE.OTHER2: {
-              hashHistory.push(`creditinformation/add/${data.loanId}`)
+              hashHistory.push(`creditinformation/add/${data.loanId}/${data.taskId}/${data.proInstId}`)
               break;
             }
         }

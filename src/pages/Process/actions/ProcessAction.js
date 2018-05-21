@@ -116,7 +116,8 @@ export const getCustomMenuList = (id) => {
   return (dispatch) => {
     dispatch(fetchStart({ customMenuList: [] }))
     Req.getCustomMenuList(id).then((res) => {
-      dispatch(fetchSuccess({ customMenuList: res.data, view: 'view' }))
+      if(res.code != 200) return;
+      dispatch(fetchSuccess({ customMenuList: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

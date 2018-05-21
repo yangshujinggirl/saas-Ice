@@ -146,6 +146,8 @@ export default class CreditInformationForm extends BaseComponent {
         // let AllValue = this.AllValue(value);
         // this.dataVerif(value);
         value['loanId'] = this.props.params.id;
+        value['taskId'] = this.props.params.taskId;
+        value['processInstanceId'] = this.props.params.taskId;
         value['baseDocuments'] =[]
         this.state.fileList.map(item =>{
           value.baseDocuments.push({
@@ -166,17 +168,39 @@ export default class CreditInformationForm extends BaseComponent {
                 Req.saveForm(value).then((res)=>{
                   dialog.hide()
                   if(res && res.code == 200){
-                    const dialogAlert = Dialog.alert({
-                      needWrapper: false,
-                      content: "提交成功",
-                      title: "提示",
-                      onOk: () => {
-                        dialogAlert.hide();
-                        hashHistory.push(`creditinformation`)
+
+                    if(res.data.flowFlag == 1){
+                      this.alert()
+                    }
+                    if(res.data.flowFlag == 2){
+                      if(res.data.diffArrStr){
+                        const dialogConfirm = Dialog.confirm({
+                          needWrapper: false,
+                          content: "两次征信数据不一致，是否确认提交数据？",
+                          title: "提示",
+                          onOk: () => {
+                            dialogConfirm.hide();
+                            value['flag'] = 'SURE';
+                            Req.saveForm(value).then((res)=>{
+                              if(res && res.code == 200){
+                                this.alert()
+                              }else{
+                                Toast.show({
+                                  type: "error",
+                                  content: res.msg,
+                                });
+                              }
+                            }).catch((error)=>{
+                              console.log(error)
+                            })
+                          }
+                        });
+                      }else{
+                        this.alert()
                       }
 
-                    });
-
+                    }
+                    this.alert()
                   }
                 }).catch((error)=>{
                   console.log(error)
@@ -196,8 +220,16 @@ export default class CreditInformationForm extends BaseComponent {
 
       });
     };
-    jump = (dialogAlert)=>{
-
+    alert = ()=>{
+      const dialogAlert = Dialog.alert({
+        needWrapper: false,
+        content: "提交成功",
+        title: "提示",
+        onOk: () => {
+          dialogAlert.hide();
+          hashHistory.push(`creditinformation`)
+        }
+      });
     }
     // 取消
     handleCancel() {}
@@ -381,6 +413,7 @@ export default class CreditInformationForm extends BaseComponent {
                             required
                             validator={this.priceRange}
                           >
+                            {}
                             <Input trim  size="large" htmlType='number' placeholder="请输入" className="custom-input" />
 
                           </IceFormBinder>
