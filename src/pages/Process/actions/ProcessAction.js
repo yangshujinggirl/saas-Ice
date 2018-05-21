@@ -71,7 +71,7 @@ export const search = (condition) => {
 export const save = (data) => {
   return (dispatch) => {
 
-    dispatch(fetchStart())
+    dispatch(fetchStart({isSubmiting: true}))
 
     Req.save(data).then((res) => {
       if (res.code != 200) {
@@ -79,6 +79,7 @@ export const save = (data) => {
           type: 'error',
           content: res.msg,
         });
+        dispatch(fetchSuccess({ isSubmiting: false }))
         return;
       }
 
@@ -87,9 +88,10 @@ export const save = (data) => {
         type: 'success',
         content: data.processName + '产品流程已' + (data.status == 1 ? '提交': '保存') +'成功',
         afterClose: () => {
-          dispatch(fetchSuccess({ formData: {} }))
+          dispatch(fetchSuccess({ formData: {}, isSubmiting: false }))
           hashHistory.push('/process');
-        }
+        },
+        duration: 2000
       });
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

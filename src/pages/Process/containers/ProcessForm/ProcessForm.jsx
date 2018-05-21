@@ -205,7 +205,8 @@ export default class ProcessForm extends Component {
                 cancel: "取消"
             },
             onOk() {
-                hashHistory.push('process');
+                this.props.router.push('process');
+                // hashHistory.push('process');
             }
         });
     }
@@ -358,17 +359,8 @@ export default class ProcessForm extends Component {
         let {customMenuList, formData = {}, params, tasksFields = {}, pageFields, allPageFields, orgsData={}} = this.props;
         let {privilegeItems} = this.state;
 
-        // if (!params.id) {
-        //     // 新增时使用传递的数据设置
-        //     // 默认名称为"新流程-MMddhhmmss"
-        //     if (!formData.processName && locationInfo && !locationInfo.processName) {
-        //         locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
-        //     }
-        //     formData = Object.assign(formData, locationInfo);
-        // }
-
         return (
-            <div className="">
+            <div className="all-in-one-for-you">
                 <IceContainer className="pch-container pch-process" style={{
                                                                                display: this.state.view == PROCESS_VIEW.EDITFORM ? '' : 'none'
                                                                            }}>
@@ -385,13 +377,13 @@ export default class ProcessForm extends Component {
                                     <div className="container-right">
                                         <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule.bind(this)} changeView={this.changeView.bind(this)} />
                                         <div className="next-btn-box pch-form-buttons">
-                                            <Button type="normal" size="large" onClick={this.handleCancel}>
+                                            <Button type="normal" size="large" onClick={this.handleCancel.bind(this)}>
                                                 取消
                                             </Button>
-                                            <Button type="primary" size="large" onClick={this.handleSave}>
+                                            <Button type="primary" size="large" onClick={this.handleSave} disabled={this.props.isSubmiting}>
                                                 保存
                                             </Button>
-                                            <Button type="secondary" size="large" onClick={this.handleSubmit}>
+                                            <Button type="secondary" size="large" onClick={this.handleSubmit} disabled={this.props.isSubmiting}>
                                                 提交
                                             </Button>
                                         </div>
