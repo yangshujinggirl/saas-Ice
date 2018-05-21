@@ -50,7 +50,8 @@ export default class setFont extends Component {
             editeCodeIndex: {
                 index: 0,
                 inj: 0
-            }
+            },
+            isSubmiting: false
         };
     }
 
@@ -165,9 +166,12 @@ export default class setFont extends Component {
             item.fieldId = fieldId;
         })
 
+        this.setState({isSubmiting: true});
+
          // 如果id存在就更新字段
         if (id) {
             FontConfigReq.changPageName(reqData,id).then((res) => {
+                this.setState({isSubmiting: false});
                 let data = res.data;
                 if (res.code == 200) {
                     if(this.props.onSave){
@@ -186,6 +190,7 @@ export default class setFont extends Component {
         } else {
             // 提交字段
             FontConfigReq.save(reqData).then((res) => {
+                this.setState({isSubmiting: false});
                 let data = res.data;
                 if (res.code == 200) {
                     if(this.props.onSave){
@@ -500,7 +505,7 @@ export default class setFont extends Component {
                                 </Button>
                                 <Button type="secondary" style={{
                                                                     marginLeft: '10px'
-                                                                }} onClick={this.submit}>
+                                                                }} onClick={this.submit} disabled={this.state.isSubmiting}>
                                     提交
                                 </Button>
                             </div>

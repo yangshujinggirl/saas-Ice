@@ -11,12 +11,12 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
         // 弹框的底部按钮
         this.footerDom = (
             <div key='1'>
-                <Button type="secondary" style={{
+                <Button type="secondary" size="large" style={{
                                                   marginRight: '10px'
                                               }} onClick={this.handleSubmitCode}>
                     提交
                 </Button>
-                <Button type="normal" onClick={this.handleClose.bind(this)}>
+                <Button type="normal" size="large" onClick={this.handleClose.bind(this)}>
                     取消
                 </Button>
             </div>
