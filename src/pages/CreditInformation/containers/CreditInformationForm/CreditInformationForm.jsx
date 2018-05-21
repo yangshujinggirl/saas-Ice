@@ -117,8 +117,13 @@ export default class CreditInformationForm extends BaseComponent {
                 this.setState({
                   fileList : res.data.baseDocuments
                 })
+              }else{
+                Toast.show({
+                  type: "error",
+                  content: res.msg,
+                });
               }
-            }).catch(error=>{
+            }).catch((error)=>{
               console.log(error)
             });
         }
@@ -154,18 +159,24 @@ export default class CreditInformationForm extends BaseComponent {
         console.log(value)
 
         const dialog = Dialog.confirm({
-          content: "确认提交数据？",
+          content: "是否确认提交数据？",
           onOk: () => {
             return new Promise(resolve => {
               if(value.baseDocuments.length >0){
                 Req.saveForm(value).then((res)=>{
+                  dialog.hide()
                   if(res && res.code == 200){
-                    dialog.hide()
-                    Toast.show({
-                      type: "success",
-                      content: "提交成功～",
+                    const dialogAlert = Dialog.alert({
+                      needWrapper: false,
+                      content: "提交成功",
+                      title: "提示",
+                      onOk: () => {
+                        dialogAlert.hide();
+                        hashHistory.push(`creditinformation`)
+                      }
+
                     });
-                    hashHistory.push(`creditinformation`)
+
                   }
                 }).catch((error)=>{
                   console.log(error)
@@ -185,7 +196,9 @@ export default class CreditInformationForm extends BaseComponent {
 
       });
     };
+    jump = (dialogAlert)=>{
 
+    }
     // 取消
     handleCancel() {}
 
@@ -289,6 +302,8 @@ export default class CreditInformationForm extends BaseComponent {
     render() {
       let { list = {} } = this.props.details || {};
       let { fileList, tableList, dataSource } = this.state;
+      let { differentFiled = {} } = this.state.value;
+      console.log(differentFiled)
 
     // console.log(list)
 
@@ -329,7 +344,7 @@ export default class CreditInformationForm extends BaseComponent {
                         name="name"
                         message="请输入"
                       >
-                        <Input  disabled size="large" placeholder="请输入" className="custom-input"  value = '22'/>
+                        <Input  disabled size="large" placeholder="请输入" className="custom-input"  />
                       </IceFormBinder>
                       <div> <IceFormError name="name" /></div>
                     </FormItem>
@@ -341,7 +356,7 @@ export default class CreditInformationForm extends BaseComponent {
                         message="请输入"
                       >
 
-                        <Input disabled size="large" placeholder="请输入"  className="custom-input"  value = '22'/>
+                        <Input disabled size="large" placeholder="请输入"  className="custom-input"  />
                       </IceFormBinder>
                       <div><IceFormError name="credentialsNo" /></div>
                     </FormItem>
@@ -352,7 +367,7 @@ export default class CreditInformationForm extends BaseComponent {
                         name="mobilePhone"
                         message="请输入"
                       >
-                        <Input disabled size="large" placeholder="请输入" className="custom-input" value = '22'  />
+                        <Input disabled size="large" placeholder="请输入" className="custom-input"   />
                       </IceFormBinder>
                       <div> <IceFormError name="mobilePhone" /></div>
                     </FormItem>
@@ -366,7 +381,7 @@ export default class CreditInformationForm extends BaseComponent {
                             required
                             validator={this.priceRange}
                           >
-                            <Input  state="error"  size="large" htmlType='number' placeholder="请输入" className="custom-input" />
+                            <Input trim  size="large" htmlType='number' placeholder="请输入" className="custom-input" />
 
                           </IceFormBinder>
                           <div><IceFormError name="customCreditScore" /></div>
