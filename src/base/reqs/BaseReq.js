@@ -114,7 +114,7 @@ class BaseReq {
           //   _data: res.data.data
           // }
           // 其它可能返回的值为：null、''、boolean
-          if(res.data.data == null || res.data.data = ''){
+          if(res.data.data == null || res.data.data == ''){
             data = {};
           }else{
             data = res.data.data;
