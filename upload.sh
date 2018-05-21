@@ -5,11 +5,11 @@ upcmd=$2
 repository=http://www1.pingchang666.com:81/web/pingchang-config-server-pro.git
 
 if [[ $param == '' ]]; then
-	echo '请输入一个分支名[master|ft1|ft2|ft3]'
+	echo '请输入一个分支名[master|ft1|ft2|ft3|login]'
 	exit
 fi
 
-if [[ $param != 'master' && $param != 'ft1' && $param != 'ft2' && $param != 'ft3' ]]; then
+if [[ $param != 'master' && $param != 'ft1' && $param != 'ft2' && $param != 'ft3' && $param != 'login' ]]; then
 	echo '输入的分支名不在范围内'
 	exit
 fi
@@ -58,7 +58,7 @@ git commit -am 'update'
 git push origin $param
 
 # 执行上传到服务器命令
-if [[ $upcmd != '-up' ]]; then
+if [[ $upcmd == '-up' ]]; then
 	npm run $param
 fi
 
