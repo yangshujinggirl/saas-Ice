@@ -154,7 +154,7 @@ class BaseReq {
     //console.log('_processError', error);
     let res = error.response || error.request;
     let existData = 'object' == typeof res.data && res.data;
-    if (res.status == 103 || res.status == 401 || res.status == 500 && existData && (existData.code == 401 || existData.message == 'Username or password error') || existData && existData.code == 103) {
+    if (res.status == 103 || res.status == 401 || existData && existData.code == 103) {
       this._redirectToLogin();
       return { status: 401, msg: '未授权，请重新登录', data: { code: 401 } };
     }
@@ -235,10 +235,15 @@ class BaseReq {
       故判断需要判断当前页面是否已经是登录页面，是则不予处理，不是则重定向到登录页
     */
     let hash = location.hash.substring(2) || '';
-    if(/*_host.indexOf('pingchang666') == -1 || */hash.indexOf('account') == 0){
+    if(hash.indexOf('account') == 0){
       return;
     }
 
+    // 登录超时，直接清除token
+    Cookie.remove('PCTOKEN');
+
+    //替换当前系统的域名成登录域名，
+    //eg:daikuan-staging.pingchang666.com=>login-staging.pingchang666.com
     _host = _host.replace('daikuan', 'login');
     location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
     // hashHistory.push('/account');

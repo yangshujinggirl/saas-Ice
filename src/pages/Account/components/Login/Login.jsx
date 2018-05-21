@@ -16,216 +16,158 @@ import { Storage, Cookie, Tools } from 'utils';
 import AccountReq from '../../reqs/AccountReq';
 
 export default class Login extends Component {
-  static displayName = 'UserLogin';
+    static displayName = 'UserLogin';
 
-  static propTypes = {};
+    static propTypes = {};
 
-  static defaultProps = {};
+    static defaultProps = {};
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: {
-        userName: undefined,
-        password: undefined,
-        checkbox: false
-      },
-      isLoging: false
-    };
-  }
-
-  componentDidMount() {
-    let remember = Storage.get('REMEMBER');
-    if (remember) {
-      this.setState({
-        value: {
-          ...remember
-        }
-      });
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: {
+                userName: undefined,
+                password: undefined,
+                checkbox: false
+            },
+            isLoging: false
+        };
     }
-  }
 
-  formChange = (value) => {
-    this.setState({
-      value,
-    });
-  };
+    componentDidMount() {
+        let remember = Storage.get('REMEMBER');
+        if (remember) {
+            this.setState({
+                value: {
+                    ...remember
+                }
+            });
+        }
+    }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    this.refs.form.validateAll((errors, values) => {
-      if (errors) {
-        console.log('errors', errors);
-        return;
-      }
-
-      this.setState({
-        isLoging: true
-      });
-
-      AccountReq.login(values).then((res) => {
+    formChange = (value) => {
         this.setState({
-          isLoging: false
+            value,
         });
-        if (!res || res.code != 200) return;
+    };
 
-        if (values.checkbox) {
-          //记住账号
-          Storage.set('REMEMBER', values);
-        } else {
-          Storage.remove('REMEMBER');
-        }
+    handleSubmit = (e) => {
+        e.preventDefault();
 
-        let fromUrl = this.props.params.from;
-        let isSameSystem = false;
-        let system = res.data.type;
+        this.refs.form.validateAll((errors, values) => {
+            if (errors) {
+                console.log('errors', errors);
+                return;
+            }
 
-        if(system){
-          system = system.toLowerCase();
-        }
+            this.setState({
+                isLoging: true
+            });
 
-        AccountReq._showMsg('success','登录成功');
-        // 判断登录账号的所属系统和当前跳转地址的系统是否同一个
-        if(fromUrl && system){
-          isSameSystem = fromUrl.indexOf(system) != -1;
-        }
-        // 跳转规则
-        // 1. 有来源且系统相同则往来源地址跳转
-        // 2. 否则往默认地址跳转
-        if(isSameSystem || fromUrl){
-          fromUrl = decodeURIComponent(fromUrl);
-          location.href = fromUrl;
-        }else{
-          //默认进入SAAS系统
-          location.href = '//' + location.host.replace('login', system || 'daikuan');
-        }
+            AccountReq.login(values).then((res) => {
+                this.setState({
+                    isLoging: false
+                });
+                if (!res || res.code != 200) return;
 
-        //Storage.set('MENUS', (res.data.leaf));
+                if (values.checkbox) {
+                    //记住账号
+                    Storage.set('REMEMBER', values);
+                } else {
+                    Storage.remove('REMEMBER');
+                }
 
-        // AccountReq.getUserInfo().then((res) => {
-        //   if (res || res.code == 200) {
-        //     Storage.set("USERINFO", res.data);
-        //     hashHistory.push('/dashboard') //跳转首页
-        //   }
-        // })
-      });
-    });
-  };
+                let fromUrl = this.props.params.from;
+                let isSameSystem = false;
+                let system = res.data.type || 'daikuan';
 
-  render() {
-    let {isLoging} = this.state;
+                AccountReq._showMsg('success', '登录成功');
+                // 判断登录账号的所属系统和当前跳转地址的系统是否同一个
+                system = system.toLowerCase();
+                isSameSystem = fromUrl && fromUrl.indexOf(system) != -1;
 
-    return (
-      <div className="user-login">
-        <div className="user-login-bg" style={{
-        backgroundImage: `url(${backgroundImage})`
-      }}/>
-        <div className="pch-login-form">
-        <div className="login-form-header">
-            <div className="login-logo">
-                <img src={adminLogo} />
+                // 跳转规则
+                // 1. 开发环境直接往fromUrl跳转（非域名访问都作为开发环境）
+                // 1. 系统相同则往来源地址跳转（系统相同则一定有来源地址）
+                // 2. 如果有来源则往来源地址跳转
+                // 3. 默认往当前登录用户的所属系统地址跳转
+                if (location.host.indexOf('pingchang666') == -1) {
+                    location.href = fromUrl ? decodeURIComponent(fromUrl) : '/';
+                } else {
+                    if (isSameSystem) {
+                        location.href = decodeURIComponent(fromUrl);
+                    } else {
+                        //默认进入登录用户的所属系统，替换登录域名成相应系统的域名，
+                        //eg:login-staging.pingchang666.com=>daikuan-staging.pingchang666.com
+                        location.href = '//' + location.host.replace('login', system);
+                    }
+                }
+            });
+        });
+    };
+
+    render() {
+        let {isLoging} = this.state;
+
+        return (
+            <div className="user-login">
+                <div className="user-login-bg" style={{
+                                                          backgroundImage: `url(${backgroundImage})`
+                                                      }} />
+                <div className="pch-login-form">
+                    <div className="login-form-header">
+                        <div className="login-logo">
+                            <img src={adminLogo} />
+                        </div>
+                    </div>
+                    <IceFormBinderWrapper value={this.state.value} onChange={this.formChange} ref="form">
+                        <form className="layui-form layui-form-pane" onSubmit={this.handleSubmit}>
+                            <Row className="layui-form-item">
+                                <Col className="layui-input-block">
+                                    <IceIcon className="layui-input-icon" type="person" />
+                                    <IceFormBinder name="userName" required message="请输入账号">
+                                        <Input
+                                            maxLength={20}
+                                            autoComplete="off"
+                                            className="layui-input"
+                                            placeholder="请输入账号(手机号码)"
+                                            autoFocus={true} />
+                                    </IceFormBinder>
+                                </Col>
+                                <Col className="layui-form-error">
+                                    <IceFormError name="userName" />
+                                </Col>
+                            </Row>
+                            <Row className="layui-form-item">
+                                <Col className="layui-input-block">
+                                    <IceIcon className="layui-input-icon lx-iconfont input-icon" type="lock" />
+                                    <IceFormBinder name="password" required message="请输入密码">
+                                        <Input className="layui-input" autoComplete="off" htmlType="password" placeholder="请输入密码" />
+                                    </IceFormBinder>
+                                </Col>
+                                <Col className="layui-form-error">
+                                    <IceFormError name="password" />
+                                </Col>
+                            </Row>
+                            <Row className="layui-form-item">
+                                <Col>
+                                    <IceFormBinder name="checkbox">
+                                        <Checkbox checked={this.state.value.checkbox}>
+                                            记住账号
+                                        </Checkbox>
+                                    </IceFormBinder>
+                                </Col>
+                            </Row>
+                            <div className="layui-form-item">
+                                <Button className="layui-btn layui-btn-sm submit-btn" htmlType="submit" disabled={isLoging}>
+                                    {isLoging ? '登录中' : '登录'}
+                                </Button>
+                            </div>
+                        </form>
+                    </IceFormBinderWrapper>
+                </div>
             </div>
-        </div>
-        <IceFormBinderWrapper value={this.state.value} onChange={this.formChange} ref="form">
-          <form className="layui-form layui-form-pane" onSubmit={this.handleSubmit}>
-              <Row className="layui-form-item">
-                  <Col className="layui-input-block">
-                    <IceIcon className="layui-input-icon" type="person"/>
-                    <IceFormBinder name="userName" required message="请输入账号">
-                      <Input maxLength={20} autoComplete="off" className="layui-input" placeholder="请输入账号(手机号码)" autoFocus={true} />
-                    </IceFormBinder>
-                  </Col>
-                  <Col className="layui-form-error">
-                    <IceFormError name="userName" />
-                  </Col>
-              </Row>
-              <Row className="layui-form-item">
-                  <Col className="layui-input-block">
-                    <IceIcon className="layui-input-icon lx-iconfont input-icon" type="lock" />
-                    <IceFormBinder name="password" required message="请输入密码">
-                      <Input className="layui-input" autoComplete="off" htmlType="password" placeholder="请输入密码" />
-                    </IceFormBinder>
-                  </Col>
-                  <Col className="layui-form-error">
-                    <IceFormError name="password" />
-                  </Col>
-                </Row>
-              <Row className="layui-form-item">
-                  <Col>
-                    <IceFormBinder name="checkbox">
-                      <Checkbox checked={this.state.value.checkbox}>记住账号</Checkbox>
-                    </IceFormBinder>
-                  </Col>
-                </Row>
-              <div className="layui-form-item">
-                  <Button className="layui-btn layui-btn-sm submit-btn" htmlType="submit" disabled={isLoging}>
-                      {isLoging ? '登录中' : '登录'}
-                  </Button>
-              </div>
-          </form>
-          </IceFormBinderWrapper>
-      </div>
-    </div>
-    );
-  }
+            );
+    }
 }
 
-const styles = {
-  userLogin1: {
-    position: 'relative',
-    height: '100vh',
-  },
-  userLoginBg: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundSize: 'cover',
-  },
-  formContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: '30px 40px',
-    background: '#fff',
-    borderRadius: '6px',
-    boxShadow: '1px 1px 2px #eee',
-  },
-  formItem: {
-    position: 'relative',
-    marginBottom: '25px',
-    flexDirection: 'column',
-  },
-  formTitle: {
-    margin: '0 0 20px',
-    textAlign: 'center',
-    color: '#3080fe',
-    letterSpacing: '12px',
-  },
-  inputIcon: {
-    position: 'absolute',
-    left: '10px',
-    top: '10px',
-    color: '#999',
-  },
-  submitBtn: {
-    borderRadius: '28px',
-  },
-  checkbox: {
-    marginLeft: '5px',
-  },
-  tips: {
-    textAlign: 'center',
-  },
-  link: {
-    color: '#999',
-    textDecoration: 'none',
-    fontSize: '13px',
-  },
-  line: {
-    color: '#dcd6d6',
-    margin: '0 8px',
-  },
-};
