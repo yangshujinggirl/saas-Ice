@@ -98,6 +98,13 @@ class EntryQueryColumn extends BaseColumn {
                           :(<span></span> )
                       }
                       {
+                        record.status  &&  record.status == 'MAKEUP' ?
+                          (<button className="editbtn searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER)}>
+                            补录
+                          </button>)
+                          :(<span></span> )
+                      }
+                      {
                         record.status  && record.status != 'DRAFT'  ?
 
                          ( <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>

@@ -75,7 +75,7 @@ class CreditInformationReq extends CurdReq{
   //提交审查审批
   submitReview(data){
     let options = {
-      url: this._config.WF_HOST +  `/tasks/${data.taskId}`,
+      url: this._config.WF_HOST +  `/tasks/${data.businessId}`,
       // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/tasks/12311',
       method: 'PUT',
       data:data
