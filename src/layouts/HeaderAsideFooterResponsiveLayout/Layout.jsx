@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 import Layout from '@icedesign/layout';
-import { Icon } from '@icedesign/base';
+import { Icon, Loading } from '@icedesign/base';
 import Menu, { SubMenu, Item as MenuItem } from '@icedesign/menu';
 import { Link } from 'react-router';
 import FoundationSymbol from 'foundation-symbol';
@@ -186,6 +186,12 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         let leafs = this.state.MENUS || [];
         allAsideNav = allAsideNav.concat(leafs);
 
+        const tipLoader1 = (
+          <div className="pch-load-container pch-load-jump">
+            <div className="loader">loading...</div>
+          </div>
+        );
+
         return (
             <Layout style={{
                    minHeight: '100vh'
@@ -234,7 +240,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                                                             <i className="icon icon-menu" dangerouslySetInnerHTML={{
                                                                                                                        __html: navData.icon
                                                                                                                    }}></i>
-                                                            ) : null} <span className="ice-menu-collapse-hide">{navData.name}</span></span>}>
+                                                            ) : null} <span className="ice-menu-collapse-hide">{navData.name}</span>
+                                                            <div className="icon-nav-more icon-nav-more"></div></span>}>
                                          {nav.leaf.map((item) => {
                                               const linkProps = {};
                                               let itemData = item.value || {};
@@ -293,7 +300,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         userinfo={this.state.USERINFO} />
                     {/* 主体内容 */}
                     <Layout.Main>
-                        {this.props.children}
+                            {this.props.children}
                     </Layout.Main>
                 </Layout.Section>
                 {/* <Footer /> */}

@@ -91,12 +91,12 @@ export const save = (data) => {
 }
 
 // 获取详情
-export const getDetail = (id) => {
+export const getDetail = (data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
+    Req.getDetail(data).then((res) => {
       dispatch(fetchSuccess({ detail: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

@@ -7,8 +7,9 @@ import IceLabel from '@icedesign/label';
 import FilterForm from './Filter';
 import {browserHistory, hashHistory} from 'react-router';
 import { Title, PchTable, PchPagination } from 'components';
+import  { BaseApp } from 'base'
 
-export default class EnhanceTable extends Component {
+export default class EnhanceTable extends BaseApp {
   static displayName = 'EnhanceTable';
 
   static defaultProps = {};
@@ -44,61 +45,11 @@ export default class EnhanceTable extends Component {
     this.fetchData();
   }
 
-  // fetchData = () => {
-  //   let {actions} = this.props;
-  //   actions.search(this.queryCache);
-  // };
-
   fetchData = (condition) => {
     console.log(condition)
     this.props.actions.search(condition);
   }
 
-  editItem = (record, e) => {
-    e.preventDefault();
-    // TODO: record 为该行所对应的数据，可自定义操作行为
-    console.log(record);
-    console.log(this.props)
-    // this.props.code(record);
-    hashHistory.push('/entryQuery/loanapplication/'+record.id);
-  };
-  detal = (record, e) =>{
-    e.preventDefault();
-    hashHistory.push('/entryQuery/detail/'+record.id);
-  }
-  //修改和详情按钮
-  renderOperations = (value, index, record) => {
-    return (
-      <div
-        className="filter-table-operation"
-      >
-        {
-          record.status  && (record.status == 'DRAFT' || record.status == 'RETURNED' || record.status == 'MAKEUP')  ? (
-            <a
-            href="#"
-            target="_blank"
-            onClick={this.editItem.bind(this, record)}
-            className='operate-btn operate-btn-two'
-          >
-            修改
-          </a>) : (<span></span>)
-        }
-        {
-          record.status  && record.status != 'DRAFT'  ? (
-            <a
-              href="#"
-              target="_blank"
-              className='operate-btn'
-              onClick={this.detal.bind(this, record)}
-            >
-              详情
-            </a>) : (<span></span>)
-        }
-
-
-      </div>
-    );
-  };
 
   renderStatus = (value) => {
     return (
@@ -120,31 +71,31 @@ export default class EnhanceTable extends Component {
     });
   };
 
-  filterTables = () => {
-    // 合并参数，请求数据
-    this.queryCache = {
-      ...this.queryCache,
-      ...this.state.filterFormValue,
-    };
-    console.log(this.queryCache)
-    this.fetchData(this.queryCache);
 
-  };
-
-  resetFilter = () => {
-    this.setState({
-      filterFormValue: {},
-    });
-  };
-  renderStatus = (value, index, record) => {
-    var  statusText = ''
-    this.state.statusList.map((item,index) =>{
-      if(item.key == record.status){
-        statusText = item.value;
+  /**
+   * 处理行列表中操作栏的点击事件
+   * @param data 传递给对应事件的行记录数据，okey一般为当前记录的主键
+   * @param type 操作类型，根据不同类型处理不同事件
+   */
+  handleOperateClick(data, type) {
+    switch (type) {
+      //详情
+      case this.OPERATE_TYPE.VIEW: {
+        hashHistory.push('/entryQuery/detail/'+data.id);
+        break;
       }
-    })
-    return statusText;
-  };
+      // 修改
+      case this.OPERATE_TYPE.EDIT: {
+        if(data.status == 'DRAFT' ||  data.status == 'RETURNED' ){
+          hashHistory.push('/entryQuery/loanapplicationOne/'+data.id);
+        }
+        if(data.status == 'MAKEUP'){
+          hashHistory.push('/entryQuery/loanapplicationOne/'+data.id);
+        }
+        break;
+      }
+    }
+  }
 
   render() {
     // const tableData = this.props.bindingData.tableData;
@@ -156,71 +107,72 @@ export default class EnhanceTable extends Component {
       <IceContainer className="pch-container">
         <Title title="车贷查询"/>
         <FilterForm onSubmit={this.fetchData} />
-          <Table
-            dataSource={tableData.list}
-            isLoading={this.props.isFetching}
-            className="basic-table"
-            hasBorder={false}
-          >
-            <Table.Column
-              title="贷款编号"
-              width={200}
-              align={'left'}
-              dataIndex="code"
-            />
-            <Table.Column
-              title="贷款状态"
-              width={150}
-              align={'left'}
-              cell={this.renderStatus}
-            />
-            <Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'left'}/>
-            <Table.Column
-              title="证件号码"
-              dataIndex="borrowerIdNo"
-              width={150}
-              align={'left'}
-            />
+          {/*<Table*/}
+            {/*dataSource={tableData.list}*/}
+            {/*isLoading={this.props.isFetching}*/}
+            {/*className="basic-table"*/}
+            {/*hasBorder={false}*/}
+          {/*>*/}
+            {/*<Table.Column*/}
+              {/*title="贷款编号"*/}
+              {/*width={200}*/}
+              {/*align={'left'}*/}
+              {/*dataIndex="code"*/}
+            {/*/>*/}
+            {/*<Table.Column*/}
+              {/*title="贷款状态"*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+              {/*cell={this.renderStatus}*/}
+            {/*/>*/}
+            {/*<Table.Column title="主贷人姓名" dataIndex="borrowerName" width={150}  align={'left'}/>*/}
+            {/*<Table.Column*/}
+              {/*title="证件号码"*/}
+              {/*dataIndex="borrowerIdNo"*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+            {/*/>*/}
 
-            <Table.Column
-              title="手机号"
-              dataIndex="borrowerMobile"
-              width={150}
-              align={'left'}
-            />
-            <Table.Column
-              title="申请金额"
-              dataIndex="principalAmount"
-              width={150}
-              align={'left'}
-            />
-            <Table.Column
-              title="贷款产品"
-              dataIndex="productName"
-              width={150}
-              align={'left'}
-            />
-            <Table.Column
-              title="展厅名称"
-              dataIndex=""
-              width={150}
-              align={'left'}
-            />
-            <Table.Column
-              title="申请时间"
-              dataIndex="createdAt"
-              width={150}
-              align={'left'}
-            />
-            <Table.Column
-              lock="right"
-              title="操作"
-              dataIndex="operation"
-              width={150}
-              cell={this.renderOperations}
-              align={'center'}
-            />
-          </Table>
+            {/*<Table.Column*/}
+              {/*title="手机号"*/}
+              {/*dataIndex="borrowerMobile"*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+            {/*/>*/}
+            {/*<Table.Column*/}
+              {/*title="申请金额"*/}
+              {/*dataIndex="principalAmount"*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+            {/*/>*/}
+            {/*<Table.Column*/}
+              {/*title="贷款产品"*/}
+              {/*dataIndex="productName"*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+            {/*/>*/}
+            {/*<Table.Column*/}
+              {/*title="展厅名称"*/}
+              {/*dataIndex=""*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+            {/*/>*/}
+            {/*<Table.Column*/}
+              {/*title="申请时间"*/}
+              {/*dataIndex="createdAt"*/}
+              {/*width={150}*/}
+              {/*align={'left'}*/}
+            {/*/>*/}
+            {/*<Table.Column*/}
+              {/*lock="right"*/}
+              {/*title="操作"*/}
+              {/*dataIndex="operation"*/}
+              {/*width={150}*/}
+              {/*cell={this.renderOperations}*/}
+              {/*align={'center'}*/}
+            {/*/>*/}
+          {/*</Table>*/}
+          <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={pageData} onChange={this.changePage} />
         </IceContainer>
     );

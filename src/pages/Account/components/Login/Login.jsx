@@ -85,25 +85,18 @@ export default class Login extends Component {
           system = system.toLowerCase();
         }
 
+        AccountReq._showMsg('success','登录成功');
         // 判断登录账号的所属系统和当前跳转地址的系统是否同一个
         if(fromUrl && system){
           isSameSystem = fromUrl.indexOf(system) != -1;
         }
-        
         // 跳转规则
         // 1. 有来源且系统相同则往来源地址跳转
         // 2. 否则往默认地址跳转
-        // 3. 测试环境直接跳到来源页
-        if(isSameSystem && fromUrl){
+        if(isSameSystem || fromUrl){
           fromUrl = decodeURIComponent(fromUrl);
           location.href = fromUrl;
         }else{
-
-          Feedback.toast.success('登录成功');
-          if(fromUrl){
-            location.href = decodeURIComponent(fromUrl);
-            return;
-          }
           //默认进入SAAS系统
           location.href = '//' + location.host.replace('login', system || 'daikuan');
         }

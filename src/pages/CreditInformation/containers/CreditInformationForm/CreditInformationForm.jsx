@@ -117,8 +117,13 @@ export default class CreditInformationForm extends BaseComponent {
                 this.setState({
                   fileList : res.data.baseDocuments
                 })
+              }else{
+                Toast.show({
+                  type: "error",
+                  content: res.msg,
+                });
               }
-            }).catch(error=>{
+            }).catch((error)=>{
               console.log(error)
             });
         }
@@ -140,7 +145,7 @@ export default class CreditInformationForm extends BaseComponent {
         //
         // let AllValue = this.AllValue(value);
         // this.dataVerif(value);
-        value['flag'] = 'submit';
+        value['loanId'] = this.props.params.id;
         value['baseDocuments'] =[]
         this.state.fileList.map(item =>{
           value.baseDocuments.push({
@@ -154,21 +159,36 @@ export default class CreditInformationForm extends BaseComponent {
         console.log(value)
 
         const dialog = Dialog.confirm({
-          content: "确认提交数据？",
+          content: "是否确认提交数据？",
           onOk: () => {
             return new Promise(resolve => {
-              Req.saveForm(value).then((res)=>{
-                if(res && res.code == 200){
+              if(value.baseDocuments.length >0){
+                Req.saveForm(value).then((res)=>{
                   dialog.hide()
-                  Toast.show({
-                    type: "success",
-                    content: "提交成功～",
-                  });
-                  hashHistory.push(`creditinformation`)
-                }
-              }).catch((error)=>{
-                console.log(error)
-              });
+                  if(res && res.code == 200){
+                    const dialogAlert = Dialog.alert({
+                      needWrapper: false,
+                      content: "提交成功",
+                      title: "提示",
+                      onOk: () => {
+                        dialogAlert.hide();
+                        hashHistory.push(`creditinformation`)
+                      }
+
+                    });
+
+                  }
+                }).catch((error)=>{
+                  console.log(error)
+                });
+              }else{
+                dialog.hide()
+                Toast.show({
+                  type: "help",
+                  content: "请上传文件～",
+                });
+              }
+
             });
           }
         });
@@ -176,7 +196,9 @@ export default class CreditInformationForm extends BaseComponent {
 
       });
     };
+    jump = (dialogAlert)=>{
 
+    }
     // 取消
     handleCancel() {}
 
@@ -256,9 +278,6 @@ export default class CreditInformationForm extends BaseComponent {
       console.log(info)
       info.fileList.map(item=>{
         if(item.status == 'done'){
-          console.log(item.type)
-          console.log(item.type.indexOf('image') == 0)
-          console.log(111)
           if(item.type.indexOf('image') == 0){
             item.size = item.originFileObj.size;
             item.downloadURL = item.imgURL;
@@ -283,6 +302,8 @@ export default class CreditInformationForm extends BaseComponent {
     render() {
       let { list = {} } = this.props.details || {};
       let { fileList, tableList, dataSource } = this.state;
+      let { differentFiled = {} } = this.state.value;
+      console.log(differentFiled)
 
     // console.log(list)
 
@@ -335,7 +356,7 @@ export default class CreditInformationForm extends BaseComponent {
                         message="请输入"
                       >
 
-                        <Input disabled size="large" placeholder="请输入" className="custom-input"  />
+                        <Input disabled size="large" placeholder="请输入"  className="custom-input"  />
                       </IceFormBinder>
                       <div><IceFormError name="credentialsNo" /></div>
                     </FormItem>
@@ -360,7 +381,7 @@ export default class CreditInformationForm extends BaseComponent {
                             required
                             validator={this.priceRange}
                           >
-                            <Input size="large" htmlType='number' placeholder="请输入" className="custom-input" />
+                            <Input trim  size="large" htmlType='number' placeholder="请输入" className="custom-input" />
 
                           </IceFormBinder>
                           <div><IceFormError name="customCreditScore" /></div>

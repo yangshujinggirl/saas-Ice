@@ -186,7 +186,9 @@ class AddEit extends BaseComponent {
       }
     );
   }
-
+  editorChange(e){
+    console.log(e)
+  }
   render() {
     const { editorState, value, moduleStatus } = this.state;
     const { templateContent, templateName } = this.state.value;
@@ -206,7 +208,7 @@ class AddEit extends BaseComponent {
                         message="合同名称不为空">
                           <Input size="large" placeholder="合同名称"/>
                       </IceFormBinder>
-                      <div><IceFormError name="templateName" /></div>
+                      <IceFormError name="templateName" />
                     </FormItem>
                   </Col>
                   <Col span={20}>
@@ -219,6 +221,7 @@ class AddEit extends BaseComponent {
                           wrapperClassName="contract-template-add-wrapper"
                           editorClassName="contract-template-editor"
                           onEditorStateChange={this.onEditorStateChange}
+                          onChange={this.editorChange.bind(this)}
                           toolbar={{
                             image: {
                               urlEnabled: true,
@@ -231,7 +234,8 @@ class AddEit extends BaseComponent {
                             }
                           }}/>
                       </IceFormBinder>
-                      <div><IceFormError name="templateContent" /></div>
+                      <IceFormError name="templateContent" />
+                      <textarea style={{'width':'100%', 'resize':'vertical'}} disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))}/>
                   </Col>
                   <Col span={24}>
                     <div className="btns-wrap">

@@ -16,7 +16,6 @@
     color: #FC9E25;
     margin-right: 7px;
 }
-
 /**
  * 尺寸 基础尺寸
  * 命名能在语义的前提下简单就尽量简单, 这里可以是 size-2x, space-2x, size-base ...
@@ -52,7 +51,6 @@
 /* put your code here*/
 .pch-container, .container-block {
     border-radius:0 !important;
-    padding-bottom: 50px !important;
 }
 .next-breadcrumb {
     display: block;
@@ -547,7 +545,6 @@ body {
             border: 20px solid transparent;
             padding: 0;
             border-bottom: 0;
-            overflow: auto;
             margin-top: 50px;
         }
 
@@ -688,6 +685,7 @@ body {
         margin: 0px auto;
         max-height: 34px;
     }
+    
 }
 
 .ice-menu {
@@ -700,7 +698,48 @@ body {
         color: #7A756B !important;
         background: #f8f8f8
     }
-
+   .ice-menu-submenu-inline:hover{
+        .ice-menu-collapse-hide{
+            color: #FC9E25;
+        }
+   }
+    
+    .ice-menu-submenu{
+        .ice-menu-submenu-title{
+            .icon-nav-more{
+                display: inline-block;
+                position: absolute;
+                width: 0;
+                height: 0;
+                right: 22px;
+                top: 18px;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                float: right;
+                border-top: 5px solid #ccc;
+                border-bottom: none;
+            }
+        }
+        
+    }
+    .ice-menu-submenu-open{
+        .ice-menu-submenu-title{
+            .icon-nav-more{
+                display: inline-block;
+                position: absolute;
+                width: 0;
+                height: 0;
+                right: 22px;
+                top: 18px;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                float: right;
+                border-bottom: 5px solid #ccc;
+                border-top: none;
+            }
+        }
+        
+    }
 }
 
 .ice-menu .ice-menu-submenu-inline > .ice-menu-submenu-title::after {
@@ -1092,4 +1131,69 @@ body {
 .pch-pagination {
     text-align: left;
     padding-top: 26px;
+}
+
+
+/* 加载中的 */
+.pch-load-container {
+    height: 1px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.pch-load-jump .loader,
+.pch-load-jump .loader:before,
+.pch-load-jump .loader:after {
+  background: #FC9E25;
+  color: #FC9E25;
+  -webkit-animation: pch-load-jump 1s infinite ease-in-out;
+  animation: pch-load-jump 1s infinite ease-in-out;
+  width: 0.8em;
+  height: 4em;
+}
+.pch-load-jump .loader:before,
+.pch-load-jump .loader:after {
+  position: absolute;
+  top: 0;
+  content: '';
+}
+.pch-load-jump .loader:before {
+  left: -1.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.pch-load-jump .loader {
+  text-indent: -9999em;
+  margin: 0 auto !important;
+  position: relative;
+  font-size: 11px;
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.pch-load-jump .loader:after {
+  left: 1.5em;
+}
+@-webkit-keyframes pch-load-jump {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 ;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em ;
+    height: 5em;
+  }
+}
+@keyframes pch-load-jump {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0 ;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em ;
+    height: 5em;
+  }
 }

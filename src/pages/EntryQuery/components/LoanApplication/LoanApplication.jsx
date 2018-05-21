@@ -46,7 +46,11 @@ export default class LoanApplication extends Component {
     let {actions} = this.props;
 
     this.getProductNum();
-    actions.getDetail(this.props.params.id);
+    actions.getDetail(
+      {
+        id:this.props.params.id,
+        step:1
+      });
   };
   //获取产品列表
   getProductNum() {
@@ -178,7 +182,7 @@ export default class LoanApplication extends Component {
                   </ul>
                 </div>
               </Col>
-              <Col span="21" className='modify-form'>
+              <Col span="21" className='modify-form pch-form'>
                 <IceFormBinderWrapper
                   value={this.state.value}
                   onChange={this.formChange}
