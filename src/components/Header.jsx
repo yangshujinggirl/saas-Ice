@@ -27,18 +27,16 @@ export default class Header extends PureComponent {
     })
   }
   /**
-   * 未登陆跳转到登陆页
-   * 1. 匹配包含域名pingchang666才跳转，否则不处理
-   * 2. 替换当前系统关键字成login，例如贷前daikuan->login
+   * 退出登录跳转到登录页
+   * 1. 替换当前系统关键字成login，例如贷前daikuan->login
+   * 2. 跳转到登录页
    * @return {[type]} [description]
    */
   _redirectToLogin() {
     let _host = location.host;
-    if(_host.indexOf('pingchang666') == -1){
-      hashHistory.push('/account/' + encodeURIComponent(location.href));
-      return;
-    }
 
+    //替换当前系统的域名成登录域名，
+    //eg:daikuan-staging.pingchang666.com=>login-staging.pingchang666.com
     _host = _host.replace('daikuan', 'login');
     location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
     // hashHistory.push('/account');

@@ -242,21 +242,34 @@ class LoanApplicationOne extends Component {
           }
         }
       }
+
       console.log(this.queryCache);
       // this.queryCache.status = 'save'
-      Req.addLoanApi(this.queryCache)
-        .then((res) => {
-          console.log(res);
-          if (res && res.data && res.code == 200) {
-            // hashHistory.push('/entryQuery/loanApplication/'+ res.data.id);
+      if(this.props.params.id){
+        this.queryCache['id'] = this.props.params.id;
+        Req.saveFrom(this.queryCache).then((res)=>{
+          if (res  && res.code == 200) {
             hashHistory.push({
-              pathname: '/entryQuery/loanApplication/' + res.data.id,
-            });
+                  pathname: '/entryQuery/loanApplication/' + this.props.params.id,
+                });
           }
-        })
-        .catch((errors) => {
+        }).catch((error)=>{
           console.log(errors);
-        });
+        })
+      }else{
+        Req.addLoanApi(this.queryCache)
+          .then((res) => {
+            console.log(res);
+            if (res  && res.code == 200) {
+              hashHistory.push({
+                pathname: '/entryQuery/loanApplication/' + res.data.id,
+              });
+            }
+          })
+          .catch((errors) => {
+            console.log(errors);
+          });
+      }
     });
   };
 

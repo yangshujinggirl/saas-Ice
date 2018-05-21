@@ -102,7 +102,7 @@ class BaseReq {
         if (res.headers.token) {
           Cookie.set('PCTOKEN', res.headers.token);
         }
-        
+
         //return res.data;
         msg = res.data.msg || msg;
         if(res.data.data instanceof Array){
@@ -114,7 +114,7 @@ class BaseReq {
           //   _data: res.data.data
           // }
           // 其它可能返回的值为：null、''、boolean
-          if(res.data.data == null || res.data.data == ''){
+          if(res.data.data == null || res.data.data == '' || !res.data.data){
             data = {};
           }else{
             data = res.data.data;

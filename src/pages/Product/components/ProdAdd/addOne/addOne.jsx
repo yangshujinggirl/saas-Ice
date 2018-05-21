@@ -142,7 +142,7 @@ export default class CreateActivityForm extends Component {
 					interestRatesRangeMax: value.interestRatesRangeMax,
 					interestRateBaseDate: value.interestRateBaseDate,
 					repaymentAccountChange: value.repaymentAccountChange,
-					repaymentPeriodFrequency: value.repaymentPeriodFrequencySubmit,
+					repaymentPeriodFrequency: value.repaymentPeriodFrequency,
 					repaymentDateChange: value.repaymentDateChange,
 					gracePeriodChange: value.gracePeriodChange,
 					repaymentMethodChange: value.repaymentMethodChange,
@@ -166,6 +166,8 @@ export default class CreateActivityForm extends Component {
 	}
 	submit = () => {
 		this.formRef.validateAll((error, value) => {
+			console.log(error,value);
+			
 			if (error) {
 				// 处理表单报错
 				return;
@@ -176,7 +178,6 @@ export default class CreateActivityForm extends Component {
 			let boolean = true;
 			// 执行年利率范围 和 最小、最大执行年利率比较
 			value.ratesSetting && value.ratesSetting.map((item) => {
-				console.log(item);
 				if (item.interestRatesRangeMax) {
 					if (Number(value.interestRatesRangeMax) < item.interestRatesRangeMax) {
 						// item.interestRatesRangeMax = value.interestRatesRangeMax

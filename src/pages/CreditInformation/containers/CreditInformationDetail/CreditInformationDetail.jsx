@@ -142,8 +142,9 @@ export default class CreditInformationDetail extends Component {
           "choose"     : data.choose,
           "approveMsg" : data.approveMsg,
           // "loanDetail" : this.queryCache,
-          "proInstId"  : this.props.params.proInstId,
-          "taskId"     : this.props.params.taskId,
+          businessId : this.props.routeParams.id,
+          // "proInstId"  : this.props.params.proInstId,
+          // "taskId"     : this.props.params.taskId,
         }
         console.log(dataJson)
         Req.submitReview(dataJson).then((res)=>{

@@ -27,6 +27,7 @@
     "draftjs-to-html": "^0.8.3",
     "enquire-js": "^0.1.2",
     "foundation-symbol": "^0.1.0",
+    "html-to-draftjs": "^1.4.0",
     "immutability-helper": "^2.6.6",
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.1",

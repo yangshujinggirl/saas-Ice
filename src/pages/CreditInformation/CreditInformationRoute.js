@@ -5,11 +5,9 @@ export default {
   path: "/creditinformation",
   name :'审查审批',
   childRoutes: [{
-    path: 'add/:id',
-    component: CreditInformation.CreditInformationForm
-  },{
-    path: 'creditentry/:id',
-    component: CreditInformation.CreditInformationForm
+    path: 'add/:id/:taskId/:proInstId',
+    component: CreditInformation.CreditInformationForm,
+    name: '征信录入'
   },{
     path: 'detail/:id/:taskId/:proInstId',
     component: CreditInformation.CreditInformationDetail,

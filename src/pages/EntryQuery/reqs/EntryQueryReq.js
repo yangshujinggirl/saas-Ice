@@ -82,6 +82,15 @@ class EntryQueryReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  addLoanApi(params) {
+    let options = {
+      url: this._config.LOAN_HOST + '/loans',
+      method: 'POST',
+      contentType: 'application/json',
+      data:params
+    }
+    return super.fetchData(options);
+  }
   //轨迹详情
   getTrackDetail(data) {
     console.log(data)
