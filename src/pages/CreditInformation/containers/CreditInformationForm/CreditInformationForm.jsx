@@ -176,35 +176,35 @@ export default class CreditInformationForm extends BaseComponent {
 
       Req.postDiff(value)
         .then((res) => {
-          if (res && res.data &&res.code == 200) {
-            if(res.data.diffArrStr){
-                //处理不同字段
-                this.checkDiff(res.data.diffArrStr);
+          if (res && res.data && res.code == 200) {
+            if (res.data.diffArrStr) {
+              //处理不同字段
+              this.checkDiff(res.data.diffArrStr);
 
-                //征信两次不一致弹框
-                const dialogConfirm = Dialog.confirm({
-                  needWrapper: false,
-                  content: '两次征信数据不一致，是否确认提交数据？',
-                  title: '提示',
-                  onOk: () => {
-                    dialogConfirm.hide();
-                    Req.saveForm(value)
-                      .then((res) => {
-                        if (res && res.code == 200) {
-                          this.alert();
-                        } else {
-                          Toast.show({
-                            type: 'error',
-                            content: res.msg,
-                          });
-                        }
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  },
-                });
-            }else {
+              //征信两次不一致弹框
+              const dialogConfirm = Dialog.confirm({
+                needWrapper: false,
+                content: '两次征信数据不一致，是否确认提交数据？',
+                title: '提示',
+                onOk: () => {
+                  dialogConfirm.hide();
+                  Req.saveForm(value)
+                    .then((res) => {
+                      if (res && res.code == 200) {
+                        this.alert();
+                      } else {
+                        Toast.show({
+                          type: 'error',
+                          content: res.msg,
+                        });
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                },
+              });
+            } else {
               const dialog = Dialog.confirm({
                 content: '是否确认提交数据？',
                 onOk: () => {
@@ -214,8 +214,8 @@ export default class CreditInformationForm extends BaseComponent {
                         .then((res) => {
                           dialog.hide();
                           if (res && res.code == 200) {
-                             this.alert();
-                          }else {
+                            this.alert();
+                          } else {
                             Toast.show({
                               type: 'error',
                               content: res.msg,
@@ -236,7 +236,7 @@ export default class CreditInformationForm extends BaseComponent {
                 },
               });
             }
-          }else {
+          } else {
             Toast.show({
               type: 'error',
               content: res.msg,
@@ -246,8 +246,6 @@ export default class CreditInformationForm extends BaseComponent {
         .catch((error) => {
 
         });
-
-
 
 
     });
@@ -379,16 +377,44 @@ export default class CreditInformationForm extends BaseComponent {
 
   checkFiled = (str, key) => {
     if (str == 'input') {
+      console.log(22222);
       if (this.state.difflist.length > 0) {
-
-        this.state.difflist.forEach(item => {
-          if (item == key) {
+        console.log(22222222);
+        for (var i = 0; i <= this.state.difflist.length; i++) {
+          if (this.state.difflist[i] == key) {
             return (
               <Input trim state='error' size="large" htmlType='number' placeholder="请输入" className="custom-input"/>);
           }
-        });
-        return (<Input trim size="large" htmlType='number' placeholder="请输入" className="custom-input"/>);
+        }
       }
+      return (<Input trim size="large" htmlType='number' placeholder="请输入" className="custom-input"/>);
+
+
+    }
+    if (str == 'select') {
+      console.log(444444);
+      if (this.state.difflist.length > 0) {
+        for (var i = 0; i <= this.state.difflist.length; i++) {
+          if (this.state.difflist[i] == key) {
+            if (key == 'loanAccountStatus') {
+              return (
+                <Select state='error' size="large" placeholder="请选择" className="custom-input"
+                        dataSource={this.state.dataList}/>);
+            }
+            return (
+              <Select state='error' size="large" placeholder="请选择" className="custom-input"
+                      dataSource={this.state.opption}/>);
+          }
+        }
+      }
+      if (key == 'loanAccountStatus') {
+        return (
+          <Select size="large" placeholder="请选择" className="custom-input"
+                  dataSource={this.state.dataList}/>);
+      }
+      return (<Select size="large" placeholder="请选择" className="custom-input"
+                      dataSource={this.state.opption}/>);
+
     }
   };
 
@@ -441,6 +467,7 @@ export default class CreditInformationForm extends BaseComponent {
                       name="name"
                       message="请输入"
                     >
+
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="name"/></div>
@@ -480,9 +507,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.priceRange}
                         >
-
-                          <Input trim size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
-
+                          {this.checkFiled('input', 'customCreditScore')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
 
                         </IceFormBinder>
                         <div><IceFormError name="customCreditScore"/></div>
@@ -505,7 +531,8 @@ export default class CreditInformationForm extends BaseComponent {
                                    required
                                    validator={this.isInteger}
                                  >
-                                   <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                                   {this.checkFiled('input', 'threeMonApproveCount')}
+                                   {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
 
                                  </IceFormBinder>
                                  <div><IceFormError name="threeMonApproveCount"/></div>
@@ -524,9 +551,8 @@ export default class CreditInformationForm extends BaseComponent {
                       message="请选择"
                       required
                     >
-                      <Select size="large" placeholder="请选择" className="custom-input"
-                              dataSource={this.state.opption}
-                      />
+                      {this.checkFiled('select', 'creditIsBlank')}
+
                     </IceFormBinder>
                     <div><IceFormError name="creditIsBlank"/></div>
                   </FormItem>
@@ -543,7 +569,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.priceRange}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditAmountPastDue')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
 
                         </IceFormBinder>
                         <div><IceFormError name="creditAmountPastDue"/></div>
@@ -567,7 +594,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.priceRange}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'loanAmountExpDue')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="loanAmountExpDue"/></div>
 
@@ -590,7 +618,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.priceRange}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'pledgeOfAssets')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="pledgeOfAssets"/></div>
                       </div>
@@ -611,8 +640,9 @@ export default class CreditInformationForm extends BaseComponent {
                           type="string"
                           message="请输入"
                         >
-                          <Select size="large" placeholder="请选择" className="custom-input"
-                                  dataSource={this.state.dataList}/>
+                          {this.checkFiled('select', 'loanAccountStatus')}
+                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                          {/*dataSource={this.state.dataList}/>*/}
                         </IceFormBinder>
 
                       </div>
@@ -635,7 +665,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.priceRange}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditBadDebtsMaxAmount')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditBadDebtsMaxAmount"/></div>
                       </div>
@@ -658,7 +689,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.priceRange}
                         >
-                          <Input size="large" htmlType='number' placeholder="请选择" className="custom-input"/>
+                          {this.checkFiled('input', 'creditFrozenMaxAmount')}
+                          {/*<Input size="large" htmlType='number' placeholder="请选择" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditFrozenMaxAmount"/></div>
                       </div>
@@ -680,7 +712,8 @@ export default class CreditInformationForm extends BaseComponent {
                           type="string"
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'twoMonApproveCount')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="twoMonApproveCount"/></div>
                       </div>
@@ -701,7 +734,8 @@ export default class CreditInformationForm extends BaseComponent {
                           type="string"
                           validator={this.priceRange}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'guaranteedCompensatory')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="guaranteedCompensatory"/></div>
                       </div>
@@ -724,7 +758,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditTwoConsecutiveYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditTwoConsecutiveYear"/></div>
                       </div>
@@ -745,7 +780,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditOneConsecutiveYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditOneConsecutiveYear"/></div>
                       </div>
@@ -767,7 +803,8 @@ export default class CreditInformationForm extends BaseComponent {
                           validator={this.isInteger}
 
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditHalfConsecutiveYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditHalfConsecutiveYear"/></div>
                       </div>
@@ -788,7 +825,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditOneYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditOneYear"/></div>
                       </div>
@@ -810,7 +848,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'loanMaxOverdue')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="loanMaxOverdue"/></div>
                       </div>
@@ -833,7 +872,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'creditMaxOverdue')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="creditMaxOverdue"/></div>
                       </div>
@@ -856,8 +896,9 @@ export default class CreditInformationForm extends BaseComponent {
                           type="string"
                           message="请输入"
                         >
-                          <Select size="large" placeholder="请选择" className="custom-input"
-                                  dataSource={this.state.opption}/>
+                          {this.checkFiled('select', 'twoIsLoanRecord')}
+                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                                  {/*dataSource={this.state.opption}/>*/}
                         </IceFormBinder>
                       </div>
 

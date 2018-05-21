@@ -35,7 +35,8 @@ export default class ReviewApproveDetail extends Component {
       index : 0,
       value: {},
       dataList:{},
-      result :{}
+      result :{},
+      _list:[]
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -45,6 +46,7 @@ export default class ReviewApproveDetail extends Component {
     this.fetchData();
 
   }
+
 
   //标题点击
   titleClick = (index,name)=>{
@@ -105,7 +107,7 @@ export default class ReviewApproveDetail extends Component {
   //请求数据
   fetchData = () => {
     let {actions} = this.props;
-    console.log(this.props)
+    // console.log(this.props)
 
     actions.getTrackDetail({
       businessId : this.props.params.id,
@@ -136,13 +138,13 @@ export default class ReviewApproveDetail extends Component {
         console.log("Errors in form!!!");
         return;
       }
-      console.log("Submit!!!");
+      // console.log("Submit!!!");
       for(var key in values){
         if(values[key] != undefined){
           if(values[key] != 'undefined'){
             if(this.isCheckBox(key)){
-              console.log("多选")
-              console.log(values[key])
+              // console.log("多选")
+              // console.log(values[key])
               // alert("123")
               if(typeof (values[key]) == 'object'){
                 values[key] = values[key].join(',');
@@ -152,14 +154,23 @@ export default class ReviewApproveDetail extends Component {
           }
         }
       }
-      console.log(this.queryCache)
+      console.log(this.props.detail.list)
+      // var _josn ={}
+      // this.props.detail.list.map(item=>{
+      //   item.fields.map(el=>{
+      //     _josn[el.name] = el.label
+      //   })
+      // })
+
       var dataJson = {
         "choose"     : data.choose,
         "approveMsg" : data.approveMsg,
         "changeFields" : this.queryCache,
-        "proInstId"  : this.props.params.proInstId,
-        "taskId"     : this.props.params.taskId,
+        'businessId' : this.props.params.id,
+        // "proInstId"  : this.props.params.proInstId,
+        // "taskId"     : this.props.params.taskId,
       }
+      console.log(dataJson)
       Req.submitReview(dataJson).then((res)=>{
         if(res && res.code == 200){
           hashHistory.push(`reviewApprove`)
