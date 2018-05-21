@@ -120,7 +120,7 @@ export default class FormRender extends Component {
   }
   //区块分类渲染
   FromRender = (el,outIndex,inIndex)=>{
-    console.log(el)
+    // console.log(el)
     this.state.filedList.map(item=>{
       if (el.name == item.value){
         el.isReadonly = true;
