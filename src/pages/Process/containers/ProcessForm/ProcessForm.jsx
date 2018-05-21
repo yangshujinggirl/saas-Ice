@@ -57,8 +57,9 @@ export default class ProcessForm extends Component {
     /**
      * 处理流程数据
      * 1. 该方法仅在初始化且获取完数据之后执行一次
-     * 1. 新增时默认选择第一个进件模块
-     * 2. 编辑时获取详情数据关联模块数据并计算模块的使用数量
+     * 2. 新增时默认选择第一个进件模块
+     * 3. 编辑时获取详情数据关联模块数据并计算模块的使用数量
+     * 4. 初始化新增时的默认流程名称和列表页传递的数据
      * @return {[type]} [description]
      */
     assignTaskItems(params, customMenuList, formData) {

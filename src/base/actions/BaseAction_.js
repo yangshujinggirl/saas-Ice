@@ -3,7 +3,7 @@
  * action的基类，主要处理curd的一些操作
  * 
  */
-class BaseActions {
+export default class BaseAction {
 
     /**
      * 构造函数
@@ -12,34 +12,58 @@ class BaseActions {
      * @param  {[type]} constant 常量
      */
     constructor(req, dispatcher, constant) {
-        this._req = req || {}; //接口
-        this._dispatcher = dispatcher; //flux分发器
-        this._constant = constant; //flux常量
+        this.Req = req || {}; //接口
+        this.T = constant; //constant常量
+        
         this.lastCondition = {}; //上次的搜索条件
         this.tick;
         this.tickNum = 0;
         this._hasFetch = false; //是否以抓取数据
     }
 
+
     /**
-     * 重置数据
+     * 请求开始的通知
      */
-    resetData() {
-        this.dispatch({
-            actionType: this._constant.RESET_DATA,
-        });
+    fetchStart(data = {}) {
+      return {
+        type: this.T.FETCH_START,
+        ...data,
+        time: Date.now()
+      }
+    }
+
+
+    /**
+     * 请求成功的通知
+     * @param data 成功后的数据
+     */
+    fetchSuccess(data) {
+      return {
+        type: this.T.FETCH_SUCCESS,
+        ...data,
+        time: Date.now()
+      }
     }
 
     /**
-     * 点击用户头像
-     * @return {[type]} [description]
+     * 请求失败后的通知
+     * @param error 异常信息
      */
-    handleAvatarClick() {
-        this.dispatch({
-            actionType: this._constant.TOGGLE_MENU_FUNC_DIALOG
-        });
+    fetchFailed(error) {
+      return {
+        type: this.T.FETCH_FAILED,
+        error,
+        time: Date.now()
+      }
+    }
+
+    change(data) {
+      return {
+        type: this.T.CHANGE,
+        ...data,
+        time: Date.now()
+      }
     }
 
 }
-
-export default BaseActions;

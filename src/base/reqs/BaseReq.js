@@ -102,22 +102,18 @@ class BaseReq {
         if (res.headers.token) {
           Cookie.set('PCTOKEN', res.headers.token);
         }
-        // 请求成功响应格式
-        // res.data = {
-        //   code: 200,
-        //   data: {},
-        //   msg: ''
-        // }
+        
         //return res.data;
         msg = res.data.msg || msg;
         if(res.data.data instanceof Array){
-          data.list = res.data.data;
+          data = res.data.data;
         }else if(res.data.data && 'object' == typeof res.data.data){
           data = {...res.data.data}
         }else{
-          data = {
-            _data: res.data.data
-          }
+          // data = {
+          //   _data: res.data.data
+          // }
+          data = res.data.data || {}
         }
       } else {
         // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
@@ -130,6 +126,12 @@ class BaseReq {
       }
     }
 
+    // 请求成功响应格式
+    // res.data = {
+    //   code: 200,
+    //   data: {},
+    //   msg: ''
+    // }
     return {
       code,
       msg,
