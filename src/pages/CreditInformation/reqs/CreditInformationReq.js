@@ -91,6 +91,16 @@ class CreditInformationReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //查询是否有不同字段
+  postDiff(data){
+    let options = {
+      url: this._config.WF_HOST + `/pbc/credit/diff`,
+      method: 'POST',
+      data: data
+    }
+    return super.fetchData(options);
+  }
+
   //点击点击签收
   signIn(data) {
     let options = {
