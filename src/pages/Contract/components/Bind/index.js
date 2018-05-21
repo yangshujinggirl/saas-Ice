@@ -181,6 +181,7 @@ class Bind extends BaseApp {
       let templateExtend = {
         keyChineseName: value,
         keyEnglishName: realName,
+        value: value,
         contractTemplateId: this.props.params.id
       }
 
