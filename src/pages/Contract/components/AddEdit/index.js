@@ -6,6 +6,7 @@ import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import Cookie from '../../../../base/utils/Cookie';
 
 import {
@@ -76,7 +77,7 @@ class AddEit extends BaseComponent {
       if(templateContent=='') {
         return
       }
-      const blocksFromHTML = convertFromHTML(templateContent);
+      const blocksFromHTML = htmlToDraft(templateContent);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
