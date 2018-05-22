@@ -117,37 +117,47 @@ export default class LoanDetails extends Component {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
     return (
-      <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
-            <Row  className='modify-page'>
-                <Col span="3">
-                  <div className='title'>
-                    <ul>
-                      {this.renderTitle(details.list)}
-                    </ul>
-                  </div>
-                </Col>
-                <Col span="21" className='modify-form'>
-                  <div className="rcontent-edito">
-                    <div className='info' id='流程轨迹'>
-                      <h4 >流程轨迹</h4>
-                      <EntryTrack {...this.props} dataSource={details.list}></EntryTrack>
-                    </div>
+      <IceContainer className="loan-details">
+        <legend className="pch-legend">
+          <span className="pch-legend-legline"></span>车贷申请
+        </legend>
+        <div className='pch-form'>
+          <Row>
+            <Col className='review-form'>
+              <div className='review-page'>
+                <div className='title'>
+                  <ul>
+                    {this.renderTitle(details.list)}
+                  </ul>
+                </div>
+              </div>
+              <div className="rcontent-edito modify-form">
+                <div className='review-detail' id='流程轨迹'>
+                  <span className='name'>流程轨迹</span>
+                  <EntryTrack {...this.props} dataSource={details.list}></EntryTrack>
+                </div>
 
-                    <Detail dataSource={details.list} ></Detail>
-                    <div className='info' id='材料提交'>
-                      <h4>材料提交</h4>
-                      <MaterialSubmit {...this.props}></MaterialSubmit>
-                    </div>
-                    <div className='botton-box'>
-                      <Button className='botton' onClick={this.back}>返回</Button>
-                    </div>
-                  </div>
+                <Detail dataSource={details.list} ></Detail>
+
+                <div className='review-detail' id='材料提交'>
+                  <span className='name'>材料提交</span>
+                  <MaterialSubmit {...this.props}></MaterialSubmit>
+                </div>
+                <div className='botton-box pch-form-buttons'>
+                  <Button size="large" type="secondary" onClick={this.back}>返回</Button>
+                </div>
+              </div>
 
 
-                </Col>
-            </Row>
+            </Col>
+          </Row>
 
+        </div>
       </IceContainer>
+
+
+
+
     );
   }
 }
@@ -155,5 +165,8 @@ export default class LoanDetails extends Component {
 const styles = {
   bg:{
     backgroundColor:'#fffffB'
-  }
+  },
+  Bottom: {
+    marginBottom: '10px',
+  },
 };
