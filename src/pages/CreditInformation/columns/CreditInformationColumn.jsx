@@ -12,7 +12,7 @@ class CreditInformationColumn extends BaseColumn {
         this._columns = [{
           title: '贷款编号',
           dataIndex: 'code',
-          width: 160
+          width: 210
         }, {
           title: '贷款状态',
           dataIndex: 'loanStatus',

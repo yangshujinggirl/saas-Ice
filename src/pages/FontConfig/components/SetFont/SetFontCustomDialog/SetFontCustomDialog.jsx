@@ -14,12 +14,12 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
         // 弹框的底部按钮
         this.footerDom = (
             <div key='1'>
-                <Button type="secondary" style={{
+                <Button type="secondary" size="large" style={{
                                                     marginRight: '10px'
                                                 }} onClick={this.handleSubmitCode}>
                     提交
                 </Button>
-                <Button type="normal" onClick={this.handleClose.bind(this)}>
+                <Button type="normal" size="large" onClick={this.handleClose.bind(this)}>
                     取消
                 </Button>
             </div>
@@ -38,20 +38,20 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     handleSubmitCode = () => {
         let reqData = this.props.data;
 
-        if (!reqData.label) {
-            Feedback.toast.show({
-                type: 'error',
-                content: '字段名称不能为空'
-            })
-            return
-        }
-        if (!reqData.type) {
-            Feedback.toast.show({
-                type: 'error',
-                content: '字段类型不能为空'
-            })
-            return
-        }
+        // if (!reqData.label) {
+        //     Feedback.toast.show({
+        //         type: 'error',
+        //         content: '字段名称不能为空'
+        //     })
+        //     return
+        // }
+        // if (!reqData.type) {
+        //     Feedback.toast.show({
+        //         type: 'error',
+        //         content: '字段类型不能为空'
+        //     })
+        //     return
+        // }
         // 删除下拉框的单选框复选框空置值
         reqData.options && reqData.options.map((item, index) => {
             if (item.label == '') {

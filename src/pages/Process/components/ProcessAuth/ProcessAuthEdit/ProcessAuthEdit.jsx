@@ -94,7 +94,8 @@ export default class ProcessAuthEdit extends BaseApp {
       content: '保存成功！',
       afterClose: () => {
            this.props.onSave(dataArry)
-      }
+      },
+      duration: 500
     });
   }
   /**

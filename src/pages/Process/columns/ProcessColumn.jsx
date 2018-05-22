@@ -10,6 +10,10 @@ class ProcessColumn extends BaseColumn {
         super();
 
         this._columns = [{
+            title: 'ID',
+            dataIndex: 'id',
+            width: 80
+        }, {
             title: '业务类型',
             dataIndex: 'businessTypeName',
             width: 140

@@ -3,3 +3,12 @@
 .blank-layout {
 
 }
+
+.next-checkbox.checked .next-checkbox-inner {
+    border-color: #FC9E25 !important;
+    background-color: #FFFFFF;
+}
+
+.next-checkbox .next-checkbox-inner > .next-icon {
+    color: #FC9E25;
+}

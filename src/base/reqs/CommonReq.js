@@ -47,6 +47,30 @@ class CommonReq extends BaseReq{
 		}
 		return super.fetchData(options);
 	}
+
+	/**
+	 * 获取用户的所有身份
+	 * @return {[type]} [description]
+	 */
+	getUserIdentityList(){
+		let options = {
+			url: `/crm/identity/identityList`,
+			method: 'GET'
+		}
+		return super.fetchData(options);
+	}
+
+	/**
+	 * 用户切换身份
+	 * @return {[type]} [description]
+	 */
+	changeUserIdentity(identityId){
+		let options = {
+			url: `/crm/identity/changeIdentity/${identityId}`,
+			method: 'GET'
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new CommonReq();

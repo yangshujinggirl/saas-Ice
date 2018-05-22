@@ -79,7 +79,7 @@ export default class MaterialSubmit extends Component {
   }
   Img = (url)=>{
     if(url){
-      return (<img  width={"10%"} src={url}/>)
+      return (<a src={url}  target='_blank' ><img  width={"10%"} src={url}/></a>)
     }
   }
   render() {

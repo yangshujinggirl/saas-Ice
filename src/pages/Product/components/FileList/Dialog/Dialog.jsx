@@ -357,7 +357,7 @@ export default class DiaLog extends Component {
               />
               <BtnAddRow text="添加一行" onClick={this.addNewRow.bind(this)} style={{marginTop: 14}} />
               <div className="filelist-btns">
-                <Button type="secondary" onClick={this.onOk.bind(this,data.id)}>提交</Button>
+                <Button size="large" type="secondary" onClick={this.onOk.bind(this,data.id)}>提交</Button>
               </div>
             </Form>
           </div>

@@ -20,6 +20,8 @@ import ProcessAuthEdit from '../../components/ProcessAuth/ProcessAuthEdit';
 import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import SetFont_ from '../../../FontConfig/components/SetFont/SetFont_';
 import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
+import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant'
+import SpDataSource from '../../utils/SpDataSource'
 
 export default class ProcessForm extends Component {
     constructor(props) {
@@ -91,9 +93,18 @@ export default class ProcessForm extends Component {
 
             // 新增时使用传递的数据设置
             // 默认名称为"新流程-MMddhhmmss"
-            const locationInfo = this.props.location.state;
-            if (locationInfo && !locationInfo.processName) {
+            // 若不从列表页过来则初始默认的值
+            const locationInfo = this.props.location.state || {};
+            if (!locationInfo.processName) {
                 locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
+            }
+            if(!locationInfo.businessTypeId){
+                locationInfo.businessTypeId = COMPANY_TYPE[0].value;
+                locationInfo.businessTypeName = COMPANY_TYPE[0].label;
+            }
+            if(!locationInfo.tenantId){
+                locationInfo.tenantId = SpDataSource.defaultValue;
+                locationInfo.tenantName = SpDataSource.defaultLabel;
             }
             formData = Object.assign(formData, locationInfo);
 
@@ -160,6 +171,7 @@ export default class ProcessForm extends Component {
             }
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 0;
+            values.processType = 'LOAN';
             if(this.props.params.id){
                 values.id = this.props.params.id;
             }
@@ -237,6 +249,9 @@ export default class ProcessForm extends Component {
                 // 没有id的获取页面字段（新增）
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
+                    actions.getAllPageFields({
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
+                    });
                     this.setState({
                         pageId: item.pageId,
                         order: idx
@@ -347,17 +362,8 @@ export default class ProcessForm extends Component {
         let {customMenuList, formData = {}, params, tasksFields = {}, pageFields, allPageFields, orgsData={}} = this.props;
         let {privilegeItems} = this.state;
 
-        // if (!params.id) {
-        //     // 新增时使用传递的数据设置
-        //     // 默认名称为"新流程-MMddhhmmss"
-        //     if (!formData.processName && locationInfo && !locationInfo.processName) {
-        //         locationInfo.processName = '新流程-' + Tools.formatDate(new Date().getTime(), 'MMddhhmmss');
-        //     }
-        //     formData = Object.assign(formData, locationInfo);
-        // }
-
         return (
-            <div className="">
+            <div className="all-in-one-for-you">
                 <IceContainer className="pch-container pch-process" style={{
                                                                                display: this.state.view == PROCESS_VIEW.EDITFORM ? '' : 'none'
                                                                            }}>
@@ -374,13 +380,13 @@ export default class ProcessForm extends Component {
                                     <div className="container-right">
                                         <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule.bind(this)} changeView={this.changeView.bind(this)} />
                                         <div className="next-btn-box pch-form-buttons">
-                                            <Button type="normal" size="large" onClick={this.handleCancel}>
+                                            <Button type="normal" size="large" onClick={this.handleCancel.bind(this)}>
                                                 取消
                                             </Button>
-                                            <Button type="primary" size="large" onClick={this.handleSave}>
+                                            <Button type="primary" size="large" onClick={this.handleSave} disabled={this.props.isSubmiting}>
                                                 保存
                                             </Button>
-                                            <Button type="secondary" size="large" onClick={this.handleSubmit}>
+                                            <Button type="secondary" size="large" onClick={this.handleSubmit} disabled={this.props.isSubmiting}>
                                                 提交
                                             </Button>
                                         </div>
