@@ -63,7 +63,14 @@ class FormModule extends BaseApp {
       let emList = [...div.querySelectorAll('.blank-em')];
       emList.forEach(p=>{
         let line = document.createTextNode("******");
-        keyVales.push(p.innerHTML.match(/_BLANK_(productname\d+c\d+)_(.+)_BLANK_/));
+        let m = p.innerHTML.match(/_BLANK_(.+)_BLANK_/);
+        let kv;
+        if(m[1].indexOf('productname') == 0){
+          kv = m[1].match(/(productname\d+c\d+)_(.+)/);
+        }else{
+          kv = m[1].match(/(.+)_(null)/);
+        }
+         keyVales.push(kv)
         p.parentNode.replaceChild(line, p);
       })
       html = div.innerHTML;
