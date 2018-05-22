@@ -77,6 +77,7 @@ class FormModule extends BaseApp {
       //记录已绑定的产品字段的个数
       kindex = keyVales.length
     }
+    
     html = html.replace(/_{3,}|\*{6}/g, (s, pos)=>{
       let i = 0, val = '';
       if(s.indexOf("_") > -1){
