@@ -20,6 +20,12 @@ class Filter extends BaseCondition {
       value:{},
       typeDataSource:[]
     }
+    this.colspans = {
+      xxs: 24,
+      xs: 12,
+      l: 6,
+      xl: 6
+    }
   }
   componentWillMount() {
     this.getTypeSource()
@@ -28,9 +34,9 @@ class Filter extends BaseCondition {
   getTypeSource() {
     Req.getSelectSourceApi()
     .then((res) => {
-      const { productType } = res.data;
+      const { productType = [] } = res.data;
       this.setState({
-        typeDataSource:productType
+        typeDataSource: productType
       })
     })
   }
@@ -77,7 +83,7 @@ class Filter extends BaseCondition {
                     </FormItem>
                   </Col>
                   <Col {...this.colspans}>
-                    <FormItem className="pch-condition-operate">
+                    <FormItem className="pch-condition-operate" style={{"textAlign": "center"}}>
                       <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                           查询
                       </Button>

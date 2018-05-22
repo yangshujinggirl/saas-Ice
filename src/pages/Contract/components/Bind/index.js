@@ -74,43 +74,35 @@ class Bind extends BaseApp {
   changePage =(currentPage)=> {
     this.props.actions.searchProduct({page:currentPage});
   }
-  tip(res){
-    if(!res || typeof res.data != 'object' || !res.data){
-      Feedback.toast.error(res.msg || '数据加载异常，请稍后再试')
-      return false;
-    }
-    return true;
-  }
   //查询已绑定产品列表
   seachBindProductList(id) {
     Req.seachBindTemplateApi(id)
     .then((res) => {
-      if(!this.tip(res))return;
+      let {templateProductList = [], content = ""} = res.data || {};
       this.setState({
-        bindProductData:res.data.templateProductList || [],
-        dataSourceRight:res.data.templateProductList || [],
-        contractTemplateHTML: res.data.content
+        bindProductData: templateProductList,
+        dataSourceRight: templateProductList,
+        contractTemplateHTML: content
       },function(){
-        //console.log(this.state.contractTemplateHTML)
-        //this.refs.FormModule.forceUpdate();
         if(this.refs.FormModule.refs.ProductNameForm){}
       })
 
-      let data = res.data.templateProductList.map(p=>p.id)
-      this.getProductName(data);
+      let data = templateProductList.map(p=>p.id)
+      if(data.length > 0)this.getProductName(data);
     })
   }
   getProductName(data){
     if(!data instanceof Array)return;
     //查询绑定的产品列表字段
     Req.getProductNameAPi(data).then(res=>{
-      if(!this.tip(res))return;
-      let data = res.data.map(p=>({
+      let names = res.data || [];
+      names = res.data.map(p=>({
         name: p.name,
         label: p.label
       }))
+      console.log(names)
       this.setState({
-        productNames: res.data
+        productNames: names
       })
     }).catch(err=>err)
   }
@@ -151,9 +143,9 @@ class Bind extends BaseApp {
    let selectedRow=[];
    selectedRow = records.map((ele) => (
      {
-       productCategory:ele.productType,
-       productName:ele.name,
-       id:ele.id
+       productCategory: ele.productType,
+       productName: ele.name,
+       id: ele.id
      }
    ));
    this.setState({
@@ -164,32 +156,29 @@ class Bind extends BaseApp {
   bindProductName(){
     let dom = this.refs.FormModule.refs.ProductNameForm.cloneNode(true);
     let inputs = [...dom.querySelectorAll('.product-name-select')];
-    let templateProducts = []; 
+    let templateProducts = [...this.state.selectedRow.map(p=>{
+      p.productId = p.id;
+      delete p.id
+      return p
+    })]; 
     let templateExtends = [];
     let content = "";
     inputs.forEach(select=>{
       let input = select.querySelector('.select-input');
       let realName = input.getAttribute('data-value');
       let value = input.value;
-      let templateProduct = {
-        productName: realName,
-        //"productId": "1",
-        contractTemplateId: this.props.params.id,
-        //"productCategory": "1"
-      }
-      let templateExtend = {
-        keyChineseName: value,
-        keyEnglishName: realName,
-        contractTemplateId: this.props.params.id
-      }
-
       if(/productname\d+/.test(realName)){
-        templateExtends.push(templateExtend);
         if(value.length <= 0)value = 'null'
       }else{
-        templateproducts.push(templateProduct)
+        //templateproducts.push(templateProduct)
         value = 'null';
       }
+      let templateExtend = {
+        "keyChineseName": value,
+        "keyEnglishName": realName,
+        "keyValue": value
+      }
+      templateExtends.push(templateExtend);
       let newNode = document.createElement('em');
       newNode.className = 'blank-em'
       newNode.innerHTML = "_BLANK_"+realName+"_"+value+"_BLANK_";
@@ -204,9 +193,10 @@ class Bind extends BaseApp {
         templateProducts,
         templateExtends
       }).then(res=>{
-      if(res.code!=200)return Feedback.toast.success(res.msg || "绑定失败")
-      Feedback.toast.success(res.msg || "绑定成功")
-      setTimeout(()=>hashHistory.push("/contract"), 3000)
+      if(res.code!=200)return Req.tipError(res.msg || "绑定失败")
+      Req.tipSuccess(res.msg || "绑定成功", 500, ()=>{
+        hashHistory.push("/contract")
+      })
     }).catch(err=>err)
   }
   //操作
