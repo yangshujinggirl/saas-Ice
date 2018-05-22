@@ -173,6 +173,11 @@ export default class CreditInformationDetail extends Component {
       }
       return false;
     }
+    //返回
+    back = (e)=>{
+      e.preventDefault();
+      hashHistory.push('/reviewApprove');
+    }
 
   /**
      * 渲染

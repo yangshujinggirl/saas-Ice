@@ -114,7 +114,7 @@ class BaseReq {
           //   _data: res.data.data
           // }
           // 其它可能返回的值为：null、''、boolean
-          if(res.data.data == null || res.data.data == '' || !res.data.data){
+          if(res.data.data === null || res.data.data === '' || res.data.data === undefined){
             data = {};
           }else{
             data = res.data.data;
@@ -214,7 +214,7 @@ class BaseReq {
     Feedback.toast.show({
       type: type,
       content: msg,
-      duration: 300,
+      duration: 2000,
       ...rest
     });
   }
