@@ -211,7 +211,7 @@ export default class LoanApplication extends Component {
                     <FormRender {...this.props} data={details.list} init={init} productList={dataSource}
                                 field={this.field} addColumn={this.addColumn.bind(this)}></FormRender>
                     <div className='botton-box pch-form-buttons'>
-                      <Button size="large" type="secondary" onClick={this.next}>下一步</Button>
+                      <Button size="large" type="secondary" onClick={this.save}>下一步</Button>
                     </div>
                   </Form>
                 </IceFormBinderWrapper>
