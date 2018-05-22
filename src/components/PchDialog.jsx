@@ -17,7 +17,11 @@ class PchDialog extends Component {
     this.props.onCancel();
   }
   onClose() {
-    this.props.onClose();
+    if(this.props.onClose) {
+      this.props.onClose();
+    } else {
+      this.props.onCancel();
+    }
   }
 
   render() {
@@ -27,12 +31,11 @@ class PchDialog extends Component {
         visible,
         onOk,
         onCancel,
-        onClose
       } = this.props;
       return (
         <Dialog
           visible={visible}
-          onClose={()=>onClose()}
+          onClose={()=>this.onClose()}
           className="pch-components-dialog-modules"
           footer={[]}>
           <div className="components-dialog-title">{this.props.title||''}</div>

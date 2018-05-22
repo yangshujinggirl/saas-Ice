@@ -78,7 +78,6 @@ class DialogModule extends Component {
           visible={visible}
           onOk={()=>this.onOk()}
           onCancel={()=>onCancel()}
-          onClose={()=>onCancel()}
           footer={[]}>
           <div className="pch-form">
             <IceFormBinderWrapper ref="form" value={value}>

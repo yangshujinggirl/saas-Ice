@@ -224,7 +224,6 @@ class ContractList extends BaseApp {
             submitText="确认"
             cancelText="取消"
             visible={elecVisbile}
-            onClose={()=>this.onCancel('elec')}
             onCancel={()=>this.onCancel('elec')}
             onOk={this.submitChangelec.bind(this)}/>
       </IceContainer>
