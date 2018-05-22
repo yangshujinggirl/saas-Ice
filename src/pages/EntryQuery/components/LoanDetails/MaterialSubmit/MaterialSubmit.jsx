@@ -92,8 +92,8 @@ export default class MaterialSubmit extends Component {
   render() {
     let { fileList, tableList, dataSource } = this.state;
     return (
-      <div className='info' id='材料提交'>
-        <Table dataSource={dataSource} className="basic-table">
+      <div style={styles.center}>
+        <Table dataSource={dataSource} className="basic-table" style={styles.width}>
           {tableList.map((item, index) => {
             return (
               <Table.Column title={item.title} dataIndex={item.id} key={index}/>
@@ -104,3 +104,12 @@ export default class MaterialSubmit extends Component {
     );
   }
 }
+const styles = {
+  width:{
+    width:'99%'
+  },
+  center:{
+    display:'flex',
+    justifyContent:'center'
+  }
+};

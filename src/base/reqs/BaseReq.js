@@ -109,7 +109,8 @@ class BaseReq {
     }else{
       code = res.data.code || code;
       msg  = res.data.msg  || res.data.message || msg;
-      data = res.data.data || data;
+      // 有些接口data会直接返回boolean值
+      data = (typeof res.data.data == 'boolean' || res.data.data) ? res.data.data : data;
       /*
       let resData = res.data.data;
       if(!resData){

@@ -9,7 +9,7 @@ const index = (state = {
 }, action) => {
   switch (action.type) {
     case T.FETCH_START:
-      return { ...state, isFetching: true }
+      return { ...state, isFetching: true, ...action }
     case T.FETCH_SUCCESS: 
       return { ...state, isFetching: false, ...action }
     case T.FETCH_FAILED:
