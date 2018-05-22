@@ -107,7 +107,6 @@ class ContractReq extends CurdReq{
 	}
 	//绑定产品字段到合同模版
 	saveProductNamesToContractTemplate(data){
-		debugger
 		let options = {
 			url: this._config.CONTRACT_HOST + '/contract/template/editBond',
 			method: 'POST',
