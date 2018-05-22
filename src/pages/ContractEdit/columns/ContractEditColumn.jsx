@@ -1,6 +1,6 @@
 
 import { BaseColumn } from 'base';
-
+import { Moment } from "@icedesign/base";
 /**
  * 定义列表的表头
  */
@@ -62,7 +62,10 @@ class ContractEditColumn extends BaseColumn {
         }, {
             title: '合同时间',
             dataIndex: 'contractTime',
-            width: 160
+            width: 160,
+            cell:(value, index, record) => {
+              return Moment(record.contractTime).format('YYYY-MM-DD h:mm:ss')
+            }
         }, {
             title: '状态',
             dataIndex: 'visible',

@@ -1,6 +1,6 @@
 
 import { BaseColumn } from 'base';
-import { Button } from "@icedesign/base";
+import { Button, Moment } from "@icedesign/base";
 
 /**
  * 定义列表的表头
@@ -75,7 +75,10 @@ class ContractFileColumn extends BaseColumn {
         }, {
             title: '合同时间',
             dataIndex: 'contractTime',
-            width: 160
+            width: 160,
+            cell:(value, index, record) => {
+              return Moment(record.contractTime).format('YYYY-MM-DD h:mm:ss')
+            }
         }, {
             title: '手机号码',
             dataIndex: 'phone',
