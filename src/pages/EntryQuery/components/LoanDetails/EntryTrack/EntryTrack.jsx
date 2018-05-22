@@ -22,7 +22,7 @@ export default class EntryTrack extends Component {
   }
   componentDidMount(){
     let {actions} = this.props;
-    console.log(this.props)
+    // console.log(this.props)
 
     Req.getTrackDetail({
       businessId : this.props.params.id,
@@ -56,7 +56,7 @@ export default class EntryTrack extends Component {
   }
   render() {
     let { trackList } = this.state;
-    console.log(trackList)
+    // console.log(trackList)
     return (
       <div className="part-same part-process info review-detail" id='流程轨迹'>
 

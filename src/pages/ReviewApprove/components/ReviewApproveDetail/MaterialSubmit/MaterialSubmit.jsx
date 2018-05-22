@@ -78,8 +78,14 @@ export default class MaterialSubmit extends Component {
     });
   }
   Img = (url)=>{
-    if(url){
-      return (<a src={url}  target='_blank' ><img  width={"10%"} src={url}/></a>)
+    if (url) {
+      if (url.indexOf('.jpg') != -1 || url.indexOf('.png') != -1 ||
+        url.indexOf('.jpeg') != -1 || url.indexOf('.gif') != -1 || url.indexOf('.bmp') != -1) {
+        return (<a href={url} target="_blank"> <img width={'10%'} src={url}/></a>)
+      }else{
+        return (<a href={url} target="_blank"> <img width={'10%'} src='/public/images/creditInformation/filed.png'/></a>)
+      }
+
     }
   }
   render() {

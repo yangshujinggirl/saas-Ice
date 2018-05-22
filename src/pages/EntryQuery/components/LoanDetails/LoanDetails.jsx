@@ -116,9 +116,6 @@ export default class LoanDetails extends Component {
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    console.log(details.list)
-    console.log(details)
-    console.log(this.props.params);
     return (
       <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
             <Row  className='modify-page'>
