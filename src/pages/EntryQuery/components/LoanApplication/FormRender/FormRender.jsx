@@ -386,7 +386,7 @@ export default class FormRender extends Component {
       productCode : productCode,
       name : value
     }
-    // console.log(carList)
+    console.log(carList)
     Req.getSelectList(carList).then((res)=>{
       if(res && res.code == 200){
         const dataSource =  res.data.list.map((item,index)=>{
