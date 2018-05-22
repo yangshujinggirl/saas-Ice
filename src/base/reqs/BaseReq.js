@@ -62,10 +62,28 @@ class BaseReq {
         params: options.params,
         timeout: 5000
       })
-      .then(this._processResponse.bind(this))
-      .catch(this._processError.bind(this));
+      .then(r=>{
+        r = this._processResponse(r);
+        if(200 == r.code)return r;
+        /** 
+          ➡️ 当api接口的code != 200
+          ➡️ 本次业务失败，return Promise.reject(r)确保交给总入口的catch处理错误
+          ➡️ 总入口的catch弹出错误提示，继续return Promise.reject(e)
+          ➡️ 确保进入业务代码回调时只有两种情况: 
+          ➡️ 业务的成功回调里一定是成功的数据，业务的失败回调里一定是失败的code
+          ➡️ ok->then(successCallback), error=>catch(errorCallback)
+        */
+        return Promise.reject({
+          code,
+          msg,
+          data
+        })
+      })
+      .catch(e=>{
+        e = this._processError(e);
+        return Promise.reject(e)
+      });
     requests.push(promise);
-    console.log(promise);
     return promise;
   }
 
@@ -84,51 +102,34 @@ class BaseReq {
    * @return {[type]}     [description]
    */
   _processResponse(res) {
-    let response = {}, code = 0, msg = '网络不给力', data = {};
-    //console.log('_processResponse', res);
+    let response = {}, 
+        code = 0, 
+        msg = '', 
+        data = {};
 
     if (!res.data) {
-      /*return {
-        code: 400,
-        msg: '响应格式数据不正确'
-      };*/
       code = 400;
       msg = '响应格式数据不正确'
     }else{
-      code = res.data.code;
-      if (code == 200) {
+      code = res.data.code || code;
+      msg  = res.data.msg  || res.data.message || msg;
+      data = res.data.data || data;
+      /*
+      let resData = res.data.data;
+      if(!resData){
+        data = {}
+      }else if(resData instanceof Array){
+        data = [...resData];
+      }else if('object' == typeof resData){
+        data = {...resData}
+      }else{
+        data = resData
+      }*/
+      if (code == 200 && res.headers.token) {
         //处理请求头，获取token，存储cookie
-        if (res.headers.token) {
-          Cookie.set('PCTOKEN', res.headers.token);
-        }
-        // 请求成功响应格式
-        // res.data = {
-        //   code: 200,
-        //   data: {},
-        //   msg: ''
-        // }
-        //return res.data;
-        msg = res.data.msg || msg;
-        if(res.data.data instanceof Array){
-          data.list = res.data.data;
-        }else if(res.data.data && 'object' == typeof res.data.data){
-          data = {...res.data.data}
-        }else{
-          data = {
-            _data: res.data.data
-          }
-        }
-      } else {
-        // 请求成功响应，但响应数据格式不正确，直接提示响应的消息
-        if (code == 103) {
-          this._redirectToLogin();
-        }
-        msg = res.data.msg || res.data.message || '未知错误';
-        this._showMsg('error', msg);
-        //return res.data;
+        Cookie.set('PCTOKEN', res.headers.token);
       }
     }
-
     return {
       code,
       msg,
@@ -143,10 +144,10 @@ class BaseReq {
    */
   _processError(error) {
     //debugger;
-    //console.log('_processError', error);
+    console.log('_processError', error);
     let res = error.response || error.request;
     let existData = 'object' == typeof res.data && res.data;
-    if (res.status == 103 || res.status == 401 || res.status == 500 && existData && (existData.code == 401 || existData.message == 'Username or password error') || existData && existData.code == 103) {
+    if (error.code == 103 || /103|401/.test(res.status) || res.status == 500 && existData && (existData.code == 401 || existData.message == 'Username or password error') || existData && existData.code == 103) {
       this._redirectToLogin();
       return { status: 401, msg: '未授权，请重新登录', data: { code: 401 } };
     }
