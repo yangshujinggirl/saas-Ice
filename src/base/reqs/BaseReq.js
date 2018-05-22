@@ -214,7 +214,7 @@ class BaseReq {
     Feedback.toast.show({
       type: type,
       content: msg,
-      duration: 300,
+      duration: 2000,
       ...rest
     });
   }
