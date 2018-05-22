@@ -87,7 +87,13 @@ class Bind extends BaseApp {
         if(this.refs.FormModule.refs.ProductNameForm){}
       })
 
-      let data = templateProductList.map(p=>p.id)
+      let data = templateProductList.map(p=>p.productId);
+      let selectedRow = templateProductList.map(p=>({
+        productCategory: p.productCategory,
+        productName: p.productName,
+        id: p.productId
+      }))
+      this.setState({selectedRow})
       if(data.length > 0)this.getProductName(data);
     })
   }
@@ -100,7 +106,6 @@ class Bind extends BaseApp {
         name: p.name,
         label: p.label
       }))
-      console.log(names)
       this.setState({
         productNames: names
       })
