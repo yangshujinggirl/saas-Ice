@@ -23,6 +23,14 @@ import { Button } from "@icedesign/base";
    5:'台湾通行证',
    6:'其他',
  }
+ const productTypeTrans = {
+   NEW_CAR_LOAN:'新车贷款',
+   NEW_CAR_RENTAL:'新车租赁',
+   SECONDHAND_CAR_LOAN:'二手车贷款',
+   SECONDHAND_CAR_RENTAL:'二手车租赁',
+   CAR_MORTGAGE_LOAN:'汽车抵押贷款',
+   CONSUMER_LOAN:'消费贷款',
+ }
 class ContractFileColumn extends BaseColumn {
     constructor() {
         super();
@@ -75,7 +83,10 @@ class ContractFileColumn extends BaseColumn {
         }, {
             title: '产品类型',
             dataIndex: 'productType',
-            width: 120
+            width: 120,
+            cell:(value, index, record) => {
+              return productTypeTrans[record.productType]
+            }
         }, {
             title: '产品名称',
             dataIndex: 'productName',
