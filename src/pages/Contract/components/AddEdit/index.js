@@ -234,7 +234,7 @@ class AddEit extends BaseComponent {
                           }}/>
                       </IceFormBinder>
                       <IceFormError name="templateContent" />
-                      <textarea style={{'width':'100%', 'resize':'vertical'}} disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))}/>
+                      {/*<textarea style={{'width':'100%', 'resize':'vertical'}} disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))}/>*/}
                   </Col>
                   <Col span={24}>
                     <div className="btns-wrap">
