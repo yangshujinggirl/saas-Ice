@@ -73,11 +73,7 @@ class BaseReq {
           ➡️ 业务的成功回调里一定是成功的数据，业务的失败回调里一定是失败的code
           ➡️ ok->then(successCallback), error=>catch(errorCallback)
         */
-        return Promise.reject({
-          code,
-          msg,
-          data
-        })
+        return Promise.reject(r)
       })
       .catch(e=>{
         e = this._processError(e);
@@ -145,15 +141,15 @@ class BaseReq {
   _processError(error) {
     //debugger;
     console.log('_processError', error);
-    let res = error.response || error.request;
-    let existData = 'object' == typeof res.data && res.data;
+    let res = error.response || error.request || {};
+    let existData = 'object' == typeof res.data && res.data || {};
 
-    if (error.code == 103 || /103|401/.test(res.status) || existData && existData.code == 103) {
+    if (error.code == 103 || /103|401/.test(res.status) || existData.code == 103) {
       this._redirectToLogin();
       return { status: 401, msg: '未授权，请重新登录', data: { code: 401 } };
     }
 
-    let msg = 'RES_MESSAGE';
+    let msg = error.msg || 'RES_MESSAGE';
 
     if (res.data && (res.data.msg || res.data.message)) {
       //接口返回错误格式
