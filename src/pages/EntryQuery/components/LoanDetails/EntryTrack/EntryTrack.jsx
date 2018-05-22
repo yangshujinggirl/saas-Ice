@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import {  Table } from '@icedesign/base';
+import {  Tablex } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
 import  './EntryTrack.scss'
 import  classNames from  'classnames'
+import { Feedback } from '@icedesign/base/index';
+const Toast = Feedback.toast;
 export default class EntryTrack extends Component {
   static displayName = 'EntryTrack';
 
@@ -33,7 +35,10 @@ export default class EntryTrack extends Component {
           trackList : res.data.trackList ? res.data.trackList : []
         })
       }else {
-
+        Toast.show({
+          type: "success",
+          content: "提交成功～",
+        });
       }
     });
   }
@@ -82,7 +87,7 @@ export default class EntryTrack extends Component {
                                   <span>审查意见:{item.approveMsg}</span>
                                 </div>
                                 <div className="content">
-                                  <p><b>办理人:</b>&nbsp;&nbsp;{item.operatorName}（{item.operatorNum}）</p>
+                                  <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b>（{item.operatorNum}）</p>
                                 </div>
 
                                 <div className="content">

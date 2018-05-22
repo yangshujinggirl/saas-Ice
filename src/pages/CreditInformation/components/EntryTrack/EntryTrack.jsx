@@ -82,7 +82,7 @@ export default class EntryTrack extends Component {
                     <span>审查意见:{item.approveMsg}</span>
                   </div>
                   <div className="content">
-                    <p><b>办理人:</b>&nbsp;&nbsp;{item.operatorName}（{item.operatorNum}）</p>
+                    <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b>（{item.operatorNum}）</p>
                   </div>
 
                   <div className="content">
