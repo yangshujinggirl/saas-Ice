@@ -57,7 +57,7 @@ class FormModule extends BaseApp {
         keyVales = [], 
         keyValesIndex = 0;
     //当已经绑定过产品字段的合同模版
-    if(html.indexOf('_BLANK_productname') > -1){
+    if(html.indexOf('_BLANK_') > -1){
       let div = document.createElement('div');
       div.innerHTML = html;
       let emList = [...div.querySelectorAll('.blank-em')];
@@ -83,7 +83,7 @@ class FormModule extends BaseApp {
       if(s.indexOf("_") > -1){
         i = kindex++;
       }else{
-        val = keyVales[keyValesIndex][2];
+        val = this.props.productNames.length > 0 && this.props.productNames.find(p=>p.name == keyVales[keyValesIndex][1]).label || '';
         val = val == 'null' ? '' : val;
         i = keyValesIndex++
       }
