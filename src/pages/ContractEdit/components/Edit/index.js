@@ -140,7 +140,7 @@ class AddEit extends BaseApp {
       if (!this_1.submitContent[index]) {//如果第一次渲染该份合同则没值的地方展示接口返回值
         obj.contractExtendSource.map((item, index) => {
           if (item.keyEnglishName === arry[0]) {
-            val_one = item.keyChineseValue;
+            val_one = item.keyValue;
           }
         });
       }

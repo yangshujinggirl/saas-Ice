@@ -26,7 +26,7 @@ class ContractEditReq extends CurdReq{
 	//提交编辑
 	submitEditContractApi(data){
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract`,
+			url: this._config.CONTRACT_HOST + `/contract/`,
 			method: 'PUT',
 			contentType: 'application/json',
 			data
