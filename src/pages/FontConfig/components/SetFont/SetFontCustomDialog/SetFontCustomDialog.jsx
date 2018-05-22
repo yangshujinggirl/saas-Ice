@@ -38,20 +38,20 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     handleSubmitCode = () => {
         let reqData = this.props.data;
 
-        if (!reqData.label) {
-            Feedback.toast.show({
-                type: 'error',
-                content: '字段名称不能为空'
-            })
-            return
-        }
-        if (!reqData.type) {
-            Feedback.toast.show({
-                type: 'error',
-                content: '字段类型不能为空'
-            })
-            return
-        }
+        // if (!reqData.label) {
+        //     Feedback.toast.show({
+        //         type: 'error',
+        //         content: '字段名称不能为空'
+        //     })
+        //     return
+        // }
+        // if (!reqData.type) {
+        //     Feedback.toast.show({
+        //         type: 'error',
+        //         content: '字段类型不能为空'
+        //     })
+        //     return
+        // }
         // 删除下拉框的单选框复选框空置值
         reqData.options && reqData.options.map((item, index) => {
             if (item.label == '') {
