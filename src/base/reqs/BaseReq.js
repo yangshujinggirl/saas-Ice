@@ -17,6 +17,13 @@ class BaseReq {
     this._loanHost = BaseConfig.LOAN_HOST; //贷前接口
     this._pageSize = BaseConfig.PAGESIZE; //分页大小
     this._config = BaseConfig;
+
+    if(!extractToast){
+      Object.keys(Feedback.toast).forEach(k=>{
+        BaseReq.prototype['tip' + k[0].toUpperCase() + k.slice(1)] = Feedback.toast[k]
+      })
+      extractToast = true;
+    }
   }
 
   fetchData(options) {
@@ -201,12 +208,7 @@ class BaseReq {
    * @return {[type]}      [description]
    */
   _showMsg(type, msg, ...rest) {
-    if(!extractToast){
-      Object.keys(Feedback.toast).forEach(k=>{
-        BaseReq.prototype['tip' + k[0].toUpperCase() + k.slice(1)] = Feedback.toast[k]
-      })
-      extractToast = true;
-    }
+    
     if (!msg) {
       return;
     }

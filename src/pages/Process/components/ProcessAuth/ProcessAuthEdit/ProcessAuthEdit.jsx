@@ -185,7 +185,7 @@ export default class ProcessAuthEdit extends BaseApp {
   //角色
   changeRoleToChildren(data){
     data && data.map((item) => {
-      item.children = item.roles;
+      item.children = item.roles || [];
       item.id = item.departmentId
     })
     return data;
@@ -200,7 +200,8 @@ export default class ProcessAuthEdit extends BaseApp {
   render() {
     console.log(this.props)
     const { dataSourceRight, current } = this.state;
-    const { visible, changeView, formData,orgsData } = this.props;
+    const { visible, changeView, formData,orgsData = {} } = this.props;
+    let deprtments = orgsData.deprtments ? orgsData.deprtments.children : [];
     return (
       <IceContainer className="pch-container" style={{ display: visible ? '' : 'none' }}>
         <Title title="权限编辑" />
@@ -222,7 +223,7 @@ export default class ProcessAuthEdit extends BaseApp {
           <div className="table-list">
             <div className="part-l">
               <Table
-                dataSource={this.changeRoleToChildren(orgsData.deprtments)}
+                dataSource={deprtments}
                 primaryKey="id"
                 style={{ width: '100%' }}
                 isTree

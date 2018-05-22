@@ -116,7 +116,7 @@ export default class SearchEdit extends Component {
 
 
     render() {
-        let { prodInfo, formData } = this.props;
+        let { prodInfo, formData, isSubmiting } = this.props;
         let name = formData.product || {};
 
         name = name.name || ''
@@ -221,7 +221,7 @@ export default class SearchEdit extends Component {
                                                          }}>
                                         返回
                                     </Button>
-                                    <Button type="secondary" className="return-btn buttonsBack" onClick={this.upData}>
+                                    <Button type="secondary" size="large" className="return-btn buttonsBack" onClick={this.upData} disabled={isSubmiting}>
                                         保存
                                     </Button>
                                 </div>

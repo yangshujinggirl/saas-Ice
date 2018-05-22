@@ -174,11 +174,18 @@ export const edit = (id) => {
 //产品修改后保存
 export const prodrevise = (condition) => {
   return (dispatch) => {
-    dispatch(fetchStart())
+    dispatch(fetchStart({isSubmiting: true}))
     Req.prodrevise(condition).then((res) => {
+      dispatch(fetchSuccess({isSubmiting: false}))
       if (!res || res.code != 200) return;
 
-      edit(condition.id)(dispatch);
+      Req.tipSuccess({
+          content: '编辑成功！',
+          afterClose: () => {
+              hashHistory.push('/product/search');
+          },
+          duration: 500
+      });
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

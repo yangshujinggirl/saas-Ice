@@ -263,16 +263,16 @@ export default class DiaLog extends Component {
   //判断清单名称是否已存在
   nameRepeat=(rule,value,callback) =>{
 
-  if(rule.required && !value){
-    callback('清单名称必填')
-    return;
-  }
-  ProductReq.fileNameRepeat(value).then((res) =>{
-    if(res.data){
-      callback("该名已存在")
+    if(rule.required && !value){
+      callback('清单名称必填')
+      return;
     }
-    callback()
-  })
+    ProductReq.fileNameRepeat(value).then((res) =>{
+      if(res.data){
+        callback("该名已存在")
+      }
+      callback()
+    })
   }
 
   testName=(id,data) =>{
