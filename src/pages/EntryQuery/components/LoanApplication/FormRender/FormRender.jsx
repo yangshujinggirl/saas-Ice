@@ -60,8 +60,8 @@ export default class FormRender extends Component {
     if(data){
       data.map((item,index)=>{
         formList.push(
-          <div className='info' key={index} id={item.name}>
-            <h4 >{item.name}</h4>
+          <div className='info review-detail' key={index} id={item.name}>
+            <span className='name' >{item.name}</span>
             <div className='info-row'>
               {
                 item.fields.map((el,i)=>{
