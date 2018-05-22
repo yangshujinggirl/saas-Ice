@@ -18,7 +18,7 @@ class ContractList extends BaseApp {
       visible:false,//作废
       elecVisbile:false,//改电子
       signVisible:false,//签字
-      fileList:[],
+      fileList:[],//已保存文件列表
       contractId:''
     }
   }
@@ -97,7 +97,6 @@ class ContractList extends BaseApp {
         fileList
       })
     })
-
   }
   //改电子
   elecDialog(record) {
@@ -180,7 +179,7 @@ class ContractList extends BaseApp {
   }
   //关闭弹框
   onCancel(type) {
-    if(type == 'sign') {
+    if(type == 'cancel') {
       this.setState({
         visible:false
       })
@@ -188,12 +187,21 @@ class ContractList extends BaseApp {
       this.setState({
         elecVisbile:false
       })
+    } else if(type == 'sign'){
+      this.setState({
+        signVisible:false
+      })
     }
   }
   render() {
     const { columns } = this.props;
     const { list=[] } =this.props.pageData;
-    const { visible, signVisible, fileList, elecVisbile, contractId } =this.state;
+    const {
+      visible,
+      signVisible,
+      fileList,
+      elecVisbile
+     } =this.state;
 
     return(
       <IceContainer className="pch-container">
@@ -203,11 +211,12 @@ class ContractList extends BaseApp {
           <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
             visible={visible}
-            onCancel={()=>this.onCancel('sign')}
+            onCancel={()=>this.onCancel('cancel')}
             submit={this.submitCancel.bind(this)}/>
           <SignDialogModule
             fileList={fileList}
             visible={signVisible}
+            onClose={()=>this.onCancel('sign')}
             save = {this.saveSign.bind(this)}
             submit={this.submitSign.bind(this)}/>
           <PchDialog

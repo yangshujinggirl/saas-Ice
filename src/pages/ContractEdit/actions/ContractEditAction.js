@@ -77,3 +77,10 @@ export const getDetail = (id) => {
     })
   }
 }
+
+//清理编辑页面formData数据
+export const clearData = (value) => {
+  return (dispatch) => {
+    dispatch(change({ formData: [],isFetching:false}));
+  }
+}
