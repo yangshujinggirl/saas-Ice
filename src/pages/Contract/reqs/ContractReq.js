@@ -107,7 +107,6 @@ class ContractReq extends CurdReq{
 	}
 	//绑定产品字段到合同模版
 	saveProductNamesToContractTemplate(data){
-		debugger
 		let options = {
 			url: this._config.CONTRACT_HOST + '/contract/template/editBond',
 			method: 'POST',
@@ -117,12 +116,12 @@ class ContractReq extends CurdReq{
 		return super.fetchData(options);
 	}
 	//模板启用，停用，删除
-	handleTemplateApi(id,status) {
+	handleTemplateApi(data) {
 		let options = {
 			url: this._config.CONTRACT_HOST + `/contract/template/oper`,
 			method: 'POST',
 			contentType: 'application/x-www-form-urlencoded',
-			data:{id,status}
+			data:data
 		}
 		return super.fetchData(options);
 	}

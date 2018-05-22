@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
-import Cookie from '../../../../../base/utils/Cookie';
 import {
   Dialog,
   Input,
@@ -32,13 +31,11 @@ class SignDialogModule extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      visible:this.props.visible,
       value:{}
     };
   }
   componentWillReceiveProps(props) {
     this.setState({
-      visible:props.visible,
       value:{
         fileIds:props.fileList
       }
@@ -81,9 +78,8 @@ class SignDialogModule extends BaseComponent {
     }
   }
   render() {
-    const { value, visible } = this.state;
-    const PCTOKEN = Cookie.get('PCTOKEN');
-    console.log(PCTOKEN)
+    const { value } = this.state;
+    const { visible, onClose } =this.props;
       return (
         <PchDialog
           title={'上传签字文件'}
@@ -91,6 +87,7 @@ class SignDialogModule extends BaseComponent {
           cancelText="保存"
           visible={visible}
           onOk={()=>this.onOk('submit')}
+          onClose={()=>onClose()}
           onCancel={()=>this.onOk('save')}
           footer={[]}>
           <div className="contract-sign-dialog-content">

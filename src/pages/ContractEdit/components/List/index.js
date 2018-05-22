@@ -101,10 +101,17 @@ class ContractList extends BaseApp {
       Toast.error(error);
     })
   }
-  onCancel() {
-    this.setState({
-      paperVisbile:false
-    })
+  //关闭弹框
+  onCancel(currentVisibile) {
+    if(currentVisibile == 'visible') {
+      this.setState({
+        visible:false
+      })
+    } else {
+      this.setState({
+        paperVisbile:false
+      })
+    }
   }
   render() {
     const { columns } = this.props;
@@ -118,12 +125,14 @@ class ContractList extends BaseApp {
         <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
             visible={visible}
+            onCancel={()=>this.onCancel('visible')}
             submit={this.submitOperate.bind(this)}/>
           <PchDialog
             title={'改为纸质后，将不再支持电子签名，您确定要改为纸质吗'}
             submitText="确认"
             cancelText="取消"
-            onCancel={()=>this.onCancel()}
+            onCancel={()=>this.onCancel('paperVisbile')}
+            onClose={()=>this.onCancel('paperVisbile')}
             visible={paperVisbile}
             onOk={this.submitChangePaper.bind(this)}/>
       </IceContainer>

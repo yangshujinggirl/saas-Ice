@@ -6,9 +6,10 @@ import { hashHistory } from 'react-router';
 /**
  * 请求开始的通知
  */
-function fetchStart() {
+function fetchStart(data = {}) {
   return {
     type: T.FETCH_START,
+    ...data,
     time: Date.now()
   }
 }
@@ -176,15 +177,14 @@ export const prodrevise = (condition) => {
   return (dispatch) => {
     dispatch(fetchStart({isSubmiting: true}))
     Req.prodrevise(condition).then((res) => {
-      dispatch(fetchSuccess({isSubmiting: false}))
-      if (!res || res.code != 200) return;
+      if (res.code != 200){
+        dispatch(fetchSuccess({isSubmiting: false}))
+        return;
+      }
 
-      Req.tipSuccess({
-          content: '编辑成功！',
-          afterClose: () => {
-              hashHistory.push('/product/search');
-          },
-          duration: 500
+      Req.tipSuccess('编辑成功！',500,() => {
+          dispatch(fetchSuccess({isSubmiting: false}))
+          hashHistory.push('/product/search');
       });
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

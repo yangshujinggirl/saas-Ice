@@ -39,23 +39,10 @@ const label =(name) => (
 class DialogModule extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      visible:this.props.visible
-    };
-  }
-  componentWillReceiveProps(props) {
-    this.setState({
-      visible:props.visible
-    })
   }
   onOk() {
-    const { id, actionStatus } = this.props.templateObj;
-    this.props.submit(id,actionStatus);
-  }
-  onCancel() {
-    this.setState({
-      visible:false
-    })
+    const { actionStatus } = this.props.templateObj;
+    this.props.submit(actionStatus);
   }
   //渲染title
   dialogTitle (){
@@ -89,7 +76,7 @@ class DialogModule extends Component {
   }
 
   render() {
-      const { templateObj } = this.props;
+      const { templateObj, onCancel, visible } = this.props;
       //初始化checked
       const defaultValue =()=> (
         templateObj.productList.map((ele) => (
@@ -101,9 +88,9 @@ class DialogModule extends Component {
           title={this.dialogTitle()}
           submitText="确认"
           cancelText="取消"
-          visible={this.state.visible}
+          visible={visible}
           onOk={()=>this.onOk()}
-          onCancel={()=>this.onCancel()}
+          onCancel={()=>onCancel()}
           footer={[]}>
           {
             templateObj.productList.length>0 &&

@@ -29,9 +29,12 @@ class CreditInformationColumn extends BaseColumn {
       dataIndex: 'borrowerMobile',
       width: 150,
     }, {
-      title: '申请金额',
+      title: '申请金额（元）',
       dataIndex: 'principalAmount',
       width: 150,
+      cell: (value, index, record) => {
+        return this.formatNumber(value, 0, true);
+      },
     }, {
       title: '贷款产品',
       dataIndex: 'productName',

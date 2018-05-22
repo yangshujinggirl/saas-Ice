@@ -42,15 +42,9 @@ class DialogModule extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible:this.props.visible,
       otherReason:false,
       value:{}
     };
-  }
-  componentWillReceiveProps(props) {
-    this.setState({
-      visible:props.visible
-    })
   }
   onOk() {
     this.refs.form.validateAll((errors, values) => {
@@ -59,11 +53,6 @@ class DialogModule extends Component {
       }
       this.props.submit(values);
     });
-  }
-  onCancel() {
-    this.setState({
-      visible:false
-    })
   }
   selectedEvent(value,option) {
     if(option.type == 'other') {
@@ -77,16 +66,16 @@ class DialogModule extends Component {
     }
   }
   render() {
-      const { dialogObj } = this.props;
-      const { visible, otherReason, value } = this.state;
+      const { dialogObj, onCancel, visible } = this.props;
+      const { otherReason, value } = this.state;
       return (
         <PchDialog
+          visible={visible}
           title={'合同取消'}
           submitText="确认"
           cancelText="取消"
-          visible={visible}
           onOk={()=>this.onOk()}
-          onCancel={()=>this.onCancel()}
+          onCancel={()=>onCancel()}
           footer={[]}>
           <div className="pch-form">
             <IceFormBinderWrapper ref="form" value={value}>
