@@ -82,13 +82,13 @@ export default class ReviewApprove extends BaseApp {
      * 渲染
      */
     render() {
-        const {pageData ={}, columns} = this.props;
+        const {pageData ={}, columns, isFetching} = this.props;
         console.log(this.props)
         return (
             <IceContainer className="pch-container">
                 <Title title="查询" />
                 <FilterForm onSubmit={this.fetchData} />
-                <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
+                <PchTable isLoading={isFetching} dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
                 <PchPagination dataSource={pageData} onChange={this.changePage} />
             </IceContainer>
         )
