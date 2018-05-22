@@ -11,7 +11,7 @@ class ReviewApproveColumn extends BaseColumn {
     this._columns = [{
       title: '贷款编号',
       dataIndex: 'code',
-      width: 160,
+      width: 210,
     }, {
       title: '贷款状态',
       dataIndex: 'loanStatus',
@@ -29,9 +29,12 @@ class ReviewApproveColumn extends BaseColumn {
       dataIndex: 'borrowerMobile',
       width: 150,
     }, {
-      title: '申请金额',
+      title: '申请金额(元)',
       dataIndex: 'principalAmount',
       width: 150,
+      cell: (value, index, record) => {
+        return this.formatNumber(value, 0, true);
+      },
     }, {
       title: '贷款产品',
       dataIndex: 'productName',
@@ -54,34 +57,42 @@ class ReviewApproveColumn extends BaseColumn {
           <div>
             {
               record.status && record.status == 'CLAIM' ?
-                (<button className="editbtn searchbtn"
-                         onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
-                  签收
-                </button>)
+                (<div className="pch-table-operation">
+                    <a href="javascript:;"
+                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                      签收
+                    </a>
+                  </div>
+                )
                 : (<span></span>)
             }
             {
               record.status && record.status == 'SIGNED' ?
                 //taskTypeKey == 10 为征信录入
                 record.taskTypeKey == '10' ? (
-                  <div className='list-button-box'>
-                    <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER3)}>
-                      详情
-                    </button>
-                    <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER4)}>
-                      征信录入
-                    </button>
-                  </div>
-                ) :
+                    <div className='pch-table-operation'>
+                      <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER3)}>
+                        详情
+                      </a>
+                      <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER4)}>
+                        征信录入
+                      </a>
+                    </div>
+                  ) :
                   //taskTypeKey == 5 为面签详情
                   record.taskTypeKey == '5' ? (
-                  <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER5)}>
-                    详情
-                  </button>
-                ) : (
-                  <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
-                  详情
-                </button>
+                    <div className='pch-table-operation'>
+                      <a href="javascript:;"
+                         onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER5)}>
+                        详情
+                      </a>
+                    </div>
+                  ) : (
+                    <div className='pch-table-operation'>
+                      <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                        详情
+                      </a>
+                    </div>
                   )
                 : (<span></span>)
             }
