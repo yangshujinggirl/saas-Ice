@@ -267,7 +267,7 @@ export default class CreditInformationForm extends BaseComponent {
       title: '提示',
       onOk: () => {
         dialogAlert.hide();
-        hashHistory.push(`creditinformation`);
+        hashHistory.push(`reviewApprove`);
       },
     });
   };
@@ -919,8 +919,9 @@ export default class CreditInformationForm extends BaseComponent {
                           type="string"
                           message="请输入"
                         >
-                          <Select size="large" placeholder="请选择" className="custom-input"
-                                  dataSource={this.state.opption}/>
+                          {this.checkFiled('select', 'customNonExistEnforce')}
+                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                                  {/*dataSource={this.state.opption}/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="customNonExistEnforce"/></div>
                       </div>
@@ -941,7 +942,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'loanTwoConsecutiveYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="loanTwoConsecutiveYear"/></div>
                       </div>
@@ -963,7 +965,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'loanOneConsecutiveYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="loanOneConsecutiveYear"/></div>
                       </div>
@@ -984,7 +987,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'loanHalfConsecutiveYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="loanHalfConsecutiveYear"/></div>
                       </div>
@@ -1005,7 +1009,8 @@ export default class CreditInformationForm extends BaseComponent {
                           required
                           validator={this.isInteger}
                         >
-                          <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                          {this.checkFiled('input', 'loanOneYear')}
+                          {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                         </IceFormBinder>
                         <div><IceFormError name="loanOneYear"/></div>
                       </div>
@@ -1023,8 +1028,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card1MonthLessThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card1MonthLessThan30"/></div>
                   </FormItem>
@@ -1036,8 +1041,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card3MonthLessThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card3MonthLessThan30"/></div>
                   </FormItem>
@@ -1051,8 +1056,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card3MonthMoreThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card3MonthMoreThan30"/></div>
                   </FormItem>
@@ -1064,8 +1069,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card6MonthLessThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card6MonthLessThan30"/></div>
                   </FormItem>
@@ -1078,8 +1083,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card12MonthLessThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card12MonthLessThan30"/></div>
                   </FormItem>
@@ -1091,8 +1096,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card12MonthMoreThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card12MonthMoreThan30"/></div>
                   </FormItem>
@@ -1104,8 +1109,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card24MonthLessThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card24MonthLessThan30"/></div>
                   </FormItem>
@@ -1117,8 +1122,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card24MonthMoreThan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card24MonthMoreThan30"/></div>
                   </FormItem>
@@ -1130,7 +1135,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'card24MonthMoreThan60')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="card24MonthMoreThan60"/></div>
                   </FormItem>
@@ -1142,10 +1148,10 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       message="请输入"
                     >
-
-                      <Select size="large" placeholder="请选择" className="custom-input"
-                              dataSource={this.state.opption}
-                      />
+                      {this.checkFiled('select', 'historyMoreThan90')}
+                      {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                              {/*dataSource={this.state.opption}*/}
+                      {/*/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="historyMoreThan90"/></div>
                   </FormItem>
@@ -1159,10 +1165,10 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       message="请输入"
                     >
-
-                      <Select size="large" placeholder="请选择" className="custom-input"
-                              dataSource={this.state.opption}
-                      />
+                      {this.checkFiled('select', 'hasLoan')}
+                      {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                              {/*dataSource={this.state.opption}*/}
+                      {/*/>*/}
 
 
                     </IceFormBinder>
@@ -1178,8 +1184,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.priceRange}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'overdrawAmount')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="overdrawAmount"/></div>
                   </FormItem>
@@ -1192,10 +1198,10 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       message="请输入"
                     >
-
-                      <Select size="large" placeholder="请选择" className="custom-input"
-                              dataSource={this.state.opption}
-                      />
+                      {this.checkFiled('input', 'spouseHasLoan')}
+                      {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                              {/*dataSource={this.state.opption}*/}
+                      {/*/>*/}
 
 
                     </IceFormBinder>
@@ -1210,8 +1216,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.priceRange}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'spoouseOverdrawAmount')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="spoouseOverdrawAmount"/></div>
                   </FormItem>
@@ -1225,8 +1231,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan3monthLessthan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan3monthLessthan30"/></div>
                   </FormItem>
@@ -1238,8 +1244,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan3monthMorethan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan3monthMorethan30"/></div>
                   </FormItem>
@@ -1251,8 +1257,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan6monthLessthan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan6monthLessthan30"/></div>
                   </FormItem>
@@ -1264,8 +1270,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan12monthLessthan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan12monthLessthan30"/></div>
                   </FormItem>
@@ -1277,8 +1283,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan12monthMorethan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan12monthMorethan30"/></div>
                   </FormItem>
@@ -1289,8 +1295,8 @@ export default class CreditInformationForm extends BaseComponent {
                     required
                     validator={this.isInteger}
                   >
-
-                    <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                    {this.checkFiled('input', 'loan24monthLessthan30')}
+                    {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                   </IceFormBinder>
                   <div><IceFormError name="loan24monthLessthan30"/></div>
                 </FormItem>
@@ -1302,8 +1308,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan24monthMorethan30')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan24monthMorethan30"/></div>
                   </FormItem>
@@ -1315,8 +1321,8 @@ export default class CreditInformationForm extends BaseComponent {
                       required
                       validator={this.isInteger}
                     >
-
-                      <Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>
+                      {this.checkFiled('input', 'loan24monthMorethan60')}
+                      {/*<Input size="large" htmlType='number' placeholder="请输入" className="custom-input"/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="loan24monthMorethan60"/></div>
                   </FormItem>

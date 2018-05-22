@@ -44,8 +44,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         this.enquireScreenRegister();
 
         CommonReq.getSaasMenu().then((res) => {
-            if (res && res.code == 200) {
-              let leafs = res.data.leaf;
+            if (res.code == 200) {
+                let leafs = res.data.leaf;
                 Storage.set('MENUS', leafs);
                 this.setState({
                     MENUS: leafs,
@@ -55,10 +55,19 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         });
 
         CommonReq.getUserInfo().then((res) => {
-            if (res && res.code == 200) {
+            if (res.code == 200) {
                 Storage.set("USERINFO", res.data);
                 this.setState({
                     USERINFO: res.data
+                });
+            }
+        });
+
+        CommonReq.getUserIdentityList().then((res) => {
+            if (res.code == 200) {
+                Storage.set("IDENTITYLIST", res.data.list);
+                this.setState({
+                    IDENTITYLIST: res.data.list
                 });
             }
         });
@@ -187,9 +196,11 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         allAsideNav = allAsideNav.concat(leafs);
 
         const tipLoader1 = (
-          <div className="pch-load-container pch-load-jump">
-            <div className="loader">loading...</div>
-          </div>
+        <div className="pch-load-container pch-load-jump">
+            <div className="loader">
+                loading...
+            </div>
+        </div>
         );
 
         return (
@@ -212,13 +223,13 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                                                        })}>
                     {/* 侧边菜单项 begin */}
                     {/*{this.state.isScreen !== 'isMobile' && (
-                                                                                                                        <a className="collapse-btn" onClick={this.toggleCollapse}>
-                                                                                                                          <Icon
-                                                                                                                            type={this.state.collapse ? 'arrow-right' : 'arrow-left'}
-                                                                                                                            size="small"
-                                                                                                                          />
-                                                                                                                        </a>
-                                                                                                                      )}*/}
+                                                                                                                                                                <a className="collapse-btn" onClick={this.toggleCollapse}>
+                                                                                                                                                                  <Icon
+                                                                                                                                                                    type={this.state.collapse ? 'arrow-right' : 'arrow-left'}
+                                                                                                                                                                    size="small"
+                                                                                                                                                                  />
+                                                                                                                                                                </a>
+                                                                                                                                                              )}*/}
                     <div className="pc-menu">
                         <img id='logo' src={logoImg} alt="" />
                     </div>
@@ -241,7 +252,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                                                                                                                        __html: navData.icon
                                                                                                                    }}></i>
                                                             ) : null} <span className="ice-menu-collapse-hide">{navData.name}</span>
-                                                            <div className="icon-nav-more icon-nav-more"></div></span>}>
+                                                     <div className="icon-nav-more icon-nav-more"></div>
+                                                     </span>}>
                                          {nav.leaf.map((item) => {
                                               const linkProps = {};
                                               let itemData = item.value || {};
@@ -297,10 +309,11 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                         pathname={pathname}
                         routes={routes}
                         isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
-                        userinfo={this.state.USERINFO} />
+                        userinfo={this.state.USERINFO}
+                        identityList={this.state.IDENTITYLIST} />
                     {/* 主体内容 */}
                     <Layout.Main>
-                            {this.props.children}
+                        {this.props.children}
                     </Layout.Main>
                 </Layout.Section>
                 {/* <Footer /> */}

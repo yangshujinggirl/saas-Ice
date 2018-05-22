@@ -71,6 +71,11 @@ export default class ReviewApprove extends BaseApp {
               hashHistory.push(`creditinformation/add/${data.loanId}`)
               break;
             }
+            // 面签详情
+            case this.OPERATE_TYPE.OTHER5: {
+              hashHistory.push(`interview/detail/${data.loanId}`)
+              break;
+            }
         }
     }
     /**

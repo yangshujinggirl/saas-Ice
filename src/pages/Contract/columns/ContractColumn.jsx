@@ -1,6 +1,6 @@
 
 import { BaseColumn } from 'base';
-import { Button,Switch } from "@icedesign/base";
+import { Button,Switch, Moment } from "@icedesign/base";
 /**
  * 定义列表的表头
  */
@@ -24,7 +24,10 @@ class ContractColumn extends BaseColumn {
         }, {
             title: '最后修改时间',
             dataIndex: 'updatedAt',
-            width: 160
+            width: 160,
+            cell:(value, index, record) => {
+              return Moment(record.updatedAt).format('YYYY-MM-DD h:mm:ss')
+            }
         }, {
             title: '状态',
             dataIndex: 'visible',

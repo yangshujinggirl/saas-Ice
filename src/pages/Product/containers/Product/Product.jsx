@@ -52,12 +52,12 @@ export default class Product extends BaseApp {
      * 渲染
      */
     render() {
-        const {pageData, columns} = this.props;
+        const {pageData, columns, isFetching} = this.props;
         return (
             <IceContainer className="pch-container">
                 <Title title="产品查询" />
                 <FilterForm onSubmit={this.fetchData} />
-                <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
+                <PchTable isLoading={isFetching} dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
                 <PchPagination dataSource={pageData} onChange={this.changePage} />
             </IceContainer>
         )

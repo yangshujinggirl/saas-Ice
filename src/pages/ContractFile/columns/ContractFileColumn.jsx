@@ -1,6 +1,6 @@
 
 import { BaseColumn } from 'base';
-import { Button } from "@icedesign/base";
+import { Button, Moment } from "@icedesign/base";
 
 /**
  * 定义列表的表头
@@ -22,6 +22,14 @@ import { Button } from "@icedesign/base";
    4:'护照',
    5:'台湾通行证',
    6:'其他',
+ }
+ const productTypeTrans = {
+   NEW_CAR_LOAN:'新车贷款',
+   NEW_CAR_RENTAL:'新车租赁',
+   SECONDHAND_CAR_LOAN:'二手车贷款',
+   SECONDHAND_CAR_RENTAL:'二手车租赁',
+   CAR_MORTGAGE_LOAN:'汽车抵押贷款',
+   CONSUMER_LOAN:'消费贷款',
  }
 class ContractFileColumn extends BaseColumn {
     constructor() {
@@ -67,7 +75,10 @@ class ContractFileColumn extends BaseColumn {
         }, {
             title: '合同时间',
             dataIndex: 'contractTime',
-            width: 160
+            width: 160,
+            cell:(value, index, record) => {
+              return Moment(record.contractTime).format('YYYY-MM-DD h:mm:ss')
+            }
         }, {
             title: '手机号码',
             dataIndex: 'phone',
@@ -75,7 +86,10 @@ class ContractFileColumn extends BaseColumn {
         }, {
             title: '产品类型',
             dataIndex: 'productType',
-            width: 120
+            width: 120,
+            cell:(value, index, record) => {
+              return productTypeTrans[record.productType]
+            }
         }, {
             title: '产品名称',
             dataIndex: 'productName',
