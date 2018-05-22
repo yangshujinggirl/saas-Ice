@@ -29,9 +29,12 @@ class ReviewApproveColumn extends BaseColumn {
       dataIndex: 'borrowerMobile',
       width: 150,
     }, {
-      title: '申请金额',
+      title: '申请金额(元)',
       dataIndex: 'principalAmount',
       width: 150,
+      cell: (value, index, record) => {
+        return this.formatNumber(value, 0, true);
+      },
     }, {
       title: '贷款产品',
       dataIndex: 'productName',
@@ -54,10 +57,13 @@ class ReviewApproveColumn extends BaseColumn {
           <div>
             {
               record.status && record.status == 'CLAIM' ?
-                (<button className="editbtn searchbtn"
-                         onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
-                  签收
-                </button>)
+                (<div className="pch-table-operation">
+                    <a href="javascript:;"
+                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                      签收
+                    </a>
+                  </div>
+                )
                 : (<span></span>)
             }
             {
