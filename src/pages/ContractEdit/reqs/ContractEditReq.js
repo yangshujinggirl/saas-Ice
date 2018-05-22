@@ -17,23 +17,19 @@ class ContractEditReq extends CurdReq{
 	//编辑详情
 	goEditContractApi(id){
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/edit_status`,
+			url: this._config.CONTRACT_HOST + `/contract/${id}/detail`,
 			method: 'GET',
-			contentType: 'application/json',
-			params:{id}
+			contentType: 'application/json'
 		}
 		return super.fetchData(options);
 	}
 	//提交编辑
-	submitEditContractApi(id,contract_content){
+	submitEditContractApi(data){
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract`,
 			method: 'PUT',
 			contentType: 'application/json',
-			params:{
-				contract_content,
-				contract_id:id
-			}
+			data
 		}
 		return super.fetchData(options);
 	}
