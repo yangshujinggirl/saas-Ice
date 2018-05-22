@@ -15,6 +15,7 @@ class ContractList extends BaseApp {
     super(props);
     this.state = {
       visible:false,
+      contractId:'',
       templateObj:{
         productList:[]
       }
@@ -104,11 +105,11 @@ class ContractList extends BaseApp {
       } else {
         this.setState({
           templateObj:{
-            id:record.id,
             actionStatus,
             isBind:false,
             productList:[]
           },
+          contractId:record.id,
           visible:true
         })
       }
@@ -141,18 +142,22 @@ class ContractList extends BaseApp {
       }));
       this.setState({
         templateObj:{
-          id:id,
           actionStatus,
           isBind:true,
           productList
         },
+        contractId:id,
         visible:true
       })
     })
   }
   //提交启用，停用，删除
-  submitOperate(id,actionStatus) {
-    Req.handleTemplateApi(id,actionStatus)
+  submitOperate(actionStatus) {
+    let params = {
+      id:this.state.contractId,
+      status:actionStatus
+    }
+    Req.handleTemplateApi(params)
     .then((res) => {
       const { code, msg} =res;
       if(code !=200 ) {
@@ -174,19 +179,26 @@ class ContractList extends BaseApp {
 
     })
   }
+  onCancel() {
+    this.setState({
+      visible:false
+    })
+  }
   render() {
     const { columns } = this.props;
     const { templateObj, visible, productList } =this.state;
     const { list=[] } = this.props.pageData;// || {};
+    console.log(this.state)
     return(
       <IceContainer className="pch-container contract-template-page">
           <Title title="合同管理" />
           <FilterForm onSubmit={this.fetchData} />
           <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-        <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
+          <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
           <DialogModule
             templateObj={templateObj}
             visible={visible}
+            onCancel={this.onCancel.bind(this)}
             submit={this.submitOperate.bind(this)}/>
       </IceContainer>
     )
