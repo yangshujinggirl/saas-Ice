@@ -91,6 +91,7 @@ class DialogModule extends Component {
           visible={visible}
           onOk={()=>this.onOk()}
           onCancel={()=>onCancel()}
+          onClose={()=>onCancel()}
           footer={[]}>
           {
             templateObj.productList.length>0 &&
