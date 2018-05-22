@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 import * as ProcessActions from './actions/ProcessAction.js'
 // import ProcessActions from './actions/ProcessAction_.js'
 
-console.log(ProcessActions);
+// console.log(ProcessActions);
 
 const mapStateToProps = (state, ownProps) => {
     const data = state.ProcessReducer;

@@ -32,7 +32,7 @@ class BaseColumn {
     let sign = (num == (num = Math.abs(num)));
     num = Math.floor(num * Math.pow(10, cent) + 0.50000000001); // 把指定的小数位先转换成整数.多余的小数位四舍五入
 
-    let cents = num % Math.pow(10, cent);// 求出小数位数值
+    let cents = num % Math.pow(10, cent); // 求出小数位数值
     num = Math.floor(num / Math.pow(10, cent))
       .toString();  // 求出整数位数值
     cents = cents.toString();        // 把小数位转换成字符串,以便求小数位长度
