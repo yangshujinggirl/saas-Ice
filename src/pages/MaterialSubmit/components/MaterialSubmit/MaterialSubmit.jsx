@@ -241,7 +241,7 @@ class MaterialSubmit extends BaseComponent {
         if (!el.downloadUrl) {
           Toast.show({
             type: 'help',
-            content: `${originData[i].type}${originData[i].name}的${el.name}材料必须上传~`,
+            content: `${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`,
           });
           return;
         }
