@@ -8,6 +8,8 @@ import ReactDOM from 'react-dom';
 import routes from './routes';
 import DeepApp from './base/third/DeepApp.jsx';
 
+let app = new DeepApp();
+
 // 以下代码 ICE 自动生成, 请勿修改
 // const container = document.createElement('div');
 // container.dataset.reactRoot = true;
