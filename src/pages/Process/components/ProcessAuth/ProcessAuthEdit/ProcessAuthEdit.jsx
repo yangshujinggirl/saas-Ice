@@ -184,15 +184,10 @@ export default class ProcessAuthEdit extends BaseApp {
   }
   //角色
   changeRoleToChildren(data){
-    data.map((item) => {
-        if (item.children && item.children.length > 0) {
-                this.changeRoleToChildren(item.children);
-        } else if(item.roles && item.roles.length > 0){
-            item.children = item.roles || [];
-            item.id = item.departmentId
-        }
+    data && data.map((item) => {
+      item.children = item.roles || [];
+      item.id = item.departmentId
     })
-
     return data;
   }
   orgNameShow(value, index, record){
@@ -206,14 +201,7 @@ export default class ProcessAuthEdit extends BaseApp {
     console.log(this.props)
     const { dataSourceRight, current } = this.state;
     const { visible, changeView, formData,orgsData = {} } = this.props;
-    let deprtments = [];
-    if (orgsData.deprtments) {
-        if(typeof orgsData.deprtments == 'object'){
-          deprtments = [orgsData.deprtments];
-        }
-        deprtments = this.changeRoleToChildren(deprtments);
-    }
-
+    let deprtments = orgsData.deprtments ? orgsData.deprtments.children : [];
     return (
       <IceContainer className="pch-container" style={{ display: visible ? '' : 'none' }}>
         <Title title="权限编辑" />

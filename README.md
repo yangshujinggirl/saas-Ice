@@ -55,6 +55,7 @@ $ npm start      // 启动预览服务器
 $ npm run build  // 构建 dist
 $ node generate  // 生成代码相关的文件
 $ node create-module xx // 添加一个新的模块
+$ npm run ft1 // 发布测试环境
 ```
 
 3. 执行upload.sh在根目录下，如没权限请执行 chmod +x upload.sh

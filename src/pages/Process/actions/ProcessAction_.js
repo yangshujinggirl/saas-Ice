@@ -39,7 +39,7 @@ class ProcessAction extends BaseAction {
 
 
   // 获取列表
-  static search(condition) {
+  search1(condition) {
     return (dispatch) => {
 
       dispatch(this.fetchStart({ formData: {} }))
@@ -55,4 +55,4 @@ class ProcessAction extends BaseAction {
   }
 }
 
-export default ProcessAction;
+export default new ProcessAction().actions;
