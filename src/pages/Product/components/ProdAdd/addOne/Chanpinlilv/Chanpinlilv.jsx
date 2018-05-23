@@ -60,8 +60,8 @@ export default class Chanpinlilv extends Component {
 						placeholder="渠道" 
 						style={{width:'200px'}}
 					>
-						<Option value='A'>集团A</Option>
-						<Option value='B'>集团B</Option>
+						<Option value='集团A'>集团A</Option>
+						<Option value='集团B'>集团B</Option>
 					</Select>
 	        </IceFormBinder>
 	    </div>

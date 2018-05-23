@@ -99,15 +99,10 @@ export default class CreateActivityForm extends Component {
 		};
 	}
 	onFormChange = (value) => {
-		// 最大执行年利率不能大于执行年利率范围
-		// if (value.interestRatesRangeMin < 0) {
-		// 	value.interestRatesRangeMin = 0
-		// }
-
-		// this.setState({
-		// 	value,
-		// });
-	};
+		this.setState({
+				value,
+		});
+};
 	AllValue = (value) => {
 		return (
 			{
@@ -562,7 +557,8 @@ export default class CreateActivityForm extends Component {
 		}
 		callback();
 	}
-
+	
+	
 	render() {
 		let data = this.props.prodActions || {}
 		let fileData = this.props.fileData || {}
