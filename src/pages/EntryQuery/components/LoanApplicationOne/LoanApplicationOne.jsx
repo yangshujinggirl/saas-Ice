@@ -82,7 +82,7 @@ class LoanApplicationOne extends Component {
     Req.getDetail(data)
       .then((res) => {
         if (res && res.code == 200) {
-          console.log(res);
+          // console.log(res);
           this.setState({
             filedList: res.data,
           });
@@ -176,7 +176,7 @@ class LoanApplicationOne extends Component {
   };
   //渲染标题
   renderTitle = (data) => {
-    console.log(data);
+    // console.log(data);
     const list = [];
     if (!this.isEmptyObject(data)) {
       data.map((item, index) => {
@@ -243,7 +243,7 @@ class LoanApplicationOne extends Component {
         }
       }
 
-      console.log(this.queryCache);
+      // console.log(this.queryCache);
       // this.queryCache.status = 'save'
       if(this.props.params.id){
         this.queryCache['id'] = this.props.params.id;
@@ -259,7 +259,7 @@ class LoanApplicationOne extends Component {
       }else{
         Req.addLoanApi(this.queryCache)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res  && res.code == 200) {
               hashHistory.push({
                 pathname: '/entryQuery/loanApplication/' + res.data.id,
@@ -284,7 +284,7 @@ class LoanApplicationOne extends Component {
     }
     if (list.length > 0) {
       for (var i = 0; i < list.length; i++) {
-        console.log(list[i]);
+        // console.log(list[i]);
         // for(var j=0; j<list[i].fields.length;j++){
         //   if(list[i].fields[j].type== 'CHECKBOX'&& list[i].fields[j].name == key){
         //     return true;
@@ -311,16 +311,16 @@ class LoanApplicationOne extends Component {
         delete list[i];
       }
     }
-    console.log(list);
+    // console.log(list);
     return list;
   };
 
   render() {
-    console.log(JSON.stringify(this.state.filedList));
+    // console.log(JSON.stringify(this.state.filedList));
     if (this.props.params.id) {
       var { filedList = {} } = this.state;
-      console.log(filedList);
-      console.log(!this.isEmptyObject(filedList));
+      // console.log(filedList);
+      // console.log(!this.isEmptyObject(filedList));
       list = !this.isEmptyObject(filedList) ? this.takeFixedField(filedList.list) : [];
     } else {
       var { list = [] } = this.props.fieldList || [];
@@ -328,7 +328,7 @@ class LoanApplicationOne extends Component {
     const { init } = this.field;
     const { loadId } = this.state;
     const { dataSource } = this.state;
-    console.log(list);
+    // console.log(list);
     return (
       <IceContainer className="loanApplicationOne" style={styles.Bottom}>
         <legend className="pch-legend">

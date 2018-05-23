@@ -114,6 +114,9 @@ export default class FormRender extends Component {
     var   disabled ;
     // console.log(el)
     if(el.type == "STRING"){
+      if(el.name == 'borrowerName'){
+        console.log(el.value)
+      }
       el.isReadonly = this.isFixedCheck(el.isFixed,el.isReadonly);
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}

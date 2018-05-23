@@ -123,6 +123,7 @@ export default class FormRenderFormRender extends Component {
     var   disabled ;
     // console.log(el)
     if(el.type == "STRING"){
+      console.log(el.value)
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -200,11 +201,6 @@ export default class FormRenderFormRender extends Component {
       );
     }
     else if(el.type == 'DECIMAL'){
-      if(el.isFixed){
-        disabled = true
-      }else{
-        disabled = false
-      }
       return(
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>

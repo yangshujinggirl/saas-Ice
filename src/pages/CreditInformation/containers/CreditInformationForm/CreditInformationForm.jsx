@@ -377,9 +377,7 @@ export default class CreditInformationForm extends BaseComponent {
 
   checkFiled = (str, key) => {
     if (str == 'input') {
-      console.log(22222);
       if (this.state.difflist.length > 0) {
-        console.log(22222222);
         for (var i = 0; i <= this.state.difflist.length; i++) {
           if (this.state.difflist[i] == key) {
             return (
@@ -392,7 +390,6 @@ export default class CreditInformationForm extends BaseComponent {
 
     }
     if (str == 'select') {
-      console.log(444444);
       if (this.state.difflist.length > 0) {
         for (var i = 0; i <= this.state.difflist.length; i++) {
           if (this.state.difflist[i] == key) {

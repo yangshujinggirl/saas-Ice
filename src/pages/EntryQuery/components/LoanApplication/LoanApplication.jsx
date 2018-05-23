@@ -34,6 +34,7 @@ export default class LoanApplication extends Component {
       visible: false,
       value: {},
       dataSource: [],
+      data: [],
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -49,10 +50,18 @@ export default class LoanApplication extends Component {
     let { actions } = this.props;
 
     this.getProductNum();
-    actions.getDetail(
+    Req.getDetail(
       {
         id: this.props.params.id,
         step: 1,
+      })
+      .then((res) => {
+        if (res && res.data && res.code == 200) {
+          console.log(res.data);
+          this.setState({
+            data:res.data.list
+          })
+        }
       });
   };
 
@@ -179,6 +188,8 @@ export default class LoanApplication extends Component {
 
   render() {
     const details = this.props.detail || {};
+    const {data =[]} = this.state
+    console.log(data)
     const init = this.field.init;
     const { dataSource = [] } = this.state;
     return (
@@ -189,37 +200,37 @@ export default class LoanApplication extends Component {
 
         <div className='pch-form'>
           <IceFormBinderWrapper value={this.state.value} onChange={this.formChange}>
-          <Row>
-            <Col className='review-form'>
-              <div className='review-page'>
-                <div className='title'>
-                  <ul>
-                    {this.renderTitle(details.list)}
-                  </ul>
+            <Row>
+              <Col className='review-form'>
+                <div className='review-page'>
+                  <div className='title'>
+                    <ul>
+                      {this.renderTitle(data)}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-              <div className="rcontent-edito modify-form">
-                <IceFormBinderWrapper
-                  value={this.state.value}
-                  onChange={this.formChange}
-                >
-                  <Form
-                    labelAlign="left"
-                    field={this.field}
-                    size="large"
+                <div className="rcontent-edito modify-form">
+                  <IceFormBinderWrapper
+                    value={this.state.value}
+                    onChange={this.formChange}
                   >
-                    <FormRender {...this.props} data={details.list} init={init} productList={dataSource}
-                                field={this.field} addColumn={this.addColumn.bind(this)}></FormRender>
-                    <div className='botton-box pch-form-buttons'>
-                      <Button size="large" type="secondary" onClick={this.save}>下一步</Button>
-                    </div>
-                  </Form>
-                </IceFormBinderWrapper>
+                    <Form
+                      labelAlign="left"
+                      field={this.field}
+                      size="large"
+                    >
+                      <FormRender {...this.props} data={data} init={init} productList={dataSource}
+                                  field={this.field} addColumn={this.addColumn.bind(this)}></FormRender>
+                      <div className='botton-box pch-form-buttons'>
+                        <Button size="large" type="secondary" onClick={this.save}>下一步</Button>
+                      </div>
+                    </Form>
+                  </IceFormBinderWrapper>
 
 
-              </div>
-            </Col>
-          </Row>
+                </div>
+              </Col>
+            </Row>
           </IceFormBinderWrapper>
         </div>
 
