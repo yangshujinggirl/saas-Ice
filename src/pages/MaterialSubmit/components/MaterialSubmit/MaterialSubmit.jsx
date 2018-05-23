@@ -61,24 +61,6 @@ class MaterialSubmit extends BaseComponent {
           title: '限制大小',
         }],
       fileList: [
-        {
-          id: 1,
-          fileName: 'IMG.png',
-          status: 'done',
-          size: 1024,
-          downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          fileURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        },
-        {
-          id: 2,
-          fileName: 'IMG.png',
-          status: 'done',
-          size: 1024,
-          downloadURL: 'http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg',
-          fileURL: 'http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg',
-          imgURL: 'http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg',
-        },
       ],
       upLoadList: [],
     };
@@ -253,6 +235,20 @@ class MaterialSubmit extends BaseComponent {
     });
 
     console.log(originData);
+    for (var i = 0; i < originData.length; i++) {
+      for (var j = 0; j < originData[i].collectionDetails.length; j++) {
+        var el = originData[i].collectionDetails[j];
+        // console.log(el);
+        if (!el.downloadUrl) {
+          Toast.show({
+            type: 'help',
+            content: `${originData[i].type}${originData[i].name}的${el.name}材料必须上传~`,
+          });
+          return;
+        }
+      }
+    }
+
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
         if (res && res.code == 200) {

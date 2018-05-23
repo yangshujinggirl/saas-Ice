@@ -27,7 +27,9 @@ export default class LoanApplication extends Component {
 
   constructor(props) {
     super(props);
-    this.field = new Field(this);
+    this.field = new Field(this,{
+      autoUnmount: true
+    });
     this.state = {
       index: 0,
       tableList: [],
@@ -167,8 +169,8 @@ export default class LoanApplication extends Component {
 
   //判断是否为CheckBox
   isCheckBox(key) {
-    console.log(this.props.detail.list);
-    let list = this.props.detail.list;
+    // console.log(this.props.detail.list);
+    let list = this.state.data;
     for (var i = 0; i < list.length; i++) {
       for (var j = 0; j < list[i].fields.length; j++) {
         if (list[i].fields[j].type == 'CHECKBOX' && list[i].fields[j].name == key) {
@@ -187,7 +189,7 @@ export default class LoanApplication extends Component {
   };
 
   render() {
-    const details = this.props.detail || {};
+    // const details = this.props.detail || {};
     const {data =[]} = this.state
     console.log(data)
     const init = this.field.init;
