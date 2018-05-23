@@ -47,7 +47,6 @@ export default {
     let selectBoxClass = this.data.selectBoxClass;
     let selectClass = this.data.selectClass;
     options.onclick = function(e){
-      debugger;
       if(!this.selectClass)this.selectClass = selectClass;
       if(!this.selectBoxClass)this.selectBoxClass = selectBoxClass;
       selectClass = null;

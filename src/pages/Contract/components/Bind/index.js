@@ -184,7 +184,7 @@ class Bind extends BaseApp {
         "keyValue": value
       }
       templateExtends.push(templateExtend);
-      let newNode = document.createElement('em');
+      let newNode = document.createElement('span');
       newNode.className = 'blank-em'
       newNode.innerHTML = "_BLANK_"+realName+"_"+value+"_BLANK_";
       select.parentNode.replaceChild(newNode, select)
