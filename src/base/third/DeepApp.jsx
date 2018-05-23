@@ -13,7 +13,7 @@ class App extends Component {
         this.client = this.ds.login();
 
         this.client.event.subscribe('publish-alert', data => {
-            // console.log('publish-alert', data);
+            console.log('publish-alert', data);
             
             this.setHtml(data);
 
