@@ -23,6 +23,7 @@
     "bizcharts": "latest",
     "classnames": "^2.2.5",
     "core-js": "^2.5.5",
+    "deepstream.io-client-js": "^2.3.0",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.3",
     "enquire-js": "^0.1.2",
