@@ -71,35 +71,21 @@ export const search = (condition) => {
 export const save = (data) => {
   return (dispatch) => {
 
-    dispatch(fetchStart({isSubmiting: true}))
+    dispatch(fetchStart({ isSubmiting: true }))
 
     Req.save(data).then((res) => {
-      if (res.code != 200) {
-        Feedback.toast.show({
-          type: 'error',
-          content: res.msg,
-        });
-        dispatch(fetchSuccess({ isSubmiting: false }))
-        return;
-      }
-
       // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
       Feedback.toast.show({
         type: 'success',
-        content: data.processName + '产品流程已' + (data.status == 1 ? '提交': '保存') +'成功',
+        content: data.processName + '产品流程已' + (data.status == 1 ? '提交' : '保存') + '成功',
         afterClose: () => {
           dispatch(fetchSuccess({ formData: {}, isSubmiting: false }))
           hashHistory.push('/process');
         },
         duration: 2000
       });
-    }).catch((data) => {
-      // Feedback.toast.show({
-      //     type: 'error',
-      //     content: res.msg,
-      //   });
-      //   dispatch(fetchFailed({ isSubmiting: false }))
-      dispatch(fetchFailed(data))
+    }).catch((res) => {
+      dispatch(fetchFailed({ isSubmiting: false }))
     })
   }
 }
@@ -123,7 +109,7 @@ export const getCustomMenuList = (id) => {
   return (dispatch) => {
     dispatch(fetchStart({ customMenuList: [] }))
     Req.getCustomMenuList(id).then((res) => {
-      if(res.code != 200) return;
+      if (res.code != 200) return;
       dispatch(fetchSuccess({ customMenuList: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -191,7 +177,7 @@ export const getProcessProdOldList = (id) => {
   return (dispatch) => {
 
     Req.getProcessProdOldList(id).then((res) => {
-      if(res.code==200){
+      if (res.code == 200) {
         dispatch(fetchSuccess({ formLeftData: res.data }))
 
       }
@@ -201,12 +187,12 @@ export const getProcessProdOldList = (id) => {
   }
 }
 //流程配置产品保存
-export const saveProcessConfigProduct = (data,id) => {
+export const saveProcessConfigProduct = (data, id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.saveProcessConfigProduct(data,id).then((res) => {
+    Req.saveProcessConfigProduct(data, id).then((res) => {
       hashHistory.push('/process')
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -235,7 +221,7 @@ export const getPageFields = (options) => {
 
     FontConfigReq.getDetail(options).then((res) => {
       if (res.code != 200) return;
-      dispatch(fetchSuccess({ pageFields: {fieldset: res.data.list} }))
+      dispatch(fetchSuccess({ pageFields: { fieldset: res.data.list } }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -249,7 +235,7 @@ export const getAllPageFields = (options) => {
 
     FontConfigReq.getDetail(options).then((res) => {
       if (res.code != 200) return;
-      dispatch(fetchSuccess({ allPageFields: {fieldset: res.data.list} }))
+      dispatch(fetchSuccess({ allPageFields: { fieldset: res.data.list } }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -271,7 +257,7 @@ export const getPageDetail = (id) => {
 }
 //权限编辑机构／角色
 export const getPrivilegeOrgs = () => {
-  return (dispatch)=>{
+  return (dispatch) => {
     dispatch(fetchStart())
 
     Req.getPrivilegeOrgs().then((res) => {
@@ -285,6 +271,6 @@ export const getPrivilegeOrgs = () => {
 
 export const changeFormData = (data) => {
   return (dispatch) => {
-    dispatch(change({formData: data}))
+    dispatch(change({ formData: data }))
   }
 }
