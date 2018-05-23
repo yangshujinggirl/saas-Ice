@@ -27,7 +27,9 @@ export default class LoanApplication extends Component {
 
   constructor(props) {
     super(props);
-    this.field = new Field(this);
+    this.field = new Field(this,{
+      autoUnmount: true
+    });
     this.state = {
       index: 0,
       tableList: [],
@@ -57,7 +59,7 @@ export default class LoanApplication extends Component {
       })
       .then((res) => {
         if (res && res.data && res.code == 200) {
-          console.log(res.data);
+          // console.log(res.data);
           this.setState({
             data:res.data.list
           })
