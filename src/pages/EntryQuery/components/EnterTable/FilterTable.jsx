@@ -101,14 +101,14 @@ export default class EnhanceTable extends BaseApp {
   render() {
     // const tableData = this.props.bindingData.tableData;
     const tableData = this.props.pageData || {};
-    const {pageData ={}, columns} = this.props;
+    const {pageData ={}, columns, isFetching} = this.props;
     const { filterFormValue } = this.state;
 
     return (
       <IceContainer className="pch-container">
         <Title title="车贷查询"/>
         <FilterForm onSubmit={this.fetchData} />
-          <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
+          <PchTable isLoading={isFetching} dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
           <PchPagination dataSource={pageData} onChange={this.changePage} />
         </IceContainer>
     );

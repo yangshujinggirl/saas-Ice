@@ -15,6 +15,7 @@ export default {
     let isProductNameSelectDom = activeSelect.className.indexOf(productNameSelectClass) > -1;
     let isProductNameSelectChildDom = activeSelect.getAttribute('data-parent') == productNameSelectClass;
     if(isProductNameSelectChildDom){
+      if(!isProductNameSelectDom && activeSelect.className.indexOf('selected') > -1)return;
       // 点击区域为select子节点，需要筛选出本次激活的select节点
       while(activeSelect.className.indexOf(productNameSelectClass) < 0){
         activeSelect = activeSelect.parentNode;
@@ -46,6 +47,7 @@ export default {
     let selectBoxClass = this.data.selectBoxClass;
     let selectClass = this.data.selectClass;
     options.onclick = function(e){
+      debugger;
       if(!this.selectClass)this.selectClass = selectClass;
       if(!this.selectBoxClass)this.selectBoxClass = selectBoxClass;
       selectClass = null;
@@ -53,7 +55,7 @@ export default {
       let target = e.target;
       let input = this.parentNode.getElementsByTagName('input')[0];
       if(target.tagName.toLowerCase() == 'li'){
-        if(target.className.indexOf(selectBoxClass) < 0){
+        if(target.className.indexOf(this.selectBoxClass) < 0){
           //用于显示的中文name
           input.value = target.innerHTML;
           //实际选中的name
