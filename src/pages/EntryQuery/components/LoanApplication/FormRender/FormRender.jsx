@@ -138,25 +138,6 @@ export default class FormRender extends Component {
        return(
                <FormItem  key={el.id} className='item half' label={this.label(el.label)}
                           {...formItemLayoutCombobox}>
-
-               {/*<Combobox*/}
-                     {/*// onInputUpdate={this.onInputUpdate.bind(this)}*/}
-                     {/*fillProps={el.label}*/}
-                     {/*// filterLocal={true}*/}
-                     {/*placeholder={"请输入"+el.label}*/}
-                     {/*style={{width:"100%"}}*/}
-                     {/*autoWidth*/}
-                     {/*hasClear*/}
-                     {/*disabled={el.isReadonly}*/}
-                     {/*// onChange={this.onChange}*/}
-                     {/*dataSource={this.state.list}*/}
-                     {/*// onSearch ={this.onSearch}*/}
-                     {/*onInputUpdate={this.onInputUpdate.bind(this)}*/}
-                     {/*{...init(el.name, {*/}
-                       {/*initValue: el.value,*/}
-                       {/*rules: [{ required:  el.isRequired, message: el.label +"不能为空" }]*/}
-                     {/*})}*/}
-                   {/*/>*/}
                  <Select
                    hasClear
                    showSearch
@@ -242,7 +223,7 @@ export default class FormRender extends Component {
           <NumberPicker
             disabled={ el.isReadonly }
             defaultValue={el.value ? parseInt(el.value) : el.value}
-            min={0}
+            min={el.minValue}
             max={el.maxValue}
             inputWidth={'100px'}
             {...init(el.name, {
@@ -421,8 +402,8 @@ export default class FormRender extends Component {
   }
   //更改渲染附属字段
   isChange = (outIndex,inIndex)=>{
-    var name = this.props.detail.list[outIndex].fields[inIndex].name;
-    this.props.detail.list[outIndex].fields[inIndex].value = this.props.field.getValue(name);
+    var name = this.props.data[outIndex].fields[inIndex].name;
+    this.props.data[outIndex].fields[inIndex].value = this.props.field.getValue(name);
   }
   //调用秒拒功能
   refuse = (name)=>{

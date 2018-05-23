@@ -187,7 +187,7 @@ export default class LoanApplication extends Component {
   };
 
   render() {
-    const details = this.props.detail || {};
+    // const details = this.props.detail || {};
     const {data =[]} = this.state
     console.log(data)
     const init = this.field.init;
@@ -238,3 +238,9 @@ export default class LoanApplication extends Component {
     );
   }
 }
+const styles = {
+  bg: {
+    backgroundColor: '#fffffB',
+  },
+
+};

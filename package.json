@@ -23,7 +23,6 @@
     "bizcharts": "latest",
     "classnames": "^2.2.5",
     "core-js": "^2.5.5",
-    "deepstream.io-client-js": "^2.3.0",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.3",
     "enquire-js": "^0.1.2",
@@ -66,7 +65,7 @@
     "prod": "export NODE_ENV=production && node generate && ice build && scp -r public build",
     "lint": "eslint . --ext '.js,.jsx' --fix",
     "copy": "cp -R ./build/ ../saas-pro",
-    "ft1": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
+    "ft1": "echo '\\033[40;32m 删除已有build目录，再次构建build目录... \\033[0m';rm -r -f build; npm run build;echo '\\033[40;32m 构建bulid目录完成，准备上传至测试环境172.16.0.242/data/pingchang/saas/... \\033[0m';scp -r build/* root@172.16.0.242:/data/pingchang/saas/",
     "up": "scp -r build/* root@172.16.1.210:/data/pingchang/saas/",
     "build": "ice build"
   },
