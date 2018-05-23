@@ -238,9 +238,3 @@ export default class LoanApplication extends Component {
     );
   }
 }
-const styles = {
-  bg: {
-    backgroundColor: '#fffffB',
-  },
-
-};
