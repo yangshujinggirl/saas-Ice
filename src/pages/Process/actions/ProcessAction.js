@@ -34,10 +34,10 @@ function fetchSuccess(data) {
  * 请求失败后的通知
  * @param error 异常信息
  */
-function fetchFailed(error) {
+function fetchFailed(error = {}) {
   return {
     type: T.FETCH_FAILED,
-    error,
+    ...error,
     time: Date.now()
   }
 }
@@ -93,8 +93,13 @@ export const save = (data) => {
         },
         duration: 2000
       });
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
+    }).catch((data) => {
+      // Feedback.toast.show({
+      //     type: 'error',
+      //     content: res.msg,
+      //   });
+      //   dispatch(fetchFailed({ isSubmiting: false }))
+      dispatch(fetchFailed(data))
     })
   }
 }
