@@ -69,7 +69,7 @@ class ProductReq extends CurdReq {
   //产品提交第三步保存
   saveProductAdd( productId,data,processDefId) {
     console.log(data)
-    var url = this._config.WF_HOST + `/processes/product/${processDefId}`;
+    var url = this._config.WF_HOST + `/processes/product/${processDefId}/loan`;
     let options = {
       url: url,
       method: 'POST',
