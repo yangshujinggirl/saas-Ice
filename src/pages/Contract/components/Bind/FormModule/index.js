@@ -65,12 +65,15 @@ class FormModule extends BaseApp {
         let line = document.createTextNode("******");
         let m = p.innerHTML.match(/_BLANK_(.+)_BLANK_/);
         let kv;
+        // 替换自定义的部分
         if(m[1].indexOf('productname') == 0){
           kv = m[1].match(/(productname\d+c\d+)_(.+)/);
         }else{
+          // 替换选择给定产品字段部分
           kv = m[1].match(/(.+)_(null)/);
         }
-         keyVales.push(kv)
+        // 存取绑定部分内容[name_value, name, value]
+        keyVales.push(kv)
         p.parentNode.replaceChild(line, p);
       })
       html = div.innerHTML;
@@ -79,11 +82,12 @@ class FormModule extends BaseApp {
     }
     
     html = html.replace(/_{3,}|\*{6}/g, (s, pos)=>{
-      let i = 0, val = '';
+      let i = 0, val = '', productName;
       if(s.indexOf("_") > -1){
         i = kindex++;
       }else{
-        val = this.props.productNames.length > 0 && this.props.productNames.find(p=>p.name == keyVales[keyValesIndex][1]).label || '';
+        productName = this.props.productNames.length > 0 && this.props.productNames.find(p=>p.name == keyVales[keyValesIndex][1]);
+        val = productName && productName.label || keyVales[keyValesIndex][2] || '';
         val = val == 'null' ? '' : val;
         i = keyValesIndex++
       }
