@@ -165,7 +165,7 @@ class Bind extends BaseApp {
       p.productId = p.id;
       delete p.id
       return p
-    })];
+    })]; 
     let templateExtends = [];
     let content = "";
     inputs.forEach(select=>{
@@ -233,7 +233,7 @@ class Bind extends BaseApp {
                       <Table.Column title="产品类型" dataIndex="productType" />
                       <Table.Column title="产品名称" dataIndex="name" />
                     </Table>
-                    <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
+                    <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
                   </div>
                   <div className="btn-wrap">
                     <Button className="add-btn" onClick={this.addItem.bind(this)}> >> </Button>
