@@ -286,7 +286,8 @@ export default class CreditInformationForm extends BaseComponent {
       }
     }
     if (value) {
-      if (parseFloat(value) < 0 || value.indexOf('.') !== -1) {
+      console.log(typeof (value))
+      if (parseFloat(value) < 0 || String(value).indexOf(".")>-1) {
         callback('只能输入正整数');
         return;
       }
@@ -1148,7 +1149,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('select', 'historyMoreThan90')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="historyMoreThan90"/></div>
@@ -1165,7 +1166,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('select', 'hasLoan')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
 
 
@@ -1198,7 +1199,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('input', 'spouseHasLoan')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
 
 

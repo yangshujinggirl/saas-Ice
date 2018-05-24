@@ -141,7 +141,7 @@ export default class FormRenderFormRender extends Component {
     var disabled;
     // console.log(el)
     if (el.type == 'STRING') {
-      console.log(el.value);
+      // console.log(el.value);
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
