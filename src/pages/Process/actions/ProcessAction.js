@@ -94,7 +94,8 @@ export const save = (data) => {
         duration: 2000
       });
     }).catch((ex) => {
-      dispatch(fetchFailed(ex))
+      dispatch(fetchFailed({ isSubmiting: false }))
+      // dispatch(fetchFailed(ex))
     })
   }
 }
