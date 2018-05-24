@@ -73,7 +73,8 @@ export default class DiaLog extends Component {
         collectionDetails: [{
           dataName: '',
           fileSize: undefined,
-          fileType: ''
+          fileType: '',
+          orderId: 0
         }]
       })
     }
@@ -101,7 +102,8 @@ export default class DiaLog extends Component {
     tempData.collectionDetails.push({
       dataName: '',
       fileSize: undefined,
-      fileType: ''
+      fileType: '',
+      orderId: tempData.collectionDetails.length
     })
     this.props.actions.changeFileDetail(tempData);
   }
