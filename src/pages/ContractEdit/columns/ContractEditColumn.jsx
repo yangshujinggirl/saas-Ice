@@ -35,11 +35,11 @@ class ContractEditColumn extends BaseColumn {
         this._columns = [{
             title: '贷款编号',
             dataIndex: 'loanNo',
-            width: 120
+            width: 100
         }, {
             title: '合同编号',
             dataIndex: 'contractNo',
-            width: 120
+            width: 170
         }, {
             title: '客户姓名',
             dataIndex: 'name',
@@ -47,18 +47,18 @@ class ContractEditColumn extends BaseColumn {
         }, {
             title: '证件类型',
             dataIndex: 'cardType',
-            width: 160,
+            width: 120,
             cell:(value, index, record)=> {
               return cardTrans[record.cardType]
             }
         }, {
             title: '证件号码',
             dataIndex: 'cardNo',
-            width: 160
+            width: 170
         }, {
             title: '手机号',
             dataIndex: 'phone',
-            width: 160
+            width: 120
         }, {
             title: '合同时间',
             dataIndex: 'contractTime',
@@ -87,7 +87,7 @@ class ContractEditColumn extends BaseColumn {
         }, {
             title: '产品名称',
             dataIndex: 'productName',
-            width: 120
+            width: 180
         }, {
             title: '客户经理',
             dataIndex: 'customerManagerName',
