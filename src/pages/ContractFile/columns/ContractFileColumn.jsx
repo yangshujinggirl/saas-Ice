@@ -77,7 +77,7 @@ class ContractFileColumn extends BaseColumn {
             dataIndex: 'contractTime',
             width: 160,
             cell:(value, index, record) => {
-              return Moment(record.contractTime).format('YYYY-MM-DD h:mm:ss')
+              return Moment(record.contractTime).format('YYYY-MM-DD H:mm:ss')
             }
         }, {
             title: '手机号码',
