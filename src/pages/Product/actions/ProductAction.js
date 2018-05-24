@@ -119,14 +119,29 @@ export const productsave = (data, id) => {
   }
 }
 ////产品提交第三步保存
-export const saveProductAdd = (id, data,processDefId) => {
+export const saveProductAdd = (id, data,processDefId,tempData) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
-
     Req.saveProductAdd(id, data,processDefId).then((res) => {
-      if (!res || res.code != 200) return;
-      hashHistory.push('/product/search')
+
+      if (!res || res.code != 200){ 
+        return;
+      }else{
+
+        Req.saveContractTemplate(tempData).then((res)=>{
+          console.log(tempData)
+          if (!res || res.code != 200) return;
+          
+          hashHistory.push('/product/search');
+
+        }).catch((ex)=>{
+            dispatch(fetchFailed(ex))
+          
+        })
+
+        
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -320,6 +335,22 @@ export const fileNameRepeat = (condition) => {
     Req.fileNameRepeat(condition).then((res) => {
       if (res.code == 200) {
         dispatch(fetchSuccess({ fileAllName: res }))
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//合同模板列表
+export const getContractTemplateList = (condition)=>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getContractTemplateList(condition).then((res) => {
+      if (res.code == 200) {
+        dispatch(fetchSuccess({ templateList: res.data }))
       }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

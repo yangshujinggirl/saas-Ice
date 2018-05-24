@@ -81,7 +81,7 @@ class ProductReq extends CurdReq {
 
   //流程名称
   _processList(condition){
-    var url = this._config.WF_HOST + `/processes`;
+    var url = this._config.WF_HOST + `/processes?status=1`;
     let options = {
       url: url,
       method: 'get',
@@ -90,6 +90,30 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
+
+  //合同模板、
+  getContractTemplateList(condition){
+    var url = this._config.CONTRACT_HOST + `/contract/template/`;
+    let options = {
+      url: url,
+      method: 'get',
+      params: condition,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //合同保存
+  saveContractTemplate(data){
+    var url = this._config.CONTRACT_HOST + `/contract/template/bondTemplate`;
+    let options = {
+      url: url,
+      method: 'post',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
   //产品修改
   prodedit(id) {
     let options = {
