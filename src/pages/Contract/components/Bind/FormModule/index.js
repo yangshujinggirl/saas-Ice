@@ -53,8 +53,8 @@ class FormModule extends BaseApp {
   parseHTML(){
     let html = this.props.html;
     if(!html || html.length <= 0)return '';
-    let kindex = 0, 
-        keyVales = [], 
+    let kindex = 0,
+        keyVales = [],
         keyValesIndex = 0;
     //当已经绑定过产品字段的合同模版
     if(html.indexOf('_BLANK_') > -1){
@@ -80,7 +80,7 @@ class FormModule extends BaseApp {
       //记录已绑定的产品字段的个数
       kindex = keyVales.length
     }
-    
+
     html = html.replace(/_{3,}|\*{6}/g, (s, pos)=>{
       let i = 0, val = '', productName;
       if(s.indexOf("_") > -1){

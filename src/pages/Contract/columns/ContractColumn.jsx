@@ -26,7 +26,7 @@ class ContractColumn extends BaseColumn {
             dataIndex: 'updatedAt',
             width: 160,
             cell:(value, index, record) => {
-              return Moment(record.updatedAt).format('YYYY-MM-DD h:mm:ss')
+              return Moment(record.updatedAt).format('YYYY-MM-DD H:mm:ss')
             }
         }, {
             title: '状态',
