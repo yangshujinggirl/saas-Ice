@@ -216,6 +216,27 @@ export default class FormRender extends Component {
     }
     else if (el.type == 'DECIMAL') {
       el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      if (el.minValue || el.maxValue) {
+        return (
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}>
+            <NumberPicker
+              step={0.01}
+              disabled={el.isReadonly}
+              // defaultValue={el.value ? parseInt(el.value) : el.value}
+              min={el.minValue}
+              max={el.maxValue}
+              inputWidth={'100px'}
+              {...init(el.name, {
+                initValue: el.value ? parseInt(el.value) : '',
+                rules: [
+                  { required: el.isRequired, message: el.label + '不能为空' },
+                ],
+              })}
+            />
+          </FormItem>
+        );
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -244,7 +265,7 @@ export default class FormRender extends Component {
             max={el.maxValue}
             inputWidth={'100px'}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : el.value,
+              initValue: el.value ? parseInt(el.value) : el.minValue,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
               ],
