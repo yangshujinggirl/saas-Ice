@@ -296,7 +296,7 @@ export default class FormRenderFormRender extends Component {
                               {...formItemLayoutR}>
           <RadioGroup
             disabled={el.isReadonly}
-            defaultValue={value + ''}
+            // defaultValue={value + ''}
             {...init(el.name, {
               initValue: value + '',
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
