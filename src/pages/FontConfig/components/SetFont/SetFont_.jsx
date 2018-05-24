@@ -168,7 +168,7 @@ export default class setFont extends Component {
 
         this.setState({isSubmiting: true});
 
-         // 如果id存在就更新字段
+         // 如果id(页面ID)存在就更新字段
         if (id) {
             FontConfigReq.changPageName(reqData,id).then((res) => {
                 this.setState({isSubmiting: false});
@@ -225,12 +225,6 @@ export default class setFont extends Component {
             if(id){
                 FontConfigReq.submitModifyCode(fields, id, fields.id).then((data) => {
                     if (data.code == 200) {
-                        // resData.fieldset[index].fields.splice(inj, 1, fields);
-                        // this.setState({
-                        //     resData,
-                        //     dialogOne: false,
-                        //     dialogTwo: false
-                        // })
                         this.removeField(resData, index, inj, fields);
                     }
                 })
@@ -238,17 +232,16 @@ export default class setFont extends Component {
                 this.removeField(resData, index, inj, fields);
             }
         } else {
+            // 自定义字段的时候只有在输入字段名称选择字段类型才当作有新增字段，否则只是选择了字段
+            if(!fields.name || !fields.type){
+                this.closeDialog();
+                return;
+            }
+
             if(id){
                 FontConfigReq.submitCustomeCode(fields, id).then((data) => {
                     if (data.code == 200) {
                         fields.id = data.data.id
-                        // resData.fieldset[fields.fieldsetOrder].fields.push(fields);
-                        // this.setState({
-                        //     resData,
-                        //     dialogOne: false,
-                        //     dialogTwo: false
-                        // })
-
                         this.addField(resData, index, fields);
                     } else {
                         console.log("添加字段", data.msg);
@@ -265,20 +258,25 @@ export default class setFont extends Component {
 
     removeField(resData, i, j, fields){
         resData.fieldset[i].fields.splice(j, 1, fields);
-        this.setState({
-            resData,
-            dialogOne: false,
-            dialogTwo: false
-        })
+        this.closeDialog(resData);
     }
 
     addField(resData, i, fields){
         resData.fieldset[i].fields.push(fields);
-        this.setState({
-            resData,
+        this.closeDialog(resData);
+    }
+
+    closeDialog(resData){
+        let obj = {
             dialogOne: false,
             dialogTwo: false
-        })
+        };
+
+        if(resData){
+            obj.resData = resData;
+        }
+
+        this.setState(obj);
     }
 
     /**
@@ -318,7 +316,7 @@ export default class setFont extends Component {
             let fieldset = item.fields[0].fieldset;
 
             resData.fieldset.map((oitem, j) => {
-                if(oitem.fields[0].fieldset == fieldset){
+                if(oitem.fields.length > 0 && oitem.fields[0].fieldset == fieldset){
                     oitem.fields = oitem.fields.concat(item.fields);
                     existFieldset = true;
                 }
@@ -377,7 +375,7 @@ export default class setFont extends Component {
      * 2. 自定义字段设置isCustom=true
      * 3. 默认添加排在当前组的最后
      * 4. 设置一个默认options
-     * @param  {[type]} index [description]
+     * @param  {[type]} index 区域的索引值
      * @return {[type]}       [description]
      */
     handleAddCode = (index) => {

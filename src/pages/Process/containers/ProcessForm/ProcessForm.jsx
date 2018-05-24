@@ -298,8 +298,20 @@ export default class ProcessForm extends Component {
             }
             case PROCESS_VIEW.EDITPAGE : {
                 // 编辑页面
-                // 有页面id的直接获取页面详情（编辑）
-                // 没有id的获取页面字段（新增）
+                // 当流程上定义多个进件的时候，如果其中一个已经编辑了页面，在编辑其他进件需要使用第一个的页面ID
+                // 也就是一个流程的进件只会有一个页面ID
+                // 同时对应哪一步保存的字段上都要追加step=几的值
+                let pageId;
+                formData.taskItems.map((item) => {
+                    if(item.pageId){
+                        pageId = item.pageId;
+                        return;
+                    }
+                })
+
+                // 1. 有页面ID的直接获取页面详情（编辑）
+                // 2. 当前进件没有页面ID但该流程已有别的进件有页面ID
+                // 3. 该流程的进件都没有ID的获取页面字段（新增）
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
                     actions.getAllPageFields({
@@ -309,14 +321,24 @@ export default class ProcessForm extends Component {
                         pageId: item.pageId,
                         order: idx
                     });
-                }else{
+                }else if(pageId){
                     actions.getPageFields({
                         step: this.getStepFromData(formData.taskItems, idx),
                         excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     actions.getAllPageFields();
                     this.setState({
-                        pageId: item.pageId,
+                        pageId: pageId,
+                        order: idx
+                    });
+                }else {
+                    actions.getPageFields({
+                        step: this.getStepFromData(formData.taskItems, idx),
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
+                    });
+                    actions.getAllPageFields();
+                    this.setState({
+                        // pageId: item.pageId,
                         order: idx
                     });
                 }
