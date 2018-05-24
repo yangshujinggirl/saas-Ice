@@ -159,9 +159,10 @@ class Bind extends BaseApp {
   }
   // 保存绑定字段到合同模版
   bindProductName(){
+    debugger
     let dom = this.refs.FormModule.refs.ProductNameForm.cloneNode(true);
     let inputs = [...dom.querySelectorAll('.product-name-select')];
-    let templateProducts = [...this.state.selectedRow.map(p=>{
+    let templateProducts = [...this.state.dataSourceRight.map(p=>{
       p.productId = p.id;
       delete p.id
       return p
