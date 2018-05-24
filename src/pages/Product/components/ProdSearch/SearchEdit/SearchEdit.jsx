@@ -70,7 +70,6 @@ export default class SearchEdit extends Component {
      */
     upData = () => {
         let { actions, pageData, params, formData } = this.props;
-        console.log(this.state.processName)
         let prod = formData.product || {}
         this.formRef.validateAll((error, value) => {
             console.log('error', error, 'value', value);
@@ -84,6 +83,7 @@ export default class SearchEdit extends Component {
             value.expirationDate = value.time[1];
             value.id = params.id;
             value.name = prod.name;
+            value.processId = this.state.processId;
             value.processName = this.state.processName;
 
             //保存
@@ -110,8 +110,13 @@ export default class SearchEdit extends Component {
     onChangeProcess = (value, option) => {
 
         this.setState({
+            processId: option.value,
             processName: option.label
         })
+    }
+
+    renderProcessName(value, index, record){
+        return <Link to={`process/detail/${record.processId}`}>{value}</Link>
     }
 
 
@@ -233,7 +238,7 @@ export default class SearchEdit extends Component {
                             <Table.Column title="版本" dataIndex="id" width={120} />
                             <Table.Column title="生效期限" dataIndex="temptime" width={250} />
                             <Table.Column title="状态" dataIndex="status" width={160} />
-                            <Table.Column title="流程" dataIndex="processName" width={100} />
+                            <Table.Column title="流程" dataIndex="processName" width={100} cell={this.renderProcessName} />
                             <Table.Column title="时间" dataIndex="operateAt" width={120} />
                             <Table.Column title="操作人" dataIndex="operateName" width={120} />
                         </Table>

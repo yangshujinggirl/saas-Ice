@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Dialog, Checkbox, Radio, Balloon, DatePicker, Select } from '@icedesign/base';
+import { Button, Input, Dialog, Checkbox, Radio, Balloon, DatePicker, Select, CascaderSelect, Feedback } from '@icedesign/base';
 import cx from 'classnames';
 import FontConfigReq from './../../../reqs/FontConfigReq.js';
 import SetFontBaseDialog from '../SetFontBaseDialog';
@@ -167,6 +167,13 @@ export default class SetFontFieldsets extends Component {
         let id = this.props.id
         const newArr = this.props.resData;
         let deleteObj = newArr.fieldset[index].name;
+
+        // 校验当前区域是否有必填字段
+        let allFields = newArr.fieldset[index].fields.filter((item) => {return item.isRequired});
+        if(allFields.length > 0){
+          Feedback.toast.error('含有*的区域不能删除');
+          return;
+        }
 
         Dialog.confirm({
             content: `是否确认删除${deleteObj}区域？`,

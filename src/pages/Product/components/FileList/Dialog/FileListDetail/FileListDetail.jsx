@@ -47,7 +47,8 @@ export default class DiaLog extends Component {
 
     renderFileType = (value, index, record, context) => {
         return (
-            record.fileTypeArr && record.fileTypeArr.map((typeItem, j) => {
+            <div>
+            {record.fileTypeArr && record.fileTypeArr.map((typeItem, j) => {
                 return (
                     <div className="filelist-exts-row" key={j}>
                         <span className="filelist-exts-row-name">{typeItem.name}</span>
@@ -56,7 +57,12 @@ export default class DiaLog extends Component {
                         </IceFormBinder>
                     </div>
                 )
-            })
+            })}
+            <IceFormBinder name={`collectionDetails[${index}].fileType`} required message="文件类型必填">
+                <Input size="large" placeholder="文件类型" htmlType="hidden" />
+            </IceFormBinder>
+            <div><IceFormError name={`collectionDetails[${index}].fileType`}/></div>
+            </div>
         );
     }
     renderFileSize = (value, index, record, context) => {
