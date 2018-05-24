@@ -295,7 +295,7 @@ export default class addThree extends Component {
                               {
                                 this.state.processList.map((item, i) => {
                                   return (
-                                    <Option value={item.id} key={i}>{item.processName}</Option>
+                                    <Option value={item.id.toString()} key={i}>{item.processName}</Option>
                                   )
                                 })
                               }

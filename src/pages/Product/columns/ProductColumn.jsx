@@ -46,8 +46,8 @@ class ProductColumn extends BaseColumn {
                 return record.isRetainage ? '是' : '否'
             }
         }, {
-            title: '资金方',
-            dataIndex: 'createdUser',
+            title: '资方',
+            dataIndex: 'tenantName',
             width: 120
         }, {
             title: '金额范围(元)',

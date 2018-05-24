@@ -3,7 +3,7 @@ import IceContainer from '@icedesign/container';
 import './ProcessForm.scss';
 import { hashHistory } from 'react-router';
 
-import { Form, Icon, Input, Button, Checkbox, Select, Switch, Radio, Grid, Field, Dialog } from '@icedesign/base';
+import { Form, Icon, Input, Button, Checkbox, Select, Radio, Grid, Field, Dialog, Feedback } from '@icedesign/base';
 
 const {Row, Col} = Grid;
 
@@ -232,6 +232,13 @@ export default class ProcessForm extends Component {
             if (errors) {
                 return false;
             }
+
+            // 添加校验流程至少需要两个模块组成
+            if(values.taskItems.length < 2){
+                Feedback.toast.error('流程需要由两个或两个以上系统模块组成');
+                return;
+            }
+            // 
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 1;
             values.processType = 'LOAN';
