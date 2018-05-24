@@ -133,6 +133,20 @@ class MaterialSubmit extends BaseComponent {
 
   handleFileChange(info) {
     console.log(info);
+    info.fileList.map(item => {
+      if (item.status == 'done') {
+        if (item.type.indexOf('image') == 0) {
+          item.size = item.originFileObj.size;
+          item.downloadURL = item.imgURL;
+          item.fileURL = item.imgURL;
+        } else {
+          item.size = item.originFileObj.size;
+          item.downloadURL = item.imgURL;
+          item.imgURL = '/public/images/creditInformation/filed.png';
+          item.fileURL = item.imgURL;
+        }
+      }
+    });
     this.setState({
       fileList: info.fileList,
     });

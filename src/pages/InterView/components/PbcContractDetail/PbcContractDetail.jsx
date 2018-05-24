@@ -7,7 +7,7 @@ import { Title } from 'components';
 import { Feedback, } from '@icedesign/base/index';
 import { BaseComponent } from 'base';
 import './PbcContractDetail.scss';
-import { Grid, Form, Input,Balloon} from '@icedesign/base';
+import { Grid, Form, Input, Balloon } from '@icedesign/base';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -39,10 +39,12 @@ export default class PbcContractDetail extends BaseComponent {
       xl: 6,
     };
   }
+
 //label的提示
   labelTitle = (label) => {
     var labelName = <span> {label}</span>;
-    console.log(labelName)
+    console.log(labelName);
+    console.log(label);
     return (
       <Balloon
         type="primary"
@@ -67,213 +69,183 @@ export default class PbcContractDetail extends BaseComponent {
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 合同编号:</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="contractCode"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="contractCode"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 合同签订地：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="contractSignPlace"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="contractSignPlace"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 经销商账户名称：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="channelName"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="channelName"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 经销商账号：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="channelAccountNumber"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="channelAccountNumber"/></div>
                   </FormItem>
                 </Col>
 
-                <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={<span> 经销商账号：</span>}>
-                    <IceFormBinder
-                      name="credentialsNo"
-                    >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
-                    </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
-                  </FormItem>
-                </Col>
-
-
-                <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={<span> 经销商账号：</span>}>
-                    <IceFormBinder
-                      name="credentialsNo"
-                    >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
-                    </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
-                  </FormItem>
-                </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 商品名称或品牌：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="productName"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="productName"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span>商品型号、颜色：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="productSerialColor"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="productSerialColor"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 客户姓名：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerName"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="customerName"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 证件类型：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerCardType"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="customerCardType"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 证件号码：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerCardNo"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="customerCardNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 客户性别：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerSex"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
+                    <div><IceFormError name="customerSex"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 客户手机号码：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerMobile"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 证件有效期：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerCardValiditydate"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 出生日期：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerBirthDate"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 现居住地址：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="cusomerLiveAddress"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col><Col {...this.colspans}>
                 <FormItem {...formItemLayout} label={<span> 邮政编码：</span>}>
                   <IceFormBinder
-                    name="credentialsNo"
+                    name="cusomerZipCode"
                   >
                     <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                   </IceFormBinder>
-                  <div><IceFormError name="credentialsNo"/></div>
+                  <div><IceFormError name="cusomerZipCode"/></div>
                 </FormItem>
               </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 建筑面积或规格型号：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerBuiltUpSpace"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 婚姻状态：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerMaritalStatus"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 国籍：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerNational"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 签证有效期：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerVisaValiditydate"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
 
@@ -281,83 +253,69 @@ export default class PbcContractDetail extends BaseComponent {
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 签证类型：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerVisaType"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 现已居住时间(年)：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerLivedTime"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 住宅性质：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerHouseNature"
                     >
                       <Input disabled size="large" placeholder="请输入" className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 住宅电话：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerHouseTel"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 母亲姓氏：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerMotherSurname"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 单位名称：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerCompName"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
-                  </FormItem>
-                </Col>
-                <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={<span> 签证有效期：</span>}>
-                    <IceFormBinder
-                      name="credentialsNo"
-                    >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
-                    </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 行业性质：</span>}>
                     <IceFormBinder
-                      name="credentialsNo"
+                      name="customerCompName"
                     >
-                      <Input disabled size="large" placeholder="请输入" className="custom-input"/>
+                      <Input disabled size="large"  className="custom-input"/>
                     </IceFormBinder>
-                    <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
+
+
+
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 职业信息：</span>}>
                     <IceFormBinder
@@ -571,7 +529,13 @@ export default class PbcContractDetail extends BaseComponent {
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={this.labelTitle('甲方应在本合同签署x日内与乙方到有关登记部门办理抵押登记(日):')}>
+                  <FormItem {...formItemLayout} label={
+                    <Balloon
+                      trigger={<span> 甲方应在本合同签署x日内与乙方到有关登记部门办理抵押登记(日)：</span>}
+                      triggerType="hover">
+                      甲方应在本合同签署x日内与乙方到有关登记部门办理抵押登记(日)
+                    </Balloon>
+                  }>
                     <IceFormBinder
                       name="credentialsNo"
                     >
@@ -582,14 +546,13 @@ export default class PbcContractDetail extends BaseComponent {
                 </Col>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={
-
-                    <Balloon align='bl'
-                    // style={styles.box}
-                    trigger={<span> 担保最高本金金额不超过人民币(元)：</span>}
-                    triggerType="hover">
-                    担保最高本金金额不超过人民币(元)：
+                    <Balloon
+                      align='t'
+                      trigger={<span> 担保最高本金金额不超过人民币(元)：</span>}
+                      triggerType="hover">
+                      担保最高本金金额不超过人民币(元)：
                     </Balloon>
-                    }>
+                  }>
                     <IceFormBinder
                       name="credentialsNo"
                     >
@@ -609,7 +572,13 @@ export default class PbcContractDetail extends BaseComponent {
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={<span> 本合同项下的抵押财产共作价(元)：</span>}>
+                  <FormItem {...formItemLayout} label={
+                    <Balloon
+                      trigger={<span> 本合同项下的抵押财产共作价(元)：</span>}
+                      triggerType="hover">
+                      本合同项下的抵押财产共作价(元)：
+                    </Balloon>
+                  }>
                     <IceFormBinder
                       name="credentialsNo"
                     >
@@ -619,7 +588,13 @@ export default class PbcContractDetail extends BaseComponent {
                   </FormItem>
                 </Col>
                 <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={<span> 乙方催告后的x日乙方有权停止发放尚未划付的分期付款(日)：</span>}>
+                  <FormItem {...formItemLayout} label={
+                    <Balloon
+                      trigger={<span> 乙方催告后的x日乙方有权停止发放尚未划付的分期付款(日)：</span>}
+                      triggerType="hover">
+                      乙方催告后的x日乙方有权停止发放尚未划付的分期付款(日)：
+                    </Balloon>
+                  }>
                     <IceFormBinder
                       name="credentialsNo"
                     >
@@ -878,8 +853,8 @@ export default class PbcContractDetail extends BaseComponent {
                     <div><IceFormError name="credentialsNo"/></div>
                   </FormItem>
                 </Col>
-                <Col {...this.colspans}>
-                  <FormItem {...formItemLayout} label={<span> 若您申请的金卡或白金卡未能满足要求，我们将为您寄送同一品牌的普卡：</span>}>
+                <Col {...this.colspans} >
+                  <FormItem {...formItemLayout}  className='item' label={<span > 若您申请的金卡或白金卡未能满足要求，我们将为您寄送同一品牌的普卡：</span>}>
                     <IceFormBinder
                       name="credentialsNo"
                     >
