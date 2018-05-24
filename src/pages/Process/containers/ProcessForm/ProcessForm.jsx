@@ -27,7 +27,8 @@ export default class ProcessForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: PROCESS_VIEW.EDITFORM
+            view: PROCESS_VIEW.EDITFORM,
+            currentTaskOrder: 1
         };
     }
 
@@ -114,11 +115,20 @@ export default class ProcessForm extends Component {
 
             customMenuList[0].limitedAddTimes--;
             formData.taskItems = [];
-            formData.taskItems.push(Object.assign({
+            // formData.taskItems.push(Object.assign({
+            //     taskOrder: 1,
+            //     taskAlias: customMenuList[0].taskTypeName,
+            //     taskTypeId: customMenuList[0].id
+            // }, customMenuList[0]));
+
+            formData.taskItems.push({
+                ...customMenuList[0],
+                transitionItems: this.deepCopyArr(customMenuList[0].transitionItems),
                 taskOrder: 1,
                 taskAlias: customMenuList[0].taskTypeName,
                 taskTypeId: customMenuList[0].id
-            }, customMenuList[0]));
+            });
+
 
             // 只处理一次
             this.props.actions.changeHasProcess(true);
@@ -133,12 +143,22 @@ export default class ProcessForm extends Component {
         if (type === 'add') {
             //添加模块
             data.limitedAddTimes--;
-            taskItems.push(Object.assign({
+            // taskItems.push(Object.assign({
+            //     taskOrder: taskItems.length + 1,
+            //     // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
+            //     taskAlias: data.taskTypeName + taskItems.length,
+            //     taskTypeId: data.id
+            // }, data));
+
+            taskItems.push({
+                ...data,
+                transitionItems: this.deepCopyArr(data.transitionItems),
                 taskOrder: taskItems.length + 1,
                 // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
                 taskAlias: data.taskTypeName + taskItems.length,
                 taskTypeId: data.id
-            }, data));
+            });
+
         } else {
             let customMenuList = this.props.customMenuList;
             customMenuList.map((item, i) => {
@@ -155,6 +175,17 @@ export default class ProcessForm extends Component {
         });
 
     };
+
+    // 深拷贝对象数组
+    deepCopyArr(arr){
+        let result = [];
+
+        arr.map((item) => {
+            result.push({...item});
+        })
+
+        return result;
+    }
 
     //表单校验change
     formChange = value => {

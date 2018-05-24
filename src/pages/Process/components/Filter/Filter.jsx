@@ -25,8 +25,8 @@ export default class Filter extends BaseCondition {
             value: {
                 businessTypeId: '1',
                 businessTypeName: '贷款业务',
-                tenantId: SpDataSource.defaultValue,
-                tenantName: SpDataSource.defaultLabel,
+                tenantId: this.SpDataSource.defaultValue,
+                tenantName: this.SpDataSource.defaultLabel,
                 processName: '',
             }
         };
@@ -70,7 +70,7 @@ export default class Filter extends BaseCondition {
                             <Col {...this.colspans}>
                                 <FormItem {...this.formItemLayout} label="资方：">
                                     <IceFormBinder name="tenantId">
-                                    <Select size="large" placeholder="请选择" dataSource={SpDataSource.dataSource} onChange={this.handleTenantChange.bind(this)} />
+                                    <Select size="large" placeholder="请选择" dataSource={this.SpDataSource.dataSource} onChange={this.handleTenantChange.bind(this)} />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
