@@ -250,7 +250,7 @@ Order=(dataIndex,order) =>{
             <Table.Column title="产品类型" dataIndex="productType" width={160} />
             <Table.Column title="生效期限" cell={this.timeRange} width={250} />
             <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
-            <Table.Column title="资金方" dataIndex="createdUser" width={120} />
+            <Table.Column title="资方" dataIndex="tenantName" width={120} />
             <Table.Column title="金额范围(元)" width={200} cell={this.moneyRange} />
             <Table.Column title="期限范围(月)" cell={this.monthRange} width={120} />
             <Table.Column title="贷款比率(%)" cell={this.loanNpiRange} width={120} />

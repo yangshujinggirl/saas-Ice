@@ -97,6 +97,7 @@ class Bind extends BaseApp {
       if(data.length > 0)this.getProductName(data);
     })
   }
+  //查询绑定的产品列表字段
   getProductName(data){
     if(!data instanceof Array)return;
     //查询绑定的产品列表字段
@@ -161,11 +162,11 @@ class Bind extends BaseApp {
   bindProductName(){
     let dom = this.refs.FormModule.refs.ProductNameForm.cloneNode(true);
     let inputs = [...dom.querySelectorAll('.product-name-select')];
-    let templateProducts = [...this.state.selectedRow.map(p=>{
+    let templateProducts = [...this.state.dataSourceRight.map(p=>{
       p.productId = p.id;
       delete p.id
       return p
-    })]; 
+    })];
     let templateExtends = [];
     let content = "";
     inputs.forEach(select=>{

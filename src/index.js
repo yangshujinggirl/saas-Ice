@@ -6,6 +6,9 @@ import 'core-js';
 import ReactDOM from 'react-dom';
 // 载入默认全局样式 normalize 、.clearfix 和一些 mixin 方法等
 import routes from './routes';
+import DeepApp from './base/third/DeepApp.jsx';
+
+let app = new DeepApp();
 
 // 以下代码 ICE 自动生成, 请勿修改
 // const container = document.createElement('div');

@@ -73,7 +73,8 @@ export default class DiaLog extends Component {
         collectionDetails: [{
           dataName: '',
           fileSize: undefined,
-          fileType: ''
+          fileType: '',
+          orderId: 0
         }]
       })
     }
@@ -101,7 +102,8 @@ export default class DiaLog extends Component {
     tempData.collectionDetails.push({
       dataName: '',
       fileSize: undefined,
-      fileType: ''
+      fileType: '',
+      orderId: tempData.collectionDetails.length
     })
     this.props.actions.changeFileDetail(tempData);
   }
@@ -130,12 +132,15 @@ export default class DiaLog extends Component {
       if (error) {
         return;
       }
+       let id = this.props.params.id;
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
+        item.name = value.name;
+        item.collectionId = id
+
       });
 
       // 提交当前填写的数据
-      let id = this.props.params.id;
       if(id){
         actions.fileEditSave(value,id);
       }else{

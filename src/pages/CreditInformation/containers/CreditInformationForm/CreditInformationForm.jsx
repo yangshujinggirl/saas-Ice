@@ -173,43 +173,43 @@ export default class CreditInformationForm extends BaseComponent {
         });
       });
       console.log(value);
+      if (value.baseDocuments.length > 0) {
 
-      Req.postDiff(value)
-        .then((res) => {
-          if (res && res.data && res.code == 200) {
-            if (res.data.diffArrStr) {
-              //处理不同字段
-              this.checkDiff(res.data.diffArrStr);
+        Req.postDiff(value)
+          .then((res) => {
+            if (res && res.data && res.code == 200) {
+              if (res.data.diffArrStr) {
+                //处理不同字段
+                this.checkDiff(res.data.diffArrStr);
 
-              //征信两次不一致弹框
-              const dialogConfirm = Dialog.confirm({
-                needWrapper: false,
-                content: '两次征信数据不一致，是否确认提交数据？',
-                title: '提示',
-                onOk: () => {
-                  dialogConfirm.hide();
-                  Req.saveForm(value)
-                    .then((res) => {
-                      if (res && res.code == 200) {
-                        this.alert();
-                      } else {
-                        Toast.show({
-                          type: 'error',
-                          content: res.msg,
-                        });
-                      }
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
-                },
-              });
-            } else {
-              const dialog = Dialog.confirm({
-                content: '是否确认提交数据？',
-                onOk: () => {
-                  return new Promise(resolve => {
-                    if (value.baseDocuments.length > 0) {
+                //征信两次不一致弹框
+                const dialogConfirm = Dialog.confirm({
+                  needWrapper: false,
+                  content: '两次征信数据不一致，是否确认提交数据？',
+                  title: '提示',
+                  onOk: () => {
+                    dialogConfirm.hide();
+                    Req.saveForm(value)
+                      .then((res) => {
+                        if (res && res.code == 200) {
+                          this.alert();
+                        } else {
+                          Toast.show({
+                            type: 'error',
+                            content: res.msg,
+                          });
+                        }
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  },
+                });
+              } else {
+                const dialog = Dialog.confirm({
+                  content: '是否确认提交数据？',
+                  onOk: () => {
+                    return new Promise(resolve => {
                       Req.saveForm(value)
                         .then((res) => {
                           dialog.hide();
@@ -225,27 +225,26 @@ export default class CreditInformationForm extends BaseComponent {
                         .catch((error) => {
                           console.log(error);
                         });
-                    } else {
-                      dialog.hide();
-                      Toast.show({
-                        type: 'help',
-                        content: '请上传文件～',
-                      });
-                    }
-                  });
-                },
+                    });
+                  },
+                });
+              }
+            } else {
+              Toast.show({
+                type: 'error',
+                content: res.msg,
               });
             }
-          } else {
-            Toast.show({
-              type: 'error',
-              content: res.msg,
-            });
-          }
-        })
-        .catch((error) => {
+          })
+          .catch((error) => {
 
+          });
+      } else {
+        Toast.show({
+          type: 'help',
+          content: '请上传文件～',
         });
+      }
 
 
     });
@@ -286,7 +285,9 @@ export default class CreditInformationForm extends BaseComponent {
       }
     }
     if (value) {
-      if (parseFloat(value) < 0 || value.indexOf('.') !== -1) {
+      console.log(typeof (value));
+      if (parseFloat(value) < 0 || String(value)
+          .indexOf('.') > -1) {
         callback('只能输入正整数');
         return;
       }
@@ -1148,7 +1149,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('select', 'historyMoreThan90')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="historyMoreThan90"/></div>
@@ -1165,7 +1166,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('select', 'hasLoan')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
 
 
@@ -1198,7 +1199,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('input', 'spouseHasLoan')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
 
 
