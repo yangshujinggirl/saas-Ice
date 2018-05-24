@@ -119,7 +119,6 @@ class AddEit extends BaseComponent {
   }
   //提交新增api
   addTemplate(params) {
-    debugger
     Req.addTemplatesApi(params)
     .then((res) => {
       const { code, msg } =res;
@@ -129,7 +128,7 @@ class AddEit extends BaseComponent {
       }
       hashHistory.push(`contract`)
     },error=> {
-      debugger
+
     })
   }
   //提交编辑api

@@ -172,39 +172,36 @@ export default class setFont extends Component {
         if (id) {
             FontConfigReq.changPageName(reqData,id).then((res) => {
                 this.setState({isSubmiting: false});
-                let data = res.data;
-                if (res.code == 200) {
-                    if(this.props.onSave){
-                        this.props.onSave(id);
-                        return
-                    }
-                    this.props.router.push(`/font/set/${id}`)  
-                } else {
-                    Dialog.alert({
-                        content: res.msg,
-                        closable: false,
-                        title: "提示",
-                    });
+                if(this.props.onSave){
+                    this.props.onSave(id);
+                    return
                 }
+                this.props.router.push(`/font/set/${id}`)  
+            }).catch((res) => {
+                this.setState({isSubmiting: false});
+                Dialog.alert({
+                    content: res.msg,
+                    closable: false,
+                    title: "提示",
+                });
             })
         } else {
             // 提交字段
             FontConfigReq.save(reqData).then((res) => {
                 this.setState({isSubmiting: false});
                 let data = res.data;
-                if (res.code == 200) {
-                    if(this.props.onSave){
-                        this.props.onSave(data.id);
-                        return
-                    }
-                    this.props.router.push(`/font/set/${data.id}?pageName=${pageName}`)
-                } else {
-                    Dialog.alert({
-                        content: res.msg,
-                        closable: false,
-                        title: "提示",
-                    });
+                if(this.props.onSave){
+                    this.props.onSave(data.id);
+                    return
                 }
+                this.props.router.push(`/font/set/${data.id}?pageName=${pageName}`)
+            }).catch((res) => {
+                this.setState({isSubmiting: false});
+                Dialog.alert({
+                    content: res.msg,
+                    closable: false,
+                    title: "提示",
+                });
             })
         }
     }
@@ -401,9 +398,14 @@ export default class setFont extends Component {
         data.fieldset = currentFieldSet.name;
         data.name = currentFieldSet.name;
 
+        // 设置编辑区域的序号
+        let editeCodeIndex = this.state.editeCodeIndex;
+        editeCodeIndex.index = index;
+
         this.setState({
             dialogOne: true,
             fields: data,
+            editeCodeIndex
         })
     }
 
@@ -508,15 +510,11 @@ export default class setFont extends Component {
                             <div className="addModule">
                                 <BtnAddRow text="添加新区域" onClick={this.handleAddModule} />
                             </div>
-                            <div className="submit">
-                                <Button type="normal" onClick={this.cancelPage} style={{
-                                                                                           marginLeft: '10px'
-                                                                                       }}>
+                            <div className="submit pch-form-buttons">
+                                <Button type="normal" size="large" onClick={this.cancelPage}>
                                     返回
                                 </Button>
-                                <Button type="secondary" style={{
-                                                                    marginLeft: '10px'
-                                                                }} onClick={this.submit} disabled={this.state.isSubmiting}>
+                                <Button type="secondary" size="large" onClick={this.submit} disabled={this.state.isSubmiting}>
                                     提交
                                 </Button>
                             </div>
