@@ -23,7 +23,7 @@ class DragFile extends Component {
         return connectDragSource(
           <div className="material-files-item" style={{opacity,display: data.isUsed ? 'none' : ''}}>
             <div className="material-files-item-thumbnail">
-                <div style={{backgroundImage: `url(${data.imgURL})`}} a={data.imgURL}></div>
+                {data.imgURL && <div style={{backgroundImage: `url(${data.imgURL})`}} a={data.imgURL}></div>}
             </div>
             <span className="material-files-item-name">
               {data.fileName}
