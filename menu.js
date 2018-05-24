@@ -43,6 +43,17 @@ var data = [{
     url: '/reviewApprove'
   }]
 }, {
+  name: '征信管理',
+  url: '/reviewApprove',
+  icon: '&#xe62d;',
+  children: [{
+    name: '征信录入',
+    url: '/reviewApprove'
+  },{
+    name: '征信校验',
+    url: '/reviewApprove'
+  }]
+}, {
   name: '合同管理',
   url: '/contract',
   icon: '&#xe678;',

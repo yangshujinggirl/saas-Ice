@@ -227,7 +227,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
           let data = this.props.data;
 
           data.options.map((item, i) => {
-            item.checked = index == i;
+            item.isDefault = index == i;
           })
 
             this.props.changeFormData({
@@ -367,7 +367,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                                                       return (
                                                           <div className='dropDown' key={index}>
                                                               <div>
-                                                                <Radio size="large" checked={item.checked} onChange={handleChecked.bind(this, index)}></Radio>
+                                                                <Radio size="large" checked={item.isDefault} onChange={handleChecked.bind(this, index)}></Radio>
                                                                   <Input size="large" value={item.label} placeholder="请输入值" onChange={handleSelect.bind(this, index)} />
                                                                   <div className='addReduce'>
                                                                       <span onClick={handleAddValue.bind(this, 'add')}>+</span>
