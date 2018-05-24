@@ -130,12 +130,15 @@ export default class DiaLog extends Component {
       if (error) {
         return;
       }
+       let id = this.props.params.id;
       value.collectionDetails && value.collectionDetails.map((item, i) => {
         item.orderId = i;
+        item.name = value.name;
+        item.collectionId = id
+
       });
 
       // 提交当前填写的数据
-      let id = this.props.params.id;
       if(id){
         actions.fileEditSave(value,id);
       }else{
