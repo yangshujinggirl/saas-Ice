@@ -31,11 +31,9 @@ class InterViewReq extends CurdReq{
 	//面签列表获取
 	searchList(){
 		let options = {
-			// url: this._host + '/member/loginMobile',
-			url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
+      url: this._config.CONTRACT_HOST + `/interview/list`,
 			method: 'get',
 			contentType: 'application/x-www-form-urlencoded',
-			// params: 'mobile=13917538027&card=211224198612285536'
 		}
 		return super.fetchData(options);
 	}
