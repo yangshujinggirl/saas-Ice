@@ -191,7 +191,7 @@ export default class ProcessAuthEdit extends BaseApp {
             item.children = item.roles || [];
             item.id = item.departmentId
         }
-    })
+      })
 
     return data;
   }

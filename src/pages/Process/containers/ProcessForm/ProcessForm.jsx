@@ -27,8 +27,11 @@ export default class ProcessForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: PROCESS_VIEW.EDITFORM
+            view: PROCESS_VIEW.EDITFORM,
+            currentTaskOrder: 1
         };
+
+        this.currentTaskOrder = 1;
     }
 
     /**
@@ -123,25 +126,16 @@ export default class ProcessForm extends Component {
             formData.taskItems.push({
                 ...customMenuList[0],
                 transitionItems: this.deepCopyArr(customMenuList[0].transitionItems),
-                taskOrder: 1,
+                taskOrder: this.currentTaskOrder,
                 taskAlias: customMenuList[0].taskTypeName,
                 taskTypeId: customMenuList[0].id
             });
+            this.currentTaskOrder++;
+
 
             // 只处理一次
             this.props.actions.changeHasProcess(true);
         }
-    }
-
-    // 深拷贝对象数组
-    deepCopyArr(arr){
-        let result = [];
-
-        arr.map((item) => {
-            result.push({...item});
-        })
-
-        return result;
     }
 
     //模块添加删除
@@ -162,19 +156,32 @@ export default class ProcessForm extends Component {
             taskItems.push({
                 ...data,
                 transitionItems: this.deepCopyArr(data.transitionItems),
-                taskOrder: taskItems.length + 1,
+                // taskOrder: taskItems.length + 1,
+                taskOrder: this.currentTaskOrder,
                 // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
                 taskAlias: data.taskTypeName + taskItems.length,
                 taskTypeId: data.id
             });
+            this.currentTaskOrder++;
+
         } else {
             let customMenuList = this.props.customMenuList;
+            let deleteTaskOrder = data.taskOrder;
             customMenuList.map((item, i) => {
                 if (item.id == data.taskTypeId) {
                     item.limitedAddTimes++;
                 }
             });
             taskItems.splice(index, 1);
+
+            //重置已选择当前模块的值
+            taskItems.map((item) => {
+                item.transitionItems.map((titem, j) => {
+                    if(titem.transToTaskOrder == deleteTaskOrder){
+                        titem.transToTaskOrder = null;
+                    }
+                })
+            })
         }
 
         //状态更新
@@ -183,6 +190,17 @@ export default class ProcessForm extends Component {
         });
 
     };
+
+    // 深拷贝对象数组
+    deepCopyArr(arr){
+        let result = [];
+
+        arr.map((item) => {
+            result.push({...item});
+        })
+
+        return result;
+    }
 
     //表单校验change
     formChange = value => {

@@ -25,7 +25,10 @@ import Chanpinchengshu from './Chanpinchengshu';
 import Chanpinlilv from './Chanpinlilv';
 import Huankuanfangshi from './Huankuanfangshi';
 import Tiqianhuankuanfangshi from './Tiqianhuankuanfangshi';
-import ProductReq from '../../../reqs/ProductReq'
+import ProductReq from '../../../reqs/ProductReq';
+import SpDataSource from '../../../../../base/utils/SpDataSource'
+import { BaseCondition } from 'base';
+
 import './addOne.scss';
 
 const { Row, Col } = Grid;
@@ -40,8 +43,8 @@ const formItemLayout = {
 	labelCol: { span: 8 },
 };
 
-export default class CreateActivityForm extends Component {
-	static displayName = 'CreateActivityForm';
+export default class addOne extends BaseCondition {
+	static displayName = 'addOne';
 
 	static defaultProps = {};
 
@@ -50,7 +53,8 @@ export default class CreateActivityForm extends Component {
 
 		this.state = {
 			value: {
-				tenantId: '12',
+				tenantId: SpDataSource.defaultValue,
+				tenantName: SpDataSource.defaultLabel,
 				name: '',
 				contractDisplayName: undefined,
 				productType: undefined,
@@ -94,20 +98,22 @@ export default class CreateActivityForm extends Component {
 				repaymentMethodsSetting: [],
 				prepaymentSetting: [],
 				productScope: []
-			},
-
+			}
+			
 		};
 	}
 	onFormChange = (value) => {
+
 		this.setState({
-				value,
+			value,
 		});
-};
+	};
 	AllValue = (value) => {
 		return (
 			{
 				product: {
 					tenantId: value.tenantId,
+					tenantName:value.tenantName,
 					name: value.name,
 					contractDisplayName: value.contractDisplayName,
 					productType: value.productType,
@@ -137,7 +143,7 @@ export default class CreateActivityForm extends Component {
 					interestRatesRangeMax: value.interestRatesRangeMax,
 					interestRateBaseDate: value.interestRateBaseDate,
 					repaymentAccountChange: value.repaymentAccountChange,
-					repaymentPeriodFrequency: value.repaymentPeriodFrequency,
+					repaymentPeriodFrequency: this.removeAllChoice(value.repaymentPeriodFrequency),
 					repaymentDateChange: value.repaymentDateChange,
 					gracePeriodChange: value.gracePeriodChange,
 					repaymentMethodChange: value.repaymentMethodChange,
@@ -154,6 +160,19 @@ export default class CreateActivityForm extends Component {
 				productScope: value.productScope
 			}
 		)
+	}
+	//全选还款周期方式
+	removeAllChoice=(data)=>{
+		if(data.length==7){
+			data.map((item,i)=>{
+				if(item=='ALL_CHOICE'){
+					data.splice(i,1)
+				}
+			})
+			return data
+		}else{
+			return data;
+		}
 	}
 	//数据校验
 	dataVerif = (value) => {
@@ -207,7 +226,7 @@ export default class CreateActivityForm extends Component {
 			})
 
 			if (!boolean) return
-			//
+			
 			let AllValue = this.AllValue(value);
 			this.dataVerif(value);
 			this.props.actions.save(AllValue);
@@ -400,11 +419,11 @@ export default class CreateActivityForm extends Component {
 				value: values
 			})
 		}
-		let allDate = [...values.repaymentPeriodFrequency];
-		let index = allDate.findIndex((data) => data == "ALL_CHOICE");
-		index != -1 ? allDate.splice(index, 1) : ''
-		this.state.value.repaymentPeriodFrequencySubmit = allDate
-		console.log(this.state.value.repaymentPeriodFrequencySubmit);
+		// let allDate = [...values.repaymentPeriodFrequency];
+		// let index = allDate.findIndex((data) => data == "ALL_CHOICE");
+		// index != -1 ? allDate.splice(index, 1) : ''
+		// this.state.value.repaymentPeriodFrequencySubmit = allDate
+		// console.log(this.state.value.repaymentPeriodFrequencySubmit);
 	}
 	checkOnChange = (value, e) => {
 
@@ -557,8 +576,14 @@ export default class CreateActivityForm extends Component {
 		}
 		callback();
 	}
-	
-	
+
+	//资方
+	handleTenantChange(v, data){
+		let value  = this.state.value;
+		value.tenantName = data.label;
+
+		this.setState({value});
+	}
 	render() {
 		let data = this.props.prodActions || {}
 		let fileData = this.props.fileData || {}
@@ -585,14 +610,13 @@ export default class CreateActivityForm extends Component {
 								<Row wrap>
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资金方:</span>}>
-											<IceFormBinder
-												name="tenantId"
-												validator={this.check}
-
-											>
-												<Input size="large" value="资金方" disabled className="custom-input" />
-											</IceFormBinder>
-											<div><IceFormError name="tenantId" /></div>
+										<IceFormBinder name="tenantId">
+											<Select size="large" 
+															placeholder="请选择"
+															className="custom-input"
+															dataSource={SpDataSource.dataSource} 
+															onChange={this.handleTenantChange.bind(this)} />
+										</IceFormBinder>
 										</FormItem>
 									</Col>
 									<Col xxs={24} xs={12} l={8} >
@@ -667,7 +691,7 @@ export default class CreateActivityForm extends Component {
 												>
 													{collData.map((val, i) => {
 														return (
-															<Option value={val.id} key={i}>{val.name}</Option>
+															<Option value={val.id.toString()} key={i}>{val.name}</Option>
 														)
 													})}
 												</Select>

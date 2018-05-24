@@ -60,7 +60,8 @@ class MaterialSubmit extends BaseComponent {
           id: 'fileSize',
           title: '限制大小',
         }],
-      fileList: [],
+      fileList: [
+      ],
       upLoadList: [],
     };
   }
@@ -233,7 +234,7 @@ class MaterialSubmit extends BaseComponent {
       });
     });
 
-    // console.log(originData);
+    console.log(originData);
     for (var i = 0; i < originData.length; i++) {
       for (var j = 0; j < originData[i].collectionDetails.length; j++) {
         var el = originData[i].collectionDetails[j];
@@ -241,12 +242,13 @@ class MaterialSubmit extends BaseComponent {
         if (!el.downloadUrl) {
           Toast.show({
             type: 'help',
-            content: `${originData[i].type}${originData[i].name}的${el.name}材料必须上传~`,
+            content: `${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`,
           });
           return;
         }
       }
     }
+
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
         if (res && res.code == 200) {
@@ -282,13 +284,10 @@ class MaterialSubmit extends BaseComponent {
         citem.downloadUrl = dataSource[j][key];
       });
     });
-    // console.log(originData);
-
-
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
         if (res && res.code == 200) {
-          Toast.success('保存成功，请提交～');
+          Toast.success('保存成功，请提交～')
         }
       });
     ;

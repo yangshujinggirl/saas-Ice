@@ -123,15 +123,7 @@ export default class FormRender extends Component {
     }
     return isReadonly;
   };
-  //校验金额最大最小值
-  checkSum = (rule, value, callback) => {
-    console.log(rule.minValue)
-    if (rule.minValue) {
-      if (parseFloat(rule.minValue) > value) {
-        callback(new Error(`${rule.label}最小值为${rule.minValue}`));
-      }
-    }
-  };
+
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
     const init = this.props.field.init;
@@ -224,6 +216,27 @@ export default class FormRender extends Component {
     }
     else if (el.type == 'DECIMAL') {
       el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      if (el.minValue || el.maxValue) {
+        return (
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}>
+            <NumberPicker
+              step={0.01}
+              disabled={el.isReadonly}
+              // defaultValue={el.value ? parseInt(el.value) : el.value}
+              min={el.minValue}
+              max={el.maxValue}
+              inputWidth={'100px'}
+              {...init(el.name, {
+                initValue: el.value ? parseInt(el.value) : '',
+                rules: [
+                  { required: el.isRequired, message: el.label + '不能为空' },
+                ],
+              })}
+            />
+          </FormItem>
+        );
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -233,9 +246,7 @@ export default class FormRender extends Component {
             htmlType="number"
             {...init(el.name, {
               initValue: el.value,
-              rules: [
-                { required: el.isRequired, message: el.label + '不能为空' },
-              ],
+              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
             placeholder={'请输入' + el.label}
           />
@@ -249,12 +260,12 @@ export default class FormRender extends Component {
                   {...formItemLayout}>
           <NumberPicker
             disabled={el.isReadonly}
-            defaultValue={el.value ? parseInt(el.value) : el.minValue}
+            // defaultValue={el.value ? parseInt(el.value) : el.value}
             min={el.minValue}
             max={el.maxValue}
             inputWidth={'100px'}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : el.minValue,
+              initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
               ],
