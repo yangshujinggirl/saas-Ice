@@ -264,12 +264,12 @@ export default class FormRenderFormRender extends Component {
                   {...formItemLayout}>
           <NumberPicker
             disabled={el.isReadonly}
-            defaultValue={el.value ? parseInt(el.value) : el.value}
+            // defaultValue={el.value ? parseInt(el.value) : el.value}
             min={el.minValue}
             max={el.maxValue}
             inputWidth={'100px'}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : el.minValue,
+              initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
               ],
