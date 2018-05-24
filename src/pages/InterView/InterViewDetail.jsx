@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import InterViewDetail from './components/InterViewDetail';
+import PbcContractDetail from './components/PbcContractDetail';
 
 export default class Demo extends Component {
 
@@ -14,9 +14,7 @@ export default class Demo extends Component {
    */
   render() {
     return (
-      <div className="interview-page">
-        这是详情
-      </div>
+      <PbcContractDetail {...this.props}></PbcContractDetail>
     );
   }
 }
