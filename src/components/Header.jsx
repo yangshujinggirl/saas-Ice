@@ -155,7 +155,7 @@ export default class Header extends PureComponent {
                     {identityList.map((item, i) => {
                       return (
                         <Menu.Item key={i}>
-                          <a href="#" onClick={this.changeIdentity.bind(this, item.organizationId)}>
+                          <a href="#" onClick={this.changeIdentity.bind(this, item.id)}>
                             {item.organizationName}
                           </a>
                         </Menu.Item>
