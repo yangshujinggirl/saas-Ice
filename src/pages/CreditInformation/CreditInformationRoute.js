@@ -9,7 +9,7 @@ export default {
     component: CreditInformation.CreditInformationForm,
     name: '征信录入'
   },{
-    path: 'detail/:id/:taskId/:proInstId',
+    path: 'detail/:id',
     component: CreditInformation.CreditInformationDetail,
     name: '进件审查详情'
   }],

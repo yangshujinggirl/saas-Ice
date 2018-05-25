@@ -32,6 +32,7 @@ class InterViewReq extends CurdReq{
 	searchList(){
 		let options = {
       url: this._config.CONTRACT_HOST + `/interview/list`,
+      // url: 'https://www.easy-mock.com/mock/5b07a8c04514163f2d193445/example/list',
 			method: 'get',
 			contentType: 'application/x-www-form-urlencoded',
 		}
