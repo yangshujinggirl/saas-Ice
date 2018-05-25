@@ -58,7 +58,7 @@ export default class ReviewApprove extends BaseApp {
             }
             //审查审批详情
             case this.OPERATE_TYPE.VIEW: {
-                hashHistory.push(`reviewApprove/detail/${data.loanId}`)
+                hashHistory.push(`reviewApprove/3/detail/${data.loanId}`)
                 break;
             }
             // 征信详情
