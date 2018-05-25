@@ -21,9 +21,21 @@ class InterViewColumn extends BaseColumn {
     this._columns = [{
       title: 'ID',
       cell: (value, index, record) => {
-        return <a className='id' onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DETAIL)}>
-          {record.id}
-        </a>;
+        return(
+          <div>
+            {
+              record.type ?
+                (<div className="pch-table-operation">
+                    <a href="javascript:;"
+                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                      {record.id}
+                    </a>
+                  </div>
+                )
+                : (<span></span>)
+            }
+          </div>
+        )
       },
       width: 60,
     }, {
