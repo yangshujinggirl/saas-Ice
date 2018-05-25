@@ -87,6 +87,7 @@ export default class ProcessForm extends Component {
                         });
                     }
                 })
+                this.currentTaskOrder++;
             // item.cid = i;
             })
 

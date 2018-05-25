@@ -317,6 +317,7 @@ export default class ProcessAuthEdit extends BaseApp {
                                 dataSource={deprtments}
                                 primaryKey="id"
                                 isTree
+                                expandedRowRender={this.renderLevel.bind(this)}
                                 rowSelection={this.state.rowSelection}>
                                 <Table.Column title="机构" dataIndex="name" />
                             </Table>
