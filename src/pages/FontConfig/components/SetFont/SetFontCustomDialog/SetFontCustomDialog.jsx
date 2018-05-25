@@ -353,7 +353,14 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                         </div>
                     </div>
                     <div className='beautify'>
-                        <CheckboxGroup value={this.getValueForCheckbox()} dataSource={this.PROP_LIST} onChange={this.codeRequire} />
+                        <CheckboxGroup  size="large" value={this.getValueForCheckbox()} onChange={this.codeRequire}>
+                        {this.PROP_LIST && this.PROP_LIST.map((val, i) => {
+                            let disabledArr = this.getDisabledForCheckbox();
+                            return (
+                              <Checkbox value={val.value} key={i} disabled={disabledArr.indexOf(val.value) != -1}>{val.label}</Checkbox>
+                            )
+                        })}
+                        </CheckboxGroup>
                     </div>
                     {data.type == "TEXT" ? <div>
                                                提示：字段类型为文本域，字段独占一行显示
