@@ -37,6 +37,13 @@ class InterViewReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	// 初始化网易的数据accid
+	initInterviw() { 
+		let options = {
+			url: this._config.CONTRACT_HOST + '/video/account'
+		}
+		return super.fetchData(options);		
+	}
 }
 
 export default new InterViewReq();
