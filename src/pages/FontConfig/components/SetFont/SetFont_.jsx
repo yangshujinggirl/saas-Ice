@@ -160,10 +160,13 @@ export default class setFont extends Component {
             })
         })
         
+        //保存页面的时候新增时需要把字段的Id=>fieldId
         reqData.fields.map((item) => {
-            let fieldId = item.id;
-            delete item.id;
-            item.fieldId = fieldId;
+            if(!item.fieldId){
+                let fieldId = item.id;
+                delete item.id;
+                item.fieldId = fieldId;
+            }
         })
 
         this.setState({isSubmiting: true});

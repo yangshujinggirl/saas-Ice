@@ -163,6 +163,10 @@ class MaterialSubmit extends BaseComponent {
     });
   }
 
+  handleFileError(err, res, file) {
+  console.log("onError callback : ", err, res, file);
+  }
+
   renderCell(key, value, index, record) {
     return (
       <DropCell
@@ -330,7 +334,8 @@ class MaterialSubmit extends BaseComponent {
               className='material-files-upload-upload'
               fileList={fileList}
               showUploadList={false}
-              onChange={this.handleFileChange.bind(this)}>
+              onChange={this.handleFileChange.bind(this)}
+              onError={this.handleFileError.bind(this)}>
               <div className="material-files-upload-button">
                 <div className="icon material-files-upload-button-icon">
                   
@@ -381,8 +386,4 @@ class MaterialSubmit extends BaseComponent {
   }
 }
 
-// MaterialSubmit = DropTarget('CARD', cardTarget, connect => ({
-//   connectDropTarget: connect.dropTarget(),
-// }))(MaterialSubmit)
 export default DragDropContext(HTML5Backend)(MaterialSubmit);
-// export default MaterialSubmit;
