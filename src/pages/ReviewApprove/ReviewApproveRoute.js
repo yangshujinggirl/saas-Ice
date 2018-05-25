@@ -2,7 +2,7 @@ import ReviewApprove from './';
 import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
-  path: "/reviewApprove/:id",
+  path: "/reviewApprove/:typeId",
   childRoutes: [{
     path: 'add',
     component: ReviewApprove.ReviewApproveForm
