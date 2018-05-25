@@ -100,7 +100,7 @@ class ContractFileColumn extends BaseColumn {
             width: 120
         }, {
           title: '资方',
-          dataIndex: 'capital',
+          dataIndex: 'lenderName',
           width: 120
         }, {
             title: '操作',
