@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base';
-import { Feedback } from "@icedesign/base";
-
-import { Title, PchTable, PchPagination } from 'components';
-import { PROCESS_VIEW } from '../../../constants/ProcessViewConstant';
-
+import { } from "@icedesign/base";
 import {
   Button,
   Grid,
   Table,
   Dialog,
-  Pagination,
-  Form
+  Form,
+  Feedback, Checkbox 
 } from "@icedesign/base";
+import { Title, PchTable, PchPagination } from 'components';
+import { PROCESS_VIEW } from '../../../constants/ProcessViewConstant';
 
 const { Row, Col } = Grid;
+const { Group : CheckboxGroup } = Checkbox;
 
 import './ProcessAuthEdit.scss';
 
@@ -175,7 +174,22 @@ export default class ProcessAuthEdit extends BaseApp {
   }
   //机构=部门=角色
   renderLevel(value, index, record) {
-    return record.name ? record.name:record.departmentName ;
+    // return record.name ? record.name:record.departmentName ;
+    let result = [];
+    record.roles.map((item) => {
+      result.push({
+        value: item.id,
+        label: item.name
+      })
+    })
+    return(
+      <div>
+        <p>{record.name}</p>
+        <CheckboxGroup
+          dataSource={result}
+        />
+      </div>
+    )
   }
   changePage(current) {
     this.setState({
@@ -211,7 +225,7 @@ export default class ProcessAuthEdit extends BaseApp {
         if(typeof orgsData.deprtments == 'object'){
           deprtments = [orgsData.deprtments];
         }
-        deprtments = this.changeRoleToChildren(deprtments);
+        // deprtments = this.changeRoleToChildren(deprtments);
     }
 
     return (
@@ -231,7 +245,7 @@ export default class ProcessAuthEdit extends BaseApp {
               </Col>
             </Row>
           </Form>
-          <div className='center'>中行进件-权限配置</div>
+          <div className="center">中行进件-权限配置</div>
           <div className="table-list">
             <div className="part-l">
               <Table
@@ -239,9 +253,10 @@ export default class ProcessAuthEdit extends BaseApp {
                 primaryKey="id"
                 style={{ width: '100%' }}
                 isTree
+                expandedRowRender={this.renderLevel}
                 rowSelection={{ ...this.rowSelection }}
               >
-                <Table.Column title="机构" cell={this.renderLevel} />
+                <Table.Column title="机构" dataIndex="name" />
               </Table>
               <Table
                 dataSource={orgsData.otherOrgs}
