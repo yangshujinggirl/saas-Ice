@@ -60,9 +60,29 @@ class AddEit extends BaseComponent {
     });
   };
   initPage() {
+    let contractContent = localStorage.getItem('contractContent');
     if(this.props.params.id) {
       this.getDetail(this.props.params.id);
+    } else if(contractContent) {
+      this.getCookieContract(contractContent);
     }
+  }
+  //新增----获取超时保存模板内容；
+  getCookieContract(contractContent) {
+    contractContent = JSON.parse(contractContent);
+    let { templateContent, templateName } = contractContent;
+    const blocksFromHTML = htmlToDraft(templateContent);
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap
+    );
+    this.setState({
+      editorState:EditorState.createWithContent(state),
+      value:{
+        templateName,
+        templateContent
+      }
+    })
   }
   //编辑api
   getDetail(id) {
@@ -119,6 +139,7 @@ class AddEit extends BaseComponent {
   }
   //提交新增api
   addTemplate(params) {
+    localStorage.setItem('contractContent',JSON.stringify(params));
     Req.addTemplatesApi(params)
     .then((res) => {
       const { code, msg } =res;
@@ -126,6 +147,7 @@ class AddEit extends BaseComponent {
         Toast.error(msg);
         return;
       }
+      localStorage.clear('contractContent');
       hashHistory.push(`contract`)
     },error=> {
 
