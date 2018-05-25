@@ -31,7 +31,7 @@ class Bind extends BaseApp {
     super(props);
     this.state = {
       selectedRow:[],
-      bindProductData:[],
+      // bindProductData:[],
       dataSourceRight:[],
       // 合同模版字符串
       contractTemplateHTML: '',
@@ -78,22 +78,18 @@ class Bind extends BaseApp {
   seachBindProductList(id) {
     Req.seachBindTemplateApi(id)
     .then((res) => {
-      let {templateProductList = [], content = ""} = res.data || {};
-      this.setState({
-        bindProductData: templateProductList,
-        dataSourceRight: templateProductList,
-        contractTemplateHTML: content
-      },function(){
-        if(this.refs.FormModule.refs.ProductNameForm){}
-      })
-
+      let { templateProductList = [], content = ""} = res.data || {};
       let data = templateProductList.map(p=>p.productId);
       let selectedRow = templateProductList.map(p=>({
         productCategory: p.productCategory,
         productName: p.productName,
         id: p.productId
       }))
-      this.setState({selectedRow})
+
+      this.setState({
+        dataSourceRight:selectedRow,
+        contractTemplateHTML: content
+      })
       if(data.length > 0)this.getProductName(data);
     })
   }
@@ -115,21 +111,22 @@ class Bind extends BaseApp {
   //添加
   addItem() {
     let arrayData = [];
-    let { selectedRow } = this.state;
-
-    for(var j=0; j<selectedRow.length; j++) {
+    let { selectedRow, dataSourceRight } = this.state;
+    let totalData = [...selectedRow,...dataSourceRight];
+    //去重
+    for(var j=0; j<totalData.length; j++) {
       var flag = true;
       for(var i=0; i<arrayData.length;i++) {
-        if(arrayData[i].id == selectedRow[j].id ) {
+        if(arrayData[i].id == totalData[j].id ) {
           flag = false;
         }
       }
       if(flag) {
-        arrayData.push(selectedRow[i]);
+        arrayData.push(totalData[i]);
       }
     }
 
-    let arra = [...this.state.bindProductData,...arrayData];
+    let arra = [...arrayData];
     this.setState({
       dataSourceRight:arra
     })
@@ -219,6 +216,7 @@ class Bind extends BaseApp {
 
   render() {
     const { list=[] } = this.props.pageData;
+    console.log(this.state)
     return(
       <IceContainer className="pch-container contract-bind-page">
           <IceFormBinderWrapper ref="form">

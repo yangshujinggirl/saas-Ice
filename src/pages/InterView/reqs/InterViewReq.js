@@ -9,7 +9,7 @@ class InterViewReq extends CurdReq{
 		this.curd = {
             create: this._host + '/filter-table-list.json',
             update: this._host + '/filter-table-list.json',
-            retrieve: this._host + '/filter-table-list.json',
+            retrieve: this._config.CONTRACT_HOST + `/interview/list`,
             delete: this._host + '/detail.json',
             detail: this._host + '/detail.json'
         }
@@ -32,11 +32,20 @@ class InterViewReq extends CurdReq{
 	searchList(){
 		let options = {
       url: this._config.CONTRACT_HOST + `/interview/list`,
+      // url: 'https://www.easy-mock.com/mock/5b07a8c04514163f2d193445/example/list',
 			method: 'get',
 			contentType: 'application/x-www-form-urlencoded',
 		}
 		return super.fetchData(options);
 	}
+  getInterViewDetail(id){
+    let options = {
+      url: this._config.CONTRACT_HOST + `/visaInterview/chinate/detail/${id}`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new InterViewReq();

@@ -271,7 +271,7 @@ export default class CreditInformationForm extends BaseComponent {
       title: '提示',
       onOk: () => {
         dialogAlert.hide();
-        hashHistory.push(`reviewApprove`);
+        hashHistory.push(`reviewApprove/10`);
       },
     });
   };

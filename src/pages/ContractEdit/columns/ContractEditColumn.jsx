@@ -75,7 +75,7 @@ class ContractEditColumn extends BaseColumn {
             }
         }, {
             title: '资方',
-            dataIndex: 'capital',
+            dataIndex: 'lenderName',
             width: 120
         }, {
             title: '产品类型',

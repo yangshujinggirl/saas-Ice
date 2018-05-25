@@ -90,7 +90,7 @@ class EntryQueryColumn extends BaseColumn {
         return (
           <div>
             {
-              record.status && (record.status == 'DRAFT' || record.status == 'RETURNED' || record.status == 'MAKEUP') ?
+              record.status && (record.status == 'DRAFT' || record.status == 'RETURNED') ?
                 (
                   <div className="pch-table-operation">
                     <a href="javascript:;"
