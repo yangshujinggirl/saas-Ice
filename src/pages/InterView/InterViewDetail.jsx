@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PbcContractDetail from './components/PbcContractDetail';
 import PinganContractDetail from './components/PinganContractDetail';
+import LoanDetail from './components/LoanDetail';
 import { hashHistory } from 'react-router';
 
 export default class Demo extends Component {
@@ -29,6 +30,10 @@ export default class Demo extends Component {
         }
         case 'pinganContract': {
           return (<PinganContractDetail {...this.props}></PinganContractDetail>)
+          break;
+        }
+        case 'loan': {
+          return (<LoanDetail {...this.props}></LoanDetail>)
           break;
         }
       }

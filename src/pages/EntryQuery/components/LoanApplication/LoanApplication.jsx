@@ -55,7 +55,7 @@ export default class LoanApplication extends Component {
     Req.getDetail(
       {
         id: this.props.params.id,
-        step: 1,
+        // step: 1,
       })
       .then((res) => {
         if (res && res.data && res.code == 200) {

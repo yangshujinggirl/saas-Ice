@@ -46,6 +46,16 @@ class InterViewReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //获取进件详情
+  getDetail(id) {
+    let options = {
+      // url: this._config.LOAN_HOST + `/loans/${id}/screen`,
+      url: this._config.WF_HOST + `/audit/loans/${id}`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new InterViewReq();

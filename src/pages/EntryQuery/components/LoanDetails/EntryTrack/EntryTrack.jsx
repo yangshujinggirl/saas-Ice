@@ -70,9 +70,9 @@ export default class EntryTrack extends Component {
 
                           trackList.map((item,index)=>{
                             var status = classNames({
-                              'circle status-red'    : item.choose == undefined || item.choose == 'REJECT',
-                              'circle status-orange' : item.choose == 'SUBMIT',
-                              'circle status-green'  : item.choose == 'PASS' ,
+                              'circle status-red'    : item.choose == 'REJECT',
+                              'circle status-orange' : item.choose == undefined ,
+                              'circle status-green'  : item.choose == 'PASS' || item.choose == 'SUBMIT' ,
                               'circle status-gray'   : item.choose == 'BACK',
                             });
 
