@@ -127,6 +127,8 @@ class AddEit extends BaseComponent {
         return;
       }
       hashHistory.push(`contract`)
+    },error=> {
+
     })
   }
   //提交编辑api

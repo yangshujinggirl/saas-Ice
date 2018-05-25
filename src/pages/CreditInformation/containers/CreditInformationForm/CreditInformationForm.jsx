@@ -111,23 +111,28 @@ export default class CreditInformationForm extends BaseComponent {
             this.setState({
               formData: res.data,
             });
-            res.data.baseDocuments.map(item => {
-              console.log(item.type.indexOf('image') == 0);
-              if (item.type.indexOf('image') == 0) {
-                item.downloadURL = item.location;
-                item.fileURL = item.location;
-                item.imgURL = item.location;
-              } else {
-                item.downloadURL = item.location;
-                item.fileURL = item.location;
-                item.imgURL = '/public/images/creditInformation/filed.png';
-              }
-            });
-            this.setState({
-              fileList: res.data.baseDocuments,
-            });
+            if(res.data.baseDocuments){
+              res.data.baseDocuments.map(item => {
+                console.log(item.type.indexOf('image') == 0);
+                if (item.type.indexOf('image') == 0) {
+                  item.downloadURL = item.location;
+                  item.fileURL = item.location;
+                  item.imgURL = item.location;
+                } else {
+                  item.downloadURL = item.location;
+                  item.fileURL = item.location;
+                  item.imgURL = '/public/images/creditInformation/filed.png';
+                }
+              });
+              this.setState({
+                fileList: res.data.baseDocuments,
+              });
+            }
+
+            console.log(res.data)
             if (res.data.diffArrStr) {
               //处理不同字段
+              console.log(res.data.diffArrStr)
               this.checkDiff(res.data.diffArrStr);
             }
           } else {
@@ -173,43 +178,43 @@ export default class CreditInformationForm extends BaseComponent {
         });
       });
       console.log(value);
+      if (value.baseDocuments.length > 0) {
 
-      Req.postDiff(value)
-        .then((res) => {
-          if (res && res.data && res.code == 200) {
-            if (res.data.diffArrStr) {
-              //处理不同字段
-              this.checkDiff(res.data.diffArrStr);
+        Req.postDiff(value)
+          .then((res) => {
+            if (res && res.data && res.code == 200) {
+              if (res.data.diffArrStr) {
+                //处理不同字段
+                this.checkDiff(res.data.diffArrStr);
 
-              //征信两次不一致弹框
-              const dialogConfirm = Dialog.confirm({
-                needWrapper: false,
-                content: '两次征信数据不一致，是否确认提交数据？',
-                title: '提示',
-                onOk: () => {
-                  dialogConfirm.hide();
-                  Req.saveForm(value)
-                    .then((res) => {
-                      if (res && res.code == 200) {
-                        this.alert();
-                      } else {
-                        Toast.show({
-                          type: 'error',
-                          content: res.msg,
-                        });
-                      }
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
-                },
-              });
-            } else {
-              const dialog = Dialog.confirm({
-                content: '是否确认提交数据？',
-                onOk: () => {
-                  return new Promise(resolve => {
-                    if (value.baseDocuments.length > 0) {
+                //征信两次不一致弹框
+                const dialogConfirm = Dialog.confirm({
+                  needWrapper: false,
+                  content: '两次征信数据不一致，是否确认提交数据？',
+                  title: '提示',
+                  onOk: () => {
+                    dialogConfirm.hide();
+                    Req.saveForm(value)
+                      .then((res) => {
+                        if (res && res.code == 200) {
+                          this.alert();
+                        } else {
+                          Toast.show({
+                            type: 'error',
+                            content: res.msg,
+                          });
+                        }
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
+                  },
+                });
+              } else {
+                const dialog = Dialog.confirm({
+                  content: '是否确认提交数据？',
+                  onOk: () => {
+                    return new Promise(resolve => {
                       Req.saveForm(value)
                         .then((res) => {
                           dialog.hide();
@@ -225,27 +230,26 @@ export default class CreditInformationForm extends BaseComponent {
                         .catch((error) => {
                           console.log(error);
                         });
-                    } else {
-                      dialog.hide();
-                      Toast.show({
-                        type: 'help',
-                        content: '请上传文件～',
-                      });
-                    }
-                  });
-                },
+                    });
+                  },
+                });
+              }
+            } else {
+              Toast.show({
+                type: 'error',
+                content: res.msg,
               });
             }
-          } else {
-            Toast.show({
-              type: 'error',
-              content: res.msg,
-            });
-          }
-        })
-        .catch((error) => {
+          })
+          .catch((error) => {
 
+          });
+      } else {
+        Toast.show({
+          type: 'help',
+          content: '请上传文件～',
         });
+      }
 
 
     });
@@ -286,7 +290,9 @@ export default class CreditInformationForm extends BaseComponent {
       }
     }
     if (value) {
-      if (parseFloat(value) < 0 || value.indexOf('.') !== -1) {
+      console.log(typeof (value));
+      if (parseFloat(value) < 0 || String(value)
+          .indexOf('.') > -1) {
         callback('只能输入正整数');
         return;
       }
@@ -627,31 +633,6 @@ export default class CreditInformationForm extends BaseComponent {
                   </FormItem>
                 </Col>
                 <Col xxs={24} xs={12} l={8}>
-                  <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>贷款账户状态</span>}>
-
-                    <Balloon align='tl' style={styles.box} trigger={
-                      <div>
-                        <IceFormBinder
-                          name="loanAccountStatus"
-                          required
-                          type="string"
-                          message="请输入"
-                        >
-                          {this.checkFiled('select', 'loanAccountStatus')}
-                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                          {/*dataSource={this.state.dataList}/>*/}
-                        </IceFormBinder>
-
-                      </div>
-
-                    } triggerType="focus">
-                      <img src="/public/images/creditInformation/loanAccountStatus.png" alt=""/>
-                    </Balloon>
-                    <div><IceFormError name="loanAccountStatus"/></div>
-
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={8}>
                   <FormItem {...formItemLayout}
                             label={<span> <span className="label-required">*</span>呆账信用卡余额(元)</span>}>
 
@@ -671,6 +652,31 @@ export default class CreditInformationForm extends BaseComponent {
                     } triggerType="focus">
                       <img src="/public/images/creditInformation/creditBadDebtsMaxAmount.png" alt=""/>
                     </Balloon>
+
+                  </FormItem>
+                </Col>
+                <Col xxs={24} xs={12} l={8}>
+                  <FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>贷款账户状态</span>}>
+
+                    <Balloon align='lb' style={styles.box} trigger={
+                      <div>
+                        <IceFormBinder
+                          name="loanAccountStatus"
+                          required
+                          type="string"
+                          message="请输入"
+                        >
+                          {this.checkFiled('select', 'loanAccountStatus')}
+                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                          {/*dataSource={this.state.dataList}/>*/}
+                        </IceFormBinder>
+
+                      </div>
+
+                    } triggerType="focus">
+                      <img src="/public/images/creditInformation/loanAccountStatus.png" alt=""/>
+                    </Balloon>
+                    <div><IceFormError name="loanAccountStatus"/></div>
 
                   </FormItem>
                 </Col>
@@ -835,6 +841,53 @@ export default class CreditInformationForm extends BaseComponent {
                 </Col>
                 <Col xxs={24} xs={12} l={8}>
                   <FormItem {...formItemLayout}
+                            label={<span> <span className="label-required">*</span>2年内是否有贷款记录</span>}>
+
+                    <Balloon align='lb' style={styles.box} trigger={
+                      <div>
+                        <IceFormBinder
+                          name="twoIsLoanRecord"
+                          required
+                          type="string"
+                          message="请输入"
+                        >
+                          {this.checkFiled('select', 'twoIsLoanRecord')}
+                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                          {/*dataSource={this.state.opption}/>*/}
+                        </IceFormBinder>
+                      </div>
+
+                    } triggerType="hover">
+                      <img src="/public/images/creditInformation/twoIsLoanRecord.png" alt=""/>
+                    </Balloon>
+                    <div><IceFormError name="twoIsLoanRecord"/></div>
+                  </FormItem>
+                </Col>
+                <Col xxs={24} xs={12} l={8}>
+                  <FormItem {...formItemLayout} label={<span className="tip"> <span className="label-required">*</span>主贷人与共借人均不存在强制执行信息</span>}>
+
+                    <Balloon align='lb' style={styles.box} trigger={
+                      <div>
+                        <IceFormBinder
+                          name="customNonExistEnforce"
+                          required
+                          type="string"
+                          message="请输入"
+                        >
+                          {this.checkFiled('select', 'customNonExistEnforce')}
+                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
+                          {/*dataSource={this.state.opption}/>*/}
+                        </IceFormBinder>
+                        <div><IceFormError name="customNonExistEnforce"/></div>
+                      </div>
+                    } triggerType="hover">
+                      <img src="/public/images/creditInformation/customNonExistEnforce.png" alt=""/>
+                    </Balloon>
+
+                  </FormItem>
+                </Col>
+                <Col xxs={24} xs={12} l={8}>
+                  <FormItem {...formItemLayout}
                             label={<span> <span className="label-required">*</span>单笔贷款最大逾期期数</span>}>
 
 
@@ -881,53 +934,7 @@ export default class CreditInformationForm extends BaseComponent {
 
                   </FormItem>
                 </Col>
-                <Col xxs={24} xs={12} l={8}>
-                  <FormItem {...formItemLayout}
-                            label={<span> <span className="label-required">*</span>2年内是否有贷款记录</span>}>
 
-                    <Balloon align='tl' style={styles.box} trigger={
-                      <div>
-                        <IceFormBinder
-                          name="twoIsLoanRecord"
-                          required
-                          type="string"
-                          message="请输入"
-                        >
-                          {this.checkFiled('select', 'twoIsLoanRecord')}
-                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                                  {/*dataSource={this.state.opption}/>*/}
-                        </IceFormBinder>
-                      </div>
-
-                    } triggerType="hover">
-                      <img src="/public/images/creditInformation/twoIsLoanRecord.png" alt=""/>
-                    </Balloon>
-                    <div><IceFormError name="twoIsLoanRecord"/></div>
-                  </FormItem>
-                </Col>
-                <Col xxs={24} xs={12} l={8}>
-                  <FormItem {...formItemLayout} label={<span className="tip"> <span className="label-required">*</span>主贷人与共借人均不存在强制执行信息</span>}>
-
-                    <Balloon align='lb' style={styles.box} trigger={
-                      <div>
-                        <IceFormBinder
-                          name="customNonExistEnforce"
-                          required
-                          type="string"
-                          message="请输入"
-                        >
-                          {this.checkFiled('select', 'customNonExistEnforce')}
-                          {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                                  {/*dataSource={this.state.opption}/>*/}
-                        </IceFormBinder>
-                        <div><IceFormError name="customNonExistEnforce"/></div>
-                      </div>
-                    } triggerType="hover">
-                      <img src="/public/images/creditInformation/customNonExistEnforce.png" alt=""/>
-                    </Balloon>
-
-                  </FormItem>
-                </Col>
                 <Col xxs={24} xs={12} l={8}>
                   <FormItem {...formItemLayout} label={<span className="tip"> <span className="label-required">*</span>单笔贷款最近24月内大于等于3的数字有几个</span>}>
 
@@ -1147,7 +1154,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('select', 'historyMoreThan90')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
                     </IceFormBinder>
                     <div><IceFormError name="historyMoreThan90"/></div>
@@ -1164,7 +1171,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('select', 'hasLoan')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
 
 
@@ -1197,7 +1204,7 @@ export default class CreditInformationForm extends BaseComponent {
                     >
                       {this.checkFiled('input', 'spouseHasLoan')}
                       {/*<Select size="large" placeholder="请选择" className="custom-input"*/}
-                              {/*dataSource={this.state.opption}*/}
+                      {/*dataSource={this.state.opption}*/}
                       {/*/>*/}
 
 

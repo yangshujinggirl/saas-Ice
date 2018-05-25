@@ -3,7 +3,7 @@ import IceContainer from '@icedesign/container';
 import './ProcessForm.scss';
 import { hashHistory } from 'react-router';
 
-import { Form, Icon, Input, Button, Checkbox, Select, Switch, Radio, Grid, Field, Dialog } from '@icedesign/base';
+import { Form, Icon, Input, Button, Checkbox, Select, Radio, Grid, Field, Dialog, Feedback } from '@icedesign/base';
 
 const {Row, Col} = Grid;
 
@@ -27,8 +27,11 @@ export default class ProcessForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: PROCESS_VIEW.EDITFORM
+            view: PROCESS_VIEW.EDITFORM,
+            currentTaskOrder: 1
         };
+
+        this.currentTaskOrder = 1;
     }
 
     /**
@@ -114,11 +117,21 @@ export default class ProcessForm extends Component {
 
             customMenuList[0].limitedAddTimes--;
             formData.taskItems = [];
-            formData.taskItems.push(Object.assign({
-                taskOrder: 1,
+            // formData.taskItems.push(Object.assign({
+            //     taskOrder: 1,
+            //     taskAlias: customMenuList[0].taskTypeName,
+            //     taskTypeId: customMenuList[0].id
+            // }, customMenuList[0]));
+
+            formData.taskItems.push({
+                ...customMenuList[0],
+                transitionItems: this.deepCopyArr(customMenuList[0].transitionItems),
+                taskOrder: this.currentTaskOrder,
                 taskAlias: customMenuList[0].taskTypeName,
                 taskTypeId: customMenuList[0].id
-            }, customMenuList[0]));
+            });
+            this.currentTaskOrder++;
+
 
             // 只处理一次
             this.props.actions.changeHasProcess(true);
@@ -133,20 +146,42 @@ export default class ProcessForm extends Component {
         if (type === 'add') {
             //添加模块
             data.limitedAddTimes--;
-            taskItems.push(Object.assign({
-                taskOrder: taskItems.length + 1,
+            // taskItems.push(Object.assign({
+            //     taskOrder: taskItems.length + 1,
+            //     // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
+            //     taskAlias: data.taskTypeName + taskItems.length,
+            //     taskTypeId: data.id
+            // }, data));
+
+            taskItems.push({
+                ...data,
+                transitionItems: this.deepCopyArr(data.transitionItems),
+                // taskOrder: taskItems.length + 1,
+                taskOrder: this.currentTaskOrder,
                 // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
                 taskAlias: data.taskTypeName + taskItems.length,
                 taskTypeId: data.id
-            }, data));
+            });
+            this.currentTaskOrder++;
+
         } else {
             let customMenuList = this.props.customMenuList;
+            let deleteTaskOrder = data.taskOrder;
             customMenuList.map((item, i) => {
                 if (item.id == data.taskTypeId) {
                     item.limitedAddTimes++;
                 }
             });
             taskItems.splice(index, 1);
+
+            //重置已选择当前模块的值
+            taskItems.map((item) => {
+                item.transitionItems.map((titem, j) => {
+                    if(titem.transToTaskOrder == deleteTaskOrder){
+                        titem.transToTaskOrder = null;
+                    }
+                })
+            })
         }
 
         //状态更新
@@ -155,6 +190,17 @@ export default class ProcessForm extends Component {
         });
 
     };
+
+    // 深拷贝对象数组
+    deepCopyArr(arr){
+        let result = [];
+
+        arr.map((item) => {
+            result.push({...item});
+        })
+
+        return result;
+    }
 
     //表单校验change
     formChange = value => {
@@ -186,6 +232,13 @@ export default class ProcessForm extends Component {
             if (errors) {
                 return false;
             }
+
+            // 添加校验流程至少需要两个模块组成
+            if(values.taskItems.length < 2){
+                Feedback.toast.error('流程需要由两个或两个以上系统模块组成');
+                return;
+            }
+            // 
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 1;
             values.processType = 'LOAN';
@@ -245,8 +298,20 @@ export default class ProcessForm extends Component {
             }
             case PROCESS_VIEW.EDITPAGE : {
                 // 编辑页面
-                // 有页面id的直接获取页面详情（编辑）
-                // 没有id的获取页面字段（新增）
+                // 当流程上定义多个进件的时候，如果其中一个已经编辑了页面，在编辑其他进件需要使用第一个的页面ID
+                // 也就是一个流程的进件只会有一个页面ID
+                // 同时对应哪一步保存的字段上都要追加step=几的值
+                let pageId;
+                formData.taskItems.map((item) => {
+                    if(item.pageId){
+                        pageId = item.pageId;
+                        return;
+                    }
+                })
+
+                // 1. 有页面ID的直接获取页面详情（编辑）
+                // 2. 当前进件没有页面ID但该流程已有别的进件有页面ID
+                // 3. 该流程的进件都没有ID的获取页面字段（新增）
                 if(item.pageId){
                     actions.getPageDetail(item.pageId);
                     actions.getAllPageFields({
@@ -256,14 +321,24 @@ export default class ProcessForm extends Component {
                         pageId: item.pageId,
                         order: idx
                     });
-                }else{
+                }else if(pageId){
                     actions.getPageFields({
                         step: this.getStepFromData(formData.taskItems, idx),
                         excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     actions.getAllPageFields();
                     this.setState({
-                        pageId: item.pageId,
+                        pageId: pageId,
+                        order: idx
+                    });
+                }else {
+                    actions.getPageFields({
+                        step: this.getStepFromData(formData.taskItems, idx),
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
+                    });
+                    actions.getAllPageFields();
+                    this.setState({
+                        // pageId: item.pageId,
                         order: idx
                     });
                 }

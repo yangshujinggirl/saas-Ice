@@ -16,7 +16,7 @@ const index = (state = {
     case T.FETCH_SUCCESS:
       return { ...state, isFetching: false, ...action }
     case T.FETCH_FAILED:
-      return { ...state, isFetching: false }
+      return { ...state, isFetching: false, ...action }
     case T.CHANGE:
       return { ...state, ...action }
     default:

@@ -168,43 +168,40 @@ export default class setFont extends Component {
 
         this.setState({isSubmiting: true});
 
-         // 如果id存在就更新字段
+         // 如果id(页面ID)存在就更新字段
         if (id) {
             FontConfigReq.changPageName(reqData,id).then((res) => {
                 this.setState({isSubmiting: false});
-                let data = res.data;
-                if (res.code == 200) {
-                    if(this.props.onSave){
-                        this.props.onSave(id);
-                        return
-                    }
-                    this.props.router.push(`/font/set/${id}`)  
-                } else {
-                    Dialog.alert({
-                        content: res.msg,
-                        closable: false,
-                        title: "提示",
-                    });
+                if(this.props.onSave){
+                    this.props.onSave(id);
+                    return
                 }
+                this.props.router.push(`/font/set/${id}`)  
+            }).catch((res) => {
+                this.setState({isSubmiting: false});
+                Dialog.alert({
+                    content: res.msg,
+                    closable: false,
+                    title: "提示",
+                });
             })
         } else {
             // 提交字段
             FontConfigReq.save(reqData).then((res) => {
                 this.setState({isSubmiting: false});
                 let data = res.data;
-                if (res.code == 200) {
-                    if(this.props.onSave){
-                        this.props.onSave(data.id);
-                        return
-                    }
-                    this.props.router.push(`/font/set/${data.id}?pageName=${pageName}`)
-                } else {
-                    Dialog.alert({
-                        content: res.msg,
-                        closable: false,
-                        title: "提示",
-                    });
+                if(this.props.onSave){
+                    this.props.onSave(data.id);
+                    return
                 }
+                this.props.router.push(`/font/set/${data.id}?pageName=${pageName}`)
+            }).catch((res) => {
+                this.setState({isSubmiting: false});
+                Dialog.alert({
+                    content: res.msg,
+                    closable: false,
+                    title: "提示",
+                });
             })
         }
     }
@@ -228,12 +225,6 @@ export default class setFont extends Component {
             if(id){
                 FontConfigReq.submitModifyCode(fields, id, fields.id).then((data) => {
                     if (data.code == 200) {
-                        // resData.fieldset[index].fields.splice(inj, 1, fields);
-                        // this.setState({
-                        //     resData,
-                        //     dialogOne: false,
-                        //     dialogTwo: false
-                        // })
                         this.removeField(resData, index, inj, fields);
                     }
                 })
@@ -241,17 +232,16 @@ export default class setFont extends Component {
                 this.removeField(resData, index, inj, fields);
             }
         } else {
+            // 自定义字段的时候只有在输入字段名称选择字段类型才当作有新增字段，否则只是选择了字段
+            if(!fields.name || !fields.type){
+                this.closeDialog();
+                return;
+            }
+
             if(id){
                 FontConfigReq.submitCustomeCode(fields, id).then((data) => {
                     if (data.code == 200) {
                         fields.id = data.data.id
-                        // resData.fieldset[fields.fieldsetOrder].fields.push(fields);
-                        // this.setState({
-                        //     resData,
-                        //     dialogOne: false,
-                        //     dialogTwo: false
-                        // })
-
                         this.addField(resData, index, fields);
                     } else {
                         console.log("添加字段", data.msg);
@@ -268,20 +258,25 @@ export default class setFont extends Component {
 
     removeField(resData, i, j, fields){
         resData.fieldset[i].fields.splice(j, 1, fields);
-        this.setState({
-            resData,
-            dialogOne: false,
-            dialogTwo: false
-        })
+        this.closeDialog(resData);
     }
 
     addField(resData, i, fields){
         resData.fieldset[i].fields.push(fields);
-        this.setState({
-            resData,
+        this.closeDialog(resData);
+    }
+
+    closeDialog(resData){
+        let obj = {
             dialogOne: false,
             dialogTwo: false
-        })
+        };
+
+        if(resData){
+            obj.resData = resData;
+        }
+
+        this.setState(obj);
     }
 
     /**
@@ -321,7 +316,7 @@ export default class setFont extends Component {
             let fieldset = item.fields[0].fieldset;
 
             resData.fieldset.map((oitem, j) => {
-                if(oitem.fields[0].fieldset == fieldset){
+                if(oitem.fields.length > 0 && oitem.fields[0].fieldset == fieldset){
                     oitem.fields = oitem.fields.concat(item.fields);
                     existFieldset = true;
                 }
@@ -380,7 +375,7 @@ export default class setFont extends Component {
      * 2. 自定义字段设置isCustom=true
      * 3. 默认添加排在当前组的最后
      * 4. 设置一个默认options
-     * @param  {[type]} index [description]
+     * @param  {[type]} index 区域的索引值
      * @return {[type]}       [description]
      */
     handleAddCode = (index) => {
@@ -401,9 +396,14 @@ export default class setFont extends Component {
         data.fieldset = currentFieldSet.name;
         data.name = currentFieldSet.name;
 
+        // 设置编辑区域的序号
+        let editeCodeIndex = this.state.editeCodeIndex;
+        editeCodeIndex.index = index;
+
         this.setState({
             dialogOne: true,
             fields: data,
+            editeCodeIndex
         })
     }
 
@@ -508,15 +508,11 @@ export default class setFont extends Component {
                             <div className="addModule">
                                 <BtnAddRow text="添加新区域" onClick={this.handleAddModule} />
                             </div>
-                            <div className="submit">
-                                <Button type="normal" onClick={this.cancelPage} style={{
-                                                                                           marginLeft: '10px'
-                                                                                       }}>
+                            <div className="submit pch-form-buttons">
+                                <Button type="normal" size="large" onClick={this.cancelPage}>
                                     返回
                                 </Button>
-                                <Button type="secondary" style={{
-                                                                    marginLeft: '10px'
-                                                                }} onClick={this.submit} disabled={this.state.isSubmiting}>
+                                <Button type="secondary" size="large" onClick={this.submit} disabled={this.state.isSubmiting}>
                                     提交
                                 </Button>
                             </div>

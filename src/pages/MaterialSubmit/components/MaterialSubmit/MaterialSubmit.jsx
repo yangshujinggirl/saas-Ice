@@ -61,27 +61,11 @@ class MaterialSubmit extends BaseComponent {
           title: '限制大小',
         }],
       fileList: [
-        {
-          id: 1,
-          fileName: 'IMG.png',
-          status: 'done',
-          size: 1024,
-          downloadURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          fileURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-          imgURL: 'https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg',
-        },
-        {
-          id: 2,
-          fileName: 'IMG.png',
-          status: 'done',
-          size: 1024,
-          downloadURL: 'http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg',
-          fileURL: 'http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg',
-          imgURL: 'http://lx-file.cn-bj.ufileos.com/ft1/path/to/file/282a0182397c9531af077d3a54c2a406.jpg',
-        },
       ],
       upLoadList: [],
     };
+
+    this.currentId = 1;
   }
 
   componentDidMount() {
@@ -149,8 +133,31 @@ class MaterialSubmit extends BaseComponent {
     });
   }
 
+  isImg(url){
+    return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
+  }
+
   handleFileChange(info) {
     console.log(info);
+    info.fileList.map((item, i) => {
+      if (item.status == 'done') {
+        if(!item.id){
+          item.id = this.currentId;
+          this.currentId++;
+        }
+        if (this.isImg(item.imgURL)) {
+          // item.size = item.originFileObj.size;
+          // item.downloadURL = item.imgURL;
+          item.fileURL = item.imgURL;
+        } else {
+          // item.size = item.originFileObj.size;
+          // item.downloadURL = item.imgURL;
+          item.fileURL = item.imgURL;
+          item.imgURL = '/public/images/creditInformation/filed.png';
+        }
+      }
+    });
+
     this.setState({
       fileList: info.fileList,
     });
@@ -177,16 +184,12 @@ class MaterialSubmit extends BaseComponent {
     };
   }
 
-  moveCard(targetIndex, sourceId, isCancel, lastTargetIndex, type) {
+  moveCard(targetIndex, sourceId, lastTargetIndex, type) {
     // console.log('moveCard', arguments);
     let { dataSource, fileList } = this.state;
     let dragFile = this.findFileById(sourceId);
     let d = dataSource[targetIndex];
 
-    if (isCancel) {
-      d[type] = undefined;
-      dragFile.file.isUsed = false;
-    } else {
       if (typeof lastTargetIndex != 'undefined') {
         dataSource[lastTargetIndex][type] = undefined;
       }
@@ -198,24 +201,27 @@ class MaterialSubmit extends BaseComponent {
       d[type] = dragFile.file.imgURL;
       d.sourceIndex = dragFile.index;
       d.sourceId = sourceId;
-    }
+
     this.setState({
       dataSource,
       fileList,
     });
   }
 
-  handleRemoveClick(index, sourceId, type, imgURL) {
+  handleRemoveClick(index, type, data) {
     let { dataSource, fileList } = this.state;
-    let dragFile = this.findFileById(sourceId);
+    let dragFile = this.findFileById(data.sourceId);
     let d = dataSource[index];
 
-    if (!sourceId) {
+    if (!data.sourceId) {
+      // sourceId标明当前数据是从哪个源拖动过来的
       fileList.push({
-        id: fileList.length + 1,
-        imgURL: imgURL,
+        id: this.currentId,
+        imgURL: data[type],
         status: 'done',
+        type
       });
+      this.currentId++;
     } else {
       dragFile.file.isUsed = false;
     }
@@ -253,6 +259,20 @@ class MaterialSubmit extends BaseComponent {
     });
 
     console.log(originData);
+    for (var i = 0; i < originData.length; i++) {
+      for (var j = 0; j < originData[i].collectionDetails.length; j++) {
+        var el = originData[i].collectionDetails[j];
+        // console.log(el);
+        if (!el.downloadUrl) {
+          Toast.show({
+            type: 'help',
+            content: `${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`,
+          });
+          return;
+        }
+      }
+    }
+
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
         if (res && res.code == 200) {
@@ -308,7 +328,6 @@ class MaterialSubmit extends BaseComponent {
             <Upload
               {...this.UPLOAD_CONFIG}
               className='material-files-upload-upload'
-              accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
               fileList={fileList}
               showUploadList={false}
               onChange={this.handleFileChange.bind(this)}>

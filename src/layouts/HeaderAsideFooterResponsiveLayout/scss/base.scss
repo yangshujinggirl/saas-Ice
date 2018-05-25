@@ -1197,3 +1197,18 @@ body {
     height: 5em;
   }
 }
+
+.pch-notice{
+    position: fixed;
+    z-index: 99;
+    top: 10px;
+    left: 50%;
+    min-width: 200px;
+    text-align: center;
+    border-radius: 6px;
+    background-color: #FA7070;
+    color: #fff;
+    padding: 12px;
+    transform: translateX(-50%);
+}
+

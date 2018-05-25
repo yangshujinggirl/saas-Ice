@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Dialog, Checkbox, Radio, Balloon, DatePicker, Select } from '@icedesign/base';
+import { Button, Input, Dialog, Checkbox, Radio, Balloon, DatePicker, Select, CascaderSelect, Feedback } from '@icedesign/base';
 import cx from 'classnames';
 import FontConfigReq from './../../../reqs/FontConfigReq.js';
 import SetFontBaseDialog from '../SetFontBaseDialog';
@@ -58,7 +58,7 @@ export default class SetFontFieldsets extends Component {
         let obj = {}
         obj.fields = copyDate.fieldset[index].fields
 
-        if(!id){
+        if (!id) {
             //新增时直接更改数据
             this.setState({
                 subTitle: ''
@@ -140,7 +140,7 @@ export default class SetFontFieldsets extends Component {
         let deleteObj = newArr.fieldset[index].fields[inj];
         let fileId = deleteObj.id;
 
-        if(!id){
+        if (!id) {
             //新增时直接更改数据
             newArr.fieldset[index].fields.splice(inj, 1);
             this.props.changeData(newArr);
@@ -168,10 +168,19 @@ export default class SetFontFieldsets extends Component {
         const newArr = this.props.resData;
         let deleteObj = newArr.fieldset[index].name;
 
+        // 校验当前区域是否有必填字段
+        let allFields = newArr.fieldset[index].fields.filter((item) => {
+            return item.isRequired
+        });
+        if (allFields.length > 0) {
+            Feedback.toast.error('含有*的区域不能删除');
+            return;
+        }
+
         Dialog.confirm({
             content: `是否确认删除${deleteObj}区域？`,
             onOk: () => {
-                if(!id){
+                if (!id) {
                     //新增时直接更改数据
                     newArr.fieldset.splice(index, 1);
                     this.props.changeData(newArr);
@@ -269,43 +278,41 @@ export default class SetFontFieldsets extends Component {
         const handleFixed = (item) => {
             let inputType = <Input size="large" placeholder="" />
 
+            let defaultValue;
+            if (item.options) {
+                let defaultOptions = item.options.filter((opt) => {
+                    return opt.isDefault
+                });
+                if (defaultOptions.length > 0) {
+                    defaultValue = defaultOptions[0].value;
+                }
+            }
+
             switch (item.type) {
                 case 'STRING':
-                    inputType = <Input size="large" placeholder="" readOnly={item.isReadonly ? true : false} />
+                    inputType = <Input size="large" placeholder="请输入" readOnly={item.isReadonly ? true : false} />
                     break;
                 case 'TEXT':
-                    inputType = <Input size="large" placeholder="" addonAfter={item.append} />
+                    inputType = <Input size="large" placeholder="请输入" addonAfter={item.append} />
                     // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
-                    inputType = <Input size="large" placeholder="" addonAfter={item.append} />
+                    inputType = <Input size="large" placeholder="请输入" addonAfter={item.append} />
                     break;
                 case 'DECIMAL':
-                    inputType = <Input size="large" placeholder="" addonAfter={item.append} />
+                    inputType = <Input size="large" placeholder="请输入" addonAfter={item.append} />
                     break;
                 case 'DATE':
                     inputType = <RangePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
                     break;
                 case 'SELECT':
-                    inputType = <Select size="large" placeholder="请选择">
-                                    {item.options && item.options.map((item, index) => {
-                                         return (
-                                             <Option value={item.value} key={index}>
-                                                 {item.label}
-                                             </Option>
-                                         )
-                                     })}
-                                </Select>
+                    inputType = <Select size="large" placeholder="请选择" dataSource={item.options} defaultValue={defaultValue} />
                     break;
                 case 'CHECKBOX':
-                    inputType = <span className="addNewCheckbox">{<label>
-                                      <CheckboxGroup size="large" dataSource={item.options} />
-                                  </label>}</span>
+                    inputType = <span className="addNewCheckbox"><CheckboxGroup size="large" dataSource={item.options} defaultValue={[defaultValue]} /></span>
                     break;
                 case 'RADIO':
-                    inputType = <span className="addNewRadio">{<label>
-                                   <RadioGroup size="large" dataSource={item.options} />
-                               </label>}</span>
+                    inputType = <span className="addNewRadio"><RadioGroup size="large" dataSource={item.options} defaultValue={defaultValue} /></span>
                     break;
                 case 'ADDRESS':
                     inputType = <CascaderSelect size="large" dataSource={dataSource} />
@@ -337,12 +344,15 @@ export default class SetFontFieldsets extends Component {
                                  </div>
                                  <div className="base-detail-opt">
                                      {index != 0 &&
-                                      <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}>&#xe625;</span> <span className={cx('icon up', {'disabled': index == 1})} onClick={this.moveUp.bind(this, index)}>&#xe62b;</span> <span className={cx('icon down', {'disabled': index == resData.fieldset.length - 1})}
-                                          onClick={this.moveDown.bind(this, index)}>&#xe629;</span></span>}
+                                      <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}></span> <span className={cx('icon up', {
+                                                                                                                                                            'disabled': index == 1
+                                                                                                                                                        })} onClick={this.moveUp.bind(this, index)}></span> <span className={cx('icon down', {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 'disabled': index == resData.fieldset.length - 1
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             })}
+                                          onClick={this.moveDown.bind(this, index)}></span></span>}
                                      <span className="addStr" onClick={handleAddCode.bind(this, index)}>添加字段</span>
                                  </div>
                              </div>
-
                              <div className='ui-sortable'>
                                  {item.fields.map((item, inj) => {
                                       if (item.isFixed) {
@@ -390,7 +400,9 @@ export default class SetFontFieldsets extends Component {
                                           )
                                       }
                                   })}
-                                 {item.fields.length == 0 && <div className="ui-sortable-empty">还没有字段哦</div>}
+                                 {item.fields.length == 0 && <div className="ui-sortable-empty">
+                                                                 还没有字段哦
+                                                             </div>}
                              </div>
                          </div>
                      )

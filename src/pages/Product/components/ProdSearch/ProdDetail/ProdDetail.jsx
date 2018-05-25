@@ -96,7 +96,7 @@ export default class ProdDetail extends Component {
               <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>资金方：</label>
-                  <span >{product.tenantId}</span>
+                  <span >{product.tenantName}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>产品名称：</label>
@@ -114,7 +114,7 @@ export default class ProdDetail extends Component {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>材料收取清单：</label>
-                  <span >{product.collectionDetailListId}</span>
+                  <span >{product.productCollectionName}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>生效期限：</label>
@@ -129,7 +129,7 @@ export default class ProdDetail extends Component {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>状态：</label>
-                  <span >{product.status=='1'?'生效':(product.status=='0'?'未生效':'失效')}</span>
+                  <span >{product.status=='1'?'生效':(product.status=='0'?'关闭':'失效')}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>尾款产品：</label>
@@ -351,22 +351,6 @@ export default class ProdDetail extends Component {
                 <Table.Column title="名称" dataIndex="relatedPathName"/>
               </Table>
             </div>
-
-            <legend className="pch-legend" style={{marginTop:"30px"}}>
-              <span className="pch-legend-legline"></span>按集团/渠道/厅店
-            </legend>
-            <div className="pch-condition" >
-            <div className="table-title">按集团/渠道/厅店</div>
-            <Table
-                hasHeader
-                className="table"
-                primaryKey="id"
-              >
-                <Table.Column title="类型" dataIndex=""/>
-                <Table.Column title="名称" dataIndex=""/>
-              </Table>
-            </div>
-
           </IceContainer>
         </div>
       </IceFormBinderWrapper >

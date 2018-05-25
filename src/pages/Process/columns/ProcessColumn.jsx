@@ -50,18 +50,16 @@ class ProcessColumn extends BaseColumn {
                         <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER)}>
                             产品
                         </a>
-                }else{
-                    editdom = 
-                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
-                            修改
-                        </a>
                 }
                 return (
                     <div className="pch-table-operation">
                         <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
                             详情
                         </a>
-                        {editdom}{productdom}
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                            修改
+                        </a>
+                        {productdom}
                         <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
                             复制
                         </a>

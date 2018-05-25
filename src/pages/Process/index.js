@@ -4,8 +4,8 @@ import ProcessDetail from './containers/ProcessDetail'
 import ProcessConfig from './containers/ProcessConfig'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as ProcessActions from './actions/ProcessAction.js'
-// import ProcessActions from './actions/ProcessAction_.js'
+// import * as ProcessActions from './actions/ProcessAction.js'
+import ProcessActions from './actions/ProcessAction_.js'
 
 // console.log(ProcessActions);
 
