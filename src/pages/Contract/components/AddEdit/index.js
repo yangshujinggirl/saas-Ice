@@ -60,9 +60,29 @@ class AddEit extends BaseComponent {
     });
   };
   initPage() {
+    let contractContent = localStorage.getItem('contractContent');
     if(this.props.params.id) {
       this.getDetail(this.props.params.id);
+    } else if(contractContent) {
+      this.getCookieContract(contractContent);
     }
+  }
+  //新增----获取超时保存模板内容；
+  getCookieContract(contractContent) {
+    contractContent = JSON.parse(contractContent);
+    let { templateContent, templateName } = contractContent;
+    const blocksFromHTML = htmlToDraft(templateContent);
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap
+    );
+    this.setState({
+      editorState:EditorState.createWithContent(state),
+      value:{
+        templateName,
+        templateContent
+      }
+    })
   }
   //编辑api
   getDetail(id) {
@@ -99,7 +119,6 @@ class AddEit extends BaseComponent {
       }
 
       'function' == typeof callback && callback(values)
-
     });
   }
   //提交保存
@@ -119,30 +138,30 @@ class AddEit extends BaseComponent {
   }
   //提交新增api
   addTemplate(params) {
+    localStorage.setItem('contractContent',JSON.stringify(params));
     Req.addTemplatesApi(params)
-    .then((res) => {
-      const { code, msg } =res;
-      if(code != 200) {
-        Toast.error(msg);
-        return;
-      }
-      hashHistory.push(`contract`)
-    },error=> {
-
-    })
+    .then(r => {
+      Req.tipSuccess({
+        content: '新增成功',
+        afterClose(){
+          localStorage.clear('contractContent');
+          hashHistory.push('contract')
+        }
+      })
+    }).catch(e=>e)
   }
   //提交编辑api
   editTemplate(params) {
     params = Object.assign(params,{id:this.props.params.id})
     Req.editTemplatesApi(params)
-    .then((res) => {
-      const { code, msg } =res;
-      if(code != 200) {
-        Toast.error(msg);
-        return;
-      }
-      hashHistory.push(`contract`)
-    })
+    .then(r => {
+      Req.tipSuccess({
+        content: '修改成功',
+        afterClose(){
+          hashHistory.push('contract')
+        }
+      })
+    }).catch(e=>e)
   }
   //取消
   cancelSubmit() {

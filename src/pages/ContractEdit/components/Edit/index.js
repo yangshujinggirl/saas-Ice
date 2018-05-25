@@ -71,7 +71,10 @@ class AddEit extends BaseApp {
   //点击确定提交数据
   handleSubmit(){
     this.handlerSubmitData();
-    let params = {contractEdit:this.submitContent};
+    let params = {
+      contractId:this.props.params.id,
+      contractEdit:this.submitContent
+    };
     Req.submitEditContractApi(params)
       .then((res) => {
         const { code, msg } =res;
@@ -138,7 +141,7 @@ class AddEit extends BaseApp {
 
       let val_one = "";
       if (!this_1.submitContent[index]) {//如果第一次渲染该份合同则没值的地方展示接口返回值
-        obj.contractExtendSource.map((item, index) => {
+        obj.contractExtendSource&&obj.contractExtendSource.map((item, index) => {
           if (item.keyEnglishName === arry[0]) {
             val_one = item.keyValue;
           }

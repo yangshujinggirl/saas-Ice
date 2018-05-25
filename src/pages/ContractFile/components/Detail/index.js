@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Button } from "@icedesign/base";
+import { Button, Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base';
 import Req from '../../reqs/ContractFileReq';
 import { Title, PchTable, PchPagination } from 'components';
 import './index.scss';
 
+const Toast = Feedback.toast;
 
 class Detail extends BaseApp {
   constructor(props) {
@@ -24,7 +25,14 @@ class Detail extends BaseApp {
   getTemplateList(id) {
     Req.contractDetailApi(id)
     .then((res) => {
-      const { data } =res;
+      const { code, data, msg } =res;
+      if( code !=200 ) {
+        // if( code == '1000063' ) {
+        //
+        // }
+        Toast.error(msg);
+        return
+      }
       this.initPageStatus(data);
     })
   }
@@ -88,12 +96,26 @@ class Detail extends BaseApp {
   printContract() {
     window.print()
   }
+  initHtml(content) {
+    let regex = /_BLANK_([^]*?)_BLANK_/ig;
+
+    content = content.replace(regex,(s,value)=> {
+      let keyValues = value.split('_');
+      keyValues[1] = keyValues[1] === 'null' ? '___' : keyValues[1];
+      let val = keyValues[1];
+      return `<span className="value-styles">${val}</span>`
+    })
+
+    return content
+
+  }
   render() {
     const { templateData, currentIndex } = this.state;
     const { lastDisabled ,nextDisabled } = this.state;
     const Module = () =>{
       if(templateData.length>0) {
-        return templateData[currentIndex].content
+        let contractent = templateData[currentIndex].content;
+        return this.initHtml(contractent)
       } else {
         return;
       }
