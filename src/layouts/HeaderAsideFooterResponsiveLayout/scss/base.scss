@@ -685,7 +685,7 @@ body {
         margin: 0px auto;
         max-height: 34px;
     }
-    
+
 }
 
 .ice-menu {
@@ -703,7 +703,7 @@ body {
             color: #FC9E25;
         }
    }
-    
+
     .ice-menu-submenu{
         .ice-menu-submenu-title{
             .icon-nav-more{
@@ -720,7 +720,7 @@ body {
                 border-bottom: none;
             }
         }
-        
+
     }
     .ice-menu-submenu-open{
         .ice-menu-submenu-title{
@@ -738,7 +738,7 @@ body {
                 border-top: none;
             }
         }
-        
+
     }
 }
 
@@ -950,6 +950,9 @@ body {
             margin: 0 5px;
         }
     }
+  .next-input.disabled input:disabled, .next-input.disabled textarea:disabled {
+    color: #000;
+  }
 }
 //
 .next-row{
