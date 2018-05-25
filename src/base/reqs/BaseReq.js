@@ -244,17 +244,15 @@ Object.keys(Feedback.toast).forEach(k=>{
     }else{
       opts = {...content, ...opts}
     }
-    if('object' != typeof duration){
+    if('object' != typeof duration && duration){
       opts.duration = Number(duration);
       opts.duration = isNaN(opts.duration) ? 300 : opts.duration;
-    }else{
-      opts = {...duration, ...opts}
     }
+
     if('function' == typeof afterCloseCallback){
       opts.afterClose = afterCloseCallback
-    }else{
-      opts.afterClose = a=>a;
     }
+    
     opts = {...opts, ...rest}
     Feedback.toast[k]({
       duration: 500,
