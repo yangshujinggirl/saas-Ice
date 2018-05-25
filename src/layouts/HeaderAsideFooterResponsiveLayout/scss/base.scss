@@ -1,11 +1,11 @@
 /* GLOBAL */
 @font-face {
   font-family: 'iconfont';  /* project id 593133 */
-  src: url('//at.alicdn.com/t/font_593133_pef869gfk0ozuxr.eot');
-  src: url('//at.alicdn.com/t/font_593133_pef869gfk0ozuxr.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_593133_pef869gfk0ozuxr.woff') format('woff'),
-  url('//at.alicdn.com/t/font_593133_pef869gfk0ozuxr.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_593133_pef869gfk0ozuxr.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_593133_sl1fxfj3muqh0k9.eot');
+  src: url('//at.alicdn.com/t/font_593133_sl1fxfj3muqh0k9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_593133_sl1fxfj3muqh0k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_593133_sl1fxfj3muqh0k9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_593133_sl1fxfj3muqh0k9.svg#iconfont') format('svg');
 }
 
 .icon {
@@ -685,7 +685,7 @@ body {
         margin: 0px auto;
         max-height: 34px;
     }
-    
+
 }
 
 .ice-menu {
@@ -703,7 +703,7 @@ body {
             color: #FC9E25;
         }
    }
-    
+
     .ice-menu-submenu{
         .ice-menu-submenu-title{
             .icon-nav-more{
@@ -720,7 +720,7 @@ body {
                 border-bottom: none;
             }
         }
-        
+
     }
     .ice-menu-submenu-open{
         .ice-menu-submenu-title{
@@ -738,7 +738,7 @@ body {
                 border-top: none;
             }
         }
-        
+
     }
 }
 
@@ -950,6 +950,12 @@ body {
             margin: 0 5px;
         }
     }
+  .next-input.disabled input:disabled, .next-input.disabled textarea:disabled {
+    color: #000;
+  }
+  .next-select.disabled {
+    color: #000;
+  }
 }
 //
 .next-row{
@@ -1212,3 +1218,100 @@ body {
     transform: translateX(-50%);
 }
 
+
+// 面签
+.pch-interview {
+    padding-right: 100px;
+    padding-left: 100px;
+    position: absolute;
+    right: 100px;
+    height: 50px;
+    &:hover {
+        .pch-interview-name {
+            display: block;
+        }
+    }
+    .icon {
+        font-size: 18px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+    .pch-interview-num {
+        position: absolute;
+        top:3px;
+        right: 80px;
+        background: red;
+        color: #fff;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+    }
+    .pch-interview-name {
+        display: none;
+        position: absolute;
+        width: 220px;
+        background: #fff;
+        top: 49px;
+        left: -80px;
+        color: #000;
+        border: 1px solid #e1e1e1;
+        border-radius: 2px;
+        background: #fff;
+        padding: 0 15px 10px;
+        align-content: space-between;
+        >li {
+            display: flex;
+            padding: 10px 0;
+            box-sizing: border-box;
+            height: 40px;
+            >span {
+                flex: auto;
+                line-height: 40px;
+            }
+        }
+        .pch-interviw-answer {
+            background: #ec9d00;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 26px;
+            margin-top: 7px;
+            line-height: 27px;
+        }
+    }
+}
+.pch-interview-shadow {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .2);
+    z-index: 5;
+}
+.pch-interview-box {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 70%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    z-index: 6;
+    border: 1px solid #999;
+    .pch-interview-left {
+        float: left;
+        width: 70%;
+    }
+    .pch-interview-right {
+          float: right;
+          width: 30%;
+          min-height: 500px;
+          #interview-box {
+              height: 450px;
+          }
+    }
+}

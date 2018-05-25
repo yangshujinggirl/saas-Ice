@@ -92,6 +92,7 @@ export default class Login extends Component {
                 // 2. 如果有来源则往来源地址跳转
                 // 3. 默认往当前登录用户的所属系统地址跳转
                 if (location.host.indexOf('pingchang666') == -1) {
+                    // TODO 还有可能当前来源页并不是当前用户的权限内的
                     location.href = fromUrl ? decodeURIComponent(fromUrl) : '/';
                 } else {
                     if (isSameSystem) {
@@ -102,6 +103,10 @@ export default class Login extends Component {
                         location.href = '//' + location.host.replace('login', system);
                     }
                 }
+            }).catch((data) => {
+                this.setState({
+                    isLoging: false
+                });
             });
         });
     };

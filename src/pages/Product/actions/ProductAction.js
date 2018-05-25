@@ -192,17 +192,13 @@ export const prodrevise = (condition) => {
   return (dispatch) => {
     dispatch(fetchStart({isSubmiting: true}))
     Req.prodrevise(condition).then((res) => {
-      if (res.code != 200){
-        dispatch(fetchSuccess({isSubmiting: false}))
-        return;
-      }
-
       Req.tipSuccess('编辑成功！',500,() => {
           dispatch(fetchSuccess({isSubmiting: false}))
           hashHistory.push('/product/search');
       });
     }).catch((ex) => {
-      dispatch(fetchFailed(ex))
+      dispatch(fetchStart({isSubmiting: false}))
+      // dispatch(fetchFailed(ex))
     })
   }
 }

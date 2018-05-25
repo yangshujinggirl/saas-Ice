@@ -111,23 +111,28 @@ export default class CreditInformationForm extends BaseComponent {
             this.setState({
               formData: res.data,
             });
-            res.data.baseDocuments.map(item => {
-              console.log(item.type.indexOf('image') == 0);
-              if (item.type.indexOf('image') == 0) {
-                item.downloadURL = item.location;
-                item.fileURL = item.location;
-                item.imgURL = item.location;
-              } else {
-                item.downloadURL = item.location;
-                item.fileURL = item.location;
-                item.imgURL = '/public/images/creditInformation/filed.png';
-              }
-            });
-            this.setState({
-              fileList: res.data.baseDocuments,
-            });
+            if(res.data.baseDocuments){
+              res.data.baseDocuments.map(item => {
+                console.log(item.type.indexOf('image') == 0);
+                if (item.type.indexOf('image') == 0) {
+                  item.downloadURL = item.location;
+                  item.fileURL = item.location;
+                  item.imgURL = item.location;
+                } else {
+                  item.downloadURL = item.location;
+                  item.fileURL = item.location;
+                  item.imgURL = '/public/images/creditInformation/filed.png';
+                }
+              });
+              this.setState({
+                fileList: res.data.baseDocuments,
+              });
+            }
+
+            console.log(res.data)
             if (res.data.diffArrStr) {
               //处理不同字段
+              console.log(res.data.diffArrStr)
               this.checkDiff(res.data.diffArrStr);
             }
           } else {
@@ -266,7 +271,7 @@ export default class CreditInformationForm extends BaseComponent {
       title: '提示',
       onOk: () => {
         dialogAlert.hide();
-        hashHistory.push(`reviewApprove`);
+        hashHistory.push(`reviewApprove/10`);
       },
     });
   };

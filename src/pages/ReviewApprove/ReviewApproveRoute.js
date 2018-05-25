@@ -2,7 +2,7 @@ import ReviewApprove from './';
 import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
-  path: "/reviewApprove",
+  path: "/reviewApprove/:typeId",
   childRoutes: [{
     path: 'add',
     component: ReviewApprove.ReviewApproveForm
@@ -10,7 +10,7 @@ export default {
     path: 'edit/:id',
     component: ReviewApprove.ReviewApproveForm
   },{
-    path: 'detail/:id/:proInstId/:taskId',
+    path: 'detail/:id',
     component: ReviewApprove.ReviewApproveDetail,
     name :'审查审批详情'
   }],

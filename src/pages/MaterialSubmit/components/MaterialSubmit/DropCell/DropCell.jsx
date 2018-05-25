@@ -21,7 +21,7 @@ class DropCell extends Component {
                             className="material-file-cell-close"
                             type="close"
                             size="small"
-                            onClick={onRemoveClick.bind(this, index, data.sourceId, type, data[type])} />
+                            onClick={onRemoveClick.bind(this, index, type, data)} />
                         
                          <IceImg
                              height={44}
@@ -43,7 +43,7 @@ const cardTarget = {
         return true;
     },
     hover(props, monitor, component) {
-        console.log('DropCell hover', props,monitor.getItem())
+        console.log('DropCell hover', props, monitor.getItem())
         const {lastTargetIndex, id: sourceId} = monitor.getItem()
         const {index: targetIndex, type} = props
 
@@ -57,7 +57,7 @@ const cardTarget = {
         }
 
         // Time to actually perform the action
-        props.moveCard(targetIndex, sourceId, false, lastTargetIndex, type)
+        props.moveCard(targetIndex, sourceId, lastTargetIndex, type)
 
         // Note: we're mutating the monitor item here!
         // Generally it's better to avoid mutations,

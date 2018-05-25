@@ -138,21 +138,21 @@ Object.keys(ContractReq.URL).forEach(methodName=>{
 		}
 		return n;
 	}
-	let clone = (a, s)=>{
+	let clone = (a, s, t)=>{
 		let b;
 		if(a instanceof Array){
 			// 防止循环引用
-			if(a === s)return [];
+			if(a === s)return t;
 			b = [];
 			for(let i = 0, len = a.length; i < len; i++){
-				b.push(clone(a[i]), a)
+				b.push(clone(a[i]), a, b)
 			}
 		}else if('object' == typeof a){
 			// 防止循环引用
-			if(a === s)return {};
+			if(a === s)return t;
 			b = {}
 			for(let k in a){
-				if(a.hasOwnProperty(k))b[k] = clone(a[k], a)
+				if(a.hasOwnProperty(k))b[k] = clone(a[k], a, b)
 			}
 		}else{
 			b = a;

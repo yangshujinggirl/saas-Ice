@@ -96,7 +96,7 @@ export default class ProdDetail extends Component {
               <Row wrap >
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>资金方：</label>
-                  <span >{product.tenantId}</span>
+                  <span >{product.tenantName}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                 <label style={styles.filterTitle}>产品名称：</label>
@@ -114,7 +114,7 @@ export default class ProdDetail extends Component {
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>材料收取清单：</label>
-                  <span >{product.collectionDetailListId}</span>
+                  <span >{product.productCollectionName}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>生效期限：</label>

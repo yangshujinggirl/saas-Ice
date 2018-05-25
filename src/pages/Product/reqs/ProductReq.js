@@ -97,7 +97,7 @@ class ProductReq extends CurdReq {
     let options = {
       url: url,
       method: 'get',
-      params: condition,
+      params: Object.assign({status:1},condition),
       contentType: 'application/json'
     }
     return super.fetchData(options);

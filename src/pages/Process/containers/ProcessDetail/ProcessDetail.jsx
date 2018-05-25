@@ -99,7 +99,8 @@ export default class ProcessDetail extends Component {
 
     // 取消
     handleCancel() {
-        hashHistory.push('process');
+        history.go(-1);
+        // hashHistory.push('process');
     }
 
     /**

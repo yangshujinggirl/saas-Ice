@@ -99,7 +99,6 @@ class AddEit extends BaseComponent {
       }
 
       'function' == typeof callback && callback(values)
-
     });
   }
   //提交保存
@@ -120,29 +119,27 @@ class AddEit extends BaseComponent {
   //提交新增api
   addTemplate(params) {
     Req.addTemplatesApi(params)
-    .then((res) => {
-      const { code, msg } =res;
-      if(code != 200) {
-        Toast.error(msg);
-        return;
-      }
-      hashHistory.push(`contract`)
-    },error=> {
-
-    })
+    .then(r => {
+      Req.tipSuccess({
+        content: '新增成功',
+        afterClose(){
+          hashHistory.push('contract')
+        }
+      })
+    }).catch(e=>e)
   }
   //提交编辑api
   editTemplate(params) {
     params = Object.assign(params,{id:this.props.params.id})
     Req.editTemplatesApi(params)
-    .then((res) => {
-      const { code, msg } =res;
-      if(code != 200) {
-        Toast.error(msg);
-        return;
-      }
-      hashHistory.push(`contract`)
-    })
+    .then(r => {
+      Req.tipSuccess({
+        content: '修改成功',
+        afterClose(){
+          hashHistory.push('contract')
+        }
+      })
+    }).catch(e=>e)
   }
   //取消
   cancelSubmit() {

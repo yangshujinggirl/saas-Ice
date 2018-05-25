@@ -36,11 +36,37 @@ export default class InterView extends BaseApp {
    * @param type 操作类型，根据不同类型处理不同事件
    */
   handleOperateClick(data, type) {
+    console.log(data)
     switch (type) {
-      case this.OPERATE_TYPE.DETAIL: {
-        hashHistory.push(`interview/detail/${data.id}`);
+      //pbcContract, 中国银行合同;
+      case this.OPERATE_TYPE.OTHER1: {
+        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
         break;
       }
+      //pinganContract, 平安银行合同
+      case this.OPERATE_TYPE.OTHER2: {
+        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+        break;
+      }
+      //;interviewOnly, 贷款仅面签;creditCard,信用卡仅面签
+      case this.OPERATE_TYPE.OTHER3: {
+        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+        break;
+      }
+      //loan, 进件合同;
+      case this.OPERATE_TYPE.OTHER4: {
+        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+        break;
+      }
+      //cwloan,车王进件
+      case this.OPERATE_TYPE.OTHER5: {
+
+        break;
+      }
+
+
+
+
       case this.OPERATE_TYPE.SEE: {
         hashHistory.push(`interview/see/${data.id}`);
         break;
