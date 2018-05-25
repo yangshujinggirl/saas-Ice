@@ -953,6 +953,9 @@ body {
   .next-input.disabled input:disabled, .next-input.disabled textarea:disabled {
     color: #000;
   }
+  .next-select.disabled {
+    color: #000;
+  }
 }
 //
 .next-row{
