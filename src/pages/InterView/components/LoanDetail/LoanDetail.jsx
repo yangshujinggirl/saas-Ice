@@ -201,6 +201,30 @@ export default class LoanDetail extends Component {
     e.preventDefault();
     hashHistory.push('/reviewApprove');
   };
+  renderField = (el) => {
+    if (el.type == 'STRING') {
+      return (<Input disabled size="large" className="custom-input" value={el.value}/>);
+    }
+    else if (el.type == 'SELECT') {
+      if (el.value) {
+        if (el.options) {
+          for (var i = 0; i < el.options.length; i++) {
+            if (el.options[i].value = el.value) {
+              return (<Input disabled size="large" className="custom-input" value={el.label}/>);
+            }
+          }
+        } else {
+          return (<Input disabled size="large" className="custom-input" value={el.value}/>);
+        }
+      } else {
+        return (<Input disabled size="large" className="custom-input" value={el.value}/>);
+      }
+    }
+    else if(el.type == 'SELECT'){
+
+    }
+    return (<span></span>);
+  };
 
   /**
    * 渲染
@@ -216,14 +240,15 @@ export default class LoanDetail extends Component {
               return (
                 <IceContainer key={item.name} title={item.name} className='subtitle LoanDetail' style={styles.bg}>
                   <Row wrap>
-
                     {
                       item.fields && item.fields.map((el) => {
                         return (
                           <Col {...this.colspans} key={el.name}>
                             <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
 
-                              <Input disabled size="large" className="custom-input" value={el.value}/>
+                              {
+                                this.renderField(el)
+                              }
                             </FormItem>
                           </Col>
                         );
