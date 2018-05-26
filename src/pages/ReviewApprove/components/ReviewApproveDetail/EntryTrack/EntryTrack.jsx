@@ -67,20 +67,31 @@ export default class EntryTrack extends Component {
               var status = classNames({
                 'circle status-red'    : item.choose == 'REJECT',
                 'circle status-orange' : item.choose == undefined ,
-                'circle status-green'  : item.choose == 'PASS' || item.choose == 'SUBMIT' ,
-                'circle status-gray'   : item.choose == 'BACK',
+                'circle status-green'  : item.choose == 'PASS' ,
+                'circle status-gray'   : item.choose == 'BACK' || item.choose == 'SUBMIT' ,
               });
 
               return (
                 <div className="item" key={index}>
-                  <div className={status}>{item.taskAlias}</div>
+                  <div className={status}>{item.chooseLable}</div>
                   <div className="status-title"><b>{item.taskName}</b></div>
                   <div className="status-desc">
                     {
-                      item.changeFields ? this.changeFile(item.changeFields) : (<span></span>)
+                      item.changeFieldsLabel ?
+                        item.changeFieldsLabel.split('|').map(el=>{
+                            return (<span>{el}</span>)
+                          }
+                        ) : (<span></span>)
                     }
-                    <span>审查意见:{item.approveMsg}</span>
+                    {
+                      item.approveMsg ? (<span>审查意见:{item.approveMsg}</span>) :(<span></span>)
+                    }
+                    {
+                      item.loanLabel ? (<span>{item.loanLabel}</span>) :(<span></span>)
+                    }
+
                   </div>
+
                   <div className="content">
                     <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b>（{item.operatorNum}）</p>
                   </div>

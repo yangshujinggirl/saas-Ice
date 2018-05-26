@@ -81,7 +81,13 @@ export default class EntryTrack extends Component {
                                 <div className={status}>{item.chooseLable}</div>
                                   <div className="status-title"><b>{item.taskName}</b></div>
                                 <div className="status-desc">
-                                  <span>{item.changeFieldsLabel}</span>
+                                  {
+                                    item.changeFieldsLabel ?
+                                      item.changeFieldsLabel.split('|').map(el=>{
+                                        return (<span>{el}</span>)
+                                        }
+                                      ) : (<span></span>)
+                                  }
                                   {
                                     item.approveMsg ? (<span>审查意见:{item.approveMsg}</span>) :(<span></span>)
                                   }
