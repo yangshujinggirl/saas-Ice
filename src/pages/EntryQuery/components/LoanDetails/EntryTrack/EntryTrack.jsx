@@ -72,7 +72,7 @@ export default class EntryTrack extends Component {
                             var status = classNames({
                               'circle status-red'    : item.choose == 'REJECT',
                               'circle status-orange' : item.choose == undefined ,
-                              'circle status-green'  : item.choose == 'PASS'  ,
+                              'circle status-green'  : item.choose == 'PASS' ,
                               'circle status-gray'   : item.choose == 'BACK'|| item.choose == 'SUBMIT',
                             });
 

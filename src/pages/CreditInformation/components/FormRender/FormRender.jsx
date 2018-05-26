@@ -412,7 +412,7 @@ export default class FormRender extends Component {
         if (res && res.code == 200) {
           const dataSource = res.data.list.map((item, index) => {
             return {
-              label: item.brandName + '/' + item.seriesGroupName + '/' + item.modelName,
+              label: item.brandName ,
               value: item.id,
             };
           });
