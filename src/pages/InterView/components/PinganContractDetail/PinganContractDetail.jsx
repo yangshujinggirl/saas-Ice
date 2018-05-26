@@ -86,7 +86,7 @@ export default class PinganContractDetail extends BaseComponent {
   render() {
     return (
       <IceContainer className="pch-container PinganContractDetail">
-        <Title title="中行合同详情"/>
+        <Title title="平安银行合同详情"/>
         <IceFormBinderWrapper value={this.state.formData} onBlur={this.formChange} >
           <div className='pch-form'>
             <Form>

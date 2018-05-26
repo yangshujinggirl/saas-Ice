@@ -38,9 +38,19 @@ class InterViewReq extends CurdReq{
 		}
 		return super.fetchData(options);
 	}
+	//平安中行面签详情接口
   getInterViewDetail(id){
     let options = {
       url: this._config.CONTRACT_HOST + `/visaInterview/chinate/detail/${id}`,
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
+  //仅面签详情接口
+  getInterViewOnlyDetail(id){
+    let options = {
+      url: this._config.CONTRACT_HOST + `/visaInterview/only/detail/${id}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
     }

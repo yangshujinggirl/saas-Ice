@@ -207,28 +207,71 @@ export default class LoanDetail extends Component {
         if (el.options) {
           for (var i = 0; i < el.options.length; i++) {
             if (el.options[i].value == el.value) {
-              return (<Input disabled size="large" className="custom-input" value={el.options[i].label}/>);
+              return (
+                <Col {...this.colspans} key={el.name}>
+                  <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
+                    <Input disabled size="large" className="custom-input" value={el.options[i].label}/>
+                  </FormItem>
+                </Col>
+              );
             }
           }
         } else {
-          return (<Input disabled size="large" className="custom-input" value={el.value}/>);
+          return (
+            <Col {...this.colspans} key={el.name}>
+              <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
+                <Input disabled size="large" className="custom-input" value={el.value}/>
+              </FormItem>
+            </Col>
+          );
+        }
+      } else {
+        return (
+          <Col {...this.colspans} key={el.name}>
+            <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
+              <Input disabled size="large" className="custom-input" value={el.value}/>
+            </FormItem>
+          </Col>
+        );
+      }
+    }
+    else if (el.type == 'RADIO') {
+      if (el.options) {
+        var list = [];
+        for (var i = 0; i < el.options.length; i++) {
+          if (el.options[i].value == el.value) {
+            list.push(
+              <Col {...this.colspans} key={el.name}>
+                <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
+                  <Input disabled size="large" className="custom-input" value={el.options[i].label}/>
+                </FormItem>
+              </Col>,
+            );
+            if (el.hasAttachedFields && el.attached[el.value]) {
+              el.attached[el.value].map((e, i) => {
+                list.push(
+                  <Col {...this.colspans} key={i}>
+                    <FormItem {...formItemLayout} label={<span> {e.label}:</span>}>
+                      <Input key={i} disabled size="large" className="custom-input" value={e.value}/>
+                    </FormItem>
+                  </Col>,
+                );
+              });
+            }
+            return list;
+          }
         }
       } else {
         return (<Input disabled size="large" className="custom-input" value={el.value}/>);
       }
     }
-    else if(el.type == 'RADIO'){
-        if (el.options) {
-          for (var i = 0; i < el.options.length; i++) {
-            if (el.options[i].value == el.value) {
-              return (<Input disabled size="large" className="custom-input" value={el.options[i].label}/>);
-            }
-          }
-        } else {
-          return (<Input disabled size="large" className="custom-input" value={el.value}/>);
-        }
-    }
-    return (<Input disabled size="large" className="custom-input" value={el.value}/>);
+    return (
+      <Col {...this.colspans} key={el.name}>
+        <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
+          <Input disabled size="large" className="custom-input" value={el.value}/>
+        </FormItem>
+      </Col>
+    );
   };
 
   /**
@@ -238,39 +281,32 @@ export default class LoanDetail extends Component {
     const details = this.props.details || [];
     console.log(details);
     return (
-      <div className='pch-form'>
-        <Form>
-          {
-            details.list && details.list.length > 0 ? details.list.map(item => {
-              return (
-                <IceContainer key={item.name} title={item.name} className='subtitle LoanDetail' style={styles.bg}>
-                  <Row wrap>
-                    {
-                      item.fields && item.fields.map((el) => {
-                        return (
-                          <Col {...this.colspans} key={el.name}>
-                            <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
-
-                              {
-                                this.renderField(el)
-                              }
-                            </FormItem>
-                          </Col>
-                        );
-                      })
-                    }
+      <div className='LoanDetail'>
+        <div className='pch-form'>
+          <Form>
+            {
+              details.list && details.list.length > 0 ? details.list.map(item => {
+                return (
+                  <IceContainer key={item.name} title={item.name} className='subtitle LoanDetail' style={styles.bg}>
+                    <Row wrap>
+                      {
+                        item.fields && item.fields.map((el) => {
+                          return this.renderField(el);
+                        })
+                      }
 
 
-                  </Row>
+                    </Row>
 
-                </IceContainer>
-              );
+                  </IceContainer>
+                );
 
 
-            }) : (<span></span>)
-          }
+              }) : (<span></span>)
+            }
 
-        </Form>
+          </Form>
+        </div>
       </div>
     );
   }
