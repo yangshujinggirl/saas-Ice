@@ -82,7 +82,13 @@ export default class EntryTrack extends Component {
                                   <div className="status-title"><b>{item.taskName}</b></div>
                                 <div className="status-desc">
                                   <span>{item.changeFieldsLabel}</span>
-                                  <span>审查意见:{item.approveMsg}</span>
+                                  {
+                                    item.approveMsg ? (<span>审查意见:{item.approveMsg}</span>) :(<span></span>)
+                                  }
+                                  {
+                                    item.loanLabel ? (<span>{item.loanLabel}</span>) :(<span></span>)
+                                  }
+
                                 </div>
 
                                 <div className="content">

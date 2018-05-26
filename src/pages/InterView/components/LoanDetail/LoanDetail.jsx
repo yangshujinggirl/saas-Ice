@@ -48,158 +48,19 @@ export default class LoanDetail extends Component {
   /**
    * 初始化
    */
-  componentDidMount() {
-    let { actions, params } = this.props;
-
-    if (params.id) {
-      actions.getDetail(params.id);
-    }
-    console.log(this.props.params.id);
-
-  }
-
-  // 取消
-  handleCancel() {
-  }
-
-  //标题点击
-  titleClick = (index, name) => {
-    // e.preventDefault();
-    this.setState({
-      index: index,
-    });
-    this.scrollToAnchor(name);
-  };
-  //渲染标题
-  renderTitle = (data) => {
-    console.log(data);
-    const list = [];
-    const titleList = [];
-    if (!this.isEmptyObject(data)) {
-      var materialsFalg = false;//材料标志falg
-      var trackFalg = false;//轨迹标志falg
-      data.map((el, i) => {
-        if (el.name == '材料提交') {
-          materialsFalg = true;
-        }
-        if (el.name == '流程轨迹') {
-          trackFalg = true;
-        }
-        titleList.push(el);
-      });
-      if (!trackFalg) {
-        titleList.unshift({ name: '流程轨迹', fields: [] });
-      }
-      if (!materialsFalg) {
-        titleList.push({ name: '材料提交', fields: [] });
-      }
-
-      titleList.map((item, index) => {
-        var btnClass = classNames({
-          'active': this.state.index == index,
-        });
-        list.push(
-          <li key={index}><a className={btnClass} onClick={this.titleClick.bind(this, index, item.name)}>{item.name}</a>
-          </li>,
-        );
-      });
-    }
-    return list;
-  };
-
-  //title跳转
-  scrollToAnchor = (anchorName) => {
-    if (anchorName) {
-      let anchorElement = document.getElementById(anchorName);
-      if (anchorElement) {
-        anchorElement.scrollIntoView();
-      }
-    }
-  };
-
-  //判断Json是否为kong
-  isEmptyObject(e) {
-    var t;
-    for (t in e) {
-      return false;
-    }
-    return true;
-  }
-
-  //新增列表一列传递的方法
-  addColumn = (data) => {
-    this.setState({
-      tableList: data,
-    });
-  };
-  //提交
-  submit = (e, data) => {
-    e.preventDefault();
-    this.field.validate((errors, values) => {
-      if (errors) {
-        console.log('Errors in form!!!');
-        return;
-      }
-      console.log('Submit!!!');
-      for (var key in values) {
-        if (values[key] != undefined) {
-          if (values[key] != 'undefined') {
-            // if(this.isCheckBox(key)){
-            //   console.log("多选")
-            //   console.log(values[key])
-            //   // alert("123")
-            //   if(typeof (values[key]) == 'object'){
-            //     values[key] = values[key].join(',');
-            //   }
-            // }
-            this.queryCache[key] = values[key];
-          }
-        }
-      }
-      console.log(this.queryCache);
-      var dataJson = {
-        'choose': data.choose,
-        'approveMsg': data.approveMsg,
-        // "loanDetail" : this.queryCache,
-        businessId: this.props.routeParams.id,
-        // "proInstId"  : this.props.params.proInstId,
-        // "taskId"     : this.props.params.taskId,
-      };
-      console.log(dataJson);
-      Req.submitReview(dataJson)
-        .then((res) => {
-          if (res && res.code == 200) {
-
-            hashHistory.push(`creditinformation`);
-            Toast.show({
-              type: 'success',
-              content: '提交成功～',
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  };
-
-  //是否为复选框
-  isCheckBox(key) {
-    let list = this.props.details.list;
-    for (var i = 0; i < list.length; i++) {
-      for (var j = 0; j < list[i].fields.length; j++) {
-        if (list[i].fields[j].type == 'CHECKBOX' && list[i].fields[j].name == key) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  // componentDidMount() {
+  //   let { actions, params } = this.props;
+  //
+  //   if (params.id) {
+  //     actions.getDetail(params.id);
+  //   }
+  //   console.log(this.props.params.id);
+  //
+  // }
 
   //返回
   back = (e) => {
-    e.preventDefault();
-    hashHistory.push('/reviewApprove');
+
   };
   renderField = (el) => {
     if (el.type == 'SELECT') {

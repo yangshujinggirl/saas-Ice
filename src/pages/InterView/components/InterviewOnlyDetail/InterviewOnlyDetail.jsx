@@ -55,28 +55,29 @@ export default class InterviewOnlyDetail extends BaseComponent {
   componentDidMount() {
     let { actions, params } = this.props;
 
-    if (params.id) {
-      Req.getInterViewOnlyDetail(params.id)
-        .then((res) => {
-          console.log(res.data);
-          this.setState({
-            formData: res.data,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    // if (params.id) {
+    //   Req.getInterViewOnlyDetail(params.id)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.setState({
+    //         formData: res.data,
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   }
 
 
   render() {
-    let { type, id } = this.props.params;
+    let { type = '' } = this.props;
+    let { formData ={} } = this.props ;
     if (type == 'interviewOnly') {
       return (
         <IceContainer className="pch-container">
           <Title title="仅面签详情"/>
-          <IceFormBinderWrapper value={this.state.formData} onBlur={this.formChange}>
+          <IceFormBinderWrapper value={formData} onBlur={this.formChange}>
             <div className='pch-form'>
               <Form>
                 <Row wrap>
@@ -145,7 +146,7 @@ export default class InterviewOnlyDetail extends BaseComponent {
       return (
         <IceContainer className="pch-container InterviewOnlyDetail">
           <Title title="信用卡面签详情"/>
-          <IceFormBinderWrapper value={this.state.formData} onBlur={this.formChange}>
+          <IceFormBinderWrapper value={formData} onBlur={this.formChange}>
             <div className='pch-form'>
               <Form>
                 <Row wrap>
