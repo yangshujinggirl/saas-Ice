@@ -8,14 +8,30 @@ import { Storage } from 'utils';
 class SpDataSource {
   constructor() {
 
-    this.dataSource = [];//数据源
-    this.defaultValue = null;//默认值
-    this.defaultLabel = null;//默认值label
+    this.dataSource = []; //数据源
+    this.defaultValue = null; //默认值
+    this.defaultLabel = null; //默认值label
+    this.hasFind = false;
+    this.inte = null;
+    this.maxCount = 10;
+    this.currentCount = 0;
 
     this.init();
   }
 
   init() {
+    // 因为异步接口获取的用户数据，这里设置多次去取值
+    this.inte = setInterval(() => {
+      if (this.hasFind || this.currentCount > this.maxCount) {
+        this.inte && clearInterval(this.inte);
+        return;
+      }
+      this.getData();
+      this.currentCount++;
+    }, 500)
+  }
+
+  getData() {
     let userinfo = Storage.get('USERINFO');
     // ownerId 资方ID
     // organizationName 资方名称
@@ -27,7 +43,10 @@ class SpDataSource {
 
       this.defaultValue = this.dataSource[0].value;
       this.defaultLabel = this.dataSource[0].label;
+
+      this.hasFind = true;
     }
+
   }
 }
 

@@ -145,5 +145,23 @@ export default class SetFontBaseDialog extends Component {
         return res;
     }
 
+    /**
+     * 获取设置必填、唯一、只读、独占一行的复选框的禁用状态
+     * @return {[type]} [description]
+     */
+    getDisabledForCheckbox() {
+        let {data} = this.props;
+
+        let res = [];
+        if (data.isRequired) {
+            res.push('readonly');
+        }
+        if (data.isReadonly) {
+            res.push('required');
+        }
+
+        return res;
+    }
+
     render() {}
 }

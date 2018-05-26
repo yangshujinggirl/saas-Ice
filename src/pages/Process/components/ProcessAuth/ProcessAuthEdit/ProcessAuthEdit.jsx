@@ -316,17 +316,12 @@ export default class ProcessAuthEdit extends BaseApp {
                             <Table
                                 dataSource={deprtments}
                                 primaryKey="id"
-                                style={{
-                                           width: '100%'
-                                       }}
                                 isTree
                                 expandedRowRender={this.renderLevel.bind(this)}
                                 rowSelection={this.state.rowSelection}>
                                 <Table.Column title="机构" dataIndex="name" />
                             </Table>
-                            <Table dataSource={orgsData.otherOrgs} style={{
-                                                                              width: '100%'
-                                                                          }} isTree rowSelection={this.state.rowSelectionTwo}>
+                            <Table dataSource={orgsData.otherOrgs} isTree rowSelection={this.state.rowSelectionTwo}>
                                 <Table.Column title="其他机构" dataIndex="name" />
                             </Table>
                         </div>
@@ -336,9 +331,7 @@ export default class ProcessAuthEdit extends BaseApp {
                             </Button>
                         </div>
                         <div className="part-r">
-                            <Table dataSource={dataSourceRight} fixedHeader style={{
-                                                                                       width: '100%'
-                                                                                   }} maxBodyHeight={370}>
+                            <Table dataSource={dataSourceRight} fixedHeader maxBodyHeight={370}>
                                 <Table.Column title="权限" cell={this.orgNameShow} />
                                 <Table.Column title="操作" cell={this.renderOperation.bind(this)} />
                             </Table>
