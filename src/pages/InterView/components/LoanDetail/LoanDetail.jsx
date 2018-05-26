@@ -202,15 +202,12 @@ export default class LoanDetail extends Component {
     hashHistory.push('/reviewApprove');
   };
   renderField = (el) => {
-    if (el.type == 'STRING') {
-      return (<Input disabled size="large" className="custom-input" value={el.value}/>);
-    }
-    else if (el.type == 'SELECT') {
+    if (el.type == 'SELECT') {
       if (el.value) {
         if (el.options) {
           for (var i = 0; i < el.options.length; i++) {
-            if (el.options[i].value = el.value) {
-              return (<Input disabled size="large" className="custom-input" value={el.label}/>);
+            if (el.options[i].value == el.value) {
+              return (<Input disabled size="large" className="custom-input" value={el.options[i].label}/>);
             }
           }
         } else {
@@ -220,10 +217,18 @@ export default class LoanDetail extends Component {
         return (<Input disabled size="large" className="custom-input" value={el.value}/>);
       }
     }
-    else if(el.type == 'SELECT'){
-
+    else if(el.type == 'RADIO'){
+        if (el.options) {
+          for (var i = 0; i < el.options.length; i++) {
+            if (el.options[i].value == el.value) {
+              return (<Input disabled size="large" className="custom-input" value={el.options[i].label}/>);
+            }
+          }
+        } else {
+          return (<Input disabled size="large" className="custom-input" value={el.value}/>);
+        }
     }
-    return (<span></span>);
+    return (<Input disabled size="large" className="custom-input" value={el.value}/>);
   };
 
   /**
