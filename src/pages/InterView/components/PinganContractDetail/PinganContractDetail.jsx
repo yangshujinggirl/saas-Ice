@@ -45,26 +45,26 @@ export default class PinganContractDetail extends BaseComponent {
   componentDidMount() {
     let { actions, params } = this.props;
 
-    if (params.id) {
-      Req.getInterViewDetail(params.id)
-        .then((res) => {
-          if (res && res.code == 200 && res.data) {
-            console.log(res.data)
-
-            this.setState({
-              formData: res.data.chinateContracResponse
-            });
-          } else {
-            Toast.show({
-              type: 'error',
-              content: res.msg,
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    // if (params.id) {
+    //   Req.getInterViewDetail(params.id)
+    //     .then((res) => {
+    //       if (res && res.code == 200 && res.data) {
+    //         console.log(res.data)
+    //
+    //         this.setState({
+    //           formData: res.data.chinateContracResponse
+    //         });
+    //       } else {
+    //         Toast.show({
+    //           type: 'error',
+    //           content: res.msg,
+    //         });
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   }
 
 //label的提示
@@ -84,10 +84,13 @@ export default class PinganContractDetail extends BaseComponent {
   };
 
   render() {
+    let { formData ={} } = this.props ;
+    console.log(this.props)
+    console.log(formData)
     return (
       <IceContainer className="pch-container PinganContractDetail">
-        <Title title="中行合同详情"/>
-        <IceFormBinderWrapper value={this.state.formData} onBlur={this.formChange} >
+        <Title title="平安银行合同详情"/>
+        <IceFormBinderWrapper value={formData} onBlur={this.formChange} >
           <div className='pch-form'>
             <Form>
               <Row wrap>

@@ -190,7 +190,7 @@ export default class CreditInformationDetail extends Component {
   //返回
   back = (e) => {
     e.preventDefault();
-    hashHistory.push('/reviewApprove');
+    hashHistory.push('/reviewApprove/10');
   };
 
   /**
