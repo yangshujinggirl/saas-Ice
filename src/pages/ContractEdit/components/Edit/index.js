@@ -120,7 +120,6 @@ class AddEit extends BaseApp {
   //处理要展示的html
   initFormData=(obj,index)=>{
     let contractContent;
-
     // if(obj.updateContractContent){//如果是第一次编辑取contractContent字段否则取updateContractContent
     //   contractContent = obj.updateContractContent;
     // }else{
