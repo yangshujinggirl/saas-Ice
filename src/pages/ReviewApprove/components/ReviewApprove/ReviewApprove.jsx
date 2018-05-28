@@ -26,6 +26,22 @@ export default class ReviewApprove extends BaseApp {
         this.fetchData();
       }
     }
+
+  }
+
+  componentWillReceiveProps(nextProps){
+   console.log(nextProps.params, this.props.params)
+    if(nextProps.params.typeId !=this.props.params.typeId){
+
+        if (nextProps.params.typeId == 10 || nextProps.params.typeId == 11) {
+          this.fetchData({
+            taskTypeKey : 10
+          });
+        } else {
+          this.fetchData();
+        }
+      }
+
   }
 
   fetchData = (condition) => {
@@ -85,7 +101,7 @@ export default class ReviewApprove extends BaseApp {
       }
       // 面签详情
       case this.OPERATE_TYPE.OTHER5: {
-        hashHistory.push(`interview/detail/${data.loanId}`);
+        hashHistory.push(`interview/detail/loan/${data.loanId}`);
         break;
       }
     }

@@ -40,7 +40,7 @@ class CreditInformationReq extends CurdReq{
   //轨迹详情
   getTrackDetail(data) {
 	  console.log(data)
-	  if(!data.isApproveInfo){
+	  if(!data.isApproveInfo && data.isApproveInfo == undefined){
       var options = {
         url: this._config.WF_HOST + `/tasks/track?businessId=${data.businessId}&isApproveInfo=${data.isApproveInfo}`,
         method: 'Get',
@@ -123,7 +123,7 @@ class CreditInformationReq extends CurdReq{
   //获取产品编号
   getProductNumApi(limit) {
     let options = {
-      url:this._config.LOAN_HOST + `/product?limit=${limit}?staus=1`,
+      url:this._config.LOAN_HOST + `/product?limit=${limit}?status=1`,
       method: 'Get',
       contentType: 'application/json'
     }
