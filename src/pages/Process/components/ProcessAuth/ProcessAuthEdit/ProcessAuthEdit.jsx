@@ -157,8 +157,12 @@ export default class ProcessAuthEdit extends BaseApp {
         let tempArr = [];
         let { orgsData = {} } = this.props;
 
-        this.getRolesFromData([orgsData.deprtments], tempArr);
-        this.getRolesFromData([orgsData.otherOrgs], tempArr);
+        if(orgsData.deprtments){
+            this.getRolesFromData([orgsData.deprtments], tempArr);
+        }
+        if(orgsData.otherOrgs){
+            this.getRolesFromData([orgsData.otherOrgs], tempArr);
+        }
 
         console.log(tempArr);
 
