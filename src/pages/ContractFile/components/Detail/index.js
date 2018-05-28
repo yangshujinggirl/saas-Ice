@@ -16,7 +16,7 @@ class Detail extends BaseApp {
       lastDisabled:true,
       nextDisabled:true,
       templateData:[],
-      currentIndex:0
+      currentIndex:0,
     }
   }
   componentWillMount() {
@@ -124,6 +124,7 @@ class Detail extends BaseApp {
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
           <div id="section-to-print" className="main-content">
+            <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
             <div dangerouslySetInnerHTML={{
               __html:Module()
             }} />

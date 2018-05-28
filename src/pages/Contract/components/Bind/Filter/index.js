@@ -13,11 +13,13 @@ const {Row, Col} = Grid;
 const {Option} = Select;
 const FormItem = Form.Item;
 
+import SpDataSource from '../../../../../base/utils/SpDataSource';
+
 class Filter extends BaseCondition {
   constructor() {
     super();
     this.state = {
-      value:{},
+      value:{tenantId:SpDataSource.defaultValue},
       typeDataSource:[]
     }
     this.colspans = {
@@ -49,6 +51,7 @@ class Filter extends BaseCondition {
 
   render() {
     const { typeDataSource } =this.state;
+
       return (
         <div className="pch-condition">
             <IceFormBinderWrapper ref="form" value={this.state.value} onChange={this.filterFormChange.bind(this)}>
@@ -57,7 +60,7 @@ class Filter extends BaseCondition {
                   <Col {...this.colspans}>
                     <FormItem {...this.formItemLayout} label="资方:">
                       <IceFormBinder name="tenantId">
-                          <Input size="large" value="中国银行" readonly/>
+                          <Select  dataSource={SpDataSource.dataSource} disabled/>
                       </IceFormBinder>
                     </FormItem>
                   </Col>
