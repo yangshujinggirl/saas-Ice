@@ -113,7 +113,7 @@ class AddEit extends BaseApp {
     this.submitContent[index] = {
       contractId:item.contractId,
       templateId:item.templateId,
-      contractContent:item.updateContractContent||item.contractContent
+      contractContent:item.contractContent
     };
   }
 
@@ -121,11 +121,11 @@ class AddEit extends BaseApp {
   initFormData=(obj,index)=>{
     let contractContent;
 
-    if(obj.updateContractContent){//如果是第一次编辑取contractContent字段否则取updateContractContent
-      contractContent = obj.updateContractContent;
-    }else{
+    // if(obj.updateContractContent){//如果是第一次编辑取contractContent字段否则取updateContractContent
+    //   contractContent = obj.updateContractContent;
+    // }else{
       contractContent = obj.contractContent;
-    }
+    // }
 
     let contractContentCopy = JSON.stringify(contractContent);
     contractContentCopy = JSON.parse(contractContentCopy);
@@ -139,16 +139,16 @@ class AddEit extends BaseApp {
       let arry = value.split("_");
       arry[1] = arry[1] === 'null' ? '' : arry[1];
 
-      let val_one = "";
-      if (!this_1.submitContent[index]) {//如果第一次渲染该份合同则没值的地方展示接口返回值
-        obj.contractExtendSource&&obj.contractExtendSource.map((item, index) => {
-          if (item.keyEnglishName === arry[0]) {
-            val_one = item.keyValue;
-          }
-        });
-      }
+      // let val_one = "";
+      // if (!this_1.submitContent[index]) {//如果第一次渲染该份合同则没值的地方展示接口返回值
+      //   obj.contractExtendSource&&obj.contractExtendSource.map((item, index) => {
+      //     if (item.keyEnglishName === arry[0]) {
+      //       val_one = item.keyValue;
+      //     }
+      //   });
+      // }
 
-      let val = arry[1] || val_one || '';
+      let val = arry[1] || '';
       return `<input value='${val}' key='${arry[0]}' ${this_1.keyArray[arry[0]]?'disabled':''} class='${this_1.keyArray[arry[0]]?'input-disabled':''}'/>`;
     }).replace(/↵/ig, function (s, value) {
       return "</br>";
