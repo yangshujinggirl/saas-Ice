@@ -34,6 +34,7 @@ export default class LoanDetail extends Component {
     this.field = new Field(this);
     this.state = {
       index: 0,
+      dataSource:[]
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -48,15 +49,40 @@ export default class LoanDetail extends Component {
   /**
    * 初始化
    */
-  // componentDidMount() {
-  //   let { actions, params } = this.props;
-  //
-  //   if (params.id) {
-  //     actions.getDetail(params.id);
-  //   }
-  //   console.log(this.props.params.id);
-  //
-  // }
+  componentDidMount() {
+    let { actions, params } = this.props;
+
+    if (params.id) {
+      this.getProductNum()
+    }
+
+
+  }
+  //获取产品列表
+  getProductNum() {
+    const limit = 990;
+    Req.getProductNumApi(limit)
+      .then((res) => {
+        if (res.data && res.code == '200') {
+          console.log(res);
+          const { data } = res;
+          const { list } = data;
+          let dataSource = list.map((el) => {
+            return {
+              id: el.id,
+              label: el.name,
+              value: el.productCode,
+            };
+          });
+          console.log(dataSource);
+          this.setState({
+            dataSource,
+          });
+        }
+      }, (error) => {
+
+      });
+  }
 
   //返回
   back = (e) => {
@@ -77,7 +103,23 @@ export default class LoanDetail extends Component {
               );
             }
           }
-        } else {
+        }
+        else {
+          if(el.name =='productCode'){
+            var value = '';
+            this.state.dataSource.map(item=>{
+              if(el.value == item.value){
+                value = item.label
+              }
+            })
+            return (
+              <Col {...this.colspans} key={el.name}>
+                <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>
+                  <Input disabled size="large" className="custom-input" value={value}/>
+                </FormItem>
+              </Col>
+            );
+          }
           return (
             <Col {...this.colspans} key={el.name}>
               <FormItem {...formItemLayout} label={<span> {el.label}:</span>}>

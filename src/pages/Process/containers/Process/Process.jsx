@@ -53,8 +53,8 @@ export default class Process extends BaseApp {
             }
             case this.OPERATE_TYPE.OTHER1: {
                 // 复制，复制该流程进入流程修改页面
-                this.props.actions.copyProcess(id);
-                // hashHistory.push(`process/edit/${id}`)
+                // this.props.actions.copyProcess(id);
+                hashHistory.push(`process/edit/${id}/copy`)
                 break;
             }
         }

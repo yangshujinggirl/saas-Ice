@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import cx from 'classnames';
+import http from '../pages/InterView/reqs/InterViewReq.js';
+import InterviewDetail from '../pages/InterView/InterViewDetail.jsx';
+
 export default class InterviwDialog extends Component {
 
     constructor(props) {
@@ -53,91 +57,92 @@ export default class InterviwDialog extends Component {
                 recordAudio: true,
                 highAudio: true
             },
+            toggleHide: false,//控制弹框显示隐藏
+            once: true,//初始化网易一次
         }
     }
-    componentDidMount() {
-        if (false) {
-            this._initNetcall(this.props.initDate)
-        }    
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.initDate.accid && this.state.once) {
+            console.log('data12345678987654567', nextProps.initDate)
+            this._initNetcall(nextProps.initDate)
+            this.setState({
+                once: false
+            })
+        }
     }
-    _initNetcall(data, connectCallback) {
-        let _this = this;
-        window.NIM.use(window.Netcall);
-        window.NIM.use(window.WebRTC);
+    _initNetcall = (data, connectCallback) => {
+        let _this = this
         let NIM_INS = window.NIM.getInstance({
             // debug: true || { api: 'info', style: 'font-size:14px;color:blue;background-color:rgba(0,0,0,0.1)' },
-            account: data.accId,
+            account: data.accid,
             // account: 'steven',
             gender: '男',
             appKey: data.appKey,
+            // appKey: '89fae3c4a75c36868bf9ef96c6f35e7e',
             token: data.token,
             // token: '89fae3c4a75c36868bf9ef96c6f35e7e',
             onconnect: function (d) {
                 // connectCallback(d);
                 // _this._onConnect(d);
                 // _this.once = false;
-                console.log('链接成功：',d)
+                console.log('链接成功：', d)
             },
-            onwillreconnect: _this._onWillReconnect,
-            ondisconnect: _this._onDisconnect,
-            onerror: _this._onError,
+            onwillreconnect: _this._onWillReconnect.bind(_this),
+            ondisconnect: _this._onDisconnect.bind(_this),
+            onerror: _this._onError.bind(_this),
             // 多端登录
-            onloginportschange: _this._onLoginPortsChange,
+            onloginportschange: _this._onLoginPortsChange.bind(_this),
             // 用户关系
-            onblacklist: _this._onBlacklist,
-            onsyncmarkinblacklist: _this._onMarkInBlacklist,
-            onmutelist: _this._onMutelist,
-            onsyncmarkinmutelist: _this._onMarkInMutelist,
+            onblacklist: _this._onBlacklist.bind(_this),
+            onsyncmarkinblacklist: _this._onMarkInBlacklist.bind(_this),
+            onmutelist: _this._onMutelist.bind(_this),
+            onsyncmarkinmutelist: _this._onMarkInMutelist.bind(_this),
             // 好友关系
-            onfriends: _this._onFriends,
-            onsyncfriendaction: _this._onSyncFriendAction,
+            onfriends: _this._onFriends.bind(_this),
+            onsyncfriendaction: _this._onSyncFriendAction.bind(_this),
             // 用户名片
-            onmyinfo: _this._onMyInfo,
-            onupdatemyinfo: _this._onUpdateMyInfo,
-            onusers: _this._onUsers,
-            onupdateuser: _this._onUpdateUser,
+            onmyinfo: _this._onMyInfo.bind(_this),
+            onupdatemyinfo: _this._onUpdateMyInfo.bind(_this),
+            onusers: _this._onUsers.bind(_this),
+            onupdateuser: _this._onUpdateUser.bind(_this),
             // 机器人列表的回调
-            onrobots: _this._onRobots,
+            onrobots: _this._onRobots.bind(_this),
             // 群组
-            onteams: _this._onTeams,
-            onsynccreateteam: _this._onCreateTeam,
-            onteammembers: _this._onTeamMembers,
+            onteams: _this._onTeams.bind(_this),
+            onsynccreateteam: _this._onCreateTeam.bind(_this),
+            onteammembers: _this._onTeamMembers.bind(_this),
             // onsyncteammembersdone: _this._onSyncTeamMembersDone,
-            onupdateteammember: _this._onUpdateTeamMember,
+            onupdateteammember: _this._onUpdateTeamMember.bind(_this),
             // 会话
-            onsessions: _this._onSessions,
-            onupdatesession: _this._onUpdateSession,
+            onsessions: _this._onSessions.bind(_this),
+            onupdatesession: _this._onUpdateSession.bind(_this),
             // 消息
-            onroamingmsgs: _this._onRoamingMsgs,
-            onofflinemsgs: _this._onOfflineMsgs,
-            onmsg: _this._onMsg,
+            onroamingmsgs: _this._onRoamingMsgs.bind(_this),
+            onofflinemsgs: _this._onOfflineMsgs.bind(_this),
+            onmsg: _this._onMsg.bind(_this),
             // 系统通知
-            onofflinesysmsgs: _this._onOfflineSysMsgs,
-            onsysmsg: _this._onSysMsg,
-            onupdatesysmsg: _this._onUpdateSysMsg,
-            onsysmsgunread: _this._onSysMsgUnread,
-            onupdatesysmsgunread: _this._onUpdateSysMsgUnread,
-            onofflinecustomsysmsgs: _this._onOfflineCustomSysMsgs,
-            oncustomsysmsg: _this._onCustomSysMsg,
+            onofflinesysmsgs: _this._onOfflineSysMsgs.bind(_this),
+            onsysmsg: _this._onSysMsg.bind(_this),
+            onupdatesysmsg: _this._onUpdateSysMsg.bind(_this),
+            onsysmsgunread: _this._onSysMsgUnread.bind(_this),
+            onupdatesysmsgunread: _this._onUpdateSysMsgUnread.bind(_this),
+            onofflinecustomsysmsgs: _this._onOfflineCustomSysMsgs.bind(_this),
+            oncustomsysmsg: _this._onCustomSysMsg.bind(_this),
             // 收到广播消息
-            onbroadcastmsg: _this._onBroadcastMsg,
-            onbroadcastmsgs: _this._onBroadcastMsgs,
+            onbroadcastmsg: _this._onBroadcastMsg.bind(_this),
+            onbroadcastmsgs: _this._onBroadcastMsgs.bind(_this),
             // 同步完成
-            onsyncdone: _this._onSyncDone
+            onsyncdone: _this._onSyncDone.bind(_this)
         });
-        _this.setState({
-            NIM_INS
-        })
+        window.NIM.use(window.Netcall);
+        window.NIM.use(window.WebRTC);
         // 初始化webrtc
         let NIM_WEBRTC = window.WebRTC.getInstance({
-            nim: _this.state.NIM_INS,
-            container: document.getElementById('interview-box'),
-            remoteContainer: document.getElementById('interview-remove')
+            nim: NIM_INS,
+            container: document.getElementById('interview-remove'),
+            remoteContainer: document.getElementById('interview-box')
             // debug: true
         });
-        _this.setState({
-            NIM_WEBRTC
-        })
         // 初始化 netcall
         // _this.NIM_WEBNET = window.Netcall.getInstance({
         //     nim: _this.NIM_INS,
@@ -148,21 +153,15 @@ export default class InterviwDialog extends Component {
         //     remoteContainer: $('#remote_container')[0]
         // });
         // 默认使用webrtc模式
-        let NETCALL = _this.state.NIM_WEBRTC;
         _this.setState({
-            NETCALL 
+            NETCALL: NIM_WEBRTC
         })
-        let callMethod = 'webrtc';
-        _this.setState({
-            callMethod 
-        })
-
         // 初始化webrtc事件
-        _this._initWebrtcEvent();
+        _this._initWebrtcEvent(NIM_WEBRTC);
     }
-    _initWebrtcEvent() {
-        let _this = this,
-            webrtc = _this.state.NETCALL;
+    _initWebrtcEvent(webrtc) {
+        console.log('_this.state.NETCALL', this.state)
+        let _this = this
         // 对方接受通话 或者 我方接受通话，都会触发
         webrtc.on("callAccepted", function (obj) {
             console.log('对方接受通话 或者 我方接受通话，都会触发')
@@ -223,14 +222,13 @@ export default class InterviwDialog extends Component {
     _onHangup(obj) {
         let _this = this;
         console.log("收到对方挂断通话消息");
-        console.log("on hange up", obj);
-        console.log(_this.state.beCalling, _this.state.beCalledInfo, _this.state.netcallDurationTimer);
         _this._removeBeCalling(obj.account);
         // 关闭面签弹框和开始提示音量
         // if (_this.listNum) {
         //     $('#audioId') ? $('#audioId')[0].play() : '';
         // }
         // _this.interviewing = true;
+        _this._closeScreen();
         if (_this.state.CALL_LIST.length <= 0) {
             // $('.interview-wrap .video-tools, #beCallingRejectButton').addClass('hide');
             // $('.video-none').removeClass('hide');
@@ -357,11 +355,11 @@ export default class InterviwDialog extends Component {
         obj.interStatus = '2';
         // base64解密
         //obj.customData = obj.custom ? JSON.parse(tools.utf8to16(tools.base64decode(obj.custom))) : '';
-        let CALL_LIST = _this.state.CALL_LIST.push(obj);
+        let CALL_LIST = _this.state.CALL_LIST;
+        CALL_LIST.push(obj)
         _this.setState({
             CALL_LIST
         })
-        //_this._showQueuingList();
         netcall.control({
             channelId: channelId,
             command: Netcall.NETCALL_CONTROL_COMMAND_START_NOTIFY_RECEIVED
@@ -370,12 +368,12 @@ export default class InterviwDialog extends Component {
         let type = obj.type;
         channelId = obj.channelId;
         _this.setState({
-            beCalling:true
+            beCalling: true
         })
         //p2p场景
         let account = obj.account;
         let netcallActive = true;
-        let netcallAccount = account;        
+        let netcallAccount = account;
         _this.setState({
             netcallActive,
             type,
@@ -420,11 +418,8 @@ export default class InterviwDialog extends Component {
         for (var i = 0; i < _this.state.CALL_LIST.length; i++) {
             if (_this.state.CALL_LIST[i].channelId == id) {
                 _this.state.CALL_LIST[i].interStatus = '1';
-                _this._viewa(_this.currentInterviewId, true)
-                _this.that.remove();
             }
         }
-        _this._showQueuingList();
     }
     _removeBeCalling(account) {
         let _this = this;
@@ -437,8 +432,9 @@ export default class InterviwDialog extends Component {
                 _this._clearDurationTimer();
             }
         }
-        _this.state.CALL_LIST = list;
-        _this._showQueuingList();
+        _this.setState({
+            CALL_LIST: list
+        })
     }
     _reject(data) {
         let _this = this;
@@ -464,7 +460,7 @@ export default class InterviwDialog extends Component {
             console.log("error info:", err);
             let beCalledInfo = null;
             _this.setState({
-                beCalling:false,
+                beCalling: false,
                 beCalledInfo
             })
             // _this.hideAllNetcallUI();
@@ -484,8 +480,10 @@ export default class InterviwDialog extends Component {
             // $('.pch-interview-popup-shadow').show()
             let type = obj.type;
             _this.setState({
-                type
+                type,
+                toggleHide: true,
             })
+            _this.props.musicState(true);
             // this.showConnectedUI(obj.type);
             this.clearCallTimer();
             this._clearRingPlay();
@@ -560,7 +558,7 @@ export default class InterviwDialog extends Component {
             netcallStartTime: (new Date()).getTime()
         })
         _this.setState({
-            netcallDurationTimer:setInterval(timer, 500)
+            netcallDurationTimer: setInterval(timer, 500)
         })
         timer();
     }
@@ -650,7 +648,7 @@ export default class InterviwDialog extends Component {
         let _this = this;
         // $(".icon-micro").toggleClass("icon-disabled", !state);
         _this.setState({
-            deviceAudioInOn:!!state
+            deviceAudioInOn: !!state
         })
         if (state) {
             console.log("开启麦克风");
@@ -704,7 +702,7 @@ export default class InterviwDialog extends Component {
         let _this = this;
         // $(".icon-camera").toggleClass("icon-disabled", !state);
         _this.setState({
-            deviceVideoInOn:!!state
+            deviceVideoInOn: !!state
         })
         if (state) {
             console.log("开启摄像头");
@@ -820,17 +818,17 @@ export default class InterviwDialog extends Component {
                 break;
         }
     }
-    _updateVideoShowSize(local, remote) {
+    _updateVideoShowSize(local, remote, fullscreen) {
         let _this = this;
         let bigSize = {
             cut: true,
-            width: _this.state.isFullScreen ? 140 : 80,
-            height: _this.state.isFullScreen ? 140 : 80
+            width: fullscreen ? 100 : 80,
+            height:fullscreen ? 100 : 80
         };
         let remoteSize = {
             cut: true,
-            width: _this.state.isFullScreen ? 280 : 280,
-            height: _this.state.isFullScreen ? 510 : 210
+            width: fullscreen ? 280 : 280,
+            height:fullscreen ? 430 : 210
         };
         if (local) {
             _this.state.NETCALL.setVideoViewSize(bigSize);
@@ -1054,10 +1052,10 @@ export default class InterviwDialog extends Component {
         console.log("同意对方音视频请求");
         let beCalledInfo = _this.state.CALL_LIST[0];
         _this.setState({
-                beCalling:false,
-                beCalledInfo
-            })
-        _this._updateBeCalling(_this.state.beCalledInfo.channelId);
+            beCalling: false,
+            beCalledInfo
+        })
+        _this._updateBeCalling(beCalledInfo.channelId);
         _this.state.NETCALL.response({
             accepted: true,
             beCalledInfo: _this.state.beCalledInfo,
@@ -1074,7 +1072,7 @@ export default class InterviwDialog extends Component {
                     _this.acceptAndWait = false;
                 }
             }.bind(_this), 45 * 1000);
-            // _this._resServer();
+            _this._resServer();
 
         }.bind(_this)).catch(function (err) {
             console.log("同意对方音视频通话失败，转为拒绝");
@@ -1085,10 +1083,7 @@ export default class InterviwDialog extends Component {
 
     }
     _resServer() {
-        $.ajax({
-            url: apiserver + '/video/answer',
-            method: 'get'
-        });
+        http.interviewAccount()
     }
     _hangup() {
         let _this = this;
@@ -1147,6 +1142,7 @@ export default class InterviwDialog extends Component {
         // _this.interviewing = true;
         // $(".pch-interview-popup").hide();
         // $('.pch-interview-popup-shadow').hide();
+        _this._closeScreen();
         if (_this.state.beCalledInfo.account) {
             _this._removeBeCalling(_this.state.beCalledInfo.account);
         }
@@ -1225,41 +1221,55 @@ export default class InterviwDialog extends Component {
     }
     _toggleScreenHandler(e) {
         let _this = this;
-        // _this.isFullScreen = !$(e.target).closest('.video-box').hasClass('video-box-fullscreen');
-        // !_this.isFullScreen ?
-        //     $('.video-box').removeClass('video-box-fullscreen') :
-        //     $('.video-box').addClass('video-box-fullscreen');
         if (_this.state.isFullScreen) {
-            // $('.interview-wrap').append('<div class="video-fullscreen-shade"></div>');
-            // $('.video-screen-toggle').html('&#xe637;');
-            // $('.video-box').addClass('video-box-fullscreen');
-            // _this._updateVideoShowSize(true, true);
+            _this.setState({
+                isFullScreen: false
+            })
+            _this._updateVideoShowSize(true, true, false);
 
         } else {
-            // $('.video-fullscreen-shade').remove();
-            // $('.video-box').removeClass('video-box-fullscreen');
-            // $('.video-screen-toggle').html('&#xe636;');
-            _this._updateVideoShowSize(true, true);
+            _this.setState({
+                isFullScreen: true
+            })
+            _this._updateVideoShowSize(true, true, true);
 
         }
     }
+     // 挂断隐藏弹框
+     _closeScreen() {
+        let _this = this;
+        _this.setState({
+            toggleHide: false,
+        })
+        _this.props.musicState(false);
+    }
     render() {
-        return[
-            <div className='pch-interview-box' key='1'>
+        // console.log("this.state", this.state)
+        let { id, type } = this.props, interviewDetail;
+        if (id) {
+            interviewDetail = <InterviewDetail id={id} type={type}></InterviewDetail>
+        }
+        let content = [
+            <div className={cx('pch-interview-box', { 'active': this.state.toggleHide })} key='1'>
                 <div className='pch-interview-left'>
-                    面签详情
+                {interviewDetail}
                 </div>
                 <div className='pch-interview-right'>
-                    <div id='interview-box'>
+                    <div className="interview-big">
+                        <div id='interview-box' className={cx({'active':this.state.isFullScreen})}>
+                        </div>
+                        <span className='icon' onClick={this._toggleScreenHandler.bind(this)}>&#xe672;</span>
                     </div>
                     <div id='interview-remove'></div>
-                    <div id='interview-cancal'>
+                    <div id='interview-cancal' onClick={this._cancelCalling.bind(this)}>
                         取消
                     </div>
                 </div>
             </div>,
-            <div className='pch-interview-shadow' key='2'>
+            <div key='2' className={cx('pch-interview-shadow', { 'active': this.state.toggleHide })}>
             </div>
         ]
+
+        return content
     }
 }

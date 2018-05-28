@@ -104,6 +104,7 @@ class ProductReq extends CurdReq {
   }
   //合同保存
   saveContractTemplate(data){
+    console.log(data)
     var url = this._config.CONTRACT_HOST + `/contract/template/bondTemplate`;
     let options = {
       url: url,

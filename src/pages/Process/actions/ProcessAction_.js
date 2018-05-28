@@ -128,8 +128,10 @@ class ProcessAction extends BaseAction {
           });
           return;
         }
-        dispatch(this.fetchSuccess({ copy: true }))
-        hashHistory.push(`process/edit/${res.data.id}`);
+        // dispatch(this.fetchSuccess({ copy: true }))
+        // hashHistory.push(`process/edit/${res.data.id}`);
+        
+        dispatch(this.fetchSuccess({ formData: res.data }))
       }).catch((ex) => {
         dispatch(this.fetchFailed(ex))
       })
@@ -226,11 +228,11 @@ class ProcessAction extends BaseAction {
   }
 
   //获取页面配置详情
-  getPageDetail(id) {
+  getPageDetail(id, step) {
     return (dispatch) => {
       dispatch(this.fetchStart())
 
-      FontConfigReq.getCode(id).then((res) => {
+      FontConfigReq.getCode(id, step).then((res) => {
         if (res.code != 200) return;
         dispatch(this.fetchSuccess({ pageFields: res.data }))
       }).catch((ex) => {

@@ -14,7 +14,16 @@ import InterviewDialog from './InterviewDialog'
 import CommonReq from '../base/reqs/CommonReq';
 
 export default class Header extends PureComponent {
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      initDate: '',
+      bool: false,
+      id: '',
+      type: '',
+      musicState: false
+    }
+  }
   getBreadCrumb(data, pathname) {
     let result = Recrysuve(data, pathname, 'value', 'leaf', 'breadcrumb')[0]
     return result;
@@ -71,9 +80,21 @@ export default class Header extends PureComponent {
       }
     });
   }
-  initNetcall(data) {
+  initNetcall(data,bool) {
     this.setState({
-      initDate: data
+      initDate: data,
+      bool
+    })
+  }
+  interviewDetail(id, type) { 
+    this.setState({
+      id,
+      type
+    })
+  }
+  musicStateF(musicState) { 
+    this.setState({
+      musicState
     })
   }
   render() {
@@ -93,7 +114,6 @@ export default class Header extends PureComponent {
     if (userinfo) {
       nickname = userinfo.realName || userinfo.userName;
     }
-
     return (
       <Layout.Header theme={theme} className="ice-design-layout-header" style={{
         width
@@ -106,9 +126,10 @@ export default class Header extends PureComponent {
           })}
         </Breadcrumb>
         {/* 面签入口 */}
-        <Interview initNetcall={this.initNetcall.bind(this)}></Interview>
+        <Interview initNetcall={this.initNetcall.bind(this)} musicState={this.state.musicState} interviewDetail={this.interviewDetail.bind(this)}></Interview>
+        
         {/* 面签弹框 */}
-        {/* <InterviewDialog initDate={this.state.initDate}></InterviewDialog> */}
+        <InterviewDialog initDate={this.state.initDate} musicState={this.musicStateF.bind(this)} id={this.state.id} type={this.state.type}></InterviewDialog>
         <div className="ice-design-layout-header-menu" style={{
           display: 'flex'
         }}>
