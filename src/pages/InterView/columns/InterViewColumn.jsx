@@ -22,7 +22,7 @@ class InterViewColumn extends BaseColumn {
       title: 'ID',
       dataIndex: 'id',
       cell: (value, index, record) => {
-        return(
+        return (
           <div>
             {
               record.type ?
@@ -36,7 +36,7 @@ class InterViewColumn extends BaseColumn {
                 : (<span></span>)
             }
           </div>
-        )
+        );
       },
       width: 80,
     }, {
@@ -76,10 +76,19 @@ class InterViewColumn extends BaseColumn {
       cell: (value, index, record) => {
         return (
           <div className="pch-table-operation">
-            <a href="javascript:;"
-               onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
-              下载视频
-            </a>
+            {
+              record.videoDownloadUrl && record.videoDownloadUrl != null ? (
+                  <a href="javascript:;"
+                     onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
+                    下载视频
+                  </a>
+                ) :
+                (<span></span>)
+            }
+            {
+
+            }
+
             <a href="javascript:;"
                onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>
               查看报告
