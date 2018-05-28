@@ -31,7 +31,7 @@ export default class Deepstream extends Component {
             client
         })
         http.initInterview().then((data) => {
-            listNameArr = data.data.list && data.data.list.split('/');
+            listNameArr = data.data.list && data.data.list.split('$');
             client.on('connectionStateChanged', function (connectionState) {
                 if (connectionState === 'OPEN') {
                     listNameArr && listNameArr.forEach(function (listname, index) {
@@ -175,7 +175,7 @@ export default class Deepstream extends Component {
                 {/* 面签提示音 */}
                 {video}
                 <div className='icon'>  
-                    {this.state.music ? listening : interview}
+                    {this.state.music ? interview : listening}
                     <span className='pch-interview-num'>{listNum}</span>
                 </div>
                 <ul className='pch-interview-name'>
