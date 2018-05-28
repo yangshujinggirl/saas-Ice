@@ -7,7 +7,7 @@ import FilterForm from './Filter';
 
 import './InterView.scss';
 
-import  Req  from '../../reqs/InterViewReq'
+import Req from '../../reqs/InterViewReq';
 import { Feedback } from '@icedesign/base/index';
 
 const Toast = Feedback.toast;
@@ -40,7 +40,7 @@ export default class InterView extends BaseApp {
    * @param type 操作类型，根据不同类型处理不同事件
    */
   handleOperateClick(data, type) {
-    console.log(data)
+    console.log(data);
     switch (type) {
       //类型 加id的路由形式;
       case this.OPERATE_TYPE.OTHER1: {
@@ -49,34 +49,32 @@ export default class InterView extends BaseApp {
       }
       //下载视频
       case this.OPERATE_TYPE.OTHER2: {
-        
+
         break;
       }
       //查看报告
       case this.OPERATE_TYPE.DOWN: {
-        // hashHistory.push(`interview/see/${data.id}`);
-        Req.getViewReport(data.id).then(res=>{
-          console.log(res)
-          if (res.code ==200){
 
-          }else {
-            if(res.data.message ){
+        break;
+      }
+      //上传报告
+      case this.OPERATE_TYPE.UP: {
+
+        break;
+      }
+      case this.OPERATE_TYPE.SIGN: {
+        Req.getViewReport(data.id)
+          .then(res => {
+            if (res && res.code == 200 && res.data && res.data.result == 'success') {
+              const w = window.open('about:blank');
+              w.location.href = res.data.url;
+            }else{
               Toast.show({
                 type: 'error',
                 content: res.data.message,
               });
             }
-          }
-        })
-        break;
-      }
-      //上传报告
-      case this.OPERATE_TYPE.UP: {
-        hashHistory.push(`interview/upload/${data.id}`);
-        break;
-      }
-      case this.OPERATE_TYPE.SIGN: {
-        hashHistory.push(`interview/sign/${data.id}`);
+          });
         break;
       }
     }

@@ -31,8 +31,8 @@ class InterViewReq extends CurdReq{
 	//面签列表获取
 	searchList(){
 		let options = {
-      url: this._config.CONTRACT_HOST + `/interview/list`,
-      // url: 'https://www.easy-mock.com/mock/5b07a8c04514163f2d193445/example/list',
+      // url: this._config.CONTRACT_HOST + `/interview/list`,
+      url: 'https://www.easy-mock.com/mock/5b07a8c04514163f2d193445/example/list',
 			method: 'get',
 			contentType: 'application/x-www-form-urlencoded',
 		}
@@ -70,13 +70,22 @@ class InterViewReq extends CurdReq{
   //查看报告
   getViewReport(id) {
     let options = {
-      // url: this._config.LOAN_HOST + `/loans/${id}/screen`,
-      url: this._config.CONTRACT_HOST + `/visaInterview/${id}/complete`,
-      method: 'post',
+      url: this._config.CONTRACT_HOST + `/visaInterview/${id}/preview`,
+      method: 'get',
       contentType: 'application/json'
     }
     return super.fetchData(options);
   }
+  //上传文件报告
+  getUpReport(data) {
+    let options = {
+      url: this._config.CONTRACT_HOST + `/visaInterview/upload`,
+      method: 'POST',
+      data: data
+    }
+    return super.fetchData(options);
+  }
+
   //获取产品编号
   getProductNumApi(limit) {
     let options = {
