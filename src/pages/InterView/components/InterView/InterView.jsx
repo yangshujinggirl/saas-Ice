@@ -7,6 +7,10 @@ import FilterForm from './Filter';
 
 import './InterView.scss';
 
+import  Req  from '../../reqs/InterViewReq'
+import { Feedback } from '@icedesign/base/index';
+
+const Toast = Feedback.toast;
 export default class InterView extends BaseApp {
   constructor(props) {
     super(props);
@@ -38,40 +42,36 @@ export default class InterView extends BaseApp {
   handleOperateClick(data, type) {
     console.log(data)
     switch (type) {
-      //pbcContract, 中国银行合同;
+      //类型 加id的路由形式;
       case this.OPERATE_TYPE.OTHER1: {
         hashHistory.push(`interview/detail/${data.type}/${data.id}`);
         break;
       }
-      //pinganContract, 平安银行合同
+      //下载视频
       case this.OPERATE_TYPE.OTHER2: {
-        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+        
         break;
       }
-      //;interviewOnly, 贷款仅面签;creditCard,信用卡仅面签
-      case this.OPERATE_TYPE.OTHER3: {
-        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+      //查看报告
+      case this.OPERATE_TYPE.DOWN: {
+        // hashHistory.push(`interview/see/${data.id}`);
+        Req.getViewReport(data.id).then(res=>{
+          console.log(res)
+          if (res.code ==200){
+
+          }else {
+            if(res.data.message ){
+              Toast.show({
+                type: 'error',
+                content: res.data.message,
+              });
+            }
+          }
+        })
         break;
       }
-      //loan, 进件合同;
-      case this.OPERATE_TYPE.OTHER4: {
-        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
-        break;
-      }
-      //cwloan,车王进件
-      case this.OPERATE_TYPE.OTHER5: {
-
-        break;
-      }
-
-
-
-
-      case this.OPERATE_TYPE.SEE: {
-        hashHistory.push(`interview/see/${data.id}`);
-        break;
-      }
-      case this.OPERATE_TYPE.UPLOAD: {
+      //上传报告
+      case this.OPERATE_TYPE.UP: {
         hashHistory.push(`interview/upload/${data.id}`);
         break;
       }

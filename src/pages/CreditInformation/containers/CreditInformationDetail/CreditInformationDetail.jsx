@@ -27,6 +27,7 @@ export default class CreditInformationDetail extends Component {
     this.field = new Field(this);
     this.state = {
       index: 0,
+      dataSource:[]
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -44,11 +45,37 @@ export default class CreditInformationDetail extends Component {
         businessId: this.props.routeParams.id,
         isApproveInfo: true,
       });
+      this.getProductNum();
+
     }
     console.log(this.props.params.id);
 
   }
+  //获取产品列表
+  getProductNum() {
+    const limit = 990;
+    Req.getProductNumApi(limit)
+      .then((res) => {
+        if (res.data && res.code == '200') {
+          console.log(res);
+          const { data } = res;
+          const { list } = data;
+          let dataSource = list.map((el) => {
+            return {
+              id: el.id,
+              label: el.name,
+              value: el.productCode,
+            };
+          });
+          console.log(dataSource);
+          this.setState({
+            dataSource,
+          });
+        }
+      }, (error) => {
 
+      });
+  }
   // 取消
   handleCancel() {
   }
@@ -200,6 +227,7 @@ export default class CreditInformationDetail extends Component {
     const details = this.props.details || {};
     const chooseMap = this.props.trackDetail ? this.props.trackDetail.chooseMap : {};
     console.log(chooseMap);
+    const { dataSource = [] } = this.state;
     const init = this.field.init;
     return (
       <IceContainer title="进件审批查询-征信详情" className='subtitle credit-informartion' style={styles.bg}>
@@ -229,7 +257,7 @@ export default class CreditInformationDetail extends Component {
                     field={this.field}
                     size="large"
                   >
-                    <FormRender {...this.props} data={details.list} init={init} field={this.field}
+                    <FormRender {...this.props} data={details.list} init={init} field={this.field} productList={dataSource}
                                 addColumn={this.addColumn.bind(this)}></FormRender>
                   </Form>
                 </IceFormBinderWrapper>
