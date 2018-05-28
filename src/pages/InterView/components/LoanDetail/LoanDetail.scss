@@ -1,13 +1,16 @@
+.LoanDetail {
+  .next-form-left.next-form-medium .next-form-item-label {
+    color: #1B2630;
+    line-height: 20px;
+  }
 
-
-.ReviewApproveDetail{
-  .botton-box{
+  .botton-box {
     width: 100%;
     height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    .botton{
+    .botton {
       width: 100px;
       height: 40px;
       font-size: 16px;
@@ -15,26 +18,25 @@
       color: #fff;
 
     }
-    .botton:hover{
+    .botton:hover {
       background: #ec9d00;
       color: #fff;
     }
   }
 
-
-  .review-form{
+  .review-form {
     background: #FFFEFB;
     border: 1px solid #F6DCA9;
-    border-left: none ;
+    border-left: none;
     border-radius: 1px;
     display: inline-flex;
     height: 800px;
-    .review-page{
+    .review-page {
       height: 800px;
       width: 15%;
       max-width: 160px;
       box-sizing: border-box;
-      .title{
+      .title {
         float: left;
         width: 100%;
         height: 100%;
@@ -42,9 +44,9 @@
         box-sizing: border-box;
         border: 1px solid #F6DCA9;
         border-top: none;
-        ul{
+        ul {
           padding-left: 25px;
-          a{
+          a {
             display: block;
             color: rgb(102, 102, 102);
             font-family: PingFangSC-Medium;
@@ -66,14 +68,14 @@
               font-size: 12px;
             }
           }
-          li:hover{
-            cursor:pointer;
+          li:hover {
+            cursor: pointer;
           }
         }
 
       }
     }
-    .rcontent-edito{
+    .rcontent-edito {
       float: right;
       width: 100%;
       box-sizing: border-box;
@@ -82,9 +84,9 @@
     .rcontent-edito::-webkit-scrollbar {
       display: none;
     }
-    .review-detail{
+    .review-detail {
       margin-bottom: 20px;
-      .name{
+      .name {
         display: block;
         height: 44px;
         background: #FFF3E4;
@@ -101,15 +103,15 @@
     }
   }
 
-  .audit-information{
-    .information{
+  .audit-information {
+    .information {
       width: 96%;
       height: 400px;
       margin-left: 2%;
       background: #FFFCF7;
       border: 1px solid #F6DCA9;
       border-radius: 0 2px 2px 0;
-      b{
+      b {
         height: 44px;
         line-height: 44px;
         display: block;
@@ -123,7 +125,7 @@
         padding-left: 20px;
         font-style: normal;
       }
-      .review-result{
+      .review-result {
         position: relative;
         padding-left: 28px;
         border-bottom: 1px solid #D8D8D8;
@@ -146,17 +148,84 @@
 
   .pch-form {
     padding: 20px 0px 0px 0px;
+    .review-form {
+      background: #FFFEFB;
+      border: 1px solid #F6DCA9;
+      border-left: none;
+      border-radius: 1px;
+      display: inline-flex;
+      height: 800px;
+      .review-page {
+        height: 800px;
+        width: 15%;
+        max-width: 160px;
+        box-sizing: border-box;
+        .title {
+          float: left;
+          width: 100%;
+          height: 100%;
+          background: #FFF3E4;
+          box-sizing: border-box;
+          border: 1px solid #F6DCA9;
+          border-top: none;
+          ul {
+            padding-left: 25px;
+            a {
+              display: block;
+              color: rgb(102, 102, 102);
+              font-family: PingFangSC-Medium;
+              font-size: 15px;
+              letter-spacing: 0;
+              line-height: 48px;
+              text-align: left;
+            }
+            a.active {
+              position: relative;
+              color: #FC9E25;
+              text-decoration: none;
+              &::after {
+                content: '*';
+                display: block;
+                position: absolute;
+                top: 0;
+                left: -11px;
+                font-size: 12px;
+              }
+            }
+            li:hover {
+              cursor: pointer;
+            }
+          }
+
+        }
+      }
+    }
+    .rcontent-edito {
+      float: right;
+      width: auto;
+      box-sizing: border-box;
+      overflow-y: scroll;
+    }
+    .rcontent-edito::-webkit-scrollbar {
+      display: none;
+    }
+    .review-detail {
+      margin-bottom: 20px;
+      .name {
+        display: block;
+        height: 44px;
+        background: #FFF3E4;
+        border-bottom: 1px solid #F6DCA9;
+        border-radius: 1px;
+        line-height: 44px;
+        font-family: PingFangSC-Medium;
+        font-size: 14px;
+        color: #000000;
+        letter-spacing: 0;
+        padding-left: 24px;
+        margin-bottom: 20px;
+      }
+    }
   }
-  .next-number-picker-handler-wrap {
-    display: none;
-  }
-  .next-number-picker-normal .next-number-picker-input {
-    width: 100%;
-  }
-  .next-number-picker-input-wrap {
-    width: 100%;
-  }
-  .next-number-picker-normal {
-    width: 100%;
-  }
+
 }

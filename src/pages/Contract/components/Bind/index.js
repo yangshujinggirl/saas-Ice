@@ -31,7 +31,6 @@ class Bind extends BaseApp {
     super(props);
     this.state = {
       selectedRow:[],
-      // bindProductData:[],
       dataSourceRight:[],
       // 合同模版字符串
       contractTemplateHTML: '',
@@ -40,25 +39,8 @@ class Bind extends BaseApp {
 
       bindProductNames: {
         templateId: this.props.params.id,
-        templateProducts: [
-          /*
-          {
-            "productName": "12",
-            "productId": "1",
-            "contractTemplateId": "2973",
-            "productCategory": "1"
-          }
-          */
-        ],
-        templateExtends: [
-          /*
-          {
-            "keyChineseName": "888",
-            "keyEnglishName": "999",
-            "contractTemplateId": "2973"
-          }
-          */
-        ],
+        templateProducts: [],
+        templateExtends: [],
         content: ''
       }
     }
@@ -216,7 +198,6 @@ class Bind extends BaseApp {
 
   render() {
     const { list=[] } = this.props.pageData;
-    console.log(this.state)
     return(
       <IceContainer className="pch-container contract-bind-page">
           <IceFormBinderWrapper ref="form">
@@ -232,7 +213,7 @@ class Bind extends BaseApp {
                       <Table.Column title="产品类型" dataIndex="productType" />
                       <Table.Column title="产品名称" dataIndex="name" />
                     </Table>
-                    <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
+                    <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
                   </div>
                   <div className="btn-wrap">
                     <Button className="add-btn" onClick={this.addItem.bind(this)}> >> </Button>

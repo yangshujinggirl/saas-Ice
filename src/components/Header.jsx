@@ -49,7 +49,9 @@ export default class Header extends PureComponent {
     //替换当前系统的域名成登录域名，
     //eg:daikuan-staging.pingchang666.com=>login-staging.pingchang666.com
     _host = _host.replace('daikuan', 'login');
-    location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
+    // location.href = '//' + _host + '/#/account/' + encodeURIComponent(location.href);
+    // 因为接口无法验证权限，当退出登录换个账号登录后可能没有改菜单权限，暂时这里不带入来源页
+    location.href = '//' + _host + '/#/account';
     // hashHistory.push('/account');
   }
 

@@ -226,7 +226,6 @@ export default class FormRender extends Component {
               // defaultValue={el.value ? parseInt(el.value) : el.value}
               min={el.minValue}
               max={el.maxValue}
-              inputWidth={'100px'}
               {...init(el.name, {
                 initValue: el.value ? parseInt(el.value) : '',
                 rules: [
@@ -263,7 +262,6 @@ export default class FormRender extends Component {
             // defaultValue={el.value ? parseInt(el.value) : el.value}
             min={el.minValue}
             max={el.maxValue}
-            inputWidth={'100px'}
             {...init(el.name, {
               initValue: el.value ? parseInt(el.value) : '',
               rules: [
@@ -414,7 +412,7 @@ export default class FormRender extends Component {
         if (res && res.code == 200) {
           const dataSource = res.data.list.map((item, index) => {
             return {
-              label: item.brandName + '/' + item.seriesGroupName + '/' + item.modelName,
+              label: item.brandName,
               value: item.id,
             };
           });

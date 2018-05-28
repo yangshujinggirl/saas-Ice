@@ -180,13 +180,11 @@ export default class ReviewApproveDetail extends Component {
       console.log(dataJson);
       Req.submitReview(dataJson)
         .then((res) => {
-          if (res && res.code == 200) {
-            hashHistory.push(`reviewApprove`);
-            Toast.show({
-              type: 'success',
-              content: '提交成功～',
-            });
-          }
+          hashHistory.push(`reviewApprove/3`);
+          Toast.show({
+            type: 'success',
+            content: '提交成功～',
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -252,7 +250,7 @@ export default class ReviewApproveDetail extends Component {
                   <MaterialSubmit {...this.props}></MaterialSubmit>
                 </div>
                 <div className='botton-box pch-form-buttons'>
-                  <Button  size="large" type="secondary" onClick={this.back}>返回</Button>
+                  <Button size="large" type="secondary" onClick={this.back}>返回</Button>
                 </div>
               </div>
             </Col>
