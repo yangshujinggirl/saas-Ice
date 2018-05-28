@@ -39,7 +39,7 @@ class ProcessReq extends CurdReq {
   copyProcess(id) {
     let options = {
       url: this._config.WF_HOST + `/processes/${id}/replication`,
-      method: 'POST',
+      method: 'GET',
       contentType: 'application/x-www-form-urlencoded'
     }
     return super.fetchData(options);

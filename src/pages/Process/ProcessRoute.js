@@ -9,7 +9,7 @@ export default {
     name:'流程新增',
     component: Process.ProcessForm
   },{
-    path: 'edit/:id',
+    path: 'edit/:id(/:copy)',
     name:'流程修改',
     component: Process.ProcessForm
   },{

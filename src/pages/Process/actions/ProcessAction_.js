@@ -128,8 +128,10 @@ class ProcessAction extends BaseAction {
           });
           return;
         }
-        dispatch(this.fetchSuccess({ copy: true }))
-        hashHistory.push(`process/edit/${res.data.id}`);
+        // dispatch(this.fetchSuccess({ copy: true }))
+        // hashHistory.push(`process/edit/${res.data.id}`);
+        
+        dispatch(this.fetchSuccess({ formData: res.data }))
       }).catch((ex) => {
         dispatch(this.fetchFailed(ex))
       })
