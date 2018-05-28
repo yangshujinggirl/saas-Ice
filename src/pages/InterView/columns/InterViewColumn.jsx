@@ -20,6 +20,7 @@ class InterViewColumn extends BaseColumn {
 
     this._columns = [{
       title: 'ID',
+      dataIndex: 'id',
       cell: (value, index, record) => {
         return(
           <div>
@@ -37,7 +38,7 @@ class InterViewColumn extends BaseColumn {
           </div>
         )
       },
-      width: 60,
+      width: 80,
     }, {
       title: '姓名',
       dataIndex: 'userName',
@@ -61,7 +62,7 @@ class InterViewColumn extends BaseColumn {
       width: 170,
     }, {
       title: '录制日期',
-      dataIndex: 'updateTime',
+      dataIndex: 'updateAt',
       width: 160,
     }, {
       title: '进件ID',
