@@ -15,7 +15,8 @@ import {
   Radio,
   Grid,
   Table,
-  Dialog
+	Dialog,
+	Feedback
 } from '@icedesign/base';
 import { Title, BtnAddRow } from 'components';
 
@@ -47,8 +48,24 @@ export default class Chanpinlilv extends Component {
       this.setState({
         percentageSetting
       });
-  }
-
+	}
+	//渠道名称不可重复
+	changeValue(value, option){
+		let {items} = this.props
+		let allArr = items;
+		items.map((item,i)=>{
+			if(value==item.channelTypes){
+				Feedback.toast.show({
+					type: 'error',
+					content: '该集团已存在！',
+					afterClose: () => {
+						return;
+					},
+					duration: 2000
+			});
+			}
+		})
+	}
   renderCell1 = (value, index, record, context) => {
     return(
     	<div>
@@ -59,6 +76,7 @@ export default class Chanpinlilv extends Component {
 	        	<Select 
 						placeholder="渠道" 
 						style={{width:'200px'}}
+						onChange={this.changeValue.bind(this)}
 					>
 						<Option value='集团A'>集团A</Option>
 						<Option value='集团B'>集团B</Option>

@@ -6,7 +6,7 @@ import {
 import { Title } from 'components';
 import { BaseComponent } from 'base';
 import './PbcContractDetail.scss';
-import { Grid, Form, Input, Balloon,Feedback} from '@icedesign/base';
+import { Grid, Form, Input, Balloon, Feedback, Select } from '@icedesign/base';
 import Req from '../../reqs/InterViewReq';
 
 const { Row, Col } = Grid;
@@ -33,7 +33,11 @@ export default class PbcContractDetail extends BaseComponent {
       value: {},
       Component: [],
       formData: {},
-
+      statusList: [
+        { value: 'DRAFT', label: '草稿' },
+        { value: 'INTERVIEW', label: '待面签' },
+        { value: 'INTERVIEWED', label: '已面签' },
+      ],
     };
     this.colspans = {
       xxs: 24,
@@ -42,29 +46,30 @@ export default class PbcContractDetail extends BaseComponent {
       xl: 6,
     };
   }
+
   componentDidMount() {
     let { actions, params } = this.props;
 
-    if (params.id) {
-      Req.getInterViewDetail(params.id)
-        .then((res) => {
-          if (res && res.code == 200 && res.data) {
-            console.log(res.data)
-
-            this.setState({
-              formData: res.data.chinateContracResponse
-            });
-          } else {
-            Toast.show({
-              type: 'error',
-              content: res.msg,
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    // if (params.id) {
+    //   Req.getInterViewDetail(params.id)
+    //     .then((res) => {
+    //       if (res && res.code == 200 && res.data) {
+    //         console.log(res.data)
+    //
+    //         this.setState({
+    //           formData: res.data.chinateContracResponse
+    //         });
+    //       } else {
+    //         Toast.show({
+    //           type: 'error',
+    //           content: res.msg,
+    //         });
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   }
 
 //label的提示
@@ -84,10 +89,12 @@ export default class PbcContractDetail extends BaseComponent {
   };
 
   render() {
+
+    let { formData = {} } = this.props;
     return (
       <IceContainer className="pch-container PbcContractDetail">
         <Title title="中行合同详情"/>
-        <IceFormBinderWrapper value={this.state.formData} onBlur={this.formChange} >
+        <IceFormBinderWrapper value={formData} onBlur={this.formChange}>
           <div className='pch-form'>
             <Form>
               <Row wrap>
@@ -96,7 +103,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="contractCode"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="contractCode"/></div>
                   </FormItem>
@@ -106,7 +113,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="contractSignPlace"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="contractSignPlace"/></div>
                   </FormItem>
@@ -116,7 +123,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="channelName"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="channelName"/></div>
                   </FormItem>
@@ -126,7 +133,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="channelAccountNumber"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="channelAccountNumber"/></div>
                   </FormItem>
@@ -137,7 +144,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="productName"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="productName"/></div>
                   </FormItem>
@@ -157,7 +164,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerName"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="customerName"/></div>
                   </FormItem>
@@ -167,7 +174,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCardType"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="customerCardType"/></div>
                   </FormItem>
@@ -177,7 +184,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCardNo"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="customerCardNo"/></div>
                   </FormItem>
@@ -187,7 +194,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerSex"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                     <div><IceFormError name="customerSex"/></div>
                   </FormItem>
@@ -197,7 +204,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerMobile"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -206,7 +213,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCardValiditydate"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -215,7 +222,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerBirthDate"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -232,7 +239,7 @@ export default class PbcContractDetail extends BaseComponent {
                   <IceFormBinder
                     name="cusomerZipCode"
                   >
-                    <Input disabled size="large"  className="custom-input"/>
+                    <Input disabled size="large" className="custom-input"/>
                   </IceFormBinder>
                   <div><IceFormError name="cusomerZipCode"/></div>
                 </FormItem>
@@ -242,7 +249,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerBuiltUpSpace"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -251,7 +258,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerMaritalStatus"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -260,7 +267,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerNational"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -269,7 +276,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerVisaValiditydate"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -280,7 +287,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerVisaType"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -289,7 +296,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerLivedTime"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -298,7 +305,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerHouseNature"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -307,7 +314,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerHouseTel"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -316,7 +323,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerMotherSurname"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -325,7 +332,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCompName"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -334,11 +341,10 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCompName"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-
 
 
                 <Col {...this.colspans}>
@@ -346,7 +352,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerProfInfo"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -355,7 +361,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerEconType"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -364,7 +370,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerJobType"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -382,7 +388,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerTitle"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -391,7 +397,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerHouseAddr"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -400,7 +406,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCompanyAddress"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -409,7 +415,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCompanyZipcode"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -418,7 +424,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerCompanyTel"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -427,7 +433,7 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="customerWorkYears"
                     >
-                      <Input disabled size="large"  className="custom-input"/>
+                      <Input disabled size="large" className="custom-input"/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>
@@ -811,7 +817,8 @@ export default class PbcContractDetail extends BaseComponent {
                 </Col>
 
                 <Col {...this.colspans} >
-                  <FormItem {...formItemLayout}  className='item' label={<span > 若您申请的金卡或白金卡未能满足要求，我们将为您寄送同一品牌的普卡：</span>}>
+                  <FormItem {...formItemLayout} className='item'
+                            label={<span> 若您申请的金卡或白金卡未能满足要求，我们将为您寄送同一品牌的普卡：</span>}>
                     <IceFormBinder
                       name="sJkPtAgree"
                     >
@@ -828,17 +835,6 @@ export default class PbcContractDetail extends BaseComponent {
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-
-
-
-
-
-
-
-
-
-
-
 
 
                 <Col {...this.colspans}>
@@ -882,7 +878,8 @@ export default class PbcContractDetail extends BaseComponent {
                     <IceFormBinder
                       name="status"
                     >
-                      <Input disabled size="large" className="custom-input"/>
+                      {/*<Input disabled size="large" className="custom-input"/>*/}
+                      <Select disabled dataSource={this.state.statusList}/>
                     </IceFormBinder>
                   </FormItem>
                 </Col>

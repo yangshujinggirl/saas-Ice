@@ -908,6 +908,10 @@ body {
         height: 32px;
     }
 
+    .next-range-picker-large .next-input input{
+        height: 32px;
+    }
+
     .next-input.next-input-single.focus{
         border: 1px solid #FC9E25;
     }
@@ -955,6 +959,14 @@ body {
   }
   .next-select.disabled {
     color: #000;
+  }
+  .next-number-picker-input-wrap .next-number-picker-input input[disabled] {
+    text-align: left;
+    margin-left: 12px;
+  }
+  .next-number-picker-normal .next-number-picker-input input {
+    text-align: left;
+    margin-left: 12px;
   }
 }
 //

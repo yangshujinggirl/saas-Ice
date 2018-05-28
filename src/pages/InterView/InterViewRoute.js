@@ -10,7 +10,7 @@ export default {
     component: InterView.InterViewForm,
   }, {
     path: 'detail/:type/:id',
-    name: '中国银行合同详情',
+    name: '面签详情',
     component: InterView.InterViewDetail,
   }],
   component: Layout,

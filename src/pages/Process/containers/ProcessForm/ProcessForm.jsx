@@ -87,6 +87,7 @@ export default class ProcessForm extends Component {
                         });
                     }
                 })
+                this.currentTaskOrder++;
             // item.cid = i;
             })
 
@@ -324,6 +325,7 @@ export default class ProcessForm extends Component {
                 }else if(pageId){
                     actions.getPageFields({
                         step: this.getStepFromData(formData.taskItems, idx),
+                        // step: idx+1,
                         excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     actions.getAllPageFields();
@@ -334,6 +336,7 @@ export default class ProcessForm extends Component {
                 }else {
                     actions.getPageFields({
                         step: this.getStepFromData(formData.taskItems, idx),
+                        // step: idx+1,
                         excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     actions.getAllPageFields();

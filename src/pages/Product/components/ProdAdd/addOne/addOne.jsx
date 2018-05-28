@@ -28,7 +28,7 @@ import Tiqianhuankuanfangshi from './Tiqianhuankuanfangshi';
 import ProductReq from '../../../reqs/ProductReq';
 import SpDataSource from '../../../../../base/utils/SpDataSource'
 import { BaseCondition } from 'base';
-
+import ProductCompare from '../../../config.js'
 import './addOne.scss';
 
 const { Row, Col } = Grid;
@@ -99,9 +99,10 @@ export default class addOne extends BaseCondition {
 				prepaymentSetting: [],
 				productScope: []
 			}
-			
+
 		};
 	}
+
 	onFormChange = (value) => {
 
 		this.setState({
@@ -113,7 +114,7 @@ export default class addOne extends BaseCondition {
 			{
 				product: {
 					tenantId: value.tenantId,
-					tenantName:value.tenantName,
+					tenantName: value.tenantName,
 					name: value.name,
 					contractDisplayName: value.contractDisplayName,
 					productType: value.productType,
@@ -162,15 +163,15 @@ export default class addOne extends BaseCondition {
 		)
 	}
 	//全选还款周期方式
-	removeAllChoice=(data)=>{
-		if(data.length==7){
-			data.map((item,i)=>{
-				if(item=='ALL_CHOICE'){
-					data.splice(i,1)
+	removeAllChoice = (data) => {
+		if (data.length == 7) {
+			data.map((item, i) => {
+				if (item == 'ALL_CHOICE') {
+					data.splice(i, 1)
 				}
 			})
 			return data
-		}else{
+		} else {
 			return data;
 		}
 	}
@@ -180,8 +181,8 @@ export default class addOne extends BaseCondition {
 	}
 	submit = () => {
 		this.formRef.validateAll((error, value) => {
-			console.log(error,value);
-			
+			console.log(error, value);
+
 			if (error) {
 				// 处理表单报错
 				return;
@@ -213,23 +214,44 @@ export default class addOne extends BaseCondition {
 					}
 				}
 			})
-			
+
 			//提前还款方式设置中的 最大、最小期限不能小于最早提前还款期数
-			value.prepaymentSetting && value.prepaymentSetting.map((item,i)=>{
-				if(item.loanTermMin < Number(value.prepaymentPeriodsLimit) || item.loanTermMax < Number(value.prepaymentPeriodsLimit)){
+			value.prepaymentSetting && value.prepaymentSetting.map((item, i) => {
+				if (item.loanTermMin > Number(value.prepaymentPeriodsLimit) || item.loanTermMax > Number(value.prepaymentPeriodsLimit)) {
 					Feedback.toast.show({
 						type: 'error',
-						content: '最大、最小期限不能小于最早提前还款期数',
+						content: '最大、最小期限不能大于最早提前还款期数',
 					});
 					boolean = false
 				}
 			})
 
+			//额度期限设置中，最大、小不得超出期限范围区间，最大、小成数不超出贷款比率区间
+			value.percentageSetting && value.percentageSetting.map((item, i) => {
+				if (item.loanTermRangeMin < Number(value.loanTermRangeMin) || item.loanTermRangeMax > Number(value.loanTermRangeMax)) {
+					Feedback.toast.show({
+						type: 'error',
+						content: '产品成数的最大、最小期限不能超出期限范围',
+					});
+					boolean = false;
+				}
+			})
+			value.percentageSetting && value.percentageSetting.map((item, i) => {
+				if (item.loanPercentageMin < Number(value.loanPercentageMin) || item.loanPercentageMax > Number(value.loanPercentageMax)) {
+					Feedback.toast.show({
+						type: 'error',
+						content: '产品成数的最大、最小成数不能超出贷款比率范围',
+					});
+					boolean = false;
+				}
+			})
+
+
 			if (!boolean) return
-			
+
 			let AllValue = this.AllValue(value);
 			this.dataVerif(value);
-			this.props.actions.save(AllValue);
+			 this.props.actions.save(AllValue);
 		});
 	};
 	componentDidMount() {
@@ -279,7 +301,22 @@ export default class addOne extends BaseCondition {
 		};
 		return test;
 	}
+	isEarlyDisabld = (checked, e) => {
+		let lilvSett = this.state.value;
+		if (checked == 'false') {
+			//prepaymentAmountMin 最小还款金额  prepaymentPeriodsLimit 最小提前还款期数  penaltyBasicAmount 违约金计算基础  penaltyCalculationType 违约金计算方式
+			//  prepaymentSetting 还款方式
 
+			lilvSett.prepaymentAmountMin = '';
+			lilvSett.prepaymentPeriodsLimit = '';
+			lilvSett.penaltyBasicAmount = '';
+			lilvSett.penaltyCalculationType = '';
+			lilvSett.prepaymentSetting = [];
+		}
+		this.setState({
+			lilvSett
+		})
+	}
 	//是否提前还款
 	tiQian = (data) => {
 		return (
@@ -371,7 +408,22 @@ export default class addOne extends BaseCondition {
 			</div>
 		)
 	};
+	//不提前还款
+	tiQianFalse = () => {
+		let tiQianData = this.state.value;
+		tiQianData.prepaymentAmountMin = '';
+		tiQianData.prepaymentPeriodsLimit = '';
+		tiQianData.penaltyBasicAmount = '';
+		tiQianData.penaltyCalculationType = '';
+		tiQianData.prepaymentSetting = [];
 
+		this.setState({
+			tiQianData
+		})
+		return ''
+		//prepaymentAmountMin 最小还款金额  prepaymentPeriodsLimit 最小提前还款期数  penaltyBasicAmount 违约金计算基础  penaltyCalculationType 违约金计算方式
+		//  prepaymentSetting 还款方式
+	}
 	//贷款期限不允许变更时其他不可被选
 	loanTermChange = (data) => {
 		data.map((item, i) => {
@@ -445,6 +497,7 @@ export default class addOne extends BaseCondition {
 
 	//申请金额范围 
 	principalAmountMinChange = (rule, value, callback) => {
+		let min = this.state.value;
 		if (rule.required && !value) {
 			callback('申请金额必填');
 			return;
@@ -470,14 +523,21 @@ export default class addOne extends BaseCondition {
 		callback();
 	}
 
-	//期限范围
+	//额度期限设置->期限范围
 	loanTermRangeMinChange = (rule, value, callback) => {
+		let min = this.state.value;
 		if (rule.required && !value) {
 			callback('期限范围必填');
 			return;
 		}
 		if (value < 0) {
 			callback('期限范围不能小于0')
+		}
+
+		var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('期限范围不能是小数')
 		}
 		callback();
 	}
@@ -490,14 +550,21 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('期限范围不能小于0')
 		}
+
 		if (Number(value) < min.loanTermRangeMin) {
 			callback('必须大于前者')
+		}
+		var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('期限范围不能是小数')
 		}
 		callback();
 	}
 
 	// 贷款比率
 	loanPercentageMinChange = (rule, value, callback) => {
+		let min = this.state.value;
 		if (rule.required && !value) {
 			callback('贷款比率必填');
 			return;
@@ -505,6 +572,7 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('比率范围0～100内')
 		}
+
 		callback();
 	}
 	loanPercentageMaxChange = (rule, value, callback) => {
@@ -547,6 +615,14 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('最早提前还款期数小于0');
 		}
+		if (value > 10000) {
+			callback('还款期数不能超过10000')
+		}
+		var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('还款期数不能是小数')
+		}
 		callback();
 	}
 
@@ -558,6 +634,14 @@ export default class addOne extends BaseCondition {
 		}
 		if (value < 0 || value > 100) {
 			callback('利率范围0～100内');
+		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
 		}
 		callback();
 	}
@@ -574,15 +658,23 @@ export default class addOne extends BaseCondition {
 		if (Number(value) < allValues.interestRatesRangeMin) {
 			callback('必须大于前者');
 		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 
 	//资方
-	handleTenantChange(v, data){
-		let value  = this.state.value;
+	handleTenantChange(v, data) {
+		let value = this.state.value;
 		value.tenantName = data.label;
 
-		this.setState({value});
+		this.setState({ value });
 	}
 	render() {
 		let data = this.props.prodActions || {}
@@ -610,13 +702,13 @@ export default class addOne extends BaseCondition {
 								<Row wrap>
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>资金方:</span>}>
-										<IceFormBinder name="tenantId">
-											<Select size="large" 
-															placeholder="请选择"
-															className="custom-input"
-															dataSource={SpDataSource.dataSource} 
-															onChange={this.handleTenantChange.bind(this)} />
-										</IceFormBinder>
+											<IceFormBinder name="tenantId">
+												<Select size="large"
+													placeholder="请选择"
+													className="custom-input"
+													dataSource={SpDataSource.dataSource}
+													onChange={this.handleTenantChange.bind(this)} />
+											</IceFormBinder>
 										</FormItem>
 									</Col>
 									<Col xxs={24} xs={12} l={8} >
@@ -1224,6 +1316,7 @@ export default class addOne extends BaseCondition {
 														{ label: '是', value: 'true' },
 														{ label: '否', value: 'false' },
 													]}
+													onChange={this.isEarlyDisabld}
 												/>
 											</IceFormBinder>
 											<div>
@@ -1232,7 +1325,7 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
+								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : this.tiQianFalse}
 
 								<div className="next-btn-box">
 									<Button type="secondary" size="large" onClick={this.submit}>下一步</Button>

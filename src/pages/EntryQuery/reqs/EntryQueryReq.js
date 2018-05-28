@@ -66,7 +66,7 @@ class EntryQueryReq extends CurdReq{
   //获取产品编号
   getProductNumApi(limit) {
     let options = {
-      url:this._config.LOAN_HOST + `/product?limit=${limit}&status=1`,
+      url:this._config.LOAN_HOST + `/product?limit=${limit}`,
       method: 'Get',
       contentType: 'application/json'
     }
@@ -110,7 +110,7 @@ class EntryQueryReq extends CurdReq{
   //获取进件详情
   getDetail(data) {
     let options = {
-      url: this._config.LOAN_HOST + `/loans/${data.id}/screen?step=${data.step}`,
+      url: this._config.LOAN_HOST + `/loans/${data.id}/screen`,
       method: 'Get',
       contentType: 'application/json'
     }

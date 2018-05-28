@@ -85,7 +85,14 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
                         </div>
                     </div>
                     <div className='beautify'>
-                        <CheckboxGroup size="large" value={this.getValueForCheckbox()} dataSource={this.PROP_LIST} onChange={this.codeRequire} />
+                    <CheckboxGroup size="large" value={this.getValueForCheckbox()} onChange={this.codeRequire}>
+                        {this.PROP_LIST && this.PROP_LIST.map((val, i) => {
+                            let disabledArr = this.getDisabledForCheckbox();
+                            return (
+                              <Checkbox value={val.value} key={i} disabled={disabledArr.indexOf(val.value) != -1}>{val.label}</Checkbox>
+                            )
+                        })}
+                        </CheckboxGroup>
                     </div>
                 </div>
             </Dialog>

@@ -167,7 +167,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         allAsideNav &&
         allAsideNav.length > 0 &&
         allAsideNav.map((item, index) => {
-            if (item.value && item.value.value === matched) {
+            if (item.value && item.value.value.toLowerCase() === matched.toLowerCase()) {
                 openKeys = [`${index}`];
             }
         });

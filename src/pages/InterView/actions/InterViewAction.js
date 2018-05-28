@@ -82,12 +82,13 @@ export const getDetail = (id) => {
     dispatch(fetchStart())
 
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data, view: 'form' }))
+      dispatch(fetchSuccess({ details: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
+
 
 // 删除一条记录
 export const remove = (id) => {
