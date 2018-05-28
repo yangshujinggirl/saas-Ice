@@ -41,6 +41,7 @@ class InterViewReq extends CurdReq{
 	//平安中行面签详情接口
   getInterViewDetail(id){
     let options = {
+      // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/sign/signCheckContract',
       url: this._config.CONTRACT_HOST + `/visaInterview/chinate/detail/${id}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
