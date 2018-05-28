@@ -283,6 +283,7 @@ export default class ProcessForm extends Component {
         }
 
         let idx = formData.taskItems.indexOf(item);
+        let step = this.getStepFromData(formData.taskItems, idx);//当前的进件属于第几步
         
         switch (view) {
             case PROCESS_VIEW.VIEWFIELD : {
@@ -317,35 +318,43 @@ export default class ProcessForm extends Component {
                 // 2. 当前进件没有页面ID但该流程已有别的进件有页面ID
                 // 3. 该流程的进件都没有ID的获取页面字段（新增）
                 if(item.pageId){
-                    actions.getPageDetail(item.pageId, this.getStepFromData(formData.taskItems, idx));
+                    actions.getPageDetail(item.pageId, step);
                     actions.getAllPageFields({
                         excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     this.setState({
                         pageId: item.pageId,
-                        order: idx
+                        pageId2: undefined,
+                        order: idx,
+                        step
                     });
                 }else if(pageId2){
                     actions.getPageFields({
-                        step: this.getStepFromData(formData.taskItems, idx),
+                        step: step,
                         // step: idx+1,
                         excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
                     });
                     actions.getAllPageFields();
                     this.setState({
+                        pageId: undefined,
                         pageId2: pageId2,
-                        order: idx
+                        order: idx,
+                        step
                     });
                 }else {
                     actions.getPageFields({
-                        step: this.getStepFromData(formData.taskItems, idx),
+                        step: step,
                         // step: idx+1,
-                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
+                        excludeScreens: this.getExcludeScreens(formData.taskItems, idx),
+                        step
                     });
                     actions.getAllPageFields();
                     this.setState({
                         // pageId: item.pageId,
-                        order: idx
+                        pageId: undefined,
+                        pageId2: undefined,
+                        order: idx,
+                        step
                     });
                 }
                 break;
@@ -355,7 +364,7 @@ export default class ProcessForm extends Component {
                     return;
                 }
 
-                actions.getPageDetail(item.pageId, this.getStepFromData(formData.taskItems, idx));
+                actions.getPageDetail(item.pageId, step);
                 this.setState({
                     pageId: item.pageId,
                 });
@@ -478,7 +487,7 @@ export default class ProcessForm extends Component {
                     </div>
                 </IceContainer>
                 <ProcessFields formData={formData} data={tasksFields.requiredFields} visible={this.state.view == PROCESS_VIEW.VIEWFIELD} changeView={this.changeView.bind(this)} />
-                <SetFont_ id={this.state.pageId} id2={this.state.pageId2} resData={pageFields} allPageFields={allPageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
+                <SetFont_ id={this.state.pageId} id2={this.state.pageId2} step={this.state.step} resData={pageFields} allPageFields={allPageFields} visible={this.state.view == PROCESS_VIEW.EDITPAGE} changeView={this.changeView.bind(this)} onSave={this.handleSavePage.bind(this)} />
                 <ProcessAuthEdit formData={formData}  orgsData={orgsData} data={privilegeItems} visible={this.state.view == PROCESS_VIEW.EDITAUTH} changeView={this.changeView.bind(this)} onSave={this.authSave.bind(this)} />
                 <SetFontView_ id={this.state.pageId} resData={pageFields} visible={this.state.view == PROCESS_VIEW.PREVIEWPAGE} changeView={this.changeView.bind(this)}  />
             </div>

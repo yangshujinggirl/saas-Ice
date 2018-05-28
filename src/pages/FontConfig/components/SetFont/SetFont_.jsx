@@ -237,10 +237,11 @@ export default class setFont extends Component {
         let resData = this.state.resData;
         let index = this.state.editeCodeIndex.index;
         let inj = this.state.editeCodeIndex.inj;
+        let step = this.props.step;
 
         console.log('saveFields', fields);
 
-        this.addSelectedFieldsToPage(selectedFields);
+        this.addSelectedFieldsToPage(selectedFields, index, step);
 
         if (fields.id) {
             if(id){
@@ -257,6 +258,11 @@ export default class setFont extends Component {
             if(!fields.name || !fields.type){
                 this.closeDialog();
                 return;
+            }
+
+            // 设置当前新增字段所属的进件步骤
+            if(!fields.step){
+                fields.step = step;
             }
 
             if(id){
@@ -301,16 +307,30 @@ export default class setFont extends Component {
     }
 
     /**
-     * 添加选中的字段到页面中，从自定义字段中选中的字段
+     * 添加选中的字段到页面中，从自定义字段中选中的字段，添加到当前的区域中，追加step参数
      * @param {[type]} selectedFields [description]
      */
-    addSelectedFieldsToPage(selectedFields){
+    addSelectedFieldsToPage(selectedFields, index, step){
         if(!selectedFields || selectedFields.length == 0){
             return;
         }
 
         let resData = this.state.resData;
         let checkedFields = [];
+
+        // 所有选择字段都插入到当前区域
+        selectedFields.map(item => {
+            item.fields.map((sitem) => {
+                if(sitem.checked){
+                    sitem.step = step;
+                    checkedFields.push(sitem);
+                }
+            });
+        });
+        resData.fieldset[index].fields = resData.fieldset[index].fields.concat(checkedFields);
+        return;
+
+        //旧的写法，分别插入到对应区域
 
         selectedFields.map(item => {
             let fieldsArr = [];
@@ -334,6 +354,7 @@ export default class setFont extends Component {
 
         let existFieldset = false;
         checkedFields.map((item, i) => {
+
             let fieldset = item.fields[0].fieldset;
 
             resData.fieldset.map((oitem, j) => {
@@ -507,7 +528,7 @@ export default class setFont extends Component {
         }
 
         const {resData = {}} = this.state;
-        let { id, visible } = this.props;
+        let { id, id2, visible } = this.props;
 
         return (
             <IceContainer className="pch-container setFont" style={{display: visible ? '' : 'none'}}>
@@ -522,6 +543,7 @@ export default class setFont extends Component {
                         <div className="container-right">
                             <SetFontFieldsets
                                 id={id}
+                                id2={id2}
                                 resData={resData}
                                 changeData={this.changeData.bind(this)}
                                 handleEditeCoce={this.handleEditeCoce}
