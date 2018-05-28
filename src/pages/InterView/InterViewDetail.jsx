@@ -17,9 +17,14 @@ export default class Demo extends Component {
   }
 
   componentDidMount() {
-    let { type, id } = this.props.params;
-    let { actions } = this.props;
-
+    let id = '', type = '';
+    if (this.props.id) {
+      id = this.props.id ||''; 
+      type = this.props.type||'';
+    } else {
+      type = this.props.params.type;
+      id = this.props.param.id;
+    }
     if (type && id) {
       if (type == 'interviewOnly' || type == 'creditCard') {
         Req.getInterViewOnlyDetail(id)
@@ -56,9 +61,14 @@ export default class Demo extends Component {
    */
 
   render() {
-    let { type, id } = this.props.params;
-    console.log(type);
-    console.log(id);
+    let id = '', type = '';
+    if (this.props.id) {
+      id = this.props.id ||''; 
+      type = this.props.type||'';
+    } else {
+      type = this.props.params.type;
+      id = this.props.param.id;
+    }
     if (type && id) {
       switch (type) {
         case 'pbcContract': {
@@ -85,7 +95,7 @@ export default class Demo extends Component {
         }
       }
     }
-    return null;
+    return '';
   }
 
   // render() {

@@ -45,7 +45,7 @@ class SignDialogModule extends BaseComponent {
     })
   }
   beforeUpload(file) {
-    if(file.size > 1024 * 1024 * 1) {
+    if(file.size > 1024 * 1024 * 5) {
       Toast.error('图片尺寸超过最大限制 1MB，请重新选择！');
       return false;
     }

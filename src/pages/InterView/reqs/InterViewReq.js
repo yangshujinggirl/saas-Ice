@@ -1,25 +1,25 @@
 import { CurdReq } from 'base';
 
-class InterViewReq extends CurdReq{
-	constructor(){
+class InterViewReq extends CurdReq {
+	constructor() {
 		super();
 
 		//基本的curd接口
 		//若有特殊定义的接口直接覆盖
 		this.curd = {
-            create: this._host + '/filter-table-list.json',
-            update: this._host + '/filter-table-list.json',
-            retrieve: this._config.CONTRACT_HOST + `/interview/list`,
-            delete: this._host + '/detail.json',
-            detail: this._host + '/detail.json'
-        }
+			create: this._host + '/filter-table-list.json',
+			update: this._host + '/filter-table-list.json',
+			retrieve: this._config.CONTRACT_HOST + `/interview/list`,
+			delete: this._host + '/detail.json',
+			detail: this._host + '/detail.json'
+		}
 	}
 
 	/**
 	 * 自定义请求
 	 * @return {[type]} [description]
 	 */
-	postDemo(){
+	postDemo() {
 		let options = {
 			url: this._host + '/member/loginMobile',
 			method: 'POST',
@@ -29,7 +29,15 @@ class InterViewReq extends CurdReq{
 		return super.fetchData(options);
 	}
 	//面签列表获取
-	searchList(){
+	searchList() {
+		let options = {
+			url: this._config.CONTRACT_HOST + `/interview/list`,
+			method: 'get',
+			contentType: 'application/x-www-form-urlencoded',
+		}
+		return super.fetchData(options);
+	}
+	getInterViewDetail(id) {
 		let options = {
       // url: this._config.CONTRACT_HOST + `/interview/list`,
       url: 'https://www.easy-mock.com/mock/5b07a8c04514163f2d193445/example/list',
@@ -95,6 +103,20 @@ class InterViewReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+	//获取面签初始化数据
+	initInterview() {
+		let options = {
+			url: this._config.CONTRACT_HOST + '/video/account',
+		}
+		return super.fetchData(options);
+	}
+	// 面签次数
+	interviewAccount() {
+		let options = {
+			url: this._config.CONTRACT_HOST + '/video/answer',
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new InterViewReq();

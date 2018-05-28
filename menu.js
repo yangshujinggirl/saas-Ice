@@ -1,6 +1,6 @@
 var data = [{
   name: '流程配置',
-  url: '/process',
+  url: '/process/0',
   icon: '&#xe644;',
   children: [{
     name: '流程查询',
@@ -11,7 +11,7 @@ var data = [{
   }]
 }, {
   name: '产品管理',
-  url: '/product',
+  url: '/product/0',
   icon: '&#xe677;',
   children: [{
     name: '产品查询',
@@ -25,7 +25,7 @@ var data = [{
   }]
 }, {
   name: '贷款管理',
-  url: '/entryquery',
+  url: '/entryquery/0',
   icon: '&#xe60b;',
   children: [{
     name: '车贷查询',
@@ -36,7 +36,7 @@ var data = [{
   }]
 }, {
   name: '审查审批',
-  url: '/reviewApprove',
+  url: '/reviewApprove/0',
   icon: '&#xe62d;',
   children: [{
     name: '进件审查审批',
@@ -44,14 +44,28 @@ var data = [{
   }]
 }, {
   name: '征信管理',
-  url: '/reviewApprove',
+  url: '/reviewApprove/10',
   icon: '&#xe62d;',
   children: [{
     name: '征信录入',
-    url: '/reviewApprove'
+    url: '/reviewApprove/11'
   },{
     name: '征信校验',
-    url: '/reviewApprove'
+    url: '/reviewApprove/12'
+  }]
+}, {
+  name: '面签管理',
+  url: '/interview/0',
+  icon: '&#xe678;',
+  children: [{
+    name: '面签列表',
+    url: '/interview'
+  }, {
+    name: '信用卡面签',
+    url: '/interview/credit'
+  }, {
+    name: '签字管理',
+    url: '/interview/sign'
   }]
 }, {
   name: '合同管理',
