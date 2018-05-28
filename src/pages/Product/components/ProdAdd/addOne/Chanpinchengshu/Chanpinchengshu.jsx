@@ -49,17 +49,35 @@ export default class Chanpinchengshu extends Component {
 			percentageSetting
 		});
 	}
-	
+
+	getArrIndex = (arr, obj) => {
+		let index = null;
+		let key = Object.keys(obj)[0];
+		arr.every(function (value, i) {
+			if (value[key] === obj[key]) {
+				index = i;
+				return false;
+			}
+			return true;
+		});
+		return index;
+	};
 	//最小、大期限不可同时相等 
 	testChange1 = (rule, value, callback) => {
-		let { items } = this.props
-
+		let { items, boolean } = this.props
+		let oIndex = this.getArrIndex(items,{loanTermRangeMin:value});
+		let max = items[oIndex].loanTermRangeMax;
 		if (rule.required && !value) {
 			callback('最小期限必填');
 			return;
 		}
 		if (value < 0) {
 			callback('最小期限必须大于0')
+		}
+		if(max){
+			if(Number(value) >= max){
+				callback('不能大于或等于后者');
+			}
 		}
 		for (var i = 0; i < items.length - 1; i++) {
 			for (var j = i + 1; j < items.length; j++) {
@@ -68,31 +86,46 @@ export default class Chanpinchengshu extends Component {
 						type: 'error',
 						content: '额度期限的最小、大期限不能同时相等！',
 						afterClose: () => {
-							return;
+							this.props.onChangeBoolean(false)
 						},
 						duration: 3000
 					});
 				}
 			}
 		}
+		
+		
 		callback();
 	}
 
 	//最大成数
-	testChange2 = (rule, value, callback) => {
+	testChange2 = (rule, value, callback) => {//loanPercentageMax
+		let {items} = this.props
+		let oIndex = this.getArrIndex(items,{loanPercentageMax:value});
+		let min = items[oIndex].loanPercentageMin;
+
 		if (rule.required && !value) {
 			callback('最大成数必填');
 			return;
 		}
-		if (value < 0 || value > 100) {
-			callback('最大成数范围0～100内')
+		if (value < 0 ) {
+			callback('最大成数必须大于0')
 		}
+		if(min){
+			if(value <= min ){
+				callback('不能小于或等于前者')
+			}
+		}
+		
 		callback();
 	}
 
 	//最小成数
 	testChange3 = (rule, value, callback) => {
-		let { items } = this.props
+		let {items} = this.props
+		let oIndex = this.getArrIndex(items,{loanPercentageMin:value});
+		let max = items[oIndex].loanPercentageMax;
+
 		if (rule.required && !value) {
 			callback('最小成数必填');
 			return;
@@ -100,15 +133,20 @@ export default class Chanpinchengshu extends Component {
 		if (value < 0) {
 			callback('最小成数范围0～100内')
 		}
-		// if (Number(value) < min.loanTermRangeMin) {
-		// 	callback('必须大于前者')
-		// }
+		if(max){
+			if(Number(value) >= max){
+				callback('不能大于或等于后者')
+			}
+		}
+		
 		callback();
 	}
-	
+
 	//最小、大期限不可同时相等
 	testChange4 = (rule, value, callback) => {
-		let { items } = this.props
+		let { items, boolean } = this.props;
+		let oIndex = this.getArrIndex(items,{loanTermRangeMax:value});
+		let min = items[oIndex].loanTermRangeMin;
 
 		if (rule.required && !value) {
 			callback('最大期限必填');
@@ -117,6 +155,11 @@ export default class Chanpinchengshu extends Component {
 		if (value < 0) {
 			callback('最大期限必须大于0')
 		}
+		if(min){
+			if(value <= min){
+				callback('不能小于或等于前者');
+			}
+		}
 		for (var i = 0; i < items.length - 1; i++) {
 			for (var j = i + 1; j < items.length; j++) {
 				if ((items[i].loanTermRangeMin == items[j].loanTermRangeMin) && (items[i].loanTermRangeMax == items[j].loanTermRangeMax)) {
@@ -124,7 +167,7 @@ export default class Chanpinchengshu extends Component {
 						type: 'error',
 						content: '额度期限的最小、大期限不能同时相等！',
 						afterClose: () => {
-							return;
+							this.props.onChangeBoolean(false)
 						},
 						duration: 3000
 					});
@@ -174,7 +217,7 @@ export default class Chanpinchengshu extends Component {
 					<Input placeholder="最小成数" />
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanPercentageMin`} /></div>
-				
+
 			</div>
 		);
 	}
