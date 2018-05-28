@@ -3,6 +3,7 @@ import IceContainer from '@icedesign/container';
 import {  Balloon } from '@icedesign/base';
 
 import './loanDetails.scss'
+import Req from '../../../reqs/EntryQueryReq';
 export default class Details extends Component {
   static displayName = 'Details';
 
@@ -15,7 +16,34 @@ export default class Details extends Component {
     this.state = {
       value: {},
       Component :[],
+      dataSource:[]
     };
+  }
+  componentWillMount() {
+    this.getProductNum();
+  }
+  //获取产品列表
+  getProductNum() {
+    const limit = 990;
+    Req.getProductNumApi(limit)
+      .then((res) => {
+        if (res.data && res.code == '200') {
+          const { data } = res;
+          const { list } = data;
+          let dataSource = list.map((el) => {
+            return {
+              id: el.id,
+              label: el.name,
+              value: el.productCode,
+            };
+          });
+          this.setState({
+            dataSource,
+          });
+        }
+      }, (error) => {
+
+      });
   }
   //名字
   label = (label)=>{
@@ -48,6 +76,12 @@ export default class Details extends Component {
         }else if(el.value == 1){
           value = '是'
         }
+    }else if (el.type =='SELECT' && el.name =='productCode' ){
+      this.state.dataSource.map(item=>{
+        if(el.value == item.value){
+          value = item.label
+        }
+      })
     }
 
     const valueTips =  <div >{value}</div>;

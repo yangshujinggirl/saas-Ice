@@ -8,7 +8,8 @@ import {
   Button,
   DatePicker,
   Form,
-  Upload
+  Upload,
+  Feedback
 } from '@icedesign/base';
 
 import {
@@ -27,6 +28,8 @@ const {Row, Col} = Grid;
 const FormItem = Form.Item;
 const { ImageUpload } = Upload;
 
+const Toast = Feedback.toast;
+
 class SignDialogModule extends BaseComponent {
   constructor(props) {
     super(props);
@@ -39,6 +42,23 @@ class SignDialogModule extends BaseComponent {
       value:{
         fileIds:props.fileList
       }
+    })
+  }
+  beforeUpload(file) {
+    if(file.size > 1024 * 1024 * 5) {
+      Toast.error('图片尺寸超过最大限制 1MB，请重新选择！');
+      return false;
+    }
+    return new Promise((resolve,reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          resolve();
+        }
+        img.src = reader.result;
+      }
+      reader.readAsDataURL(file)
     })
   }
   //上传文件
@@ -108,7 +128,8 @@ class SignDialogModule extends BaseComponent {
                             action={`${this._config.CONTRACT_HOST}/contract/signed-paper-file/picture`}
                             onChange={this.onChange.bind(this)}
                             accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                            defaultFileList={value.fileIds}/>
+                            defaultFileList={value.fileIds}
+                            beforeUpload={this.beforeUpload}/>
                         </IceFormBinder>
                         <div><IceFormError name="fileIds" /></div>
                       </FormItem>

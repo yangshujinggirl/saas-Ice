@@ -77,7 +77,7 @@ export default class InterviewOnlyDetail extends BaseComponent {
       return (
         <IceContainer className="pch-container">
           <Title title="仅面签详情"/>
-          <IceFormBinderWrapper value={formData} onBlur={this.formChange}>
+          <IceFormBinderWrapper value={formData}>
             <div className='pch-form'>
               <Form>
                 <Row wrap>
@@ -146,7 +146,7 @@ export default class InterviewOnlyDetail extends BaseComponent {
       return (
         <IceContainer className="pch-container InterviewOnlyDetail">
           <Title title="信用卡面签详情"/>
-          <IceFormBinderWrapper value={formData} onBlur={this.formChange}>
+          <IceFormBinderWrapper value={formData}>
             <div className='pch-form'>
               <Form>
                 <Row wrap>
