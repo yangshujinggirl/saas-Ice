@@ -64,7 +64,7 @@ class Bind extends BaseApp {
       let { templateProductList = [], content = ""} = res.data || {};
       let data = templateProductList.map(p=>p.productId);
       let formDataList = templateProductList.map(p=>({
-        productCategory: ProductTypeMap[p.productCategory],
+        productCategory: p.productCategory,
         productName: p.productName,
         id: p.productId
       }))

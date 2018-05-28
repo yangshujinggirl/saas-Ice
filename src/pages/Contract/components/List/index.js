@@ -65,17 +65,7 @@ class ContractList extends BaseApp {
   }
   //复制模板
   copyEvent(id) {
-    Req.copyTemplateApi(id)
-    .then((res) => {
-      const { code, msg, data } =res;
-      if(code != 200 || !data) {
-        Toast.error(msg);
-        return
-      }
-      hashHistory.push(`contract/add/${data.id}`)
-    },(error) => {
-
-    })
+    hashHistory.push(`contract/add/${id}?action=copy`)
   }
   //修改
   changeDialog(id) {
