@@ -19,6 +19,8 @@ export default class Deepstream extends Component {
     }
     componentDidMount() {
         let _this = this;
+        //<!-- wss://deepstream-staging.pingchang666.com --> 予发布
+        //<!-- ws://deepstream.pingchang666.com -->生产
         let client = dt('ws://deepstream-staging.pingchang666.com');
         let listNameArr = ['ios2018', 'android2018'] //队列名称
         client.on('error', function (error) {
