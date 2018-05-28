@@ -126,6 +126,7 @@ export default class setFont extends Component {
     submit = () => {
 
         let id = this.props.id;
+        let id2 = this.props.id2;
         let resData = this.state.resData;
 
         let reqData = {
@@ -188,7 +189,24 @@ export default class setFont extends Component {
                     title: "提示",
                 });
             })
-        } else {
+        } else if(id2){
+            // 编辑第二个进件的时候
+            FontConfigReq.changPageName(reqData,id2).then((res) => {
+                this.setState({isSubmiting: false});
+                if(this.props.onSave){
+                    this.props.onSave(id2);
+                    return
+                }
+                this.props.router.push(`/font/set/${id2}`)  
+            }).catch((res) => {
+                this.setState({isSubmiting: false});
+                Dialog.alert({
+                    content: res.msg,
+                    closable: false,
+                    title: "提示",
+                });
+            })
+        }else{
             // 提交字段
             FontConfigReq.save(reqData).then((res) => {
                 this.setState({isSubmiting: false});
