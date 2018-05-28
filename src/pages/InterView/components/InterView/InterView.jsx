@@ -71,7 +71,7 @@ export default class InterView extends BaseApp {
             }else{
               Toast.show({
                 type: 'error',
-                content: res.data.message,
+                content: res.data.msg,
               });
             }
           });

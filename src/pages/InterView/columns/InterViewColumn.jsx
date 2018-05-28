@@ -127,7 +127,7 @@ class InterViewColumn extends BaseColumn {
                 (<span></span>)
             }
             {
-              record.type && (record.type == 'pbcContract' || record.type == 'pinganContract' || record.type == 'loan') ? (
+              record.type && ( record.type == 'loan') ? (
                   <div className="pch-table-operation">
                     <a href="javascript:;"
                        onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>

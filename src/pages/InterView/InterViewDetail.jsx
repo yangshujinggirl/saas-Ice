@@ -17,13 +17,14 @@ export default class Demo extends Component {
   }
 
   componentDidMount() {
-    let id = '', type = '';
+    var id = '',
+      type = '';
     if (this.props.id) {
-      id = this.props.id ||''; 
-      type = this.props.type||'';
+      id = this.props.id || '';
+      type = this.props.type || '';
     } else {
       type = this.props.params.type;
-      id = this.props.param.id;
+      id = this.props.params.id;
     }
     if (type && id) {
       if (type == 'interviewOnly' || type == 'creditCard') {
@@ -61,18 +62,19 @@ export default class Demo extends Component {
    */
 
   render() {
-    let id = '', type = '';
+    let id = '',
+      type = '';
     if (this.props.id) {
-      id = this.props.id ||''; 
-      type = this.props.type||'';
+      id = this.props.id || '';
+      type = this.props.type || '';
     } else {
       type = this.props.params.type;
-      id = this.props.param.id;
+      id = this.props.params.id;
     }
     if (type && id) {
       switch (type) {
         case 'pbcContract': {
-          return (<PbcContractDetail {...this.props} formData={this.state.formData} ></PbcContractDetail>);
+          return (<PbcContractDetail {...this.props} formData={this.state.formData}></PbcContractDetail>);
           break;
         }
         case 'pinganContract': {
