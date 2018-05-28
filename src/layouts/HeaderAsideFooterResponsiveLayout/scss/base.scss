@@ -960,6 +960,14 @@ body {
   .next-select.disabled {
     color: #000;
   }
+  .next-number-picker-input-wrap .next-number-picker-input input[disabled] {
+    text-align: left;
+    margin-left: 12px;
+  }
+  .next-number-picker-normal .next-number-picker-input input {
+    text-align: left;
+    margin-left: 12px;
+  }
 }
 //
 .next-row{

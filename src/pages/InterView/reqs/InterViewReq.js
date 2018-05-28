@@ -41,6 +41,7 @@ class InterViewReq extends CurdReq{
 	//平安中行面签详情接口
   getInterViewDetail(id){
     let options = {
+      // url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/sign/signCheckContract',
       url: this._config.CONTRACT_HOST + `/visaInterview/chinate/detail/${id}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
@@ -61,6 +62,25 @@ class InterViewReq extends CurdReq{
     let options = {
       // url: this._config.LOAN_HOST + `/loans/${id}/screen`,
       url: this._config.WF_HOST + `/audit/loans/${id}`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //查看报告
+  getViewReport(id) {
+    let options = {
+      // url: this._config.LOAN_HOST + `/loans/${id}/screen`,
+      url: this._config.CONTRACT_HOST + `/visaInterview/${id}/complete`,
+      method: 'post',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+  //获取产品编号
+  getProductNumApi(limit) {
+    let options = {
+      url:this._config.LOAN_HOST + `/product?limit=${limit}&status=1`,
       method: 'Get',
       contentType: 'application/json'
     }

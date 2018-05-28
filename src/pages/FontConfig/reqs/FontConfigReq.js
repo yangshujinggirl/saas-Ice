@@ -42,10 +42,13 @@ class FontConfigReq extends CurdReq {
   /**
    * 获取选中字段
    */
-  getCode(id) {
+  getCode(id, step) {
     let options = {
       url: this._config.LOAN_HOST + '/screen-schemes/' + id,
-      contentType: 'application/json'
+      contentType: 'application/json',
+      params: {
+        step: step
+      }
     }
     return super.fetchData(options);
   }

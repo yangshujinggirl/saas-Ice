@@ -20,8 +20,9 @@ class InterViewColumn extends BaseColumn {
 
     this._columns = [{
       title: 'ID',
+      dataIndex: 'id',
       cell: (value, index, record) => {
-        return(
+        return (
           <div>
             {
               record.type ?
@@ -35,9 +36,9 @@ class InterViewColumn extends BaseColumn {
                 : (<span></span>)
             }
           </div>
-        )
+        );
       },
-      width: 60,
+      width: 80,
     }, {
       title: '姓名',
       dataIndex: 'userName',
@@ -61,7 +62,7 @@ class InterViewColumn extends BaseColumn {
       width: 170,
     }, {
       title: '录制日期',
-      dataIndex: 'updateTime',
+      dataIndex: 'updateAt',
       width: 160,
     }, {
       title: '进件ID',
@@ -71,17 +72,33 @@ class InterViewColumn extends BaseColumn {
       title: '操作',
       dataIndex: 'visible',
       lock: 'right',
-      width: 200,
+      width: 210,
       cell: (value, index, record) => {
         return (
-          <div>
-            <a className="see" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SEE)}>
+          <div className="pch-table-operation">
+            {
+              record.videoDownloadUrl && record.videoDownloadUrl != null ? (
+                  <a href="javascript:;"
+                     onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
+                    下载视频
+                  </a>
+                ) :
+                (<span></span>)
+            }
+            {
+
+            }
+
+            <a href="javascript:;"
+               onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>
               查看报告
             </a>
-            <a className="upload" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.UPLOAD)}>
+            <a href="javascript:;"
+               onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.UP)}>
               上传报告
             </a>
-            <a className="sign" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
+            <a href="javascript:;"
+               onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
               查看签名报告
             </a>
           </div>

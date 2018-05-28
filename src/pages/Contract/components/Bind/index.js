@@ -22,6 +22,7 @@ import {
 } from '@icedesign/base';
 import Req from '../../reqs/ContractReq';
 import FormModule from './FormModule';
+import ProductTypeMap from '../../../../base/constants/ProductTypeMap';
 import './index.scss'
 
 const { Row, Col } = Grid;
@@ -62,14 +63,14 @@ class Bind extends BaseApp {
     .then((res) => {
       let { templateProductList = [], content = ""} = res.data || {};
       let data = templateProductList.map(p=>p.productId);
-      let selectedRow = templateProductList.map(p=>({
-        productCategory: p.productCategory,
+      let formDataList = templateProductList.map(p=>({
+        productCategory: ProductTypeMap[p.productCategory],
         productName: p.productName,
         id: p.productId
       }))
 
       this.setState({
-        dataSourceRight:selectedRow,
+        dataSourceRight:formDataList,
         contractTemplateHTML: content
       })
       if(data.length > 0)this.getProductName(data);
@@ -213,7 +214,7 @@ class Bind extends BaseApp {
                       <Table.Column title="产品类型" dataIndex="productType" />
                       <Table.Column title="产品名称" dataIndex="name" />
                     </Table>
-                    <PchPagination dataSource={this.props.pageData} changePage={this.changePage} />
+                    <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
                   </div>
                   <div className="btn-wrap">
                     <Button className="add-btn" onClick={this.addItem.bind(this)}> >> </Button>
