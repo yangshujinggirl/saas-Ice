@@ -50,7 +50,7 @@ class ReviewApproveReq extends CurdReq{
   //轨迹详情
   getTrackDetail(data) {
     console.log(data)
-    if(!data.isApproveInfo){
+    if(!data.isApproveInfo && data.isApproveInfo == undefined){
       var options = {
         url: this._config.WF_HOST + `/tasks/track?businessId=${data.businessId}&isApproveInfo=${data.isApproveInfo}`,
         method: 'Get',
