@@ -41,10 +41,13 @@ export default class ProcessForm extends Component {
         let {actions, params} = this.props;
 
         if (params.id) {
-            actions.getDetail(params.id);
+            if(params.copy){
+                actions.copyProcess(params.id);
+            }else{
+                actions.getDetail(params.id);
+            }
         }
         actions.getCustomMenuList();
-        console.log(this.props,';')
     }
 
     componentWillUnmount() {
