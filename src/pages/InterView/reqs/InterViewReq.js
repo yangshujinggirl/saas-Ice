@@ -28,12 +28,11 @@ class InterViewReq extends CurdReq {
 		}
 		return super.fetchData(options);
 	}
-	//面签列表获取
-	searchList() {
+	//仅面签列表获取
+	searchList(condition) {
 		let options = {
 			url: this._config.CONTRACT_HOST + `/interview/list`,
-			method: 'get',
-			contentType: 'application/x-www-form-urlencoded',
+      params: condition
 		}
 		return super.fetchData(options);
 	}
