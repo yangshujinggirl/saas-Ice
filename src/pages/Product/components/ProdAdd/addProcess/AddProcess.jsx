@@ -3,8 +3,7 @@ import IceContainer from '@icedesign/container';
 import { hashHistory } from 'react-router';
 import { BaseApp } from 'base'
 import { Title, PchTable, PchPagination } from 'components';
-import FilterForm from './Filter';
-
+import ProcessProduct from '../../ProcessFormProduct/ProcessFormProduct'
 import './AddProcess.scss';
 
 export default class AddProcess extends BaseApp {
@@ -18,14 +17,11 @@ export default class AddProcess extends BaseApp {
         this.fetchData();
     }
     fetchData = (condition) => {
-        console.log(this.props)
-        this.props.actions.search(condition);
+       
     }
     //点击分页
     changePage = (currentPage) => {
-        this.props.actions.search({
-            page: currentPage
-        });
+        
     }
 
     /**
@@ -41,8 +37,7 @@ export default class AddProcess extends BaseApp {
         const { pageData,columns} = this.props;
         return (
             <IceContainer className="pch-container">
-                <Title title="流程配置" />
-                <FilterForm onSubmit={this.fetchData} />
+                <ProcessProduct />
             </IceContainer>
         )
     }
