@@ -31,7 +31,7 @@ class InterViewReq extends CurdReq {
 	//仅面签列表获取
 	searchList(condition) {
 		let options = {
-			url: this._config.CONTRACT_HOST + `/interview/list`,
+			url: this._config.CONTRACT_HOST + `/interview/credit/list`,
       params: condition
 		}
 		return super.fetchData(options);

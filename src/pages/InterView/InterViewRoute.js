@@ -14,10 +14,11 @@ export default {
     component: InterView.InterViewDetail,
   },
     {
-      path: '/interViewOnly',
-      name: '仅签字列表',
+      path: 'interViewOnly',
+      name: '仅面签列表',
       component: InterView.InterViewOnly,
-    },],
+    }
+  ],
   component: Layout,
   indexRoute: {
     component: InterView.InterView,

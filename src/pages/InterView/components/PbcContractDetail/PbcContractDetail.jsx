@@ -912,6 +912,16 @@ export default class PbcContractDetail extends BaseComponent {
                 </Col>
               </Row>
             </Form>
+            {
+              formData.signedDocumentUR && formData.signedDocumentUR != '' ?
+                (
+                  <div className='file'>
+                    <a href="">查看贷签名文件</a>
+                  </div>
+                ) : (
+                  <span></span>
+                )
+            }
           </div>
         </IceFormBinderWrapper>
       </IceContainer>

@@ -25,7 +25,7 @@ export default class InterViewOnly extends BaseApp {
 
   fetchData = (condition) => {
     console.log(this.props);
-    this.props.actions.search(condition);
+    this.props.actions.searchList(condition);
   };
   //点击分页
   changePage = (currentPage) => {
@@ -87,7 +87,7 @@ export default class InterViewOnly extends BaseApp {
     const { pageData, columns } = this.props;
     return (
       <IceContainer className="pch-container">
-        <Title title="面签列表"/>
+        <Title title="仅面签列表"/>
         <FilterForm onSubmit={this.fetchData}/>
         <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)}/>
         <PchPagination dataSource={pageData} onChange={this.changePage}/>

@@ -60,6 +60,19 @@ export const search = (condition) => {
     })
   }
 }
+// 获取信用卡列表
+export const searchList = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+    Req.searchList(condition).then((res) => {
+      // Req.searchList(condition).then((res) => {
+      dispatch(fetchSuccess({ pageData: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
 
 // 保存表单
 export const save = (data) => {
