@@ -15,7 +15,7 @@ export default {
   },
     {
       path: 'interViewOnly',
-      name: '仅面签列表',
+      name: '信用卡面签列表',
       component: InterView.InterViewOnly,
     }
   ],
