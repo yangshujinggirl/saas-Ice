@@ -96,21 +96,21 @@ export default class FormRender extends Component {
   };
   //区块分类渲染
   FromRender = (el, outIndex, inIndex) => {
-    if (el.hasAttachedFields) {
-      return (<div className="subsidiary-field" key={el.name}>
-        {this.RenderField(el, outIndex, inIndex)}
-      </div>);
-    }
-    else if (el.type == 'CHECKBOX' || el.type == 'RADIO') {
-      return (<div className="subsidiary-field" key={el.name}>
-        {this.RenderField(el, outIndex, inIndex)}
-      </div>);
-    }
-    else if (el.line == '1') {
-      return (<div className="subsidiary-field" key={el.name}>
-        {this.RenderField(el, outIndex, inIndex)}
-      </div>);
-    }
+    // if (el.hasAttachedFields) {
+    //   return (<div className="subsidiary-field" key={el.name}>
+    //     {this.RenderField(el, outIndex, inIndex)}
+    //   </div>);
+    // }
+    // else if (el.type == 'CHECKBOX' || el.type == 'RADIO') {
+    //   return (<div className="subsidiary-field" key={el.name}>
+    //     {this.RenderField(el, outIndex, inIndex)}
+    //   </div>);
+    // }
+    // else if (el.line == '1') {
+    //   return (<div className="subsidiary-field" key={el.name}>
+    //     {this.RenderField(el, outIndex, inIndex)}
+    //   </div>);
+    // }
     return this.RenderField(el, outIndex, inIndex);
   };
   //selectList
@@ -142,6 +142,7 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
+            maxLength={el.length?el.length:null}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
