@@ -94,7 +94,8 @@ class Detail extends BaseApp {
   }
   //打印
   printContract() {
-    window.print()
+    Web.ExecWB(8,1) //打印页面设置
+    // window.print()
   }
   initHtml(content) {
     let regex = /_BLANK_([^]*?)_BLANK_/ig;

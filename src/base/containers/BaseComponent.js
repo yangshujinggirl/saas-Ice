@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import BaseConfig from '../../config/BaseConfig';
 import Cookie from '../utils/Cookie';
+import { Feedback } from "@icedesign/base";
 /**
  * 组件的基类
  * 1. 提供上传组件的通用配置，地址、请求头、响应格式等
  */
+const Toast = Feedback.toast;
+
 export default class BaseComponent extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +26,10 @@ export default class BaseComponent extends Component {
       },
       formatter: (res) => {
         let isArray = Object.prototype.toString.call(res) === '[object Array]';
+        if(!res.data) {
+          Toast.error('上传失败，请重新上传');
+          return;
+        }
         if(isArray) {
           return {
             code: res.length > 0 ? '0' : '1',
