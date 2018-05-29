@@ -916,7 +916,7 @@ export default class PbcContractDetail extends BaseComponent {
               formData.signedDocumentUR && formData.signedDocumentUR != '' ?
                 (
                   <div className='file'>
-                    <a href="">查看贷签名文件</a>
+                    <a href={formData.signedDocumentUR} target='_blank'>查看贷签名文件</a>
                   </div>
                 ) : (
                   <span></span>
