@@ -98,8 +98,7 @@ class Detail extends BaseApp {
   }
   //打印
   printContract() {
-    Web.ExecWB(8,1) //打印页面设置
-    // window.print()
+    window.print()
   }
   initHtml(contractContent) {
     let regex = /_BLANK_([^]*?)_BLANK_/ig;
@@ -123,12 +122,12 @@ class Detail extends BaseApp {
     return(
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
-          <div id="section-to-print" className="main-content">
-            <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
-            <div dangerouslySetInnerHTML={{
-              __html:contractContent
-            }} />
-          </div>
+            <div id="section-to-print" className="main-content">
+              <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
+              <div dangerouslySetInnerHTML={{
+                __html:contractContent
+              }} />
+            </div>
           <div className="handle-btn-list-wrap">
             <Button
               type="secondary"
