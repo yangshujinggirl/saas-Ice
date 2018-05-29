@@ -181,22 +181,22 @@ class AddEit extends BaseApp {
         </div>
         <div className="contract-edit-bottom-div">
           <Button disabled={this.state.currentIndex===0}
-                  className="contract-edit-button" type="secondary" size="large"
+                  type="secondary"
                   onClick={this.preContract.bind(this)}>
             上一份
           </Button>
           <Button disabled={!this.props.formData.length||this.state.currentIndex===(this.props.formData.length-1)}
-                  className="contract-edit-button" type="secondary" size="large"
+                  type="secondary"
                   onClick={this.nextContract.bind(this)}>
             下一份
           </Button>
-          <Button className="contract-edit-button" type="secondary" size="large" onClick={this.backPage.bind(this)}>
+          <Button type="secondary" onClick={this.backPage.bind(this)}>
             返回
           </Button>
-          <Button className="contract-edit-button" type="secondary" size="large" onClick={this.resetSubmitData.bind(this)}>
+          <Button type="secondary" onClick={this.resetSubmitData.bind(this)}>
             重置
           </Button>
-          <Button className="contract-edit-button" type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
+          <Button type="secondary" onClick={this.handleSubmit.bind(this)}>
             确定
           </Button>
         </div>

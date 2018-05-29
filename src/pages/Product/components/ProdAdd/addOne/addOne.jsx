@@ -331,6 +331,8 @@ export default class addOne extends BaseCondition {
 		};
 		return test;
 	}
+
+	//提前还款为否
 	isEarlyDisabld = (checked, e) => {
 		let lilvSett = this.state.value;
 		if (checked == 'false') {
@@ -440,21 +442,7 @@ export default class addOne extends BaseCondition {
 			</div>
 		)
 	};
-	//不提前还款
-	tiQianFalse = () => {
-		// let tiQianData = this.state.value;
-		// tiQianData.prepaymentAmountMin = null;
-		// tiQianData.prepaymentPeriodsLimit = null;
-		// tiQianData.penaltyBasicAmount = null;
-		// tiQianData.penaltyCalculationType = null;
-		// tiQianData.prepaymentSetting = [];
-
-		// this.setState({
-		// 	tiQianData
-		// })
-		//prepaymentAmountMin 最小还款金额  prepaymentPeriodsLimit 最小提前还款期数  penaltyBasicAmount 违约金计算基础  penaltyCalculationType 违约金计算方式
-		//  prepaymentSetting 还款方式
-	}
+	
 	//贷款期限不允许变更时其他不可被选
 	loanTermChange = (data) => {
 		data.map((item, i) => {
@@ -612,12 +600,20 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('贷款比率必须大于0')
 		}
-		if( value > 10000){
-			callback('贷款比率范围为四位')
+		if( value >= 1000){
+			callback('贷款比率不能大于1000')
 		}
 		if(min.loanPercentageMax){
 			if (Number(value) > min.loanPercentageMax) {
 				callback('必须小于后者')
+			}
+		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
 			}
 		}
 		callback();
@@ -631,11 +627,20 @@ export default class addOne extends BaseCondition {
 		if (value < 0 ) {
 			callback('贷款比率必选大于0')
 		}
-		if( value > 10000){
-			callback('贷款比率范围为四位')
+		if( value >= 1000){
+			callback('贷款比率不能大于1000')
 		}
 		if (Number(value) < min.loanPercentageMin) {
 			callback('必须大于前者')
+		}
+
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
 		}
 		callback();
 	}
@@ -665,7 +670,7 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('最早提前还款期数小于0');
 		}
-		if (value > 10000) {
+		if (value >= 10000) {
 			callback('还款期数不能超过10000')
 		}
 		var regex = /^\d+\.\d+$/;
@@ -686,8 +691,8 @@ export default class addOne extends BaseCondition {
 		if (value < 0  ) {
 			callback('利率范围必须大于0');
 		}
-		if(value > 10000){
-			callback('利率范围为四位！');
+		if(value >= 1000){
+			callback('利率范围不能大于1000');
 		}
 		if(min.interestRatesRangeMax){
 			if (Number(value) > min.interestRatesRangeMax) {
@@ -714,8 +719,8 @@ export default class addOne extends BaseCondition {
 		if (value < 0  ) {
 			callback('利率范围必须大于0');
 		}
-		if(value > 10000){
-			callback('利率范围为四位！');
+		if(value >= 1000){
+			callback('利率范围不能大于1000');
 		}
 		if (Number(value) < allValues.interestRatesRangeMin) {
 			callback('必须大于前者');
@@ -908,7 +913,7 @@ export default class addOne extends BaseCondition {
 												>
 													<Option value={'1'.toString()}>生效</Option>
 													<Option value={'0'.toString()}>关闭</Option>
-													<Option value={'2'.toString()}>失效</Option>
+													{/* <Option value={'2'.toString()}>失效</Option> */}
 												</Select>
 											</IceFormBinder>
 											<div><IceFormError name="status" /></div>

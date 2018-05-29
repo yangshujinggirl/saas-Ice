@@ -3,12 +3,17 @@
     width: 80%;
     margin: 0 auto;
   }
-  .contract-edit-button{
-    margin: 0px 10px;
-  }
   .contract-edit-bottom-div{
     text-align: center;
-    margin: 20px;
+    padding: 20px 0;
+    button {
+      background-color: #FC9E25;
+      margin-right: 10px;
+    }
+    .next-btn.disabled, .next-btn[disabled] {
+      background-color: #F4F4F4;
+      border-color: #DCDEE3;
+    }
   }
   .input-disabled{
     border: 0px;

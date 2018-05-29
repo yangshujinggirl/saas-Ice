@@ -122,12 +122,12 @@ class Detail extends BaseApp {
     return(
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
-            <div id="section-to-print" className="main-content">
-              <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
-              <div dangerouslySetInnerHTML={{
-                __html:contractContent
-              }} />
-            </div>
+          <div id="section-to-print" className="main-content">
+            <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
+            <div dangerouslySetInnerHTML={{
+              __html:contractContent
+            }} />
+          </div>
           <div className="handle-btn-list-wrap">
             <Button
               type="secondary"
