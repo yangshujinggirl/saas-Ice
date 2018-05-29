@@ -92,31 +92,38 @@ export default {
   bindInputEvent(activeSelect){
     if(activeSelect.bindInputEvent)return;
     activeSelect.bindInputEvent = true;
+    focusMenu = this.focusMenu;
     let input = activeSelect.getElementsByTagName('input')[0];
     input.oninput = function(){
       let menu = [...this.parentNode.getElementsByTagName('div')];
       let list = [...this.parentNode.getElementsByTagName('li')];
+      focusMenu(menu, list, this)
+      return false
+    }
+  },
+  focusMenu(menu, menus, input, noInput){
+      menu = menu instanceof Array && menu || [menu];
+      list = [...menus];
       let dataName = '';
-      if(menu.length < 1 || list.length < 1){
+      let dataValue = input.getAttribute('data-value');
+      let value = input.value;
+      if((menu.length < 1 || list.length < 1) && !noInput){
         //如果不存在menu时return
-        dataName = this.name;
+        dataName = input.name;
       }else{
         //将上一个选中项去调
         if(menu.length > 0 && menu[0].activeOption)menu[0].activeOption.className = '';
-        let value = this.value;
         let selected = list.find(li=>li.innerHTML==value);
         if(selected){
           menu[0].activeOption = selected;
           selected.className = 'selected';
           dataName = selected.getAttribute('data-name');
         }else{
-          dataName = this.name;
+          dataName = input.name;
         }  
       }
       //设置input的data-value，即实际name值
-      this.setAttribute('data-value', dataName);
-      return false
-    }
+      input.setAttribute('data-value', dataName);
   },
   show(select){
     if(this.data.selectBox != select && this.data.selectBox){
@@ -124,6 +131,9 @@ export default {
     }
     //存取本次激活的下拉列表项
     this.data.selectBox = select;
+    //显示的时候要匹配当前是否有选中的菜单
+    this.focusMenu(select, select.getElementsByTagName('li'), select.parentNode.getElementsByTagName('input')[0])
+    //显示下拉框
     this.data.selectBox.className += ' ' + this.data.activeSelectBoxClass; 
     return this;
   },

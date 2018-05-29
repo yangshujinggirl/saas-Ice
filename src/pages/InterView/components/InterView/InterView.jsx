@@ -44,7 +44,11 @@ export default class InterView extends BaseApp {
     switch (type) {
       //类型 加id的路由形式;
       case this.OPERATE_TYPE.OTHER1: {
-        hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+        if(data.type == 'loan'){
+          hashHistory.push(`interview/detail/${data.type}/${data.loanId}`);
+        }else{
+          hashHistory.push(`interview/detail/${data.type}/${data.id}`);
+        }
         break;
       }
       //下载视频

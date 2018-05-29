@@ -228,7 +228,7 @@ export default class FormRender extends Component {
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
-                initValue: el.value ? parseInt(el.value) : '',
+                initValue: el.value ? parseFloat(el.value) : null,
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
                 ],
@@ -264,7 +264,7 @@ export default class FormRender extends Component {
             min={el.minValue}
             max={el.maxValue}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : '',
+              initValue: el.value ? parseInt(el.value) : null,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
               ],
