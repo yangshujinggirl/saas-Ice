@@ -16,6 +16,7 @@ class Detail extends BaseApp {
       lastDisabled:true,
       nextDisabled:true,
       templateData:[],
+      isHasFile:true,
       contractContent:'',//html
       currentIndex:0,
     }
@@ -28,10 +29,11 @@ class Detail extends BaseApp {
     .then((res) => {
       const { code, data, msg } =res;
       if( code !=200 ) {
-        // if( code == '1000063' ) {
-        //
-        // }
-        Toast.error(msg);
+        if( code == '1000063' ) {
+          this.setState({
+            isHasFile:false
+          })
+        }
         return
       }
       this.initPageStatus(data);
@@ -116,42 +118,60 @@ class Detail extends BaseApp {
 
   }
   render() {
-    const { templateData, currentIndex, contractContent } = this.state;
+    const { templateData, currentIndex, contractContent, isHasFile } = this.state;
     const { lastDisabled ,nextDisabled } = this.state;
 
     return(
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
-          <div id="section-to-print" className="main-content">
-            <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
-            <div dangerouslySetInnerHTML={{
-              __html:contractContent
-            }} />
-          </div>
-          <div className="handle-btn-list-wrap">
-            <Button
-              type="secondary"
-              disabled={lastDisabled}
-              onClick={this.lastContract.bind(this)}>
-                上一份
-             </Button>
-            <Button
-              type="secondary"
-              disabled={nextDisabled}
-              onClick={this.firstContract.bind(this)}>
-                下一份
-             </Button>
-            <Button
-              type="secondary"
-              onClick={this.returnBack}>
-                返回
-             </Button>
-            <Button
-              type="secondary"
-              onClick={this.printContract}>
-                打印
-             </Button>
-          </div>
+          {
+            isHasFile ?
+            <div id="section-to-print" className="main-content">
+              <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
+              <div dangerouslySetInnerHTML={{
+                __html:contractContent
+              }} />
+            </div>
+            :
+            <div className="no-template">该合同没有文件</div>
+          }
+          {
+            isHasFile ?
+            <div className="handle-btn-list-wrap">
+              <Button
+                type="secondary"
+                disabled={lastDisabled}
+                onClick={this.lastContract.bind(this)}>
+                  上一份
+               </Button>
+              <Button
+                type="secondary"
+                disabled={nextDisabled}
+                onClick={this.firstContract.bind(this)}>
+                  下一份
+               </Button>
+              <Button
+                type="secondary"
+                onClick={this.returnBack}>
+                  返回
+               </Button>
+              <Button
+                type="secondary"
+                onClick={this.printContract}>
+                  打印
+               </Button>
+            </div>
+            :
+            <div className="handle-btn-list-wrap">
+              <Button
+                type="secondary"
+                onClick={this.returnBack}>
+                  返回
+               </Button>
+            </div>
+          }
+
+
       </IceContainer>
     )
   }

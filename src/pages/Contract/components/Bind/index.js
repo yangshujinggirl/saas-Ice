@@ -66,7 +66,7 @@ class Bind extends BaseApp {
       let formDataList = templateProductList.map(p=>({
         productCategory: p.productCategory,
         productName: p.productName,
-        id: p.productId
+        id: p.productCode
       }))
 
       this.setState({
@@ -130,7 +130,7 @@ class Bind extends BaseApp {
        {
          productCategory: ele.productType,
          productName: ele.name,
-         id: ele.id
+         id: ele.productCode
        }
      ));
      let selectedRow=[...this.state.selectedRow,...records];
@@ -143,7 +143,7 @@ class Bind extends BaseApp {
     let dom = this.refs.FormModule.refs.ProductNameForm.cloneNode(true);
     let inputs = [...dom.querySelectorAll('.product-name-select')];
     let templateProducts = [...this.state.dataSourceRight.map(p=>{
-      p.productId = p.id;
+      p.productCode = p.id;
       delete p.id
       return p
     })];

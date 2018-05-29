@@ -147,12 +147,12 @@ export default class addThree extends Component {
       )
 
       this.state.templateData={
-        productId: product.id,
+        productCode: product.productCode,
         productCategory: this.productTypeChange(product.productType),
         productName: product.name,
         contractTemplateIds: this.contractTemplateIds(this.state.dataSourceRight)
       }
-      
+
       if (error) {
         return;
       }
