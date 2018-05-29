@@ -339,8 +339,8 @@ export default class addOne extends BaseCondition {
 
 			lilvSett.prepaymentAmountMin = '';
 			lilvSett.prepaymentPeriodsLimit = '';
-			lilvSett.penaltyBasicAmount = '';
-			lilvSett.penaltyCalculationType = '';
+			lilvSett.penaltyBasicAmount = null;
+			lilvSett.penaltyCalculationType = null;
 			lilvSett.prepaymentSetting = [];
 		}
 		this.setState({
@@ -442,16 +442,16 @@ export default class addOne extends BaseCondition {
 	};
 	//不提前还款
 	tiQianFalse = () => {
-		let tiQianData = this.state.value;
-		tiQianData.prepaymentAmountMin = '';
-		tiQianData.prepaymentPeriodsLimit = '';
-		tiQianData.penaltyBasicAmount = null;
-		tiQianData.penaltyCalculationType = null;
-		tiQianData.prepaymentSetting = [];
+		// let tiQianData = this.state.value;
+		// tiQianData.prepaymentAmountMin = null;
+		// tiQianData.prepaymentPeriodsLimit = null;
+		// tiQianData.penaltyBasicAmount = null;
+		// tiQianData.penaltyCalculationType = null;
+		// tiQianData.prepaymentSetting = [];
 
-		this.setState({
-			tiQianData
-		})
+		// this.setState({
+		// 	tiQianData
+		// })
 		//prepaymentAmountMin 最小还款金额  prepaymentPeriodsLimit 最小提前还款期数  penaltyBasicAmount 违约金计算基础  penaltyCalculationType 违约金计算方式
 		//  prepaymentSetting 还款方式
 	}
@@ -1395,7 +1395,7 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : this.tiQianFalse}
+								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
 
 								<div className="next-btn-box">
 									<Button type="secondary" size="large" onClick={this.submit}>下一步</Button>
