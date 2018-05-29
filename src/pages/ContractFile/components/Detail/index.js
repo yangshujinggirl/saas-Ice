@@ -133,7 +133,7 @@ class Detail extends BaseApp {
               }} />
             </div>
             :
-            <div>没有文件</div>
+            <div className="no-template">该合同没有文件</div>
           }
           {
             isHasFile ?
