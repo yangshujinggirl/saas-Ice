@@ -130,7 +130,7 @@ class Bind extends BaseApp {
        {
          productCategory: ele.productType,
          productName: ele.name,
-         id: ele.id
+         id: ele.productCode
        }
      ));
      let selectedRow=[...this.state.selectedRow,...records];
