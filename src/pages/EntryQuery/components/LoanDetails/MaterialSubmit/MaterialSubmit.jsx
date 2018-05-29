@@ -85,7 +85,6 @@ export default class MaterialSubmit extends Component {
       }else{
         return (<a href={url} target="_blank"> <img width={'10%'} src='/public/images/creditInformation/filed.png'/></a>)
       }
-
     }
   };
 

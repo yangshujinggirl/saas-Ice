@@ -129,7 +129,9 @@ class MaterialSubmit extends BaseComponent {
 
   processDataSource(dataSource, key) {
     dataSource.map((item, i) => {
+      console.log(item)
       item[key] = item.downloadUrl;
+      console.log(item)
     });
   }
 
@@ -153,7 +155,7 @@ class MaterialSubmit extends BaseComponent {
           item.size = item.originFileObj.size;
           item.downloadURL = item.imgURL;
           item.fileURL = item.imgURL;
-          item.imgURL = '/public/images/creditInformation/filed.png';
+          // item.imgURL = '/public/images/creditInformation/filed.png';
         }
       }
     });
@@ -312,12 +314,13 @@ class MaterialSubmit extends BaseComponent {
         citem.downloadUrl = dataSource[j][key];
       });
     });
-    // Req.saveMaterial(this.props.params.id, originData)
-    //   .then((res) => {
-    //     if (res && res.code == 200) {
-    //       Toast.success('保存成功，请提交～')
-    //     }
-    //   });
+    console.log(originData)
+    Req.saveMaterial(this.props.params.id, originData)
+      .then((res) => {
+        if (res && res.code == 200) {
+          Toast.success('保存成功，请提交～')
+        }
+      });
   };
 
   render() {
