@@ -187,7 +187,6 @@ export default class addOne extends BaseCondition {
 		this.formRef.validateAll((error, value) => {
 			console.log(error, value);
 			let {boolean} = this.state
-			console.log(boolean)
 			if (error) {
 				// 处理表单报错
 				return;
@@ -446,8 +445,8 @@ export default class addOne extends BaseCondition {
 		let tiQianData = this.state.value;
 		tiQianData.prepaymentAmountMin = '';
 		tiQianData.prepaymentPeriodsLimit = '';
-		tiQianData.penaltyBasicAmount = '';
-		tiQianData.penaltyCalculationType = '';
+		tiQianData.penaltyBasicAmount = null;
+		tiQianData.penaltyCalculationType = null;
 		tiQianData.prepaymentSetting = [];
 
 		this.setState({
@@ -613,8 +612,8 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('贷款比率必须大于0')
 		}
-		if( value > 100000){
-			callback('贷款比率范围为五位')
+		if( value > 10000){
+			callback('贷款比率范围为四位')
 		}
 		if(min.loanPercentageMax){
 			if (Number(value) > min.loanPercentageMax) {
@@ -632,8 +631,8 @@ export default class addOne extends BaseCondition {
 		if (value < 0 ) {
 			callback('贷款比率必选大于0')
 		}
-		if( value > 100000){
-			callback('贷款比率范围为五位')
+		if( value > 10000){
+			callback('贷款比率范围为四位')
 		}
 		if (Number(value) < min.loanPercentageMin) {
 			callback('必须大于前者')
@@ -687,8 +686,8 @@ export default class addOne extends BaseCondition {
 		if (value < 0  ) {
 			callback('利率范围必须大于0');
 		}
-		if(value > 100000){
-			callback('利率范围为五位！');
+		if(value > 10000){
+			callback('利率范围为四位！');
 		}
 		if(min.interestRatesRangeMax){
 			if (Number(value) > min.interestRatesRangeMax) {
@@ -715,8 +714,8 @@ export default class addOne extends BaseCondition {
 		if (value < 0  ) {
 			callback('利率范围必须大于0');
 		}
-		if(value > 100000){
-			callback('利率范围为五位！');
+		if(value > 10000){
+			callback('利率范围为四位！');
 		}
 		if (Number(value) < allValues.interestRatesRangeMin) {
 			callback('必须大于前者');
@@ -740,6 +739,7 @@ export default class addOne extends BaseCondition {
 		this.setState({ value });
 	}
 	render() {
+		let {actions} = this.props;
 		let data = this.props.prodActions || {}
 		let fileData = this.props.fileData || {}
 		fileData = fileData.data || {}
@@ -1262,6 +1262,7 @@ export default class addOne extends BaseCondition {
 									removeItem={this.removeItem.bind(this, 'ratesSetting')}
 									boolean= {this.state.boolean}
 									onChangeBoolean={this.onChangeBoolean}
+									getProdeuctAgency={actions.getProdeuctAgency}
 								/>
 							</div>
 							<legend className="pch-legend">

@@ -184,7 +184,6 @@ export default class CarType extends Component {
     actions.addTwoList(val, name, currentPage)
   };
   render() {
-    console.log(this.props)
     let addTwoData = this.props.addTwoData || {};
     let type = this.props.data;
     let { list = [], page, limit, total } = addTwoData
