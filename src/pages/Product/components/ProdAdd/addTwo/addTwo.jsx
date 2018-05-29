@@ -61,7 +61,7 @@ export default class addTwo extends Component {
     this.state = {
       value:{
           productScopes: []
-          },
+      },
       type: '1',
       name: undefined,
       value2:'carGroup',
@@ -137,10 +137,10 @@ export default class addTwo extends Component {
                 labelAlign="left">
                 <Row wrap>
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <RadioGroup 
-                      dataSource={list[0]} 
+                    <RadioGroup
+                      dataSource={list[0]}
                       defaultValue={'1'}
-                      value={this.state.type}                    
+                      value={this.state.type}
                       onChange={this.onTypeChange}
                       />
                   </Col>
@@ -159,21 +159,21 @@ export default class addTwo extends Component {
               <div className="pch-condition">
               <Row wrap >
                   <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                    <RadioGroup 
+                    <RadioGroup
                       dataSource={list[1]}
-                      defaultValue={"carGroup"} 
-                      value={this.state.value2}                    
+                      defaultValue={"carGroup"}
+                      value={this.state.value2}
                       onChange={this.onNestChange}
                       />
                   </Col>
                 </Row>
-              
+
                 <Row wrap style={{marginBottom:"30px"}} >
-                <OrgType {...this.props} data={this.state.value2}/> 
+                <OrgType {...this.props} data={this.state.value2}/>
                 </Row>
               </div> */}
-            
-            
+
+
               <div className="next-btn-box">
                 <Button type="secondary" size="large" onClick={this.onsubmit}>下一步</Button>
               </div>

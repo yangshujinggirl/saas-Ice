@@ -46,40 +46,31 @@ export default class CarType extends Component {
   static displayName = 'CarType';
   constructor(props) {
     super(props);
-
-    // 表格可以勾选配置项
+    this.state = {
+      value: {},
+      type: '',
+      recordArray:[],//存储分页选中的数据
+      dataSourceRight: [],//存储选中的数据，右侧数据源
+      selectedRowKeys: [],//选中的复选框
+      selectDate: []
+    };
     this.rowSelection = {
       // 表格发生勾选状态变化时触发
       onChange: (ids, array) => {
         let types = this.props.data;
-        let arra = [];
-
+        let recordArray =[...this.state.recordArray,...array];
         if (types == '1') {
-          arrayRightData.pinpai = [...array]
+          arrayRightData.pinpai = recordArray
         } else if (types == '2') {
-          arrayRightData.chexi = [...array]
+          arrayRightData.chexi = recordArray
         } else {
-          arrayRightData.cehxing = [...array]
+          arrayRightData.cehxing = recordArray
         }
-
         this.setState({
+          recordArray,
           selectDate: arrayRightData
         })
-        this.setState({
-          selectedRowKeys: ids,
-        });
-      },
-      // 全选表格时触发的回调
-      onSelectAll: (selected, records) => {
-      },
-    };
-
-    this.state = {
-      value: {},
-      type: '',
-      dataSourceRight: [],//存储选中的数据，渲染右侧
-      selectedRowKeys: [],//选中的复选框
-      selectDate: []
+      }
     };
 
   }
@@ -226,8 +217,7 @@ export default class CarType extends Component {
               <Table
                 dataSource={dataSource}
                 rowSelection={{
-                  ...this.rowSelection,
-                  selectedRowKeys: this.state.selectedRowKeys,
+                  ...this.rowSelection
                 }}
                 fixedHeader={true}
                 maxBodyHeight={547}
