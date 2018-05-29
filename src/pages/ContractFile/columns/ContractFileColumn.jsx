@@ -1,6 +1,7 @@
 
 import { BaseColumn } from 'base';
 import { Button, Moment } from "@icedesign/base";
+import ProductTypeMap from '../../../base/constants/ProductTypeMap';
 
 /**
  * 定义列表的表头
@@ -22,14 +23,6 @@ import { Button, Moment } from "@icedesign/base";
    4:'护照',
    5:'台湾通行证',
    6:'其他',
- }
- const productTypeTrans = {
-   NEW_CAR_LOAN:'新车贷款',
-   NEW_CAR_RENTAL:'新车租赁',
-   SECONDHAND_CAR_LOAN:'二手车贷款',
-   SECONDHAND_CAR_RENTAL:'二手车租赁',
-   CAR_MORTGAGE_LOAN:'汽车抵押贷款',
-   CONSUMER_LOAN:'消费贷款',
  }
 class ContractFileColumn extends BaseColumn {
     constructor() {
@@ -88,7 +81,7 @@ class ContractFileColumn extends BaseColumn {
             dataIndex: 'productType',
             width: 120,
             cell:(value, index, record) => {
-              return productTypeTrans[record.productType]
+              return ProductTypeMap[record.productType]
             }
         }, {
             title: '产品名称',

@@ -56,7 +56,15 @@ class ReviewApproveColumn extends BaseColumn {
         return (
           <div>
             {
-              record.status && record.status == 'CLAIM' ?
+              record.taskTypeKey == '5' ?
+                (<div className='pch-table-operation'>
+                    <a href="javascript:;"
+                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER5)}>
+                      详情
+                    </a>
+                  </div>
+                )
+                : record.status && record.status == 'CLAIM' ?
                 (<div className="pch-table-operation">
                     <a href="javascript:;"
                        onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
@@ -81,12 +89,7 @@ class ReviewApproveColumn extends BaseColumn {
                   ) :
                   //taskTypeKey == 5 为面签详情
                   record.taskTypeKey == '5' ? (
-                    <div className='pch-table-operation'>
-                      <a href="javascript:;"
-                         onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER5)}>
-                        详情
-                      </a>
-                    </div>
+                    (<span></span>)
                   ) : (
                     <div className='pch-table-operation'>
                       <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>

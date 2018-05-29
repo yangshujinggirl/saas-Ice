@@ -53,7 +53,7 @@ export default class Huankuanfangshi extends Component {
 
 	//还款方式不可重复
 	changeValue = (value, option) => {
-		let { items } = this.props
+		let { items,boolean } = this.props
 		let allArr = items;
 		items.map((item, i) => {
 			if (value == item.repaymentMethods) {
@@ -61,7 +61,7 @@ export default class Huankuanfangshi extends Component {
 					type: 'error',
 					content: '该还款方式已存在！',
 					afterClose: () => {
-						return;
+						this.props.onChangeBoolean(false)
 					},
 					duration: 2000
 				});

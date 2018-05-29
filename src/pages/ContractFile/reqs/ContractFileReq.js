@@ -18,7 +18,7 @@ class ContractFileReq extends CurdReq{
 	//合同详情
 	contractDetailApi(id){
 		let options = {
-			url: this._config.CONTRACT_HOST + `/contract/${id}`,
+			url: this._config.CONTRACT_HOST + `/contract/${id}/detail`,
 			method: 'GET',
 			contentType: 'application/json'
 		}

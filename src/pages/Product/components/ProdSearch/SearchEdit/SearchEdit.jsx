@@ -141,9 +141,9 @@ export default class SearchEdit extends Component {
                 case 0:
                     item.status = '关闭'
                     break;
-                case 2:
-                    item.status = '失效'
-                    break;
+                // case 2:
+                //     item.status = '失效'
+                //     break;
 
                 default:
                     break;
@@ -210,9 +210,7 @@ export default class SearchEdit extends Component {
                                                 <Option value="0">
                                                     关闭
                                                 </Option>
-                                                <Option value="2">
-                                                    失效
-                                                </Option>
+                                                
                                             </Select>
                                         </IceFormBinder>
                                         <div>

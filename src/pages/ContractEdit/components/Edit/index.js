@@ -113,19 +113,18 @@ class AddEit extends BaseApp {
     this.submitContent[index] = {
       contractId:item.contractId,
       templateId:item.templateId,
-      contractContent:item.updateContractContent||item.contractContent
+      contractContent:item.contractContent
     };
   }
 
   //处理要展示的html
   initFormData=(obj,index)=>{
     let contractContent;
-
-    if(obj.updateContractContent){//如果是第一次编辑取contractContent字段否则取updateContractContent
-      contractContent = obj.updateContractContent;
-    }else{
+    // if(obj.updateContractContent){//如果是第一次编辑取contractContent字段否则取updateContractContent
+    //   contractContent = obj.updateContractContent;
+    // }else{
       contractContent = obj.contractContent;
-    }
+    // }
 
     let contractContentCopy = JSON.stringify(contractContent);
     contractContentCopy = JSON.parse(contractContentCopy);
@@ -139,16 +138,16 @@ class AddEit extends BaseApp {
       let arry = value.split("_");
       arry[1] = arry[1] === 'null' ? '' : arry[1];
 
-      let val_one = "";
-      if (!this_1.submitContent[index]) {//如果第一次渲染该份合同则没值的地方展示接口返回值
-        obj.contractExtendSource&&obj.contractExtendSource.map((item, index) => {
-          if (item.keyEnglishName === arry[0]) {
-            val_one = item.keyValue;
-          }
-        });
-      }
+      // let val_one = "";
+      // if (!this_1.submitContent[index]) {//如果第一次渲染该份合同则没值的地方展示接口返回值
+      //   obj.contractExtendSource&&obj.contractExtendSource.map((item, index) => {
+      //     if (item.keyEnglishName === arry[0]) {
+      //       val_one = item.keyValue;
+      //     }
+      //   });
+      // }
 
-      let val = arry[1] || val_one || '';
+      let val = arry[1] || '';
       return `<input value='${val}' key='${arry[0]}' ${this_1.keyArray[arry[0]]?'disabled':''} class='${this_1.keyArray[arry[0]]?'input-disabled':''}'/>`;
     }).replace(/↵/ig, function (s, value) {
       return "</br>";
@@ -182,22 +181,22 @@ class AddEit extends BaseApp {
         </div>
         <div className="contract-edit-bottom-div">
           <Button disabled={this.state.currentIndex===0}
-                  className="contract-edit-button" type="secondary" size="large"
+                  type="secondary"
                   onClick={this.preContract.bind(this)}>
             上一份
           </Button>
           <Button disabled={!this.props.formData.length||this.state.currentIndex===(this.props.formData.length-1)}
-                  className="contract-edit-button" type="secondary" size="large"
+                  type="secondary"
                   onClick={this.nextContract.bind(this)}>
             下一份
           </Button>
-          <Button className="contract-edit-button" type="secondary" size="large" onClick={this.backPage.bind(this)}>
+          <Button type="secondary" onClick={this.backPage.bind(this)}>
             返回
           </Button>
-          <Button className="contract-edit-button" type="secondary" size="large" onClick={this.resetSubmitData.bind(this)}>
+          <Button type="secondary" onClick={this.resetSubmitData.bind(this)}>
             重置
           </Button>
-          <Button className="contract-edit-button" type="secondary" size="large" onClick={this.handleSubmit.bind(this)}>
+          <Button type="secondary" onClick={this.handleSubmit.bind(this)}>
             确定
           </Button>
         </div>

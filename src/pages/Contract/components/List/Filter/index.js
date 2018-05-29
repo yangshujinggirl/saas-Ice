@@ -28,14 +28,11 @@ class Filter extends BaseCondition {
         }
         hashHistory.push(path)
     }
-    
+
     //重置
     resetSubmit() {
         this.setState({
-            value: {
-                templateCode: '',
-                templateName: ''
-            }
+            value: null
         })
         this.props.onSubmit && this.props.onSubmit();
     }

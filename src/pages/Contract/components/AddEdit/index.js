@@ -128,9 +128,14 @@ class AddEit extends BaseComponent {
       let templateContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
       templateContent = templateContent.replace(/(<script[\s\S]*?<\/script>)/i,'');
       this.refs.form.setter('templateContent',templateContent);
-      //新增or编辑
+      //新增or编辑or复制
       if(this.props.params.id) {
-        this.editTemplate(values)
+        //复制
+        if(this.props.location.query.action) {
+          this.addTemplate(values);
+        } else {
+          this.editTemplate(values)
+        }
       } else {
         this.addTemplate(values);
       }
@@ -142,7 +147,7 @@ class AddEit extends BaseComponent {
     Req.addTemplatesApi(params)
     .then(r => {
       Req.tipSuccess({
-        content: '新增成功',
+        content: this.props.location.query.action?'复制成功':'新增成功',
         afterClose(){
           localStorage.clear('contractContent');
           hashHistory.push('contract')
@@ -211,6 +216,7 @@ class AddEit extends BaseComponent {
   render() {
     const { editorState, value, moduleStatus } = this.state;
     const { templateContent, templateName } = this.state.value;
+    console.log(this.props)
     return(
       <IceContainer className="pch-container contract-edit-pages">
           <Title title="合同新增" />

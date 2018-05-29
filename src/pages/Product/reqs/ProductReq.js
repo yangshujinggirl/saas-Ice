@@ -104,6 +104,7 @@ class ProductReq extends CurdReq {
   }
   //合同保存
   saveContractTemplate(data){
+    console.log(data)
     var url = this._config.CONTRACT_HOST + `/contract/template/bondTemplate`;
     let options = {
       url: url,
@@ -249,6 +250,18 @@ class ProductReq extends CurdReq {
       url: this._config.LOAN_HOST + `/product/collect/exists?name=${condition}`,
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
+    }
+    return super.fetchData(options);
+  }
+
+  //渠道
+  getProdeuctAgency(condition){
+    let options = {
+      url: this._config.LOAN_HOST + `/product/agency`,
+      // url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      // params:condition
     }
     return super.fetchData(options);
   }

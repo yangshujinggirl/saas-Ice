@@ -17,9 +17,15 @@ export default class Demo extends Component {
   }
 
   componentDidMount() {
-    let { type, id } = this.props.params;
-    let { actions } = this.props;
-
+    var id = '',
+      type = '';
+    if (this.props.id) {
+      id = this.props.id || '';
+      type = this.props.type || '';
+    } else {
+      type = this.props.params.type;
+      id = this.props.params.id;
+    }
     if (type && id) {
       if (type == 'interviewOnly' || type == 'creditCard') {
         Req.getInterViewOnlyDetail(id)
@@ -44,7 +50,7 @@ export default class Demo extends Component {
           });
 
       } else if (type == 'loan') {
-        actions.getDetail(id);
+        this.props.actions.getDetail(id);
       }
 
     }
@@ -56,13 +62,19 @@ export default class Demo extends Component {
    */
 
   render() {
-    let { type, id } = this.props.params;
-    console.log(type);
-    console.log(id);
+    let id = '',
+      type = '';
+    if (this.props.id) {
+      id = this.props.id || '';
+      type = this.props.type || '';
+    } else {
+      type = this.props.params.type;
+      id = this.props.params.id;
+    }
     if (type && id) {
       switch (type) {
         case 'pbcContract': {
-          return (<PbcContractDetail {...this.props} formData={this.state.formData} ></PbcContractDetail>);
+          return (<PbcContractDetail {...this.props} formData={this.state.formData}></PbcContractDetail>);
           break;
         }
         case 'pinganContract': {
@@ -85,7 +97,7 @@ export default class Demo extends Component {
         }
       }
     }
-    return null;
+    return '';
   }
 
   // render() {

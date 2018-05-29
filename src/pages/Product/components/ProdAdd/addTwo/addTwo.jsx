@@ -3,7 +3,7 @@ import {hashHistory} from 'react-router';
 
 import {
   Form,Input,Button,Checkbox,Select,DatePicker,Switch,Radio,Grid,Field,Dialog,
-  Table,Transfer ,
+  Table,Transfer ,Feedback
 } from '@icedesign/base';
 
 import IceContainer from '@icedesign/container';
@@ -74,9 +74,17 @@ export default class addTwo extends Component {
   }
   onsubmit = () =>  {
     let {actions,params} = this.props;
+    let {productScopes} = this.state.value;
     let id = params.id;
     console.log(id)
-    actions.productsave(this.state.value,id);
+    if(productScopes.length==0){
+      Feedback.toast.show({
+        type: 'error',
+        content: '请选择品牌／车系／车型',
+      });
+    }else{
+      actions.productsave(this.state.value,id);
+    }
   }
 
   onFormChange=() => {

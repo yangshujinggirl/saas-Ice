@@ -5,13 +5,13 @@ import { BaseApp } from 'base';
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 
-import './InterView.scss';
+import './InterViewOnly.scss';
 
 import Req from '../../reqs/InterViewReq';
 import { Feedback } from '@icedesign/base/index';
 
 const Toast = Feedback.toast;
-export default class InterView extends BaseApp {
+export default class InterViewOnly extends BaseApp {
   constructor(props) {
     super(props);
   }
@@ -25,7 +25,7 @@ export default class InterView extends BaseApp {
 
   fetchData = (condition) => {
     console.log(this.props);
-    this.props.actions.search(condition);
+    this.props.actions.searchList(condition);
   };
   //点击分页
   changePage = (currentPage) => {
@@ -87,7 +87,7 @@ export default class InterView extends BaseApp {
     const { pageData, columns } = this.props;
     return (
       <IceContainer className="pch-container">
-        <Title title="面签列表"/>
+        <Title title="信用卡面签列表"/>
         <FilterForm onSubmit={this.fetchData}/>
         <PchTable dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)}/>
         <PchPagination dataSource={pageData} onChange={this.changePage}/>

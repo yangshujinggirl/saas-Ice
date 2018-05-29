@@ -98,11 +98,15 @@ export default class addOne extends BaseCondition {
 				repaymentMethodsSetting: [],
 				prepaymentSetting: [],
 				productScope: []
-			}
-
+			},
+			boolean:true
 		};
 	}
-
+	onChangeBoolean=(boolean)=>{
+		this.setState({
+			boolean:boolean
+		})
+	}
 	onFormChange = (value) => {
 
 		this.setState({
@@ -182,7 +186,7 @@ export default class addOne extends BaseCondition {
 	submit = () => {
 		this.formRef.validateAll((error, value) => {
 			console.log(error, value);
-
+			let {boolean} = this.state
 			if (error) {
 				// 处理表单报错
 				return;
@@ -190,7 +194,20 @@ export default class addOne extends BaseCondition {
 			// 提交当前填写的数据
 			value.effectiveDate = value.time[0];
 			value.expirationDate = value.time[1]
-			let boolean = true;
+			// let boolean = true;
+			//渠道不能重复
+			for (var i = 0; i < value.ratesSetting.length - 1; i++) {
+				for (var j = i + 1; j < value.ratesSetting.length; j++) {
+					if ((value.ratesSetting[i].channelTypes == value.ratesSetting[j].channelTypes)) {
+						Feedback.toast.show({
+							type: 'error',
+							content: '渠道不能重复！',
+						});
+						boolean = false
+					}
+				}
+			}
+
 			// 执行年利率范围 和 最小、最大执行年利率比较
 			value.ratesSetting && value.ratesSetting.map((item) => {
 				if (item.interestRatesRangeMax) {
@@ -215,6 +232,19 @@ export default class addOne extends BaseCondition {
 				}
 			})
 
+			//还款方式不能重复 
+			for (var i = 0; i < value.repaymentMethodsSetting.length - 1; i++) {
+				for (var j = i + 1; j < value.repaymentMethodsSetting.length; j++) {
+					if ((value.repaymentMethodsSetting[i].repaymentMethods == value.repaymentMethodsSetting[j].repaymentMethods)) {
+						Feedback.toast.show({
+							type: 'error',
+							content: '还款方式不能重复！',
+						});
+						boolean = false
+					}
+				}
+			}
+			
 			//提前还款方式设置中的 最大、最小期限不能小于最早提前还款期数
 			value.prepaymentSetting && value.prepaymentSetting.map((item, i) => {
 				if (item.loanTermMin > Number(value.prepaymentPeriodsLimit) || item.loanTermMax > Number(value.prepaymentPeriodsLimit)) {
@@ -301,6 +331,8 @@ export default class addOne extends BaseCondition {
 		};
 		return test;
 	}
+
+	//提前还款为否
 	isEarlyDisabld = (checked, e) => {
 		let lilvSett = this.state.value;
 		if (checked == 'false') {
@@ -309,8 +341,8 @@ export default class addOne extends BaseCondition {
 
 			lilvSett.prepaymentAmountMin = '';
 			lilvSett.prepaymentPeriodsLimit = '';
-			lilvSett.penaltyBasicAmount = '';
-			lilvSett.penaltyCalculationType = '';
+			lilvSett.penaltyBasicAmount = null;
+			lilvSett.penaltyCalculationType = null;
 			lilvSett.prepaymentSetting = [];
 		}
 		this.setState({
@@ -404,26 +436,13 @@ export default class addOne extends BaseCondition {
 					items={this.state.value.prepaymentSetting}
 					addItem={this.addNewItem.bind(this, 'prepaymentSetting')}
 					removeItem={this.removeItem.bind(this, 'prepaymentSetting')}
+					boolean= {this.state.boolean}
+					onChangeBoolean={this.onChangeBoolean}
 				/>
 			</div>
 		)
 	};
-	//不提前还款
-	tiQianFalse = () => {
-		let tiQianData = this.state.value;
-		tiQianData.prepaymentAmountMin = '';
-		tiQianData.prepaymentPeriodsLimit = '';
-		tiQianData.penaltyBasicAmount = '';
-		tiQianData.penaltyCalculationType = '';
-		tiQianData.prepaymentSetting = [];
-
-		this.setState({
-			tiQianData
-		})
-		return ''
-		//prepaymentAmountMin 最小还款金额  prepaymentPeriodsLimit 最小提前还款期数  penaltyBasicAmount 违约金计算基础  penaltyCalculationType 违约金计算方式
-		//  prepaymentSetting 还款方式
-	}
+	
 	//贷款期限不允许变更时其他不可被选
 	loanTermChange = (data) => {
 		data.map((item, i) => {
@@ -505,6 +524,19 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('申请金额不能小于0')
 		}
+		if(min.principalAmountMax){
+			if (Number(value) > min.principalAmountMax) {
+				callback('必须小于后者')
+			}
+		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 	principalAmountMaxChange = (rule, value, callback) => {
@@ -520,6 +552,14 @@ export default class addOne extends BaseCondition {
 		if (Number(value) < min.principalAmountMin) {
 			callback('必须大于前者')
 		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 
@@ -533,7 +573,11 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('期限范围不能小于0')
 		}
-
+		if(min.loanTermRangeMax){
+			if (Number(value) > min.loanTermRangeMax) {
+				callback('必须小于后者')
+			}
+		}
 		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
 		if (b) {
@@ -570,9 +614,24 @@ export default class addOne extends BaseCondition {
 			return;
 		}
 		if (value < 0) {
-			callback('比率范围0～100内')
+			callback('贷款比率必须大于0')
 		}
-
+		if( value >= 1000){
+			callback('贷款比率不能大于1000')
+		}
+		if(min.loanPercentageMax){
+			if (Number(value) > min.loanPercentageMax) {
+				callback('必须小于后者')
+			}
+		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 	loanPercentageMaxChange = (rule, value, callback) => {
@@ -581,11 +640,23 @@ export default class addOne extends BaseCondition {
 			callback('贷款比率必填');
 			return;
 		}
-		if (value < 0 || value > 100) {
-			callback('比率范围0～100内')
+		if (value < 0 ) {
+			callback('贷款比率必选大于0')
+		}
+		if( value >= 1000){
+			callback('贷款比率不能大于1000')
 		}
 		if (Number(value) < min.loanPercentageMin) {
 			callback('必须大于前者')
+		}
+
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
 		}
 		callback();
 	}
@@ -615,7 +686,7 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('最早提前还款期数小于0');
 		}
-		if (value > 10000) {
+		if (value >= 10000) {
 			callback('还款期数不能超过10000')
 		}
 		var regex = /^\d+\.\d+$/;
@@ -628,12 +699,21 @@ export default class addOne extends BaseCondition {
 
 	//执行年利率
 	interestRatesRangeMinChange = (rule, value, callback) => {
+		let min = this.state.value
 		if (rule.required && !value) {
 			callback('执行年利率必填');
 			return;
 		}
-		if (value < 0 || value > 100) {
-			callback('利率范围0～100内');
+		if (value < 0  ) {
+			callback('利率范围必须大于0');
+		}
+		if(value >= 1000){
+			callback('利率范围不能大于1000');
+		}
+		if(min.interestRatesRangeMax){
+			if (Number(value) > min.interestRatesRangeMax) {
+				callback('必须小于后者');
+			}
 		}
 		//保留两位小数
 		var dot = value.indexOf(".");
@@ -652,8 +732,11 @@ export default class addOne extends BaseCondition {
 			callback('执行年利率必填');
 			return;
 		}
-		if (value < 0 || value > 100) {
-			callback('利率范围0～100内');
+		if (value < 0  ) {
+			callback('利率范围必须大于0');
+		}
+		if(value >= 1000){
+			callback('利率范围不能大于1000');
 		}
 		if (Number(value) < allValues.interestRatesRangeMin) {
 			callback('必须大于前者');
@@ -676,7 +759,9 @@ export default class addOne extends BaseCondition {
 
 		this.setState({ value });
 	}
+	
 	render() {
+		let {actions} = this.props;
 		let data = this.props.prodActions || {}
 		let fileData = this.props.fileData || {}
 		fileData = fileData.data || {}
@@ -843,9 +928,9 @@ export default class addOne extends BaseCondition {
 													style={styles.filterTool}
 													className="custom-select"
 												>
-													<Option value="1">生效</Option>
-													<Option value="0">关闭</Option>
-													<Option value="2">失效</Option>
+													<Option value={'1'.toString()}>生效</Option>
+													<Option value={'0'.toString()}>关闭</Option>
+													{/* <Option value={'2'.toString()}>失效</Option> */}
 												</Select>
 											</IceFormBinder>
 											<div><IceFormError name="status" /></div>
@@ -1062,6 +1147,8 @@ export default class addOne extends BaseCondition {
 									items={this.state.value.percentageSetting}
 									addItem={this.addNewItem.bind(this, 'percentageSetting')}
 									removeItem={this.removeItem.bind(this, 'percentageSetting')}
+									boolean= {this.state.boolean}
+									onChangeBoolean={this.onChangeBoolean}
 								/>
 							</div>
 
@@ -1195,6 +1282,9 @@ export default class addOne extends BaseCondition {
 									items={this.state.value.ratesSetting}
 									addItem={this.addNewItem.bind(this, 'ratesSetting')}
 									removeItem={this.removeItem.bind(this, 'ratesSetting')}
+									boolean= {this.state.boolean}
+									onChangeBoolean={this.onChangeBoolean}
+									getProdeuctAgency={actions.getProdeuctAgency}
 								/>
 							</div>
 							<legend className="pch-legend">
@@ -1305,6 +1395,8 @@ export default class addOne extends BaseCondition {
 									data={data}
 									addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
 									removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
+									boolean= {this.state.boolean}
+									onChangeBoolean={this.onChangeBoolean}
 								/>
 								<Row wrap>
 									<Col xxs={24} xs={12} l={8} >
@@ -1325,7 +1417,7 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : this.tiQianFalse}
+								{this.state.value.isEarlyRepaymentAllowed == 'true' ? this.tiQian(data) : ''}
 
 								<div className="next-btn-box">
 									<Button type="secondary" size="large" onClick={this.submit}>下一步</Button>

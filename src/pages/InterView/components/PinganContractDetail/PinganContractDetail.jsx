@@ -336,6 +336,16 @@ export default class PinganContractDetail extends BaseComponent {
 
               </Row>
             </Form>
+            {
+              formData.signedDocumentUR && formData.signedDocumentUR != '' ?
+                (
+                  <div className='file'>
+                    <a href={formData.signedDocumentUR} target='_blank'>查看贷签名文件</a>
+                  </div>
+                ) : (
+                  <span></span>
+                )
+            }
           </div>
         </IceFormBinderWrapper>
       </IceContainer>

@@ -12,7 +12,13 @@ export default {
     path: 'detail/:type/:id',
     name: '面签详情',
     component: InterView.InterViewDetail,
-  }],
+  },
+    {
+      path: 'interViewOnly',
+      name: '信用卡面签列表',
+      component: InterView.InterViewOnly,
+    }
+  ],
   component: Layout,
   indexRoute: {
     component: InterView.InterView,
