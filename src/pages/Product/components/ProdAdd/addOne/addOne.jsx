@@ -913,7 +913,7 @@ export default class addOne extends BaseCondition {
 												>
 													<Option value={'1'.toString()}>生效</Option>
 													<Option value={'0'.toString()}>关闭</Option>
-													<Option value={'2'.toString()}>失效</Option>
+													{/* <Option value={'2'.toString()}>失效</Option> */}
 												</Select>
 											</IceFormBinder>
 											<div><IceFormError name="status" /></div>
