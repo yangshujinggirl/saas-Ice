@@ -529,6 +529,14 @@ export default class addOne extends BaseCondition {
 				callback('必须小于后者')
 			}
 		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 	principalAmountMaxChange = (rule, value, callback) => {
@@ -543,6 +551,14 @@ export default class addOne extends BaseCondition {
 		}
 		if (Number(value) < min.principalAmountMin) {
 			callback('必须大于前者')
+		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
 		}
 		callback();
 	}
@@ -743,6 +759,7 @@ export default class addOne extends BaseCondition {
 
 		this.setState({ value });
 	}
+	
 	render() {
 		let {actions} = this.props;
 		let data = this.props.prodActions || {}
