@@ -131,10 +131,7 @@ export default class FormRender extends Component {
     var disabled;
     // console.log(el)
     if (el.type == 'STRING') {
-      if (el.name == 'borrowerName') {
-        console.log(el.value);
-      }
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -150,7 +147,7 @@ export default class FormRender extends Component {
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.name == 'car.id') {
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
@@ -215,7 +212,7 @@ export default class FormRender extends Component {
       );
     }
     else if (el.type == 'DECIMAL') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.minValue || el.maxValue) {
         return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
@@ -227,7 +224,7 @@ export default class FormRender extends Component {
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
-                initValue: el.value ? parseFloat(el.value) : null,
+                initValue: el.value ? parseFloat(el.value) : '',
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
                 ],
@@ -253,17 +250,37 @@ export default class FormRender extends Component {
       );
     }
     else if (el.type == 'INT' || el.type == 'LONG') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      if (el.minValue || el.maxValue) {
+        return (
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}>
+            <NumberPicker
+              step={0.01}
+              disabled={el.isReadonly}
+              // defaultValue={el.value ? parseInt(el.value) : el.value}
+              min={el.minValue}
+              max={el.maxValue}
+              {...init(el.name, {
+                initValue: el.value ? parseFloat(el.value) : '',
+                rules: [
+                  { required: el.isRequired, message: el.label + '不能为空' },
+                ],
+              })}
+            />
+          </FormItem>
+        );
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <NumberPicker
+          <Input
+            htmlType="number"
+            placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
             // defaultValue={el.value ? parseInt(el.value) : el.value}
-            min={el.minValue}
-            max={el.maxValue}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : null,
+              initValue: el.value ? parseInt(el.value) : '' ,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
               ],
@@ -334,7 +351,7 @@ export default class FormRender extends Component {
       return (Fields);
     } else if (el.type == 'CHECKBOX') {
       // console.log(el.value)
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       var str = el.value;
       if (str && str.indexOf(',') >= 0) {
         el.value = str.split(',');
@@ -395,6 +412,13 @@ export default class FormRender extends Component {
       );
     }
   };
+  checkNum(rule, value, callback) {
+    console.log(rule)
+    var ex = /^[0-9]\d*$/;
+    if (!ex.test(value)) {
+      callback(new Error("请填写正整数"));
+    }
+  }
   //改变value
   onChange = (value, option) => {
     // console.log(value)
