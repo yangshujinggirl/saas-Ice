@@ -82,17 +82,20 @@ class FormModule extends BaseApp {
     }
 
     html = html.replace(/_{3,}|\*{6}/g, (s, pos)=>{
-      let i = 0, val = '', productName;
+      let i = 0, val = '', productName, temp;
       if(s.indexOf("_") > -1){
         i = kindex++;
       }else{
         productName = this.props.productNames.length > 0 && this.props.productNames.find(p=>p.name == keyVales[keyValesIndex][1]);
         val = productName && productName.label || keyVales[keyValesIndex][2] || '';
+        temp = productName && productName.name || keyVales[keyValesIndex][1] || '';
         val = val == 'null' ? '' : val;
         i = keyValesIndex++
       }
+      let dataValue = `productname${i}c${this.props.contractid}`;
+      if(temp)dataValue = temp;
       return `<span class='product-name-select'>
-                <input class='select-input' name='productname${i}c${this.props.contractid}' data-value='productname${i}c${this.props.contractid}' placeholder='请选择' data-parent='product-name-select' value='${val}'>
+                <input class='select-input' name='productname${i}c${this.props.contractid}' data-value='${dataValue}' placeholder='请选择' data-parent='product-name-select' value='${val}'>
                 <i class='arrow' data-parent='product-name-select'></i>
               </span>`
     })
