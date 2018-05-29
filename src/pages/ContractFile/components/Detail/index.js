@@ -25,11 +25,9 @@ class Detail extends BaseApp {
     this.getTemplateList(this.props.params.id)
   }
   getTemplateList(id) {
-    debugger
     Req.contractDetailApi(id)
     .then((res) => {
       const { code, data, msg } =res;
-      debugger
       if( code !=200 ) {
         if( code == '1000063' ) {
           this.setState({
