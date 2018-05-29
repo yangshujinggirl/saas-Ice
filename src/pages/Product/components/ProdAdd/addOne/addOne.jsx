@@ -759,6 +759,7 @@ export default class addOne extends BaseCondition {
 
 		this.setState({ value });
 	}
+	
 	render() {
 		let {actions} = this.props;
 		let data = this.props.prodActions || {}
