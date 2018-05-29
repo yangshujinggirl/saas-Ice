@@ -3,6 +3,7 @@ import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
   path: "/reviewApprove/:typeId",
+  name:'审查审批',
   childRoutes: [{
     path: 'add',
     component: ReviewApprove.ReviewApproveForm
@@ -17,6 +18,6 @@ export default {
   component: Layout,
   indexRoute: {
     component: ReviewApprove.ReviewApprove,
-    name:'进件审查审批'
+    name:'进件审核'
   }
 }

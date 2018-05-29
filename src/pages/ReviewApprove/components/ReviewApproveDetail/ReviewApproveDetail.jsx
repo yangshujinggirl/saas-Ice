@@ -147,8 +147,7 @@ export default class ReviewApproveDetail extends Component {
       }
       // console.log("Submit!!!");
       for (var key in values) {
-        if (values[key] != undefined) {
-          if (values[key] != 'undefined') {
+        if (values[key] != undefined || values[key] != 'undefined') {
             if (this.isCheckBox(key)) {
               // console.log("多选")
               // console.log(values[key])
@@ -158,8 +157,8 @@ export default class ReviewApproveDetail extends Component {
               }
             }
             this.queryCache[key] = values[key];
-          }
         }
+        this.queryCache[key] ='';
       }
       console.log(this.props.detail.list);
       // var _josn ={}

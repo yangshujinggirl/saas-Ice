@@ -64,10 +64,7 @@ class ReviewApproveColumn extends BaseColumn {
                     </a>
                   </div>
                 )
-                : (<span></span>)
-            }
-            {
-              record.status && record.status == 'CLAIM' ?
+                : record.status && record.status == 'CLAIM' ?
                 (<div className="pch-table-operation">
                     <a href="javascript:;"
                        onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>

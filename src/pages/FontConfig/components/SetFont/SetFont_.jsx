@@ -322,6 +322,7 @@ export default class setFont extends Component {
         selectedFields.map(item => {
             item.fields.map((sitem) => {
                 if(sitem.checked){
+                    sitem.fieldset = resData.fieldset[index].name;
                     sitem.step = step;
                     checkedFields.push(sitem);
                 }
