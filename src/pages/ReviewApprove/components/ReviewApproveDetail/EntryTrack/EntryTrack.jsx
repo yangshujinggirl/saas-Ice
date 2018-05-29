@@ -93,7 +93,7 @@ export default class EntryTrack extends Component {
                   </div>
 
                   <div className="content">
-                    <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b>（{item.operatorNum}）</p>
+                    <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b></p>
                   </div>
 
                   <div className="content">

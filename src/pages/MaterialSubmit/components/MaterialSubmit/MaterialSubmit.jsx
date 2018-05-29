@@ -146,12 +146,12 @@ class MaterialSubmit extends BaseComponent {
           this.currentId++;
         }
         if (this.isImg(item.imgURL)) {
-          // item.size = item.originFileObj.size;
-          // item.downloadURL = item.imgURL;
+          item.size = item.originFileObj.size;
+          item.downloadURL = item.imgURL;
           item.fileURL = item.imgURL;
         } else {
-          // item.size = item.originFileObj.size;
-          // item.downloadURL = item.imgURL;
+          item.size = item.originFileObj.size;
+          item.downloadURL = item.imgURL;
           item.fileURL = item.imgURL;
           item.imgURL = '/public/images/creditInformation/filed.png';
         }
@@ -312,13 +312,12 @@ class MaterialSubmit extends BaseComponent {
         citem.downloadUrl = dataSource[j][key];
       });
     });
-    Req.saveMaterial(this.props.params.id, originData)
-      .then((res) => {
-        if (res && res.code == 200) {
-          Toast.success('保存成功，请提交～')
-        }
-      });
-    ;
+    // Req.saveMaterial(this.props.params.id, originData)
+    //   .then((res) => {
+    //     if (res && res.code == 200) {
+    //       Toast.success('保存成功，请提交～')
+    //     }
+    //   });
   };
 
   render() {
