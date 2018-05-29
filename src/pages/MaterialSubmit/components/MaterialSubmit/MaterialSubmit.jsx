@@ -331,7 +331,7 @@ class MaterialSubmit extends BaseComponent {
         <Title title="材料提交"/>
         <div className="pch-form material-files-form">
           <div className="material-files-upload">
-            <Upload
+            <DragUpload
               {...this.UPLOAD_CONFIG}
               className='material-files-upload-upload'
               fileList={fileList}
@@ -346,7 +346,7 @@ class MaterialSubmit extends BaseComponent {
                   将文件拖到此处，或<em>点击上传</em>
                 </p>
               </div>
-            </Upload>
+            </DragUpload>
           </div>
           <div className="material-files">
             {fileList.map((item, idx) => {
