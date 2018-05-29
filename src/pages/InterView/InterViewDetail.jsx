@@ -50,7 +50,7 @@ export default class Demo extends Component {
           });
 
       } else if (type == 'loan') {
-        actions.getDetail(id);
+        this.props.actions.getDetail(id);
       }
 
     }
