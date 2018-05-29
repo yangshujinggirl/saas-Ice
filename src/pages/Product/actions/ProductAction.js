@@ -353,3 +353,19 @@ export const getContractTemplateList = (condition)=>{
     })
   }
 }
+
+//渠道
+export const getProdeuctAgency=(condition)=>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getProdeuctAgency(condition).then((res) => {
+      if (!res || res.code != 200) return;
+      dispatch(fetchSuccess({ AgencyData: res.data }))
+
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}

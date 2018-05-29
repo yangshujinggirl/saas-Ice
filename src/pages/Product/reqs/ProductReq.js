@@ -253,6 +253,18 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
+
+  //渠道
+  getProdeuctAgency(condition){
+    let options = {
+      url: this._config.LOAN_HOST + `/product/agency`,
+      // url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      // params:condition
+    }
+    return super.fetchData(options);
+  }
 }
 
 
