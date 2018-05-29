@@ -111,6 +111,7 @@ class EntryQueryReq extends CurdReq{
     let options = {
       url: this._config.LOAN_HOST + `/loans/${data.id}/screen`,
       method: 'Get',
+      params:data,
       contentType: 'application/json'
     }
     return super.fetchData(options);

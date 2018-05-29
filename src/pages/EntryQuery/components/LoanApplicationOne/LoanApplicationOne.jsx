@@ -321,7 +321,8 @@ class LoanApplicationOne extends Component {
       var { filedList = {} } = this.state;
       // console.log(filedList);
       // console.log(!this.isEmptyObject(filedList));
-      list = !this.isEmptyObject(filedList) ? this.takeFixedField(filedList.list) : [];
+      list = !this.isEmptyObject(filedList) ? filedList.list : [];
+      // list = filedList.list;
     } else {
       var { list = [] } = this.props.fieldList || [];
     }

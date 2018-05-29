@@ -5,13 +5,13 @@ import { BaseApp } from 'base';
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 
-import './InterView.scss';
+import './InterViewOnly.scss';
 
 import Req from '../../reqs/InterViewReq';
 import { Feedback } from '@icedesign/base/index';
 
 const Toast = Feedback.toast;
-export default class InterView extends BaseApp {
+export default class InterViewOnly extends BaseApp {
   constructor(props) {
     super(props);
   }

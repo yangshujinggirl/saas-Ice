@@ -1,3 +1,3 @@
-import InterView from './InterView';
+import InterViewOnly from './InterViewOnly';
 
-export default InterView;
+export default InterViewOnly;
