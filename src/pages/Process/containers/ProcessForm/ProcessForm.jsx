@@ -242,13 +242,19 @@ export default class ProcessForm extends Component {
                 Feedback.toast.error('流程需要由两个或两个以上系统模块组成');
                 return;
             }
-            // 
+            //
             // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
             values.status = 1;
             values.processType = 'LOAN';
             if(this.props.params.id){
-                values.id = this.props.params.id;
+                //复制，提交调保存接口
+                if(this.props.params.copy) {
+                  values.status = 0;
+                } else {
+                  values.id = this.props.params.id;
+                }
             }
+
             this.props.actions.save(values);
         });
     }
@@ -284,7 +290,7 @@ export default class ProcessForm extends Component {
 
         let idx = formData.taskItems.indexOf(item);
         let step = this.getStepFromData(formData.taskItems, idx);//当前的进件属于第几步
-        
+
         switch (view) {
             case PROCESS_VIEW.VIEWFIELD : {
                 // 查看必要字段
@@ -443,7 +449,7 @@ export default class ProcessForm extends Component {
 
         return result.join(',');
     }
-    
+
     /**
      * 渲染
      */
