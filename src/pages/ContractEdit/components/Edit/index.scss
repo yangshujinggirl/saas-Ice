@@ -3,7 +3,7 @@
     width: 80%;
     margin: 0 auto;
   }
-  .contract-edit-bottom-div{
+  .contract-edit-bottom-div {
     text-align: center;
     padding: 20px 0;
     button {
@@ -15,7 +15,7 @@
       border-color: #DCDEE3;
     }
   }
-  .input-disabled{
+  .input-disabled {
     border: 0px;
     border-bottom: 1px solid;
     text-align: center;
@@ -24,6 +24,11 @@
     text-align: center;
     margin: 30px 0px;
     font-weight: 500;
+    font-size: 16px;
+  }
+  .no-data-title {
+    margin: 40px 0px;
+    text-align: center;
     font-size: 16px;
   }
 }
