@@ -16,6 +16,7 @@ class Detail extends BaseApp {
       lastDisabled:true,
       nextDisabled:true,
       templateData:[],
+      contractContent:'',//html
       currentIndex:0,
     }
   }
@@ -53,12 +54,13 @@ class Detail extends BaseApp {
       nextDisabled,
       templateData
     })
+    this.initHtml(templateData[this.state.currentIndex].contractContent);
   }
 
 
   //上一份
   lastContract() {
-    let { currentIndex } =this.state;
+    let { currentIndex, templateData } =this.state;
     let lastDisabled;
     currentIndex--;
     if(currentIndex == 0) {
@@ -71,6 +73,7 @@ class Detail extends BaseApp {
       lastDisabled,
       nextDisabled:false
     })
+    this.initHtml(templateData[currentIndex].contractContent);
   }
   //下一份
   firstContract() {
@@ -87,6 +90,7 @@ class Detail extends BaseApp {
       lastDisabled:false,
       nextDisabled
     })
+    this.initHtml(templateData[currentIndex].contractContent);
   }
   //返回
   returnBack() {
@@ -94,39 +98,35 @@ class Detail extends BaseApp {
   }
   //打印
   printContract() {
-    window.print()
+    Web.ExecWB(8,1) //打印页面设置
+    // window.print()
   }
-  initHtml(content) {
+  initHtml(contractContent) {
     let regex = /_BLANK_([^]*?)_BLANK_/ig;
 
-    content = content.replace(regex,(s,value)=> {
+    contractContent = contractContent.replace(regex,(s,value)=> {
       let keyValues = value.split('_');
       keyValues[1] = keyValues[1] === 'null' ? '___' : keyValues[1];
       let val = keyValues[1];
       return `<span className="value-styles">${val}</span>`
     })
 
-    return content
+    this.setState({
+      contractContent
+    })
 
   }
   render() {
-    const { templateData, currentIndex } = this.state;
+    const { templateData, currentIndex, contractContent } = this.state;
     const { lastDisabled ,nextDisabled } = this.state;
-    const Module = () =>{
-      if(templateData.length>0) {
-        let contractent = templateData[currentIndex].content;
-        return this.initHtml(contractent)
-      } else {
-        return;
-      }
-    }
+
     return(
       <IceContainer className="pch-container contract-file-pages">
           <Title title="合同归档详情" />
           <div id="section-to-print" className="main-content">
             <h2 className="contract-title">{templateData.length>0 && templateData[currentIndex].templateName}</h2>
             <div dangerouslySetInnerHTML={{
-              __html:Module()
+              __html:contractContent
             }} />
           </div>
           <div className="handle-btn-list-wrap">
