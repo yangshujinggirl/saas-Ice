@@ -1,4 +1,5 @@
 import InterView from './InterView'
+import InterViewOnly from './InterViewOnly'
 import InterViewForm from './InterViewForm'
 import InterViewDetail from './InterViewDetail'
 import { connect } from 'react-redux'
@@ -21,6 +22,11 @@ let InterViewObj = connect(
     mapDispatchToProps
 )(InterView);
 
+let InterViewOnlyObj = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(InterViewOnly);
+
 let InterViewFormObj = connect(
     mapStateToProps,
     mapDispatchToProps
@@ -33,6 +39,7 @@ let InterViewDetailObj = connect(
 
 export default {
 	InterView: InterViewObj,
+  InterViewOnly: InterViewOnlyObj,
 	InterViewForm: InterViewFormObj,
 	InterViewDetail: InterViewDetailObj
 }

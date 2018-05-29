@@ -145,21 +145,26 @@ export default class ReviewApproveDetail extends Component {
         console.log('Errors in form!!!');
         return;
       }
-      // console.log("Submit!!!");
+      console.log("Submit!!!");
+      console.log(values);
       for (var key in values) {
-        if (values[key] != undefined || values[key] != 'undefined') {
+        if (values[key] != undefined) {
+          if (values[key] != 'undefined') {
             if (this.isCheckBox(key)) {
-              // console.log("多选")
-              // console.log(values[key])
+              console.log('多选');
+              console.log(values[key]);
               // alert("123")
               if (typeof (values[key]) == 'object') {
                 values[key] = values[key].join(',');
               }
             }
             this.queryCache[key] = values[key];
+          }
+        }else{
+          this.queryCache[key] = null;
         }
-        this.queryCache[key] ='';
       }
+      console.log(this.queryCache)
       console.log(this.props.detail.list);
       // var _josn ={}
       // this.props.detail.list.map(item=>{
