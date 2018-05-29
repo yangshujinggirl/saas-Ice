@@ -67,7 +67,7 @@ class Filter extends BaseCondition {
                   <Col {...this.colspans}>
                     <FormItem {...this.formItemLayout} label="产品类型:">
                       <IceFormBinder name="productType">
-                        <Select size="large">
+                        <Select size="large" hasClear={true}>
                           {
                             typeDataSource.length>0 &&
                             typeDataSource.map((el,index) => (
