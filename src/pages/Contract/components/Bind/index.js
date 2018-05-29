@@ -126,17 +126,17 @@ class Bind extends BaseApp {
     this.getProductName(dataSourceRight.map(p=>p.id))
   }
   onChange =(selectedRowKeys,records)=> {
-   let selectedRow=[];
-   selectedRow = records.map((ele) => (
-     {
-       productCategory: ele.productType,
-       productName: ele.name,
-       id: ele.id
-     }
-   ));
-   this.setState({
-     selectedRow
-   })
+     records = records.map((ele) => (
+       {
+         productCategory: ele.productType,
+         productName: ele.name,
+         id: ele.id
+       }
+     ));
+     let selectedRow=[...this.state.selectedRow,...records];
+     this.setState({
+       selectedRow
+     })
   }
   // 保存绑定字段到合同模版
   bindProductName(){
@@ -208,7 +208,6 @@ class Bind extends BaseApp {
                 <div className="change-product">
                   <div className="product-list">
                     <Table
-                      primaryKey="id"
                       dataSource={list}
                       rowSelection={{ onChange: this.onChange }}>
                       <Table.Column title="产品类型" dataIndex="productType" />
