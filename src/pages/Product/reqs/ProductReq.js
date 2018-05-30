@@ -66,7 +66,20 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-  //产品提交第三步保存
+
+  //产品权限编辑
+  saveProductAuth(data,id){
+    var url = this._config.LOAN_HOST + `/product/${id}/scope`;
+    let options = {
+      url: url,
+      method: 'POST',
+      data: data,
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
+
+  //产品提交addThree保存
   saveProductAdd( productId,data,processDefId) {
     console.log(data)
     var url = this._config.WF_HOST + `/processes/product/${processDefId}/loan`;
@@ -261,6 +274,19 @@ class ProductReq extends CurdReq {
       // url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/test',
       method: 'get',
       contentType: 'application/x-www-form-urlencoded',
+      // params:condition
+    }
+    return super.fetchData(options);
+  }
+
+
+  //权限编辑机构／角色
+  getPrivilegeOrgs(){
+    let options = {
+      url:this._config.WF_HOST + '/processes/privilege/orgs',
+      // url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/processes/privilege/orgs',
+      contentType: 'application/x-www-form-urlencoded',
+      method:'GET',
       // params:condition
     }
     return super.fetchData(options);

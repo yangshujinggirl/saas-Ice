@@ -1,0 +1,60 @@
+.edit-permission-dialog-content {
+  padding: 30px 15px 40px;
+  .table-list {
+    width: 100%;
+    text-align: center;
+  }
+  .btn-wrap,
+  .part-l,
+  .part-r {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .part-l {
+    text-align: left;
+    width: 40%;
+  }
+  .btn-wrap {
+    width: 20%;
+    .add-btn {
+      width: 50px;
+      color: #E5B67A ;
+    }
+  }
+  .part-r {
+    text-align: left;
+    vertical-align: top;
+    width: 40%;
+  }
+  .center{
+    font-family: PingFangSC-Medium;
+    font-size: 14px;
+    color: #1B2630;
+    letter-spacing: 0;
+    margin-top:25px;
+    margin-bottom: 10px;
+  }
+}
+.edit-permission-dialog-wrap {
+  width: 80%;
+  .permission-btn-list {
+    text-align: center;
+    .submit-btn,
+    .cancel-btn {
+      width: 70px;
+      height: 30px;
+      line-height: 30px;
+    }
+    .submit-btn {
+      background: #FC9E25;
+      border-color: #FC9E25;
+      color: #fff;
+    }
+  }
+}
+.buttonsSure,.buttonsBack{
+  border-radius: 4px !important;
+}
+.buttonsSure {
+  margin-right: 50px;
+}

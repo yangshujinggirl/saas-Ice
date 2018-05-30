@@ -25,13 +25,13 @@ export default {
       name: '产品新增',
       component: Product.AddTwo
     }, {
+      path: 'process/:id',
+      name: '权限编辑',
+      component: Product.ProcessProduct
+    }, {
       path: 'addthree/:id',
       name: '产品新增',
       component: Product.AddThree
-    },{
-      path: 'addprocess/:id',
-      name: '流程配置',
-      component: Product.AddProcess
     },{
       path: 'filelist',
       name: '材料查询',

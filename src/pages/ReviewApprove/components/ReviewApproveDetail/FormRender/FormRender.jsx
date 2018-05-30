@@ -153,6 +153,12 @@ export default class FormRender extends Component {
     }
     return isReadonly;
   }
+  checkNum(rule, value, callback) {
+    var ex = /^[0-9]\d*$/;
+    if (!ex.test(value)) {
+      callback(new Error("请填写正整数"));
+    }
+  }
 
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
@@ -285,17 +291,20 @@ export default class FormRender extends Component {
     else if (el.type == 'INT' || el.type == 'LONG') {
       el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
-        <FormItem key={el.name} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
-          <NumberPicker
+          <Input
+            htmlType="number"
+            placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
             // defaultValue={el.value ? parseInt(el.value) : el.value}
             min={el.minValue}
             max={el.maxValue}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : '',
+              initValue: el.value ? parseInt(el.value) : '' ,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
+                { validator: this.checkNum }
               ],
             })}
           />

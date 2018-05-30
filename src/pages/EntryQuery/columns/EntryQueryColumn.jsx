@@ -114,7 +114,7 @@ class EntryQueryColumn extends BaseColumn {
                 : (<span></span>)
             }
             {
-              record.status && record.status != 'DRAFT' &&   record.status != 'RETURNED'?
+              record.status && record.status != 'DRAFT' &&   record.status != 'RETURNED'&&   record.status != 'MAKEUP'?
 
                 (
                   <div className="pch-table-operation">

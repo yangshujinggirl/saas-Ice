@@ -578,6 +578,9 @@ export default class addOne extends BaseCondition {
 				callback('必须小于后者')
 			}
 		}
+		if( value >= 100000){
+			callback('期限不能超出五位')
+		}
 		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
 		if (b) {
@@ -598,6 +601,9 @@ export default class addOne extends BaseCondition {
 		if (Number(value) < min.loanTermRangeMin) {
 			callback('必须大于前者')
 		}
+		if( value >= 100000){
+			callback('期限不能超出五位')
+		}
 		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
 		if (b) {
@@ -617,7 +623,7 @@ export default class addOne extends BaseCondition {
 			callback('贷款比率必须大于0')
 		}
 		if( value >= 1000){
-			callback('贷款比率不能大于1000')
+			callback('比率不能大于1000')
 		}
 		if(min.loanPercentageMax){
 			if (Number(value) > min.loanPercentageMax) {
@@ -644,7 +650,7 @@ export default class addOne extends BaseCondition {
 			callback('贷款比率必选大于0')
 		}
 		if( value >= 1000){
-			callback('贷款比率不能大于1000')
+			callback('比率不能大于1000')
 		}
 		if (Number(value) < min.loanPercentageMin) {
 			callback('必须大于前者')
@@ -669,6 +675,14 @@ export default class addOne extends BaseCondition {
 		}
 		if (value < 0) {
 			callback('最小提前还款金额不能小于0');
+		}
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
 		}
 		callback();
 	}
@@ -708,7 +722,7 @@ export default class addOne extends BaseCondition {
 			callback('利率范围必须大于0');
 		}
 		if(value >= 1000){
-			callback('利率范围不能大于1000');
+			callback('利率不能大于1000');
 		}
 		if(min.interestRatesRangeMax){
 			if (Number(value) > min.interestRatesRangeMax) {
@@ -736,7 +750,7 @@ export default class addOne extends BaseCondition {
 			callback('利率范围必须大于0');
 		}
 		if(value >= 1000){
-			callback('利率范围不能大于1000');
+			callback('利率不能大于1000');
 		}
 		if (Number(value) < allValues.interestRatesRangeMin) {
 			callback('必须大于前者');
