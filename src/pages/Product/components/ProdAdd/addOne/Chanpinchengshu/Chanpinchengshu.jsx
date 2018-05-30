@@ -79,6 +79,11 @@ export default class Chanpinchengshu extends Component {
 				callback('不能大于或等于后者');
 			}
 		}
+		var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('最小期限不能是小数')
+		}
 		for (var i = 0; i < items.length - 1; i++) {
 			for (var j = i + 1; j < items.length; j++) {
 				if ((items[i].loanTermRangeMin == items[j].loanTermRangeMin) && (items[i].loanTermRangeMax == items[j].loanTermRangeMax)) {
@@ -111,12 +116,22 @@ export default class Chanpinchengshu extends Component {
 		if (value < 0 ) {
 			callback('最大成数必须大于0')
 		}
+		if (value >= 1000 ) {
+			callback('最大成数不能大于1000')
+		}
 		if(min){
 			if(value <= min ){
 				callback('不能小于或等于前者')
 			}
 		}
-		
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 
@@ -133,12 +148,22 @@ export default class Chanpinchengshu extends Component {
 		if (value < 0) {
 			callback('最小成数范围0～100内')
 		}
+		if (value >= 1000 ) {
+			callback('最小成数不能大于1000')
+		}
 		if(max){
 			if(Number(value) >= max){
 				callback('不能大于或等于后者')
 			}
 		}
-		
+		//保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 		callback();
 	}
 
@@ -159,6 +184,11 @@ export default class Chanpinchengshu extends Component {
 			if(value <= min){
 				callback('不能小于或等于前者');
 			}
+		}
+		var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('最小期限不能是小数')
 		}
 		for (var i = 0; i < items.length - 1; i++) {
 			for (var j = i + 1; j < items.length; j++) {

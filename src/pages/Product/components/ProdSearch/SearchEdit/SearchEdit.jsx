@@ -230,6 +230,7 @@ export default class SearchEdit extends Component {
                                 </div>
                             </Row>
                         </Form>
+                        <div className="searchedit-history">产品历史版本</div>
                         <Table dataSource={dataSource} isLoading={this.state.isLoading} sort={{
                             id: '=desc'
                         }}>

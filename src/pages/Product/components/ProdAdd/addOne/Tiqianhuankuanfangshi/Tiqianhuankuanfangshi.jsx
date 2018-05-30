@@ -81,6 +81,11 @@ export default class TIqianhuankanfangshi extends Component {
         callback('不能大于或等于后者')
       }
     }
+    var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('最小期限不能是小数')
+		}
     for (var i = 0; i < items.length - 1; i++) {
       for (var j = i + 1; j < items.length; j++) {
         if ((items[i].loanTermMin == items[j].loanTermMin) && (items[i].loanTermMax == items[j].loanTermMax)) {
@@ -115,6 +120,11 @@ export default class TIqianhuankanfangshi extends Component {
         callback('不能小于或等于前者')
       }
     }
+    var regex = /^\d+\.\d+$/;
+		var b = regex.test(value);
+		if (b) {
+			callback('最大期限不能是小数')
+		}
     for (var i = 0; i < items.length - 1; i++) {
       for (var j = i + 1; j < items.length; j++) {
         if ((items[i].loanTermMin == items[j].loanTermMin) && (items[i].loanTermMax == items[j].loanTermMax)) {
