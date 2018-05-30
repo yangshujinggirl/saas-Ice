@@ -65,6 +65,7 @@ export default class ApprovalBox extends Component {
         });
         return;
       }
+      console.log(233333)
       this.props.submit(e,values);
     });
   }
@@ -97,15 +98,15 @@ export default class ApprovalBox extends Component {
             </Select>
           </FormItem>
           <FormItem  className='item' label="审查意见:"
-                     {...formItemLayout}>
-            <Input  multiple
-                    className="text"
-                    maxLength={500}
-                    placeholder="请填写审查意见"
-                    {...init('approveMsg', {
-                      rules: [{ required:  false, message: "审查意见" }]
-                    })}/>
-          </FormItem>
+                                {...formItemLayout}>
+          <Input  multiple
+                  className="text"
+                  maxLength={500}
+                  placeholder="请填写审查意见"
+                  {...init('approveMsg', {
+                    rules: [{ required:  false, message: "审查意见" }]
+                  })}/>
+        </FormItem>
           <FormItem  className='item' label=""
                      {...formItemLayout}>
             <button onClick={this.submit.bind(this)}>提交</button>

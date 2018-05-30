@@ -153,6 +153,7 @@ export default class FormRender extends Component {
     }
     return isReadonly;
   }
+
   checkNum(rule, value, callback) {
     var ex = /^[0-9]\d*$/;
     if (!ex.test(value)) {
@@ -303,8 +304,7 @@ export default class FormRender extends Component {
             {...init(el.name, {
               initValue: el.value ? parseInt(el.value) : '' ,
               rules: [
-                { required: el.isRequired, message: el.label + '不能为空' },
-                { validator: this.checkNum }
+                { required: el.isRequired, message: el.label + '不能为空' }
               ],
             })}
           />
