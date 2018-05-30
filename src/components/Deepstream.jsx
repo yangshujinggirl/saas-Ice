@@ -45,7 +45,7 @@ export default class Deepstream extends Component {
             })
         })
     }
-    componentWillReceiveProps(nextProps) { 
+    componentWillReceiveProps(nextProps) {
         this.setState({
             music: this.props.musicState
         })
@@ -148,7 +148,7 @@ export default class Deepstream extends Component {
             })
             // 展示详情
             this.props.interviewDetail(loanId,type)
-            // document.querySelector("#audio").pause();   
+            // document.querySelector("#audio").pause();
         })
     }
 
@@ -156,7 +156,7 @@ export default class Deepstream extends Component {
         let { dataList, listNum, interviewState, music } = this.state, interview, video,listening = <span>&#xe67e;</span>;
         // console.log("datalist:", dataList)
         console.log("music:",music)
-        
+
         switch (interviewState) {
             case 1:
                 interview = <span>&#xe67f;</span>
@@ -166,38 +166,41 @@ export default class Deepstream extends Component {
                 break;
         }
         if (music&&listNum) {
-            video = <audio src = 'https://lx-static.cn-bj.ufileos.com/lib/audio/interview-mp3.mp3' autoPlay loop id='audio'></audio>    
+            video = <audio src = 'https://lx-static.cn-bj.ufileos.com/lib/audio/interview-mp3.mp3' autoPlay loop id='audio'></audio>
         } else {
-            video = '' 
+            video = ''
         }
         return (
             <div className='pch-interview-deep'>
                 {/* 面签提示音 */}
                 {video}
-                <div className='icon'>  
+                <div className='icon'>
                     {this.state.music ? interview : listening}
                     <span className='pch-interview-num'>{listNum}</span>
                 </div>
+              {
+                dataList[0]&&
                 <ul className='pch-interview-name'>
-                    {
-                        Object.keys(dataList).map((listname) => {
-                            // console.log(dataList[listname])
-                            return (
-                                dataList[listname].map((item, index) => {
-                                    return (
-                                                <li key={index}>
-                                                        <span>{item.value.customName}</span>
-                                                        {this.interviewType(item.value.type)}
-                                                        <span className='pch-interviw-answer' onClick={this.interviewAnswer.bind(this,item.id,listname,item.value.id,item.value.type)}>接听</span>
-                                                </li>
-                                            )
-                                
-                                })
-                            )
-                            
+                  {
+                    Object.keys(dataList).map((listname) => {
+                      // console.log(dataList[listname])
+                      return (
+                        dataList[listname].map((item, index) => {
+                          return (
+                            <li key={index}>
+                              <span>{item.value.customName}</span>
+                              {this.interviewType(item.value.type)}
+                              <span className='pch-interviw-answer' onClick={this.interviewAnswer.bind(this,item.id,listname,item.value.id,item.value.type)}>接听</span>
+                            </li>
+                          )
+
                         })
-                    }
+                      )
+
+                    })
+                  }
                 </ul>
+              }
             </div>
         )
     }
