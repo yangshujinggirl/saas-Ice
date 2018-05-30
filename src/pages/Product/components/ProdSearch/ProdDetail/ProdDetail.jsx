@@ -56,12 +56,33 @@ export default class ProdDetail extends Component {
     let { actions, pageData, params } = this.props;
     this.props.actions.getDetail(params.id);//传参数，eg:ID
   }
+
+  //品牌／车型／车系
+  carData=(productScopes)=>{
+    let tempArr =[];
+    productScopes.map((item,i)=>{
+      if(item.type==='CARS'){
+        tempArr.push(item)
+      }
+    })
+    return tempArr
+  }
   //判断品牌／车型／车系
   relatedType = (value, index, record) => {
     let itemPath = record.relatedPath.split('/');
     return itemPath.length == 3 ? '品牌' : (itemPath.length == 4 ? '车系' : '车型')
   }
 
+  //权限
+  authData=(productScopes)=>{
+    let tempArr =[];
+    productScopes.map((item,i)=>{
+      if(item.type==='ORG'){
+        tempArr.push(item)
+      }
+    })
+    return tempArr
+  }
   //多选框展示
   checkboxShow = (data) => {
     let temp = ''
@@ -362,7 +383,7 @@ export default class ProdDetail extends Component {
             <div className="pch-condition">
               <div className="table-title">按品牌/车系/车型</div>
               <Table
-                dataSource={productScopes}
+                dataSource={this.carData(productScopes)}
                 hasHeader
                 className="table"
                 primaryKey="id"
@@ -371,6 +392,21 @@ export default class ProdDetail extends Component {
                 <Table.Column title="名称" dataIndex="relatedPathName" />
               </Table>
             </div>
+            <legend className="pch-legend" style={{ marginTop: "30px" }}>
+              <span className="pch-legend-legline"></span>权限编辑
+            </legend>
+            <div className="pch-condition">
+              <div className="table-title">权限编辑</div>
+              <Table
+                dataSource={this.authData(productScopes)}
+                hasHeader
+                className="table"
+                primaryKey="id"
+              >
+                <Table.Column title="权限" dataIndex="relatedPathName" />
+              </Table>
+            </div>
+            
             <legend className="pch-legend" style={{ marginTop: "30px" }}>
               <span className="pch-legend-legline"></span>流程配置
             </legend>

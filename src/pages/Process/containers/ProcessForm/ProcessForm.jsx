@@ -265,7 +265,6 @@ export default class ProcessForm extends Component {
             type: 'success',
             content: values.processName + '产品流程已' + (values.status == 1 ? '提交' : '保存') + '成功',
             afterClose: () => {
-              dispatch(fetchSuccess({ formData: {}, isSubmiting: false }));
               hashHistory.push('/process');
             },
             duration: 2000,
