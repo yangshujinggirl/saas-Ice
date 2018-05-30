@@ -23,11 +23,12 @@ import Req from '../../reqs/EntryQueryReq';
 
 import './LoanApplicationOne.scss';
 import classNames from 'classnames';
+import { Feedback } from '@icedesign/base/index';
 
 const { Options } = Select;
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
-
+const Toast = Feedback.toast;
 const formItemLayout = {
   labelCol: { span: 8 },
 };
@@ -75,18 +76,21 @@ class LoanApplicationOne extends Component {
 
   changeInfomation(loadId) {
     let { actions } = this.props;
-    var data ={
-      id : this.props.params.id,
-      step : 0
-    }
+    var data = {
+      id: this.props.params.id,
+      step: 0,
+    };
     Req.getDetail(data)
       .then((res) => {
-        if (res && res.code == 200) {
-          // console.log(res);
-          this.setState({
-            filedList: res.data,
-          });
-        }
+        this.setState({
+          filedList: res.data,
+        });
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          content: error.msg,
+        });
       });
   }
 
@@ -95,22 +99,23 @@ class LoanApplicationOne extends Component {
     const limit = 990;
     Req.getProductNumApi(limit)
       .then((res) => {
-        if (res.data && res.code == '200') {
-          const { data } = res;
-          const { list } = data;
-          let dataSource = list.map((el) => {
-            return {
-              id: el.id,
-              label: el.name,
-              value: el.productCode,
-            };
-          });
-          this.setState({
-            dataSource,
-          });
-        }
+        const { data } = res;
+        const { list } = data;
+        let dataSource = list.map((el) => {
+          return {
+            id: el.id,
+            label: el.name,
+            value: el.productCode,
+          };
+        });
+        this.setState({
+          dataSource,
+        });
       }, (error) => {
-
+        Toast.show({
+          type: 'error',
+          content: error.msg,
+        });
       });
   }
 
@@ -245,22 +250,24 @@ class LoanApplicationOne extends Component {
 
       // console.log(this.queryCache);
       // this.queryCache.status = 'save'
-      if(this.props.params.id){
+      if (this.props.params.id) {
         this.queryCache['id'] = this.props.params.id;
-        Req.saveFrom(this.queryCache).then((res)=>{
-          if (res  && res.code == 200) {
-            hashHistory.push({
-                  pathname: '/entryQuery/loanApplication/' + this.props.params.id,
-                });
-          }
-        }).catch((error)=>{
-          console.log(errors);
-        })
-      }else{
+        Req.saveFrom(this.queryCache)
+          .then((res) => {
+            if (res && res.code == 200) {
+              hashHistory.push({
+                pathname: '/entryQuery/loanApplication/' + this.props.params.id,
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(errors);
+          });
+      } else {
         Req.addLoanApi(this.queryCache)
           .then((res) => {
             // console.log(res);
-            if (res  && res.code == 200) {
+            if (res && res.code == 200) {
               hashHistory.push({
                 pathname: '/entryQuery/loanApplication/' + res.data.id,
               });

@@ -62,7 +62,15 @@ export default class ReviewApprove extends BaseApp {
     })
       .then((res) => {
         if (res && res.code == 200) {
-          this.fetchData();
+          if (this.props.params.typeId) {
+            if (this.props.params.typeId == 10 || this.props.params.typeId == 11) {
+              this.fetchData({
+                taskTypeKey : 10
+              });
+            } else {
+              this.fetchData();
+            }
+          }
         }
       })
       .catch((error) => {

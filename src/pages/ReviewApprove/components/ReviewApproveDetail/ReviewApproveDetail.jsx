@@ -38,6 +38,7 @@ export default class ReviewApproveDetail extends Component {
       dataList: {},
       result: {},
       _list: [],
+      dataSource: [],
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -119,8 +120,35 @@ export default class ReviewApproveDetail extends Component {
     });
 
     actions.getDetail(this.props.params.id);
+    this.getProductNum();
 
   };
+
+  //获取产品列表
+  getProductNum() {
+    const limit = 990;
+    Req.getProductNumApi(limit)
+      .then((res) => {
+        if (res.data && res.code == '200') {
+          console.log(res);
+          const { data } = res;
+          const { list } = data;
+          let dataSource = list.map((el) => {
+            return {
+              id: el.id,
+              label: el.name,
+              value: el.productCode,
+            };
+          });
+          console.log(dataSource);
+          this.setState({
+            dataSource,
+          });
+        }
+      }, (error) => {
+
+      });
+  }
 
   //判断Json是否为kong
   isEmptyObject(e) {
@@ -145,7 +173,7 @@ export default class ReviewApproveDetail extends Component {
         console.log('Errors in form!!!');
         return;
       }
-      console.log("Submit!!!");
+      console.log('Submit!!!');
       console.log(values);
       for (var key in values) {
         if (values[key] != undefined) {
@@ -160,11 +188,11 @@ export default class ReviewApproveDetail extends Component {
             }
             this.queryCache[key] = values[key];
           }
-        }else{
+        } else {
           this.queryCache[key] = null;
         }
       }
-      console.log(this.queryCache)
+      console.log(this.queryCache);
       console.log(this.props.detail.list);
       // var _josn ={}
       // this.props.detail.list.map(item=>{
@@ -213,6 +241,7 @@ export default class ReviewApproveDetail extends Component {
   render() {
     const details = this.props.detail || {};
     const chooseMap = this.props.trackDetail ? this.props.trackDetail.chooseMap : {};
+    const { dataSource = [] } = this.state;
     const init = this.field.init;
     return (
       <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle ReviewApproveDetail' style={styles.bg}>
@@ -244,7 +273,7 @@ export default class ReviewApproveDetail extends Component {
                     field={this.field}
                     size="large"
                   >
-                    <FormRender {...this.props} data={details.list} init={init} field={this.field}
+                    <FormRender {...this.props} data={details.list} init={init} field={this.field} productList={dataSource}
                                 addColumn={this.addColumn.bind(this)}></FormRender>
                   </Form>
                 </IceFormBinderWrapper>

@@ -90,6 +90,15 @@ class ReviewApproveReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+  //获取产品编号
+  getProductNumApi(limit) {
+    let options = {
+      url:this._config.LOAN_HOST + `/product?limit=${limit}&status=1`,
+      method: 'Get',
+      contentType: 'application/json'
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new ReviewApproveReq();
