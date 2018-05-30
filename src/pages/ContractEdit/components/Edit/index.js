@@ -167,18 +167,12 @@ class AddEit extends BaseApp {
   }
 
   render() {
-    let title = '';
-    if (this.props.formData[this.state.currentIndex]) {
-      title = this.props.formData[this.state.currentIndex].templateName;
-    }
-
     return (
       <IceContainer className="pch-container contract-eidt-pages">
         <Title title="合同编辑"/>
 
         {this.props.formData[this.state.currentIndex] ?
           <div>
-            <div className="contract-edit-title">{title}</div>
             <div className="main-contract-main-action" ref='contractEdit'>
               <div dangerouslySetInnerHTML={{
                 __html: this.state.contractContent,
