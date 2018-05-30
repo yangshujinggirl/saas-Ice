@@ -62,7 +62,7 @@ class Bind extends BaseApp {
     Req.seachBindTemplateApi(id)
     .then((res) => {
       let { templateProductList = [], content = ""} = res.data || {};
-      let data = templateProductList.map(p=>p.productId);
+      let data = templateProductList.map(p=>p.productCode);
       let formDataList = templateProductList.map(p=>({
         productCategory: p.productCategory,
         productName: p.productName,
