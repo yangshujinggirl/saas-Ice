@@ -112,13 +112,28 @@ export const productsave = (data, id) => {
 
     Req.productsave(data, id).then((res) => {
       if (!res || res.code != 200) return;
-      hashHistory.push(`/product/addthree/${id}`)
+      hashHistory.push(`/product/process/${id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
-////产品提交第三步保存
+//产品权限编辑
+export const saveProductAuth = (data,id) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.saveProductAuth(data, id).then((res) => {
+      if (!res || res.code != 200) return;
+      hashHistory.push(`/product/addthree/${id}`)
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+
+}
+//产品提交第三步保存
 export const saveProductAdd = (id, data,processDefId,tempData) => {
   return (dispatch) => {
 
@@ -364,6 +379,21 @@ export const getProdeuctAgency=(condition)=>{
       if (!res || res.code != 200) return;
       dispatch(fetchSuccess({ AgencyData: res.data }))
 
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+
+//权限编辑机构／角色
+export const getPrivilegeOrgs = () => {
+  return (dispatch)=>{
+    dispatch(fetchStart())
+
+    Req.getPrivilegeOrgs().then((res) => {
+      // if (res.code != 200) return;
+      dispatch(fetchSuccess({ orgsData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

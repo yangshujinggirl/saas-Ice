@@ -66,11 +66,11 @@ class BaseReq {
       .then(r=>{
         r = this._processResponse(r);
         if(200 == r.code)return r;
-        /** 
+        /**
           ➡️ 当api接口的code != 200
           ➡️ 本次业务失败，return Promise.reject(r)确保交给总入口的catch处理错误
           ➡️ 总入口的catch弹出错误提示，继续return Promise.reject(e)
-          ➡️ 确保进入业务代码回调时只有两种情况: 
+          ➡️ 确保进入业务代码回调时只有两种情况:
           ➡️ 业务的成功回调里一定是成功的数据，业务的失败回调里一定是失败的code
           ➡️ ok->then(successCallback), error=>catch(errorCallback)
         */
@@ -99,9 +99,9 @@ class BaseReq {
    * @return {[type]}     [description]
    */
   _processResponse(res) {
-    let response = {}, 
-        code = 0, 
-        msg = '', 
+    let response = {},
+        code = 0,
+        msg = '',
         data = {};
 
     if (!res.data) {
@@ -141,20 +141,18 @@ class BaseReq {
    * @return {[type]}       [description]
    */
   _processError(error) {
-    //debugger;
     console.log('_processError', error);
     let res = error.response || error.request || {};
     let existData = 'object' == typeof res.data && res.data || {};
-
+    let msg = error.msg || 'RES_MESSAGE';
+    let code = error.code || -404;
+    //退出登陆
     if (error.code == 103 || /103|401/.test(res.status) || existData.code == 103) {
       this._redirectToLogin();
       return { status: 401, msg: '未授权，请重新登录', data: { code: 401 } };
     }
-
-    let msg = error.msg || 'RES_MESSAGE';
-
+    //接口返回错误格式，服务错误弹出提示消息
     if (res.data && (res.data.msg || res.data.message)) {
-      //接口返回错误格式
       // {
       //   error: "Internal Server Error",
       //   exception: "org.apache.shiro.UnavailableSecurityManagerException",
@@ -164,23 +162,20 @@ class BaseReq {
       //   timestamp: 1521861550469
       // }
       msg = res.data.code + ' ' + (res.data.msg || res.data.message);
+      this._showMsg('error', msg);
     }
-
+    // 接口发起成功但没收到响应，一般请求超时
     if (res.status == 0) {
-      // 接口发起成功但没收到响应，一般请求超时
       msg = '请求超时，请重试';
-
       //解决退出登陆302跳转的错误提示
       if (error.config && error.config.url == '/crm/saas/logout') {
         msg = '';
       }
+      this._showMsg('error', msg);
     }
-
-    this._showMsg('error', msg);
-
     // 异常状态下，把错误信息返回去
     return {
-      code: -404,
+      code: code,
       msg: msg
     }
   }
@@ -252,7 +247,7 @@ Object.keys(Feedback.toast).forEach(k=>{
     if('function' == typeof afterCloseCallback){
       opts.afterClose = afterCloseCallback
     }
-    
+
     opts = {...opts, ...rest}
     Feedback.toast[k]({
       duration: 500,

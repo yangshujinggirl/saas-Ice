@@ -27,16 +27,14 @@ class Detail extends BaseApp {
   getTemplateList(id) {
     Req.contractDetailApi(id)
     .then((res) => {
-      const { code, data, msg } =res;
-      if( code !=200 ) {
-        if( code == '1000063' ) {
-          this.setState({
-            isHasFile:false
-          })
-        }
-        return
-      }
+      const { data } =res;
       this.initPageStatus(data);
+    },error => {
+      if( error.code == '1000063' ) {
+        this.setState({
+          isHasFile:false
+        })
+      }
     })
   }
   initPageStatus(templateData) {

@@ -33,19 +33,19 @@ export default class Chanpinlilv extends Component {
 
       this.state = {
          percentageSetting: [],
-         agencyData:[]
+         agencyData: []
       }
    }
-   componentWillMount(){
-      Req.getProdeuctAgency().then((res)=>{
-          this.getAgencyData(res.data);
-      //    let agencyData = this.state.agencyData;
-      //    agencyData = this.getAgencyData(res.data)
-      //    this.setState({
-      //       agencyData
-      //    })
-      //    console.log(this.state.agencyData)
-      }).catch((res)=>{
+   componentWillMount() {
+      Req.getProdeuctAgency().then((res) => {
+         this.getAgencyData(res.data);
+         //    let agencyData = this.state.agencyData;
+         //    agencyData = this.getAgencyData(res.data)
+         //    this.setState({
+         //       agencyData
+         //    })
+         //    console.log(this.state.agencyData)
+      }).catch((res) => {
 
       })
       // // let {getProdeuctAgency} = this.props;
@@ -83,20 +83,20 @@ export default class Chanpinlilv extends Component {
    };
    //渠道的值
    getAgencyData = (data) => {
-      data.map((item,i)=>{
-         item.label=item.name;
-         item.value=item.name;
-         if( item.children.length>0){
+      data.map((item, i) => {
+         item.label = item.name;
+         item.value = item.name;
+         if (item.children.length > 0) {
             this.getAgencyData(item.children)
-         }else{
-      　　　 item.label=item.name;
-            item.value=item.name;
-      　　}
+         } else {
+            item.label = item.name;
+            item.value = item.name;
+         }
       })
       let agencyData = this.state.agencyData;
-         this.setState({
-            agencyData:data
-         })
+      this.setState({
+         agencyData: data
+      })
    }
    //渠道名称不可重复
    changeValue(value, option) {
@@ -128,9 +128,20 @@ export default class Chanpinlilv extends Component {
       if (value < 0) {
          callback('最小执行年利率必须大于0')
       }
+      if (value >= 1000) {
+         callback('最小执行年利率不能大于1000');
+      }
       if (max) {
-         if (Number(value) >= max) {
+         if (Number(value) >=Number( max)) {
             callback('不能大于或等于后者')
+         }
+      }
+      //保留两位小数
+      var dot = value.indexOf(".");
+      if (dot != -1) {
+         var dotCnt = value.substring(dot + 1, value.length);
+         if (dotCnt.length > 2) {
+            callback('小数范围是两位');
          }
       }
 
@@ -143,23 +154,34 @@ export default class Chanpinlilv extends Component {
       let min = items[oIndex].interestRatesRangeMin;
 
       if (rule.required && !value) {
-         callback('最小执行年利率必填');
+         callback('最大执行年利率必填');
          return;
       }
       if (value < 0) {
-         callback('最小执行年利率必须大于0')
+         callback('最大执行年利率必须大于0')
+      }
+      if (value >= 1000) {
+         callback('最大执行年利率不能大于1000')
       }
       if (min) {
          if (Number(value) <= min) {
             callback('不能小于或等于前者')
          }
       }
+      //保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
 
       callback();
    }
-   
+
    renderCell1 = (value, index, record, context) => {
-      let {agencyData} = this.state
+      let { agencyData } = this.state
       return (
          <div>
             <IceFormBinder
@@ -167,21 +189,13 @@ export default class Chanpinlilv extends Component {
                name={`ratesSetting[${index}].channelTypes`}
             >
                <TreeSelect
-                     treeDefaultExpandAll
-                     dataSource={agencyData}
-                     // onChange={::this.handleChange}
-                     style={{ width: 200 }}
-                     autoWidth
-                     onChange={this.changeValue.bind(this)}
-                  />
-               {/* <Select 
-						placeholder="渠道" 
-						style={{width:'200px'}}
-						onChange={this.changeValue.bind(this)}
-					>
-						<Option value='集团A'>集团A</Option>
-						<Option value='集团B'>集团B</Option>
-					</Select> */}
+                  treeDefaultExpandAll
+                  dataSource={agencyData}
+                  // onChange={::this.handleChange}
+                  style={{ width: 200 }}
+                  // autoWidth
+                  onChange={this.changeValue.bind(this)}
+               />
             </IceFormBinder>
          </div>
       );
