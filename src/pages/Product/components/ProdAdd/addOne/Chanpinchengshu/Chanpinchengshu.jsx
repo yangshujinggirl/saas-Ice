@@ -120,7 +120,7 @@ export default class Chanpinchengshu extends Component {
 			callback('最大成数不能大于1000')
 		}
 		if(min){
-			if(value <= min ){
+			if(Number(value) <= min ){
 				callback('不能小于或等于前者')
 			}
 		}
@@ -181,7 +181,7 @@ export default class Chanpinchengshu extends Component {
 			callback('最大期限必须大于0')
 		}
 		if(min){
-			if(value <= min){
+			if(Number(value) <= min){
 				callback('不能小于或等于前者');
 			}
 		}

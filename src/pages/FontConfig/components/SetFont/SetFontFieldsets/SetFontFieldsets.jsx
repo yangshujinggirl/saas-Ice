@@ -8,11 +8,27 @@ const {Group: CheckboxGroup} = Checkbox;
 const {Group: RadioGroup} = Radio;
 const {MonthPicker, YearPicker, RangePicker} = DatePicker;
 
-export default class SetFontFieldsets extends Component {
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend';
+import FieldsOne from '../DragFields/Fields/FieldsOne';
+import FieldsTwo from '../DragFields/Fields/FieldsTwo';
+
+
+class SetFontFieldsets extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {};
+        this.moveCard = this.moveCard.bind(this)
+        this.state = {
+          resData:this.props.resData
+        };
+    }
+    componentWillReceiveProps(props) {
+      this.setState({
+        resData:props.resData
+      })
+    }
+    moveCard(dragParent, hoverParent, dragIndex, hoverIndex) {
+        this.changeFieldsSort(dragParent, hoverParent, dragIndex, hoverIndex)
     }
 
     titleState = (index) => {
@@ -203,6 +219,13 @@ export default class SetFontFieldsets extends Component {
 
     }
 
+    changeFieldsSort =(dragParent, hoverParent, dragIndex, hoverIndex)=>{
+        let { resData } = this.state;
+        let temp = resData.fieldset[dragParent].fields.splice(dragIndex,1)
+        resData.fieldset[hoverParent].fields.splice(hoverIndex, 0, ...temp);
+        this.setState({resData});
+    }
+
     render() {
         const hover = (bool, item) => {
 
@@ -327,7 +350,7 @@ export default class SetFontFieldsets extends Component {
 
         return (
             <div className="setfont-fieldsets">
-                {resData.fieldset && resData.fieldset.map((item, index) => {
+                {this.state.resData.fieldset && this.state.resData.fieldset.map((item, index) => {
                      return (
                          <div key={index} className="setfont-field">
                              {/*添加字段按钮和小标题  */}
@@ -343,13 +366,26 @@ export default class SetFontFieldsets extends Component {
                                          readOnly={this.state.subTitle != index + 1} />
                                  </div>
                                  <div className="base-detail-opt">
-                                     {index != 0 &&
-                                      <span><span className='icon delete' onClick={this.handleRemoveModule.bind(this, index)}></span> <span className={cx('icon up', {
-                                                                                                                                                            'disabled': index == 1
-                                                                                                                                                        })} onClick={this.moveUp.bind(this, index)}></span> <span className={cx('icon down', {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 'disabled': index == resData.fieldset.length - 1
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             })}
-                                          onClick={this.moveDown.bind(this, index)}></span></span>}
+                                     {
+                                       index != 0 &&
+                                        <span>
+                                          <span
+                                            className='icon delete'
+                                            onClick={this.handleRemoveModule.bind(this, index)}>
+                                            
+                                          </span>
+                                          <span
+                                            className={cx('icon up', {'disabled': index == 1})}
+                                            onClick={this.moveUp.bind(this, index)}>
+                                            
+                                          </span>
+                                          <span
+                                            className={cx('icon down', {'disabled': index == resData.fieldset.length - 1})}
+                                            onClick={this.moveDown.bind(this, index)}>
+                                            
+                                          </span>
+                                        </span>
+                                      }
                                      <span className="addStr" onClick={handleAddCode.bind(this, index)}>添加字段</span>
                                  </div>
                              </div>
@@ -358,51 +394,79 @@ export default class SetFontFieldsets extends Component {
                                       if (item.isFixed) {
                                           // 固定字段
                                           return (
-                                              <div className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
-                                                      'false')} key={inj} data-row={item.line == 1 ? true : ''}>
-                                                  <div className="clearfix">
-                                                      <label htmlFor="" className='label'>
-                                                          <Balloon type="primary" trigger={<span className='ellips'><span className='required'>*</span>
-                                                                                           {item.label}:</span>} closable={false} triggerType="hover">
-                                                              {item.label}
-                                                          </Balloon>
-                                                      </label>
-                                                      {handleFixed(item)}
-                                                      <span className='edite icon'></span>
-                                                  </div>
-                                                  <span className="delete" onClick={this.handleRemoveElement.bind(this, index)}>×</span>
-                                              </div>
+                                              // <div className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
+                                              //         'false')} key={inj} data-row={item.line == 1 ? true : ''}>
+                                              //     <div className="clearfix">
+                                              //         <label htmlFor="" className='label'>
+                                              //             <Balloon type="primary" trigger={<span className='ellips'><span className='required'>*</span>
+                                              //                                              {item.label}:</span>} closable={false} triggerType="hover">
+                                              //                 {item.label}
+                                              //             </Balloon>
+                                              //         </label>
+                                              //         {handleFixed(item)}
+                                              //         <span className='edite icon'></span>
+                                              //     </div>
+                                              //     <span className="delete" onClick={this.handleRemoveElement.bind(this, index)}>×</span>
+                                              // </div>
+                                              <FieldsOne
+                                                item={item}
+                                                id={item.id}
+                                                parent={index}
+                                                index={inj}
+                                                key={inj}
+                                                moveCard={this.moveCard}
+                                                onClick={this.handleRemoveElement.bind(this, index)}>
+                                                {handleFixed(item)}
+                                              </FieldsOne>
                                           )
                                       } else {
                                           return (
-                                              <div
-                                                  onMouseLeave={hover.bind(this, 0)}
-                                                  onMouseEnter={hover.bind(this, 1, item.label)}
-                                                  className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
-                                                                 'false', {
-                                                                     active: this.state.rightActive == item.label
-                                                                 })}
-                                                  key={inj}
-                                                  data-row={item.line == 1 ? true : ''}>
-                                                  <div className="clearfix">
-                                                      <label htmlFor="" className='label'>
-                                                          <Balloon type="primary" trigger={<span className='ellips' onDoubleClick={handleEditeCoce.bind(this, item, index, inj)} title={item.label}><span className='required' onClick={this.validaRequire.bind(this, index, inj)}>{item.isRequired ? '*' : ''}</span>
-                                                                                           {item.label}
-                                                                                           </span>} closable={false} triggerType="hover">
-                                                              {item.label}
-                                                          </Balloon>
-                                                      </label>
-                                                      {handleFixed(item)}
-                                                      <span className='edite icon' onClick={handleEditeCoce.bind(this, item, index, inj)}></span>
-                                                  </div>
-                                                  <span className="delete" onClick={this.handleRemoveElement.bind(this, index, inj)}>×</span>
-                                              </div>
+                                              // <div
+                                              //     onMouseLeave={hover.bind(this, 0)}
+                                              //     onMouseEnter={hover.bind(this, 1, item.label)}
+                                              //     className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
+                                              //                    'false', {
+                                              //                        active: this.state.rightActive == item.label
+                                              //                    })}
+                                              //     key={inj}
+                                              //     data-row={item.line == 1 ? true : ''}>
+                                              //     <div className="clearfix">
+                                              //         <label htmlFor="" className='label'>
+                                              //             <Balloon type="primary" trigger={<span className='ellips' onDoubleClick={handleEditeCoce.bind(this, item, index, inj)} title={item.label}><span className='required' onClick={this.validaRequire.bind(this, index, inj)}>{item.isRequired ? '*' : ''}</span>
+                                              //                                              {item.label}
+                                              //                                              </span>} closable={false} triggerType="hover">
+                                              //                 {item.label}
+                                              //             </Balloon>
+                                              //         </label>
+                                              //         {handleFixed(item)}
+                                              //         <span className='edite icon' onClick={handleEditeCoce.bind(this, item, index, inj)}></span>
+                                              //     </div>
+                                              //     <span className="delete" onClick={this.handleRemoveElement.bind(this, index, inj)}>×</span>
+                                              // </div>
+                                              <FieldsTwo
+                                                item={item}
+                                                id={item.id}
+                                                parent={index}
+                                                index={inj}
+                                                key={inj}
+                                                moveCard={this.moveCard}
+                                                onMouseLeave={hover.bind(this, 0)}
+                                                onMouseEnter={hover.bind(this, 1, item.label)}
+                                                rightActive={this.state.rightActive}
+                                                handleEditeCoce={handleEditeCoce.bind(this, item, index, inj)}
+                                                validaRequire={this.validaRequire.bind(this, index, inj)}
+                                                handleRemoveElement={handleEditeCoce.bind(this, item, index, inj)}>
+                                                {handleFixed(item)}
+                                              </FieldsTwo>
                                           )
                                       }
                                   })}
-                                 {item.fields.length == 0 && <div className="ui-sortable-empty">
-                                                                 还没有字段哦
-                                                             </div>}
+                                 {
+                                   item.fields.length == 0 &&
+                                   <div className="ui-sortable-empty">
+                                       还没有字段哦
+                                   </div>
+                                 }
                              </div>
                          </div>
                      )
@@ -412,3 +476,5 @@ export default class SetFontFieldsets extends Component {
         )
     }
 }
+
+export default DragDropContext(HTML5Backend)(SetFontFieldsets);

@@ -52,7 +52,7 @@ export default class ProcessAuthEdit extends BaseApp {
             rowSelectionTwo: {
                 selectedRowKeys: [],
                 onChange: (selectedRowKeys, records) => {
-                    // console.log(records)
+
                     // let selectedRowTwo = [];
                     // for (var i in records) {
                     //     records[i].departmentName = records[i].name
@@ -61,17 +61,17 @@ export default class ProcessAuthEdit extends BaseApp {
                     // this.setState({
                     //     selectedRowTwo
                     // });
-
                     let selectedRowTwo = records;
+                    
                     records.map((item) => {
                         let result = [];
-                        item.roles.map((role) => {
-                            result.push(role.id);
-                        })
+                            result.push(item.id);
                         item.selectedRoles = result;
                     })
+
+
                     this.setState({
-                        selectedRowTwo,
+                        selectedRowTwo
                     });
 
                     let { rowSelectionTwo } = this.state;
@@ -79,6 +79,13 @@ export default class ProcessAuthEdit extends BaseApp {
                     this.setState({
                         rowSelectionTwo
                     });
+
+                },
+                onSelect: (selected, record, records) => {
+                    if (!selected) {
+                        record.selectedRoles = [];
+                    }
+
                 }
             }
         }
@@ -90,7 +97,7 @@ export default class ProcessAuthEdit extends BaseApp {
     // componentWillReceiveProps(props) {
     //     this.setState({
     //         // visible: this.props.visible,
-    //         dataSourceRight: props.data
+    //         dataSourceRight:this.state.dataSourceRight
     //     })
     // }
 
@@ -111,6 +118,7 @@ export default class ProcessAuthEdit extends BaseApp {
                         result.push({
                             // orgId: item.id,
                             // orgName: item.name,
+                            
                             relatedPathName:item.name+'-'+role.name,
                             relatedId: role.id,
                             relatedName: role.name,
@@ -126,6 +134,26 @@ export default class ProcessAuthEdit extends BaseApp {
             }
         })
     }
+
+    getSpFromData(data, result) {
+        data.map(item => {
+            item.map((em,i)=>{
+                if (em.selectedRoles && em.selectedRoles.length > 0) {
+                            result.push({
+                                // orgId: item.id,
+                                // orgName: item.name,
+                                relatedPathName:em.name,
+                                relatedId: em.id,
+                                relatedName: em.name,
+                                relatedPath:em.path,
+                                relatedPath:'/'+em.id+'/',
+                                type:"ORG"
+                            })
+                }
+            })
+
+        })
+    }
     /**
      * 合并两个表格的选择值
      * 去除重复
@@ -139,7 +167,7 @@ export default class ProcessAuthEdit extends BaseApp {
             this.getRolesFromData([orgsData.deprtments], tempArr);
         }
         if (orgsData.otherOrgs) {
-            this.getRolesFromData([orgsData.otherOrgs], tempArr);
+            this.getSpFromData([orgsData.otherOrgs], tempArr);
         }
 
         console.log(tempArr);
@@ -168,13 +196,13 @@ export default class ProcessAuthEdit extends BaseApp {
         })
     }
 
-    getAKey(data) {
+    getAKey(data) { //relatedId: role.id,relatedName: role.name,
         let ret = [];
 
-        ret.push(data.orgId);
-        ret.push(data.departmentId);
-        if (data.roleId) {
-            ret.push(data.roleId);
+        // ret.push(data.orgId);
+        // ret.push(data.departmentId);
+        if (data.relatedId) {
+            ret.push(data.relatedId);
         }
 
         return ret.join(',');
