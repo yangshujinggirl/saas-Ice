@@ -357,6 +357,7 @@ body {
         }
         /* ASIDE */
         .ice-design-layout-aside {
+            overflow-y: auto;
             background: $ice-aside-bg;
             position: fixed;
             z-index: 2; // font-size: 14px;
