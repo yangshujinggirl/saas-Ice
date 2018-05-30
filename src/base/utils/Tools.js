@@ -6,7 +6,7 @@ import Webp from './Webp'
 class Tools {
     constructor() {}
 
-    countDown(start, end) { 
+    countDown(start, end) {
         let limitTime = end - start;
 
         let hours = Math.floor(limitTime/60/60);
@@ -624,6 +624,23 @@ class Tools {
         return parseInt(appVersion.replace(patterndot, ''));
     }
 
+    //身份证校验
+  cardNoValidate=(value)=> {
+    let regIdNo = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+    if(regIdNo.test(value)){
+      return true;
+    }
+    return false;
+  };
+
+    //手机号码校验
+  mobileValidate=(value)=> {
+    let regIdNo = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
+    if(regIdNo.test(value)){
+      return true;
+    }
+    return false;
+  };
 }
 
 export default new Tools();

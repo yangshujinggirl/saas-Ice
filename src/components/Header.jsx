@@ -86,13 +86,13 @@ export default class Header extends PureComponent {
       bool
     })
   }
-  interviewDetail(id, type) { 
+  interviewDetail(id, type) {
     this.setState({
       id,
       type
     })
   }
-  musicStateF(musicState) { 
+  musicStateF(musicState) {
     this.setState({
       musicState
     })
@@ -108,11 +108,13 @@ export default class Header extends PureComponent {
       routes = [routes[0]];
     }
 
-    let nickname = '--';
+    let nickname = '--',organizaName='--';
+
     //获取登陆用户信息
     // let userinfo = Storage.get('USERINFO');
     if (userinfo) {
       nickname = userinfo.realName || userinfo.userName;
+      organizaName = userinfo.identity.organizationName;
     }
     return (
       <Layout.Header theme={theme} className="ice-design-layout-header" style={{
@@ -125,14 +127,17 @@ export default class Header extends PureComponent {
             </Breadcrumb.Item>
           })}
         </Breadcrumb>
-        {/* 面签入口 */}
-        <Interview initNetcall={this.initNetcall.bind(this)} musicState={this.state.musicState} interviewDetail={this.interviewDetail.bind(this)}></Interview>
-        
+
+
         {/* 面签弹框 */}
         <InterviewDialog initDate={this.state.initDate} musicState={this.musicStateF.bind(this)} id={this.state.id} type={this.state.type}></InterviewDialog>
         <div className="ice-design-layout-header-menu" style={{
           display: 'flex'
         }}>
+
+          {/* 面签入口 */}
+          <Interview initNetcall={this.initNetcall.bind(this)} musicState={this.state.musicState} interviewDetail={this.interviewDetail.bind(this)}></Interview>
+
           {/* Header 菜单项 begin */}
           {headerNavs && headerNavs.length > 0 ? (
             <Menu mode="horizontal" selectedKeys={[]}>
@@ -166,7 +171,7 @@ export default class Header extends PureComponent {
                 offset={[0, 11]}
                 size={20}
                 shape="circle"
-                userName="切换身份"
+                userName={"切换身份:"+organizaName}
                 style={{
                   marginRight: 20
                 }}>
