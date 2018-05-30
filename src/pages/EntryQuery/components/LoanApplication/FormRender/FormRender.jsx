@@ -26,7 +26,7 @@ const { Group: CheckboxGroup } = Checkbox;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Combobox } = Select;
-
+const { MonthPicker, YearPicker, RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: { span: 11 },
   wrapperCol: { span: 13 },
@@ -378,18 +378,66 @@ export default class FormRender extends Component {
     }
     else if (el.type == 'DATE') {
       // console.log(el.value)
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // if(el.dateFormat == 'yyyy'){
+      //   return (
+      //     <FormItem key={el.id} className='item' label={this.label(el.label)}
+      //               {...formItemLayout}  >
+      //       <YearPicker
+      //         disabled={el.isReadonly}
+      //         style={{ width: '100%' }}
+      //         {...init(el.name, {
+      //           initValue: el.value
+      //         }, {
+      //           rules: [{ required: true, message: el.label + '不能为空' }],
+      //         })}
+      //       />
+      //     </FormItem>
+      //
+      //   )
+      // }
+      // else if(el.dateFormat == 'yyyy-MM'){
+      //   return(
+      //     <FormItem key={el.id} className='item' label={this.label(el.label)}
+      //               {...formItemLayout}  >
+      //       <MonthPicker
+      //         disabled={el.isReadonly}
+      //         style={{ width: '100%' }}
+      //         {...init(el.name, {
+      //           initValue: el.value
+      //         }, {
+      //           rules: [{ required: true, message: el.label + '不能为空' }],
+      //         })}
+      //       />
+      //     </FormItem>
+      //   )
+      // }
+      // else if(el.dateFormat == 'yyyy-MM-dd'){
+      //   return(
+      //     <FormItem key={el.id} className='item' label={this.label(el.label)}
+      //               {...formItemLayout}  >
+      //       <DatePicker
+      //         disabled={el.isReadonly}
+      //         format={'YYYY-MM-DD'}
+      //         style={{ width: '100%' }}
+      //         {...init(el.name, {
+      //           initValue: el.value
+      //         }, {
+      //           rules: [{ required: true, message: el.label + '不能为空' }],
+      //         })}
+      //       />
+      //     </FormItem>
+      //   )
+      // }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
           <DatePicker
-            defaultValue={el.value}
             disabled={el.isReadonly}
             format={'YYYY-MM-DD'}
             style={{ width: '100%' }}
             {...init(el.name, {
-              initValue: el.value,
-              getValueFromEvent: this.formater,
+              initValue: el.value
             }, {
               rules: [{ required: true, message: el.label + '不能为空' }],
             })}

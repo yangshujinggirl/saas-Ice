@@ -136,19 +136,19 @@ export default class FormRenderFormRender extends Component {
   };
 
   //对输入框的身份证号码与电话号码校验
-  specialValidateHandler = (borrowerIdType,rule, value, callback) => {
+  specialValidateHandler = (borrowerIdType, rule, value, callback) => {
     if (value === '') {
       callback();
       return;
     }
     if (rule.field === 'borrowerIdNo') {//身份证
-        if(borrowerIdType==="身份证"&&Tools.cardNoValidate(value)){//证件类型选择了身份证
-          callback();
-        }else{
-          setTimeout(() => callback('请输入有效证件号码'), 0);
-        }
-    }else if(rule.field === 'borrowerMobile'){//手机号码
-      Tools.mobileValidate(value)?callback():setTimeout(() => callback('请输入有效手机号码'), 0);
+      if (borrowerIdType === '身份证' && Tools.cardNoValidate(value)) {//证件类型选择了身份证
+        callback();
+      } else {
+        setTimeout(() => callback('请输入有效证件号码'), 0);
+      }
+    } else if (rule.field === 'borrowerMobile') {//手机号码
+      Tools.mobileValidate(value) ? callback() : setTimeout(() => callback('请输入有效手机号码'), 0);
     } else {
       callback();
     }
@@ -170,7 +170,10 @@ export default class FormRenderFormRender extends Component {
             disabled={el.isReadonly}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required: el.isRequired, message: '请选择' + el.label },{validator:this.specialValidateHandler.bind(this,this.props.field.getValue('borrowerIdType'))}],
+              rules: [{
+                required: el.isRequired,
+                message: '请选择' + el.label,
+              }, { validator: this.specialValidateHandler.bind(this, this.props.field.getValue('borrowerIdType')) }],
             })}
           />
         </FormItem>

@@ -36,7 +36,7 @@ const formItemLayout = {
     span: 10,
   },
   wrapperCol: {
-    span: 23,
+    span: 14,
   },
 };
 
@@ -91,6 +91,7 @@ export default class CreditInformationForm extends BaseComponent {
       fileList: [],
       upLoadList: [],
       difflist: [],
+      flowFlag: 0,
 
     };
     this.field = new Field(this);
@@ -107,11 +108,10 @@ export default class CreditInformationForm extends BaseComponent {
       Req.getCreditDetail(params.id)
         .then((res) => {
           if (res && res.code == 200 && res.data) {
-            // res.data = Object.assign(this.state.formData,res.data)
             this.setState({
               formData: res.data,
             });
-            if(res.data.baseDocuments){
+            if (res.data.baseDocuments) {
               res.data.baseDocuments.map(item => {
                 console.log(item.type.indexOf('image') == 0);
                 if (item.type.indexOf('image') == 0) {
@@ -128,11 +128,15 @@ export default class CreditInformationForm extends BaseComponent {
                 fileList: res.data.baseDocuments,
               });
             }
-
-            console.log(res.data)
+            //判断第几个人录入 1 代表第一个  2代表第二个
+            console.log(res.data.flowFlag)
+            if (res.data.flowFlag) {
+              this.setState({
+                flowFlag: res.data.flowFlag,
+              });
+            }
             if (res.data.diffArrStr) {
               //处理不同字段
-              console.log(res.data.diffArrStr)
               this.checkDiff(res.data.diffArrStr);
             }
           } else {
@@ -160,99 +164,98 @@ export default class CreditInformationForm extends BaseComponent {
         // 处理表单报错
         return;
       }
-      console.log(value);
-      //
-      // let AllValue = this.AllValue(value);
-      // this.dataVerif(value);
       value['loanId'] = this.props.params.id;
-      // value['taskId'] = this.props.params.taskId;
-      // value['processInstanceId'] = this.props.params.taskId;
       value['baseDocuments'] = [];
-      this.state.fileList.map(item => {
-        value.baseDocuments.push({
-          description: '',
-          size: item.size,
-          fileName: item.fileName,
-          location: item.downloadURL,
-          type: item.type,
-        });
-      });
-      console.log(value);
-      if (value.baseDocuments.length > 0) {
-
-        Req.postDiff(value)
-          .then((res) => {
-            if (res && res.data && res.code == 200) {
-              if (res.data.diffArrStr) {
-                //处理不同字段
-                this.checkDiff(res.data.diffArrStr);
-
-                //征信两次不一致弹框
-                const dialogConfirm = Dialog.confirm({
-                  needWrapper: false,
-                  content: '两次征信数据不一致，是否确认提交数据？',
-                  title: '提示',
-                  onOk: () => {
-                    dialogConfirm.hide();
-                    Req.saveForm(value)
-                      .then((res) => {
-                        if (res && res.code == 200) {
-                          this.alert();
-                        } else {
-                          Toast.show({
-                            type: 'error',
-                            content: res.msg,
-                          });
-                        }
-                      })
-                      .catch((error) => {
-                        console.log(error);
-                      });
-                  },
-                });
-              } else {
-                const dialog = Dialog.confirm({
-                  content: '是否确认提交数据？',
-                  onOk: () => {
-                    return new Promise(resolve => {
-                      Req.saveForm(value)
-                        .then((res) => {
-                          dialog.hide();
-                          if (res && res.code == 200) {
-                            this.alert();
-                          } else {
-                            Toast.show({
-                              type: 'error',
-                              content: res.msg,
-                            });
-                          }
-                        })
-                        .catch((error) => {
-                          console.log(error);
-                        });
-                    });
-                  },
-                });
-              }
-            } else {
-              Toast.show({
-                type: 'error',
-                content: res.msg,
-              });
-            }
-          })
-          .catch((error) => {
-
+      //判断是否为第一个人
+      if (this.state.flowFlag == 1) {
+        this.state.fileList.map(item => {
+          value.baseDocuments.push({
+            description: '',
+            size: item.size,
+            fileName: item.fileName,
+            location: item.downloadURL,
+            type: item.type,
           });
-      } else {
-        Toast.show({
-          type: 'help',
-          content: '请上传文件～',
         });
+        if(value.baseDocuments.length > 0){
+          this.postData(value)
+        }else {
+          Toast.show({
+            type: 'help',
+            content: '请上传文件～',
+          });
+        }
+      }else{
+        this.postData(value);
       }
 
-
     });
+  };
+  //保存征信信息
+  postData = (value) => {
+    Req.postDiff(value)
+      .then((res) => {
+        if (res && res.data && res.code == 200) {
+          if (res.data.diffArrStr) {
+            //处理不同字段
+            this.checkDiff(res.data.diffArrStr);
+
+            //征信两次不一致弹框
+            const dialogConfirm = Dialog.confirm({
+              needWrapper: false,
+              content: '两次征信数据不一致，是否确认提交数据？',
+              title: '提示',
+              onOk: () => {
+                dialogConfirm.hide();
+                Req.saveForm(value)
+                  .then((res) => {
+                    if (res && res.code == 200) {
+                      this.alert();
+                    } else {
+                      Toast.show({
+                        type: 'error',
+                        content: res.msg,
+                      });
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              },
+            });
+          } else {
+            const dialog = Dialog.confirm({
+              content: '是否确认提交数据？',
+              onOk: () => {
+                return new Promise(resolve => {
+                  Req.saveForm(value)
+                    .then((res) => {
+                      dialog.hide();
+                      if (res && res.code == 200) {
+                        this.alert();
+                      } else {
+                        Toast.show({
+                          type: 'error',
+                          content: res.msg,
+                        });
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                });
+              },
+            });
+          }
+        } else {
+          Toast.show({
+            type: 'error',
+            content: res.msg,
+          });
+        }
+      })
+      .catch((error) => {
+      });
   };
   //处理不同字段
   checkDiff = (str) => {
@@ -275,11 +278,6 @@ export default class CreditInformationForm extends BaseComponent {
       },
     });
   };
-
-  // 取消
-  handleCancel() {
-  }
-
 
   //验证 正整数 不限制数位
   isInteger = (rule, value, callback) => {
@@ -320,10 +318,6 @@ export default class CreditInformationForm extends BaseComponent {
     callback();
   };
 
-  handleVisibleChange(visible) {
-    this.setState({ visible });
-  }
-
   //判断Json是否为kong
   isEmptyObject(e) {
     var t;
@@ -333,45 +327,29 @@ export default class CreditInformationForm extends BaseComponent {
     return true;
   }
 
-  //第一次录入查找当前登陆信息
-  findFied = (list) => {
-    if (!this.isEmptyObject(list)) {
-      let _json = {};
-      list.map((el, i) => {
-        el.fields.map((item, index) => {
-          if (item.name == 'borrowerName') {
-            _json['name'] = item.value;
-          }
-          if (item.name == 'borrowerIdNo') {
-            _json['credentialsNo'] = item.value;
-          }
-          if (item.name == 'borrowerMobile') {
-            _json['mobilePhone'] = item.value;
-          }
-        });
-      });
-      _json = Object.assign(this.state.formData, _json);
-      this.setState({
-        formData: _json,
-      });
-
-    }
-
-  };
-
+  //上传文件改变时调用
   handleFileChange(info) {
     console.log(info);
     info.fileList.map(item => {
       if (item.status == 'done') {
+        console.log(info);
         if (item.type.indexOf('image') == 0) {
           item.size = item.originFileObj.size;
           item.downloadURL = item.imgURL;
           item.fileURL = item.imgURL;
         } else {
-          item.size = item.originFileObj.size;
-          item.downloadURL = item.imgURL;
-          item.imgURL = '/public/images/creditInformation/filed.png';
-          item.fileURL = item.imgURL;
+          if(item.downloadURL){
+            item.size = item.originFileObj.size;
+            item.downloadURL = item.downloadURL;
+            item.fileURL = item.downloadURL;
+            item.imgURL = '/public/images/creditInformation/filed.png';
+          }
+          else{
+            item.size = item.originFileObj.size;
+            item.downloadURL = item.imgURL;
+            item.fileURL = item.imgURL;
+            item.imgURL = '/public/images/creditInformation/filed.png';
+          }
         }
       }
     });
@@ -380,7 +358,29 @@ export default class CreditInformationForm extends BaseComponent {
     );
   }
 
+  //移除文件时调用
+  onRemove(info) {
 
+    var arr = this.state.fileList;
+    if(this.state.flowFlag == 1){
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].downloadURL == info.downloadURL) {
+          arr.splice(i, 1);
+          i--;
+        }
+      }
+    }else{
+      Toast.show({
+        type: 'help',
+        content: "不能删除文件",
+      });
+    }
+    this.setState({
+      fileList: arr,
+    });
+  }
+
+  //验证是否为不一致字段
   checkFiled = (str, key) => {
     if (str == 'input') {
       if (this.state.difflist.length > 0) {
@@ -401,21 +401,21 @@ export default class CreditInformationForm extends BaseComponent {
           if (this.state.difflist[i] == key) {
             if (key == 'loanAccountStatus') {
               return (
-                <Select state='error' size="large" placeholder="请选择" className="custom-input"
+                <Select style={styles.diff} size="large" placeholder="请选择" className="custom-input"
                         dataSource={this.state.dataList}/>);
             }
             return (
-              <Select state='error' size="large" placeholder="请选择" className="custom-input"
+              <Select style={styles.diff} size="large" placeholder="请选择" className="custom-input"
                       dataSource={this.state.opption}/>);
           }
         }
       }
       if (key == 'loanAccountStatus') {
         return (
-          <Select size="large" placeholder="请选择" className="custom-input"
+          <Select  size="large" placeholder="请选择" className="custom-input"
                   dataSource={this.state.dataList}/>);
       }
-      return (<Select size="large" placeholder="请选择" className="custom-input"
+      return (<Select  size="large" placeholder="请选择" className="custom-input"
                       dataSource={this.state.opption}/>);
 
     }
@@ -444,11 +444,11 @@ export default class CreditInformationForm extends BaseComponent {
             <div className="material-files-upload">
               <Upload
                 {...this.UPLOAD_CONFIG}
-                listType="text"
                 className='material-files-upload-upload'
                 fileList={fileList}
                 showUploadList={false}
                 url="/saas/file/upload"
+                disabled={this.state.flowFlag != 1}
                 onChange={this.handleFileChange.bind(this)}
               >
                 <div className="material-files-upload-button">
@@ -458,6 +458,7 @@ export default class CreditInformationForm extends BaseComponent {
               </Upload>
             </div>
             <ImageUpload
+              onRemove={this.onRemove.bind(this)}
               className='upload-picture  upload-picture-list'
               listType="picture-card"
               fileList={fileList}
@@ -1355,4 +1356,7 @@ const styles = {
     hegiht: '120px',
     maxWidth: '780px',
   },
+  diff :{
+    border: "red 1px solid",
+  }
 };
