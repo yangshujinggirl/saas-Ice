@@ -173,7 +173,9 @@ export default class FormRenderFormRender extends Component {
               rules: [{
                 required: el.isRequired,
                 message: '请选择' + el.label,
-              }, { validator: this.specialValidateHandler.bind(this, this.props.field.getValue('borrowerIdType')) }],
+              },
+                // { validator: this.specialValidateHandler.bind(this, this.props.field.getValue('borrowerIdType')) }],
+              ],
             })}
           />
         </FormItem>
