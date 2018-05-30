@@ -188,7 +188,7 @@ export default class Chanpinchengshu extends Component {
 		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
 		if (b) {
-			callback('最小期限不能是小数')
+			callback('最大期限不能是小数')
 		}
 		for (var i = 0; i < items.length - 1; i++) {
 			for (var j = i + 1; j < items.length; j++) {

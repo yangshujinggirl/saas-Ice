@@ -158,9 +158,20 @@ export default class TIqianhuankanfangshi extends Component {
       callback('违约金比例必填');
       return;
     }
-    if (value < 0 || value > 100) {
-      callback('违约金比例范围0～100')
+    if (value < 0) {
+      callback('违约金比例必须大于0')
     }
+    if(value >=100000){
+      callback('违约金比例不能大于100000')
+    }
+    //保留两位小数
+		var dot = value.indexOf(".");
+		if (dot != -1) {
+			var dotCnt = value.substring(dot + 1, value.length);
+			if (dotCnt.length > 2) {
+				callback('小数范围是两位');
+			}
+		}
     callback()
   }
   renderCell1 = (value, index, record, context) => {
