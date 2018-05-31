@@ -166,16 +166,18 @@ export default class Deepstream extends Component {
                 break;
         }
         if (music&&listNum) {
-            video = <audio src = 'https://lx-static.cn-bj.ufileos.com/lib/audio/interview-mp3.mp3' autoPlay loop id='audio'></audio>
+            video = <audio src='https://lx-static.cn-bj.ufileos.com/lib/audio/interview-mp3.mp3' autoPlay loop id='audio'></audio>;
         } else {
-            video = ''
+            video = '';
+            interview = <span>&#xe67e;</span>;
         }
         return (
             <div className='pch-interview-deep'>
                 {/* 面签提示音 */}
                 {video}
-                <div className='icon'>
-                    {this.state.music ? interview : listening}
+                <div className='icon'>  
+                    {/* {interview} */}
+                    <span>&#xe67e;</span> 
                     <span className='pch-interview-num'>{listNum}</span>
                 </div>
               {

@@ -96,18 +96,27 @@ class Bind extends BaseApp {
     let arrayData = [];
     let { selectedRow, dataSourceRight } = this.state;
     let totalData = [...selectedRow,...dataSourceRight];
+
     //去重
-    for(var j=0; j<totalData.length; j++) {
-      var flag = true;
-      for(var i=0; i<arrayData.length;i++) {
-        if(arrayData[i].id == totalData[j].id ) {
-          flag = false;
-        }
-      }
-      if(flag) {
+    var hash = {};
+    for (var i = 0, elem; totalData[i]&&(elem = totalData[i].id) != null; i++) {
+      if (!hash[elem]) {
         arrayData.push(totalData[i]);
+        hash[elem] = true;
       }
     }
+
+    // for(var j=0; j<totalData.length; j++) {
+    //   var flag = true;
+    //   for(var i=0; i<arrayData.length;i++) {
+    //     if(arrayData[i].productCode == totalData[j].productCode ) {
+    //       flag = false;
+    //     }
+    //   }
+    //   if(flag) {
+    //     arrayData.push(totalData[i]);
+    //   }
+    // }
 
     let arra = [...arrayData];
     this.setState({
@@ -133,7 +142,7 @@ class Bind extends BaseApp {
          id: ele.productCode
        }
      ));
-     let selectedRow=[...this.state.selectedRow,...records];
+     let selectedRow=[...records];
      this.setState({
        selectedRow
      })

@@ -167,31 +167,34 @@ export default class Header extends PureComponent {
           {/* Header 右侧内容块 */}
           <div className="ice-layout-header-right">
             {identityList && identityList.length > 0 && (
-              <UserPanel
-                offset={[0, 11]}
-                size={20}
-                shape="circle"
-                userName={"切换身份:"+organizaName}
-                style={{
-                  marginRight: 20
-                }}>
-                <div>
-                  <Menu style={{
-                    minWidth: 120,
-                    boxShadow: '0 0 2px #ccc'
+              <div>
+                <div style={{ float: 'left', lineHeight: '20px', height: '20px' }}>切换身份:</div>
+                <UserPanel
+                  offset={[0, 11]}
+                  size={20}
+                  shape="circle"
+                  userName={organizaName}
+                  style={{
+                    marginRight: 20,
                   }}>
-                    {identityList.map((item, i) => {
-                      return (
-                        <Menu.Item key={i}>
-                          <a href="#" onClick={this.changeIdentity.bind(this, item.id)}>
-                            {item.organizationName}
-                          </a>
-                        </Menu.Item>
-                      );
-                    })}
-                  </Menu>
-                </div>
-              </UserPanel>)}
+                  <div>
+                    <Menu style={{
+                      minWidth: 120,
+                      boxShadow: '0 0 2px #ccc',
+                    }}>
+                      {identityList.map((item, i) => {
+                        return (
+                          <Menu.Item key={i}>
+                            <a href="#" onClick={this.changeIdentity.bind(this, item.id)}>
+                              {item.organizationName}
+                            </a>
+                          </Menu.Item>
+                        );
+                      })}
+                    </Menu>
+                  </div>
+                </UserPanel>
+              </div>)}
             <UserPanel
               offset={[0, 11]}
               size={20}

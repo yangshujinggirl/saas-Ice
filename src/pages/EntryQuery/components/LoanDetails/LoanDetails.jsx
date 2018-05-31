@@ -99,7 +99,7 @@ export default class LoanDetails extends Component {
     let {actions} = this.props;
     actions.getDetail({
       id:this.props.params.id,
-      step:1
+      // step:1
     });
     // this.props.updateBindingData('details', {
     //   data:this.queryCache ,

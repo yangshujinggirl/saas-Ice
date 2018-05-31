@@ -100,8 +100,6 @@ export const save = (data) => {
         });
       })
       .catch((ex) => {
-        console.log(ex)
-        alert(ex)
         Feedback.toast.show({
           type: 'error',
           content: ex.msg,

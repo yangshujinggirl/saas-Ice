@@ -96,17 +96,17 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
       }
 
       let formatArr = format.split(' ');
-      formatArr.map((item) => {
-        if(item.indexOf('-') != -1){
-          value = value.concat(item.split('-'));
-        } else if(item.indexOf(':') != -1){
-          value = value.concat(item.split(':'));
-        }else{
-          value.push(item);
-        }
-      })
+      // formatArr.map((item) => {
+      //   if(item.indexOf('-') != -1){
+      //     value = value.concat(item.split('-'));
+      //   } else if(item.indexOf(':') != -1){
+      //     value = value.concat(item.split(':'));
+      //   }else{
+      //     value.push(item);
+      //   }
+      // })
 
-      return value;
+      return formatArr;
     }
 
     /**
@@ -119,35 +119,43 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
       let datePart = [];
       let timePart = [];
 
-      if(str.indexOf('yyyy') != -1){
-        datePart.push('yyyy');
+      // if(str.indexOf('yyyy') != -1){
+      //   datePart.push('yyyy');
+      // }
+      // if(str.indexOf('MM') != -1){
+      //   datePart.push('MM');
+      // }
+      // if(str.indexOf('dd') != -1){
+      //   datePart.push('dd');
+      // }
+      //
+      // if(str.indexOf('HH') != -1){
+      //   timePart.push('HH');
+      // }
+      // if(str.indexOf('mm') != -1){
+      //   timePart.push('mm');
+      // }
+      // if(str.indexOf('ss') != -1){
+      //   timePart.push('ss');
+      // }
+      if(str.indexOf('yyyy-MM-dd') != -1){
+        datePart.push('yyyy-MM-dd');
       }
-      if(str.indexOf('MM') != -1){
-        datePart.push('MM');
-      }
-      if(str.indexOf('dd') != -1){
-        datePart.push('dd');
-      }
-
-      if(str.indexOf('HH') != -1){
-        timePart.push('HH');
-      }
-      if(str.indexOf('mm') != -1){
-        timePart.push('mm');
-      }
-      if(str.indexOf('ss') != -1){
-        timePart.push('ss');
+      if(str.indexOf('HH:mm:ss') != -1){
+        timePart.push('HH:mm:ss');
       }
 
       let result = [];
 
       if(datePart.length > 0){
-        result.push(datePart.join('-'));
+        // result.push(datePart.join('-'));
+        result.push(datePart);
       }
       if(timePart.length > 0){
-        result.push(timePart.join(':'));
+        // result.push(timePart.join(':'));
+        result.push(timePart);
       }
-
+      console.log(result)
       this.props.changeFormData({
           dateFormat: result.join(' ')
       })
@@ -192,14 +200,15 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     }
 
     render() {
-        
+
 
         // 添加自定义字段，选择下拉框，下拉框输入值的时候触发的函数
         const handleSelect = (index, value) => {
             let data = this.props.data;
             data.options[index] = {
                 label: value,
-                value: value + index
+                // value: value + index
+                value: value
             };
 
             this.props.changeFormData({
@@ -383,7 +392,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                                                               </div>
                                                           </div>
                                                       )
-                                                  
+
                                                   })}
                                              </div> : ''}
                     {this.showDateForm() ?
@@ -391,6 +400,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                          <label htmlFor="" className='marr10'>
                              日期格式
                          </label>
+
                          <CheckboxGroup value={this.getDateValue()} dataSource={this.DATE_FORMATS} onChange={this.changeDate} />
                      </div> : ""}
                 </div>
