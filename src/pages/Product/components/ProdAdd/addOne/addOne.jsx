@@ -276,7 +276,9 @@ export default class addOne extends BaseCondition {
 				}
 			})
 
-
+			if(value.repaymentMethodsSetting.length==0){
+			 return	ProductReq.tipError('至少选择一中还款方式！')
+			}
 			if (!boolean) return
 
 			let AllValue = this.AllValue(value);
