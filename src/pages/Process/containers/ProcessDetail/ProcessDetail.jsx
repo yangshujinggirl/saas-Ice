@@ -110,6 +110,7 @@ export default class ProcessDetail extends Component {
      */
     changeView(view, item) {
         console.log('changeView', view);
+        // console.log('changeViewitem', item);
         let { actions, formData = {} } = this.props;
 
         if(!view || typeof view != 'string'){
@@ -136,7 +137,7 @@ export default class ProcessDetail extends Component {
                     return;
                 }
                 
-                actions.getPageDetail(item.pageId);
+                actions.getPageDetail(item.pageId,item.taskOrder);
                 this.setState({
                     pageId: item.pageId,
                 });

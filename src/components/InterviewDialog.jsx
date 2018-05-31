@@ -485,8 +485,8 @@ export default class InterviwDialog extends Component {
             })
             _this.props.musicState(true);
             // this.showConnectedUI(obj.type);
-            this.clearCallTimer();
-            this._clearRingPlay();
+            // _this.clearCallTimer();
+            _this._clearRingPlay();
         }
         changeState = changeState.bind(_this);
 
