@@ -62,10 +62,10 @@ export default class ProcessAuthEdit extends BaseApp {
                     //     selectedRowTwo
                     // });
                     let selectedRowTwo = records;
-                    
+
                     records.map((item) => {
                         let result = [];
-                            result.push(item.id);
+                        result.push(item.id);
                         item.selectedRoles = result;
                     })
 
@@ -103,12 +103,12 @@ export default class ProcessAuthEdit extends BaseApp {
 
     //确定
     submit() {
-        let {params,actions} = this.props;
+        let { params, actions } = this.props;
         let id = params.id
         let dataArry = this.state.dataSourceRight;
         // let datatemp = [];
-        actions.saveProductAuth({'productScopes':dataArry},id)
-        
+        actions.saveProductAuth({ 'productScopes': dataArry }, id)
+
     }
     getRolesFromData(data, result) {
         data.map(item => {
@@ -118,12 +118,12 @@ export default class ProcessAuthEdit extends BaseApp {
                         result.push({
                             // orgId: item.id,
                             // orgName: item.name,
-                            
-                            relatedPathName:item.name+'-'+role.name,
+
+                            relatedPathName: item.name + '-' + role.name,
                             relatedId: role.id,
                             relatedName: role.name,
-                            relatedPath:item.path,
-                            type:"ORG"
+                            relatedPath: item.path,
+                            type: "ORG"
                         })
                     }
                 })
@@ -137,18 +137,17 @@ export default class ProcessAuthEdit extends BaseApp {
 
     getSpFromData(data, result) {
         data.map(item => {
-            item.map((em,i)=>{
+            item.map((em, i) => {
                 if (em.selectedRoles && em.selectedRoles.length > 0) {
-                            result.push({
-                                // orgId: item.id,
-                                // orgName: item.name,
-                                relatedPathName:em.name,
-                                relatedId: em.id,
-                                relatedName: em.name,
-                                relatedPath:em.path,
-                                relatedPath:'/'+em.id+'/',
-                                type:"SP"
-                            })
+                    result.push({
+                        // orgId: item.id,
+                        // orgName: item.name,
+                        relatedPathName: em.name,
+                        relatedId: em.id,
+                        relatedName: em.name,
+                        relatedPath: '/' + em.id + '/',
+                        type: "SP"
+                    })
                 }
             })
 
@@ -196,7 +195,7 @@ export default class ProcessAuthEdit extends BaseApp {
         })
     }
 
-    getAKey(data) { 
+    getAKey(data) {
         let ret = [];
 
         // ret.push(data.orgId);
@@ -226,13 +225,13 @@ export default class ProcessAuthEdit extends BaseApp {
     renderLevel(record) {
         // return record.name ? record.name:record.departmentName ;
         let result = [];
-        record.roles && record.roles.length >0 ?
-        record.roles.map((item) => {
-            result.push({
-                value: item.id,
-                label: item.name
-            })
-        }) : ''
+        record.roles && record.roles.length > 0 ?
+            record.roles.map((item) => {
+                result.push({
+                    value: item.id,
+                    label: item.name
+                })
+            }) : ''
         return (
             <div style={{
                 padding: 12
@@ -281,7 +280,7 @@ export default class ProcessAuthEdit extends BaseApp {
     render() {
         console.log(this.props)
         const { dataSourceRight, current } = this.state;
-        const {  orgsData = {} } = this.props;
+        const { orgsData = {} } = this.props;
         let deprtments = [];
         if (orgsData.deprtments) {
             if (typeof orgsData.deprtments == 'object') {
@@ -306,7 +305,7 @@ export default class ProcessAuthEdit extends BaseApp {
                             <Table dataSource={orgsData.otherOrgs} isTree rowSelection={this.state.rowSelectionTwo}>
                                 <Table.Column title="SP" dataIndex="name" />
                             </Table>
-                            
+
                         </div>
                         <div className="btn-wrap">
                             <Button className="add-btn" onClick={this.addItem.bind(this)}>

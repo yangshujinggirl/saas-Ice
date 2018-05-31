@@ -57,9 +57,6 @@ export default class addTwo extends Component {
    constructor(props) {
       super(props);
       this.state = {
-        condition:{
-          productScopes:[]
-        },
          value: {
             productScopes: [],
             productScopes2: []
@@ -103,7 +100,6 @@ export default class addTwo extends Component {
       this.getCarList(value, this.state.value.name)
    }
 
-
    getCarList(type, name) {
       let { actions } = this.props;
       actions.addTwoList(type, name);
@@ -132,7 +128,6 @@ export default class addTwo extends Component {
    }
    //查询内容
    changeGroupName(name) {
-
       let value = this.state.value;
       value.name2 = name;
       this.setState({ value: value });
@@ -179,7 +174,7 @@ export default class addTwo extends Component {
                               dataSource={list[1]}
                               defaultValue={'10'}
                               value={this.state.type2}
-                              onChange={this.onNestChange}
+                              onChange={this.onNestChange} 
                            />
                         </Col>
                      </Row>

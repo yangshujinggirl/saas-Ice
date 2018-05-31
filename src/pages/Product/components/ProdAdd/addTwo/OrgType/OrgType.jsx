@@ -69,16 +69,18 @@ export default class OrgType extends Component {
         this.setState({
           recordArray,
           selectDate: arrayRightData
+          
         })
+        
       }
     };
 
   }
   componentWillMount() {
-    let { actions, GroupData } = this.props;
+    console.log(this.props)
+    let { actions } = this.props;
     let type = this.props.type;
     this.state.type = type
-    debugger
     actions.getGroupList(type,'')
   }
 
@@ -102,7 +104,7 @@ export default class OrgType extends Component {
     getGroupList(type, name);
   }
   onFormChange(value) {
-    this.props.changeCarName && this.props.changeGroupName(value.name);
+    this.props.changeGroupName && this.props.changeGroupName(value.name);
     this.setState({
       value
     })
@@ -168,7 +170,7 @@ export default class OrgType extends Component {
   };
   //分页
   changePage = (currentPage) => {
-    let { actions, GroupData } = this.props;
+    let { actions } = this.props;
     let { name2 } = this.state.value;
     let type = this.props.type;
     this.state.type = val
@@ -221,13 +223,13 @@ export default class OrgType extends Component {
                 <Table.Column title="名称" dataIndex="agencyName" width={200} />
               </Table>
               <div className='pagination'>
-                {/* <Pagination
+                <Pagination
                   current={page}
                   pageSize={limit}
-                  total={total}
+                  total={totalCount}
                   onChange={this.changePage}
                   shape="arrow-only"
-                /> */}
+                />
               </div>
             </div>
             <div className="btn-wrap">
