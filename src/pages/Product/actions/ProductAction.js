@@ -310,11 +310,24 @@ export const fileEditSave = (value, id) => {
   }
 }
 
+//品牌、车型、车系
 export const addTwoList = (data, formData, page) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.addTwoList(data, formData, page).then((res) => {
       dispatch(fetchSuccess({ addTwoData: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//集团、渠道、厅店
+export const getGroupList = (data, formData, page) =>{
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.getGroupList(data, formData, page).then((res) => {
+      dispatch(fetchSuccess({ groupData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })

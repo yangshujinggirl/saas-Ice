@@ -58,10 +58,10 @@ export default class ProdDetail extends Component {
   }
 
   //品牌／车型／车系
-  carData=(productScopes)=>{
-    let tempArr =[];
-    productScopes.map((item,i)=>{
-      if(item.type==='CARS'){
+  carData = (productScopes) => {
+    let tempArr = [];
+    productScopes.map((item, i) => {
+      if (item.type === 'CARS') {
         tempArr.push(item)
       }
     })
@@ -72,12 +72,35 @@ export default class ProdDetail extends Component {
     let itemPath = record.relatedPath.split('/');
     return itemPath.length == 3 ? '品牌' : (itemPath.length == 4 ? '车系' : '车型')
   }
-
+  //集团／渠道／厅店
+  groupData = (productScopes) =>{
+    let tempArr = [];
+    productScopes.map((item, i) => {
+      if (item.type === 'GROUP') {
+        tempArr.push(item)
+      }
+    })
+    return tempArr
+  }
+  relatedGroupType = (value, index, record) => {
+    let itemPath = record.relatedPath.split('/');
+    return itemPath.length == 3 ? '集团' : (itemPath.length == 4 ? '渠道' : '厅店')
+  }
   //权限
-  authData=(productScopes)=>{
-    let tempArr =[];
-    productScopes.map((item,i)=>{
-      if(item.type==='ORG'){
+  authData = (productScopes) => {
+    let tempArr = [];
+    productScopes.map((item, i) => {
+      if (item.type === 'ORG') {
+        tempArr.push(item)
+      }
+    })
+    return tempArr
+  }
+  //SP
+  spData = (productScopes) => {
+    let tempArr = [];
+    productScopes.map((item, i) => {
+      if (item.type === 'SP') {
         tempArr.push(item)
       }
     })
@@ -99,18 +122,18 @@ export default class ProdDetail extends Component {
   contractTemplatesShow = (data) => {
     let temp = ''
     if (data && data.length > 1) {
-      for(var i =0;i<data.length;i++){
-        if(i<data.length-1){
+      for (var i = 0; i < data.length; i++) {
+        if (i < data.length - 1) {
           temp += data[i].templateName + ' 、 '
-        }else{
+        } else {
           temp += data[i].templateName
         }
       }
     }
-    if(data&&data.length==1){
-        temp += data[0].templateName
+    if (data && data.length == 1) {
+      temp += data[0].templateName
     }
-    
+
     return temp;
   }
   render() {
@@ -121,7 +144,7 @@ export default class ProdDetail extends Component {
     let prepaymentSetting = this.props.formData.prepaymentSetting || [];//提前还款设置
     let productScopes = this.props.formData.productScopes || []
     let productCollectionName = this.props.formData.productCollectionName   //材料收取清单
-    let {contractTemplates=[]} = this.props.formData   //合同模板
+    let { contractTemplates = [] } = this.props.formData   //合同模板
     return (
       <IceFormBinderWrapper
         value={this.props.value}
@@ -170,7 +193,7 @@ export default class ProdDetail extends Component {
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>状态：</label>
                   {/* <span >{product.status == '1' ? '生效' : (product.status == '0' ? '关闭' : '失效')}</span> */}
-                  <span >{product.status == '1' ? '生效' : '关闭'}</span> 
+                  <span >{product.status == '1' ? '生效' : '关闭'}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>尾款产品：</label>
@@ -393,6 +416,21 @@ export default class ProdDetail extends Component {
               </Table>
             </div>
             <legend className="pch-legend" style={{ marginTop: "30px" }}>
+              <span className="pch-legend-legline"></span>按集团/渠道/展厅
+            </legend>
+            <div className="pch-condition">
+              <div className="table-title">按集团/渠道/展厅</div>
+              <Table
+                dataSource={this.groupData(productScopes)}
+                hasHeader
+                className="table"
+                primaryKey="id"
+              >
+                <Table.Column title="类型" cell={this.relatedGroupType} />
+                <Table.Column title="名称" dataIndex="relatedPathName" />
+              </Table>
+            </div>
+            <legend className="pch-legend" style={{ marginTop: "30px" }}>
               <span className="pch-legend-legline"></span>权限编辑
             </legend>
             <div className="pch-condition">
@@ -405,8 +443,17 @@ export default class ProdDetail extends Component {
               >
                 <Table.Column title="权限" dataIndex="relatedPathName" />
               </Table>
+              <div className="table-height"></div>
+              <Table
+                dataSource={this.spData(productScopes)}
+                hasHeader
+                className="table"
+                primaryKey="id"
+              >
+                <Table.Column title="SP" dataIndex="relatedPathName" />
+              </Table>
             </div>
-            
+
             <legend className="pch-legend" style={{ marginTop: "30px" }}>
               <span className="pch-legend-legline"></span>流程配置
             </legend>
@@ -416,7 +463,7 @@ export default class ProdDetail extends Component {
                   <label style={styles.filterTitle}>流程名称：</label>
                   <span >{product.processName}</span>
                 </Col>
-                
+
               </Row>
             </div>
             <legend className="pch-legend" style={{ marginTop: "30px" }}>

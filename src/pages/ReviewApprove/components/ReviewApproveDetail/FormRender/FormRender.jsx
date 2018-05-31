@@ -434,9 +434,8 @@ export default class FormRender extends Component {
               showTime
               style={{ width: '100%' }}
               {...init(el.name, {
-                initValue: el.value
-              }, {
-                rules: [{ required: true, message: el.label + '不能为空' }],
+                initValue: el.value,
+                rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
               })}
             />
           </FormItem>
@@ -451,9 +450,8 @@ export default class FormRender extends Component {
               disabled={el.isReadonly}
               style={{ width: '100%' }}
               {...init(el.name, {
-                initValue: el.value
-              }, {
-                rules: [{ required: true, message: el.label + '不能为空' }],
+                initValue: el.value,
+                rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
               })}
             />
           </FormItem>
@@ -467,9 +465,8 @@ export default class FormRender extends Component {
             format={'YYYY-MM-DD'}
             style={{ width: '100%' }}
             {...init(el.name, {
-              initValue: el.value
-            }, {
-              rules: [{ required: true, message: el.label + '不能为空' }],
+              initValue: el.value,
+              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
           />
         </FormItem>

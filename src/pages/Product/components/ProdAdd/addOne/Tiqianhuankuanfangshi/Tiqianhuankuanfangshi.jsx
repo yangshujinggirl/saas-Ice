@@ -97,6 +97,8 @@ export default class TIqianhuankanfangshi extends Component {
             },
             duration: 3000
           });
+        }else{
+          this.props.onChangeBoolean(true)
         }
       }
     }
@@ -136,6 +138,8 @@ export default class TIqianhuankanfangshi extends Component {
             },
             duration: 3000
           });
+        }else{
+          this.props.onChangeBoolean(true)
         }
       }
     }

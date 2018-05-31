@@ -147,7 +147,7 @@ export default class ProcessAuthEdit extends BaseApp {
                                 relatedName: em.name,
                                 relatedPath:em.path,
                                 relatedPath:'/'+em.id+'/',
-                                type:"ORG"
+                                type:"SP"
                             })
                 }
             })
@@ -196,7 +196,7 @@ export default class ProcessAuthEdit extends BaseApp {
         })
     }
 
-    getAKey(data) { //relatedId: role.id,relatedName: role.name,
+    getAKey(data) { 
         let ret = [];
 
         // ret.push(data.orgId);
@@ -226,12 +226,13 @@ export default class ProcessAuthEdit extends BaseApp {
     renderLevel(record) {
         // return record.name ? record.name:record.departmentName ;
         let result = [];
+        record.roles && record.roles.length >0 ?
         record.roles.map((item) => {
             result.push({
                 value: item.id,
                 label: item.name
             })
-        })
+        }) : ''
         return (
             <div style={{
                 padding: 12

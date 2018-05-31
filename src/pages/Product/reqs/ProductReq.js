@@ -226,7 +226,7 @@ class ProductReq extends CurdReq {
     }
   }
 
-  //addTwoList
+  //品牌、车型、车系
   addTwoList(type, name, page) {
     let condition = {
       name: name,
@@ -244,6 +244,24 @@ class ProductReq extends CurdReq {
     return super.fetchData(options);
   }
 
+
+  //集团、渠道、厅店
+  getGroupList(type, name, page){
+    let condition = {
+      name: name,
+      type: type,
+      page: page,
+    }
+    let options = {
+      // url: this._config.LOAN_HOST + '/product/data
+      url: this._config.LOAN_HOST + `/product/agency/type`,
+      // url:'/cars',
+      method: 'get',
+      contentType: 'application/x-www-form-urlencoded',
+      params: condition
+    }
+    return super.fetchData(options);
+  }
 
   //查询产品名称是否重复
   productNameRepeat(condition) {

@@ -36,8 +36,9 @@ export default class ProcessAuthDetails extends Component  {
         
     }
     orgDetails(value, index, record){
+        return `${record.orgName}-${record.roleName}`
         //record.roleName?`${record.orgName}-${record.departmentName}-${record.roleName}`:record.departmentName
-    return record.roleName==record.departmentName?record.roleName:(record.roleName?`${record.orgName}-${record.departmentName}-${record.roleName}`:`${record.departmentName}`)
+    // return record.roleName==record.departmentName?record.roleName:(record.roleName?`${record.orgName}-${record.departmentName}-${record.roleName}`:`${record.departmentName}`)
     }
     /**
      * 处理行列表中操作栏的点击事件
