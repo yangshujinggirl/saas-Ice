@@ -3,7 +3,7 @@ import { hashHistory } from 'react-router';
 import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
 import {
-    FormBinderWrapper as IceFormBinderWrapper, 
+    FormBinderWrapper as IceFormBinderWrapper,
     FormBinder as IceFormBinder,
     FormError as IceFormError
 } from '@icedesign/form-binder';
@@ -72,10 +72,12 @@ export default class ProcessFormItem extends Component {
      */
     handleCollectionChange(value, data){
         this.props.item.productCollectionId = value;
+        this.props.item.productCollectionName = data.label;
+        console.log(data)
     }
 
     render() {
-        const { index, item, selectData, setModule, changeView } = this.props;
+        const { index, item, selectData, setModule, changeView, taskItems } = this.props;
 
         return (
             <Row align="top" key={index} className="container-right-tabRow">
@@ -111,7 +113,7 @@ export default class ProcessFormItem extends Component {
                     {item.haveConfigPage ? <a className='pch-target' onClick={changeView.bind(this, PROCESS_VIEW.EDITPAGE, item)}>编辑</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="4">
-                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].productCollectionId`}><PchMaterialSelect onChange={this.handleCollectionChange.bind(this)} /></IceFormBinder></div> : '--'}
+                    {item.haveCollection == '1' ? <div className="pch-target-name"><IceFormBinder name={`taskItems[${index}].productCollectionId`}><PchMaterialSelect  defaultVisible ={taskItems[index].productCollectionId} onChange={this.handleCollectionChange.bind(this)} /></IceFormBinder></div> : '--'}
                     {item.haveCollection == '1' ? <a className="pch-target" href="/#/product/filelist" target="_blank">添加</a> : ''}
                 </Col>
                 <Col xxs="6" s="2" l="2">

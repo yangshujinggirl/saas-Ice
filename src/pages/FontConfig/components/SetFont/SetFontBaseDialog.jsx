@@ -28,29 +28,29 @@ export default class SetFontBaseDialog extends Component {
         // 日期的格式化
         this.DATE_FORMATS = [
             {
-                value: "yyyy",
-                label: "年"
+                value: "yyyy-MM-dd",
+                label: "年-月-日"
             },
+            // {
+            //     value: "MM",
+            //     label: "月"
+            // },
+            // {
+            //     value: "dd",
+            //     label: "日"
+            // },
             {
-                value: "MM",
-                label: "月"
+                value: "HH:mm:ss",
+                label: "时:分:秒"
             },
-            {
-                value: "dd",
-                label: "日"
-            },
-            {
-                value: "HH",
-                label: "时"
-            },
-            {
-                value: "mm",
-                label: "分"
-            },
-            {
-                value: "ss",
-                label: "秒"
-            }
+            // {
+            //     value: "mm",
+            //     label: "分"
+            // },
+            // {
+            //     value: "ss",
+            //     label: "秒"
+            // }
         ];
 
         // 弹框的底部按钮

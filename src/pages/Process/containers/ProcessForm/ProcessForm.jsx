@@ -256,6 +256,7 @@ export default class ProcessForm extends Component {
           values.id = this.props.params.id;
         }
       }
+      console.log(values)
 
       // this.props.actions.save(values);
       Req.save(values)

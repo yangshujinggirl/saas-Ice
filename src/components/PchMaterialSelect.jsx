@@ -22,8 +22,10 @@ export default class PchMaterialSelect extends BaseComponent {
     }
 
     render() {
+      console.log(this.props.defaultVisible)
         return (
             <Select
+                value ={this.props.defaultVisible}
                 showSearch
                 size="large"
                 dataSource={this.state.dataSource}
@@ -55,6 +57,7 @@ export default class PchMaterialSelect extends BaseComponent {
                         value: item.id.toString()
                     };
                 });
+                console.log(dataSource)
                 this.setState({
                     dataSource
                 });

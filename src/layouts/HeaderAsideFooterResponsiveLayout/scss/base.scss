@@ -1212,7 +1212,7 @@ body {
         border: 1px solid #e1e1e1;
         border-radius: 2px;
         background: #fff;
-        padding: 0 15px 10px;
+        padding: 0 15px 0;
         align-content: space-between;
         >li {
             display: flex;
@@ -1222,6 +1222,9 @@ body {
             >span {
                 flex: auto;
                 line-height: 40px;
+            }
+            li:last-child {
+                padding-bottom: 10x;
             }
         }
         .pch-interviw-answer {

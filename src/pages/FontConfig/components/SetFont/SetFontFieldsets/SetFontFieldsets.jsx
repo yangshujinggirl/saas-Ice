@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Dialog, Checkbox, Radio, Balloon, DatePicker, Select, CascaderSelect, Feedback } from '@icedesign/base';
+import { Button, Input, Dialog, Checkbox, Radio, Balloon, DatePicker, Select, CascaderSelect, Feedback,TimePicker } from '@icedesign/base';
 import cx from 'classnames';
 import FontConfigReq from './../../../reqs/FontConfigReq.js';
 import SetFontBaseDialog from '../SetFontBaseDialog';
@@ -151,6 +151,7 @@ class SetFontFieldsets extends Component {
      * @return {[type]}       [description]
      */
     handleRemoveElement = (index, inj) => {
+        console.log(index,inj)
         let id = this.props.id
         const newArr = Object.assign({}, this.props.resData);
         let deleteObj = newArr.fieldset[index].fields[inj];
@@ -213,6 +214,11 @@ class SetFontFieldsets extends Component {
                             content: data.msg
                         })
                     }
+                }).catch((error)=>{
+                  Dialog.alert({
+                    title: '提示',
+                    content: error.msg
+                  })
                 })
             }
         })
@@ -326,8 +332,17 @@ class SetFontFieldsets extends Component {
                     inputType = <Input size="large" placeholder="请输入" addonAfter={item.append} />
                     break;
                 case 'DATE':
-                    inputType = <RangePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
-                    break;
+                    if(item.dateFormat =='yyyy-MM-dd HH:mm:ss'){
+                      inputType = <DatePicker size="large"  showTime onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
+                      break;
+                    }else if(item.dateFormat =='HH:mm:ss'){
+                      inputType = <TimePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
+                      break;
+                    }else{
+                      inputType = <DatePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
+                      break;
+                    }
+
                 case 'SELECT':
                     inputType = <Select size="large" placeholder="请选择" dataSource={item.options} defaultValue={defaultValue} />
                     break;
@@ -455,7 +470,7 @@ class SetFontFieldsets extends Component {
                                                 rightActive={this.state.rightActive}
                                                 handleEditeCoce={handleEditeCoce.bind(this, item, index, inj)}
                                                 validaRequire={this.validaRequire.bind(this, index, inj)}
-                                                handleRemoveElement={handleEditeCoce.bind(this, item, index, inj)}>
+                                                handleRemoveElement={this.handleRemoveElement.bind(this, index)}>
                                                 {handleFixed(item)}
                                               </FieldsTwo>
                                           )

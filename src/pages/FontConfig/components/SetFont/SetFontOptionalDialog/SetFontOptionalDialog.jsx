@@ -39,6 +39,7 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
 
         let fileId = fields.id
         console.log(fields);
+        console.log(222);
         if (!fields.label.length) {
             Dialog.alert({
                 title: "提示",
