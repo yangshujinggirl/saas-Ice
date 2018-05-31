@@ -62,7 +62,7 @@ export default class ProcessAuthEdit extends BaseApp {
                     //     selectedRowTwo
                     // });
                     let selectedRowTwo = records;
-                    
+
                     records.map((item) => {
                         let result = [];
                             result.push(item.id);
@@ -108,7 +108,7 @@ export default class ProcessAuthEdit extends BaseApp {
         let dataArry = this.state.dataSourceRight;
         // let datatemp = [];
         actions.saveProductAuth({'productScopes':dataArry},id)
-        
+
     }
     getRolesFromData(data, result) {
         data.map(item => {
@@ -118,7 +118,7 @@ export default class ProcessAuthEdit extends BaseApp {
                         result.push({
                             // orgId: item.id,
                             // orgName: item.name,
-                            
+
                             relatedPathName:item.name+'-'+role.name,
                             relatedId: role.id,
                             relatedName: role.name,
@@ -306,7 +306,7 @@ export default class ProcessAuthEdit extends BaseApp {
                             <Table dataSource={orgsData.otherOrgs} isTree rowSelection={this.state.rowSelectionTwo}>
                                 <Table.Column title="SP" dataIndex="name" />
                             </Table>
-                            
+
                         </div>
                         <div className="btn-wrap">
                             <Button className="add-btn" onClick={this.addItem.bind(this)}>
