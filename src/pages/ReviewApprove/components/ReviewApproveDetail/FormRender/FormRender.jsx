@@ -164,6 +164,8 @@ export default class FormRender extends Component {
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
     const init = this.props.field.init;
+    const arr = [];
+    var disabled;
     // console.log(el)
     if (el.type == 'STRING') {
       // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
@@ -174,12 +176,13 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
-            maxLength={el.length?el.length:null}
+            maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
           />
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
@@ -200,7 +203,7 @@ export default class FormRender extends Component {
               value={el.value}
               disabled={el.isReadonly}
               placeholder={'请选择' + el.label}
-              style={{ width: '100%' }}
+              style={{ width: '90%' }}
               {...init(el.name, {
                 initValue: el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
@@ -208,7 +211,7 @@ export default class FormRender extends Component {
               // dataSource={ this.props.productList || []}
             >
             </Select>
-
+            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -219,7 +222,7 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
-            style={{ width: '100%' }}
+            style={{ width: '90%' }}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
@@ -236,7 +239,7 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
-            style={{ width: '100%' }}
+            style={{ width: '90%' }}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
@@ -244,6 +247,7 @@ export default class FormRender extends Component {
             dataSource={el.options}
           >
           </Select>
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
@@ -267,6 +271,7 @@ export default class FormRender extends Component {
                 ],
               })}
             />
+            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -278,12 +283,14 @@ export default class FormRender extends Component {
             disabled={el.isReadonly}
             placeholder={'请输入' + el.label}
             htmlType="number"
+            maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
             placeholder={'请输入' + el.label}
           />
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
@@ -307,6 +314,7 @@ export default class FormRender extends Component {
                 ],
               })}
             />
+            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -317,14 +325,16 @@ export default class FormRender extends Component {
             htmlType="number"
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
+            maxLength={el.length ? el.length : null}
             // defaultValue={el.value ? parseInt(el.value) : el.value}
             {...init(el.name, {
-              initValue: el.value ? parseInt(el.value) : '' ,
+              initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
               ],
             })}
           />
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
@@ -360,6 +370,7 @@ export default class FormRender extends Component {
             dataSource={el.options}
           >
           </RadioGroup>
+          <span className="append">{el.append}</span>
         </FormItem>);
         if (el.attached[value]) {
           el.attached[value].map((item, index) => {
@@ -385,6 +396,7 @@ export default class FormRender extends Component {
             })}
           >
           </RadioGroup>
+          <span className="append">{el.append}</span>
         </FormItem>);
       }
       return (Fields);
@@ -393,15 +405,15 @@ export default class FormRender extends Component {
       // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
 
       var str = el.value;
-      var arr1 =[];
+      var arr1 = [];
       if (str && str.indexOf(',') >= 0) {
         el.value = str.split(',');
       }
-      el.options.map(item=>{
-        if(item.isDefault){
-          arr1.push(item.value)
+      el.options.map(item => {
+        if (item.isDefault) {
+          arr1.push(item.value);
         }
-      })
+      });
 
       return (
 
@@ -419,43 +431,46 @@ export default class FormRender extends Component {
             dataSource={el.options}
           >
           </CheckboxGroup>
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
     else if (el.type == 'DATE') {
       // console.log(el.value)
       // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
-      if(el.dateFormat == 'yyyy-MM-dd HH:mm:ss'){
+      if (el.dateFormat == 'yyyy-MM-dd HH:mm:ss') {
         return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}  >
             <DatePicker
               disabled={el.isReadonly}
               showTime
-              style={{ width: '100%' }}
+              style={{ width: '90%' }}
               {...init(el.name, {
                 initValue: el.value,
                 rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
               })}
             />
+            <span className="append">{el.append}</span>
           </FormItem>
 
-        )
+        );
       }
-      else if(el.dateFormat == 'HH:mm:ss'){
-        return(
+      else if (el.dateFormat == 'HH:mm:ss') {
+        return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}  >
             <TimePicker
               disabled={el.isReadonly}
-              style={{ width: '100%' }}
+              style={{ width: '90%' }}
               {...init(el.name, {
                 initValue: el.value,
                 rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
               })}
             />
+            <span className="append">{el.append}</span>
           </FormItem>
-        )
+        );
       }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
@@ -463,12 +478,13 @@ export default class FormRender extends Component {
           <DatePicker
             disabled={el.isReadonly}
             format={'YYYY-MM-DD'}
-            style={{ width: '100%' }}
+            style={{ width: '90%' }}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
           />
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     } else if (el.type == 'TEXT') {
@@ -485,6 +501,7 @@ export default class FormRender extends Component {
                    rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
                  })}
           />
+          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
