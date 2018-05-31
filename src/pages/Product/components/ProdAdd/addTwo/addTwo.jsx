@@ -37,53 +37,56 @@ const list = [
    {
       value: "3",
       label: "车型"
-   }],
-   [{
-      value: "carGroup",
+   }], [{
+      value: "10",
       label: "集团",
-      disabled: false
    },
    {
-      value: "carChannel",
+      value: "30",
       label: "渠道"
    },
    {
-      value: "carStore",
+      value: "40",
       label: "厅店"
-   }
-   ],
+   }]
 ];
+
 export default class addTwo extends Component {
    static displayName = 'addTwo';
 
    constructor(props) {
       super(props);
       this.state = {
+        condition:{
+          productScopes:[]
+        },
          value: {
-            productScopes: []
+            productScopes: [],
+            productScopes2: []
          },
          type: '1',
          name: undefined,
-         value2: 'carGroup',
+         type2: '10',
+         name2: undefined,
          visible: false
       };
    }
 
    componentDidMount() {
-      console.log(this.props)
    }
    onsubmit = () => {
       let { actions, params } = this.props;
-      let { productScopes } = this.state.value;
+      let { productScopes,productScopes2 } = this.state.value;
       let id = params.id;
-      console.log(id)
       if (productScopes.length == 0) {
          Feedback.toast.show({
             type: 'error',
             content: '请选择品牌／车系／车型',
          });
       } else {
-         actions.productsave(this.state.value, id);
+        productScopes=productScopes.concat(productScopes2)
+        // console.log(productScopes)
+         actions.productsave({productScopes:productScopes}, id);
       }
    }
 
@@ -92,18 +95,14 @@ export default class addTwo extends Component {
          value
       })
    }
+   /* 品牌、车系、车型*/
    onTypeChange = (value) => {
       this.setState({
          type: value
       });
       this.getCarList(value, this.state.value.name)
    }
-   onNestChange = (value) => {
-      this.setState({
-         value2: value
-      });
-      console.log(value)
-   }
+
 
    getCarList(type, name) {
       let { actions } = this.props;
@@ -111,9 +110,31 @@ export default class addTwo extends Component {
    }
 
    changeCarName(name) {
-
       let value = this.state.value;
       value.name = name;
+      this.setState({ value: value });
+   }
+
+   /*
+   集团、渠道、展厅
+   */
+   //选择集团、渠道、展厅
+   onNestChange = (value) => {
+      this.setState({
+         type2: value
+      });
+      this.getGroupList(value, this.state.value.name2)
+   }
+   //集团、渠道、展厅数据展示
+   getGroupList(type, name) {
+      let { actions } = this.props;
+      actions.getGroupList(type, name);
+   }
+   //查询内容
+   changeGroupName(name) {
+
+      let value = this.state.value;
+      value.name2 = name;
       this.setState({ value: value });
    }
 
@@ -140,7 +161,7 @@ export default class addTwo extends Component {
                            />
                         </Col>
                      </Row>
-                     <Row wrap style={{ marginBottom: "30px" }} >
+                     <Row wrap className='marginBottom' >
                         <IceFormBinder
                            name="CarTypeBrand"
                         >
@@ -148,40 +169,28 @@ export default class addTwo extends Component {
                         </IceFormBinder>
                         <IceFormError name="CarTypeBrand" />
                      </Row>
-                     {/* <legend className="pch-legend">
-                           <span className="pch-legend-legline"></span>按集团/渠道/厅店
-                        </legend>
-                        <div className="pch-condition">
-                        <Row wrap >
-                              <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                              <RadioGroup
-                                 dataSource={list[1]}
-                                 defaultValue={"carGroup"}
-                                 value={this.state.value2}
-                                 onChange={this.onNestChange}
-                                 />
-                              </Col>
-                           </Row>
-
-                           <Row wrap style={{marginBottom:"30px"}} >
-                           <OrgType {...this.props} data={this.state.value2}/>
-                           </Row>
-                        </div> */}
                   </div>
+
                   <Title title='按集团/渠道/厅店' />
                   <div className="pch-form">
-                     <Row wrap >
+                     <Row wrap>
                         <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                            <RadioGroup
                               dataSource={list[1]}
-                              defaultValue={"carGroup"}
-                              value={this.state.value2}
+                              defaultValue={'10'}
+                              value={this.state.type2}
                               onChange={this.onNestChange}
                            />
                         </Col>
                      </Row>
-                     <Row wrap style={{ marginBottom: "30px" }} >
-                        {/* <OrgType {...this.props} data={this.state.value2} /> */}
+
+                     <Row wrap className='marginBottom' >
+                        <IceFormBinder
+                           name="GroupChannel"
+                        >
+                           <OrgType {...this.props} type={this.state.type2} GroupData={this.state.value} getGroupList={this.getGroupList.bind(this)} changeGroupName={this.changeGroupName.bind(this)}/>
+                        </IceFormBinder>
+                        <IceFormError name="GroupChannel" />
                      </Row>
                      <div className="next-btn-box pch-form-buttons">
                         <Button type="secondary" size="large" onClick={this.onsubmit}>下一步</Button>
@@ -193,8 +202,6 @@ export default class addTwo extends Component {
          </IceFormBinderWrapper>
       );
    }
-
-
 }
 
 const styles = {

@@ -164,21 +164,17 @@ export default class FormRender extends Component {
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
     const init = this.props.field.init;
-    const arr = [];
-    var disabled;
     // console.log(el)
     if (el.type == 'STRING') {
-      if (el.name == 'borrowerName') {
-        console.log(el.value);
-      }
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
-        <FormItem key={el.name} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
             defaultValue={el.value}
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
+            maxLength={el.length?el.length:null}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
@@ -187,10 +183,10 @@ export default class FormRender extends Component {
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.name == 'car.id') {
         return (
-          <FormItem key={el.name} className='item half' label={this.label(el.label)}
+          <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
             <Select
               hasClear
@@ -217,7 +213,7 @@ export default class FormRender extends Component {
         );
       }
       else if (el.name == 'productCode') {
-        return (<FormItem key={el.name} className='item' label={this.label(el.label)}
+        return (<FormItem key={el.id} className='item' label={this.label(el.label)}
                           {...formItemLayout}>
           <Select
             defaultValue={el.value}
@@ -234,7 +230,7 @@ export default class FormRender extends Component {
         </FormItem>);
       }
       return (
-        <FormItem key={el.name} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Select
             defaultValue={el.value}
@@ -252,14 +248,15 @@ export default class FormRender extends Component {
       );
     }
     else if (el.type == 'DECIMAL') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.minValue || el.maxValue) {
         return (
-          <FormItem key={el.name} className='item' label={this.label(el.label)}
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}>
             <NumberPicker
               step={0.01}
               disabled={el.isReadonly}
+              placeholder={'请输入' + el.label}
               // defaultValue={el.value ? parseInt(el.value) : el.value}
               min={el.minValue}
               max={el.maxValue}
@@ -274,11 +271,12 @@ export default class FormRender extends Component {
         );
       }
       return (
-        <FormItem key={el.name} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
             defaultValue={el.value}
             disabled={el.isReadonly}
+            placeholder={'请输入' + el.label}
             htmlType="number"
             {...init(el.name, {
               initValue: el.value,
@@ -290,7 +288,28 @@ export default class FormRender extends Component {
       );
     }
     else if (el.type == 'INT' || el.type == 'LONG') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      if (el.minValue || el.maxValue) {
+        return (
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}>
+            <NumberPicker
+              step={0.01}
+              disabled={el.isReadonly}
+              placeholder={'请输入' + el.label}
+              // defaultValue={el.value ? parseInt(el.value) : el.value}
+              min={el.minValue}
+              max={el.maxValue}
+              {...init(el.name, {
+                initValue: el.value ? parseFloat(el.value) : '',
+                rules: [
+                  { required: el.isRequired, message: el.label + '不能为空' },
+                ],
+              })}
+            />
+          </FormItem>
+        );
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -299,12 +318,10 @@ export default class FormRender extends Component {
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
             // defaultValue={el.value ? parseInt(el.value) : el.value}
-            min={el.minValue}
-            max={el.maxValue}
             {...init(el.name, {
               initValue: el.value ? parseInt(el.value) : '' ,
               rules: [
-                { required: el.isRequired, message: el.label + '不能为空' }
+                { required: el.isRequired, message: el.label + '不能为空' },
               ],
             })}
           />
@@ -312,7 +329,7 @@ export default class FormRender extends Component {
       );
     }
     else if (el.type == 'RADIO') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       var Fields = [];
       var Default = '';
       if (el.options) {
@@ -326,7 +343,7 @@ export default class FormRender extends Component {
       if (el.hasAttachedFields) {
         var value = '';
         value = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
-        Fields.push(<FormItem key={el.name} className='item single-line' label={this.label(el.label)}
+        Fields.push(<FormItem key={el.id} className='item single-line' label={this.label(el.label)}
                               {...formItemLayoutR}>
           <RadioGroup
             disabled={el.isReadonly}
@@ -356,7 +373,7 @@ export default class FormRender extends Component {
         setValue = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
         // console.log(Default)
         // console.log(setValue)
-        Fields.push(<FormItem key={el.name} style={{ width: '100%' }} label={this.label(el.label)}
+        Fields.push(<FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
                               {...formItemLayoutTEXT}>
           <RadioGroup
             defaultValue={setValue + ''}
@@ -373,22 +390,30 @@ export default class FormRender extends Component {
       return (Fields);
     } else if (el.type == 'CHECKBOX') {
       // console.log(el.value)
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+
       var str = el.value;
+      var arr1 =[];
       if (str && str.indexOf(',') >= 0) {
         el.value = str.split(',');
       }
+      el.options.map(item=>{
+        if(item.isDefault){
+          arr1.push(item.value)
+        }
+      })
+
       return (
 
-        <FormItem key={el.name} style={{ width: '100%' }} label={this.label(el.label)}
+        <FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
           <CheckboxGroup
             className='CheckboxGroup'
             style={{ width: '100%' }}
-            defaultValue={el.value}
+            // defaultValue={el.value}
             disabled={el.isReadonly}
             {...init(el.name, {
-              initValue: el.value,
+              initValue: el.value ? el.value : arr1,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
             dataSource={el.options}
@@ -399,30 +424,60 @@ export default class FormRender extends Component {
     }
     else if (el.type == 'DATE') {
       // console.log(el.value)
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      if(el.dateFormat == 'yyyy-MM-dd HH:mm:ss'){
+        return (
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}  >
+            <DatePicker
+              disabled={el.isReadonly}
+              showTime
+              style={{ width: '100%' }}
+              {...init(el.name, {
+                initValue: el.value,
+                rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+              })}
+            />
+          </FormItem>
+
+        )
+      }
+      else if(el.dateFormat == 'HH:mm:ss'){
+        return(
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}  >
+            <TimePicker
+              disabled={el.isReadonly}
+              style={{ width: '100%' }}
+              {...init(el.name, {
+                initValue: el.value,
+                rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+              })}
+            />
+          </FormItem>
+        )
+      }
       return (
-        <FormItem key={el.name} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
           <DatePicker
-            defaultValue={el.value}
             disabled={el.isReadonly}
             format={'YYYY-MM-DD'}
             style={{ width: '100%' }}
             {...init(el.name, {
               initValue: el.value,
-              getValueFromEvent: this.formater,
-            }, {
-              rules: [{ required: true, message: el.label + '不能为空' }],
+              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
           />
         </FormItem>
       );
     } else if (el.type == 'TEXT') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
-        <FormItem key={el.name} style={{ width: '90%' }} className='item' label={this.label(el.label)}
+        <FormItem key={el.id} style={{ width: '90%' }} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
           <Input multiple='6'
+                 placeholder={'请输入' + el.label}
                  style={{ width: '85%' }}
                  disabled={el.isReadonly}
                  {...init(el.name, {

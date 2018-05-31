@@ -95,6 +95,8 @@ export default class Chanpinchengshu extends Component {
 						},
 						duration: 3000
 					});
+				}else{
+					this.props.onChangeBoolean(true)
 				}
 			}
 		}
@@ -201,6 +203,8 @@ export default class Chanpinchengshu extends Component {
 						},
 						duration: 3000
 					});
+				}else{
+					this.props.onChangeBoolean(true)
 				}
 			}
 		}

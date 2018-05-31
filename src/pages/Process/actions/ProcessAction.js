@@ -43,6 +43,7 @@ function fetchFailed(error) {
 }
 
 function change(data) {
+  console.log(data)
   return {
     type: T.CHANGE,
     ...data,

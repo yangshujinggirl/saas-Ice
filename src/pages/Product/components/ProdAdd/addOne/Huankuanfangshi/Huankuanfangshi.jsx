@@ -65,6 +65,8 @@ export default class Huankuanfangshi extends Component {
 					},
 					duration: 2000
 				});
+			}else{
+				this.props.onChangeBoolean(true)
 			}
 		})
 
@@ -201,10 +203,10 @@ export default class Huankuanfangshi extends Component {
 			</div>
 		);
 	}
-
+	
 	render() {
 		let { styles, items } = this.props;
-
+		console.log(items)
 		return (
 			<div>
 				<div className="table-title">还款方式设置</div>

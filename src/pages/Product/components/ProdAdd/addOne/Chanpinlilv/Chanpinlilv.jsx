@@ -112,6 +112,8 @@ export default class Chanpinlilv extends Component {
                },
                duration: 2000
             });
+         }else{
+            this.props.onChangeBoolean(true)
          }
       })
    }
@@ -193,7 +195,7 @@ export default class Chanpinlilv extends Component {
                   dataSource={agencyData}
                   // onChange={::this.handleChange}
                   style={{ width: 200 }}
-                  autoWidth
+                  // autoWidth
                   onChange={this.changeValue.bind(this)}
                />
             </IceFormBinder>

@@ -1,6 +1,6 @@
 
 import { BaseColumn } from 'base';
-import { Moment } from "@icedesign/base";
+import { Button, Moment } from "@icedesign/base";
 import ProductTypeMap from '../../../base/constants/ProductTypeMap';
 /**
  * 定义列表的表头
@@ -28,7 +28,7 @@ class ContractEditColumn extends BaseColumn {
         super();
         this._columns = [{
             title: '贷款编号',
-            dataIndex: 'loanNo',
+            dataIndex: 'loanCode',
             width: 100
         }, {
             title: '合同编号',
@@ -98,15 +98,15 @@ class ContractEditColumn extends BaseColumn {
             cell: (value, index, record) => {
                 return (
                     <div className="contract-handle-btn-list-wrap">
-                        <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
                             编辑
-                        </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
+                        </Button>
+                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
                             取消
-                        </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
+                        </Button>
+                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
                             改纸质
-                        </button>
+                        </Button>
                     </div>
                     );
             }
