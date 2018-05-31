@@ -161,6 +161,7 @@
           box-sizing: border-box;
           border: 1px solid #F6DCA9;
           border-top: none;
+          overflow-y: scroll;
           ul{
             width: 150px;
             padding-left: 25px;
@@ -190,8 +191,8 @@
               cursor:pointer;
             }
           }
-
         }
+        .title::-webkit-scrollbar {display:none}
       }
       .rcontent-edito{
         float: right;
