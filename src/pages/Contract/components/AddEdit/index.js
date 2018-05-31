@@ -71,6 +71,8 @@ class AddEit extends BaseComponent {
   getCookieContract(contractContent) {
     contractContent = JSON.parse(contractContent);
     let { templateContent, templateName } = contractContent;
+    //解决编辑器内容第一个元素必须这P的问题
+    templateContent = templateContent.replace(/^<img/g,'<p></p><img');
     const blocksFromHTML = htmlToDraft(templateContent);
     const state = ContentState.createFromBlockArray(
       blocksFromHTML.contentBlocks,
@@ -97,6 +99,8 @@ class AddEit extends BaseComponent {
       if(templateContent=='') {
         return
       }
+      //解决编辑器内容第一个元素必须这P的问题
+      templateContent = templateContent.replace(/^<img/g,'<p></p><img');
       const blocksFromHTML = htmlToDraft(templateContent);
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
@@ -127,6 +131,8 @@ class AddEit extends BaseComponent {
       const { editorState } = this.state;
       let templateContent = draftToHtml(convertToRaw(editorState.getCurrentContent()));
       templateContent = templateContent.replace(/(<script[\s\S]*?<\/script>)/i,'');
+      //解决编辑器内容第一个元素必须这P的问题
+      templateContent = templateContent.replace(/^<img/g,'<p></p><img');
       this.refs.form.setter('templateContent',templateContent);
       //新增or编辑or复制
       if(this.props.params.id) {
@@ -187,36 +193,41 @@ class AddEit extends BaseComponent {
   }
   //上传图片
   uploadImageCallBack(file) {
-    return new Promise(
-      (resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/contract/contract/signed-paper-file/picture');
-        xhr.setRequestHeader('Authorization', `PCTOKEN ${Cookie.get('PCTOKEN')}`);
-        const data = new FormData();
-        data.append('file', file);
-        xhr.send(data);
-        xhr.addEventListener('load', () => {
-          const response = JSON.parse(xhr.responseText);
-          //处理返回数据
-          let formdata = {
-            data: {
-              link: response.data.fileUrl
-            }
+
+      return new Promise(
+        (resolve, reject) => {
+          if(file.size > 1024*1024*5) {
+            Toast.error('图片尺寸超过最大限制 5MB，请重新选择！');
+            return;
           }
-          resolve(formdata)
-        });
-        xhr.addEventListener('error', () => {
-          const error = JSON.parse(xhr.responseText);
-          reject(error);
-        });
-      }
-    );
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/contract/contract/signed-paper-file/picture');
+          xhr.setRequestHeader('Authorization', `PCTOKEN ${Cookie.get('PCTOKEN')}`);
+          const data = new FormData();
+          data.append('file', file);
+          xhr.send(data);
+          xhr.addEventListener('load', () => {
+            const response = JSON.parse(xhr.responseText);
+            //处理返回数据
+            let formdata = {
+              data: {
+                link: response.data.fileUrl
+              }
+            }
+            resolve(formdata)
+          });
+          xhr.addEventListener('error', () => {
+            const error = JSON.parse(xhr.responseText);
+            reject(error);
+          });
+        }
+      );
   }
 
   render() {
     const { editorState, value, moduleStatus } = this.state;
     const { templateContent, templateName } = this.state.value;
-    console.log(this.props)
+
     return(
       <IceContainer className="pch-container contract-edit-pages">
           <Title title="合同新增" />
