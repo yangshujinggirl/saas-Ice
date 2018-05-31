@@ -151,6 +151,7 @@ class SetFontFieldsets extends Component {
      * @return {[type]}       [description]
      */
     handleRemoveElement = (index, inj) => {
+        console.log(index,inj)
         let id = this.props.id
         const newArr = Object.assign({}, this.props.resData);
         let deleteObj = newArr.fieldset[index].fields[inj];
@@ -204,7 +205,6 @@ class SetFontFieldsets extends Component {
                 }
 
                 FontConfigReq.deleteModelCode(id, encodeURIComponent(deleteObj)).then((data) => {
-                  alert()
                     if (data.code == 200) {
                         newArr.fieldset.splice(index, 1);
                         this.props.changeData(newArr);
@@ -470,7 +470,7 @@ class SetFontFieldsets extends Component {
                                                 rightActive={this.state.rightActive}
                                                 handleEditeCoce={handleEditeCoce.bind(this, item, index, inj)}
                                                 validaRequire={this.validaRequire.bind(this, index, inj)}
-                                                handleRemoveElement={handleEditeCoce.bind(this, item, index, inj)}>
+                                                handleRemoveElement={this.handleRemoveElement.bind(this, index)}>
                                                 {handleFixed(item)}
                                               </FieldsTwo>
                                           )
