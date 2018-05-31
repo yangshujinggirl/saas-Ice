@@ -19,12 +19,6 @@ class Filter extends BaseCondition {
       value:{}
     }
   }
-  // handleSubmit() {
-  //   this.refs.form.validateAll((errors, values) => {
-  //     console.log(values)
-  //     this.props.onSubmit && this.props.onSubmit(values);
-  //   });
-  // }
 
   render() {
       return (
@@ -34,7 +28,7 @@ class Filter extends BaseCondition {
                 <Row wrap>
                   <Col {...this.colspans}>
                     <FormItem {...this.formItemLayout} label="贷款编号:">
-                      <IceFormBinder name="loanNo">
+                      <IceFormBinder name="loanCode">
                           <Input size="large" placeholder="请输入"/>
                       </IceFormBinder>
                     </FormItem>

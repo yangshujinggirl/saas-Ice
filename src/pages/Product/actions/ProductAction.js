@@ -58,7 +58,7 @@ export const prodActions = (condition) => {
       if (!res || res.code != 200) {
         data = {};
       }
-      
+
       // 添加一个默认全部选项
       data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.splice(0, 0, {
         value: 'ALL_CHOICE',
@@ -96,7 +96,7 @@ export const save = (data) => {
     Req.save(data).then((res) => {
       console.log(data)
       console.log(res)
-      
+
       if (!res || res.code != 200) return;
       hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
@@ -140,22 +140,22 @@ export const saveProductAdd = (id, data,processDefId,tempData) => {
     dispatch(fetchStart())
     Req.saveProductAdd(id, data,processDefId).then((res) => {
 
-      if (!res || res.code != 200){ 
+      if (!res || res.code != 200){
         return;
       }else{
 
         Req.saveContractTemplate(tempData).then((res)=>{
           console.log(tempData)
           if (!res || res.code != 200) return;
-          
+
           hashHistory.push('/product/search');
 
         }).catch((ex)=>{
             dispatch(fetchFailed(ex))
-          
+
         })
 
-        
+
       }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
