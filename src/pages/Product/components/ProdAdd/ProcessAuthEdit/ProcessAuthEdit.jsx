@@ -147,7 +147,7 @@ export default class ProcessAuthEdit extends BaseApp {
                                 relatedName: em.name,
                                 relatedPath:em.path,
                                 relatedPath:'/'+em.id+'/',
-                                type:"ORG"
+                                type:"SP"
                             })
                 }
             })
@@ -196,7 +196,7 @@ export default class ProcessAuthEdit extends BaseApp {
         })
     }
 
-    getAKey(data) { //relatedId: role.id,relatedName: role.name,
+    getAKey(data) { 
         let ret = [];
 
         // ret.push(data.orgId);
