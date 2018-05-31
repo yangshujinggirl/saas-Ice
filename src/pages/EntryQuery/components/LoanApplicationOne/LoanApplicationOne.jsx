@@ -266,7 +266,6 @@ class LoanApplicationOne extends Component {
       } else {
         Req.addLoanApi(this.queryCache)
           .then((res) => {
-            // console.log(res);
             if (res && res.code == 200) {
               hashHistory.push({
                 pathname: '/entryQuery/loanApplication/' + res.data.id,
@@ -274,7 +273,7 @@ class LoanApplicationOne extends Component {
             }
           })
           .catch((errors) => {
-            console.log(errors);
+            Req.tipError(errors.msg)
           });
       }
     });

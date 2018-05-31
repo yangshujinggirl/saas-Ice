@@ -283,7 +283,7 @@ class UserPanel extends Component {
     );
     if (hasChildren) {
       return (
-        <Dropdown offset={offset} align="tr br" trigger={trigger} onVisibleChange={this.handleDropChange}>
+        <Dropdown offset={offset} align="tr br" trigger={trigger} onVisibleChange={this.handleDropChange} style={{maxHeight:"70%",overflowY:"auto"}}>
           {this.props.children}
         </Dropdown>
       );
