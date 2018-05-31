@@ -207,7 +207,8 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             let data = this.props.data;
             data.options[index] = {
                 label: value,
-                value: value + index
+                // value: value + index
+                value: value
             };
 
             this.props.changeFormData({

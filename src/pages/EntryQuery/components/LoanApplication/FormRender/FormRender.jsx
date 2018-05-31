@@ -14,6 +14,7 @@ import {
   DatePicker,
   Table,
   Upload,
+  TimePicker
 } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
 import {
@@ -221,6 +222,7 @@ export default class FormRender extends Component {
             <NumberPicker
               step={0.01}
               disabled={el.isReadonly}
+              placeholder={'请输入' + el.label}
               // defaultValue={el.value ? parseInt(el.value) : el.value}
               min={el.minValue}
               max={el.maxValue}
@@ -240,6 +242,7 @@ export default class FormRender extends Component {
           <Input
             defaultValue={el.value}
             disabled={el.isReadonly}
+            placeholder={'请输入' + el.label}
             htmlType="number"
             {...init(el.name, {
               initValue: el.value,
@@ -259,6 +262,7 @@ export default class FormRender extends Component {
             <NumberPicker
               step={0.01}
               disabled={el.isReadonly}
+              placeholder={'请输入' + el.label}
               // defaultValue={el.value ? parseInt(el.value) : el.value}
               min={el.minValue}
               max={el.maxValue}
@@ -291,7 +295,7 @@ export default class FormRender extends Component {
       );
     }
     else if (el.type == 'RADIO') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       var Fields = [];
       var Default = '';
       if (el.options) {
@@ -353,10 +357,18 @@ export default class FormRender extends Component {
     } else if (el.type == 'CHECKBOX') {
       // console.log(el.value)
       // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+
       var str = el.value;
+      var arr1 =[];
       if (str && str.indexOf(',') >= 0) {
         el.value = str.split(',');
       }
+      el.options.map(item=>{
+        if(item.isDefault){
+          arr1.push(item.value)
+        }
+      })
+
       return (
 
         <FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
@@ -364,10 +376,10 @@ export default class FormRender extends Component {
           <CheckboxGroup
             className='CheckboxGroup'
             style={{ width: '100%' }}
-            defaultValue={el.value}
+            // defaultValue={el.value}
             disabled={el.isReadonly}
             {...init(el.name, {
-              initValue: el.value,
+              initValue: el.value ? el.value : arr1,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
             dataSource={el.options}
@@ -379,56 +391,40 @@ export default class FormRender extends Component {
     else if (el.type == 'DATE') {
       // console.log(el.value)
       // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
-      // if(el.dateFormat == 'yyyy'){
-      //   return (
-      //     <FormItem key={el.id} className='item' label={this.label(el.label)}
-      //               {...formItemLayout}  >
-      //       <YearPicker
-      //         disabled={el.isReadonly}
-      //         style={{ width: '100%' }}
-      //         {...init(el.name, {
-      //           initValue: el.value
-      //         }, {
-      //           rules: [{ required: true, message: el.label + '不能为空' }],
-      //         })}
-      //       />
-      //     </FormItem>
-      //
-      //   )
-      // }
-      // else if(el.dateFormat == 'yyyy-MM'){
-      //   return(
-      //     <FormItem key={el.id} className='item' label={this.label(el.label)}
-      //               {...formItemLayout}  >
-      //       <MonthPicker
-      //         disabled={el.isReadonly}
-      //         style={{ width: '100%' }}
-      //         {...init(el.name, {
-      //           initValue: el.value
-      //         }, {
-      //           rules: [{ required: true, message: el.label + '不能为空' }],
-      //         })}
-      //       />
-      //     </FormItem>
-      //   )
-      // }
-      // else if(el.dateFormat == 'yyyy-MM-dd'){
-      //   return(
-      //     <FormItem key={el.id} className='item' label={this.label(el.label)}
-      //               {...formItemLayout}  >
-      //       <DatePicker
-      //         disabled={el.isReadonly}
-      //         format={'YYYY-MM-DD'}
-      //         style={{ width: '100%' }}
-      //         {...init(el.name, {
-      //           initValue: el.value
-      //         }, {
-      //           rules: [{ required: true, message: el.label + '不能为空' }],
-      //         })}
-      //       />
-      //     </FormItem>
-      //   )
-      // }
+      if(el.dateFormat == 'yyyy-MM-dd HH:mm:ss'){
+        return (
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}  >
+            <DatePicker
+              disabled={el.isReadonly}
+              showTime
+              style={{ width: '100%' }}
+              {...init(el.name, {
+                initValue: el.value
+              }, {
+                rules: [{ required: true, message: el.label + '不能为空' }],
+              })}
+            />
+          </FormItem>
+
+        )
+      }
+      else if(el.dateFormat == 'HH:mm:ss'){
+        return(
+          <FormItem key={el.id} className='item' label={this.label(el.label)}
+                    {...formItemLayout}  >
+            <TimePicker
+              disabled={el.isReadonly}
+              style={{ width: '100%' }}
+              {...init(el.name, {
+                initValue: el.value
+              }, {
+                rules: [{ required: true, message: el.label + '不能为空' }],
+              })}
+            />
+          </FormItem>
+        )
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
@@ -445,11 +441,12 @@ export default class FormRender extends Component {
         </FormItem>
       );
     } else if (el.type == 'TEXT') {
-      el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
+      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
         <FormItem key={el.id} style={{ width: '90%' }} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
           <Input multiple='6'
+                 placeholder={'请输入' + el.label}
                  style={{ width: '85%' }}
                  disabled={el.isReadonly}
                  {...init(el.name, {

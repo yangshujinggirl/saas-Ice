@@ -12,12 +12,13 @@ import { browserHistory, hashHistory } from 'react-router';
 import FormRender from './FormRender';
 import './LoanApplication.scss';
 import Req from '../../reqs/EntryQueryReq';
+import { Feedback } from '@icedesign/base/index';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { DragUpload } = Upload;
-
+const Toast = Feedback.toast;
 export default class LoanApplication extends Component {
   static displayName = 'LoanApplication';
 
@@ -156,13 +157,15 @@ export default class LoanApplication extends Component {
       // this.queryCache.status = 'save'
       Req.saveFrom(this.queryCache)
         .then((res) => {
-          console.log(res);
-          if (res && res.code == 200) {
             hashHistory.push('/MaterialSubmit/' + this.props.params.id);
-          }
+
         })
         .catch((errors) => {
           console.log(errors);
+          Toast.show({
+            type: 'error',
+            content: errors.msg,
+          });
         });
     });
   };
