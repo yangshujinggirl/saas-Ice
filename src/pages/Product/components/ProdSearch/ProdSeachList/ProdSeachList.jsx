@@ -76,7 +76,7 @@ export default class ProdSeachList extends Component {
     let enable = record.enable
     console.log(enable)
     // 0=未生效；1=生效；2=失效  
-    return`${enable==1?(record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')):'草稿'}`
+    return`${enable == '1' ?(record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')):'草稿'}`
   }
   //金额范围
   moneyRange(value, index, record) {
@@ -144,6 +144,7 @@ Order=(dataIndex,order) =>{
     order:{desc}
 }
   render() {
+    debugger
     const { list=[], total, limit, page} = this.props.pageData;
     const { init, getValue } = this.field;
 
@@ -247,7 +248,7 @@ Order=(dataIndex,order) =>{
             isZebra={true}
             onSort={this.Order}
           >
-            <Table.Column title="产品编号" dataIndex="productCode" width={160} />
+            <Table.Column title="产品编号ss" dataIndex="productCode" width={160} />
             <Table.Column title="产品名称" dataIndex="name" width={200} />
             <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
             <Table.Column title="状态" cell={this.status} width={100} />
