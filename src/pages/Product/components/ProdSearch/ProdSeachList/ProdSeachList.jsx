@@ -73,8 +73,10 @@ export default class ProdSeachList extends Component {
   }
   //状态
   status(value, index, record){
-    // 0=未生效；1=生效；2=失效
-    return`${record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')}`
+    let enable = record.enable
+    console.log(enable)
+    // 0=未生效；1=生效；2=失效  
+    return`${enable==1?(record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')):'草稿'}`
   }
   //金额范围
   moneyRange(value, index, record) {
@@ -101,11 +103,13 @@ export default class ProdSeachList extends Component {
     return record.isRetainage? '是':'否'
   }
   renderOperator = (value, index, record) => {
+    let enable = record.enable
     return (
       <div>
         <button
           className="editbtn"
           onClick = {()=>this.editItem(record)}
+          style={{display: enable == 0 ? 'none' : ''}}
         >
           编辑</button>
         <button

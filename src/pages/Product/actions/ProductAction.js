@@ -94,8 +94,6 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
-      console.log(data)
-      console.log(res)
 
       if (!res || res.code != 200) return;
       hashHistory.push(`/product/addtwo/${res.data.id}`)

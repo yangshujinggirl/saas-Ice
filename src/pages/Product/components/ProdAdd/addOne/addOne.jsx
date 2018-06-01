@@ -63,7 +63,7 @@ export default class addOne extends BaseCondition {
 				effectiveDate: [],
 				isPermittedDiscount: undefined,
 				status: undefined,
-				enable: 1,
+				enable: 0,
 				isRetainage: undefined,
 				purposeOfLoan: ['BUY_CAR'],
 				guaranteeMethodType: ['CREDIT'],
@@ -223,7 +223,7 @@ export default class addOne extends BaseCondition {
 			
 			let AllValue = this.AllValue(value);
 			this.dataVerif(value);
-			//  this.props.actions.save(AllValue);
+			this.props.actions.save(AllValue);
 		});
 	};
 	componentDidMount() {
