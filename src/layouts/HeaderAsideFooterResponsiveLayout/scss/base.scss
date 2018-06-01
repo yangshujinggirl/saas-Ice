@@ -1227,8 +1227,8 @@ body {
                 flex: auto;
                 line-height: 40px;
             }
-            li:last-child {
-                padding-bottom: 10x;
+            &:last-child {
+                margin-bottom: 10px;
             }
         }
         .pch-interviw-answer {

@@ -154,8 +154,8 @@ export default class Deepstream extends Component {
 
     render() {
         let { dataList, listNum, interviewState, music } = this.state, interview, video,listening = <span>&#xe67e;</span>;
-        // console.log("datalist:", dataList)
-        console.log("music:",music)
+        console.log("datalist:", dataList)
+        // console.log("music:",music)
 
         switch (interviewState) {
             case 1:
@@ -181,7 +181,6 @@ export default class Deepstream extends Component {
                     <span className='pch-interview-num'>{listNum}</span>
                 </div>
               {
-                dataList[0]&&
                 <ul className='pch-interview-name'>
                   {
                     Object.keys(dataList).map((listname) => {

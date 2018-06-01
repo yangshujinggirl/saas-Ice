@@ -5,17 +5,40 @@ import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
 import { Icon } from "@icedesign/base";
 import IceImg from '@icedesign/img';
+import { Feedback } from '@icedesign/base';
 
+const Toast = Feedback.toast;
 class DropCell extends Component {
     constructor(props) {
         super(props);
+        this.imgMatching = true;
+    }
+    isImg(url) {
+        return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
+    }
+    componentDidUpdate(state) {
+        const { index, data, type, isOver, canDrop, connectDropTarget, onRemoveClick } = this.props;        
+        if(!this.imgMatching) {
+            Toast.show({
+                type: 'help',
+                content: '材料类型上传不正确～',
+            });
+            onRemoveClick.bind(this, index, type, data)();
+        }
     }
     render() {
-        const {index, data, type, isOver, canDrop, connectDropTarget, onRemoveClick} = this.props
-
+        const { index, data, type, isOver, canDrop, connectDropTarget, onRemoveClick } = this.props;
+            this.imgMatching = data.fileType.split(',').some(element => {
+            if (data.principalLender) {
+                return data.principalLender.includes(element);
+            } else {
+                return true;
+            }
+        });
+        console.log(data)
         return connectDropTarget(
             <div className={cx('material-file-cell', {'can-drop': canDrop})}>
-                {data[type] ? 
+                {data[type]!=undefined? 
                     <div className="material-file-content">
                         <Icon
                             className="material-file-cell-close"
@@ -26,7 +49,7 @@ class DropCell extends Component {
                          <IceImg
                              height={44}
                              width={44}
-                             src={data[type]} />
+                             src={this.isImg(data[type])? data[type]:'/public/images/creditInformation/filed.png'}/>
                     </div> : <div className="material-file-text">请拖动图片</div>}
             </div>
         )
@@ -36,6 +59,7 @@ class DropCell extends Component {
 const cardTarget = {
     canDrop(props, monitor) {
         // console.log('dropcell candrop', props);
+        console.log(props.data)
         if(props.data[props.type]){
             // 已经拖动过则不在拖放
             return false;
@@ -43,9 +67,9 @@ const cardTarget = {
         return true;
     },
     hover(props, monitor, component) {
-        console.log('DropCell hover', props, monitor.getItem())
+        console.log('DropCell hover', monitor.getItem())
         const {lastTargetIndex, id: sourceId} = monitor.getItem()
-        const {index: targetIndex, type} = props
+        const {index: targetIndex, type, data} = props
 
         // Don't replace items with themselves
         if (lastTargetIndex === targetIndex) {
@@ -55,10 +79,9 @@ const cardTarget = {
             // 已经拖动过则不在拖放
             return false;
         }
-
         // Time to actually perform the action
-        props.moveCard(targetIndex, sourceId, lastTargetIndex, type)
-
+        props.moveCard(targetIndex, sourceId, lastTargetIndex, type, data.fileType)
+        
         // Note: we're mutating the monitor item here!
         // Generally it's better to avoid mutations,
         // but it's good here for the sake of performance

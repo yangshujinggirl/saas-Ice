@@ -186,7 +186,8 @@ export default class addOne extends BaseCondition {
 	submit = () => {
 		this.formRef.validateAll((error, value) => {
 			console.log(error, value);
-			let {boolean} = this.state
+			let {boolean} = this.state;
+			let msg = '';
 			if (error) {
 				// 处理表单报错
 				return;
@@ -194,96 +195,35 @@ export default class addOne extends BaseCondition {
 			// 提交当前填写的数据
 			value.effectiveDate = value.time[0];
 			value.expirationDate = value.time[1]
-			// let boolean = true;
+			
 			//渠道不能重复
 			for (var i = 0; i < value.ratesSetting.length - 1; i++) {
 				for (var j = i + 1; j < value.ratesSetting.length; j++) {
 					if ((value.ratesSetting[i].channelTypes == value.ratesSetting[j].channelTypes)) {
-						Feedback.toast.show({
-							type: 'error',
-							content: '渠道不能重复！',
-						});
-						boolean = false
+						return	ProductReq.tipError('渠道不能重复！')
+				
 					}
 				}
 			}
 
-			// 执行年利率范围 和 最小、最大执行年利率比较
-			value.ratesSetting && value.ratesSetting.map((item) => {
-				if (item.interestRatesRangeMax) {
-					if (Number(value.interestRatesRangeMax) < item.interestRatesRangeMax) {
-						// item.interestRatesRangeMax = value.interestRatesRangeMax
-						Feedback.toast.show({
-							type: 'error',
-							content: '最大执行年利率不能大于执行年利率范围最大值',
-						});
-						boolean = false
-					}
-				}
-				if (item.interestRatesRangeMin) {
-					if (Number(value.interestRatesRangeMin) > item.interestRatesRangeMin) {
-						// item.interestRatesRangeMin = value.interestRatesRangeMin
-						Feedback.toast.show({
-							type: 'error',
-							content: '最小执行年利率不能小于执行年利率范围最小值',
-						});
-						boolean = false
-					}
-				}
-			})
-
+			//至少选择一种还款方式
+			if(value.repaymentMethodsSetting.length==0){
+				return	ProductReq.tipError('至少选择一中还款方式！')
+			 }
 			//还款方式不能重复 
 			for (var i = 0; i < value.repaymentMethodsSetting.length - 1; i++) {
 				for (var j = i + 1; j < value.repaymentMethodsSetting.length; j++) {
 					if ((value.repaymentMethodsSetting[i].repaymentMethods == value.repaymentMethodsSetting[j].repaymentMethods)) {
-						Feedback.toast.show({
-							type: 'error',
-							content: '还款方式不能重复！',
-						});
-						boolean = false
+						return	ProductReq.tipError('还款方式不能重复！')
 					}
 				}
 			}
+
+			if(!boolean) return	ProductReq.tipError(msg)
 			
-			//提前还款方式设置中的 最大、最小期限不能小于最早提前还款期数
-			value.prepaymentSetting && value.prepaymentSetting.map((item, i) => {
-				if (item.loanTermMin > Number(value.prepaymentPeriodsLimit) || item.loanTermMax > Number(value.prepaymentPeriodsLimit)) {
-					Feedback.toast.show({
-						type: 'error',
-						content: '最大、最小期限不能大于最早提前还款期数',
-					});
-					boolean = false
-				}
-			})
-
-			//额度期限设置中，最大、小不得超出期限范围区间，最大、小成数不超出贷款比率区间
-			value.percentageSetting && value.percentageSetting.map((item, i) => {
-				if (item.loanTermRangeMin < Number(value.loanTermRangeMin) || item.loanTermRangeMax > Number(value.loanTermRangeMax)) {
-					Feedback.toast.show({
-						type: 'error',
-						content: '产品成数的最大、最小期限不能超出期限范围',
-					});
-					boolean = false;
-				}
-			})
-			value.percentageSetting && value.percentageSetting.map((item, i) => {
-				if (item.loanPercentageMin < Number(value.loanPercentageMin) || item.loanPercentageMax > Number(value.loanPercentageMax)) {
-					Feedback.toast.show({
-						type: 'error',
-						content: '产品成数的最大、最小成数不能超出贷款比率范围',
-					});
-					boolean = false;
-				}
-			})
-
-			if(value.repaymentMethodsSetting.length==0){
-			 return	ProductReq.tipError('至少选择一中还款方式！')
-			}
-			if (!boolean) return
-
 			let AllValue = this.AllValue(value);
 			this.dataVerif(value);
-			 this.props.actions.save(AllValue);
+			//  this.props.actions.save(AllValue);
 		});
 	};
 	componentDidMount() {
@@ -436,6 +376,7 @@ export default class addOne extends BaseCondition {
 				<Tiqianhuankuanfangshi
 					styles={styles}
 					items={this.state.value.prepaymentSetting}
+					Obj={this.state.value.prepaymentPeriodsLimit}
 					addItem={this.addNewItem.bind(this, 'prepaymentSetting')}
 					removeItem={this.removeItem.bind(this, 'prepaymentSetting')}
 					boolean= {this.state.boolean}
@@ -580,8 +521,8 @@ export default class addOne extends BaseCondition {
 				callback('必须小于后者')
 			}
 		}
-		if( value >= 100000){
-			callback('期限不能超出五位')
+		if( Number(value) >= 10000){
+			callback('期限不能超出四位')
 		}
 		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
@@ -603,8 +544,8 @@ export default class addOne extends BaseCondition {
 		if (Number(value) < min.loanTermRangeMin) {
 			callback('必须大于前者')
 		}
-		if( value >= 100000){
-			callback('期限不能超出五位')
+		if( Number(value) >= 10000){
+			callback('期限不能超出四位')
 		}
 		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
@@ -1161,6 +1102,12 @@ export default class addOne extends BaseCondition {
 								<Chanpinchengshu
 									styles={styles}
 									items={this.state.value.percentageSetting}
+									Obj={{
+										loanTermRangeMin:this.state.value.loanTermRangeMin,
+										loanTermRangeMax:this.state.value.loanTermRangeMax,
+										loanPercentageMin: this.state.value.loanPercentageMin,
+										loanPercentageMax: this.state.value.loanPercentageMax
+											}}
 									addItem={this.addNewItem.bind(this, 'percentageSetting')}
 									removeItem={this.removeItem.bind(this, 'percentageSetting')}
 									boolean= {this.state.boolean}
@@ -1296,6 +1243,7 @@ export default class addOne extends BaseCondition {
 								<Chanpinlilv
 									styles={styles}
 									items={this.state.value.ratesSetting}
+									Obj={{interestRatesRangeMax:this.state.value.interestRatesRangeMax,interestRatesRangeMin:this.state.value.interestRatesRangeMin}}
 									addItem={this.addNewItem.bind(this, 'ratesSetting')}
 									removeItem={this.removeItem.bind(this, 'ratesSetting')}
 									boolean= {this.state.boolean}

@@ -308,7 +308,6 @@ export default class ProcessForm extends Component {
       // 默认返回当前编辑页，约定返回不传参数
       view = PROCESS_VIEW.EDITFORM;
     }
-
     let idx = formData.taskItems.indexOf(item);
     let step = this.getStepFromData(formData.taskItems, idx);//当前的进件属于第几步
 

@@ -133,28 +133,21 @@ class MaterialSubmit extends BaseComponent {
     });
   }
 
-  isImg(url){
+  isImg(url) {
     return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
   }
 
   handleFileChange(info) {
-    console.log(info);
+    // console.log(info);
     info.fileList.map((item, i) => {
       if (item.status == 'done') {
-        if(!item.id){
+        if (!item.id) {
           item.id = this.currentId;
           this.currentId++;
         }
-        if (this.isImg(item.imgURL)) {
-          item.size = item.originFileObj.size;
-          item.downloadURL = item.imgURL;
-          item.fileURL = item.imgURL;
-        } else {
-          item.size = item.originFileObj.size;
-          item.downloadURL = item.imgURL;
-          item.fileURL = item.imgURL;
-          // item.imgURL = '/public/images/creditInformation/filed.png';
-        }
+        item.size = item.originFileObj.size;
+        item.downloadURL = item.imgURL;
+        item.fileURL = item.imgURL;
       }
     });
 
@@ -164,7 +157,7 @@ class MaterialSubmit extends BaseComponent {
   }
 
   handleFileError(err, res, file) {
-  console.log("onError callback : ", err, res, file);
+    console.log("onError callback : ", err, res, file);
   }
 
   renderCell(key, value, index, record) {
@@ -175,7 +168,7 @@ class MaterialSubmit extends BaseComponent {
         data={record}
         type={key}
         moveCard={this.moveCard.bind(this)}
-        onRemoveClick={this.handleRemoveClick.bind(this)}/>
+        onRemoveClick={this.handleRemoveClick.bind(this)} />
     );
   }
 
@@ -188,23 +181,24 @@ class MaterialSubmit extends BaseComponent {
     };
   }
 
-  moveCard(targetIndex, sourceId, lastTargetIndex, type) {
-    // console.log('moveCard', arguments);
+  moveCard(targetIndex, sourceId, lastTargetIndex, type, fileType) {
+    console.log('moveCard', arguments);
     let { dataSource, fileList } = this.state;
     let dragFile = this.findFileById(sourceId);
     let d = dataSource[targetIndex];
 
-      if (typeof lastTargetIndex != 'undefined') {
-        dataSource[lastTargetIndex][type] = undefined;
-      }
-      if (typeof d.sourceId != 'undefined') {
-        // let lastdragFile = this.findFileById(d.sourceId);
-        // lastdragFile.file.isUsed = false;
-      }
-      dragFile.file.isUsed = true;
-      d[type] = dragFile.file.imgURL;
-      d.sourceIndex = dragFile.index;
-      d.sourceId = sourceId;
+    if (typeof lastTargetIndex != 'undefined') {
+      dataSource[lastTargetIndex][type] = undefined;
+    }
+    if (typeof d.sourceId != 'undefined') {
+      // let lastdragFile = this.findFileById(d.sourceId);
+      // lastdragFile.file.isUsed = false;
+    }
+    dragFile.file.isUsed = true;
+    // console.log('dragFile.file', dragFile.file)
+    d[type] = dragFile.file.imgURL; 
+    d.sourceIndex = dragFile.index;
+    d.sourceId = sourceId;
 
     this.setState({
       dataSource,
@@ -213,6 +207,7 @@ class MaterialSubmit extends BaseComponent {
   }
 
   handleRemoveClick(index, type, data) {
+    console.log(index,type,data)
     let { dataSource, fileList } = this.state;
     let dragFile = this.findFileById(data.sourceId);
     let d = dataSource[index];
@@ -326,7 +321,7 @@ class MaterialSubmit extends BaseComponent {
     let { fileList, tableList, dataSource } = this.state;
     return (
       <IceContainer className="pch-container">
-        <Title title="材料提交"/>
+        <Title title="材料提交" />
         <div className="pch-form material-files-form">
           <div className="material-files-upload">
             <Upload
@@ -339,7 +334,7 @@ class MaterialSubmit extends BaseComponent {
               <div className="material-files-upload-button">
                 <div className="icon material-files-upload-button-icon">&#xe628;</div>
                 <p className="material-files-upload-button-text">
-                  将文件拖到此处，或
+                  {/* 将文件拖到此处，或 */}
                   <em>点击上传</em>
                 </p>
               </div>
@@ -353,7 +348,7 @@ class MaterialSubmit extends BaseComponent {
                   id={item.id}
                   index={idx}
                   data={item}
-                  moveCard={this.moveCard.bind(this)}/>
+                  moveCard={this.moveCard.bind(this)} />
               );
             })}
           </div>
@@ -364,7 +359,7 @@ class MaterialSubmit extends BaseComponent {
                 myCell = this.renderCell.bind(this, item.id);
               }
               return (
-                <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
+                <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index} />
               );
             })}
           </Table>

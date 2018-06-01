@@ -65,7 +65,8 @@ export default class TIqianhuankanfangshi extends Component {
   };
   
   changValue1 = (rule, value, callback) => {
-    let { items, boolean } = this.props
+    let { items, boolean,Obj } = this.props
+    let {prepaymentPeriodsLimit} = Obj
     let oIndex = this.getArrIndex(items,{loanTermMin:value});
     let max = items[oIndex].loanTermMax;
     
@@ -79,6 +80,11 @@ export default class TIqianhuankanfangshi extends Component {
     if(max){
       if(Number(value) >= max){
         callback('不能大于或等于后者')
+      }
+    }
+    if(Obj){
+      if(Number(value) >Obj){
+        callback('不在提前还款期数内')
       }
     }
     var regex = /^\d+\.\d+$/;
@@ -106,7 +112,7 @@ export default class TIqianhuankanfangshi extends Component {
   }
 
   changValue2 = (rule, value, callback) => {
-    let { items, boolean } = this.props;
+    let { items, boolean,Obj } = this.props;
     let oIndex = this.getArrIndex(items,{loanTermMax:value});
     let min = items[oIndex].loanTermMin;
 
@@ -122,6 +128,12 @@ export default class TIqianhuankanfangshi extends Component {
         callback('不能小于或等于前者')
       }
     }
+    if(Obj){
+      if(Number(value) > Obj){
+        callback('不在提前还款期数内')
+      }
+    }
+
     var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
 		if (b) {
