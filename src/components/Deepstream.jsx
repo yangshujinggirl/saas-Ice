@@ -22,7 +22,7 @@ export default class Deepstream extends Component {
         //<!-- wss://deepstream-staging.pingchang666.com --> 予发布
         //<!-- ws://deepstream.pingchang666.com -->生产
         let client = dt('ws://deepstream-staging.pingchang666.com');
-        let listNameArr = ['ios2018', 'android2018'] //队列名称
+        let listNameArr = 'creditCard/d1cb47ee145e9e26008cff0d0c534157$creditCard/0acc7dfd8b1d24edd908c79c01d20574' //队列名称
         client.on('error', function (error) {
             console.log(error)
         })
@@ -31,7 +31,8 @@ export default class Deepstream extends Component {
             client
         })
         http.initInterview().then((data) => {
-            listNameArr = data.data.list && data.data.list.split('$');
+            // listNameArr = data.data.list && data.data.list.split('$');
+            listNameArr = listNameArr.split('$');            
             client.on('connectionStateChanged', function (connectionState) {
                 if (connectionState === 'OPEN') {
                     listNameArr && listNameArr.forEach(function (listname, index) {
