@@ -115,6 +115,13 @@ class InterViewReq extends CurdReq {
 			url: this._config.CONTRACT_HOST + '/video/answer',
 		}
 		return super.fetchData(options);
+  }
+  	// 判断当前坐席是否可以接听面签请求
+	interviewPermissions(idList) {
+		let options = {
+			url: this._config.CONTRACT_HOST + `/video/accepted?interviewId=${idList}`,
+		}
+		return super.fetchData(options);
 	}
 }
 
