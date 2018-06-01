@@ -128,11 +128,7 @@ export default class FormRender extends Component {
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
     const init = this.props.field.init;
-    const arr = [];
-    var disabled;
-    // console.log(el)
     if (el.type == 'STRING') {
-      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -141,16 +137,15 @@ export default class FormRender extends Component {
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
             maxLength={el.length ? el.length : null}
+            addonAfter={el.append}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
           />
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
-      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.name == 'car.id') {
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
@@ -162,20 +157,16 @@ export default class FormRender extends Component {
               onSearch={this.onInputUpdate.bind(this)}
               filterLocal={false}
               className="temp"
-
-
               value={el.value}
               disabled={el.isReadonly}
               placeholder={'请选择' + el.label}
-              style={{ width: '90%' }}
+              style={{ width: '100%' }}
               {...init(el.name, {
                 initValue: el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
               })}
-              // dataSource={ this.props.productList || []}
             >
             </Select>
-            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -186,7 +177,7 @@ export default class FormRender extends Component {
             defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
-            style={{ width: '90%' }}
+            style={{ width: '100%' }}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
@@ -200,10 +191,10 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Select
-            defaultValue={el.value}
+            // defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
-            style={{ width: '90%' }}
+            style={{ width: '100%' }}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
@@ -211,12 +202,10 @@ export default class FormRender extends Component {
             dataSource={el.options}
           >
           </Select>
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
     else if (el.type == 'DECIMAL') {
-      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.minValue || el.maxValue) {
         return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
@@ -225,7 +214,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              // defaultValue={el.value ? parseInt(el.value) : el.value}
+              maxLength={el.length ? el.length : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -235,7 +224,6 @@ export default class FormRender extends Component {
                 ],
               })}
             />
-            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -243,23 +231,24 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
-            defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请输入' + el.label}
-            htmlType="number"
+            trim
+            addonAfter={el.append}
             maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
-              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+              rules: [
+                { required: el.isRequired, message: el.label + '不能为空' },
+                { validator: this.checkNum.bind(this) },
+              ],
             })}
             placeholder={'请输入' + el.label}
           />
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
     else if (el.type == 'INT' || el.type == 'LONG') {
-      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       if (el.minValue || el.maxValue) {
         return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
@@ -268,7 +257,6 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              // defaultValue={el.value ? parseInt(el.value) : el.value}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -286,31 +274,29 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
-            htmlType="number"
+            trim
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
+            addonAfter={el.append}
             maxLength={el.length ? el.length : null}
-            // defaultValue={el.value ? parseInt(el.value) : el.value}
             {...init(el.name, {
               initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
+                { validator: this.checkInt.bind(this) },
               ],
             })}
           />
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
     else if (el.type == 'RADIO') {
-      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       var Fields = [];
       var Default = '';
       if (el.options) {
         el.options.map((item, index) => {
           if (item.isDefault) {
             Default = item.value;
-            // console.log(Default)
           }
         });
       }
@@ -334,7 +320,6 @@ export default class FormRender extends Component {
             dataSource={el.options}
           >
           </RadioGroup>
-          <span className="append">{el.append}</span>
         </FormItem>);
         if (el.attached[value]) {
           el.attached[value].map((item, index) => {
@@ -346,8 +331,6 @@ export default class FormRender extends Component {
       else {
         var setValue = '';
         setValue = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
-        // console.log(Default)
-        // console.log(setValue)
         Fields.push(<FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
                               {...formItemLayoutTEXT}>
           <RadioGroup
@@ -360,7 +343,6 @@ export default class FormRender extends Component {
             })}
           >
           </RadioGroup>
-          <span className="append">{el.append}</span>
         </FormItem>);
       }
       return (Fields);
@@ -395,7 +377,6 @@ export default class FormRender extends Component {
             dataSource={el.options}
           >
           </CheckboxGroup>
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
@@ -409,13 +390,12 @@ export default class FormRender extends Component {
             <DatePicker
               disabled={el.isReadonly}
               showTime
-              style={{ width: '90%' }}
+              style={{ width: '100%' }}
               {...init(el.name, {
                 initValue: el.value,
                 rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
               })}
             />
-            <span className="append">{el.append}</span>
           </FormItem>
 
         );
@@ -426,13 +406,12 @@ export default class FormRender extends Component {
                     {...formItemLayout}  >
             <TimePicker
               disabled={el.isReadonly}
-              style={{ width: '90%' }}
+              style={{ width: '100%' }}
               {...init(el.name, {
                 initValue: el.value,
                 rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
               })}
             />
-            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -442,41 +421,59 @@ export default class FormRender extends Component {
           <DatePicker
             disabled={el.isReadonly}
             format={'YYYY-MM-DD'}
-            style={{ width: '90%' }}
+            style={{ width: '100%' }}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
             })}
           />
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     } else if (el.type == 'TEXT') {
-      // el.isReadonly = this.isFixedCheck(el.isFixed, el.isReadonly);
       return (
         <FormItem key={el.id} style={{ width: '90%' }} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
           <Input multiple='6'
                  placeholder={'请输入' + el.label}
-                 style={{ width: '85%' }}
+                 style={{ width: '100%' }}
                  disabled={el.isReadonly}
+                 maxLength={el.length ? el.length : null}
                  {...init(el.name, {
                    initValue: el.value,
                    rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
                  })}
           />
-          <span className="append">{el.append}</span>
         </FormItem>
       );
     }
   };
-
+  //验证数字
   checkNum(rule, value, callback) {
-    console.log(rule);
-    var ex = /^[0-9]\d*$/;
-    if (!ex.test(value)) {
-      callback(new Error('请填写正整数'));
+    value = parseInt(value);
+    console.log(value);
+    if (value) {
+      var ex = /^[0-9]\d*$/;
+      if (!ex.test(value)) {
+        callback(new Error('请填写数字'));
+      }
+    } else if (isNaN(value)) {
+      callback(new Error('请填写数字'));
     }
+    callback();
+  }
+  //验证非负数
+  checkInt(rule, value, callback) {
+    value = parseInt(value);
+    if (value) {
+      var ex = /^([1-9]\d*|[0]{1,1})$/;
+      if (!ex.test(value)) {
+        callback(new Error('请填写整数'));
+      }
+    } else if (isNaN(value)) {
+      callback(new Error('请填写整数'));
+    }
+    callback();
+
   }
 
   //改变value
@@ -521,6 +518,14 @@ export default class FormRender extends Component {
         {label}
       </Balloon>
     );
+  };
+  //number 类型的研制输入长度
+  checkLength = (value, number) => {
+    console.log(value);
+    console.log(number);
+    if (number && number != null) {
+      value = value.slice(0, 5);
+    }
   };
   //更改渲染附属字段
   isChange = (outIndex, inIndex) => {
