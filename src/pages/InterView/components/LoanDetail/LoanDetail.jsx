@@ -52,9 +52,9 @@ export default class LoanDetail extends Component {
   componentDidMount() {
     let { actions, params } = this.props;
 
-    if (params.id) {
+    
       this.getProductNum()
-    }
+    
 
 
   }

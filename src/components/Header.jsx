@@ -135,8 +135,8 @@ export default class Header extends PureComponent {
           display: 'flex'
         }}>
 
-          {/* 面签入口 */}
-          <Interview initNetcall={this.initNetcall.bind(this)} musicState={this.state.musicState} interviewDetail={this.interviewDetail.bind(this)}></Interview>
+        {/* 面签入口 */}
+        <Interview initNetcall={this.initNetcall.bind(this)} musicState={this.state.musicState} interviewDetail={this.interviewDetail.bind(this)}></Interview>
 
           {/* Header 菜单项 begin */}
           {headerNavs && headerNavs.length > 0 ? (

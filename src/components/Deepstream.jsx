@@ -10,7 +10,7 @@ export default class Deepstream extends Component {
         //&#xe67e; 接听中
         this.state = {
             dataList: [],
-            interviewState:1,
+            interviewState: 1,
             music: false,//提示音和接挺icon状态
             listNum: 0,
             client: '',
@@ -50,8 +50,8 @@ export default class Deepstream extends Component {
             music: this.props.musicState
         })
     }
-    listChanged(listname,params) {
-        let dataJson = [], dataList = {}, listNum = 0,_this = this;
+    listChanged(listname, params) {
+        let dataJson = [], dataList = {}, listNum = 0, _this = this;
         console.log("listname:", listname);
         console.log("等待面签的id:", params);
         // 删除数据
@@ -84,58 +84,75 @@ export default class Deepstream extends Component {
             })
             return;
         }
+        let callMap = {}
         params && params.forEach(function (id, index) {
             _this.state.client.record.getRecord(id).whenReady(function (record) {
-                let jsonObj = {
-                    id: id,
-                    value: record.get()
-                };
-                jsonObj.value.customName ? dataJson.push(jsonObj) : "";
+                // let jsonObj = {
+                //     id: id,
+                //     value: record.get()
+                // };
+                if (record.get('customName')) {
+                    callMap[record.get('id')] = {
+                        id: id,
+                        value: record.get()
+                    }
+                }
+                // jsonObj.value.customName ? dataJson.push(jsonObj) : "";
                 let length = params.length - 1
                 if (index == length) {
-                    dataList[listname] = dataJson;
-                    _this.setState({
-                        dataList
-                    })
-                    for (let key in dataList) {
-                        let itemArra = dataList[key]
-                        for (let i = 0; i < itemArra.length; i++) {
-                            listNum += 1;
+                    let idList = [];
+                    for (let interviewId in callMap) {
+                        idList.push(interviewId);
+                    }
+                    http.interviewPermissions(idList.join(',')).then((data) => {
+                        for (var i = 0; i < data.data.length; i++) {
+                            dataJson.push(callMap[data.data[i].id])
                         }
-                    }
-                    if (listNum) {
-                        // document.querySelector("#audio").play();
+                        dataList[listname] = dataJson;
                         _this.setState({
-                            interviewState: 2,
-                            music: true,
+                            dataList
                         })
-                    } else {
+                        for (let key in dataList) {
+                            let itemArra = dataList[key]
+                            for (let i = 0; i < itemArra.length; i++) {
+                                listNum += 1;
+                            }
+                        }
+                        if (listNum) {
+                            // document.querySelector("#audio").play();
+                            _this.setState({
+                                interviewState: 2,
+                                music: true,
+                            })
+                        } else {
+                            _this.setState({
+                                interviewState: 1,
+                                music: false,
+                            })
+                        }
                         _this.setState({
-                            interviewState: 1,
-                            music: false,
+                            listNum
                         })
-                    }
-                    _this.setState({
-                        listNum
                     })
+
                 }
             })
         })
     }
     interviewType(type) {
-        if(type=='creditCard') {
-            return(<span>信用卡面签</span>)
-        }else if(type=='interviewOnly') {
-            return(<span>仅面签</span>)
-        }else {
-            return(<span>进件</span>)
+        if (type == 'creditCard') {
+            return (<span>信用卡面签</span>)
+        } else if (type == 'interviewOnly') {
+            return (<span>仅面签</span>)
+        } else {
+            return (<span>进件</span>)
         }
     }
-    interviewAnswer(id,listname,loanId,type) {
+    interviewAnswer(id, listname, loanId, type) {
         let { client } = this.state
         http.initInterview().then((data) => {
             if (this.state.once) {
-                this.props.initNetcall(data.data,true)
+                this.props.initNetcall(data.data, true)
                 this.setState({
                     once: false,
                 })
@@ -147,13 +164,13 @@ export default class Deepstream extends Component {
                 music: false
             })
             // 展示详情
-            this.props.interviewDetail(loanId,type)
+            this.props.interviewDetail(loanId, type)
             // document.querySelector("#audio").pause();
         })
     }
 
     render() {
-        let { dataList, listNum, interviewState, music } = this.state, interview, video,listening = <span>&#xe67e;</span>;
+        let { dataList, listNum, interviewState, music } = this.state, interview, video, listening = <span>&#xe67e;</span>;
         console.log("datalist:", dataList)
         // console.log("music:",music)
 
@@ -165,7 +182,7 @@ export default class Deepstream extends Component {
                 interview = <span>&#xe680;</span>
                 break;
         }
-        if (music&&listNum) {
+        if (music && listNum) {
             video = <audio src='https://lx-static.cn-bj.ufileos.com/lib/audio/interview-mp3.mp3' autoPlay loop id='audio'></audio>;
         } else {
             video = '';
@@ -175,30 +192,30 @@ export default class Deepstream extends Component {
             <div className='pch-interview-deep'>
                 {/* 面签提示音 */}
                 {video}
-                <div className='icon'>  
+                <div className='icon'>
                     {/* {interview} */}
-                    <span>&#xe67e;</span> 
+                    <span>&#xe67e;</span>
                     <span className='pch-interview-num'>{listNum}</span>
                 </div>
                 <ul className='pch-interview-name'>
-                  {
-                    Object.keys(dataList).map((listname) => {
-                      // console.log(dataList[listname])
-                      return (
-                        dataList[listname].map((item, index) => {
-                          return (
-                            <li key={index}>
-                              <span>{item.value.customName}</span>
-                              {this.interviewType(item.value.type)}
-                              <span className='pch-interviw-answer' onClick={this.interviewAnswer.bind(this,item.id,listname,item.value.id,item.value.type)}>接听</span>
-                            </li>
-                          )
+                    {
+                        Object.keys(dataList).map((listname) => {
+                            // console.log(dataList[listname])
+                            return (
+                                dataList[listname].map((item, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <span>{item.value.customName}</span>
+                                            {this.interviewType(item.value.type)}
+                                            <span className='pch-interviw-answer' onClick={this.interviewAnswer.bind(this, item.id, listname, item.value.id, item.value.type)}>接听</span>
+                                        </li>
+                                    )
+                                })
+                            )
                         })
-                      )
-                    })
-                  }
+                    }
                 </ul>
-              
+
             </div>
         )
     }
