@@ -25,15 +25,18 @@ export default class BaseComponent extends Component {
         'path': 'path/to/file'
       },
       formatter: (res) => {
-        let isArray = Object.prototype.toString.call(res) === '[object Array]';
+        let isArray = Object.prototype.toString.call(res.data) === '[object Array]';
         if(!res.data) {
           Toast.error('上传失败，请重新上传');
           return;
         }
         if(isArray) {
           return {
-            code: res.length > 0 ? '0' : '1',
-            imgURL: res[0].downloadUrl,
+            code: res.code == 200 ? '0' : '1',
+            imgURL: res.data[0].downloadUrl,
+            fileName:res.data[0].filename,
+            fileURL: res.data[0].downloadUrl,
+            type:res.data[0].fileType,
           }
         } else {
           if(!res.data) {
