@@ -247,7 +247,7 @@ export default class ProcessForm extends Component {
         Feedback.toast.error('模块 ' + item.taskAlias + ' 页面未保存!');
         return;
       }
-      if (item.canPrivilegeEditable && (!item.privilegeItems) || !item.privilegeItems.length) {
+      if (item.canPrivilegeEditable && (!item.privilegeItems || !item.privilegeItems.length)) {
         Feedback.toast.error('模块 ' + item.taskAlias + ' 权限未配置!');
         return;
       }
