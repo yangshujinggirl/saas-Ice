@@ -415,13 +415,15 @@ export default class FormRender extends Component {
           </FormItem>
         );
       }
+      console.log(el.name)
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
           <DatePicker
             disabled={el.isReadonly}
-            format={'YYYY-MM-DD'}
+            formater={["YYYY-MM-DD"]}
             style={{ width: '100%' }}
+            // onChange={this.onDateChange.bind(this)}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
@@ -491,6 +493,27 @@ export default class FormRender extends Component {
     callback();
   }
 
+
+  onDateChange(date, formateDate){
+    console.log(date)
+    console.log(formateDate)
+
+  }
+  formatDateTime =(inputTime) => {
+    var date = new Date(inputTime);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h = h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    second = second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+  };
   //改变value
   onChange = (value, option) => {
     // console.log(value)
