@@ -53,7 +53,8 @@ export default class InterView extends BaseApp {
       }
       //下载视频
       case this.OPERATE_TYPE.OTHER2: {
-
+        const w = window.open('about:blank');
+        w.location.href = data.videoDownloadUrl;
         break;
       }
       //查看报告
