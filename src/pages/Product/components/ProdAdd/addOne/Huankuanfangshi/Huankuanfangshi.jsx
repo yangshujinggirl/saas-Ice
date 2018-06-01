@@ -206,7 +206,6 @@ export default class Huankuanfangshi extends Component {
 	
 	render() {
 		let { styles, items } = this.props;
-		console.log(items)
 		return (
 			<div>
 				<div className="table-title">还款方式设置</div>

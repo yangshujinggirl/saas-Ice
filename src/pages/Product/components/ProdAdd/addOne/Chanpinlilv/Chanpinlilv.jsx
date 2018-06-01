@@ -119,7 +119,8 @@ export default class Chanpinlilv extends Component {
    }
 
    testChange2 = (rule, value, callback) => {
-      let { items } = this.props
+      let { items ,Obj} = this.props
+      let {interestRatesRangeMin} = Obj
       let oIndex = this.getArrIndex(items, { interestRatesRangeMin: value });
       let max = items[oIndex].interestRatesRangeMax;
 
@@ -138,6 +139,11 @@ export default class Chanpinlilv extends Component {
             callback('不能大于或等于后者')
          }
       }
+      if(interestRatesRangeMin){
+            if(Number(value) < interestRatesRangeMin){
+                  callback('不在执行年利率范围内')
+            }     
+      }
       //保留两位小数
       var dot = value.indexOf(".");
       if (dot != -1) {
@@ -151,7 +157,8 @@ export default class Chanpinlilv extends Component {
    }
 
    testChange3 = (rule, value, callback) => {
-      let { items } = this.props
+      let { items,Obj } = this.props
+      let {interestRatesRangeMax} = Obj
       let oIndex = this.getArrIndex(items, { interestRatesRangeMax: value });
       let min = items[oIndex].interestRatesRangeMin;
 
@@ -169,6 +176,11 @@ export default class Chanpinlilv extends Component {
          if (Number(value) <= min) {
             callback('不能小于或等于前者')
          }
+      }
+      if(interestRatesRangeMax){
+            if(Number(value) > interestRatesRangeMax){
+                  callback('不在执行年利率范围内')
+            }     
       }
       //保留两位小数
 		var dot = value.indexOf(".");
