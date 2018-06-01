@@ -27,7 +27,8 @@ class ProcessAction extends BaseAction {
       'getAllPageFields',
       'getPageDetail',
       'getPrivilegeOrgs',
-      'changeFormData'
+      'changeFormData',
+      'removePageStep'
     ];
 
     // 初始化一些数据
@@ -257,6 +258,19 @@ class ProcessAction extends BaseAction {
   changeFormData(data) {
     return (dispatch) => {
       dispatch(change({ formData: data }))
+    }
+  }
+
+  removePageStep(id, step) {
+    return (dispatch) => {
+      dispatch(this.fetchStart())
+
+      FontConfigReq.removePageStep(id, step).then((res) => {
+        if (res.code != 200) return;
+        dispatch(this.fetchSuccess({}))
+      }).catch((ex) => {
+        dispatch(this.fetchFailed(ex))
+      })
     }
   }
 }

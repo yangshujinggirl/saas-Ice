@@ -53,6 +53,19 @@ class FontConfigReq extends CurdReq {
     return super.fetchData(options);
   }
 
+  //移除已经配置step的字段
+  removePageStep(id, step) {
+    let options = {
+      url: this._config.LOAN_HOST + '/screen-schemes/' + id + '/step/' + step,
+      contentType: 'application/json',
+      data: {
+        step: step
+      },
+      method:'delete'
+    }
+    return super.fetchData(options);
+  }
+
   /**
    * 批量修改字段
    */
