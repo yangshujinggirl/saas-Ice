@@ -31,7 +31,7 @@ class ContractFileColumn extends BaseColumn {
         this._columns = [{
             title: '贷款编号',
             dataIndex: 'loanCode',
-            width: 100
+            width: 210
         }, {
             title: '合同编号',
             dataIndex: 'contractNo',
