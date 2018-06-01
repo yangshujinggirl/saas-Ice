@@ -28,7 +28,7 @@ export default class ProcessAuthEdit extends BaseApp {
                     let selectedRowOne = records;
                     records.map((item) => {
                         let result = [];
-                        item.roles.map((role) => {
+                        item.roles && item.roles.map((role) => {
                             result.push(role.id);
                         })
                         item.selectedRoles = result;
@@ -66,7 +66,7 @@ export default class ProcessAuthEdit extends BaseApp {
                     let selectedRowTwo = records;
                     records.map((item) => {
                         let result = [];
-                        item.roles.map((role) => {
+                        item.roles && item.roles.map((role) => {
                             result.push(role.id);
                         })
                         item.selectedRoles = result;
@@ -229,13 +229,12 @@ export default class ProcessAuthEdit extends BaseApp {
     renderLevel(record) {
         // return record.name ? record.name:record.departmentName ;
         let result = [];
-      record.roles && record.roles.length >0 ?
-        record.roles.map((item) => {
+        record.roles && record.roles.map((item) => {
             result.push({
                 value: item.id,
                 label: item.name
             })
-        }) : ''
+        })
         return (
             <div style={{
                 padding: 12
@@ -246,10 +245,9 @@ export default class ProcessAuthEdit extends BaseApp {
     }
     handleRoleChange(record, value, e) {
         record.selectedRoles = value;
-
         // TODO 全部选中角色后需要选中行记录
         let hasSelectedAll = true;
-        record.roles.map(item => {
+        record.roles && record.roles.map(item => {
             if (value.indexOf(item.id) == -1) {
                 hasSelectedAll = false;
             }
