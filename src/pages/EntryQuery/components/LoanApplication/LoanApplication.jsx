@@ -140,7 +140,7 @@ export default class LoanApplication extends Component {
       // console.log(values);
       for (var key in values) {
         if (values[key] != undefined) {
-          if (values[key] != 'undefined' && values[key] == '') {
+          if (values[key] != 'undefined') {
             if (this.isCheckBox(key)) {
               console.log('多选');
               console.log(values[key]);
@@ -149,7 +149,10 @@ export default class LoanApplication extends Component {
                 values[key] = values[key].join(',');
               }
             }
-            this.queryCache[key] = values[key];
+            if( values[key] != ''){
+              this.queryCache[key] = values[key];
+            }
+
           }
         }
       }

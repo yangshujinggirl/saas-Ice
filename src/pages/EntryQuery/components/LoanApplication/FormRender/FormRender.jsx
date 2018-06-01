@@ -266,7 +266,6 @@ export default class FormRender extends Component {
                 ],
               })}
             />
-            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -283,7 +282,7 @@ export default class FormRender extends Component {
               initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
-                { validator: this.checkInt.bind(this) },
+                { validator: this.checkInt.bind(this,el.isRequired) },
               ],
             })}
           />
@@ -462,15 +461,18 @@ export default class FormRender extends Component {
     callback();
   }
   //验证非负数
-  checkInt(rule, value, callback) {
-    value = parseInt(value);
-    if (value) {
-      var ex = /^([1-9]\d*|[0]{1,1})$/;
-      if (!ex.test(value)) {
+  checkInt(flag,rule, value, callback) {
+    if(flag){
+      value = parseInt(value);
+      if (value) {
+        var ex = /^([1-9]\d*|[0]{1,1})$/;
+        if (!ex.test(value)) {
+          callback(new Error('请填写整数'));
+        }
+      } else if (isNaN(value)) {
         callback(new Error('请填写整数'));
       }
-    } else if (isNaN(value)) {
-      callback(new Error('请填写整数'));
+      callback();
     }
     callback();
 
