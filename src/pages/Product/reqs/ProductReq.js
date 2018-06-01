@@ -309,6 +309,18 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
+
+  //产品状态
+  getProductStatus(condition){
+    let options = {
+      url:this._config.LOAN_HOST + `/product/enable?productId=${condition}`,
+      // url:'https://www.easy-mock.com/mock/5a1629ea8eb5f73bfafa4f4f/lxapi/processes/privilege/orgs',
+      contentType: 'application/x-www-form-urlencoded',
+      method:'PUT',
+      // params:condition
+    }
+    return super.fetchData(options);
+  }
 }
 
 

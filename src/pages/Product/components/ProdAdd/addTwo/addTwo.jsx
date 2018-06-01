@@ -8,6 +8,7 @@ import {
 
 import IceContainer from '@icedesign/container';
 // import CellEditor from './CellEditor';
+import ProductReq from '../../../reqs/ProductReq';
 // form binder 详细用法请参见官方文档
 import {
    FormBinderWrapper as IceFormBinderWrapper,
@@ -76,14 +77,10 @@ export default class addTwo extends Component {
       let { productScopes,productScopes2 } = this.state.value;
       let id = params.id;
       if (productScopes.length == 0) {
-         Feedback.toast.show({
-            type: 'error',
-            content: '请选择品牌／车系／车型',
-         });
+          ProductReq.tipError('请选择品牌／车系／车型')
       } else {
         productScopes=productScopes.concat(productScopes2)
-        // console.log(productScopes)
-         actions.productsave({productScopes:productScopes}, id);
+        actions.productsave({productScopes:productScopes}, id);
       }
    }
 

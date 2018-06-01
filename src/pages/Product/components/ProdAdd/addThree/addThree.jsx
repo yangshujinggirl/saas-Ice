@@ -131,7 +131,9 @@ export default class addThree extends Component {
     let id = params.id;
     this.formRef.validateAll((error, value) => {
       console.log(value)
-      this.state.processData.push(
+      let processData= this.state.processData
+      let templateData = this.state.templateData
+      processData.push(
         {
           productId: product.id,
           productName: product.name,
@@ -146,13 +148,17 @@ export default class addThree extends Component {
         }
       )
 
-      this.state.templateData={
+      templateData={
         productCode: product.productCode,
         productCategory: this.productTypeChange(product.productType),
         productName: product.name,
         contractTemplateIds: this.contractTemplateIds(this.state.dataSourceRight)
       }
 
+        this.setState({
+          processData,
+          templateData
+        })
       if (error) {
         return;
       }
@@ -165,6 +171,7 @@ export default class addThree extends Component {
         boolean = false
       }
       if (!boolean) return
+      console.log(this.state.processData,this.state.templateData)
       //提交当前填写的数据
       this.props.actions.saveProductAdd(id, this.state.processData, value.processName,this.state.templateData);
       this.setState({

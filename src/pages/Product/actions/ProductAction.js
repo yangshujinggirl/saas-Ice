@@ -141,6 +141,14 @@ export const saveProductAdd = (id, data,processDefId,tempData) => {
       if (!res || res.code != 200){
         return;
       }else{
+        Req.getProductStatus(id).then((res)=>{
+          console.log(id)
+          dispatch(fetchSuccess({ status: true }))
+        }).catch((ex)=>{
+            dispatch(fetchFailed(ex))
+
+        })
+
 
         Req.saveContractTemplate(tempData).then((res)=>{
           console.log(tempData)
