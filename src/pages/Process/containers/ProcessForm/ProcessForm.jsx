@@ -188,6 +188,13 @@ export default class ProcessForm extends Component {
           }
         });
       });
+      this.currentTaskOrder--;
+      // 移除进件
+      if (data.taskTypeId == 1) {
+        let step = this.getStepFromData(taskItems, index);
+        this.props.actions.removePageStep(taskItems[0].pageId, step);
+      }
+
     }
 
     //状态更新
@@ -233,6 +240,19 @@ export default class ProcessForm extends Component {
 
   //提交
   handleSubmit = () => {
+    for (var i = 0; i < this.props.formData.taskItems.length; i++) {
+      let item = this.props.formData.taskItems[i];
+      // 进件需要保存页面
+      if (item.taskTypeId == 1 && !item.pageId) {
+        Feedback.toast.error('模块 ' + item.taskAlias + ' 页面未保存!');
+        return;
+      }
+      if (item.canPrivilegeEditable && (!item.privilegeItems) || !item.privilegeItems.length) {
+        Feedback.toast.error('模块 ' + item.taskAlias + ' 权限未配置!');
+        return;
+      }
+    }
+
     this.refs.form.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
       if (errors) {
@@ -333,9 +353,9 @@ export default class ProcessForm extends Component {
         // 也就是一个流程的进件只会有一个页面ID
         // 同时对应哪一步保存的字段上都要追加step=几的值
         let pageId2;
-        formData.taskItems.map((item) => {
-          if (item.pageId) {
-            pageId2 = item.pageId;
+        formData.taskItems.map((i) => {
+          if (i.pageId) {
+            pageId2 = i.pageId;
             return;
           }
         });
@@ -346,43 +366,43 @@ export default class ProcessForm extends Component {
         if (item.pageId) {
           actions.getPageDetail(item.pageId, step);
           actions.getAllPageFields({
-            excludeScreens: this.getExcludeScreens(formData.taskItems, idx),
+            excludeScreens: this.getExcludeScreens(formData.taskItems, idx)
           });
           this.setState({
             pageId: item.pageId,
             pageId2: undefined,
             order: idx,
-            step,
+            step
           });
         } else if (pageId2) {
           actions.getPageFields({
-            step: step,
-            // step: idx+1,
-            excludeScreens: this.getExcludeScreens(formData.taskItems, idx),
+            step: step
           });
-          actions.getAllPageFields();
+          actions.getAllPageFields({
+            excludeScreens: pageId2
+          });
           this.setState({
             pageId: undefined,
             pageId2: pageId2,
             order: idx,
-            step,
+            step
           });
         } else {
           actions.getPageFields({
-            step: step,
-            // step: idx+1,
-            excludeScreens: this.getExcludeScreens(formData.taskItems, idx),
-            step,
+            step: step
           });
-          actions.getAllPageFields();
+          actions.getAllPageFields({
+            excludeStep: step
+          });
           this.setState({
             // pageId: item.pageId,
             pageId: undefined,
             pageId2: undefined,
             order: idx,
-            step,
+            step
           });
         }
+
         break;
       }
       case PROCESS_VIEW.PREVIEWPAGE : {
@@ -464,9 +484,10 @@ export default class ProcessForm extends Component {
   getExcludeScreens(taskItems, order) {
     let result = [];
     taskItems.map((item, i) => {
-      if (i != order && item.haveConfigPage && item.pageId) {
+      if (item.haveConfigPage && item.pageId && result.indexOf(item.pageId) == -1) {
         result.push(item.pageId);
       }
+
     });
 
     return result.join(',');
