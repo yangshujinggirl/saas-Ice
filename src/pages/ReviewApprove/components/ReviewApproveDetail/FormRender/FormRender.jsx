@@ -154,12 +154,6 @@ export default class FormRender extends Component {
     return isReadonly;
   }
 
-  checkNum(rule, value, callback) {
-    var ex = /^[0-9]\d*$/;
-    if (!ex.test(value)) {
-      callback(new Error("请填写正整数"));
-    }
-  }
 
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
@@ -271,12 +265,13 @@ export default class FormRender extends Component {
             placeholder={'请输入' + el.label}
             trim
             addonAfter={el.append}
+            // htmlType='number'
             maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
-                { validator: this.checkNum.bind(this) },
+                { validator: this.checkNum.bind(this, el.isRequired) },
               ],
             })}
             placeholder={'请输入' + el.label}
@@ -302,7 +297,6 @@ export default class FormRender extends Component {
                 ],
               })}
             />
-            <span className="append">{el.append}</span>
           </FormItem>
         );
       }
@@ -319,7 +313,7 @@ export default class FormRender extends Component {
               initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
-                { validator: this.checkInt.bind(this) },
+                { validator: this.checkInt.bind(this, el.isRequired) },
               ],
             })}
           />
@@ -483,33 +477,48 @@ export default class FormRender extends Component {
       );
     }
   };
+
   //验证数字
-  checkNum(rule, value, callback) {
-    value = parseInt(value);
-    console.log(value);
-    if (value) {
-      var ex = /^[0-9]\d*$/;
-      if (!ex.test(value)) {
-        callback(new Error('请填写数字'));
+  checkNum(flag, rule, value, callback) {
+    console.log(value)
+    if (value == undefined || value == 'undefined') {
+      callback();
+    } else {
+      if (value != '') {
+        value = parseInt(value);
+        if (value) {
+          var ex = /^[0-9]\d*$/;
+          if (!ex.test(value)) {
+            callback(new Error('请填写数字'));
+          }
+        } else if (isNaN(value)) {
+          callback(new Error('请填写数字'));
+        }
+        callback();
       }
-    } else if (isNaN(value)) {
-      callback(new Error('请填写数字'));
     }
     callback();
   }
+
   //验证非负数
-  checkInt(rule, value, callback) {
-    value = parseInt(value);
-    if (value) {
-      var ex = /^([1-9]\d*|[0]{1,1})$/;
-      if (!ex.test(value)) {
-        callback(new Error('请填写整数'));
+  checkInt(flag, rule, value, callback) {
+    if (value == undefined || value == 'undefined') {
+      callback();
+    } else {
+      if (value != '') {
+        value = parseInt(value);
+        if (value) {
+          var ex = /^([1-9]\d*|[0]{1,1})$/;
+          if (!ex.test(value)) {
+            callback(new Error('请填写整数'));
+          }
+        } else if (isNaN(value)) {
+          callback(new Error('请填写整数'));
+        }
+        callback();
       }
-    } else if (isNaN(value)) {
-      callback(new Error('请填写整数'));
     }
     callback();
-
   }
   //改变value
   onChange =(value,option)=>{
