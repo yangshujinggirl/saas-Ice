@@ -39,16 +39,12 @@ export default class BaseComponent extends Component {
             type:res.data[0].fileType,
           }
         } else {
-          if(!res.data) {
-            return;
-          }
-          console.log(res.data[0])
           return {
             code: res.code == 200 ? '0' : '1',
-            imgURL: res.data[0].downloadUrl,
-            fileName:res.data[0].filename,
-            fileURL: res.data[0].downloadUrl,
-            type:res.data[0].fileType,
+            imgURL: res.data.fileUrl,
+            fileName:res.data.filename,
+            fileURL: res.data.fileUrl,
+            type:res.data.fileType,
           }
         }
       }
