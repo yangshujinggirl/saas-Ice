@@ -180,7 +180,6 @@ export default class Deepstream extends Component {
                     <span>&#xe67e;</span> 
                     <span className='pch-interview-num'>{listNum}</span>
                 </div>
-              {
                 <ul className='pch-interview-name'>
                   {
                     Object.keys(dataList).map((listname) => {
@@ -194,14 +193,12 @@ export default class Deepstream extends Component {
                               <span className='pch-interviw-answer' onClick={this.interviewAnswer.bind(this,item.id,listname,item.value.id,item.value.type)}>接听</span>
                             </li>
                           )
-
                         })
                       )
-
                     })
                   }
                 </ul>
-              }
+              
             </div>
         )
     }
