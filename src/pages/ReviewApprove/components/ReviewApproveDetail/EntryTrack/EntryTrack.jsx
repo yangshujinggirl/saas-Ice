@@ -73,7 +73,9 @@ export default class EntryTrack extends Component {
 
               return (
                 <div className="item" key={index}>
-                  <div className={status}>{item.chooseLable}</div>
+                  <div className={status}>
+                    <span>{item.chooseLable}</span>
+                  </div>
                   <div className="status-title"><b>{item.taskAlias}</b></div>
                   <div className="status-desc">
                     {

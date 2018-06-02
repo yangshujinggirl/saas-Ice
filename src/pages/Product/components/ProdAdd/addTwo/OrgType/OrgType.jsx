@@ -52,29 +52,43 @@ export default class OrgType extends Component {
       recordArray: [],//存储分页选中的数据
       dataSourceRight: [],//存储选中的数据，右侧数据源
       selectedRowKeys: [],//选中的复选框
-      selectDate: []
-    };
-    this.rowSelection = {
-      // 表格发生勾选状态变化时触发
-      onChange: (ids, array) => {
-        let types = this.props.type;
-        let recordArray = [...this.state.recordArray, ...array];
-        if (types == '10') {
-          arrayRightData.jituan = recordArray
-        } else if (types == '30') {
-          arrayRightData.qudao  = recordArray
-        } else {
-          arrayRightData.tingdian = recordArray
-        }
-        this.setState({
-          recordArray,
-          selectDate: arrayRightData
+      selectDate: [],
+      rowSelection: {
+        selectedRowKeys: [],
+        // 表格发生勾选状态变化时触发
+        onChange: (ids, array) => {
+          let types = this.props.type;
+          let recordArray = [...this.state.recordArray, ...array];
+          if (types == '10') {
+            arrayRightData.jituan = recordArray
+          } else if (types == '30') {
+            arrayRightData.qudao  = recordArray
+          } else {
+            arrayRightData.tingdian = recordArray
+          }
+
+          let { rowSelection } = this.state;
+          rowSelection.selectedRowKeys = ids;
+
+          this.setState({
+            rowSelection,
+            recordArray,
+            selectDate: arrayRightData
+            
+          })
           
-        })
-        
+        }
       }
     };
 
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.type != this.props.type){
+      let rowSelection = this.state.rowSelection;
+      rowSelection.selectedRowKeys = [];
+      this.setState({rowSelection});
+    }
   }
   componentWillMount() {
     console.log(this.props)
@@ -91,7 +105,9 @@ export default class OrgType extends Component {
       tempData.push({
         agencyType: groupType.name,
         agencyId: item.agencyId,
-        agencyName: item.agencyName
+        agencyName: item.agencyName,
+        idPath: item.idPath,
+        namePath: item.namePath,
       });
     })
     return tempData;
@@ -139,8 +155,8 @@ export default class OrgType extends Component {
       GroupData.productScopes2.push({
         relatedId: item.agencyId,
         relatedName: item.agencyType == 'group' ? item.agencyName : (item.agencyType == 'channel' ? item.agencyName : item.agencyName),
-        relatedPath: '',
-        relatedPathName: '',
+        relatedPath: item.idPath,
+        relatedPathName: item.namePath,
         type: 'GROUP'
       })
     })
@@ -173,7 +189,7 @@ export default class OrgType extends Component {
     let { actions } = this.props;
     let { name2 } = this.state.value;
     let type = this.props.type;
-    this.state.type = val
+    this.state.type = type;
     actions.getGroupList(type, name2, currentPage)
   };
   render() {
@@ -213,10 +229,11 @@ export default class OrgType extends Component {
               <Table
                 dataSource={dataSource}
                 rowSelection={{
-                  ...this.rowSelection
+                  ...this.state.rowSelection
                 }}
                 fixedHeader={true}
                 maxBodyHeight={547}
+                primaryKey='agencyId'
               >
 
                 <Table.Column title="类型" dataIndex="agencyType" width={50} />
