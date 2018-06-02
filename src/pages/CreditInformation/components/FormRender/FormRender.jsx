@@ -14,7 +14,7 @@ import {
   DatePicker,
   Table,
   Upload,
-  TimePicker
+  TimePicker,
 } from '@icedesign/base';
 import Req from '../../reqs/CreditInformationReq';
 import {
@@ -67,11 +67,6 @@ export default class FormRender extends Component {
     };
   }
 
-  componentWillMount() {
-    // this.fetchData()
-    this.SelectList();
-  }
-
   //渲染表单
   renderForm = (data) => {
     const formList = [];
@@ -102,7 +97,7 @@ export default class FormRender extends Component {
         {this.RenderField(el, outIndex, inIndex)}
       </div>);
     }
-    else if (el.type == 'CHECKBOX' || el.type == 'RADIO') {
+    else if (el.type == 'CHECKBOX' || el.type == 'RADIO' || el.type == 'ADDRESS') {
       return (<div className="subsidiary-field" key={el.name}>
         {this.RenderField(el, outIndex, inIndex)}
       </div>);
@@ -113,16 +108,6 @@ export default class FormRender extends Component {
       </div>);
     }
     return this.RenderField(el, outIndex, inIndex);
-  };
-  //selectList
-  SelectList = () => {
-
-  };
-  isFixedCheck = (isFixed, isReadonly) => {
-    if (isFixed) {
-      isReadonly = true;
-    }
-    return isReadonly;
   };
 
   //渲染字段
@@ -421,7 +406,7 @@ export default class FormRender extends Component {
                   {...formItemLayout}  >
           <DatePicker
             disabled={el.isReadonly}
-            formater={["YYYY-MM-DD"]}
+            formater={['YYYY-MM-DD']}
             style={{ width: '100%' }}
             // onChange={this.onDateChange.bind(this)}
             {...init(el.name, {
@@ -448,12 +433,68 @@ export default class FormRender extends Component {
         </FormItem>
       );
     }
+    else if (el.type == 'ADDRESS') {
+      return (
+        <FormItem key={el.id} style={{ width: '70%' }} className='item' label={this.label(el.label)}
+                  {...formItemLayoutR}>
+          <Input
+            placeholder={'请输入' + el.label}
+            style={{ width: '100%' }}
+            disabled={el.isReadonly}
+            maxLength={el.length ? el.length : null}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+            })}
+          />
+        </FormItem>
+      );
+    }
   };
-  //改变value
-  onChange = (value, option) => {
-    // console.log(value)
-    // console.log(option)
-  };
+
+  //验证数字
+  checkNum(flag, rule, value, callback) {
+    console.log(value);
+    if (value == undefined || value == 'undefined') {
+      callback();
+    } else {
+      if (value != '') {
+        value = parseInt(value);
+        if (value) {
+          var ex = /^[0-9]\d*$/;
+          if (!ex.test(value)) {
+            callback(new Error('请填写数字'));
+          }
+        } else if (isNaN(value)) {
+          callback(new Error('请填写数字'));
+        }
+        callback();
+      }
+    }
+    callback();
+  }
+
+  //验证非负数
+  checkInt(flag, rule, value, callback) {
+    if (value == undefined || value == 'undefined') {
+      callback();
+    } else {
+      if (value != '') {
+        value = parseInt(value);
+        if (value) {
+          var ex = /^([1-9]\d*|[0]{1,1})$/;
+          if (!ex.test(value)) {
+            callback(new Error('请填写整数'));
+          }
+        } else if (isNaN(value)) {
+          callback(new Error('请填写整数'));
+        }
+        callback();
+      }
+    }
+    callback();
+  }
+
   onInputUpdate = (value) => {
     const productCode = this.props.field.getValue('productCode');
     var carList = {
@@ -466,7 +507,7 @@ export default class FormRender extends Component {
         if (res && res.code == 200) {
           const dataSource = res.data.list.map((item, index) => {
             return {
-              label: item.brandName   ,
+              label: item.brandName,
               value: item.id,
             };
           });

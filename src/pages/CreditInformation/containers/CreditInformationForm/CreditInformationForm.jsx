@@ -326,14 +326,15 @@ export default class CreditInformationForm extends BaseComponent {
     }
     return true;
   }
-
+  //判断图片类型
+  isImg(url) {
+    return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
+  }
   //上传文件改变时调用
   handleFileChange(info) {
-    console.log(info);
     info.fileList.map(item => {
       if (item.status == 'done') {
-        console.log(info);
-        if (item.type.indexOf('image') == 0) {
+        if (this.isImg(item.imgURL)) {
           item.size = item.originFileObj.size;
           item.downloadURL = item.imgURL;
           item.fileURL = item.imgURL;
