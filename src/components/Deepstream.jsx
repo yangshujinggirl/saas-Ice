@@ -16,6 +16,8 @@ export default class Deepstream extends Component {
             client: '',
             once: true
         }
+        this.connectionState = false;
+        this.listNameArr = '';
     }
     componentDidMount() {
         let _this = this;
@@ -27,30 +29,36 @@ export default class Deepstream extends Component {
             console.log(error)
         })
         client.login();
+        this.client = client;
         _this.setState({
             client
         })
+        client.on('connectionStateChanged', (connectionState) => { 
+            console.log('connectionStateChanged',connectionState)
+            this.connectionState = connectionState;
+            this.deepLink();
+        })
+        
         http.initInterview().then((data) => {
-            let listNameArr = data.data.list.split('$');
-            // listNameArr = listNameArr.split('$');            
-            client.on('connectionStateChanged', function (connectionState) {
-                console.log('connectionState:',connectionState)
-                if (connectionState === 'OPEN') {
-                    listNameArr && listNameArr.forEach(function (listname, index) {
-                        let list = client.record.getList(listname);
-                        list.subscribe(_this.listChanged.bind(_this, listname), true);
-                    })
-                    // let list = client.record.getList(data.data.list);
-                    // let list = client.record.getList('android2018');
-                    // list.subscribe(_this.listChanged.bind(_this, data.data.list), true);
-                }
-            })
+            this.listNameArr = data.data.list.split('$');
+            this.deepLink();
         })
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
             music: this.props.musicState
         })
+    }
+
+    deepLink() {
+        console.log(this.connectionState, this.listNameArr)
+        let _this = this;
+        if (this.connectionState === 'OPEN' && this.listNameArr && this.listNameArr.length > 0) {
+            this.listNameArr.forEach((listname, index) => {
+                let list = this.client.record.getList(listname);
+                list.subscribe(_this.listChanged.bind(_this, listname), true);
+            })
+        }
     }
     listChanged(listname, params) {
         let dataJson = [], dataList = {}, listNum = 0, _this = this;

@@ -34,9 +34,10 @@ export default class BaseComponent extends Component {
           return {
             code: res.code == 200 ? '0' : '1',
             imgURL: res.data[0].downloadUrl,
-            fileName:res.data[0].filename,
+            fileName:res.data[0].filename || res.data[0].name,
             fileURL: res.data[0].downloadUrl,
             type:res.data[0].fileType,
+            size: res.data[0].size
           }
         } else {
           return {

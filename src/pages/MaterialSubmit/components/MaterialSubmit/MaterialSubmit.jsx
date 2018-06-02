@@ -1,38 +1,19 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import {
-  Input,
   Grid,
   Form,
   Button,
-  Select,
-  Field,
-  NumberPicker,
-  Balloon,
-  Radio,
-  Checkbox,
-  DatePicker,
-  Table,
-  Upload,
+  Upload
 } from '@icedesign/base';
-import { DragDropContext, DropTarget } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import DragFile from './DragFile';
-import DropCell from './DropCell';
+import DragContext from './DragContext';
 import Req from '../../reqs/MaterialSubmitReq';
 import { hashHistory } from 'react-router';
-
-const { DragUpload, ImageUpload } = Upload;
-require('./index.scss');
-import { Feedback } from '@icedesign/base';
 import { BaseComponent } from 'base';
 import { Title } from 'components';
 
-const Toast = Feedback.toast;
-const cardTarget = {
-  drop() {
-  },
-};
+require('./index.scss');
+const { Core, DragUpload, ImageUpload } = Upload;
 
 class MaterialSubmit extends BaseComponent {
   static displayName = 'MaterialSubmit';
@@ -44,8 +25,6 @@ class MaterialSubmit extends BaseComponent {
   constructor(props) {
     super(props);
     this.state = {
-      queryCache: {},
-      value: {},
       dataSource: [],
       tableList: [
         {
@@ -60,9 +39,7 @@ class MaterialSubmit extends BaseComponent {
           id: 'fileSize',
           title: '限制大小',
         }],
-      fileList: [
-      ],
-      upLoadList: [],
+      fileList: []
     };
 
     this.currentId = 1;
@@ -70,17 +47,12 @@ class MaterialSubmit extends BaseComponent {
 
   componentDidMount() {
     this.getLoanUpload(this.props.params.id);
-    console.log(this.props);
   }
 
   //获取上传资料列表
   getLoanUpload(id) {
     Req.getLoanUploadApi(id)
       .then((res) => {
-        if (!res || res.code != 200) {
-          return;
-        }
-
         const { data } = res;
         const { list } = data;
 
@@ -133,10 +105,6 @@ class MaterialSubmit extends BaseComponent {
     });
   }
 
-  isImg(url) {
-    return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
-  }
-
   handleFileChange(info) {
     // console.log(info);
     info.fileList.map((item, i) => {
@@ -156,78 +124,21 @@ class MaterialSubmit extends BaseComponent {
     });
   }
 
-  handleFileError(err, res, file) {
-    console.log("onError callback : ", err, res, file);
-  }
-
-  renderCell(key, value, index, record) {
-    return (
-      <DropCell
-        key={record.id}
-        index={index}
-        data={record}
-        type={key}
-        moveCard={this.moveCard.bind(this)}
-        onRemoveClick={this.handleRemoveClick.bind(this)} />
-    );
-  }
-
-  findFileById(id) {
-    const { fileList } = this.state;
-    const file = fileList.filter(c => c.id === id)[0];
-    return {
-      file,
-      index: fileList.indexOf(file),
-    };
-  }
-
-  moveCard(targetIndex, sourceId, lastTargetIndex, type, fileType) {
-    console.log('moveCard', arguments);
-    let { dataSource, fileList } = this.state;
-    let dragFile = this.findFileById(sourceId);
-    let d = dataSource[targetIndex];
-
-    if (typeof lastTargetIndex != 'undefined') {
-      dataSource[lastTargetIndex][type] = undefined;
-    }
-    if (typeof d.sourceId != 'undefined') {
-      // let lastdragFile = this.findFileById(d.sourceId);
-      // lastdragFile.file.isUsed = false;
-    }
-    dragFile.file.isUsed = true;
-    // console.log('dragFile.file', dragFile.file)
-    d[type] = dragFile.file.imgURL;
-    d.sourceIndex = dragFile.index;
-    d.sourceId = sourceId;
-
+  handleSuccessChange(data, file) {
+    data = data.data[0];
+    let fileList = this.state.fileList;
+    fileList.push({
+      id: this.currentId,
+      size: data.size,
+      fileName: data.name,
+      imgURL: data.downloadUrl,
+      downloadURL: data.downloadUrl,
+      fileURL: data.downloadUrl,
+      status: 'done'
+    })
+    
     this.setState({
-      dataSource,
-      fileList,
-    });
-  }
-
-  handleRemoveClick(index, type, data) {
-    console.log(index,type,data)
-    let { dataSource, fileList } = this.state;
-    let dragFile = this.findFileById(data.sourceId);
-    let d = dataSource[index];
-
-    if (!data.sourceId) {
-      // sourceId标明当前数据是从哪个源拖动过来的
-      fileList.push({
-        id: this.currentId,
-        imgURL: data[type],
-        status: 'done',
-        type
-      });
-      this.currentId++;
-    } else {
-      dragFile.file.isUsed = false;
-    }
-    d[type] = undefined;
-    this.setState({
-      dataSource,
-      fileList,
+      fileList: fileList,
     });
   }
 
@@ -235,14 +146,14 @@ class MaterialSubmit extends BaseComponent {
   cancel = (e) => {
     e.preventDefault();
     hashHistory.push('/entryQuery');
-  };
+  }
+
   //提交
   submit = () => {
-    this.state.queryCache.id = this.props.params.id;
-    this.state.queryCache.status = 'SUBMIT';
-
+    let id = this.props.params.id;
     let { originData, tableList, dataSource } = this.state;
     let data = [];
+    
     originData.map((item) => {
       let key = '';
       if (item.type == '主贷人') {
@@ -263,37 +174,37 @@ class MaterialSubmit extends BaseComponent {
         var el = originData[i].collectionDetails[j];
         // console.log(el);
         if (!el.downloadUrl) {
-          Toast.show({
-            type: 'help',
-            content: `${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`,
-          });
+          Req.tipError(`${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`);
           return;
         }
+
+        // 验证图片的格式和大小
+        // if(el.fileSize)
       }
     }
 
-    Req.saveMaterial(this.props.params.id, originData)
+    Req.saveMaterial(id, originData)
       .then((res) => {
-        if (res && res.code == 200) {
+          let d = {
+            id: id,
+            status: 'SUBMIT'
+          };
 
-          Req.saveFrom(this.state.queryCache)
+          Req.saveFrom(d)
             .then((res) => {
-              console.log(res);
-              if (res && res.code == 200) {
-                Toast.success('提交成功');
+                Req.tipSuccess('提交成功');
                 hashHistory.push('/entryQuery');
-              }
             })
             .catch((errors) => {
               console.log(errors);
             });
-        }
       });
-  };
+  }
+
   //保存
   save = () => {
     let { originData, tableList, dataSource } = this.state;
-    let data = [];
+
     originData.map((item) => {
       let key = '';
       if (item.type == '主贷人') {
@@ -307,14 +218,17 @@ class MaterialSubmit extends BaseComponent {
         citem.downloadUrl = dataSource[j][key];
       });
     });
+
     console.log(originData)
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
-        if (res && res.code == 200) {
-          Toast.success('保存成功，请提交～')
-        }
+          Req.tipSuccess('保存成功，请提交～')
       });
-  };
+  }
+
+  handleChangeData(data){
+    this.setState(data);
+  }
 
   render() {
     const { connectDropTarget } = this.props;
@@ -323,46 +237,38 @@ class MaterialSubmit extends BaseComponent {
       <IceContainer className="pch-container">
         <Title title="材料提交" />
         <div className="pch-form material-files-form">
+          {/*<div className="material-files-upload">
+            <DragUpload
+              {...this.UPLOAD_CONFIG}
+              showUploadList={false}
+              accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+            />
+          </div>
+          <br/>*/}
           <div className="material-files-upload">
             <Upload
               {...this.UPLOAD_CONFIG}
-              className='material-files-upload-upload'
+              className="material-files-upload-upload"
               fileList={fileList}
               showUploadList={false}
-              onChange={this.handleFileChange.bind(this)}
-              onError={this.handleFileError.bind(this)}>
+              draggable={true}
+              onChange={this.handleFileChange.bind(this)}>
               <div className="material-files-upload-button">
                 <div className="icon material-files-upload-button-icon">&#xe628;</div>
                 <p className="material-files-upload-button-text">
-                   将文件拖到此处，或
+                   {/*将文件拖到此处，或 */}
                   <em>点击上传</em>
                 </p>
               </div>
             </Upload>
           </div>
-          <div className="material-files">
-            {fileList.map((item, idx) => {
-              return (
-                <DragFile
-                  key={idx}
-                  id={item.id}
-                  index={idx}
-                  data={item}
-                  moveCard={this.moveCard.bind(this)} />
-              );
-            })}
-          </div>
-          <Table dataSource={dataSource}>
-            {tableList.map((item, index) => {
-              let myCell;
-              if (item.draggable) {
-                myCell = this.renderCell.bind(this, item.id);
-              }
-              return (
-                <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index} />
-              );
-            })}
-          </Table>
+          <DragContext
+            fileList={fileList}
+            tableList={tableList} 
+            dataSource={dataSource}
+            onChangeData={this.handleChangeData.bind(this)}
+          />
+          
           <div className="pch-form-buttons">
             <Button size="large" type="secondary" onClick={this.submit}>
               提交
@@ -380,4 +286,4 @@ class MaterialSubmit extends BaseComponent {
   }
 }
 
-export default DragDropContext(HTML5Backend)(MaterialSubmit);
+export default (MaterialSubmit);
