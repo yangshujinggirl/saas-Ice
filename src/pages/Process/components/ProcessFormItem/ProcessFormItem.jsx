@@ -100,7 +100,7 @@ export default class ProcessFormItem extends Component {
                                 <Input className="input-bottom" disabled defaultValue={list.conditionName} size="large" />
                                 <i className="icon icon-arrow">&#xe603;</i>
                                 <IceFormBinder name={`taskItems[${index}].transitionItems[${ind}].transToTaskOrder`}>
-                                    <Select size="large" className="select-middle">
+                                    <Select size="large" className="select-middle" disabled={list.conditionType == 'REJECT'}>
                                         {this.renderSelect(selectData)}
                                     </Select>
                                 </IceFormBinder>

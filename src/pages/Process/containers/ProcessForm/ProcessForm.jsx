@@ -161,7 +161,7 @@ export default class ProcessForm extends Component {
 
       taskItems.push({
         ...data,
-        transitionItems: this.deepCopyArr(data.transitionItems),
+        transitionItems: this.setRejectDefaultEnd(this.deepCopyArr(data.transitionItems)),
         // taskOrder: taskItems.length + 1,
         taskOrder: this.currentTaskOrder,
         // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
@@ -213,6 +213,18 @@ export default class ProcessForm extends Component {
     });
 
     return result;
+  }
+
+  //设置拒绝流程默认结束
+  setRejectDefaultEnd(items){
+
+    items.map((item) => {
+      if(item.conditionType == 'REJECT'){
+        item.transToTaskOrder = -1;
+      }
+    })
+
+    return items;
   }
 
   //表单校验change
