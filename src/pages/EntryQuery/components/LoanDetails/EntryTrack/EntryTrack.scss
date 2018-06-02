@@ -46,6 +46,15 @@
         }
         &.status-orange {
           background: #FFCC66;
+          position: relative;
+          line-height: inherit;
+          >span {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            transform: translate(-50%,-50%)
+          }
         }
         &.status-green {
           background: #66CC99;

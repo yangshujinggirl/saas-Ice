@@ -22,7 +22,7 @@ export default class Deepstream extends Component {
         //<!-- wss://deepstream-staging.pingchang666.com --> 予发布
         //<!-- ws://deepstream.pingchang666.com -->生产
         let client = dt('ws://deepstream-staging.pingchang666.com');
-        let listNameArr = 'creditCard/d1cb47ee145e9e26008cff0d0c534157$creditCard/0acc7dfd8b1d24edd908c79c01d20574' //队列名称
+        // let listNameArr = 'creditCard/d1cb47ee145e9e26008cff0d0c534157$creditCard/0acc7dfd8b1d24edd908c79c01d20574' //队列名称
         client.on('error', function (error) {
             console.log(error)
         })
@@ -31,8 +31,8 @@ export default class Deepstream extends Component {
             client
         })
         http.initInterview().then((data) => {
-            // listNameArr = data.data.list && data.data.list.split('$');
-            listNameArr = listNameArr.split('$');            
+            let listNameArr = data.data.list.split('$');
+            // listNameArr = listNameArr.split('$');            
             client.on('connectionStateChanged', function (connectionState) {
                 if (connectionState === 'OPEN') {
                     listNameArr && listNameArr.forEach(function (listname, index) {
@@ -54,7 +54,7 @@ export default class Deepstream extends Component {
     listChanged(listname, params) {
         let dataJson = [], dataList = {}, listNum = 0, _this = this;
         console.log("listname:", listname);
-        console.log("等待面签的id:", params);
+        console.log("ididid:", params);
         // 删除数据
         if (!params.length) {
             dataList = _this.state.dataList

@@ -1270,6 +1270,8 @@ body {
     z-index: 6;
     max-height: 600px;
     overflow:auto;
+    min-height: 330px;
+    padding-bottom: 20px;
     // border: 1px solid #999;
     &.active {
         display: block;
@@ -1333,3 +1335,12 @@ body {
         }
     }
 }
+// 保存按钮样式
+.next-btn-primary {
+    background-color: #1AA8F0;
+}
+// 弹框透明度
+.next-dialog-wrapper.opened .next-overlay-backdrop {
+    opacity: .4;
+}
+// .next-btn-secondary
