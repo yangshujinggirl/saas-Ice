@@ -34,7 +34,6 @@ export default class Deepstream extends Component {
             client
         })
         client.on('connectionStateChanged', (connectionState) => { 
-            console.log('connectionStateChanged',connectionState)
             this.connectionState = connectionState;
             this.deepLink();
         })
@@ -51,7 +50,6 @@ export default class Deepstream extends Component {
     }
 
     deepLink() {
-        console.log(this.connectionState, this.listNameArr)
         let _this = this;
         if (this.connectionState === 'OPEN' && this.listNameArr && this.listNameArr.length > 0) {
             this.listNameArr.forEach((listname, index) => {

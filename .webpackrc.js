@@ -10,7 +10,6 @@ var package = require('./package.json');
 var NODE_ENV = (process.env.NODE_ENV || 'DEVELOPMENT').toUpperCase();
 var __DEV__ = NODE_ENV !== 'PRODUCTION';
 
-
 module.exports = {
     // output: {
     //     path: resolve("build/assets"),
