@@ -211,17 +211,6 @@ export default class Chanpinchengshu extends Component {
 			for (var j = i + 1; j < items.length; j++) {
 				if ((items[i].loanTermRangeMin == items[j].loanTermRangeMin) && (items[i].loanTermRangeMax == items[j].loanTermRangeMax)) {
 					callback('不能相等')
-				// 	Feedback.toast.show({
-				// 		type: 'error',
-				// 		content: '额度期限的最小、大期限不能同时相等！',
-				// 		afterClose: () => {
-				// 			this.props.onChangeBoolean(false)
-				// 		},
-				// 		duration: 3000
-				// 	});
-				// }else{
-				// 	this.props.onChangeBoolean(true)
-				// }
 				}
 			}
 		}
@@ -235,7 +224,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanTermRangeMin`}
 					validator={this.testChange1}
 				>
-					<Input placeholder="最小期限" />
+					<Input placeholder="最小期限" htmlType ='number'/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanTermRangeMin`} /></div>
 			</div>
@@ -250,7 +239,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanPercentageMax`}
 					validator={this.testChange2}
 				>
-					<Input placeholder="最大成数" />
+					<Input placeholder="最大成数" htmlType ='number'/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanPercentageMax`} /></div>
 			</div>
@@ -265,7 +254,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanPercentageMin`}
 					validator={this.testChange3}
 				>
-					<Input placeholder="最小成数" min="1"/>
+					<Input placeholder="最小成数" htmlType ='number'/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanPercentageMin`} /></div>
 
@@ -281,7 +270,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanTermRangeMax`}
 					validator={this.testChange4}
 				>
-					<Input placeholder="最大期限" />
+					<Input placeholder="最大期限" htmlType ='number'/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanTermRangeMax`} /></div>
 			</div>

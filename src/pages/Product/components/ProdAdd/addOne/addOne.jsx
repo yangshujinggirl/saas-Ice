@@ -304,7 +304,7 @@ export default class addOne extends BaseCondition {
 								validator={this.prepaymentAmountMinChange}
 
 							>
-								<Input size="large" placeholder="最小提前还款金额" className="custom-input" />
+								<Input size="large" placeholder="最小提前还款金额" className="custom-input" htmlType ='number'/>
 							</IceFormBinder>
 							<div> <IceFormError name="prepaymentAmountMin" /></div>
 						</FormItem>
@@ -317,7 +317,7 @@ export default class addOne extends BaseCondition {
 								validator={this.prepaymentPeriodsLimitChange}
 							>
 
-								<Input size="large" placeholder="最早提前还款期数" className="custom-input" />
+								<Input size="large" placeholder="最早提前还款期数" className="custom-input" htmlType ='number'/>
 							</IceFormBinder>
 							<div><IceFormError name="prepaymentPeriodsLimit" /></div>
 						</FormItem>
@@ -1023,7 +1023,10 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.principalAmountMinChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" 
+															className="addone-input" 
+															htmlType ='number'
+															/>
 													</IceFormBinder>
 													<div><IceFormError name="principalAmountMin" /></div>
 												</div>
@@ -1034,7 +1037,10 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.principalAmountMaxChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" 
+														className="addone-input" 
+														htmlType ='number'
+														/>
 
 													</IceFormBinder>
 													<div ><IceFormError name="principalAmountMax" /></div>
@@ -1051,7 +1057,7 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.loanTermRangeMinChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" className="addone-input" htmlType ='number' />
 													</IceFormBinder>
 													<div><IceFormError name="loanTermRangeMin" /></div>
 												</div>
@@ -1062,7 +1068,7 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.loanTermRangeMaxChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" className="addone-input" htmlType ='number'/>
 													</IceFormBinder>
 													<div><IceFormError name="loanTermRangeMax" /></div>
 												</div>
@@ -1078,7 +1084,7 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.loanPercentageMinChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" className="addone-input" htmlType ='number'/>
 													</IceFormBinder>
 													<div><IceFormError name="loanPercentageMin" /></div>
 												</div>
@@ -1090,7 +1096,7 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.loanPercentageMaxChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" className="addone-input" htmlType ='number'/>
 
 													</IceFormBinder>
 													<div><IceFormError name="loanPercentageMax" /></div>
@@ -1197,7 +1203,7 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.interestRatesRangeMinChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" className="addone-input" htmlType ='number'/>
 													</IceFormBinder>
 													<div><IceFormError name="interestRatesRangeMin" /></div>
 												</div>
@@ -1208,7 +1214,7 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.interestRatesRangeMaxChange}
 													>
-														<Input size="large" style={{ width: '100%', height: '34px' }} />
+														<Input size="large" className="addone-input" htmlType ='number'/>
 													</IceFormBinder>
 													<div><IceFormError name="interestRatesRangeMax" /></div>
 												</div>

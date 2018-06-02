@@ -70,17 +70,7 @@
 .table {
     border:none !important
 }
-//     // border: 1px solid #f6dca9;
-//     border-spacing: 0;
-//     border-collapse: collapse;
-//     tr td {
-//         border: 1px solid #f6dca9;
-//     }
-//     tr th {
-//         background: #fdf4e3;
-//         border: 1px solid #f6dca9;
-//     }
-// }
+
 .deleteBtn {
     border: none;
     border-radius: 2px;
@@ -128,4 +118,8 @@
         float: left;
         width: 40%;
     }
+}
+.addone-input {
+    width: 100%;
+    height: 34px;
 }
