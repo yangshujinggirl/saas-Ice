@@ -34,6 +34,7 @@ export default class Deepstream extends Component {
             let listNameArr = data.data.list.split('$');
             // listNameArr = listNameArr.split('$');            
             client.on('connectionStateChanged', function (connectionState) {
+                console.log('connectionState:',connectionState)
                 if (connectionState === 'OPEN') {
                     listNameArr && listNameArr.forEach(function (listname, index) {
                         let list = client.record.getList(listname);
