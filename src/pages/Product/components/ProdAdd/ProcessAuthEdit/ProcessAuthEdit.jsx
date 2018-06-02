@@ -27,7 +27,7 @@ export default class ProcessAuthEdit extends BaseApp {
                     let selectedRowOne = records;
                     records.map((item) => {
                         let result = [];
-                        item.roles.map((role) => {
+                        item.roles && item.roles.map((role) => {
                             result.push(role.id);
                         })
                         item.selectedRoles = result;
