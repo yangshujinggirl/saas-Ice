@@ -66,12 +66,6 @@ export default class FormRender extends Component {
       dataSource: [],
     };
   }
-
-  componentWillMount() {
-    // this.fetchData()
-    this.SelectList();
-  }
-
   //渲染表单
   renderForm = (data) => {
     const formList = [];
