@@ -22,16 +22,18 @@ class DropCell extends Component {
         if(!this.imgSizeMatching) {
             Toast.show({
                 type: 'help',
-                content: '材料文件超过大小限制',
+                content: '材料文件太大，超过' + data.fileSize + 'M',
             });
             onRemoveClick.bind(this, index, type, data)();
+            return;
         }
         if(!this.imgMatching) {
             Toast.show({
                 type: 'help',
-                content: '材料类型上传不正确～',
+                content: '材料文件类型不正确，应使用格式' + data.fileType,
             });
             onRemoveClick.bind(this, index, type, data)();
+            return;
         }
     }
     render() {
@@ -43,8 +45,14 @@ class DropCell extends Component {
                 return true;
             }
         });
-        // this.imgSizeMatching = data.fileSize > data.realSize;
-        console.log(data)
+        if(data.realSize){
+            //realSize 单位B
+            //fileSize 单位M
+            this.imgSizeMatching = data.fileSize * 1000 * 1000 > data.realSize;
+        }else{
+            this.imgSizeMatching = true;
+        }
+
         return connectDropTarget(
             <div className={cx('material-file-cell', {'can-drop': canDrop})}>
                 {data[type]!=undefined? 
@@ -68,15 +76,15 @@ class DropCell extends Component {
 const cardTarget = {
     canDrop(props, monitor) {
         // console.log('dropcell candrop', props);
-        console.log(props.data)
         if(props.data[props.type]){
             // 已经拖动过则不在拖放
             return false;
         }
+
         return true;
     },
     hover(props, monitor, component) {
-        console.log('DropCell hover', monitor.getItem())
+        // console.log('DropCell hover', props, monitor.getItem())
         const {lastTargetIndex, id: sourceId} = monitor.getItem()
         const {index: targetIndex, type, data} = props
 
@@ -88,6 +96,7 @@ const cardTarget = {
             // 已经拖动过则不在拖放
             return false;
         }
+
         // Time to actually perform the action
         props.moveCard(targetIndex, sourceId, lastTargetIndex, type, data.fileType)
         

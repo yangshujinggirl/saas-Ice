@@ -19,12 +19,14 @@ class DragContext extends BaseComponent {
     }
 
     renderCell(key, value, index, record) {
+      const {fileList} = this.props;
         return (
             <DropCell
                 key={record.id}
                 index={index}
                 data={record}
                 type={key}
+                fileList={fileList}
                 moveCard={this.moveCard.bind(this)}
                 onRemoveClick={this.handleRemoveClick.bind(this)} />
             );
@@ -84,6 +86,7 @@ class DragContext extends BaseComponent {
             dragFile.file.isUsed = false;
         }
         d[type] = undefined;
+        d.realSize = undefined;
         
         this.props.onChangeData({
             dataSource,
