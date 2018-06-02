@@ -5,7 +5,8 @@ import LoanDetail from './components/LoanDetail';
 import InterviewOnlyDetail from './components/InterviewOnlyDetail';
 import { hashHistory } from 'react-router';
 import Req from './reqs/InterViewReq';
-
+import { Feedback } from '@icedesign/base/index';
+const Toast = Feedback.toast;
 export default class Demo extends Component {
 
   constructor(props) {
@@ -30,13 +31,15 @@ export default class Demo extends Component {
       if (type == 'interviewOnly' || type == 'creditCard') {
         Req.getInterViewOnlyDetail(id)
           .then((res) => {
-            console.log(res.data);
             this.setState({
               formData: res.data,
             });
           })
           .catch((error) => {
-            console.log(error);
+            Toast.show({
+              type: 'error',
+              content: error.msg,
+            });
           });
       } else if (type == 'pbcContract' || type == 'pinganContract') {
         Req.getInterViewDetail(id)
@@ -46,11 +49,26 @@ export default class Demo extends Component {
             });
           })
           .catch((error) => {
-            console.log(error);
+            Toast.show({
+              type: 'error',
+              content: error.msg,
+            });
           });
 
       } else if (type == 'loan') {
         this.props.actions.getDetail(id);
+        Req.getDetail(id).then(res=>{
+          this.setState({
+            formData: res.data,
+          });
+          }
+        ).catch(error=>{
+          Toast.show({
+            type: 'error',
+            content: error.msg,
+          });
+        })
+
       }
 
     }
