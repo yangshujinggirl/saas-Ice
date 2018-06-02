@@ -1250,7 +1250,7 @@ export default class InterviwDialog extends Component {
             interviewDetail = <InterviewDetail id={id} type={type}></InterviewDetail>
         }
         let content = [
-            <div className={cx('pch-interview-box', { 'active': this.state.toggleHide })} key='1'>
+            <div className={cx('pch-interview-box', { 'active': this.state.toggleHide,'min-height': this.state.isFullScreen})} key='1'>
                 <div className='pch-interview-left'>
                 {interviewDetail}
                 </div>

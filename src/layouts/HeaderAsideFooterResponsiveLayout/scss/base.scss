@@ -890,6 +890,9 @@ body {
   }
   .next-select.disabled {
     color: #000;
+    border-color: #E0E0E0;
+    background-color: #F4F4F4;
+    cursor: not-allowed;
   }
   .next-number-picker-input-wrap .next-number-picker-input input[disabled] {
     text-align: left;
@@ -1275,6 +1278,9 @@ body {
     // border: 1px solid #999;
     &.active {
         display: block;
+    }
+    &.min-height {
+        min-height: 550px;
     }
     .pch-interview-left {
         float: left;
