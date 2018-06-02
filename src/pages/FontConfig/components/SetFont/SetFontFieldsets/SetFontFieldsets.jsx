@@ -214,7 +214,7 @@ class SetFontFieldsets extends Component {
                             content: data.msg
                         })
                     }
-                }).catch((error)=>{
+                }).catch((error) =>{
                   Dialog.alert({
                     title: '提示',
                     content: error.msg
@@ -225,7 +225,7 @@ class SetFontFieldsets extends Component {
 
     }
 
-    changeFieldsSort =(dragParent, hoverParent, dragIndex, hoverIndex)=>{
+    changeFieldsSort =(dragParent, hoverParent, dragIndex, hoverIndex) =>{
         let { resData } = this.state;
         let temp = resData.fieldset[dragParent].fields.splice(dragIndex,1)
         resData.fieldset[hoverParent].fields.splice(hoverIndex, 0, ...temp);

@@ -1,18 +1,14 @@
 /* eslint no-underscore-dangle: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
-import { Balloon } from "@icedesign/base";
-// import "./SetFont.scss"
+import { Balloon, Button, Input, Select, Field, DatePicker, Upload, Dialog, Checkbox, Radio, CascaderSelect } from '@icedesign/base';
 import cx from 'classnames';
 import FontConfigReq from './../../reqs/FontConfigReq.js'
-import Tools from 'utils'
 import { Title } from 'components';
 import SetFontMenus from '../SetFont/SetFontMenus';
 
 const {Group: CheckboxGroup} = Checkbox;
 const {Group: RadioGroup} = Radio;
-const {MonthPicker, YearPicker, RangePicker} = DatePicker;
 
 
 export default class SetFontView_ extends Component {
@@ -23,60 +19,10 @@ export default class SetFontView_ extends Component {
 
         // 请求参数缓存
         this.state = {
-            resData: [],
-            pageValue: '',
-            leftActive: 0,
-            rightActive: '',
-            subTitle: '',
-            addValue: [1],
-            fields: {
-                fieldsetOrder: 1,
-                hasAttachedFields: false,
-                isCustom: true,
-                isRepeatable: false,
-                isRequired: false,
-                label: "",
-                name: "",
-                orderId: 43,
-                screenSchemeId: '',
-                type: "",
-                options: [],
-                length: 30,
-            },
-            arraList: [5, 6, 7, 8, 9],
-            dialogOne: false,
-            dialogTwo: false,
-            boolDate: false,
-            boolSelect: false,
-            value: ["true"],
-            listDate: ["yyyy"],
-            editeCodeIndex: {
-                index: 0,
-                inj: 0
-            }
+            resData: []
         };
     }
 
-    handleRemoveElement = (index, inj) => {
-        let id = this.props.router.location.query.id
-        const newArr = this.state.resData;
-        let deleteObj = newArr.fieldset[index].fields.splice(inj, 1);
-        let fileId = deleteObj[0].id;
-        console.log(deleteObj[0]);
-
-        FontConfigReq.deleteCode(id, fileId).then((data) => {
-            if (data.code == '200') {
-                this.setState({
-                    resData: newArr
-                });
-            } else {
-                Dialog.alert({
-                    content: data.msg
-                })
-            }
-        })
-
-    }
     // 返回
     handleCancel = () => {
         if (this.props.changeView) {
@@ -87,26 +33,7 @@ export default class SetFontView_ extends Component {
     }
 
     componentDidMount() {
-        // let id = this.props.params.id
-
-        // FontConfigReq.getCode(id).then((data) => {
-        //     let res = data.data
-        //     this.setState({
-        //         resData: res,
-        //         pageValue: res && res.name
-        //     })
-        //     for (const key in this.state.resData.fieldset) {
-
-        //         if (this.state.resData.fieldset[key].name == '基本信息') {
-        //             let allDate = this.state.resData
-        //             let first = allDate.fieldset.splice(key, 1)
-        //             allDate.fieldset.unshift(...first)
-        //             this.setState({
-        //                 resData: allDate
-        //             })
-        //         }
-        //     }
-        // })
+        
         // 固定左侧菜单
         window.onscroll = function() {
             let scrollFix = document.querySelector('.scrollFix');
@@ -130,30 +57,7 @@ export default class SetFontView_ extends Component {
     }
 
     render() {
-        const hover = (bool, item) => {
 
-            if (bool) {
-                this.setState({
-                    rightActive: item
-                })
-            } else {
-                this.setState({
-                    rightActive: ''
-                })
-            }
-        }
-
-        const handleAddModule = () => {
-            const newArr = this.state.resData;
-            let add = {
-                name: '请输入标题',
-                fields: []
-            }
-            newArr.fieldset.push(add)
-            this.setState({
-                resData: newArr
-            });
-        }
         const dataSource = [
             {
                 value: "2973",
@@ -213,6 +117,7 @@ export default class SetFontView_ extends Component {
         const handleFixed = (item) => {
             let defaultValue;
             if (item.options) {
+              // 有选项的设置默认值
                 let defaultOptions = item.options.filter((opt) => {
                     return opt.isDefault
                 });
@@ -228,7 +133,6 @@ export default class SetFontView_ extends Component {
                     break;
                 case 'TEXT':
                     inputType = <Input size="large" placeholder="请输入" />
-                    // inputType = <Input placeholder=""  multiple/>
                     break;
                 case 'INT':
                     inputType = <Input size="large" placeholder="请输入" />
@@ -237,7 +141,7 @@ export default class SetFontView_ extends Component {
                     inputType = <Input size="large" placeholder="请输入" />
                     break;
                 case 'DATE':
-                    inputType = <RangePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
+                    inputType = <DatePicker size="large" onChange={(val, str) => console.log(val, str)} onStartChange={(val, str) => console.log(val, str)} />
                     break;
                 case 'SELECT':
                     inputType = <Select size="large" placeholder="请选择" dataSource={item.options} defaultValue={defaultValue} />
@@ -255,16 +159,6 @@ export default class SetFontView_ extends Component {
                     break;
             }
             return inputType
-        }
-
-        const handleEditeCoce = (index, inj) => {
-            // let reqData = this.state.resData;
-            // reqData.fieldset[index].fields[inj].label
-            this.state.editeCodeIndex.index = index;
-            this.state.editeCodeIndex.inj = inj;
-            this.setState({
-                dialogTwo: true,
-            })
         }
 
         const {resData = {}} = this.state;
@@ -299,53 +193,11 @@ export default class SetFontView_ extends Component {
                                                  </div>
                                              </div>
                                              <div className='ui-sortable'>
-                                                 {index == 0 ? item.fields.map((item, inj) => {
-                                                      if (item.isCustom) {
-                                                          return (
-                                                              // 基本信息里面自定义字段
-                                                              <div onMouseLeave={hover.bind(this, 0)} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                                                                         'false')} key={inj} data-row={item.line == 1 ? true : ''}>
-                                                                  <div className="clearfix">
-                                                                      <label htmlFor="" className='label'>
-                                                                          <Balloon type="primary" trigger={<span className='ellips' title={item.label}><span className='required'>{item.isRequired ? <span>*</span> : ''}</span>
-                                                                                                           {item.label}
-                                                                                                           </span>} closable={false} triggerType="hover">
-                                                                              {item.label}
-                                                                          </Balloon>
-                                                                      </label>
-                                                                      {handleFixed(item)}
-                                                                      <span className='edite icon' onClick={handleEditeCoce.bind(this, index, inj)}></span>
-                                                                  </div>
-                                                                  <span className="delete" onClick={this.handleRemoveElement.bind(this, index, inj)}>×</span>
-                                                              </div>
-                                                          )
-                                                      } else {
-                                                          return (
-                                                              // 固定字段
-                                                              <div className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                                      'false')} key={inj} data-row={item.line == 1 ? true : ''}>
-                                                                  <div className="clearfix">
-                                                                      <label htmlFor="" className='label'>
-                                                                          <Balloon type="primary" trigger={<span className='ellips'><span className='required'>*</span>
-                                                                                                           {item.label}:</span>} closable={false} triggerType="hover">
-                                                                              {item.label}
-                                                                          </Balloon>
-                                                                      </label>
-                                                                      {handleFixed(item)}
-                                                                      <span className='edite icon'></span>
-                                                                  </div>
-                                                                  <span className="delete">×</span>
-                                                              </div>
-                                                          )
-                                                      }
-                                                  
-                                                  }) : ''}
-                                                 {index == 0 ? '' : item.fields.map((item, inj) => {
+                                                 {item.fields.map((item, inj) => {
                                                       return (
-                                                          <div key={inj} className={cx('dynamic-item', 'firstModle', ' ui-sortable-item',
-                                                                                'false')} data-row={item.line == 1 ? true : ''}>
+                                                          <div key={inj} className={cx('dynamic-item', 'firstModle', "ui-sortable-item")} data-row={item.line == 1 ? true : ''}>
                                                               <div className="clearfix">
-                                                                  <label htmlFor="" className='label'>
+                                                                  <label className='label'>
                                                                       <Balloon type="primary" trigger={<span className='ellips' title={item.label}><span className='required'>{item.isRequired ? <span>*</span> : ''}</span>
                                                                                                        {item.label}
                                                                                                        </span>} closable={false} triggerType="hover">
@@ -353,11 +205,9 @@ export default class SetFontView_ extends Component {
                                                                       </Balloon>
                                                                   </label>
                                                                   {handleFixed(item)}
-                                                                  <span className='edite icon' onClick={handleEditeCoce.bind(this, index, inj)}></span>
                                                               </div>
-                                                              <span className="delete" onClick={this.handleRemoveElement.bind(this, index, inj)}>×</span>
                                                           </div>
-                                                          );
+                                                        );
                                                   })}
                                              </div>
                                          </div>
