@@ -68,9 +68,11 @@ export default class ProcessDetail extends Component {
                 customMenuList.map((citem, j) => {
                     if (item.taskTypeId == citem.id) {
                         citem.limitedAddTimes--;
-                        // 是否有必要数据需要使用模块列表的数据，其余使用默认
+                        // 编辑是需要模块的数据，只更新需要的数据，有些值是已经编辑过的，如果全部更新会替换已编辑过的数据
                         item = Object.assign(item, {
-                            haveRequiredField: citem.haveRequiredFields,
+                          haveConfigPage: citem.haveConfigPage,
+                          haveRequiredField: citem.haveRequiredField,
+                          haveCollection: citem.haveCollection,
                         });
                     }
                 })
@@ -136,8 +138,11 @@ export default class ProcessDetail extends Component {
                 if(!item.pageId){
                     return;
                 }
+
+                let idx = formData.taskItems.indexOf(item);
+                let step = this.getStepFromData(formData.taskItems, idx);//当前的进件属于第几步
                 
-                actions.getPageDetail(item.pageId,item.taskOrder);
+                actions.getPageDetail(item.pageId,step);
                 this.setState({
                     pageId: item.pageId,
                 });
@@ -148,6 +153,29 @@ export default class ProcessDetail extends Component {
         this.setState({
             view
         })
+    }
+
+    /**
+    * 获取进件页面配置的step参数
+    * 1. 默认从1开始
+    * 2. 当前编辑页面在列表的位置
+    * @param  {[type]} taskItems 整个模块列表
+    * @param  {[type]} order 当前点击编辑页面的模块序号、从0开始
+    * @return {[type]}           [description]
+    */
+    getStepFromData(taskItems, order) {
+        if (order == 0) {
+          return 1;
+        }
+
+        let count = 1;
+        taskItems.map((item, i) => {
+          if (i < order && item.haveConfigPage) {
+            count++;
+          }
+        });
+
+        return count;
     }
 
     /**

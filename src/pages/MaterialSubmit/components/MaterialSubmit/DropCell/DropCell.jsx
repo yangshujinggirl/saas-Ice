@@ -12,12 +12,20 @@ class DropCell extends Component {
     constructor(props) {
         super(props);
         this.imgMatching = true;
+        this.imgSizeMatching = true;
     }
     isImg(url) {
         return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
     }
     componentDidUpdate(state) {
-        const { index, data, type, isOver, canDrop, connectDropTarget, onRemoveClick } = this.props;        
+        const { index, data, type, isOver, canDrop, connectDropTarget, onRemoveClick } = this.props;
+        if(!this.imgSizeMatching) {
+            Toast.show({
+                type: 'help',
+                content: '材料文件超过大小限制',
+            });
+            onRemoveClick.bind(this, index, type, data)();
+        }
         if(!this.imgMatching) {
             Toast.show({
                 type: 'help',
@@ -28,13 +36,14 @@ class DropCell extends Component {
     }
     render() {
         const { index, data, type, isOver, canDrop, connectDropTarget, onRemoveClick } = this.props;
-            this.imgMatching = data.fileType.split(',').some(element => {
-            if (data.principalLender) {
-                return data.principalLender.includes(element);
+        this.imgMatching = data.fileType.split(',').some(element => {
+            if (data[type]) {
+                return data[type].includes(element);
             } else {
                 return true;
             }
         });
+        // this.imgSizeMatching = data.fileSize > data.realSize;
         console.log(data)
         return connectDropTarget(
             <div className={cx('material-file-cell', {'can-drop': canDrop})}>
