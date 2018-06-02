@@ -77,11 +77,6 @@ export default class FormRenderFormRender extends Component {
     console.log(this.props.params.id);
   };
 
-  componentWillMount() {
-    // this.fetchData()
-    this.SelectList();
-  }
-
   //渲染表单
   renderForm = (data) => {
     // console.log(data)
