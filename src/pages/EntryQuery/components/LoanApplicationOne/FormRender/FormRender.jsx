@@ -77,11 +77,6 @@ export default class FormRenderFormRender extends Component {
     console.log(this.props.params.id);
   };
 
-  componentWillMount() {
-    // this.fetchData()
-    this.SelectList();
-  }
-
   //渲染表单
   renderForm = (data) => {
     // console.log(data)
@@ -112,29 +107,6 @@ export default class FormRenderFormRender extends Component {
     }
     return formList;
   };
-  //区块分类渲染
-  FromRender = (el, outIndex, inIndex) => {
-    if (el.hasAttachedFields) {
-      return (<div className="subsidiary-field" key={el.name}>
-        {this.RenderField(el, outIndex, inIndex)}
-      </div>);
-    }
-    else if (el.type == 'CHECKBOX' || el.type == 'RADIO') {
-      return (<div className="subsidiary-field" key={el.name}>
-        {this.RenderField(el, outIndex, inIndex)}
-      </div>);
-    }
-    else if (el.line == '1') {
-      return (<div className="subsidiary-field" key={el.name}>
-        {this.RenderField(el, outIndex, inIndex)}
-      </div>);
-    }
-    return this.RenderField(el, outIndex, inIndex);
-  };
-  //selectList
-  SelectList = () => {
-
-  };
 
   //对输入框的身份证号码与电话号码校验
   specialValidateHandler = (borrowerIdType, rule, value, callback) => {
@@ -153,6 +125,26 @@ export default class FormRenderFormRender extends Component {
     } else {
       callback();
     }
+  };
+
+  //区块分类渲染
+  FromRender = (el, outIndex, inIndex) => {
+    if (el.hasAttachedFields) {
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el, outIndex, inIndex)}
+      </div>);
+    }
+    else if (el.type == 'CHECKBOX' || el.type == 'RADIO' || el.type == 'ADDRESS') {
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el, outIndex, inIndex)}
+      </div>);
+    }
+    else if (el.line == '1') {
+      return (<div className="subsidiary-field" key={el.name}>
+        {this.RenderField(el, outIndex, inIndex)}
+      </div>);
+    }
+    return this.RenderField(el, outIndex, inIndex);
   };
 
   //渲染字段
@@ -362,7 +354,7 @@ export default class FormRenderFormRender extends Component {
         var setValue = '';
         setValue = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
         Fields.push(<FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                              {...formItemLayoutTEXT}>
+                              {...formItemLayoutR}>
           <RadioGroup
             defaultValue={setValue + ''}
             disabled={el.isReadonly}
@@ -394,7 +386,7 @@ export default class FormRenderFormRender extends Component {
       return (
 
         <FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                  {...formItemLayoutTEXT}>
+                  {...formItemLayoutR}>
           <CheckboxGroup
             className='CheckboxGroup'
             style={{ width: '100%' }}
@@ -450,8 +442,9 @@ export default class FormRenderFormRender extends Component {
                   {...formItemLayout}  >
           <DatePicker
             disabled={el.isReadonly}
-            format={'YYYY-MM-DD'}
+            formater={["YYYY-MM-DD"]}
             style={{ width: '100%' }}
+            // onChange={this.onDateChange.bind(this)}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
@@ -472,6 +465,23 @@ export default class FormRenderFormRender extends Component {
                    initValue: el.value,
                    rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
                  })}
+          />
+        </FormItem>
+      );
+    }
+    else if (el.type == 'ADDRESS') {
+      return (
+        <FormItem key={el.id} style={{ width: '70%' }} className='item' label={this.label(el.label)}
+                  {...formItemLayoutR}>
+          <Input
+            placeholder={'请输入' + el.label}
+            style={{ width: '100%' }}
+            disabled={el.isReadonly}
+            maxLength={el.length ? el.length : null}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+            })}
           />
         </FormItem>
       );
@@ -520,11 +530,8 @@ export default class FormRenderFormRender extends Component {
     }
     callback();
   }
-  //改变value
-  onChange = (value, option) => {
-    console.log(value);
-    console.log(option);
-  };
+
+
   onInputUpdate = (value) => {
     const productCode = this.props.field.getValue('productCode');
     var carList = {

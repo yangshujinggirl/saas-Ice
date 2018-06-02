@@ -56,7 +56,7 @@ export default class Demo extends Component {
           });
 
       } else if (type == 'loan') {
-        this.props.actions.getDetail(id);
+        //this.props.actions.getDetail(id);
         Req.getDetail(id).then(res=>{
           this.setState({
             formData: res.data,

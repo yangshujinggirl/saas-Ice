@@ -133,7 +133,6 @@ export const saveProductAuth = (data,id) => {
 //产品提交第三步保存
 export const saveProductAdd = (id, data,processDefId,tempData) => {
   return (dispatch) => {
-
     dispatch(fetchStart())
     Req.saveProductAdd(id, data,processDefId).then((res) => {
 
@@ -141,7 +140,6 @@ export const saveProductAdd = (id, data,processDefId,tempData) => {
         return;
       }else{
         Req.getProductStatus(id).then((res)=>{
-          console.log(id)
           dispatch(fetchSuccess({ status: true }))
         }).catch((ex)=>{
             dispatch(fetchFailed(ex))
@@ -150,7 +148,6 @@ export const saveProductAdd = (id, data,processDefId,tempData) => {
 
 
         Req.saveContractTemplate(tempData).then((res)=>{
-          console.log(tempData)
           if (!res || res.code != 200) return;
 
           hashHistory.push('/product/search');

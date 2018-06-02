@@ -198,7 +198,7 @@ export default class TIqianhuankanfangshi extends Component {
           name={`prepaymentSetting[${index}].loanTermMin`}
           validator={this.changValue1}
         >
-          <Input placeholder="最小期限" />
+          <Input placeholder="最小期限" htmlType ='number'/>
         </IceFormBinder>
         <div style={{ display: 'inline' }}><IceFormError name={`prepaymentSetting[${index}].loanTermMin`} /></div>
       </div>
@@ -213,7 +213,7 @@ export default class TIqianhuankanfangshi extends Component {
           name={`prepaymentSetting[${index}].loanTermMax`}
           validator={this.changValue2}
         >
-          <Input placeholder="最大期限" />
+          <Input placeholder="最大期限" htmlType ='number'/>
         </IceFormBinder>
         <div style={{ display: 'inline' }}><IceFormError name={`prepaymentSetting[${index}].loanTermMax`} /></div>
       </div>
@@ -243,7 +243,7 @@ export default class TIqianhuankanfangshi extends Component {
           name={`prepaymentSetting[${index}].penaltyPercentage`}
           validator={this.changValue4}
         >
-          <Input placeholder="违约金比例" />
+          <Input placeholder="违约金比例" htmlType ='number'/>
         </IceFormBinder>
         <div style={{ display: 'inline' }}><IceFormError name={`prepaymentSetting[${index}].penaltyPercentage`} /></div>
       </div>

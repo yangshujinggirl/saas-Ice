@@ -66,12 +66,6 @@ export default class FormRender extends Component {
       dataSource: [],
     };
   }
-
-  componentWillMount() {
-    // this.fetchData()
-    this.SelectList();
-  }
-
   //渲染表单
   renderForm = (data) => {
     const formList = [];
@@ -102,7 +96,7 @@ export default class FormRender extends Component {
         {this.RenderField(el, outIndex, inIndex)}
       </div>);
     }
-    else if (el.type == 'CHECKBOX' || el.type == 'RADIO') {
+    else if (el.type == 'CHECKBOX' || el.type == 'RADIO' || el.type == 'ADDRESS') {
       return (<div className="subsidiary-field" key={el.name}>
         {this.RenderField(el, outIndex, inIndex)}
       </div>);
@@ -113,16 +107,6 @@ export default class FormRender extends Component {
       </div>);
     }
     return this.RenderField(el, outIndex, inIndex);
-  };
-  //selectList
-  SelectList = () => {
-
-  };
-  isFixedCheck = (isFixed, isReadonly) => {
-    if (isFixed) {
-      isReadonly = true;
-    }
-    return isReadonly;
   };
 
   //渲染字段
@@ -332,7 +316,7 @@ export default class FormRender extends Component {
         var setValue = '';
         setValue = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
         Fields.push(<FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                              {...formItemLayoutTEXT}>
+                              {...formItemLayoutR}>
           <RadioGroup
             defaultValue={setValue + ''}
             disabled={el.isReadonly}
@@ -364,7 +348,7 @@ export default class FormRender extends Component {
       return (
 
         <FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                  {...formItemLayoutTEXT}>
+                  {...formItemLayoutR}>
           <CheckboxGroup
             className='CheckboxGroup'
             style={{ width: '100%' }}
@@ -415,7 +399,6 @@ export default class FormRender extends Component {
           </FormItem>
         );
       }
-      console.log(el.name)
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >
@@ -436,6 +419,23 @@ export default class FormRender extends Component {
         <FormItem key={el.id} style={{ width: '90%' }} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
           <Input multiple='6'
+                 placeholder={'请输入' + el.label}
+                 style={{ width: '100%' }}
+                 disabled={el.isReadonly}
+                 maxLength={el.length ? el.length : null}
+                 {...init(el.name, {
+                   initValue: el.value,
+                   rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+                 })}
+          />
+        </FormItem>
+      );
+    }
+    else if (el.type == 'ADDRESS') {
+      return (
+        <FormItem key={el.id} style={{ width: '70%' }} className='item' label={this.label(el.label)}
+                  {...formItemLayoutR}>
+          <Input
                  placeholder={'请输入' + el.label}
                  style={{ width: '100%' }}
                  disabled={el.isReadonly}

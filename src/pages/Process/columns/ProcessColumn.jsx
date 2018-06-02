@@ -51,14 +51,19 @@ class ProcessColumn extends BaseColumn {
                             产品
                         </a>
                 }
+                if(!record.bindProduct || record.bindProduct < 1){
+                    // 绑定了产品则不能显示修改按钮
+                    editdom = 
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                            修改
+                        </a>
+                }
                 return (
                     <div className="pch-table-operation">
                         <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
                             详情
                         </a>
-                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
-                            修改
-                        </a>
+                        {editdom}
                         {productdom}
                         <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
                             复制

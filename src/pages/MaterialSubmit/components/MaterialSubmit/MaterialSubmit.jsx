@@ -136,7 +136,7 @@ class MaterialSubmit extends BaseComponent {
       fileURL: data.downloadUrl,
       status: 'done'
     })
-
+    
     this.setState({
       fileList: fileList,
     });
@@ -237,14 +237,14 @@ class MaterialSubmit extends BaseComponent {
       <IceContainer className="pch-container">
         <Title title="材料提交" />
         <div className="pch-form material-files-form">
-          <div className="material-files-upload">
+          {/*<div className="material-files-upload">
             <DragUpload
               {...this.UPLOAD_CONFIG}
               showUploadList={false}
               accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
             />
           </div>
-          <br/>
+          <br/>*/}
           <div className="material-files-upload">
             <Upload
               {...this.UPLOAD_CONFIG}

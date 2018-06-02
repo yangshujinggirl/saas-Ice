@@ -143,7 +143,7 @@ export default class Huankuanfangshi extends Component {
 					name={`repaymentMethodsSetting[${index}].fixedAmount`}
 					validator={this.testChange2}
 				>
-					<Input placeholder="固定金额" />
+					<Input placeholder="固定金额" htmlType ='number'/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`repaymentMethodsSetting[${index}].fixedAmount`} /></div>
 			</div>
@@ -158,7 +158,7 @@ export default class Huankuanfangshi extends Component {
 					name={`repaymentMethodsSetting[${index}].gracePeriod`}
 					validator={this.testChange3}
 				>
-					<Input placeholder="宽限期期限" />
+					<Input placeholder="宽限期期限" htmlType ='number'/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`repaymentMethodsSetting[${index}].gracePeriod`} /></div>
 			</div>
