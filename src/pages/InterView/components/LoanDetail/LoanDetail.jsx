@@ -52,9 +52,9 @@ export default class LoanDetail extends Component {
   componentDidMount() {
     let { actions, params } = this.props;
 
-    
+
       this.getProductNum()
-    
+
 
 
   }
@@ -181,14 +181,14 @@ export default class LoanDetail extends Component {
    * 渲染
    */
   render() {
-    const details = this.props.details || [];
-    console.log(details);
+    const formData = this.props.formData || [];
+    console.log(formData);
     return (
       <div className='LoanDetail'>
         <div className='pch-form'>
           <Form>
             {
-              details.list && details.list.length > 0 ? details.list.map(item => {
+              formData.list && formData.list.length > 0 ? formData.list.map(item => {
                 return (
                   <IceContainer key={item.name} title={item.name} className='subtitle LoanDetail' style={styles.bg}>
                     <Row wrap>
