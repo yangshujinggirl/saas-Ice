@@ -332,7 +332,7 @@ export default class FormRender extends Component {
         var setValue = '';
         setValue = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
         Fields.push(<FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                              {...formItemLayoutTEXT}>
+                              {...formItemLayoutR}>
           <RadioGroup
             defaultValue={setValue + ''}
             disabled={el.isReadonly}
@@ -364,7 +364,7 @@ export default class FormRender extends Component {
       return (
 
         <FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                  {...formItemLayoutTEXT}>
+                  {...formItemLayoutR}>
           <CheckboxGroup
             className='CheckboxGroup'
             style={{ width: '100%' }}
@@ -415,7 +415,6 @@ export default class FormRender extends Component {
           </FormItem>
         );
       }
-      console.log(el.name)
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}  >

@@ -362,7 +362,7 @@ export default class FormRender extends Component {
         var setValue = '';
         setValue = el.value == undefined || el.value == '' || el.value == 'undefined' ? Default : el.value;
         Fields.push(<FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                              {...formItemLayoutTEXT}>
+                              {...formItemLayoutR}>
           <RadioGroup
             defaultValue={setValue + ''}
             disabled={el.isReadonly}
@@ -394,7 +394,7 @@ export default class FormRender extends Component {
       return (
 
         <FormItem key={el.id} style={{ width: '100%' }} label={this.label(el.label)}
-                  {...formItemLayoutTEXT}>
+                  {...formItemLayoutR}>
           <CheckboxGroup
             className='CheckboxGroup'
             style={{ width: '100%' }}
@@ -450,8 +450,9 @@ export default class FormRender extends Component {
                   {...formItemLayout}  >
           <DatePicker
             disabled={el.isReadonly}
-            format={'YYYY-MM-DD'}
+            formater={["YYYY-MM-DD"]}
             style={{ width: '100%' }}
+            // onChange={this.onDateChange.bind(this)}
             {...init(el.name, {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
