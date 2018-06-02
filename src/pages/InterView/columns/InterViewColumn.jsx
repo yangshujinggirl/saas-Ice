@@ -114,43 +114,39 @@ class InterViewColumn extends BaseColumn {
       width: 210,
       cell: (value, index, record) => {
         return (
-          <div>
+          <div className="pch-table-operation">
             {
               record.videoDownloadUrl && record.videoDownloadUrl != null ? (
-                  <div className="pch-table-operation">
+
                     <a href="javascript:;"
                        onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
                       下载视频
                     </a>
-                  </div>
                 ) :
-                (<span></span>)
-            }
-            {
-              record.type && ( record.type == 'loan') ? (
-                  <div className="pch-table-operation">
-                    <a href="javascript:;"
-                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>
-                      查看报告
-                    </a>
-                    <Upload
-                      {...this.UPLOAD_CONFIG}
-                      listType='text'
-                      showUploadList={false}
-                      onChange={this.handleFileChange.bind(this, record)}
-                    >
-                      < a href='javascript:;'
-                          onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.UP)}>
-                        上传报告
+                record.type && ( record.type == 'loan') ? (
+                    <div>
+                      <a href="javascript:;"
+                         onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>
+                        查看报告
                       </a>
-                    </Upload>
-                    <a href="javascript:;"
-                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
-                      查看签名报告
-                    </a>
-                  </div>
-                ) :
-                (<span></span>)
+                      <Upload
+                        {...this.UPLOAD_CONFIG}
+                        listType='text'
+                        showUploadList={false}
+                        onChange={this.handleFileChange.bind(this, record)}
+                      >
+                        < a href='javascript:;'
+                            onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.UP)}>
+                          上传报告
+                        </a>
+                      </Upload>
+                      <a href="javascript:;"
+                         onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
+                        查看签名报告
+                      </a>
+                    </div>
+                  ) :
+                  (<span></span>)
             }
           </div>
         );
