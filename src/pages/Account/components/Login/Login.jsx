@@ -68,7 +68,6 @@ export default class Login extends Component {
                 this.setState({
                     isLoging: false
                 });
-                if (!res || res.code != 200) return;
 
                 if (values.checkbox) {
                     //记住账号
@@ -81,7 +80,7 @@ export default class Login extends Component {
                 let isSameSystem = false;
                 let system = res.data.type || 'daikuan';
 
-                AccountReq._showMsg('success', '登录成功');
+                AccountReq.tipSuccess('登录成功');
                 // 判断登录账号的所属系统和当前跳转地址的系统是否同一个
                 system = system.toLowerCase();
                 isSameSystem = fromUrl && fromUrl.indexOf(system) != -1;
@@ -107,6 +106,7 @@ export default class Login extends Component {
                 this.setState({
                     isLoging: false
                 });
+                AccountReq.tipError(data.msg);
             });
         });
     };

@@ -43,17 +43,7 @@ class BaseReq {
     let pctoken = Cookie.get('PCTOKEN');
     if (pctoken) {
       header['Authorization'] = 'PCHTOKEN ' +  pctoken;
-      //header['Authorization'] = pctoken;
     }
-
-    if (!options.method || options.method == 'get') {
-      if (!options.params) {
-        options.params = {};
-      }
-      // options.params.t = new Date().getTime().toString(32);
-    }
-
-    console.log(options.url, typeof options.data)
 
     let promise = axios({
         url: options.url,
@@ -112,17 +102,7 @@ class BaseReq {
       msg  = res.data.msg  || res.data.message || msg;
       // 有些接口data会直接返回boolean值
       data = (typeof res.data.data == 'boolean' || res.data.data) ? res.data.data : data;
-      /*
-      let resData = res.data.data;
-      if(!resData){
-        data = {}
-      }else if(resData instanceof Array){
-        data = [...resData];
-      }else if('object' == typeof resData){
-        data = {...resData}
-      }else{
-        data = resData
-      }*/
+      
       if (code == 200 && res.headers.token) {
         //处理请求头，获取token，存储cookie
         Cookie.set('PCTOKEN', res.headers.token);
@@ -144,19 +124,21 @@ class BaseReq {
     console.log('_processError', error);
     let res = error.response || error.request || {};
     let existData = 'object' == typeof res.data && res.data || {};
-    let msg = error.msg || 'RES_MESSAGE';
+    let msg = error.msg || '未知错误';
     let code = error.code || -404;
+
     //退出登陆
     if (error.code == 103 || /103|401/.test(res.status) || existData.code == 103) {
       this._redirectToLogin();
       return { status: 401, msg: '未授权，请重新登录', data: { code: 401 } };
     }
-    //接口返回错误格式，服务错误弹出提示消息
+
+    //接收到接口返回的错误，服务错误弹出提示消息
     if (res.data && (res.data.msg || res.data.message)) {
       // {
       //   error: "Internal Server Error",
       //   exception: "org.apache.shiro.UnavailableSecurityManagerException",
-      //   message: "No SecurityManager accessible to the calling code, either bound to the org.apache.shiro.util.ThreadContext or as a vm static singleton.  This is an invalid application configuration.",
+      //   message: "No SecurityManager.",
       //   path: "/crm/login",
       //   status: 500,
       //   timestamp: 1521861550469
@@ -164,13 +146,16 @@ class BaseReq {
       msg = res.data.code + ' ' + (res.data.msg || res.data.message);
       this._showMsg('error', msg);
     }
-    // 接口发起成功但没收到响应，一般请求超时
+
     if (res.status == 0) {
+      // 接口发起成功但没收到响应，一般请求超时
       msg = '请求超时，请重试';
-      //解决退出登陆302跳转的错误提示
-      if (error.config && error.config.url == '/crm/saas/logout') {
-        msg = '';
-      }
+      this._showMsg('error', msg);
+    }
+
+    if(res.status == 503){
+      // 约定接口返回503为服务启动中
+      msg = '服务启动中';
       this._showMsg('error', msg);
     }
     // 异常状态下，把错误信息返回去
