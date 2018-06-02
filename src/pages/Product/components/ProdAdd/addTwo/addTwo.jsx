@@ -62,11 +62,11 @@ export default class addTwo extends Component {
             productScopes: [],
             productScopes2: []
          },
+         val:{},
          type: '1',
-         name: undefined,
+        //  name: undefined,
          type2: '10',
-         name2: undefined,
-         visible: false
+        //  name2: undefined,
       };
    }
 
@@ -77,7 +77,9 @@ export default class addTwo extends Component {
       let { productScopes,productScopes2 } = this.state.value;
       let id = params.id;
       if (productScopes.length == 0) {
-          ProductReq.tipError('请选择品牌／车系／车型')
+         return ProductReq.tipError('请选择品牌／车系／车型')
+      }if(productScopes2.length == 0){
+        return ProductReq.tipError('请选择集团／渠道／厅店')
       } else {
         productScopes=productScopes.concat(productScopes2)
         actions.productsave({productScopes:productScopes}, id);
@@ -86,7 +88,7 @@ export default class addTwo extends Component {
 
    onFormChange = () => {
       this.setState({
-         value
+         val
       })
    }
    /* 品牌、车系、车型*/
@@ -94,7 +96,7 @@ export default class addTwo extends Component {
       this.setState({
          type: value
       });
-      this.getCarList(value, this.state.value.name)
+      this.getCarList(value, this.state.val.name)
    }
 
    getCarList(type, name) {
@@ -103,9 +105,9 @@ export default class addTwo extends Component {
    }
 
    changeCarName(name) {
-      let value = this.state.value;
+      let value = this.state.val;
       value.name = name;
-      this.setState({ value: value });
+      this.setState({ val: value });
    }
 
    /*
@@ -116,7 +118,7 @@ export default class addTwo extends Component {
       this.setState({
          type2: value
       });
-      this.getGroupList(value, this.state.value.name2)
+      this.getGroupList(value, this.state.val.name2)
    }
    //集团、渠道、展厅数据展示
    getGroupList(type, name) {
@@ -125,9 +127,9 @@ export default class addTwo extends Component {
    }
    //查询内容
    changeGroupName(name) {
-      let value = this.state.value;
+      let value = this.state.val;
       value.name2 = name;
-      this.setState({ value: value });
+      this.setState({ val: value });
    }
 
    render() {
@@ -136,7 +138,7 @@ export default class addTwo extends Component {
             ref={(formRef) => {
                this.formRef = formRef;
             }}
-            value={this.state.value}
+            value={this.state.val}
             onChange={this.onFormChange}
          >
             <div>

@@ -202,16 +202,7 @@ export default class CarType extends Component {
                 </Button>
             </Col>
           </Row>
-          {/* <Row wrap style={{marginBottom:"30px"}} >
-                <Transfer
-                  titles={['选项',' 选项']}
-                  dataSource={dataSource}
-                  defaultLeftChecked={["0"]}
-                  listStyle={{width:"500px",height:"320px"}}
-                  onChange={this.leftData}
-                >
-                </Transfer>
-              </Row>*/}
+          
           <div className="table-center">
             <div className="table-left">
               <Table

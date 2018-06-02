@@ -84,7 +84,8 @@ export default class ProdDetail extends Component {
   }
   relatedGroupType = (value, index, record) => {
     let itemPath = record.relatedPath.split('/');
-    return itemPath.length == 3 ? '集团' : (itemPath.length == 4 ? '渠道' : '厅店')
+
+    return itemPath.length == 2 ? '集团' : (itemPath.length == 3 ? '渠道' : '厅店')
   }
   //权限
   authData = (productScopes) => {
@@ -427,7 +428,7 @@ export default class ProdDetail extends Component {
                 primaryKey="id"
               >
                 <Table.Column title="类型" cell={this.relatedGroupType} />
-                <Table.Column title="名称" dataIndex="relatedPathName" />
+                <Table.Column title="名称" dataIndex="relatedName" />
               </Table>
             </div>
             <legend className="pch-legend" style={{ marginTop: "30px" }}>
@@ -471,9 +472,9 @@ export default class ProdDetail extends Component {
             </legend>
             <div className="pch-condition">
               <Row wrap>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                <Col xxs={24} xs={12} l={9} style={styles.filterCol}>
                   <label style={styles.filterTitle}>合同模板名称：</label>
-                  <span >{this.contractTemplatesShow(contractTemplates)}</span>
+                  <span className='templatesName'>{this.contractTemplatesShow(contractTemplates)}</span>
                 </Col>
 
               </Row>
