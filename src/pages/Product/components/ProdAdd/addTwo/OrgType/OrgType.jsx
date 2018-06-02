@@ -58,7 +58,7 @@ export default class OrgType extends Component {
         // 表格发生勾选状态变化时触发
         onChange: (ids, array) => {
           let types = this.props.type;
-          let recordArray = [...this.state.recordArray, ...array];
+          let recordArray = [ ...array];
           if (types == '10') {
             arrayRightData.jituan = recordArray
           } else if (types == '30') {
@@ -80,13 +80,12 @@ export default class OrgType extends Component {
         }
       }
     };
-
   }
 
   componentWillReceiveProps(nextProps){
     if(nextProps.type != this.props.type){
       let rowSelection = this.state.rowSelection;
-      rowSelection.selectedRowKeys = [];
+      // rowSelection.selectedRowKeys = [];
       this.setState({rowSelection});
     }
   }

@@ -23,7 +23,7 @@ export default class ProcessAuthEdit extends BaseApp {
             rowSelection: {
                 selectedRowKeys: [],
                 onChange: (selectedRowKeys, records) => {
-                    console.log(selectedRowKeys, records)
+                    // console.log(selectedRowKeys, records)
                     let selectedRowOne = records;
                     records.map((item) => {
                         let result = [];
@@ -52,15 +52,6 @@ export default class ProcessAuthEdit extends BaseApp {
             rowSelectionTwo: {
                 selectedRowKeys: [],
                 onChange: (selectedRowKeys, records) => {
-
-                    // let selectedRowTwo = [];
-                    // for (var i in records) {
-                    //     records[i].departmentName = records[i].name
-                    // }
-                    // selectedRowTwo.push(...records);
-                    // this.setState({
-                    //     selectedRowTwo
-                    // });
                     let selectedRowTwo = records;
 
                     records.map((item) => {
@@ -106,7 +97,6 @@ export default class ProcessAuthEdit extends BaseApp {
         let { params, actions } = this.props;
         let id = params.id
         let dataArry = this.state.dataSourceRight;
-        // let datatemp = [];
         actions.saveProductAuth({ 'productScopes': dataArry }, id)
 
     }
@@ -118,7 +108,6 @@ export default class ProcessAuthEdit extends BaseApp {
                         result.push({
                             // orgId: item.id,
                             // orgName: item.name,
-
                             relatedPathName: item.name + '-' + role.name,
                             relatedId: role.id,
                             relatedName: role.name,
@@ -168,8 +157,6 @@ export default class ProcessAuthEdit extends BaseApp {
         if (orgsData.otherOrgs) {
             this.getSpFromData([orgsData.otherOrgs], tempArr);
         }
-
-        console.log(tempArr);
 
         // 连接处理后的数据到右侧框
         dataSourceRight = dataSourceRight.concat(tempArr);
@@ -278,7 +265,6 @@ export default class ProcessAuthEdit extends BaseApp {
      * 渲染
      */
     render() {
-        console.log(this.props)
         const { dataSourceRight, current } = this.state;
         const { orgsData = {} } = this.props;
         let deprtments = [];
