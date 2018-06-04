@@ -1019,7 +1019,11 @@ body {
 
 .pch-table-operation {
     a {
+        color: #1AA8F0;
         margin: 0 5px;
+        &:hover{
+            color: #1AA8F0;
+        }
     }
 }
 
