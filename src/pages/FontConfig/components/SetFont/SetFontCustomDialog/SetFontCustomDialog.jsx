@@ -22,7 +22,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
           <Button type="secondary" size="large"  onClick={this.handleSubmitCode}>
             确定
         </Button>
-         
+
         </div>
       </div>
     );
@@ -74,7 +74,6 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     }
     else {
       this.check(reqData);
-      this.props.submitFormData(this.state.allPageFields);
     }
   };
   check = (reqData) => {
@@ -121,6 +120,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
       });
       return;
     }
+    this.props.submitFormData(this.state.allPageFields);
   }
 
 
