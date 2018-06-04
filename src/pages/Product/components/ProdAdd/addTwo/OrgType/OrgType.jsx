@@ -145,12 +145,13 @@ export default class OrgType extends Component {
 
     //去重后渲染
     let arra = testarray
+    let dataSourceRight = this.state.dataSourceRight
     this.setState({
       dataSourceRight: arra
     })
 
     //右侧提交数据
-    arra.map((item, i) => {
+    dataSourceRight.map((item, i) => {
       GroupData.productScopes2.push({
         relatedId: item.agencyId,
         relatedName: item.agencyType == 'group' ? item.agencyName : (item.agencyType == 'channel' ? item.agencyName : item.agencyName),
@@ -177,11 +178,16 @@ export default class OrgType extends Component {
   //右侧删除一列
   deleteItem = (index) => {
     let data = this.state.dataSourceRight;
+    let {GroupData={}} = this.props;
 
     data.splice(index, 1)
+    if(data.length==0){
+      GroupData.productScopes2=[]
+    }
     this.setState({
       dataSourceRight: data
     })
+    
   };
   //分页
   changePage = (currentPage) => {

@@ -144,7 +144,6 @@ export default class ProdDetail extends Component {
     let repaymentMethodsSetting = this.props.formData.repaymentMethodsSetting || [];//还款方式设置    
     let prepaymentSetting = this.props.formData.prepaymentSetting || [];//提前还款设置
     let productScopes = this.props.formData.productScopes || []
-    let productCollectionName = this.props.formData.productCollectionName   //材料收取清单
     let { contractTemplates = [] } = this.props.formData   //合同模板
     return (
       <IceFormBinderWrapper
@@ -167,26 +166,15 @@ export default class ProdDetail extends Component {
                   <span >{product.name}</span>
                 </Col>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}>合同显示名称：</label>
-                  <span >{product.contractDisplayName}</span>
-                </Col>
-              </Row>
-              <Row wrap>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>产品类型：</label>
                   <span >{product.productType}</span>
                 </Col>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}>材料收取清单：</label>
-                  <span >{productCollectionName}</span>
-                </Col>
+              </Row>
+              <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>生效期限：</label>
                   <span >{product.effectiveDate}～{product.expirationDate}</span>
                 </Col>
-              </Row>
-              <Row wrap>
-
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>允许贴息：</label>
                   <span >{product.isPermittedDiscount == true ? '是' : '否'}</span>
@@ -196,9 +184,15 @@ export default class ProdDetail extends Component {
                   {/* <span >{product.status == '1' ? '生效' : (product.status == '0' ? '关闭' : '失效')}</span> */}
                   <span >{product.enable=='1'?(product.status == '1' ? '生效' : '关闭'):'草稿'}</span>
                 </Col>
+              </Row>
+              <Row wrap>
                 <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
                   <label style={styles.filterTitle}>尾款产品：</label>
                   <span >{product.isRetainage == true ? '是' : '否'}</span>
+                </Col>
+                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
+                  <label style={styles.filterTitle}>支付方式：</label>
+                  <span >{product.paymentOfLoan}</span>
                 </Col>
               </Row>
 
@@ -212,12 +206,6 @@ export default class ProdDetail extends Component {
                 <Col style={styles.filterCol}>
                   <label style={styles.filterTitle}>担保方式：</label>
                   <span >{this.checkboxShow(product.guaranteeMethodType)}</span>
-                </Col>
-              </Row>
-              <Row wrap>
-                <Col xxs={24} xs={12} l={8} style={styles.filterCol}>
-                  <label style={styles.filterTitle}>支付方式：</label>
-                  <span >{product.paymentOfLoan}</span>
                 </Col>
               </Row>
               <Row wrap>

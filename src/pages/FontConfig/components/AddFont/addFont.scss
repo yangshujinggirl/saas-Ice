@@ -59,8 +59,12 @@
         color: #A7A7A7;
         margin-top: 15px;
         margin-bottom: 15px;
-        .select {
+        .subDif-name{
+            min-width: 150px;
+        }
+        .subDif-select {
             float: right;
+            width: 131px;
             margin-top: -20px;
             span {
                 font-size: 14px;
@@ -73,6 +77,10 @@
             }
         }
     }
+}
+.footerDom-btn .next-btn{
+    border-radius: 5px !important;
+    margin-right: 10px;
 }
 .subtitle {
     margin-bottom: 0 !important;
