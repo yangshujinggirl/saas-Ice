@@ -472,6 +472,12 @@ export default class addOne extends BaseCondition {
 				callback('必须小于后者')
 			}
 		}
+		//范围
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
+		}
+		
 		//保留两位小数
 		var dot = value.indexOf(".");
 		if (dot != -1) {
@@ -494,6 +500,11 @@ export default class addOne extends BaseCondition {
 		}
 		if (Number(value) < min.principalAmountMin) {
 			callback('必须大于前者')
+		}
+
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
 		}
 		//保留两位小数
 		var dot = value.indexOf(".");
@@ -618,6 +629,11 @@ export default class addOne extends BaseCondition {
 		}
 		if (value < 0) {
 			callback('最小提前还款金额不能小于0');
+		}
+		
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
 		}
 		//保留两位小数
 		var dot = value.indexOf(".");
