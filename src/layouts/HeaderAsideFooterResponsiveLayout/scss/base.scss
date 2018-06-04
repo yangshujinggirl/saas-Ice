@@ -172,10 +172,6 @@
     color: #FC9E25;
 }
 
-.next-btn-primary {
-    // background-color: #1AA8F0 !important;
-}
-
 .next-btn-medium {
     border-radius: 3px !important;
 }
@@ -872,6 +868,12 @@ body {
     .next-btn {
         border-radius: 4px;
     }
+    .next-btn-primary {
+        background-color: #1AA8F0;
+        &:hover {
+            background-color: #008cd2;
+        }
+    }
     .next-btn-secondary {
         background-color: #FC9E25;
         &:hover {
@@ -1348,12 +1350,18 @@ body {
 // 保存按钮样式
 .next-btn-primary {
     background-color: #1AA8F0;
+    &:hover {
+        background-color: #008cd2;
+    }
+}
+// 弹框确定按钮样式 .next-btn-secondary
+.next-btn-secondary {
+    background-color: #FC9E25;
+    &:hover {
+        background-color: #F58C00;
+    }
 }
 // 弹框透明度
 .next-dialog-wrapper.opened .next-overlay-backdrop {
     opacity: .4;
-}
-// 弹框确定按钮样式 .next-btn-secondary
-.next-btn-secondary{
-    background-color:#FC9E25;
 }
