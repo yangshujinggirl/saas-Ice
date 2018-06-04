@@ -11,20 +11,13 @@ var NODE_ENV = (process.env.NODE_ENV || 'DEVELOPMENT').toUpperCase();
 var __DEV__ = NODE_ENV !== 'PRODUCTION';
 
 module.exports = {
-    // output: {
-    //     path: resolve("build/assets"),
-    //     filename: __DEV__ ? "[name].js" : "[name].[hash].js",
-    //     publicPath: "/assets/",
-    //     chunkFilename: "[id].[hash].js",
-    //     pathinfo: true
-    // },
-    // output: {
-    //     path: resolve("build/assets"),
-    //     publicPath: "/build/assets/",
-    //     filename: '[name].[hash].js',
-    //     chunkFilename: '[id].[hash].js',
-    //     pathinfo: true
-    // },
+    output: {
+        path: resolve("build/assets"),
+        publicPath: "/assets/",
+        filename: __DEV__ ? "[name].js" : "[name].[hash].js",
+        chunkFilename: '[id].[hash].js',
+        pathinfo: true
+    },
     resolve: {
         alias: {
             '@': resolve('src/pages'),
@@ -67,7 +60,6 @@ module.exports = {
                 target: CONTRACT_HOST,
                 changeOrigin: true,
                 pathRewrite: { "^/contract": "/contract-ft1" },
-                // pathRewrite: { "^/contract": "" },
                 bypass: function(req, res, proxyOpt) {
                     // 添加 HTTP Header 标识 proxy 开启
                     res.set('X-ICE-PROXY', 'on');
@@ -93,9 +85,8 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: package.title + ' ' + NODE_ENV + ' ' + package.version,
-            template: __DEV__ ? './public/index.dev.ejs' : './public/index.ejs',
-            // filename: '../index.html',
-            filename: 'index.html',
+            template: __DEV__ ? 'src/html/index.dev.ejs' : 'src/html/index.ejs',
+            filename: __DEV__ ? 'index.html' : '../index.html',
             name: package.name,
             description: package.description,
             version: package.version,
@@ -136,7 +127,45 @@ module.exports = {
             children: true,
             minChunks: 3
         }),
-    ]
+    ],
+    // module: {
+    //     rules: [{
+    //         test: /\.jsx$/,
+    //         exclude: /node_modules/,
+    //         use: {
+    //             loader: 'babel-loader',
+    //             options: {
+    //                 babelrc: false,
+    //                 presets: [
+    //                     [
+    //                         'babel-preset-env',
+    //                         {
+    //                             modules: false,
+    //                             targets: {
+    //                                 browsers: [
+    //                                     'last 2 versions',
+    //                                     'Firefox ESR',
+    //                                     '> 1%',
+    //                                     'ie >= 9',
+    //                                     'iOS >= 8',
+    //                                     'Android >= 4',
+    //                                 ],
+    //                             },
+    //                         },
+    //                     ],
+    //                     'babel-preset-react',
+    //                     'babel-preset-stage-0',
+    //                 ],
+    //                 plugins: [
+    //                     'syntax-dynamic-import',
+    //                     'babel-plugin-transform-decorators-legacy',
+    //                     'babel-plugin-transform-es2015-object-super',
+    //                     'babel-plugin-transform-runtime',
+    //                 ],
+    //             }
+    //         },
+    //     }, ],
+    // }
 };
 
 
