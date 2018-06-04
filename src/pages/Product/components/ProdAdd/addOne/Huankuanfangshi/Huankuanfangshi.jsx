@@ -53,7 +53,7 @@ export default class Huankuanfangshi extends Component {
 
 	//还款方式不可重复
 	changeValue = (value, option) => {
-		let { items,boolean } = this.props
+		let { items, boolean } = this.props
 		let allArr = items;
 		items.map((item, i) => {
 			if (value == item.repaymentMethods) {
@@ -65,7 +65,7 @@ export default class Huankuanfangshi extends Component {
 					},
 					duration: 2000
 				});
-			}else{
+			} else {
 				this.props.onChangeBoolean(true)
 			}
 		})
@@ -79,6 +79,12 @@ export default class Huankuanfangshi extends Component {
 			callback('固定金额必填');
 			return;
 		}
+
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
+		}
+		
 		//保留两位小数
 		var dot = value.indexOf(".");
 		if (dot != -1) {
@@ -97,8 +103,12 @@ export default class Huankuanfangshi extends Component {
 		if (rule.required && !value) {
 			callback('宽限期期限必填');
 			return;
-      }
-      var regex = /^\d+\.\d+$/;
+		}
+		if(Number(value)>=100000){
+			callback('最多五位')
+		}
+
+		var regex = /^\d+\.\d+$/;
 		var b = regex.test(value);
 		if (b) {
 			callback('宽限期期限为整数')
@@ -143,7 +153,7 @@ export default class Huankuanfangshi extends Component {
 					name={`repaymentMethodsSetting[${index}].fixedAmount`}
 					validator={this.testChange2}
 				>
-					<Input placeholder="固定金额" htmlType ='number'/>
+					<Input placeholder="固定金额" htmlType='number' />
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`repaymentMethodsSetting[${index}].fixedAmount`} /></div>
 			</div>
@@ -158,7 +168,7 @@ export default class Huankuanfangshi extends Component {
 					name={`repaymentMethodsSetting[${index}].gracePeriod`}
 					validator={this.testChange3}
 				>
-					<Input placeholder="宽限期期限" htmlType ='number'/>
+					<Input placeholder="宽限期期限" htmlType='number' />
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`repaymentMethodsSetting[${index}].gracePeriod`} /></div>
 			</div>
@@ -203,7 +213,7 @@ export default class Huankuanfangshi extends Component {
 			</div>
 		);
 	}
-	
+
 	render() {
 		let { styles, items } = this.props;
 		return (
