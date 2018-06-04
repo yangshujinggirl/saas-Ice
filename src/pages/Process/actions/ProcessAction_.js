@@ -1,7 +1,6 @@
 import T from '../constants/ProcessConstant'
 import Req from '../reqs/ProcessReq'
 import { BaseAction } from 'base';
-import { Feedback } from "@icedesign/base";
 import { hashHistory } from 'react-router'
 import FontConfigReq from '../../FontConfig/reqs/FontConfigReq';
 
@@ -9,27 +8,6 @@ class ProcessAction extends BaseAction {
 
   constructor() {
     super(Req, null, T);
-
-    // 定义通知给reducer的方法名称
-    this._actionKeys = [
-      'search',
-      'getCustomMenuList',
-      'save',
-      'changeHasProcess',
-      'getDetail',
-      'remove',
-      'copyProcess',
-      'getProcessProdList',
-      'getProcessProdOldList',
-      'saveProcessConfigProduct',
-      'getTasksFields',
-      'getPageFields',
-      'getAllPageFields',
-      'getPageDetail',
-      'getPrivilegeOrgs',
-      'changeFormData',
-      'removePageStep'
-    ];
 
     // 初始化一些数据
     this.init();
@@ -59,7 +37,7 @@ class ProcessAction extends BaseAction {
 
       Req.save(data).then((res) => {
         // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
-        Feedback.toast.show({
+        Req.tipSuccess({
           type: 'success',
           content: data.processName + '产品流程已' + (data.status == 1 ? '提交' : '保存') + '成功',
           afterClose: () => {
@@ -123,10 +101,7 @@ class ProcessAction extends BaseAction {
 
       Req.copyProcess(id).then((res) => {
         if (res.code != 200) {
-          Feedback.toast.show({
-            type: 'error',
-            content: res.msg,
-          });
+          Req.tipError(res.msg);
           return;
         }
         // dispatch(this.fetchSuccess({ copy: true }))
