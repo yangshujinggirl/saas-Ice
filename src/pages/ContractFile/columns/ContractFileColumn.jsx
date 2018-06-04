@@ -102,18 +102,16 @@ class ContractFileColumn extends BaseColumn {
             width: 240,
             cell: (value, index, record) => {
                 return (
-                    <div className="contract-handle-btn-list-wrap">
-                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                    <div className="pch-table-operation">
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
                             详情
-                        </Button>
+                        </a>
                         {
                           record.status != 2 &&
-                          record.status != 4 && <Button
-                                                  type="secondary"
-                                                  shape="text"
+                          record.status != 4 && <a href="javascript:;"
                                                   onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
                                                     作废
-                                                </Button>
+                                                </a>
 
                         }
 
@@ -121,30 +119,24 @@ class ContractFileColumn extends BaseColumn {
                           record.type == 2 &&
                           record.status != 4 &&
                           record.status !=5 &&
-                                                <Button
-                                                  type="secondary"
-                                                  shape="text"
+                                                <a href="javascript:;"
                                                   onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
                                                     签字
-                                                </Button>
+                                                </a>
                         }
                         {
                           record.type == 2 &&
                           record.status != 4 &&
-                          record.status !=5 && <Button
-                                                type="secondary"
-                                                shape="text"
+                          record.status !=5 && <a href="javascript:;"
                                                 onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
                                                   改电子
-                                               </Button>
+                                               </a>
                         }
                         {
-                          record.status ==5 && <Button
-                                                type="secondary"
-                                                shape="text"
+                          record.status ==5 && <a
                                                 onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWNLOAD)}>
                                                   下载
-                                               </Button>
+                                               </a>
                         }
                     </div>
                     );

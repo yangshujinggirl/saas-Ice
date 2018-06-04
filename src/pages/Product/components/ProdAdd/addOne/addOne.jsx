@@ -229,7 +229,6 @@ export default class addOne extends BaseCondition {
 	componentDidMount() {
 		let { actions } = this.props
 		console.log(this.props)
-		actions.filesearch({ limit: 999 });
 		actions.prodActions();
 
 	}
@@ -472,6 +471,12 @@ export default class addOne extends BaseCondition {
 				callback('必须小于后者')
 			}
 		}
+		//范围
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
+		}
+		
 		//保留两位小数
 		var dot = value.indexOf(".");
 		if (dot != -1) {
@@ -494,6 +499,11 @@ export default class addOne extends BaseCondition {
 		}
 		if (Number(value) < min.principalAmountMin) {
 			callback('必须大于前者')
+		}
+
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
 		}
 		//保留两位小数
 		var dot = value.indexOf(".");
@@ -618,6 +628,11 @@ export default class addOne extends BaseCondition {
 		}
 		if (value < 0) {
 			callback('最小提前还款金额不能小于0');
+		}
+		
+		let valLenght = value.split('.')[0]
+		if(valLenght.length > 14){
+			callback('金额不能超过14位')
 		}
 		//保留两位小数
 		var dot = value.indexOf(".");
@@ -769,22 +784,6 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 									<Col xxs={24} xs={12} l={8} >
-										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>合同显示名称:</span>}>
-											<IceFormBinder
-												name="contractDisplayName"
-											>
-												<Input size="large" placeholder="合同显示名称"
-													required
-													message="合同显示名称必填"
-													className="custom-input"
-												/>
-											</IceFormBinder>
-											<div><IceFormError name="contractDisplayName" /></div>
-										</FormItem>
-									</Col>
-								</Row>
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>产品类型:</span>}>
 											<IceFormBinder
 												name="productType"
@@ -808,31 +807,9 @@ export default class addOne extends BaseCondition {
 											<div><IceFormError name="productType" /></div>
 										</FormItem>
 									</Col>
-
-									<Col xxs={24} xs={12} l={8} >
-										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>材料收取清单:</span>}>
-											<IceFormBinder
-												name="collectionDetailListId"
-											>
-												<Select
-													size="large"
-													name="collectionDetailListId"
-													required
-													message="资料收取清单必填"
-													placeholder="请选择"
-													style={styles.filterTool}
-													className="custom-select"
-												>
-													{collData.map((val, i) => {
-														return (
-															<Option value={val.id.toString()} key={i}>{val.name}</Option>
-														)
-													})}
-												</Select>
-											</IceFormBinder>
-											<div><IceFormError name="collectionDetailListId" /></div>
-										</FormItem>
-									</Col>
+								</Row>
+								<Row wrap>
+								
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限:</span>}>
 											<IceFormBinder
@@ -847,9 +824,6 @@ export default class addOne extends BaseCondition {
 											<div><IceFormError name="time" /></div>
 										</FormItem>
 									</Col>
-								</Row>
-								<Row wrap>
-
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>允许贴息:</span>}>
 											<IceFormBinder
@@ -893,6 +867,8 @@ export default class addOne extends BaseCondition {
 											<div><IceFormError name="status" /></div>
 										</FormItem>
 									</Col>
+								</Row>
+								<Row wrap>
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>尾款产品:</span>}>
 											<IceFormBinder
@@ -911,6 +887,30 @@ export default class addOne extends BaseCondition {
 												</Select>
 											</IceFormBinder>
 											<div><IceFormError name="isRetainage" /></div>
+										</FormItem>
+									</Col>
+									<Col xxs={24} xs={12} l={8} >
+										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>支付方式:</span>}>
+											<IceFormBinder
+												name="paymentOfLoan"
+											>
+												<Select
+													size="large"
+													name="paymentOfLoan"
+													required
+													message="支付方式必填"
+													placeholder="请选择"
+													style={styles.filterTool}
+													className="custom-select"
+												>
+													{data.paymentOfLoan && data.paymentOfLoan.map((val, i) => {
+														return (
+															<Option value={val.value} key={i}>{val.desc}</Option>
+														)
+													})}
+												</Select>
+											</IceFormBinder>
+											<div><IceFormError name="paymentOfLoan" /></div>
 										</FormItem>
 									</Col>
 								</Row>
@@ -953,32 +953,6 @@ export default class addOne extends BaseCondition {
 								</Row>
 								<Row wrap>
 									<Col xxs={24} xs={12} l={8} >
-										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>支付方式:</span>}>
-											<IceFormBinder
-												name="paymentOfLoan"
-											>
-												<Select
-													size="large"
-													name="paymentOfLoan"
-													required
-													message="支付方式必填"
-													placeholder="请选择"
-													style={styles.filterTool}
-													className="custom-select"
-												>
-													{data.paymentOfLoan && data.paymentOfLoan.map((val, i) => {
-														return (
-															<Option value={val.value} key={i}>{val.desc}</Option>
-														)
-													})}
-												</Select>
-											</IceFormBinder>
-											<div><IceFormError name="paymentOfLoan" /></div>
-										</FormItem>
-									</Col>
-								</Row>
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span>产品描述:</span>}>
 											<IceFormBinder
 												name="description"
@@ -992,7 +966,7 @@ export default class addOne extends BaseCondition {
 							</div>
 							<legend className="pch-legend">
 								<span className="pch-legend-legline"></span>额度期限设置
-          </legend>
+          		</legend>
 							<div className="pch-product-sep">
 								<Row wrap>
 									<Col xxs={24} xs={12} l={8} >

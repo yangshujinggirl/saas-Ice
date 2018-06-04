@@ -15,14 +15,15 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
     // 弹框的底部按钮
     this.footerDom = (
       <div key='1'>
-        <Button type="secondary" size="large" style={{
-          marginRight: '10px',
-        }} onClick={this.handleSubmitCode}>
-          提交
-        </Button>
+        <div className="footerDom-btn">
         <Button type="normal" size="large" onClick={this.handleClose.bind(this)}>
-          取消
+            取消
         </Button>
+          <Button type="secondary" size="large"  onClick={this.handleSubmitCode}>
+            确定
+        </Button>
+         
+        </div>
       </div>
     );
   }
@@ -76,7 +77,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
       this.props.submitFormData(this.state.allPageFields);
     }
   };
-  check = (reqData)=>{
+  check = (reqData) => {
     if (!reqData.label) {
       Feedback.toast.show({
         type: 'error',
@@ -113,7 +114,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
         return;
       }
     }
-    if (reqData.length  && reqData.length <= 0) {
+    if (reqData.length && reqData.length <= 0) {
       Feedback.toast.show({
         type: 'error',
         content: '字段长度必须大于0',
@@ -259,14 +260,14 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
       allPageFields: data,
     });
   };
-  checkDisable = (type,key) => {
-    if(key && key == 'append'){
+  checkDisable = (type, key) => {
+    if (key && key == 'append') {
       if (type && (type == 'STRING' || type == 'INT' || type == 'LONG' || type == 'DECIMAL')) {
         return false;
       }
       return true;
     }
-    if(key && key == 'length'){
+    if (key && key == 'length') {
       if (type && (type == 'DATE' || type == 'SELECT' || type == 'CHECKBOX' || type == 'RADIO')) {
         return true;
       }
@@ -338,12 +339,15 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
         closable="esc,mask,close"
         onCancel={this.handleClose.bind(this)}
         onClose={this.handleClose.bind(this)}
-        title={(data.id ? '编辑' : '添加') + '自定义字段'}
+        // title={(data.id ? '编辑' : '添加') + '自定义字段'}
         footer={this.footerDom}
         footerAlign='center'>
         <div className="pch-form" style={{
           width: 800,
         }}>
+        <div className="dialog-title">
+        {(data.id ? '编辑' : '添加') + '自定义字段'}
+        </div>
           <div className="serfont-custom-dialog-title">
             可选字段
           </div>
@@ -351,10 +355,10 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             {allPageFields.map((item, index) => {
               return (
                 <div className='subDif' key={index}>
-                  <div>
+                  <div className='subDif-name'>
                     {item.name}
                   </div>
-                  <div className="select">
+                  <div className="subDif-select">
                     <span onClick={this.selected.bind(this, index, true)}>全选</span>
                     <span onClick={this.selected.bind(this, index, false)}>反选</span>
                   </div>
@@ -381,16 +385,16 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                 <span>字段名称</span>
               </label>
               <Input size="large" placeholder="请输入" value={data.label} maxLength='30'
-                     onChange={this.changeFormData.bind(this, 'label')}/>
+                onChange={this.changeFormData.bind(this, 'label')} />
             </div>
             <div>
               <label htmlFor="">
                 <span>字段后缀</span>
               </label>
               <Input size="large" placeholder="请输入" value={data.append} maxLength='10'
-                     onChange={this.changeFormData.bind(this, 'append')} disabled ={ this.checkDisable(data.type,'append')}/>
+                onChange={this.changeFormData.bind(this, 'append')} disabled={this.checkDisable(data.type, 'append')} />
             </div>
-            <br/>
+            <br />
             <div className='first'>
               <label htmlFor="">
                 <span>字段类型</span>
@@ -434,7 +438,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
               <label htmlFor="">
                 <span>字段长度</span>
               </label>
-              <Input size="large" placeholder="请输入" onChange={this.changeFormData.bind(this, 'length')} disabled ={ this.checkDisable(data.type,'length')}/>
+              <Input size="large" placeholder="请输入" onChange={this.changeFormData.bind(this, 'length')} disabled={this.checkDisable(data.type, 'length')} />
             </div>
           </div>
           <div className='beautify'>
@@ -443,7 +447,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                 let disabledArr = this.getDisabledForCheckbox();
                 return (
                   <Checkbox value={val.value} key={i}
-                            disabled={disabledArr.indexOf(val.value) != -1}>{val.label}</Checkbox>
+                    disabled={disabledArr.indexOf(val.value) != -1}>{val.label}</Checkbox>
                 );
               })}
             </CheckboxGroup>
@@ -455,14 +459,14 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
             <label htmlFor="" className='changSet'>
               选择设置:
             </label>
-            <br/>
+            <br />
             {data.options && data.options.map((item, index) => {
               return (
                 <div className='dropDown' key={index}>
                   <div>
                     <Radio size="large" checked={item.isDefault} onChange={handleChecked.bind(this, index)}></Radio>
                     <Input size="large" value={item.label} placeholder="请输入值"
-                           onChange={handleSelect.bind(this, index)}/>
+                      onChange={handleSelect.bind(this, index)} />
                     <div className='addReduce'>
                       <span onClick={handleAddValue.bind(this, 'add')}>+</span>
                       {index != 0 && <span onClick={handleAddValue.bind(this, index)}>-</span>}
@@ -479,7 +483,7 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
                 日期格式
               </label>
 
-              <CheckboxGroup value={this.getDateValue()} dataSource={this.DATE_FORMATS} onChange={this.changeDate}/>
+              <CheckboxGroup value={this.getDateValue()} dataSource={this.DATE_FORMATS} onChange={this.changeDate} />
             </div> : ''}
         </div>
       </Dialog>

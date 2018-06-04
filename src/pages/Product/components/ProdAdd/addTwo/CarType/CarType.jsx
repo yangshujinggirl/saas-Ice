@@ -166,8 +166,13 @@ export default class CarType extends Component {
    //右侧删除一列
    deleteItem = (index) => {
       let data = this.state.dataSourceRight;
-
-      data.splice(index, 1)
+      let {CarData={}} = this.props;
+      
+      data.splice(index, 1);
+      
+      if(data.lenght==0){
+        CarData.productScopes = []
+      }
       this.setState({
          dataSourceRight: data
       })

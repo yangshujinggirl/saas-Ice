@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Input, Dialog, Checkbox, Radio } from '@icedesign/base';
 import FontConfigReq from './../../../reqs/FontConfigReq.js';
 import SetFontBaseDialog from '../SetFontBaseDialog';
-const {Group: CheckboxGroup} = Checkbox;
+const { Group: CheckboxGroup } = Checkbox;
 
 export default class SetFontOptionalDialog extends SetFontBaseDialog {
     constructor(props) {
@@ -11,14 +11,14 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
         // 弹框的底部按钮
         this.footerDom = (
             <div key='1'>
-                <Button type="secondary" size="large" style={{
-                                                  marginRight: '10px'
-                                              }} onClick={this.handleSubmitCode}>
-                    提交
+
+                <div className="footerDom-btn">
+                    <Button type="normal" size="large" onClick={this.handleClose.bind(this)}>
+                        取消
                 </Button>
-                <Button type="normal" size="large" onClick={this.handleClose.bind(this)}>
-                    取消
-                </Button>
+                    <Button type="secondary" size="large" onClick={this.handleSubmitCode}>
+                        确定
+                </Button></div>
             </div>
         );
     }
@@ -66,17 +66,20 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
 
     render() {
 
-        let {data, visible, onClose} = this.props;
+        let { data, visible, onClose } = this.props;
 
         return (
             <Dialog
                 visible={visible}
                 closable="esc,mask,close"
                 onClose={this.handleClose.bind(this)}
-                title="修改预定义字段"
+                // title="修改预定义字段"
                 footer={this.footerDom}
                 footerAlign='center'>
                 <div className="pch-form">
+                    <div className="dialog-title">
+                    修改预定义字段
+                    </div>
                     <div className='customerStr customerEdite'>
                         <div className='first'>
                             <label htmlFor="">
@@ -86,13 +89,13 @@ export default class SetFontOptionalDialog extends SetFontBaseDialog {
                         </div>
                     </div>
                     <div className='beautify'>
-                    <CheckboxGroup size="large" value={this.getValueForCheckbox()} onChange={this.codeRequire}>
-                        {this.PROP_LIST && this.PROP_LIST.map((val, i) => {
-                            let disabledArr = this.getDisabledForCheckbox();
-                            return (
-                              <Checkbox value={val.value} key={i} disabled={disabledArr.indexOf(val.value) != -1}>{val.label}</Checkbox>
-                            )
-                        })}
+                        <CheckboxGroup size="large" value={this.getValueForCheckbox()} onChange={this.codeRequire}>
+                            {this.PROP_LIST && this.PROP_LIST.map((val, i) => {
+                                let disabledArr = this.getDisabledForCheckbox();
+                                return (
+                                    <Checkbox value={val.value} key={i} disabled={disabledArr.indexOf(val.value) != -1}>{val.label}</Checkbox>
+                                )
+                            })}
                         </CheckboxGroup>
                     </div>
                 </div>

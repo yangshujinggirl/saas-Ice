@@ -5,7 +5,7 @@ import { BaseApp } from 'base';
 import { } from "@icedesign/base";
 import { Button, Grid, Table, Dialog, Form, Feedback, Checkbox } from "@icedesign/base";
 import { Title, PchTable, PchPagination } from 'components';
-
+import ProductReq from '../../../reqs/ProductReq';
 const { Row, Col } = Grid;
 const { Group: CheckboxGroup } = Checkbox;
 
@@ -23,11 +23,11 @@ export default class ProcessAuthEdit extends BaseApp {
             rowSelection: {
                 selectedRowKeys: [],
                 onChange: (selectedRowKeys, records) => {
-                    // console.log(selectedRowKeys, records)
+                    console.log(selectedRowKeys, records)
                     let selectedRowOne = records;
                     records.map((item) => {
                         let result = [];
-                        item.roles && item.roles.map((role) => {
+                        item.children && item.children.map((role) => {
                             result.push(role.id);
                         })
                         item.selectedRoles = result;
@@ -97,13 +97,16 @@ export default class ProcessAuthEdit extends BaseApp {
         let { params, actions } = this.props;
         let id = params.id
         let dataArry = this.state.dataSourceRight;
+        if(dataArry.length==0){
+            return ProductReq.tipError('请选择机构或SP')
+        }
         actions.saveProductAuth({ 'productScopes': dataArry }, id)
 
     }
     getRolesFromData(data, result) {
         data.map(item => {
             if (item.selectedRoles && item.selectedRoles.length > 0) {
-                item.roles.map(role => {
+                item.children.map(role => {
                     if (item.selectedRoles.indexOf(role.id) != -1) {
                         result.push({
                             // orgId: item.id,
@@ -212,8 +215,8 @@ export default class ProcessAuthEdit extends BaseApp {
     renderLevel(record) {
         // return record.name ? record.name:record.departmentName ;
         let result = [];
-        record.roles && record.roles.length > 0 ?
-            record.roles.map((item) => {
+        record.children && record.children.length > 0 ?
+            record.children.map((item) => {
                 result.push({
                     value: item.id,
                     label: item.name
@@ -232,7 +235,7 @@ export default class ProcessAuthEdit extends BaseApp {
 
         // TODO 全部选中角色后需要选中行记录
         let hasSelectedAll = true;
-        record.roles.map(item => {
+        record.children.map(item => {
             if (value.indexOf(item.id) == -1) {
                 hasSelectedAll = false;
             }
@@ -283,7 +286,7 @@ export default class ProcessAuthEdit extends BaseApp {
                             <Table
                                 dataSource={deprtments}
                                 primaryKey="id"
-                                isTree
+                                // isTree
                                 expandedRowRender={this.renderLevel.bind(this)}
                                 rowSelection={this.state.rowSelection}>
                                 <Table.Column title="机构" dataIndex="name" />
