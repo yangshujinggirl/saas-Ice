@@ -220,17 +220,6 @@ export const prodrevise = (condition) => {
   }
 }
 
-// 获取材料列表
-export const filesearch = (condition) => {
-  return (dispatch) => {
-    dispatch(fetchStart())
-    Req.filesearch(condition).then((res) => {
-      dispatch(fetchSuccess({ fileData: res }))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
 
 //材料清单明细
 export const fileDetail = (id) => {
