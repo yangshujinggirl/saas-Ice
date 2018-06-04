@@ -281,12 +281,7 @@ export default class ProcessForm extends Component {
       values.status = 1;
       values.processType = 'LOAN';
       if (this.props.params.id) {
-        //复制，提交调保存接口
-        if (this.props.params.copy) {
-          values.status = 0;
-        } else {
           values.id = this.props.params.id;
-        }
       }
       console.log(values)
 
