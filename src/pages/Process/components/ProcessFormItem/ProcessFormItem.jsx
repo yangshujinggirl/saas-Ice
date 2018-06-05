@@ -14,6 +14,7 @@ const { Row, Col } = Grid;
 const { Option } = Select;
 const FormItem = Form.Item;
 
+let hasErrorObj = {};
 export default class ProcessFormItem extends Component {
     constructor() {
         super();
@@ -27,6 +28,8 @@ export default class ProcessFormItem extends Component {
                 name: '页面'
             }]
         };
+
+        this.hasError = {};
     }
 
     //select生成
@@ -60,6 +63,7 @@ export default class ProcessFormItem extends Component {
         taskItems.map((task) => {
             if(task.taskAlias == value && task.taskOrder != item.taskOrder){
                 hasError = true;
+                hasErrorObj[item.taskOrder] = true;
                 callback('模块别名不能重复');
                 return;
             }
@@ -67,10 +71,13 @@ export default class ProcessFormItem extends Component {
 
         if(hasError){
             return;
-        }
+        } 
 
-        // this.props.validateForm && this.props.validateForm();
-        callback();
+        // if(Object.keys(hasErrorObj).length > 0){
+        //     hasErrorObj = {};
+        //     this.props.validateForm && this.props.validateForm();
+        // }
+        callback(undefined);
     }
 
     /**
@@ -97,7 +104,7 @@ export default class ProcessFormItem extends Component {
                     <div className="pch-realname">
                         {item.taskTypeName}
                     </div>
-                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required validator={this.validatorTaskAlias} >
+                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required validator={this.validatorTaskAlias.bind(this)} >
                         <Input size="large" maxLength={10} />
                     </IceFormBinder>
                     <div><IceFormError name={`taskItems[${index}].taskAlias`} /></div>

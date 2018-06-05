@@ -122,11 +122,6 @@ export default class ProcessForm extends Component {
 
       customMenuList[0].limitedAddTimes--;
       formData.taskItems = [];
-      // formData.taskItems.push(Object.assign({
-      //     taskOrder: 1,
-      //     taskAlias: customMenuList[0].taskTypeName,
-      //     taskTypeId: customMenuList[0].id
-      // }, customMenuList[0]));
 
       formData.taskItems.push({
         ...customMenuList[0],
@@ -151,17 +146,10 @@ export default class ProcessForm extends Component {
     if (type === 'add') {
       //添加模块
       data.limitedAddTimes--;
-      // taskItems.push(Object.assign({
-      //     taskOrder: taskItems.length + 1,
-      //     // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
-      //     taskAlias: data.taskTypeName + taskItems.length,
-      //     taskTypeId: data.id
-      // }, data));
 
       taskItems.push({
         ...data,
         transitionItems: this.setRejectDefaultEnd(this.deepCopyArr(data.transitionItems)),
-        // taskOrder: taskItems.length + 1,
         taskOrder: this.currentTaskOrder,
         // 默认别名同模块名称，多次使用模块被多次使用后，默认别名后加数字区分，模块别名不可重复
         taskAlias: data.taskTypeName + taskItems.length,
@@ -251,19 +239,6 @@ export default class ProcessForm extends Component {
 
   //提交
   handleSubmit = () => {
-    for (var i = 0; i < this.props.formData.taskItems.length; i++) {
-      let item = this.props.formData.taskItems[i];
-      // 进件需要保存页面
-      if (item.taskTypeId == 1 && !item.pageId) {
-        Feedback.toast.error('模块 ' + item.taskAlias + ' 页面未保存!');
-        return;
-      }
-      if (item.canPrivilegeEditable && (!item.privilegeItems || !item.privilegeItems.length)) {
-        Feedback.toast.error('模块 ' + item.taskAlias + ' 权限未配置!');
-        return;
-      }
-    }
-
     this.refs.form.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
       if (errors) {
@@ -275,7 +250,20 @@ export default class ProcessForm extends Component {
         Feedback.toast.error('流程需要由两个或两个以上系统模块组成');
         return;
       }
-      //
+
+      for (var i = 0; i < this.props.formData.taskItems.length; i++) {
+        let item = this.props.formData.taskItems[i];
+        // 进件需要保存页面
+        if (item.taskTypeId == 1 && !item.pageId) {
+          Feedback.toast.error('模块 ' + item.taskAlias + ' 页面未保存!');
+          return;
+        }
+        if (item.canPrivilegeEditable && (!item.privilegeItems || !item.privilegeItems.length)) {
+          Feedback.toast.error('模块 ' + item.taskAlias + ' 权限未配置!');
+          return;
+        }
+      }
+
       // "status": 0, 状态:0=未保存（保存）;1=当前(提交)
       values.status = 1;
       values.processType = 'LOAN';
@@ -500,8 +488,9 @@ export default class ProcessForm extends Component {
   }
 
   validateForm(){
-    console.log(typeof this.refs.form.validate)
-    this.refs.form.validate('taskItems[1].taskAlias');
+    console.log( this.refs.form.validateAll)
+    // this.refs.form.validate('taskItems[1].taskAlias');
+    this.refs.form.validateAll();
   }
 
   /**
