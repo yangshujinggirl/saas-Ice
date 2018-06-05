@@ -12,6 +12,7 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend';
 import FieldsOne from '../DragFields/Fields/FieldsOne';
 import FieldsTwo from '../DragFields/Fields/FieldsTwo';
+import FieldsEmpty from '../DragFields/Fields/FieldsEmpty';
 
 
 class SetFontFieldsets extends Component {
@@ -448,9 +449,11 @@ class SetFontFieldsets extends Component {
                                   })}
                                  {
                                    item.fields.length == 0 &&
-                                   <div className="ui-sortable-empty">
-                                       还没有字段哦
-                                   </div>
+                                   <FieldsEmpty
+                                     parent={index}
+                                     index={0}
+                                     status={'empty'}
+                                     moveCard={this.moveCard}/>
                                  }
                              </div>
                          </div>

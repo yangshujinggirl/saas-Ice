@@ -26,7 +26,7 @@ let arrayRightData = {
   qudao: [],
   tingdian: []
 };//全局
-const testarray = []; //右侧即将要渲染的数据
+let testarray = []; //右侧即将要渲染的数据
 
 const CARTYPES = {
   '10': {
@@ -90,11 +90,15 @@ export default class OrgType extends Component {
     }
   }
   componentWillMount() {
-    console.log(this.props)
     let { actions } = this.props;
     let type = this.props.type;
     this.state.type = type
     actions.getGroupList(type,'')
+  }
+
+  componentWillUnmount(){
+     //组件卸载，数据清空
+    testarray = []
   }
 
   renderDataWithGroup = (type, list) => {
