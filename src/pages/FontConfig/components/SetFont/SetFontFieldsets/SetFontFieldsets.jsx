@@ -32,9 +32,9 @@ class SetFontFieldsets extends Component {
     }
 
     titleState = (index) => {
-        if (index == 1) {
-            return
-        }
+        // if (index == 1) {
+        //     return
+        // }
         if (index) {
             this.setState({
                 subTitle: index
