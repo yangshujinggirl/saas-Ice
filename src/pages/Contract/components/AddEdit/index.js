@@ -276,13 +276,13 @@ class AddEit extends BaseComponent {
                     <div className="btns-wrap">
                       <Button
                         onClick={this.cancelSubmit.bind(this)}
-                        type="secondary"
+                        type="normal"
                         size="large">
                           取消
                       </Button>
                       <Button
                         onClick={this.handleSubmit.bind(this)}
-                        type="secondary"
+                        type="primary"
                         size="large">
                           保存
                       </Button>

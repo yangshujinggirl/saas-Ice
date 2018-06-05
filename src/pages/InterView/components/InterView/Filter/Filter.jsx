@@ -50,7 +50,7 @@ export default class Filter extends Component {
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
                         <Row wrap>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
+                            <Col xxs={24} xs={12} l={7} xl={6}>
                                 <FormItem {...formItemLayout} label="证件类型：">
                                     <IceFormBinder name="icType">
                                         <Select size="large" hasClear={true} placeholder="请选择" dataSource={company_type}>
@@ -58,22 +58,22 @@ export default class Filter extends Component {
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
+                            <Col xxs={24} xs={12} l={7} xl={6}>
                                 <FormItem {...formItemLayout} label="证件号码：">
                                     <IceFormBinder name="icNo">
                                         <Input size="large" placeholder="证件号码" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
+                            <Col xxs={24} xs={12} l={6} xl={6}>
                                 <FormItem {...formItemLayout} label="真实姓名：">
                                     <IceFormBinder name="userName">
                                         <Input size="large" placeholder="真实姓名" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={8} xl={6}>
-                                <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                            <Col xxs={24} xs={12} l={4} xl={6}>
+                                <FormItem {...formItemLayout} className="pch-condition-operate">
                                     <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                                         查询
                                     </Button>
