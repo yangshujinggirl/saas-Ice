@@ -184,7 +184,7 @@ export default class FormRender extends Component {
             </div>
           </div>
         </div>);
-        console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
+        // console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
@@ -192,7 +192,7 @@ export default class FormRender extends Component {
               hasClear
               autoWidth
               overlay={this.state.overlay}
-              onClick={this.onInputFocus.bind(this)}
+              // onClick={this.onInputFocus.bind(this)}
               // onSearch={this.onInputUpdate.bind(this)}
               // filterLocal={false}
               className="temp"
@@ -203,6 +203,11 @@ export default class FormRender extends Component {
               {...init(el.name, {
                 initValue: this.state.carValue ? this.state.carValue : el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
+                props: {
+                  onClick: (value) => {
+                    this.onInputFocus(value);
+                  },
+                },
               })}
               dataSource={this.state.carList ? this.state.carList : el.options}
             >
@@ -787,6 +792,8 @@ export default class FormRender extends Component {
         ],
         carValue: id,
       }) : '';
+    // this.field.setValues({ 'car.id': id});
+    this.props.field.setValues({ 'car.id': id});
     this.setState({
       overlay: '',
     });

@@ -790,6 +790,7 @@ export default class FormRender extends Component {
         ],
         carValue: id,
       }) : '';
+    this.props.field.setValues({ 'car.id': id});
     this.setState({
       overlay: '',
     });

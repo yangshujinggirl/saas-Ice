@@ -185,7 +185,7 @@ export default class FormRender extends Component {
             </div>
           </div>
         </div>);
-        console.log('this.state.carValue',this.state.carValue ?  this.state.carValue: el.value)
+        // console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
@@ -202,10 +202,10 @@ export default class FormRender extends Component {
               placeholder={'请选择' + el.label}
               style={{ width: '100%' }}
               {...init(el.name, {
-                initValue: this.state.carValue ?  this.state.carValue: el.value,
+                initValue: this.state.carValue ? this.state.carValue : el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
               })}
-              dataSource={this.state.carList ?this.state.carList :  el.options}
+              dataSource={this.state.carList ? this.state.carList : el.options}
             >
             </Select>
           </FormItem>
@@ -256,7 +256,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              maxLength={el.length && (el.decimal || el.decimal ==0) ? (el.length + el.decimal + 1) : null}
+              maxLength={el.length && (el.decimal || el.decimal == 0) ? (el.length + el.decimal + 1) : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -278,7 +278,7 @@ export default class FormRender extends Component {
             trim
             addonAfter={el.append}
             // htmlType='number'
-            maxLength={el.length ? el.length  : null}
+            maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [
@@ -606,7 +606,7 @@ export default class FormRender extends Component {
                     </ul>
                   </div>
                 </div>
-              ): (<span></span>)
+              ) : (<span></span>)
           }
         </div>);
         this.setState({
@@ -650,11 +650,12 @@ export default class FormRender extends Component {
   renderCarModelOptions = (data) => {
     var list = [];
     data.map((item, index) => {
-      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id,item.modelName)}><a
+      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id, item.modelName)}><a
         href="javascript:">{item.modelName}</a></li>);
     });
     return list;
   };
+
   //点击品牌
   carOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
@@ -712,6 +713,7 @@ export default class FormRender extends Component {
 
       });
   }
+
   //点击车系
   carSystemOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
@@ -776,18 +778,21 @@ export default class FormRender extends Component {
 
       });
   }
+
   //点击车型
-  CarModelOnclick(id,text) {
+  CarModelOnclick(id, text) {
     text && this.state.carSystemText && this.state.brandText ?
       this.setState({
-        carList :[
-          {label:this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id},
+        carList: [
+          { label: this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id },
         ],
         carValue: id,
       }) : '';
+    this.props.field.setValues({ 'car.id': id});
     this.setState({
       overlay: '',
     });
+
   }
 
   //label的提示
