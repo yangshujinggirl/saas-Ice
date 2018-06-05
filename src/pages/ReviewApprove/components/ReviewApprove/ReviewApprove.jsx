@@ -45,7 +45,9 @@ export default class ReviewApprove extends BaseApp {
   }
 
   fetchData = (condition) => {
-    console.log(condition);
+    if (this.props.params.typeId == 10 || this.props.params.typeId == 11) {
+      condition.taskTypeKey = 10
+    }
     this.props.actions.search(condition);
   };
   //点击分页

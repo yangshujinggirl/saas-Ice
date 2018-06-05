@@ -76,8 +76,8 @@ export default class LoanApplication extends Component {
         if (res.data && res.code == '200') {
           console.log(res);
           const { data } = res;
-          const { list } = data;
-          let dataSource = list.map((el) => {
+          const { list = [] } = data;
+          let dataSource =list && list.map((el) => {
             return {
               id: el.id,
               label: el.name,
