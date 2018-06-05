@@ -34,7 +34,7 @@ export default class ProcessFormItemList extends Component {
     }
 
     render() {
-        const { taskItems = [], setModule, changeView, editable = true } = this.props;
+        const { taskItems = [], setModule, changeView, editable = true, validateForm } = this.props;
 
         return (
             <div className="container-right-con">
@@ -73,7 +73,8 @@ export default class ProcessFormItemList extends Component {
                              taskItems={taskItems}
                              selectData={this.getSelectList(item.taskOrder)}
                              setModule={setModule}
-                             changeView={changeView} />
+                             changeView={changeView}
+                             validateForm={validateForm} />
                          );
                     }else{
                         return(
