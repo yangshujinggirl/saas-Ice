@@ -28,7 +28,7 @@ export default class Filter extends BaseCondition {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-              limit:20,
+              limit:10,
             },
             submitStart: null,
             submitEnd: null,
