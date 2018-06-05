@@ -152,10 +152,8 @@ class ProductReq extends CurdReq {
     return super.fetchData(options);
   }
 
-
-
   //材料清单查询
-  filesearch(condition) {
+  filesearch(condition){
     let options = {
       url: this._config.LOAN_HOST + `/product/collect`,
       method: 'get',
@@ -164,8 +162,6 @@ class ProductReq extends CurdReq {
     }
     return super.fetchData(options);
   }
-
-
   //资料清单明细
   fileDetail(id) {
     let options = {

@@ -58,6 +58,15 @@ export default class BaseCondition extends Component {
    * @return {[type]} [description]
    */
   handleSubmit() {
+    let value = this.state.value;
+
+    for (let i in value) {
+      // 替换搜索条件中字符串的前后空格
+      if (typeof value[i] == 'string') {
+        value[i] = value[i].replace(/^\s+|\s+$/gm, '');
+      }
+    }
+
     this.props.onSubmit && this.props.onSubmit(this.state.value);
   }
 

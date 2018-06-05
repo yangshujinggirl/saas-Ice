@@ -151,15 +151,15 @@ class ContractList extends BaseApp {
     .then((res) => {
       const { code, msg} =res;
       if(code !=200 ) {
-        Toast.error(msg);
+        Req.tipError(msg);
         return;
       }
       if(actionStatus == 1) {
-        Toast.success("启用成功");
+        Req.tipSuccess("启用成功");
       } else if(actionStatus == 2) {
-        Toast.success("停用成功");
+        Req.tipSuccess("停用成功");
       } else if(actionStatus == 999) {
-        Toast.success("删除成功");
+        Req.tipSuccess("删除成功");
       }
       this.props.actions.search();
       this.setState({
@@ -175,16 +175,14 @@ class ContractList extends BaseApp {
     })
   }
   render() {
-    const { columns } = this.props;
+    const { pageData, columns, isFetching } = this.props;
     const { templateObj, visible, productList } =this.state;
-    const { list=[] } = this.props.pageData;// || {};
-    console.log(this.state)
     return(
       <IceContainer className="pch-container contract-template-page">
           <Title title="合同管理" />
           <FilterForm onSubmit={this.fetchData} />
-          <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
+          <PchTable isLoading={isFetching} dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
+          <PchPagination dataSource={pageData} onChange={this.changePage} />
           <DialogModule
             templateObj={templateObj}
             visible={visible}

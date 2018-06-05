@@ -60,7 +60,7 @@ export default class Filter extends BaseCondition {
                                 </FormItem>
                             </Col>
                             <Col {...this.colspans}>
-                                <FormItem {...this.formItemLayout} label="&nbsp;" className="pch-condition-operate">
+                                <FormItem {...this.formItemLayout} className="pch-condition-operate">
                                     <Button type="secondary" htmlType='submit' onClick={this.handleSubmit.bind(this)}>
                                         查询
                                     </Button>

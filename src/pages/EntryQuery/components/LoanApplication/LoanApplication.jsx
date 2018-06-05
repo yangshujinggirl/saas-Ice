@@ -28,8 +28,8 @@ export default class LoanApplication extends Component {
 
   constructor(props) {
     super(props);
-    this.field = new Field(this,{
-      autoUnmount: true
+    this.field = new Field(this, {
+      autoUnmount: true,
     });
     this.state = {
       index: 0,
@@ -59,12 +59,17 @@ export default class LoanApplication extends Component {
         // step: 1,
       })
       .then((res) => {
-        if (res && res.data && res.code == 200) {
-          console.log(res.data);
-          this.setState({
-            data:res.data.list
-          })
-        }
+        console.log(res.data);
+        this.setState({
+          data: res.data.list,
+          hasCollection: res.data && res.data.hasCollection,
+        });
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          content: error.msg,
+        });
       });
   };
 
@@ -76,8 +81,8 @@ export default class LoanApplication extends Component {
         if (res.data && res.code == '200') {
           console.log(res);
           const { data } = res;
-          const { list } = data;
-          let dataSource = list.map((el) => {
+          const { list = [] } = data;
+          let dataSource = list && list.map((el) => {
             return {
               id: el.id,
               label: el.name,
@@ -129,8 +134,7 @@ export default class LoanApplication extends Component {
   };
 
   //save
-  save = (e) => {
-    e.preventDefault();
+  save = (str) => {
     this.field.validate((errors, values) => {
       if (errors) {
         console.log('Errors in form!!!');
@@ -149,7 +153,7 @@ export default class LoanApplication extends Component {
                 values[key] = values[key].join(',');
               }
             }
-            if( values[key] != ''){
+            if (values[key] != '') {
               this.queryCache[key] = values[key];
             }
 
@@ -157,18 +161,22 @@ export default class LoanApplication extends Component {
         }
       }
       console.log(this.queryCache);
+      if(str == 'submit'){
+        this.queryCache['id'] = this.props.params.id
+        this.queryCache['status'] = 'SUBMIT'
+      }
       // this.queryCache.status = 'save'
       Req.saveFrom(this.queryCache)
         .then((res) => {
+          if(str == 'submit'){
+            Req.tipSuccess('提交成功');
+            hashHistory.push('/entryQuery');
+          }else{
             hashHistory.push('/MaterialSubmit/' + this.props.params.id);
-
+          }
         })
-        .catch((errors) => {
-          console.log(errors);
-          Toast.show({
-            type: 'error',
-            content: errors.msg,
-          });
+        .catch((error) => {
+          Req.tipError(error.msg)
         });
     });
   };
@@ -196,8 +204,8 @@ export default class LoanApplication extends Component {
 
   render() {
     // const details = this.props.detail || {};
-    const {data =[]} = this.state
-    console.log(data)
+    const { data = [] } = this.state;
+    console.log(data);
     const init = this.field.init;
     const { dataSource = [] } = this.state;
     return (
@@ -230,7 +238,15 @@ export default class LoanApplication extends Component {
                       <FormRender {...this.props} data={data} init={init} productList={dataSource}
                                   field={this.field} addColumn={this.addColumn.bind(this)}></FormRender>
                       <div className='botton-box pch-form-buttons'>
-                        <Button size="large" type="secondary" onClick={this.save}>下一步</Button>
+                        {
+                          this.state.hasCollection ? (
+                              <Button size="large" type="secondary" onClick={this.save.bind(this,'save')}>下一步</Button>
+                            ) :
+                            (
+                              <Button size="large" type="secondary" onClick={this.save.bind(this,'submit')}>提交</Button>
+                            )
+                        }
+
                       </div>
                     </Form>
                   </IceFormBinderWrapper>

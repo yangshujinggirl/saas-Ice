@@ -38,7 +38,7 @@ class SpDataSource {
     if (userinfo && userinfo.identity) {
       this.dataSource.push({
         label: userinfo.identity.organizationName,
-        value: userinfo.identity.ownerId
+        value: userinfo.identity.ownerId.toString()
       });
 
       this.defaultValue = this.dataSource[0].value;

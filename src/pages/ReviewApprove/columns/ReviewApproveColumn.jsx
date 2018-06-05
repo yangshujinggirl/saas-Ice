@@ -33,7 +33,7 @@ class ReviewApproveColumn extends BaseColumn {
       dataIndex: 'principalAmount',
       width: 150,
       cell: (value, index, record) => {
-        return this.formatNumber(value, 0, true);
+        return this.formatNumber(value, 2, true);
       },
     }, {
       title: '贷款产品',

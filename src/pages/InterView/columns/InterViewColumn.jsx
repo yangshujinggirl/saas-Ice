@@ -104,8 +104,8 @@ class InterViewColumn extends BaseColumn {
       dataIndex: 'updateAt',
       width: 160,
     }, {
-      title: '进件ID',
-      dataIndex: 'loanId',
+      title: '进件编码',
+      dataIndex: 'loanCode',
       width: 220,
     }, {
       title: '操作',
@@ -118,13 +118,14 @@ class InterViewColumn extends BaseColumn {
             {
               record.videoDownloadUrl && record.videoDownloadUrl != null ? (
 
-                    <a href="javascript:;"
-                       onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
-                      下载视频
-                    </a>
-                ) :
-                record.type && ( record.type == 'loan') ? (
-                    <div>
+                <a href="javascript:;"
+                   onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER2)}>
+                  下载视频
+                </a>
+              ) : (<span></span>)
+            }
+            {  record.type && record.type == 'loan'? (
+                    <span>
                       <a href="javascript:;"
                          onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>
                         查看报告
@@ -144,7 +145,7 @@ class InterViewColumn extends BaseColumn {
                          onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.SIGN)}>
                         查看签名报告
                       </a>
-                    </div>
+                    </span>
                   ) :
                   (<span></span>)
             }

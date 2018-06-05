@@ -97,16 +97,16 @@ class ContractEditColumn extends BaseColumn {
             width: 200,
             cell: (value, index, record) => {
                 return (
-                    <div className="contract-handle-btn-list-wrap">
-                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                    <div className="pch-table-operation">
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
                             编辑
-                        </Button>
-                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
+                        </a>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
                             取消
-                        </Button>
-                        <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
+                        </a>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
                             改纸质
-                        </Button>
+                        </a>
                     </div>
                     );
             }

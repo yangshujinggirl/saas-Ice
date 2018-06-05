@@ -49,28 +49,28 @@ class ContractColumn extends BaseColumn {
             width: 200,
             cell: (value, index, record) => {
                 return (
-                    <div className="contract-handle-btn-list-wrap">
+                    <div className="pch-table-operation contract-handle-btn-list-wrap">
                         {
                           record.status != 1 && record.templateType != 1 &&
-                          <Button type="secondary" shape="text" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
+                          <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
                               修改
-                          </Button>
+                          </a>
                         }
-                        <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
                             详情
-                        </Button>
+                        </a>
                         {
                           record.status != 1 && record.templateType != 1 &&
-                          <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.REMOVE)}>
+                          <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.REMOVE)}>
                               删除
-                          </Button>
+                          </a>
                         }
-                        <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.BIND)}>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.BIND)}>
                             产品
-                        </Button>
-                        <Button type="secondary" shape="text"  onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.COPY)}>
+                        </a>
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.COPY)}>
                             复制
-                        </Button>
+                        </a>
                     </div>
                     );
             }

@@ -48,9 +48,10 @@ class EntryQueryReq extends CurdReq{
   }
   //获取select下拉框的options
   getSelectList(data) {
+	  console.log(data)
     let options = {
-      url: this._config.LOAN_HOST+ `/cars?name=${data.name}&productCode=${data.productCode}`,
-      method: 'Get',
+      url: this._config.LOAN_HOST+ `/cars`,
+      params: data
     }
     return super.fetchData(options);
   }
@@ -64,11 +65,13 @@ class EntryQueryReq extends CurdReq{
     return super.fetchData(options);
   }
   //获取产品编号
-  getProductNumApi(limit) {
+  getProductNumApi(data) {
+	  console.log(data)
     let options = {
-      url:this._config.LOAN_HOST + `/product?limit=${limit}&status=1`,
+      url:this._config.LOAN_HOST + `/product?status=1`,
       method: 'Get',
-      contentType: 'application/json'
+      contentType: 'application/json',
+      params : data
     }
     return super.fetchData(options);
   }

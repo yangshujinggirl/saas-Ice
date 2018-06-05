@@ -126,4 +126,4 @@ class DragContext extends BaseComponent {
     }
 }
 
-export default DragDropContext(HTML5Backend)(DragContext);
+export default (DragContext);

@@ -19,8 +19,9 @@ export default class BaseAction {
     this.tickNum = 0;
     this._hasFetch = false; //是否以抓取数据
 
-    this._actionKeys = []; // 定义通知给reducer的方法名称
     this._actions = {}; //定义通知给reducer的方法
+
+    this._defaultKeys = [];//定义默认的
   }
 
   get actions() {
@@ -36,17 +37,26 @@ export default class BaseAction {
   }
 
   /**
-   * 根据定义的名称绑定action
+   * 自动绑定定义的所有方法到actions上，包括默认定义的
    * @param  {[type]} key  [description]
    * @param  {[type]} func [description]
    * @return {[type]}      [description]
    */
   bindActions() {
-    this._actionKeys.map((item, i) => {
-      if (typeof this[item] == 'function') {
+
+    let arr = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
+    arr.map((item) => {
+      if (item != 'constructor' && typeof this[item] == 'function') {
         this._actions[item] = this[item].bind(this);
       }
-    })
+    });
+
+    //追加默认定义的
+    this._defaultKeys.map((item) => {
+      if(typeof this._actions[item] == 'undefined' && typeof this[item] == 'function'){
+        this._actions[item] = this[item].bind(this);
+      }
+    });
   }
 
 

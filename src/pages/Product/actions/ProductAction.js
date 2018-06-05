@@ -219,8 +219,7 @@ export const prodrevise = (condition) => {
     })
   }
 }
-
-// 获取材料列表
+  //材料清单查询
 export const filesearch = (condition) => {
   return (dispatch) => {
     dispatch(fetchStart())
@@ -231,6 +230,7 @@ export const filesearch = (condition) => {
     })
   }
 }
+
 
 //材料清单明细
 export const fileDetail = (id) => {

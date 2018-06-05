@@ -1,6 +1,10 @@
 .addFont {
     font-size: 14px;
     color: #333333;
+    display: none;
+    &.active {
+        display: block;
+    }
     .pageName {
         label {
             margin-right: 10px;
@@ -59,8 +63,12 @@
         color: #A7A7A7;
         margin-top: 15px;
         margin-bottom: 15px;
-        .select {
+        .subDif-name{
+            min-width: 150px;
+        }
+        .subDif-select {
             float: right;
+            width: 131px;
             margin-top: -20px;
             span {
                 font-size: 14px;
@@ -74,7 +82,22 @@
         }
     }
 }
+.footerDom-btn .next-btn{
+    border-radius: 5px !important;
+    margin-right: 10px;
+}
 .subtitle {
     margin-bottom: 0 !important;
     border-radius: 0 !important;
+}
+.serfont-cutom-dialog-title {
+    display: none;
+    font-size: 18px;
+    color: #333333;
+    margin-bottom: 27px;
+    padding: 5px 0;
+    border-bottom: 1px solid #d8d8d8;
+    &.active {
+        display: block;
+    }
 }

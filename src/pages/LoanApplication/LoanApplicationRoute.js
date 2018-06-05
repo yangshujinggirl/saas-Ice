@@ -1,13 +1,39 @@
-import LoanApplication from './';
-import HeaderAsideFooterResponsiveLayout from "../../layouts/HeaderAsideFooterResponsiveLayout";
+import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as LoanApplicationActions from './actions/LoanApplicationAction.js'
+
+const mapStateToProps = (state, ownProps) => {
+  const data = state.LoanApplicationReducer;
+  return data;
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    actions: bindActionCreators(LoanApplicationActions, dispatch)
+  }
+}
+
+
+const connentAnything = (obj) => {
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(obj.default)
+}
 
 export default {
   path: "/loanapplication/fixed(/:id)",
-  name:'贷款管理',
+  name: '贷款管理',
   childRoutes: [],
-  component: HeaderAsideFooterResponsiveLayout,
+  component: Layout,
   indexRoute: {
-    component: LoanApplication.LoanApplicationFixed,
-    name:"车贷申请"
+    name: "车贷申请",
+    getComponent(nextState, callback) {
+      require.ensure([], require => {
+        callback(null, connentAnything(require('./LoanApplicationFixed')));
+      }, 'loanapplication');
+    }
   }
 }

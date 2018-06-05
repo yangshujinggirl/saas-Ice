@@ -32,7 +32,10 @@ class Filter extends BaseCondition {
     //重置
     resetSubmit() {
         this.setState({
-            value: null
+            value: {
+                templateCode: '',
+                templateName: ''
+            }
         })
         this.props.onSubmit && this.props.onSubmit();
     }

@@ -190,7 +190,7 @@ export default class ProcessForm extends Component {
       });
       this.currentTaskOrder--;
       // 移除进件
-      if (data.taskTypeId == 1) {
+      if (data.taskTypeId == 1 && taskItems[0].pageId) {
         let step = this.getStepFromData(taskItems, index);
         this.props.actions.removePageStep(taskItems[0].pageId, step);
       }
@@ -281,12 +281,7 @@ export default class ProcessForm extends Component {
       values.status = 1;
       values.processType = 'LOAN';
       if (this.props.params.id) {
-        //复制，提交调保存接口
-        if (this.props.params.copy) {
-          values.status = 0;
-        } else {
           values.id = this.props.params.id;
-        }
       }
       console.log(values)
 

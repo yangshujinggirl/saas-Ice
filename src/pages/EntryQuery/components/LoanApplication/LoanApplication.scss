@@ -173,6 +173,7 @@
               letter-spacing: 0;
               line-height: 48px;
               text-align: left;
+              cursor: pointer;
             }
             a.active {
               position: relative;
@@ -222,6 +223,10 @@
         }
       }
     }
+    .next-menu{
+      padding: 8px 0;
+      min-width: 100px;
+    }
   }
 
   .botton-box{
@@ -241,4 +246,9 @@
     float: right;
     line-height: 33px;
   }
+  .next-number-picker-input-wrap {
+    overflow: hidden;
+    float: none;
+  }
+
 }

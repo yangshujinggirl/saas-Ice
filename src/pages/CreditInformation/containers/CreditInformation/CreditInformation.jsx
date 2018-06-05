@@ -37,9 +37,7 @@ export default class CreditInformation extends BaseApp {
       Req.signIn({
         taskId: taskId
       }).then((res)=>{
-        if(res && res.code==200){
           this.fetchData();
-        }
       }).catch((error)=>{
 
       });
