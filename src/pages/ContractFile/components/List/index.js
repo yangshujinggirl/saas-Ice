@@ -194,8 +194,7 @@ class ContractList extends BaseApp {
     }
   }
   render() {
-    const { columns } = this.props;
-    const { list=[] } =this.props.pageData;
+    const { pageData, columns, isFetching } = this.props;
     const {
       visible,
       signVisible,
@@ -207,8 +206,8 @@ class ContractList extends BaseApp {
       <IceContainer className="pch-container">
           <Title title="合同归档" />
           <FilterForm onSubmit={this.fetchData} />
-          <PchTable dataSource={list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
-          <PchPagination dataSource={this.props.pageData} onChange={this.changePage} />
+          <PchTable isLoading={isFetching} dataSource={pageData.list} columns={columns} onOperateClick={this.handleOperateClick.bind(this)} />
+          <PchPagination dataSource={pageData} onChange={this.changePage} />
           <DialogModule
             visible={visible}
             onCancel={()=>this.onCancel('cancel')}

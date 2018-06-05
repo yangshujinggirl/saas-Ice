@@ -27,7 +27,7 @@ export default class Filter extends Component {
         // 搜索框表单的对应的值，可以设置默认值
         this.state = {
             value: {
-                icType: '',
+                icType: null,
                 icNo: '',
                 userName: '',
             }
@@ -44,13 +44,6 @@ export default class Filter extends Component {
         this.props.onSubmit && this.props.onSubmit(this.state.value);
     }
 
-    handleBusinessTypeChange(v, data){
-        let value  = this.state.value;
-        value.icType = data.label;
-
-        this.setState({value});
-    }
-
     render() {
         return (
             <div className="pch-condition">
@@ -60,7 +53,7 @@ export default class Filter extends Component {
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="证件类型：">
                                     <IceFormBinder name="icType">
-                                        <Select size="large" placeholder="请选择" dataSource={company_type} onChange={this.handleBusinessTypeChange.bind(this)}>
+                                        <Select size="large" hasClear={true} placeholder="请选择" dataSource={company_type}>
                                         </Select>
                                     </IceFormBinder>
                                 </FormItem>
@@ -81,7 +74,7 @@ export default class Filter extends Component {
                             </Col>
                             <Col xxs={24} xs={12} l={8} xl={6}>
                                 <FormItem {...formItemLayout} label="&nbsp;" className="pch-condition-operate">
-                                    <Button onClick={this.handleSubmit.bind(this)} type="secondary">
+                                    <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                                         查询
                                     </Button>
                                 </FormItem>
