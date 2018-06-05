@@ -17,11 +17,13 @@ class ProductColumn extends BaseColumn {
          title: '产品名称',
          dataIndex: 'name',
          width: 200
-      }, {
-         title: '合同显示名称',
-         dataIndex: 'contractDisplayName',
-         width: 160
-      }, {
+       }, 
+      //{
+      //    title: '合同显示名称',
+      //    dataIndex: 'contractDisplayName',
+      //    width: 160
+      // },
+       {
          title: '状态',
          dataIndex: 'status',
          width: 100,

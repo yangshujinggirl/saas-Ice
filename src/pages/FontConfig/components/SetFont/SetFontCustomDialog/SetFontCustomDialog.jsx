@@ -348,10 +348,10 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
         <div className="dialog-title">
         {(data.id ? '编辑' : '添加') + '自定义字段'}
         </div>
-          <div className="serfont-custom-dialog-title">
+          <div className={cx('serfont-cutom-dialog-title',{'active':allPageFields.length})}>
             可选字段
           </div>
-          <div className="addFont">
+          <div className={cx('addFont',{'active':allPageFields.length})}>
             {allPageFields.map((item, index) => {
               return (
                 <div className='subDif' key={index}>
