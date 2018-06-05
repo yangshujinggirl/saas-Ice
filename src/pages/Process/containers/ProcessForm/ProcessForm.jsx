@@ -11,7 +11,7 @@ import {
   FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
 import { Title } from 'components';
-import { Tools } from 'utils';
+import { Tools, SpDataSource } from 'utils';
 
 import ProcessFormName from '../../components/ProcessFormName';
 import ProcessFormModule from '../../components/ProcessFormModule';
@@ -22,7 +22,6 @@ import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import SetFont_ from '../../../FontConfig/components/SetFont/SetFont_';
 import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
 import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant';
-import SpDataSource from '../../utils/SpDataSource';
 import Req from '../../reqs/ProcessReq';
 
 export default class ProcessForm extends Component {

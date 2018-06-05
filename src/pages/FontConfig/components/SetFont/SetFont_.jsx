@@ -154,6 +154,28 @@
               return
           }
 
+          //校验区域名称是否有重复的
+          let namesObj = {};
+          resData.fieldset.map((item) => {
+            if(!namesObj[item.name]){
+              namesObj[item.name] = 0;
+            }
+            namesObj[item.name]++;
+          })
+          let namesArr = [];
+          for(var i in namesObj){
+            if(namesObj[i] > 1){
+              namesArr.push(i);
+            }
+          }
+          if(namesArr.length > 0){
+            Feedback.toast.show({
+                type: 'error',
+                content: `有区域名称重复，${namesArr.join(',')}`
+            })
+            return;
+          }
+
           // 转换fieldset到fields，并追加上fieldsetOrder排序字段
           resData.fieldset.map((item, i) => {
               item.fields.map((field) => {
