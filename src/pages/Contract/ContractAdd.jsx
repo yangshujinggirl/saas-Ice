@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddEdit from './components/AddEdit';
+import AddEdit from './components/AddEdit/index0';
 
 export default class Demo extends Component {
 
