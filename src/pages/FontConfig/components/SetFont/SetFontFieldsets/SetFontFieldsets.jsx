@@ -54,6 +54,7 @@ class SetFontFieldsets extends Component {
      */
     handleGroupTitle = (index, view) => {
         let copyDate = this.props.resData;
+        // copyDate.fieldset
         copyDate.fieldset[index].name = view
         copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
             item.fieldset = view
@@ -83,11 +84,9 @@ class SetFontFieldsets extends Component {
         }
 
         FontConfigReq.changPageName(obj, id).then((data) => {
-            if (data.code == 200) {
-                this.setState({
-                    subTitle: ''
-                })
-            }
+          this.setState({
+              subTitle: ''
+          })
         })
     }
 
