@@ -294,7 +294,7 @@ export default class addOne extends BaseCondition {
 	tiQian = (data) => {
 		return (
 			<div>
-				<Row wrap>
+				<Row wrap className='pch-adjust-next-col-size'>
 					<Col xxs={24} xs={12} l={8} >
 						<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>最小提前还款金额:</span>}>
 							<IceFormBinder
@@ -322,7 +322,7 @@ export default class addOne extends BaseCondition {
 						</FormItem>
 					</Col>
 				</Row>
-				<Row wrap>
+				<Row wrap className='pch-adjust-next-col-size'>
 					<Col xxs={24} xs={12} l={8} >
 						<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>违约金计算基础:</span>}>
 							<IceFormBinder
@@ -915,8 +915,8 @@ export default class addOne extends BaseCondition {
 									</Col>
 								</Row>
 
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
+								<Row wrap className='pch-adjust-next-col-size-13'>
+									<Col xxs={24} xs={12} l={20} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>贷款用途:</span>}>
 											<IceFormBinder name="purposeOfLoan" >
 												<CheckboxGroup
@@ -968,8 +968,8 @@ export default class addOne extends BaseCondition {
 								<span className="pch-legend-legline"></span>额度期限设置
           		</legend>
 							<div className="pch-product-sep">
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
+								<Row wrap className='pch-adjust-next-col-size-18'>
+									<Col xxs={24} xs={12} l={20} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>贷款期限变更:</span>}>
 											<IceFormBinder name="loanTermChange" >
 												<CheckboxGroup
@@ -987,7 +987,7 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								<Row wrap>
+								<Row wrap className='pch-adjust-next-col-size'>
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>申请金额范围(元):</span>}>
 											<div className='box'>
@@ -1099,8 +1099,8 @@ export default class addOne extends BaseCondition {
 								<span className="pch-legend-legline"></span>利率设置
           </legend>
 							<div className="pch-product-sep">
-								<Row wrap>
-									<Col xxs={24} xs={12} l={12} >
+								<Row wrap className='pch-adjust-next-col-size-18'>
+									<Col xxs={24} xs={12} l={20} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>贷款利率变更:</span>}>
 											<IceFormBinder name="interestLoanRateChange" >
 												<CheckboxGroup
@@ -1118,7 +1118,7 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								<Row wrap>
+								<Row wrap className='pch-adjust-next-col-size'>
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>定价利率规则:</span>}>
 											<IceFormBinder
@@ -1167,7 +1167,7 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								<Row wrap>
+								<Row wrap className='pch-adjust-next-col-size'>
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>执行年利率范围(%):</span>}>
 											<div className='box'>
@@ -1235,8 +1235,8 @@ export default class addOne extends BaseCondition {
 								<span className="pch-legend-legline"></span>还款设置
               </legend>
 							<div className="pch-product-sep">
-								<Row wrap>
-									<Col xxs={24} xs={12} l={12} >
+								<Row wrap className='pch-adjust-next-col-size-13'>
+									<Col xxs={24} xs={12} l={20} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款账户变更:</span>}>
 											<IceFormBinder name="repaymentAccountChange" >
 												<CheckboxGroup
@@ -1255,8 +1255,8 @@ export default class addOne extends BaseCondition {
 										</FormItem>
 									</Col>
 								</Row>
-								<Row wrap>
-									<Col xxs={24} xs={12} l={12} >
+								<Row wrap className='pch-adjust-next-col-size-13 '>
+									<Col xxs={24} xs={12} l={20} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款周期:</span>}>
 
 											<CheckboxGroup
@@ -1279,8 +1279,8 @@ export default class addOne extends BaseCondition {
 									</Col>
 								</Row>
 
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
+								<Row wrap className='pch-adjust-next-col-size-40'>
+									<Col xxs={24} xs={12} l={6} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款日变更:</span>}>
 											<IceFormBinder name="repaymentDateChange" >
 												<RadioGroup
@@ -1296,9 +1296,7 @@ export default class addOne extends BaseCondition {
 											</div>
 										</FormItem>
 									</Col>
-								</Row>
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
+									<Col xxs={24} xs={12} l={6} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>宽限期变更:</span>}>
 											<IceFormBinder name="gracePeriodChange" >
 												<RadioGroup
@@ -1314,9 +1312,7 @@ export default class addOne extends BaseCondition {
 											</div>
 										</FormItem>
 									</Col>
-								</Row>
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
+									<Col xxs={24} xs={12} l={6} >
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>还款方式变更:</span>}>
 											<IceFormBinder name="repaymentMethodChange" >
 												<RadioGroup
@@ -1342,8 +1338,8 @@ export default class addOne extends BaseCondition {
 									boolean= {this.state.boolean}
 									onChangeBoolean={this.onChangeBoolean}
 								/>
-								<Row wrap>
-									<Col xxs={24} xs={12} l={8} >
+								<Row wrap className='pch-adjust-next-col-size-18'>
+									<Col xxs={24} xs={12} l={20} className='m-t-24'>
 										<FormItem {...formItemLayout} label={<span> <span className="label-required">*</span>提前还款:</span>}>
 											<IceFormBinder name="isEarlyRepaymentAllowed" >
 												<RadioGroup

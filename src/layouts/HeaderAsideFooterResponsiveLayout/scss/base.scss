@@ -1361,3 +1361,17 @@ body {
 .next-dialog-wrapper.opened .next-overlay-backdrop {
     opacity: .4;
 }
+//时间空间边框颜色统一
+.next-range-picker {
+    border-color: #dcdee3;
+    &:hover {
+        border-color: #C4C6CF;
+    }
+    .next-input {
+        line-height: 32px;
+    }
+}
+// margin-top 24
+.m-t-24 {
+    margin-top: 24px;
+}
