@@ -134,6 +134,7 @@ class ContractFileColumn extends BaseColumn {
                         }
                         {
                           record.status ==5 && <a
+                                                href="javascript:;"
                                                 onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWNLOAD)}>
                                                   下载
                                                </a>
