@@ -6,7 +6,15 @@ import {
   Button,
   Upload
 } from '@icedesign/base';
+import {
+  DragDropContext,
+  DragDropContextProvider,
+  DragSourceMonitor,
+  DropTargetMonitor,
+} from 'react-dnd'
+import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend'
 import DragContext from './DragContext';
+import PchDragUpload from './DragUpload';
 import Req from '../../reqs/MaterialSubmitReq';
 import { hashHistory } from 'react-router';
 import { BaseComponent } from 'base';
@@ -177,9 +185,6 @@ class MaterialSubmit extends BaseComponent {
           Req.tipError(`${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`);
           return;
         }
-
-        // 验证图片的格式和大小
-        // if(el.fileSize)
       }
     }
 
@@ -230,58 +235,67 @@ class MaterialSubmit extends BaseComponent {
     this.setState(data);
   }
 
+  handleTestDrop(){
+    console.log(arguments)
+  }
+
   render() {
     const { connectDropTarget } = this.props;
     let { fileList, tableList, dataSource } = this.state;
     return (
-      <IceContainer className="pch-container">
-        <Title title="材料提交" />
-        <div className="pch-form material-files-form">
-          {/*<div className="material-files-upload">
-            <DragUpload
-              {...this.UPLOAD_CONFIG}
-              showUploadList={false}
-              accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-            />
-          </div>
-          <br/>*/}
-          <div className="material-files-upload">
-            <Upload
-              {...this.UPLOAD_CONFIG}
-              className="material-files-upload-upload"
+      <DragDropContextProvider backend={HTML5Backend}>
+        <IceContainer className="pch-container">
+          <Title title="材料提交" />
+          <div className="pch-form material-files-form">
+            {/*<div className="material-files-upload">
+            <PchDragUpload />
+            </div>*/}
+            {/*<div className="material-files-upload">
+              <DragUpload
+                {...this.UPLOAD_CONFIG}
+                showUploadList={false}
+                accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+              />
+            </div>
+            <br/>*/}
+            <div className="material-files-upload" onDrop={this.handleTestDrop}>
+              <Upload
+                {...this.UPLOAD_CONFIG}
+                className="material-files-upload-upload"
+                fileList={fileList}
+                showUploadList={false}
+                draggable={true}
+                onChange={this.handleFileChange.bind(this)}>
+                <div className="material-files-upload-button">
+                  <div className="icon material-files-upload-button-icon">&#xe628;</div>
+                  <p className="material-files-upload-button-text">
+                     {/*将文件拖到此处，或 */}
+                    <em>点击上传</em>
+                  </p>
+                </div>
+              </Upload>
+            </div>
+            <DragContext
               fileList={fileList}
-              showUploadList={false}
-              draggable={true}
-              onChange={this.handleFileChange.bind(this)}>
-              <div className="material-files-upload-button">
-                <div className="icon material-files-upload-button-icon">&#xe628;</div>
-                <p className="material-files-upload-button-text">
-                   {/*将文件拖到此处，或 */}
-                  <em>点击上传</em>
-                </p>
-              </div>
-            </Upload>
+              tableList={tableList} 
+              dataSource={dataSource}
+              onChangeData={this.handleChangeData.bind(this)}
+            />
+            
+            <div className="pch-form-buttons">
+              <Button size="large" type="secondary" onClick={this.submit}>
+                提交
+              </Button>
+              <Button size="large" type="primary" onClick={this.save}>
+                保存
+              </Button>
+              <Button size="large" type="normal" onClick={this.cancel}>
+                取消
+              </Button>
+            </div>
           </div>
-          <DragContext
-            fileList={fileList}
-            tableList={tableList} 
-            dataSource={dataSource}
-            onChangeData={this.handleChangeData.bind(this)}
-          />
-          
-          <div className="pch-form-buttons">
-            <Button size="large" type="secondary" onClick={this.submit}>
-              提交
-            </Button>
-            <Button size="large" type="primary" onClick={this.save}>
-              保存
-            </Button>
-            <Button size="large" type="normal" onClick={this.cancel}>
-              取消
-            </Button>
-          </div>
-        </div>
-      </IceContainer>
+        </IceContainer>
+      </DragDropContextProvider>
     );
   }
 }
