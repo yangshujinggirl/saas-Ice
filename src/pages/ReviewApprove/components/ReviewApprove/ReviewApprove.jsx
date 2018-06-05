@@ -5,9 +5,10 @@ import { BaseApp } from 'base';
 import { Title, PchTable, PchPagination } from 'components';
 import FilterForm from './Filter';
 import Req from '../../reqs/ReviewApproveReq';
+import { Feedback } from '@icedesign/base/index';
 
 // import './Process.scss';
-
+const Toast = Feedback.toast;
 export default class ReviewApprove extends BaseApp {
   constructor(props) {
     super(props);
@@ -76,7 +77,10 @@ export default class ReviewApprove extends BaseApp {
         }
       })
       .catch((error) => {
-
+        Toast.show({
+          type: 'error',
+          content: error.msg,
+        });
       });
 
   };

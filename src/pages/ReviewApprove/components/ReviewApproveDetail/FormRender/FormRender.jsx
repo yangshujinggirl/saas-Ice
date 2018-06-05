@@ -88,7 +88,11 @@ export default class FormRender extends Component {
         {value:'guarantor.idNo', name:'担保人证件号码'},
         {value:'guarantor.mobile', name:'担保人手机号码'},
         {value:'guarantor.relationshipWithBorrower', name:'担保人与主贷人关系'},
-      ]
+      ],
+      overlay: '',
+      brandList: [],//品牌列表
+      carSystemList: [],//车系列表
+      carModelList: [],//车型
     };
   }
   //渲染表单
@@ -137,6 +141,11 @@ export default class FormRender extends Component {
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
     const init = this.props.field.init;
+    this.state.filedList.map((item)=>{
+      if(el.name == item.value){
+        el.isReadonly = true
+      }
+    })
     if (el.type == 'STRING') {
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
@@ -156,24 +165,79 @@ export default class FormRender extends Component {
       );
     } else if (el.type == 'SELECT') {
       if (el.name == 'car.id') {
+        const overlay = (< div className="pch-from-select-overlay">
+          <div className='brand'>
+            <h5>请选择品牌</h5>
+            <div className='brand-options'>
+              <ul>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className='carsystem'>
+            <h5>请选择车系</h5>
+            <div className='carsystem-options'>
+              <ul>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className='carmodel'>
+            <h5>请选择车型</h5>
+            <div className='carmodel-options'>
+
+              <ul>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪A4L</a></li>
+                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>);
+        console.log('this.state.carValue',this.state.carValue ?  this.state.carValue: el.value)
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
             <Select
               hasClear
-              showSearch
-              dataSource={this.state.list}
-              onSearch={this.onInputUpdate.bind(this)}
-              filterLocal={false}
+              autoWidth
+              overlay={this.state.overlay}
+              onClick={this.onInputFocus.bind(this)}
+              // onSearch={this.onInputUpdate.bind(this)}
+              // filterLocal={false}
               className="temp"
-              value={el.value}
+              // value={el.value ? el.value : this.state.carValue}
               disabled={el.isReadonly}
               placeholder={'请选择' + el.label}
               style={{ width: '100%' }}
               {...init(el.name, {
-                initValue: el.value,
+                initValue: this.state.carValue ?  this.state.carValue: el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
               })}
+              dataSource={this.state.carList ?this.state.carList :  el.options}
             >
             </Select>
           </FormItem>
@@ -429,7 +493,7 @@ export default class FormRender extends Component {
                   {...formItemLayout}  >
           <DatePicker
             disabled={el.isReadonly}
-            formater={["YYYY-MM-DD"]}
+            formater={['YYYY-MM-DD']}
             style={{ width: '100%' }}
             // onChange={this.onDateChange.bind(this)}
             {...init(el.name, {
@@ -517,29 +581,217 @@ export default class FormRender extends Component {
     }
     callback();
   }
-  //
-  onInputUpdate = (value)=>{
-    const  productCode = this.props.field.getValue('productCode');
-    var carList = {
-      productCode : productCode,
-      name : value
-    }
-    // console.log(carList)
-    Req.getSelectList(carList).then((res)=>{
-      if(res && res.code == 200){
-        const dataSource =  res.data.list.map((item,index)=>{
-          return {
-            label: item.brandName,
-            value: item.id
-          };
-        })
-        this.setState({
-          list:dataSource
-        });
-      }
-    }).catch((error)=>{
 
-    })
+
+  onInputFocus(e, value) {
+    const productCode = this.props.field.getValue('productCode');
+    var carList = {
+      productCode: productCode,
+      type: 1,
+    };
+    Req.getSelectList(carList)
+      .then((res) => {
+        console.log(res.data);
+        this.setState({
+          brandList: res.data.list,
+        });
+        const overlay = (< div className="pch-from-select-overlay">
+
+          {
+            res.data && res.data.list ?
+              (
+                <div className='brand'>
+                  <h5>请选择品牌</h5>
+                  <div className='brand-options'>
+                    <ul>
+                      {
+                        this.renderBrandOptions(res.data && res.data.list)
+                      }
+                    </ul>
+                  </div>
+                </div>
+              ): (<span></span>)
+          }
+        </div>);
+        this.setState({
+          overlay: overlay,
+        });
+      })
+      .catch((error) => {
+
+      });
+  };
+
+  //品牌
+  renderBrandOptions = (data) => {
+    var list = [];
+    data.map((item, index) => {
+      if (this.state.brandIndex && this.state.brandIndex == item.id) {
+        list.push(<li key={index} onClick={this.carOnclick.bind(this, item.carId, item.id, item.brandName)}><a
+          href="javascript:" className='active'>{item.brandName}</a></li>);
+      } else {
+        list.push(<li key={index} onClick={this.carOnclick.bind(this, item.carId, item.id, item.brandName)}><a
+          href="javascript:">{item.brandName}</a></li>);
+      }
+    });
+    return list;
+  };
+  //车系
+  renderCarSystemOptions = (data) => {
+    var list = [];
+    data.map((item, index) => {
+      if (this.state.carSystemIndex && this.state.carSystemIndex == item.id) {
+        list.push(<li key={index} onClick={this.carSystemOnclick.bind(this, item.carId, item.id, item.seriesName)}><a
+          href="javascript:" className='active'>{item.seriesName}</a></li>);
+      } else {
+        list.push(<li key={index} onClick={this.carSystemOnclick.bind(this, item.carId, item.id, item.seriesName)}><a
+          href="javascript:">{item.seriesName}</a></li>);
+      }
+    });
+    return list;
+  };
+  //车车型
+  renderCarModelOptions = (data) => {
+    var list = [];
+    data.map((item, index) => {
+      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id,item.modelName)}><a
+        href="javascript:">{item.modelName}</a></li>);
+    });
+    return list;
+  };
+  //点击品牌
+  carOnclick(id, index, text) {
+    const productCode = this.props.field.getValue('productCode');
+    var carList = {
+      productCode: productCode,
+      parentId: id,
+      type: 2,
+    };
+    this.setState({
+      brandIndex: index,
+      brandText: text,
+    });
+
+    Req.getSelectList(carList)
+      .then((res) => {
+        console.log(res.data);
+        const overlay = (< div className="pch-from-select-overlay">
+          {
+            this.state.brandList ?
+              (
+                <div className='brand'>
+                  <h5>请选择品牌</h5>
+                  <div className='brand-options'>
+                    <ul>
+                      {
+                        this.renderBrandOptions(this.state.brandList)
+                      }
+                    </ul>
+                  </div>
+                </div>
+              ) : (<span></span>)
+
+          }
+          {
+            res.data.list ? (
+              <div className='carsystem'>
+                <h5>请选择车系</h5>
+                <div className='carsystem-options'>
+                  <ul>
+                    {this.renderCarSystemOptions(res.data.list)}
+                  </ul>
+                </div>
+              </div>
+            ) : (<span></span>)
+          }
+        </div>);
+        this.setState({
+          carSystemList: res.data.list,
+        });
+        this.setState({
+          overlay: overlay,
+        });
+      })
+      .catch((error) => {
+
+      });
+  }
+  //点击车系
+  carSystemOnclick(id, index, text) {
+    const productCode = this.props.field.getValue('productCode');
+    var carList = {
+      productCode: productCode,
+      parentId: id,
+      type: 3,
+    };
+    this.setState({
+      carSystemIndex: index,
+      carSystemText: text,
+    });
+    Req.getSelectList(carList)
+      .then((res) => {
+        console.log(res.data);
+        const overlay = (< div className="pch-from-select-overlay">
+          {
+            this.state.brandList ?
+              (
+                <div className='brand'>
+                  <h5>请选择品牌</h5>
+                  <div className='brand-options'>
+                    <ul>
+                      {
+                        this.renderBrandOptions(this.state.brandList)
+                      }
+                    </ul>
+                  </div>
+                </div>
+              ) : (<span></span>)
+          }
+          {
+            res.data.list ? (
+              <div className='carsystem'>
+                <h5>请选择车系</h5>
+                <div className='carsystem-options'>
+                  <ul>
+                    {this.renderCarSystemOptions(this.state.carSystemList)}
+                  </ul>
+                </div>
+              </div>
+            ) : (<span></span>)
+          }
+          {res.data.list ? (
+            <div className='carmodel'>
+              <h5>请选择车型</h5>
+              <div className='carmodel-options'>
+                <ul>
+                  {this.renderCarModelOptions(res.data.list)}
+                </ul>
+              </div>
+            </div>
+          ) : (<span></span>)
+
+          }
+        </div>);
+        this.setState({
+          overlay: overlay,
+        });
+      })
+      .catch((error) => {
+
+      });
+  }
+  //点击车型
+  CarModelOnclick(id,text) {
+    text && this.state.carSystemText && this.state.brandText ?
+      this.setState({
+        carList :[
+          {label:this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id},
+        ],
+        carValue: id,
+      }) : '';
+    this.setState({
+      overlay: '',
+    });
   }
   //label的提示
   label = (label) =>{

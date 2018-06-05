@@ -129,6 +129,16 @@ class CreditInformationReq extends CurdReq{
     }
     return super.fetchData(options);
   }
+
+  //获取select下拉框的options
+  getSelectList(data) {
+    console.log(data)
+    let options = {
+      url: this._config.LOAN_HOST+ `/cars`,
+      params: data
+    }
+    return super.fetchData(options);
+  }
 }
 
 export default new CreditInformationReq();

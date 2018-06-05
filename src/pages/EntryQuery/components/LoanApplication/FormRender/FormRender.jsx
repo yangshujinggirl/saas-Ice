@@ -644,7 +644,7 @@ export default class FormRender extends Component {
     });
     return list;
   };
-  //车系
+  //车车型
   renderCarModelOptions = (data) => {
     var list = [];
     data.map((item, index) => {
@@ -653,7 +653,7 @@ export default class FormRender extends Component {
     });
     return list;
   };
-
+  //点击品牌
   carOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
     var carList = {
@@ -710,7 +710,7 @@ export default class FormRender extends Component {
 
       });
   }
-
+  //点击车系
   carSystemOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
     var carList = {
@@ -774,7 +774,7 @@ export default class FormRender extends Component {
 
       });
   }
-
+  //点击车型
   CarModelOnclick(id,text) {
     text && this.state.carSystemText && this.state.brandText ?
       this.setState({

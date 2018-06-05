@@ -250,7 +250,7 @@ Order=(dataIndex,order) =>{
           >
             <Table.Column title="产品编号ss" dataIndex="productCode" width={160} />
             <Table.Column title="产品名称" dataIndex="name" width={200} />
-            <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
+            {/* <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} /> */}
             <Table.Column title="状态" cell={this.status} width={100} />
             <Table.Column title="产品类型" dataIndex="productType" width={160} />
             <Table.Column title="生效期限" cell={this.timeRange} width={250} />

@@ -129,7 +129,6 @@ export default class ReviewApproveDetail extends Component {
     const limit = 990;
     Req.getProductNumApi(limit)
       .then((res) => {
-        if (res.data && res.code == '200') {
           console.log(res);
           const { data } = res;
           const { list } = data;
@@ -144,9 +143,8 @@ export default class ReviewApproveDetail extends Component {
           this.setState({
             dataSource,
           });
-        }
       }, (error) => {
-
+        Req.tipError(error.msg)
       });
   }
 
@@ -219,7 +217,10 @@ export default class ReviewApproveDetail extends Component {
           });
         })
         .catch((error) => {
-          console.log(error);
+          Toast.show({
+            type: 'error',
+            content: error.msg,
+          });
         });
     });
   };
