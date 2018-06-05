@@ -85,9 +85,6 @@ export default class Filter extends BaseCondition {
                                             <Option value="0">
                                                 关闭
                                             </Option>
-                                            <Option value="2">
-                                                失效
-                                            </Option>
                                         </Select>
                                     </IceFormBinder>
                                 </FormItem>

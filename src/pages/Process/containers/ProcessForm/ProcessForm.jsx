@@ -190,7 +190,7 @@ export default class ProcessForm extends Component {
       });
       this.currentTaskOrder--;
       // 移除进件
-      if (data.taskTypeId == 1 && taskItem[0].pageId) {
+      if (data.taskTypeId == 1 && taskItems[0].pageId) {
         let step = this.getStepFromData(taskItems, index);
         this.props.actions.removePageStep(taskItems[0].pageId, step);
       }

@@ -88,8 +88,8 @@ export default class ProcessFormItem extends Component {
                     <div className="pch-realname">
                         {item.taskTypeName}
                     </div>
-                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required max={10} validator={this.validatorTaskAlias} >
-                        <Input size="large" />
+                    <IceFormBinder name={`taskItems[${index}].taskAlias`} required validator={this.validatorTaskAlias} >
+                        <Input size="large" maxLength={10} />
                     </IceFormBinder>
                     <div><IceFormError name={`taskItems[${index}].taskAlias`} /></div>
                 </Col>
