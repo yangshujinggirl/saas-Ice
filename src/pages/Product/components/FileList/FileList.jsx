@@ -72,12 +72,12 @@ export default class FileList extends Component {
     }
 
     render() {
-        let dataSource = this.state.dataSource
-        dataSource = this.props.fileData || {} //data
+        let isFetching = this.props.isFetching;
+        let dataSource = this.props.fileData || {} //data
         dataSource = dataSource.data || {}
-        let page = dataSource.page;
-        let limit = dataSource.limit;
-        let total = dataSource.total;
+        // let page = dataSource.page;
+        // let limit = dataSource.limit;
+        // let total = dataSource.total;
         // dataSource = dataSource.list
         dataSource.list && dataSource.list.map((item) => {
             let temp = [];
@@ -90,7 +90,7 @@ export default class FileList extends Component {
             <IceContainer className="pch-container">
                 <Title title="材料查询" />
                 <FilterForm onSubmit={this.fetchData} />
-                <Table dataSource={dataSource.list} maxBodyHeight={800}>
+                <Table isLoading={isFetching} dataSource={dataSource.list} maxBodyHeight={800}>
                     <Table.Column title="ID" dataIndex="id" />
                     <Table.Column title="清单类型" dataIndex="dataType" />
                     <Table.Column title="清单名称" dataIndex="name" />
