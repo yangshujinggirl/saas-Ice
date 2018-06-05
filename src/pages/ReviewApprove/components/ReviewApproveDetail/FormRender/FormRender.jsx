@@ -280,6 +280,7 @@ export default class FormRender extends Component {
     }
     else if (el.type == 'DECIMAL') {
       if (el.minValue || el.maxValue) {
+
         return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}>
@@ -287,7 +288,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              maxLength={el.length ? el.length : null}
+              maxLength={el.length && (el.decimal || el.decimal ==0) ? (el.length + el.decimal + 1) : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -309,7 +310,7 @@ export default class FormRender extends Component {
             trim
             addonAfter={el.append}
             // htmlType='number'
-            maxLength={el.length ? el.length : null}
+            maxLength={el.length ? el.length  : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [

@@ -184,7 +184,7 @@ export default class FormRender extends Component {
             </div>
           </div>
         </div>);
-        console.log('this.state.carValue',this.state.carValue ?  this.state.carValue: el.value)
+        console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
@@ -201,10 +201,10 @@ export default class FormRender extends Component {
               placeholder={'请选择' + el.label}
               style={{ width: '100%' }}
               {...init(el.name, {
-                initValue: this.state.carValue ?  this.state.carValue: el.value,
+                initValue: this.state.carValue ? this.state.carValue : el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
               })}
-              dataSource={this.state.carList ?this.state.carList :  el.options}
+              dataSource={this.state.carList ? this.state.carList : el.options}
             >
             </Select>
           </FormItem>
@@ -222,7 +222,31 @@ export default class FormRender extends Component {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
-            dataSource={this.props.productList || []}
+            dataSource={this.state.productList}
+          >
+          </Select>
+        </FormItem>);
+      }
+      else if (el.name == 'exhibitionHallHierarchy') {
+        console.log(el.name)
+        return (<FormItem key={el.id} className='item' label={this.label(el.label)}
+                          {...formItemLayout}>
+          <Select
+            defaultValue={el.value}
+            disabled={el.isReadonly}
+            placeholder={'请选择' + el.label}
+            style={{ width: '100%' }}
+            // onChange={this.onSelect.bind(this)}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required: el.isRequired, message: '请选择' + el.label }],
+              props: {
+                onChange: (value) => {
+                  this.onSelect(value);
+                },
+              },
+            })}
+            dataSource={el.options}
           >
           </Select>
         </FormItem>);
@@ -247,6 +271,7 @@ export default class FormRender extends Component {
     }
     else if (el.type == 'DECIMAL') {
       if (el.minValue || el.maxValue) {
+
         return (
           <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}>
@@ -254,7 +279,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              maxLength={el.length ? el.length : null}
+              maxLength={el.length && (el.decimal || el.decimal ==0) ? (el.length + el.decimal + 1) : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -276,7 +301,7 @@ export default class FormRender extends Component {
             trim
             addonAfter={el.append}
             // htmlType='number'
-            maxLength={el.length ? el.length : null}
+            maxLength={el.length ? el.length  : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [
@@ -604,7 +629,7 @@ export default class FormRender extends Component {
                     </ul>
                   </div>
                 </div>
-              ): (<span></span>)
+              ) : (<span></span>)
           }
         </div>);
         this.setState({
@@ -615,6 +640,32 @@ export default class FormRender extends Component {
 
       });
   };
+
+  //展厅选择
+  onSelect =(e, value) =>{
+    const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
+    const limit = 990;
+    Req.getProductNumApi({
+      limit: limit,
+      exhibitionHallHierarchy: exhibitionHallHierarchy,
+    })
+      .then((res) => {
+        const { data } = res;
+        const { list } = data;
+        let dataSource = list.map((el) => {
+          return {
+            id: el.id,
+            label: el.name,
+            value: el.productCode,
+          };
+        });
+        this.setState({
+          productList: dataSource,
+        });
+      }, (error) => {
+        Req.tipError(error.msg);
+      });
+  }
 
   //品牌
   renderBrandOptions = (data) => {
@@ -648,11 +699,12 @@ export default class FormRender extends Component {
   renderCarModelOptions = (data) => {
     var list = [];
     data.map((item, index) => {
-      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id,item.modelName)}><a
+      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id, item.modelName)}><a
         href="javascript:">{item.modelName}</a></li>);
     });
     return list;
   };
+
   //点击品牌
   carOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
@@ -710,6 +762,7 @@ export default class FormRender extends Component {
 
       });
   }
+
   //点击车系
   carSystemOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
@@ -774,12 +827,13 @@ export default class FormRender extends Component {
 
       });
   }
+
   //点击车型
-  CarModelOnclick(id,text) {
+  CarModelOnclick(id, text) {
     text && this.state.carSystemText && this.state.brandText ?
       this.setState({
-        carList :[
-          {label:this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id},
+        carList: [
+          { label: this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id },
         ],
         carValue: id,
       }) : '';

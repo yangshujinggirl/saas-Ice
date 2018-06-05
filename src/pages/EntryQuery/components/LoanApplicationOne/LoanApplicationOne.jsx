@@ -61,7 +61,7 @@ class LoanApplicationOne extends Component {
   }
 
   componentDidMount() {
-    this.getProductNum();
+    // this.getProductNum();
     this.actionType();
   }
 
@@ -73,7 +73,6 @@ class LoanApplicationOne extends Component {
       this.props.actions.searchField({ step: 0 });
     }
   }
-
   changeInfomation(loadId) {
     let { actions } = this.props;
     var data = {
