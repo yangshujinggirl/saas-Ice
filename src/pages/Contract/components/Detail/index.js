@@ -20,7 +20,7 @@ class Detail extends BaseApp {
     return(
       <IceContainer className="pch-container contract-template-detail-page">
           <Title title="模板详情" />
-          <div className="template-title">{templateName}</div>
+          {/* <div className="template-title">{templateName}</div> */}
           <div className="template-detail-content">
             <div dangerouslySetInnerHTML={{
               __html:templateContent

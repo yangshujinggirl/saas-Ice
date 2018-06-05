@@ -1,4 +1,7 @@
 .contract-edit-pages {
+  #editorElem .w-e-text-container {
+    height: 600px !important;
+  }
   .contract-template-add-wrapper {
     line-height: normal;
     border: 1px solid #ccc;

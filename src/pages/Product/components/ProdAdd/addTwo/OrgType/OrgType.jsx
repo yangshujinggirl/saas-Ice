@@ -155,8 +155,8 @@ export default class OrgType extends Component {
       GroupData.productScopes2.push({
         relatedId: item.agencyId,
         relatedName: item.agencyType == 'group' ? item.agencyName : (item.agencyType == 'channel' ? item.agencyName : item.agencyName),
-        relatedPath: item.idPath,
-        relatedPathName: item.namePath,
+        relatedPath: item.idPath + '/',
+        relatedPathName: item.namePath + '/',
         type: 'GROUP'
       })
     })
