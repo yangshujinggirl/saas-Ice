@@ -151,7 +151,7 @@ export default class OrgType extends Component {
     })
 
     //右侧提交数据
-    dataSourceRight.map((item, i) => {
+    arra.map((item, i) => {
       GroupData.productScopes2.push({
         relatedId: item.agencyId,
         relatedName: item.agencyType == 'group' ? item.agencyName : (item.agencyType == 'channel' ? item.agencyName : item.agencyName),
