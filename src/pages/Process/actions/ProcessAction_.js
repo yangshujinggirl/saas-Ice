@@ -59,7 +59,7 @@ class ProcessAction extends BaseAction {
       dispatch(this.fetchStart({ formData: {} }))
 
       Req.getDetail(id).then((res) => {
-        dispatch(this.fetchSuccess({ formData: res.data }))
+        dispatch(this.fetchSuccess({ formData: res.data, hasProcess: false }))
       }).catch((ex) => {
         dispatch(this.fetchFailed(ex))
       })
@@ -71,8 +71,7 @@ class ProcessAction extends BaseAction {
     return (dispatch) => {
       dispatch(this.fetchStart({ customMenuList: [] }))
       Req.getCustomMenuList(id).then((res) => {
-        if (res.code != 200) return;
-        dispatch(this.fetchSuccess({ customMenuList: res.data }))
+        dispatch(this.fetchSuccess({ customMenuList: res.data, hasProcess: false }))
       }).catch((ex) => {
         dispatch(this.fetchFailed(ex))
       })

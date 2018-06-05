@@ -1,4 +1,4 @@
-import { Storage } from 'utils';
+import Storage from './Storage';
 
 /**
  * 资方下拉框数据

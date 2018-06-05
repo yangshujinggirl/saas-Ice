@@ -22,7 +22,6 @@ export default class PchMaterialSelect extends BaseComponent {
     }
 
     render() {
-      console.log(this.props.defaultVisible)
         return (
             <Select
                 value ={this.props.defaultVisible}
@@ -57,7 +56,6 @@ export default class PchMaterialSelect extends BaseComponent {
                         value: item.id.toString()
                     };
                 });
-                console.log(dataSource)
                 this.setState({
                     dataSource
                 });

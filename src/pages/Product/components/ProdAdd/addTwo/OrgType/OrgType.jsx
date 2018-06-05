@@ -26,7 +26,7 @@ let arrayRightData = {
   qudao: [],
   tingdian: []
 };//全局
-const testarray = []; //右侧即将要渲染的数据
+let testarray = []; //右侧即将要渲染的数据
 
 const CARTYPES = {
   '10': {
@@ -90,11 +90,15 @@ export default class OrgType extends Component {
     }
   }
   componentWillMount() {
-    console.log(this.props)
     let { actions } = this.props;
     let type = this.props.type;
     this.state.type = type
     actions.getGroupList(type,'')
+  }
+
+  componentWillUnmount(){
+     //组件卸载，数据清空
+    testarray = []
   }
 
   renderDataWithGroup = (type, list) => {
@@ -151,12 +155,12 @@ export default class OrgType extends Component {
     })
 
     //右侧提交数据
-    dataSourceRight.map((item, i) => {
+    arra.map((item, i) => {
       GroupData.productScopes2.push({
         relatedId: item.agencyId,
         relatedName: item.agencyType == 'group' ? item.agencyName : (item.agencyType == 'channel' ? item.agencyName : item.agencyName),
-        relatedPath: item.idPath,
-        relatedPathName: item.namePath,
+        relatedPath: item.idPath + '/',
+        relatedPathName: item.namePath + '/',
         type: 'GROUP'
       })
     })

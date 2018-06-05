@@ -56,11 +56,20 @@ export default class ProcessFormItem extends Component {
         }
 
         let { taskItems = [], item } = this.props;
+        let hasError = false;
         taskItems.map((task) => {
             if(task.taskAlias == value && task.taskOrder != item.taskOrder){
+                hasError = true;
                 callback('模块别名不能重复');
+                return;
             }
         })
+
+        if(hasError){
+            return;
+        }
+
+        // this.props.validateForm && this.props.validateForm();
         callback();
     }
 

@@ -55,6 +55,14 @@ class SetFontFieldsets extends Component {
      */
     handleGroupTitle = (index, view) => {
         let copyDate = this.props.resData;
+        let hasAName = copyDate.fieldset.some((item, i) => {
+          return item.name == view && index != i
+        });
+        if(hasAName){
+          Feedback.toast.error('区域名称重复')
+        }
+
+
         copyDate.fieldset[index].name = view
         copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
             item.fieldset = view
@@ -84,11 +92,9 @@ class SetFontFieldsets extends Component {
         }
 
         FontConfigReq.changPageName(obj, id).then((data) => {
-            if (data.code == 200) {
-                this.setState({
-                    subTitle: ''
-                })
-            }
+          this.setState({
+              subTitle: ''
+          })
         })
     }
 
@@ -410,20 +416,6 @@ class SetFontFieldsets extends Component {
                                       if (item.isFixed) {
                                           // 固定字段
                                           return (
-                                              // <div className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
-                                              //         'false')} key={inj} data-row={item.line == 1 ? true : ''}>
-                                              //     <div className="clearfix">
-                                              //         <label htmlFor="" className='label'>
-                                              //             <Balloon type="primary" trigger={<span className='ellips'><span className='required'>*</span>
-                                              //                                              {item.label}:</span>} closable={false} triggerType="hover">
-                                              //                 {item.label}
-                                              //             </Balloon>
-                                              //         </label>
-                                              //         {handleFixed(item)}
-                                              //         <span className='edite icon'></span>
-                                              //     </div>
-                                              //     <span className="delete" onClick={this.handleRemoveElement.bind(this, index)}>×</span>
-                                              // </div>
                                               <FieldsOne
                                                 item={item}
                                                 id={item.id}
@@ -437,28 +429,6 @@ class SetFontFieldsets extends Component {
                                           )
                                       } else {
                                           return (
-                                              // <div
-                                              //     onMouseLeave={hover.bind(this, 0)}
-                                              //     onMouseEnter={hover.bind(this, 1, item.label)}
-                                              //     className={cx('dynamic-item', 'firstModle', 'ui-sortable-item',
-                                              //                    'false', {
-                                              //                        active: this.state.rightActive == item.label
-                                              //                    })}
-                                              //     key={inj}
-                                              //     data-row={item.line == 1 ? true : ''}>
-                                              //     <div className="clearfix">
-                                              //         <label htmlFor="" className='label'>
-                                              //             <Balloon type="primary" trigger={<span className='ellips' onDoubleClick={handleEditeCoce.bind(this, item, index, inj)} title={item.label}><span className='required' onClick={this.validaRequire.bind(this, index, inj)}>{item.isRequired ? '*' : ''}</span>
-                                              //                                              {item.label}
-                                              //                                              </span>} closable={false} triggerType="hover">
-                                              //                 {item.label}
-                                              //             </Balloon>
-                                              //         </label>
-                                              //         {handleFixed(item)}
-                                              //         <span className='edite icon' onClick={handleEditeCoce.bind(this, item, index, inj)}></span>
-                                              //     </div>
-                                              //     <span className="delete" onClick={this.handleRemoveElement.bind(this, index, inj)}>×</span>
-                                              // </div>
                                               <FieldsTwo
                                                 item={item}
                                                 id={item.id}

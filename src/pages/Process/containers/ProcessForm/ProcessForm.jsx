@@ -11,7 +11,7 @@ import {
   FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
 import { Title } from 'components';
-import { Tools } from 'utils';
+import { Tools, SpDataSource } from 'utils';
 
 import ProcessFormName from '../../components/ProcessFormName';
 import ProcessFormModule from '../../components/ProcessFormModule';
@@ -22,7 +22,6 @@ import { PROCESS_VIEW } from '../../constants/ProcessViewConstant';
 import SetFont_ from '../../../FontConfig/components/SetFont/SetFont_';
 import SetFontView_ from '../../../FontConfig/components/SetFontView/SetFontView_';
 import { COMPANY_TYPE } from '../../constants/CompanyTypeConstant';
-import SpDataSource from '../../utils/SpDataSource';
 import Req from '../../reqs/ProcessReq';
 
 export default class ProcessForm extends Component {
@@ -500,6 +499,11 @@ export default class ProcessForm extends Component {
     return result.join(',');
   }
 
+  validateForm(){
+    console.log(typeof this.refs.form.validate)
+    this.refs.form.validate('taskItems[1].taskAlias');
+  }
+
   /**
    * 渲染
    */
@@ -525,7 +529,7 @@ export default class ProcessForm extends Component {
                   {/*右边*/}
                   <div className="container-right">
                     <ProcessFormItemList taskItems={formData.taskItems} setModule={this.setModule.bind(this)}
-                                         changeView={this.changeView.bind(this)}/>
+                                         changeView={this.changeView.bind(this)} validateForm={this.validateForm.bind(this)} />
                     <div className="next-btn-box pch-form-buttons">
                       <Button type="normal" size="large" onClick={this.handleCancel.bind(this)}>
                         取消

@@ -25,7 +25,7 @@ let arrayRightData = {
    chexi: [],
    pinpai: []
 };//全局
-const testarray = []; //右侧即将要渲染的数据
+let testarray = []; //右侧即将要渲染的数据
 
 const CARTYPES = {
    '1': {
@@ -66,7 +66,6 @@ export default class CarType extends Component {
                } else {
                   arrayRightData.cehxing = recordArray
                }
-               console.log(arrayRightData)
 
                let { rowSelection } = this.state;
                rowSelection.selectedRowKeys = ids;
@@ -87,7 +86,10 @@ export default class CarType extends Component {
       actions.addTwoList(val, '')
 
    }
-
+   componentWillUnmount(){
+     //组件卸载，数据清空
+     testarray =[]
+   }
    renderDataWithCar = (type, list) => {
       let carType = CARTYPES[type];
       const tempData = []
