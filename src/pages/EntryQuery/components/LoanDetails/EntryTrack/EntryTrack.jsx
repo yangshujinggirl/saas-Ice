@@ -67,7 +67,6 @@ export default class EntryTrack extends Component {
 
                   <div className="process-action">
                         {
-
                           trackList.map((item,index)=>{
                             var status = classNames({
                               'circle status-red'    : item.choose == 'REJECT',
@@ -110,6 +109,7 @@ export default class EntryTrack extends Component {
                             </div>)
                         })
                         }
+                        <div className='oneline'></div>
                   </div>
       </div>
 
