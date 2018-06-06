@@ -83,9 +83,13 @@ export default class ProdDetail extends Component {
     return tempArr
   }
   relatedGroupType = (value, index, record) => {
-    let itemPath = record.relatedPath.split('/');
-
-    return itemPath.length == 2 ? '集团' : (itemPath.length == 3 ? '渠道' : '厅店')
+    // let itemPath = record.relatedPath.split('/');
+    let itemType = record.relatedPath1
+    return itemType == '10' ? '集团' : (itemType == '30' ? '渠道' : '厅店')
+  }
+  relatedGroupName= (value, index, record) => {
+    let itemName = record.relatedPathName;
+    return  itemName.substring(1,itemName.length-1);
   }
   //权限
   authData = (productScopes) => {
@@ -416,7 +420,7 @@ export default class ProdDetail extends Component {
                 primaryKey="id"
               >
                 <Table.Column title="类型" cell={this.relatedGroupType} />
-                <Table.Column title="名称" dataIndex="relatedName" />
+                <Table.Column title="名称" cell={this.relatedGroupName} />
               </Table>
             </div>
             <legend className="pch-legend" style={{ marginTop: "30px" }}>
