@@ -234,6 +234,10 @@ export default class ProcessForm extends Component {
       if (this.props.params.id) {
         values.id = this.props.params.id;
       }
+      if(this.props.params.copy){
+        //复制流程的id改为0
+        value.id = 0;
+      }
       this.props.actions.save(values);
     });
   };
@@ -270,6 +274,10 @@ export default class ProcessForm extends Component {
       values.processType = 'LOAN';
       if (this.props.params.id) {
           values.id = this.props.params.id;
+      }
+      if(this.props.params.copy){
+        //复制流程的id改为0
+        value.id = 0;
       }
       console.log(values)
 
