@@ -1,5 +1,5 @@
 .setFont {
-    
+
     .pch-form{
         padding-left: 0;
         padding-right: 0;
@@ -15,13 +15,14 @@
         }
     }
     .container {
-        display: table;
         width: 100%;
         border: 1px solid #F6DCA9;
-        background: #fff;  
+        background: #fff;
+        height: 800px;
+        overflow: hidden;
+        display: inline-flex;
         .container-left {
-            display: table-cell;
-            width: 150px;
+            width: 20% !important;
             box-sizing: border-box;
             color: #666;
             line-height: 30px;
@@ -30,23 +31,23 @@
             padding: 15px 0 15px 20px;
             height: 100%;
             vertical-align: top;
-
+            overflow-y: scroll;
             ul{
                 width: 135px;
             }
             a {
                 color: #666;
                 cursor: pointer;
-                
+
             }
             a:focus {
                 text-decoration: none;
             }
             li.active {
                 position: relative;
-                
+
                 >a {
-                    color: #FC9E25;  
+                    color: #FC9E25;
                 }
                 &::after {
                     content: '*';
@@ -60,14 +61,13 @@
         }
         .container-right {
             background: #fff;
-            display: table-cell;
             padding: 15px;
             padding-top: 25px;
-
+            overflow-y: scroll;
             .setfont-field{
                 margin-bottom: 35px;
             }
-            
+
             .base-detail {
                 border-bottom: 1px solid #d8d8d8;
                 padding-bottom: 6px;
@@ -81,7 +81,7 @@
                             border-bottom-color: #fff;
                         }
                     }
-                    
+
                 }
                 .base-detail-name{
                     float: left;
@@ -205,7 +205,7 @@
                         & + .next-input, & + .next-select{
                             width: 150px !important;
                         }
-                       
+
                         @media screen and (max-width: 1400px) {
                             & + .next-input, & + .next-select{
                                 width: 150px !important;
@@ -230,13 +230,13 @@
                         }
                         >span {
                             float: left;
-                            
+
                         }
                         span.required {
                             color: #666;
                             text-align: center;
                             cursor: pointer;
-                            margin-right: 3px; 
+                            margin-right: 3px;
                             background: #FCFCFC;
                             border: 1px solid #E1E1D8 ;
                             border-radius: 2px;
@@ -244,13 +244,13 @@
                             width: 15px;
                             display: inline-block;
                             vertical-align: middle;
-                                   
+
                         }
                         .required {
                             color: #FD5848 !important;
-                           
+
                         }
-                        
+
                         .none {
                             display: none;
                         }
@@ -278,7 +278,7 @@
                     }
                 }
             }
-                
+
             .addModule {
                 margin-top: 30px;
                 margin-bottom: 30px;
@@ -288,6 +288,8 @@
                 margin-top: 40px;
             }
         }
+        .container-right::-webkit-scrollbar {display:none}
+        .container-left::-webkit-scrollbar {display:none}
     }
     .next-select {
         width: 200px;

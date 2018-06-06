@@ -55,19 +55,19 @@ class DropCell extends Component {
 
         return connectDropTarget(
             <div className={cx('material-file-cell', {'can-drop': canDrop})}>
-                {data[type]!=undefined? 
+                {data[type]!=undefined?
                     <div className="material-file-content">
                         <Icon
                             className="material-file-cell-close"
                             type="close"
                             size="small"
                             onClick={onRemoveClick.bind(this, index, type, data)} />
-                        
+
                          <IceImg
                              height={44}
                              width={44}
                              src={this.isImg(data[type])? data[type]:'/public/images/creditInformation/filed.png'}/>
-                    </div> : <div className="material-file-text">请拖动图片</div>}
+                    </div> : <div className="material-file-text">请拖动材料</div>}
             </div>
         )
     }
@@ -99,7 +99,7 @@ const cardTarget = {
 
         // Time to actually perform the action
         props.moveCard(targetIndex, sourceId, lastTargetIndex, type, data.fileType)
-        
+
         // Note: we're mutating the monitor item here!
         // Generally it's better to avoid mutations,
         // but it's good here for the sake of performance

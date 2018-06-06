@@ -33,7 +33,7 @@ export default class SetFontView_ extends Component {
     }
 
     componentDidMount() {
-        
+
         // 固定左侧菜单
         window.onscroll = function() {
             let scrollFix = document.querySelector('.scrollFix');
@@ -177,48 +177,50 @@ export default class SetFontView_ extends Component {
                         </div>
                         {/* 渲染右边 */}
                         <div className="container-right">
+                          <div>
                             <div className="dynamic-demo">
-                                {resData.fieldset && resData.fieldset.map((item, index) => {
-                                     return (
-                                         <div key={index}>
-                                             {/*添加字段按钮和小标题  */}
-                                             <div className='base-detail clearfix'>
-                                                 <div className='base-detail-name active' id={item.name}>
-                                                     <Input
-                                                         placeholder="区域名称"
-                                                         maxLength={35}
-                                                         value={item.name}
-                                                         className='moduleStr'
-                                                         readOnly />
-                                                 </div>
-                                             </div>
-                                             <div className='ui-sortable'>
-                                                 {item.fields.map((item, inj) => {
-                                                      return (
-                                                          <div key={inj} className={cx('dynamic-item', 'firstModle', "ui-sortable-item")} data-row={item.line == 1 ? true : ''}>
-                                                              <div className="clearfix">
-                                                                  <label className='label'>
-                                                                      <Balloon type="primary" trigger={<span className='ellips' title={item.label}><span className='required'>{item.isRequired ? <span>*</span> : ''}</span>
-                                                                                                       {item.label}
+                              {resData.fieldset && resData.fieldset.map((item, index) => {
+                                return (
+                                  <div key={index}>
+                                    {/*添加字段按钮和小标题  */}
+                                    <div className='base-detail clearfix'>
+                                      <div className='base-detail-name active' id={item.name}>
+                                        <Input
+                                          placeholder="区域名称"
+                                          maxLength={35}
+                                          value={item.name}
+                                          className='moduleStr'
+                                          readOnly />
+                                      </div>
+                                    </div>
+                                    <div className='ui-sortable'>
+                                      {item.fields.map((item, inj) => {
+                                        return (
+                                          <div key={inj} className={cx('dynamic-item', 'firstModle', "ui-sortable-item")} data-row={item.line == 1 ? true : ''}>
+                                            <div className="clearfix">
+                                              <label className='label'>
+                                                <Balloon type="primary" trigger={<span className='ellips' title={item.label}><span className='required'>{item.isRequired ? <span>*</span> : ''}</span>
+                                                  {item.label}
                                                                                                        </span>} closable={false} triggerType="hover">
-                                                                          {item.label}
-                                                                      </Balloon>
-                                                                  </label>
-                                                                  {handleFixed(item)}
-                                                              </div>
-                                                          </div>
-                                                        );
-                                                  })}
-                                             </div>
-                                         </div>
-                                     )
-                                 })}
+                                                  {item.label}
+                                                </Balloon>
+                                              </label>
+                                              {handleFixed(item)}
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                )
+                              })}
                             </div>
                             <div className="submit pch-form-buttons">
-                                <Button type="normal" size="large" onClick={this.handleCancel}>
-                                    返回
-                                </Button>
+                              <Button type="normal" size="large" onClick={this.handleCancel}>
+                                返回
+                              </Button>
                             </div>
+                          </div>
                         </div>
                     </div>
                 </div>
