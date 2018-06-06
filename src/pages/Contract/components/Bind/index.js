@@ -213,7 +213,7 @@ class Bind extends BaseApp {
   render() {
     const { list=[] } = this.props.pageData;
     return(
-      <IceContainer className="pch-container contract-bind-page contract-template-pages">
+      <IceContainer className="pch-container contract-bind-page">
           <IceFormBinderWrapper ref="form">
             <div className="pch-form">
                 <Title title="选择产品" />
