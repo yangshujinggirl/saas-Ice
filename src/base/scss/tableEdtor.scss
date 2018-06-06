@@ -1,3 +1,14 @@
+//改写编辑器内行margin
+.w-e-text p,
+.w-e-text h1,
+.w-e-text h2,
+.w-e-text h3,
+.w-e-text h4,
+.w-e-text h5,
+.w-e-text table,
+.w-e-text pre {
+  margin:6px 0 !important;
+}
 .wang-edtor-table-styles {
   table {
     border-top: 1px solid #ccc;
