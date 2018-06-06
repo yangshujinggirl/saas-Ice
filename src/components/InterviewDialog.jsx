@@ -63,7 +63,7 @@ export default class InterviwDialog extends Component {
         this.loanIdOnce = true;
     }
     componentWillReceiveProps(nextProps) {
-        this.loanIdOnce = true;
+        // this.loanIdOnce = true;
         if (nextProps.initDate.accid && this.state.once) {
             console.log('data12345678987654567', nextProps.initDate)
             this._initNetcall(nextProps.initDate)
@@ -1248,16 +1248,9 @@ export default class InterviwDialog extends Component {
     render() {
         // console.log("this.state", this.state)
         let { id, type } = this.props, interviewDetail;
-        if (type == 'loan'&&this.loanIdOnce&&id) {
-            this.loanIdOnce = false;
-            http.loanId().then((res) => {
-                console.log(res)
-                id = res.data.visaInterview.loanId;
-            })
-        }
         if (id) {
             interviewDetail = <InterviewDetail id={id} type={type}></InterviewDetail>
-        }
+        } 
         let content = [
             <div className={cx('pch-interview-box', { 'active': this.state.toggleHide,'min-height': this.state.isFullScreen})} key='1'>
                 <div className='pch-interview-left'>
