@@ -384,14 +384,14 @@ export default class SetFontCustomDialog extends SetFontBaseDialog {
               <label htmlFor="">
                 <span>字段名称</span>
               </label>
-              <Input size="large" placeholder="请输入" value={data.label} maxLength='30'
+              <Input size="large" placeholder="请输入" value={data.label} maxLength={30}
                 onChange={this.changeFormData.bind(this, 'label')} />
             </div>
             <div>
               <label htmlFor="">
                 <span>字段后缀</span>
               </label>
-              <Input size="large" placeholder="请输入" value={data.append} maxLength='10'
+              <Input size="large" placeholder="请输入" value={data.append} maxLength={10}
                 onChange={this.changeFormData.bind(this, 'append')} disabled={this.checkDisable(data.type, 'append')} />
             </div>
             <br />
