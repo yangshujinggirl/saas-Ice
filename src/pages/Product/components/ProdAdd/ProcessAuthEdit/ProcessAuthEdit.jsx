@@ -17,53 +17,45 @@ export default class ProcessAuthEdit extends BaseApp {
         this.state = {
             visible: this.props.visible,
             dataSourceRight: [],
-            selectedRowOne: [],
             selectedRowTwo: [],
             current: 1,
             rowSelection: {
                 selectedRowKeys: [],
-                onChange: (selectedRowKeys, records) => {
-                    console.log(selectedRowKeys, records)
-                    let selectedRowOne = records;
-                    records.map((item) => {
-                        let result = [];
-                        item.children && item.children.map((role) => {
-                            result.push(role.id);
-                        })
-                        item.selectedRoles = result;
-                    })
-                    this.setState({
-                        selectedRowOne,
-                    });
-
-                    let { rowSelection } = this.state;
-                    rowSelection.selectedRowKeys = selectedRowKeys;
-                    this.setState({
-                        rowSelection
-                    });
-                },
                 onSelect: (selected, record, records) => {
                     if (!selected) {
                         record.selectedRoles = [];
                     }
+                    let { rowSelection } = this.state;
+                    let selectedRowKeys = rowSelection.selectedRowKeys;
+                    if(selected){
+                        selectedRowKeys.push(record.id);
+                        // 选中某行如果有子集则子集全选中
+                        record.children && record.children.map((item) => {
+                            if(selectedRowKeys.indexOf(item.id) == -1){
+                                selectedRowKeys.push(item.id);
+                            }
+                        })
+                    }else{
+                        let idx = selectedRowKeys.indexOf(record.id);
+                        if(idx != -1){
+                            selectedRowKeys.splice(idx,1);
+                        }
+                    }
+                    rowSelection.selectedRowKeys = selectedRowKeys;
+                        this.setState({
+                            rowSelection
+                        });
 
                 }
             },
             rowSelectionTwo: {
                 selectedRowKeys: [],
                 onChange: (selectedRowKeys, records) => {
-                    let selectedRowTwo = records;
-
                     records.map((item) => {
                         let result = [];
                         result.push(item.id);
                         item.selectedRoles = result;
                     })
-
-
-                    this.setState({
-                        selectedRowTwo
-                    });
 
                     let { rowSelectionTwo } = this.state;
                     rowSelectionTwo.selectedRowKeys = selectedRowKeys;
@@ -127,6 +119,29 @@ export default class ProcessAuthEdit extends BaseApp {
         })
     }
 
+
+    getRolesFromData1(data, result, name) {
+        data.map(item => {
+            item.pname = (name ? name + '-' : '') + item.name;
+            if (this.state.rowSelection.selectedRowKeys.indexOf(item.id) != -1) {
+                
+                result.push({
+                    // orgId: item.id,
+                    // orgName: item.name,
+                    relatedPathName: (name ? name + '-' : '') + item.name,
+                    relatedId: item.id,
+                    relatedName: item.name,
+                    relatedPath: item.path,
+                    type: "ORG"
+                })
+            }
+
+            if (item.children && item.children.length > 0) {
+                this.getRolesFromData1(item.children, result, item.pname);
+            }
+        })
+    }
+
     getSpFromData(data, result) {
         data.map(item => {
             item.map((em, i) => {
@@ -155,7 +170,7 @@ export default class ProcessAuthEdit extends BaseApp {
         let { orgsData = {} } = this.props;
 
         if (orgsData.deprtments) {
-            this.getRolesFromData([orgsData.deprtments], tempArr);
+            this.getRolesFromData1([orgsData.deprtments], tempArr);
         }
         if (orgsData.otherOrgs) {
             this.getSpFromData([orgsData.otherOrgs], tempArr);
@@ -167,10 +182,11 @@ export default class ProcessAuthEdit extends BaseApp {
         // 去除重复的数据，依据机构ID,部门ID,角色ID唯一标识
         for (var i = 0; i < dataSourceRight.length - 1; i++) {
             for (var j = i + 1; j < dataSourceRight.length; j++) {
-
-                if (this.getAKey(dataSourceRight[i]) == this.getAKey(dataSourceRight[j])) {
+                if(dataSourceRight[i].relatedId == dataSourceRight[j].relatedId){
                     dataSourceRight.splice(j, 1)
                 }
+                // if (this.getAKey(dataSourceRight[i]) == this.getAKey(dataSourceRight[j])) {
+                // }
             }
         }
 
@@ -286,8 +302,8 @@ export default class ProcessAuthEdit extends BaseApp {
                             <Table
                                 dataSource={deprtments}
                                 primaryKey="id"
-                                // isTree
-                                expandedRowRender={this.renderLevel.bind(this)}
+                                isTree
+                                // expandedRowRender={this.renderLevel.bind(this)}
                                 rowSelection={this.state.rowSelection}>
                                 <Table.Column title="机构" dataIndex="name" />
                             </Table>
