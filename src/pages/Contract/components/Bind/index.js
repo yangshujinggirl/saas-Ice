@@ -23,7 +23,8 @@ import {
 import Req from '../../reqs/ContractReq';
 import FormModule from './FormModule';
 import ProductTypeMap from '../../../../base/constants/ProductTypeMap';
-import './index.scss'
+import './index.scss';
+import '../../../../base/scss/tableEdtor.scss';
 
 const { Row, Col } = Grid;
 
@@ -212,7 +213,7 @@ class Bind extends BaseApp {
   render() {
     const { list=[] } = this.props.pageData;
     return(
-      <IceContainer className="pch-container contract-bind-page">
+      <IceContainer className="pch-container contract-bind-page contract-template-pages">
           <IceFormBinderWrapper ref="form">
             <div className="pch-form">
                 <Title title="选择产品" />
@@ -237,7 +238,7 @@ class Bind extends BaseApp {
                   </Table>
                 </div>
                 <Title title="选择字段" />
-                <div className="action-block">
+                <div className="action-block wang-edtor-table-styles">
                   <FormModule contractid={this.props.params.id} html={this.state.contractTemplateHTML} productNames={this.state.productNames} ref="FormModule" />
                 </div>
                 <div style={{'textAlign': 'center'}}>
