@@ -131,13 +131,13 @@ export default class FormRender extends Component {
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
-      var defaultOption = '';
-      if(!el.value && el.options){
-          el.options.map((item, index) => {
-            if (item.isDefault) {
-              defaultOption = item.value;
-            }
-          });
+      var defaultOption = null;
+      if (!el.value && el.options) {
+        el.options.map((item, index) => {
+          if (item.isDefault) {
+            defaultOption = item.value;
+          }
+        });
       }
       if (el.name == 'car.id') {
         // console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
@@ -188,6 +188,30 @@ export default class FormRender extends Component {
           </Select>
         </FormItem>);
       }
+      else if (el.name == 'exhibitionHallHierarchy') {
+        console.log(el.name)
+        return (<FormItem key={el.id} className='item' label={this.label(el.label)}
+                          {...formItemLayout}>
+          <Select
+            defaultValue={el.value}
+            disabled={el.isReadonly}
+            placeholder={'请选择' + el.label}
+            style={{ width: '100%' }}
+            // onChange={this.onSelect.bind(this)}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required: el.isRequired, message: '请选择' + el.label }],
+              props: {
+                onChange: (value) => {
+                  this.onSelect(value);
+                },
+              },
+            })}
+            dataSource={el.options}
+          >
+          </Select>
+        </FormItem>);
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -198,7 +222,7 @@ export default class FormRender extends Component {
             style={{ width: '100%' }}
             {...init(el.name, {
               initValue: el.value ? el.value : defaultOption,
-              rules: [{ required: el.isRequired, message: '请选择' + el.label  }],
+              rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
             dataSource={el.options}
           >
@@ -216,7 +240,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              maxLength={el.length && (el.decimal || el.decimal ==0) ? (el.length + el.decimal + 1) : null}
+              maxLength={el.length && (el.decimal || el.decimal == 0) ? (el.length + el.decimal + 1) : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -224,6 +248,11 @@ export default class FormRender extends Component {
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
                 ],
+                props: {
+                  onChange: (value) => {
+                    this.numberOnchange(el);
+                  },
+                },
               })}
             />
           </FormItem>
@@ -238,13 +267,18 @@ export default class FormRender extends Component {
             trim
             addonAfter={el.append}
             // htmlType='number'
-            maxLength={el.length ? el.length  : null}
+            maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
                 { validator: this.checkNum.bind(this, el.isRequired) },
               ],
+              props: {
+                onChange: (value) => {
+                  this.numberOnchange(el);
+                },
+              },
             })}
             placeholder={'请输入' + el.label}
           />
@@ -538,6 +572,7 @@ export default class FormRender extends Component {
     // console.log(value)
     // console.log(option)
   };
+
   onInputFocus(e, value) {
     const productCode = this.props.field.getValue('productCode');
     var carList = {
@@ -549,17 +584,17 @@ export default class FormRender extends Component {
       .then((res) => {
         console.log(res.data);
 
-        var list ={}
-        res.data && res.data.list ? res.data.list.map((item)=>{
-          if(!list[item.brandIndex]){
+        var list = {};
+        res.data && res.data.list ? res.data.list.map((item) => {
+          if (!list[item.brandIndex]) {
             list[item.brandIndex] = [];
           }
-          list[item.brandIndex].push(item)
-          }) : "";
-        console.log(list)
+          list[item.brandIndex].push(item);
+        }) : '';
+        console.log(list);
         this.setState({
-          brandList: res.data && res.data.list ? res.data.list : '' ,
-          titleBarList : list
+          brandList: res.data && res.data.list ? res.data.list : '',
+          titleBarList: list,
         });
         const overlay = (< div className="pch-from-select-overlay">
 
@@ -567,7 +602,7 @@ export default class FormRender extends Component {
             res.data && res.data.list ?
               (<div>
                 <div className='title-bar'>
-                  <ul >
+                  <ul>
                     {
                       this.renderTitleOptions(list)
                     }
@@ -585,9 +620,9 @@ export default class FormRender extends Component {
                         </ul>
                       </div>
                     </div>
-                    )
+                  )
                 }
-              </div>) :(<span></span>)
+              </div>) : (<span></span>)
           }
         </div>);
         this.setState({
@@ -598,37 +633,38 @@ export default class FormRender extends Component {
 
       });
   };
+
   //ABCD按钮
   renderTitleOptions = (data) => {
     var list = [];
-    for(var key in data){
-      console.log(key)
+    for (var key in data) {
+      console.log(key);
       list.push(<li key={key}><a
-        href="javascript:" className='active' onClick={this.scrollToAnchor.bind(this,key)}>{key}</a></li>);
+        href="javascript:" className='active' onClick={this.scrollToAnchor.bind(this, key)}>{key}</a></li>);
     }
     return list;
   };
   //品牌
   renderBrandOptions = (data) => {
     var list = [];
-    console.log(data)
-    for(var key in data){
+    console.log(data);
+    for (var key in data) {
 
       list.push(
         <div>
-        <span className='title-bar' key={key} id={key}>{key}</span>
+          <span className='title-bar' key={key} id={key}>{key}</span>
           {
             this.renderBrand(data[key])
           }
-      </div>)
+        </div>);
     }
 
 
     return list;
   };
   //渲染
-  renderBrand = (data)=>{
-    var list =[]
+  renderBrand = (data) => {
+    var list = [];
     data.map((item, index) => {
 
       if (this.state.brandIndex && this.state.brandIndex == item.id) {
@@ -639,8 +675,8 @@ export default class FormRender extends Component {
           href="javascript:">{item.brandName}</a></li>);
       }
     });
-    return list
-  }
+    return list;
+  };
   //车系
   renderCarSystemOptions = (data) => {
     var list = [];
@@ -687,7 +723,7 @@ export default class FormRender extends Component {
             this.state.titleBarList ?
               (<div>
                 <div className='title-bar'>
-                  <ul >
+                  <ul>
                     {
                       this.renderTitleOptions(this.state.titleBarList)
                     }
@@ -707,7 +743,7 @@ export default class FormRender extends Component {
                     </div>
                   )
                 }
-              </div>) :(<span></span>)
+              </div>) : (<span></span>)
 
           }
           {
@@ -756,7 +792,7 @@ export default class FormRender extends Component {
             this.state.titleBarList ?
               (<div>
                 <div className='title-bar'>
-                  <ul >
+                  <ul>
                     {
                       this.renderTitleOptions(this.state.titleBarList)
                     }
@@ -776,7 +812,7 @@ export default class FormRender extends Component {
                     </div>
                   )
                 }
-              </div>) :(<span></span>)
+              </div>) : (<span></span>)
 
           }
           {
@@ -823,21 +859,84 @@ export default class FormRender extends Component {
         carValue: id,
       }) : '';
     // this.field.setValues({ 'car.id': id});
-    this.props.field.setValues({ 'car.id': id});
+    this.props.field.setValues({ 'car.id': id });
     this.setState({
       overlay: '',
     });
   }
+  //展厅选择
+  onSelect =(e, value) =>{
+    const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
+    const limit = 990;
+    Req.getProductNumApi({
+      limit: limit,
+      exhibitionHallHierarchy: exhibitionHallHierarchy,
+    })
+      .then((res) => {
+        const { data } = res;
+        const { list } = data;
+        let dataSource = list.map((el) => {
+          return {
+            id: el.id,
+            label: el.name,
+            value: el.productCode,
+          };
+        });
+        this.setState({
+          productList: dataSource,
+        });
+      }, (error) => {
+        Req.tipError(error.msg);
+      });
+  }
   //跳转
   scrollToAnchor = (anchorName) => {
-    console.log(anchorName)
+    console.log(anchorName);
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
       if (anchorElement) {
-        console.log(anchorElement)
+        console.log(anchorElement);
         anchorElement.scrollIntoView();
       }
     }
+  };
+
+  //计算公式
+  numberOnchange = (el) => {
+    if (el.name == 'principalAmount' || el.name == 'loanPercentage') {
+      const carCarprice = this.props.field.getValue('car.carPrice');
+      if (carCarprice) {
+        const principalAmount = this.props.field.getValue('principalAmount');
+        const loanPercentage = this.props.field.getValue('loanPercentage');
+        if (el.name == 'principalAmount') {
+          var loanPercentage1 = principalAmount / carCarprice * 100.00;
+          this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+          return;
+        }
+        if (el.name =='loanPercentage') {
+          var principalAmount1 = loanPercentage * carCarprice / 100.00;
+          this.props.field.setValues({ 'principalAmount': principalAmount1 });
+          return;
+        }
+      }
+    }
+    // if(el.name == 'car.carPrice'){
+    //   const carCarprice = this.props.field.getValue('car.carPrice');
+    //   const principalAmount = this.props.field.getValue('principalAmount');
+    //   const loanPercentage = this.props.field.getValue('loanPercentage');
+    //   if(principalAmount){
+    //     var loanPercentage1 = principalAmount / carCarprice * 100.00;
+    //     this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+    //     return;
+    //   }
+    //   if (loanPercentage) {
+    //     var principalAmount1 = loanPercentage * carCarprice / 100.00;
+    //     this.props.field.setValues({ 'principalAmount': principalAmount1 });
+    //     return;
+    //   }
+    // }
+
+
   };
 
   //label的提示
