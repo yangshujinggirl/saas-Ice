@@ -51,7 +51,7 @@ export default class Details extends Component {
 
   //名字
   label = (label) => {
-    const labelTips = <div>{label}</div>;
+    const labelTips = <div className='label'>{label}</div>;
     return (
       <Balloon
         type="primary"
@@ -64,8 +64,8 @@ export default class Details extends Component {
     );
   };
   //内容value
-  value = (el) => {
-    var value = el.value;
+  value = (el,str) => {
+    var value = el.value ;
     if (el.type == 'INT' && el.value == 0) {
       value = 0;
     } else if (el.type == 'SELECT' && el.options && el.options.length) {
@@ -87,13 +87,18 @@ export default class Details extends Component {
         }
       });
     } else if (el.type == 'DATE') {
-      el.dateFormat == 'yyyy-MM-dd' ? value = this.formatDateTime(el.value, 'yyyy-MM-dd') :
-        el.dateFormat == 'HH:mm:ss' ? value = this.formatDateTime(el.value, 'HH:mm:ss') :
-          el.dateFormat == 'yyyy-MM-dd HH:mm:ss' ? value = this.formatDateTime(el.value, 'yyyy-MM-dd HH:mm:ss') :
-            value = el.value;
+      if(value){
+        el.dateFormat == 'yyyy-MM-dd' ? value = this.formatDateTime(el.value , 'yyyy-MM-dd') :
+          el.dateFormat == 'HH:mm:ss' ? value = this.formatDateTime(el.value, 'HH:mm:ss') :
+            el.dateFormat == 'yyyy-MM-dd HH:mm:ss' ? value = this.formatDateTime(el.value, 'yyyy-MM-dd HH:mm:ss') :
+              value = el.value;
+      }
     }
-
-    const valueTips = <div>{value}</div>;
+    if(str && str == 'line'){
+      var valueTips = <div className='linevalue'>{value}</div>;
+    }else{
+      var  valueTips = <div className='value'>{value}</div>;
+    }
     if (value) {
       return (
         <Balloon
@@ -161,11 +166,12 @@ export default class Details extends Component {
                     });
                   }
                   return list;
-                } else if (el.line == 1 || el.type == 'TEXT' || el.type == 'CHECKBOX' || el.type == 'RADIO' || el.type == 'ADDRESS' || (el.type == 'SELECT' && el.name == 'car.id')) {
+                } else if (el.line == 1 || el.type == 'TEXT' || el.type == 'CHECKBOX' || el.type == 'RADIO' ||
+                                el.type == 'ADDRESS' || (el.type == 'SELECT' && el.name == 'car.id') ) {
                   list.push(<div className='config-font colspan' key={el.id}>
                       {this.label(el.label)}
                       <span>:</span>
-                      {this.value(el)}
+                        {this.value(el,'line')}
                     </div>,
                   );
                   return list;
