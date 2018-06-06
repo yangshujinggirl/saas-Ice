@@ -108,6 +108,7 @@ export default class Chanpinlilv extends Component {
             this.props.onChangeBoolean(true)
          }
       })
+      
    }
 
    testChange2 = (rule, value, callback) => {
