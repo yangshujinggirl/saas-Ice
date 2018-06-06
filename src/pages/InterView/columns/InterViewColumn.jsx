@@ -101,7 +101,7 @@ class InterViewColumn extends BaseColumn {
       width: 170,
     }, {
       title: '录制日期',
-      dataIndex: 'updateAt',
+      dataIndex: 'videoUploadDate',
       width: 160,
     }, {
       title: '进件编码',

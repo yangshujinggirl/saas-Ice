@@ -124,67 +124,23 @@ export default class FormRender extends Component {
             maxLength={el.length ? el.length : null}
             addonAfter={el.append}
             {...init(el.name, {
-              initValue: el.value,
+              initValue: el.value ? el.value : '',
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
           />
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
+      var defaultOption = null;
+      if (!el.value && el.options) {
+        el.options.map((item, index) => {
+          if (item.isDefault) {
+            defaultOption = item.value;
+          }
+        });
+      }
       if (el.name == 'car.id') {
-        const overlay = (< div className="pch-from-select-overlay">
-          <div className='brand'>
-            <h5>请选择品牌</h5>
-            <div className='brand-options'>
-              <ul>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className='carsystem'>
-            <h5>请选择车系</h5>
-            <div className='carsystem-options'>
-              <ul>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className='carmodel'>
-            <h5>请选择车型</h5>
-            <div className='carmodel-options'>
-
-              <ul>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>);
-        console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
+        // console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
@@ -192,7 +148,7 @@ export default class FormRender extends Component {
               hasClear
               autoWidth
               overlay={this.state.overlay}
-              onClick={this.onInputFocus.bind(this)}
+              // onClick={this.onInputFocus.bind(this)}
               // onSearch={this.onInputUpdate.bind(this)}
               // filterLocal={false}
               className="temp"
@@ -203,6 +159,11 @@ export default class FormRender extends Component {
               {...init(el.name, {
                 initValue: this.state.carValue ? this.state.carValue : el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
+                props: {
+                  onClick: (value) => {
+                    this.onInputFocus(value);
+                  },
+                },
               })}
               dataSource={this.state.carList ? this.state.carList : el.options}
             >
@@ -222,7 +183,7 @@ export default class FormRender extends Component {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
-            dataSource={this.state.productList}
+            dataSource={this.state.productList || []}
           >
           </Select>
         </FormItem>);
@@ -260,8 +221,8 @@ export default class FormRender extends Component {
             placeholder={'请选择' + el.label}
             style={{ width: '100%' }}
             {...init(el.name, {
-              initValue: el.value,
-              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+              initValue: el.value ? el.value : defaultOption,
+              rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
             dataSource={el.options}
           >
@@ -279,7 +240,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              maxLength={el.length && (el.decimal || el.decimal ==0) ? (el.length + el.decimal + 1) : null}
+              maxLength={el.length && (el.decimal || el.decimal == 0) ? (el.length + el.decimal + 1) : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -287,6 +248,11 @@ export default class FormRender extends Component {
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
                 ],
+                props: {
+                  onChange: (value) => {
+                    this.numberOnchange(el);
+                  },
+                },
               })}
             />
           </FormItem>
@@ -301,13 +267,18 @@ export default class FormRender extends Component {
             trim
             addonAfter={el.append}
             // htmlType='number'
-            maxLength={el.length ? el.length  : null}
+            maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
                 { validator: this.checkNum.bind(this, el.isRequired) },
               ],
+              props: {
+                onChange: (value) => {
+                  this.numberOnchange(el);
+                },
+              },
             })}
             placeholder={'请输入' + el.label}
           />
@@ -320,7 +291,7 @@ export default class FormRender extends Component {
           <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}>
             <NumberPicker
-              step={0.01}
+              step={1}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
               min={el.minValue}
@@ -605,71 +576,6 @@ export default class FormRender extends Component {
   onInputFocus(e, value) {
     const productCode = this.props.field.getValue('productCode');
     var carList = {
-      productCode: productCode,
-      type: 1,
-    };
-    Req.getSelectList(carList)
-      .then((res) => {
-        console.log(res.data);
-        this.setState({
-          brandList: res.data.list,
-        });
-        const overlay = (< div className="pch-from-select-overlay">
-
-          {
-            res.data && res.data.list ?
-              (
-                <div className='brand'>
-                  <h5>请选择品牌</h5>
-                  <div className='brand-options'>
-                    <ul>
-                      {
-                        this.renderBrandOptions(res.data && res.data.list)
-                      }
-                    </ul>
-                  </div>
-                </div>
-              ) : (<span></span>)
-          }
-        </div>);
-        this.setState({
-          overlay: overlay,
-        });
-      })
-      .catch((error) => {
-
-      });
-  };
-
-  //展厅选择
-  onSelect =(e, value) =>{
-    const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
-    const limit = 990;
-    Req.getProductNumApi({
-      limit: limit,
-      exhibitionHallHierarchy: exhibitionHallHierarchy,
-    })
-      .then((res) => {
-        const { data } = res;
-        const { list } = data;
-        let dataSource = list.map((el) => {
-          return {
-            id: el.id,
-            label: el.name,
-            value: el.productCode,
-          };
-        });
-        this.setState({
-          productList: dataSource,
-        });
-      }, (error) => {
-        Req.tipError(error.msg);
-      });
-  }
-
-  onInputFocus(e, value) {
-    const productCode = this.props.field.getValue('productCode');
-    var carList = {
       limit: 99999999,
       productCode: productCode,
       type: 1,
@@ -678,17 +584,17 @@ export default class FormRender extends Component {
       .then((res) => {
         console.log(res.data);
 
-        var list ={}
-        res.data && res.data.list ? res.data.list.map((item)=>{
-          if(!list[item.brandIndex]){
+        var list = {};
+        res.data && res.data.list ? res.data.list.map((item) => {
+          if (!list[item.brandIndex]) {
             list[item.brandIndex] = [];
           }
-          list[item.brandIndex].push(item)
-        }) : "";
-        console.log(list)
+          list[item.brandIndex].push(item);
+        }) : '';
+        console.log(list);
         this.setState({
-          brandList: res.data && res.data.list ? res.data.list : '' ,
-          titleBarList : list
+          brandList: res.data && res.data.list ? res.data.list : '',
+          titleBarList: list,
         });
         const overlay = (< div className="pch-from-select-overlay">
 
@@ -696,7 +602,7 @@ export default class FormRender extends Component {
             res.data && res.data.list ?
               (<div>
                 <div className='title-bar'>
-                  <ul >
+                  <ul>
                     {
                       this.renderTitleOptions(list)
                     }
@@ -716,7 +622,7 @@ export default class FormRender extends Component {
                     </div>
                   )
                 }
-              </div>) :(<span></span>)
+              </div>) : (<span></span>)
           }
         </div>);
         this.setState({
@@ -727,21 +633,22 @@ export default class FormRender extends Component {
 
       });
   };
+
   //ABCD按钮
   renderTitleOptions = (data) => {
     var list = [];
-    for(var key in data){
-      console.log(key)
+    for (var key in data) {
+      console.log(key);
       list.push(<li key={key}><a
-        href="javascript:" className='active' onClick={this.scrollToAnchor.bind(this,key)}>{key}</a></li>);
+        href="javascript:" className='active' onClick={this.scrollToAnchor.bind(this, key)}>{key}</a></li>);
     }
     return list;
   };
   //品牌
   renderBrandOptions = (data) => {
     var list = [];
-    console.log(data)
-    for(var key in data){
+    console.log(data);
+    for (var key in data) {
 
       list.push(
         <div>
@@ -749,15 +656,15 @@ export default class FormRender extends Component {
           {
             this.renderBrand(data[key])
           }
-        </div>)
+        </div>);
     }
 
 
     return list;
   };
   //渲染
-  renderBrand = (data)=>{
-    var list =[]
+  renderBrand = (data) => {
+    var list = [];
     data.map((item, index) => {
 
       if (this.state.brandIndex && this.state.brandIndex == item.id) {
@@ -768,8 +675,8 @@ export default class FormRender extends Component {
           href="javascript:">{item.brandName}</a></li>);
       }
     });
-    return list
-  }
+    return list;
+  };
   //车系
   renderCarSystemOptions = (data) => {
     var list = [];
@@ -816,7 +723,7 @@ export default class FormRender extends Component {
             this.state.titleBarList ?
               (<div>
                 <div className='title-bar'>
-                  <ul >
+                  <ul>
                     {
                       this.renderTitleOptions(this.state.titleBarList)
                     }
@@ -836,7 +743,7 @@ export default class FormRender extends Component {
                     </div>
                   )
                 }
-              </div>) :(<span></span>)
+              </div>) : (<span></span>)
 
           }
           {
@@ -885,7 +792,7 @@ export default class FormRender extends Component {
             this.state.titleBarList ?
               (<div>
                 <div className='title-bar'>
-                  <ul >
+                  <ul>
                     {
                       this.renderTitleOptions(this.state.titleBarList)
                     }
@@ -905,7 +812,7 @@ export default class FormRender extends Component {
                     </div>
                   )
                 }
-              </div>) :(<span></span>)
+              </div>) : (<span></span>)
 
           }
           {
@@ -952,22 +859,86 @@ export default class FormRender extends Component {
         carValue: id,
       }) : '';
     // this.field.setValues({ 'car.id': id});
-    this.props.field.setValues({ 'car.id': id});
+    this.props.field.setValues({ 'car.id': id });
     this.setState({
       overlay: '',
     });
   }
+  //展厅选择
+  onSelect =(e, value) =>{
+    const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
+    const limit = 990;
+    Req.getProductNumApi({
+      limit: limit,
+      exhibitionHallHierarchy: exhibitionHallHierarchy,
+    })
+      .then((res) => {
+        const { data } = res;
+        const { list } = data;
+        let dataSource = list.map((el) => {
+          return {
+            id: el.id,
+            label: el.name,
+            value: el.productCode,
+          };
+        });
+        this.setState({
+          productList: dataSource,
+        });
+      }, (error) => {
+        Req.tipError(error.msg);
+      });
+  }
   //跳转
   scrollToAnchor = (anchorName) => {
-    console.log(anchorName)
+    console.log(anchorName);
     if (anchorName) {
       let anchorElement = document.getElementById(anchorName);
       if (anchorElement) {
-        console.log(anchorElement)
+        console.log(anchorElement);
         anchorElement.scrollIntoView();
       }
     }
   };
+
+  //计算公式
+  numberOnchange = (el) => {
+    if (el.name == 'principalAmount' || el.name == 'loanPercentage') {
+      const carCarprice = this.props.field.getValue('car.carPrice');
+      if (carCarprice) {
+        const principalAmount = this.props.field.getValue('principalAmount');
+        const loanPercentage = this.props.field.getValue('loanPercentage');
+        if (el.name == 'principalAmount') {
+          var loanPercentage1 = principalAmount / carCarprice * 100.00;
+          this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+          return;
+        }
+        if (el.name =='loanPercentage') {
+          var principalAmount1 = loanPercentage * carCarprice / 100.00;
+          this.props.field.setValues({ 'principalAmount': principalAmount1 });
+          return;
+        }
+      }
+    }
+    // if(el.name == 'car.carPrice'){
+    //   const carCarprice = this.props.field.getValue('car.carPrice');
+    //   const principalAmount = this.props.field.getValue('principalAmount');
+    //   const loanPercentage = this.props.field.getValue('loanPercentage');
+    //   if(principalAmount){
+    //     var loanPercentage1 = principalAmount / carCarprice * 100.00;
+    //     this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+    //     return;
+    //   }
+    //   if (loanPercentage) {
+    //     var principalAmount1 = loanPercentage * carCarprice / 100.00;
+    //     this.props.field.setValues({ 'principalAmount': principalAmount1 });
+    //     return;
+    //   }
+    // }
+
+
+  };
+
   //label的提示
   label = (label) => {
     var labelName = <span> {label}:</span>;

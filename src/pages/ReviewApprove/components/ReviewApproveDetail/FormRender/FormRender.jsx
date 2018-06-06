@@ -1,58 +1,49 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Uploadm,TimePicker } from '@icedesign/base';
-import Req from '../../../reqs/ReviewApproveReq';
 import {
-  FormBinderWrapper as IceFormBinderWrapper,
-  FormBinder as IceFormBinder,
-  FormError as IceFormError,
-} from '@icedesign/form-binder';
+  Input,
+  Grid,
+  Form,
+  Button,
+  Select,
+  Field,
+  NumberPicker,
+  Balloon,
+  Radio,
+  Checkbox,
+  DatePicker,
+  Table,
+  Upload,
+  TimePicker,
+} from '@icedesign/base';
+import Req from '../../../reqs/ReviewApproveReq';
+import './FormRender.scss';
+
 const { Group: CheckboxGroup } = Checkbox;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { Combobox } = Select;
-
+const { MonthPicker, YearPicker, RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: { span: 11 },
-  wrapperCol: { span: 13 }
+  wrapperCol: { span: 12 },
 };
 const formItemLayoutR = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 20 }
+  wrapperCol: { span: 20 },
 };
 const formItemLayoutCombobox = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 15 }
+  wrapperCol: { span: 15 },
 };
 const formItemLayoutTEXT = {
-  labelCol: { span: 3},
-  wrapperCol: { span: 21 }
+  labelCol: { span: 3 },
+  wrapperCol: { span: 21 },
 };
 const formItemLayoutCHECKBOX = {
-  labelCol: { span: 6},
-  wrapperCol: { span: 21 }
+  labelCol: { span: 6 },
+  wrapperCol: { span: 21 },
 };
-const  List = [
-  {value:'productCode', name:'产品名称'},
-  {value:'borrowerName', name:'主贷款人姓名'},
-  {value:'borrowerIdType', name:'主贷款人证件类型'},
-  {value:'borrowerIdNo', name:'主贷款人证件号码'},
-  {value:'exhibitionHallName', name:'展厅名称'},
-  {value:'lenderId', name:'资方'},
-  {value:'car.id', name:'品牌/车系/车型'},
-  {value:'hasCoBorrower', name:'是否有共同贷款人'},
-  {value:'coBorrower.name', name:'共同贷款人姓名'},
-  {value:'coBorrower.idType', name:'共同贷款人证件类型'},
-  {value:'coBorrower.idNo', name:'共同贷款人证件号码'},
-  {value:'coBorrower.mobile', name:'共同贷款人手机号码'},
-  {value:'coBorrower.relationshipWithBorrower', name:'共同贷款人与主贷人关系'},
-  {value:'hasGuarantor', name:'是否有担保人'},
-  {value:'guarantor.idType', name:'担保人证件类型'},
-  {value:'guarantor.idNo', name:'担保人证件号码'},
-  {value:'guarantor.mobile', name:'担保人手机号码'},
-  {value:'guarantor.relationshipWithBorrower', name:'担保人与主贷人关系'},
-]
-
 
 export default class FormRender extends Component {
   static displayName = 'FormRender';
@@ -66,58 +57,39 @@ export default class FormRender extends Component {
     super(props);
     this.state = {
       value: {},
-      Component :[],
-      list:[],
-      dataSource:[],
-      filedList:[
-        {value:'productCode', name:'产品名称'},
-        {value:'borrowerName', name:'主贷款人姓名'},
-        {value:'borrowerIdType', name:'主贷款人证件类型'},
-        {value:'borrowerIdNo', name:'主贷款人证件号码'},
-        {value:'exhibitionHallName', name:'展厅名称'},
-        {value:'lenderId', name:'资方'},
-        {value:'car.id', name:'品牌/车系/车型'},
-        {value:'hasCoBorrower', name:'是否有共同贷款人'},
-        {value:'coBorrower.name', name:'共同贷款人姓名'},
-        {value:'coBorrower.idType', name:'共同贷款人证件类型'},
-        {value:'coBorrower.idNo', name:'共同贷款人证件号码'},
-        {value:'coBorrower.mobile', name:'共同贷款人手机号码'},
-        {value:'coBorrower.relationshipWithBorrower', name:'共同贷款人与主贷人关系'},
-        {value:'hasGuarantor', name:'是否有担保人'},
-        {value:'guarantor.idType', name:'担保人证件类型'},
-        {value:'guarantor.idNo', name:'担保人证件号码'},
-        {value:'guarantor.mobile', name:'担保人手机号码'},
-        {value:'guarantor.relationshipWithBorrower', name:'担保人与主贷人关系'},
-      ],
+      Component: [],
+      list: [],
+      dataSource: [],
       overlay: '',
       brandList: [],//品牌列表
       carSystemList: [],//车系列表
       carModelList: [],//车型
     };
   }
+
   //渲染表单
-  renderForm = (data)=>{
-    const  formList = [];
-    if(data){
-      data.map((item,index)=>{
+  renderForm = (data) => {
+    const formList = [];
+    if (data) {
+      data.map((item, index) => {
         formList.push(
-          <div className='info' key={index} id={item.name}>
-            <span className='title-text'>{item.name}</span>
+          <div className='info review-detail' key={index} id={item.name}>
+            <span className='name'>{item.name}</span>
             <div className='info-row'>
               {
-                item.fields.map((el,i)=>{
-                  return(
-                    this.FromRender(el,index,i)
-                  )
+                item.fields.map((el, i) => {
+                  return (
+                    this.FromRender(el, index, i)
+                  );
                 })
               }
             </div>
-          </div>
-        )
-      })
+          </div>,
+        );
+      });
     }
     return formList;
-  }
+  };
   //区块分类渲染
   FromRender = (el, outIndex, inIndex) => {
     if (el.hasAttachedFields) {
@@ -141,11 +113,6 @@ export default class FormRender extends Component {
   //渲染字段
   RenderField = (el, outIndex, inIndex) => {
     const init = this.props.field.init;
-    this.state.filedList.map((item)=>{
-      if(el.name == item.value){
-        el.isReadonly = true
-      }
-    })
     if (el.type == 'STRING') {
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
@@ -157,67 +124,23 @@ export default class FormRender extends Component {
             maxLength={el.length ? el.length : null}
             addonAfter={el.append}
             {...init(el.name, {
-              initValue: el.value,
+              initValue: el.value ? el.value : '',
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
           />
         </FormItem>
       );
     } else if (el.type == 'SELECT') {
+      var defaultOption = null;
+      if (!el.value && el.options) {
+        el.options.map((item, index) => {
+          if (item.isDefault) {
+            defaultOption = item.value;
+          }
+        });
+      }
       if (el.name == 'car.id') {
-        const overlay = (< div className="pch-from-select-overlay">
-          <div className='brand'>
-            <h5>请选择品牌</h5>
-            <div className='brand-options'>
-              <ul>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className='carsystem'>
-            <h5>请选择车系</h5>
-            <div className='carsystem-options'>
-              <ul>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className='carmodel'>
-            <h5>请选择车型</h5>
-            <div className='carmodel-options'>
-
-              <ul>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4" className='active'>奥迪A4L</a></li>
-                <li><a href="javascript:" data-parentid="536" data-carid="4">奥迪A4L</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>);
-        console.log('this.state.carValue',this.state.carValue ?  this.state.carValue: el.value)
+        // console.log('this.state.carValue', this.state.carValue ? this.state.carValue : el.value);
         return (
           <FormItem key={el.id} className='item half' label={this.label(el.label)}
                     {...formItemLayoutCombobox}>
@@ -225,7 +148,7 @@ export default class FormRender extends Component {
               hasClear
               autoWidth
               overlay={this.state.overlay}
-              onClick={this.onInputFocus.bind(this)}
+              // onClick={this.onInputFocus.bind(this)}
               // onSearch={this.onInputUpdate.bind(this)}
               // filterLocal={false}
               className="temp"
@@ -234,10 +157,15 @@ export default class FormRender extends Component {
               placeholder={'请选择' + el.label}
               style={{ width: '100%' }}
               {...init(el.name, {
-                initValue: this.state.carValue ?  this.state.carValue: el.value,
+                initValue: this.state.carValue ? this.state.carValue : el.value,
                 rules: [{ required: el.isRequired, message: '请选择' + el.label }],
+                props: {
+                  onClick: (value) => {
+                    this.onInputFocus(value);
+                  },
+                },
               })}
-              dataSource={this.state.carList ?this.state.carList :  el.options}
+              dataSource={this.state.carList ? this.state.carList : el.options}
             >
             </Select>
           </FormItem>
@@ -260,6 +188,30 @@ export default class FormRender extends Component {
           </Select>
         </FormItem>);
       }
+      else if (el.name == 'exhibitionHallHierarchy') {
+        console.log(el.name)
+        return (<FormItem key={el.id} className='item' label={this.label(el.label)}
+                          {...formItemLayout}>
+          <Select
+            defaultValue={el.value}
+            disabled={el.isReadonly}
+            placeholder={'请选择' + el.label}
+            style={{ width: '100%' }}
+            // onChange={this.onSelect.bind(this)}
+            {...init(el.name, {
+              initValue: el.value,
+              rules: [{ required: el.isRequired, message: '请选择' + el.label }],
+              props: {
+                onChange: (value) => {
+                  this.onSelect(value);
+                },
+              },
+            })}
+            dataSource={el.options}
+          >
+          </Select>
+        </FormItem>);
+      }
       return (
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
@@ -269,8 +221,8 @@ export default class FormRender extends Component {
             placeholder={'请选择' + el.label}
             style={{ width: '100%' }}
             {...init(el.name, {
-              initValue: el.value,
-              rules: [{ required: el.isRequired, message: el.label + '不能为空' }],
+              initValue: el.value ? el.value : defaultOption,
+              rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
             dataSource={el.options}
           >
@@ -288,7 +240,7 @@ export default class FormRender extends Component {
               step={0.01}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
-              maxLength={el.length && (el.decimal || el.decimal ==0) ? (el.length + el.decimal + 1) : null}
+              maxLength={el.length && (el.decimal || el.decimal == 0) ? (el.length + el.decimal + 1) : null}
               min={el.minValue}
               max={el.maxValue}
               {...init(el.name, {
@@ -296,6 +248,11 @@ export default class FormRender extends Component {
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
                 ],
+                props: {
+                  onChange: (value) => {
+                    this.numberOnchange(el);
+                  },
+                },
               })}
             />
           </FormItem>
@@ -310,13 +267,18 @@ export default class FormRender extends Component {
             trim
             addonAfter={el.append}
             // htmlType='number'
-            maxLength={el.length ? el.length  : null}
+            maxLength={el.length ? el.length : null}
             {...init(el.name, {
               initValue: el.value,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
                 { validator: this.checkNum.bind(this, el.isRequired) },
               ],
+              props: {
+                onChange: (value) => {
+                  this.numberOnchange(el);
+                },
+              },
             })}
             placeholder={'请输入' + el.label}
           />
@@ -329,7 +291,7 @@ export default class FormRender extends Component {
           <FormItem key={el.id} className='item' label={this.label(el.label)}
                     {...formItemLayout}>
             <NumberPicker
-              step={0.01}
+              step={1}
               disabled={el.isReadonly}
               placeholder={'请输入' + el.label}
               min={el.minValue}
@@ -542,7 +504,7 @@ export default class FormRender extends Component {
 
   //验证数字
   checkNum(flag, rule, value, callback) {
-    console.log(value)
+    console.log(value);
     if (value == undefined || value == 'undefined') {
       callback();
     } else {
@@ -584,34 +546,83 @@ export default class FormRender extends Component {
   }
 
 
+  onDateChange(date, formateDate) {
+    console.log(date);
+    console.log(formateDate);
+
+  }
+
+  formatDateTime = (inputTime) => {
+    var date = new Date(inputTime);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    var h = date.getHours();
+    h = h < 10 ? ('0' + h) : h;
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    minute = minute < 10 ? ('0' + minute) : minute;
+    second = second < 10 ? ('0' + second) : second;
+    return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+  };
+  //改变value
+  onChange = (value, option) => {
+    // console.log(value)
+    // console.log(option)
+  };
+
   onInputFocus(e, value) {
     const productCode = this.props.field.getValue('productCode');
     var carList = {
+      limit: 99999999,
       productCode: productCode,
       type: 1,
     };
     Req.getSelectList(carList)
       .then((res) => {
         console.log(res.data);
+
+        var list = {};
+        res.data && res.data.list ? res.data.list.map((item) => {
+          if (!list[item.brandIndex]) {
+            list[item.brandIndex] = [];
+          }
+          list[item.brandIndex].push(item);
+        }) : '';
+        console.log(list);
         this.setState({
-          brandList: res.data.list,
+          brandList: res.data && res.data.list ? res.data.list : '',
+          titleBarList: list,
         });
         const overlay = (< div className="pch-from-select-overlay">
 
           {
             res.data && res.data.list ?
-              (
-                <div className='brand'>
-                  <h5>请选择品牌</h5>
-                  <div className='brand-options'>
-                    <ul>
-                      {
-                        this.renderBrandOptions(res.data && res.data.list)
-                      }
-                    </ul>
-                  </div>
+              (<div>
+                <div className='title-bar'>
+                  <ul>
+                    {
+                      this.renderTitleOptions(list)
+                    }
+                  </ul>
                 </div>
-              ): (<span></span>)
+                {
+                  (
+                    <div className='brand'>
+                      <p>请选择品牌</p>
+                      <div className='brand-options'>
+                        <ul>
+                          {
+                            this.renderBrandOptions(list)
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  )
+                }
+              </div>) : (<span></span>)
           }
         </div>);
         this.setState({
@@ -623,15 +634,44 @@ export default class FormRender extends Component {
       });
   };
 
+  //ABCD按钮
+  renderTitleOptions = (data) => {
+    var list = [];
+    for (var key in data) {
+      console.log(key);
+      list.push(<li key={key}><a
+        href="javascript:" className='active' onClick={this.scrollToAnchor.bind(this, key)}>{key}</a></li>);
+    }
+    return list;
+  };
   //品牌
   renderBrandOptions = (data) => {
     var list = [];
+    console.log(data);
+    for (var key in data) {
+
+      list.push(
+        <div>
+          <span className='title-bar' key={key} id={key}>{key}</span>
+          {
+            this.renderBrand(data[key])
+          }
+        </div>);
+    }
+
+
+    return list;
+  };
+  //渲染
+  renderBrand = (data) => {
+    var list = [];
     data.map((item, index) => {
+
       if (this.state.brandIndex && this.state.brandIndex == item.id) {
-        list.push(<li key={index} onClick={this.carOnclick.bind(this, item.carId, item.id, item.brandName)}><a
+        list.push(<li key={item.id} onClick={this.carOnclick.bind(this, item.carId, item.id, item.brandName)}><a
           href="javascript:" className='active'>{item.brandName}</a></li>);
       } else {
-        list.push(<li key={index} onClick={this.carOnclick.bind(this, item.carId, item.id, item.brandName)}><a
+        list.push(<li key={item.id} onClick={this.carOnclick.bind(this, item.carId, item.id, item.brandName)}><a
           href="javascript:">{item.brandName}</a></li>);
       }
     });
@@ -655,11 +695,12 @@ export default class FormRender extends Component {
   renderCarModelOptions = (data) => {
     var list = [];
     data.map((item, index) => {
-      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id,item.modelName)}><a
+      list.push(<li key={index} onClick={this.CarModelOnclick.bind(this, item.id, item.modelName)}><a
         href="javascript:">{item.modelName}</a></li>);
     });
     return list;
   };
+
   //点击品牌
   carOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
@@ -667,6 +708,7 @@ export default class FormRender extends Component {
       productCode: productCode,
       parentId: id,
       type: 2,
+      limit: 99999999,
     };
     this.setState({
       brandIndex: index,
@@ -678,19 +720,30 @@ export default class FormRender extends Component {
         console.log(res.data);
         const overlay = (< div className="pch-from-select-overlay">
           {
-            this.state.brandList ?
-              (
-                <div className='brand'>
-                  <h5>请选择品牌</h5>
-                  <div className='brand-options'>
-                    <ul>
-                      {
-                        this.renderBrandOptions(this.state.brandList)
-                      }
-                    </ul>
-                  </div>
+            this.state.titleBarList ?
+              (<div>
+                <div className='title-bar'>
+                  <ul>
+                    {
+                      this.renderTitleOptions(this.state.titleBarList)
+                    }
+                  </ul>
                 </div>
-              ) : (<span></span>)
+                {
+                  (
+                    <div className='brand'>
+                      <p>请选择品牌</p>
+                      <div className='brand-options'>
+                        <ul>
+                          {
+                            this.renderBrandOptions(this.state.titleBarList)
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  )
+                }
+              </div>) : (<span></span>)
 
           }
           {
@@ -717,6 +770,7 @@ export default class FormRender extends Component {
 
       });
   }
+
   //点击车系
   carSystemOnclick(id, index, text) {
     const productCode = this.props.field.getValue('productCode');
@@ -724,6 +778,7 @@ export default class FormRender extends Component {
       productCode: productCode,
       parentId: id,
       type: 3,
+      limit: 99999999,
     };
     this.setState({
       carSystemIndex: index,
@@ -734,19 +789,31 @@ export default class FormRender extends Component {
         console.log(res.data);
         const overlay = (< div className="pch-from-select-overlay">
           {
-            this.state.brandList ?
-              (
-                <div className='brand'>
-                  <h5>请选择品牌</h5>
-                  <div className='brand-options'>
-                    <ul>
-                      {
-                        this.renderBrandOptions(this.state.brandList)
-                      }
-                    </ul>
-                  </div>
+            this.state.titleBarList ?
+              (<div>
+                <div className='title-bar'>
+                  <ul>
+                    {
+                      this.renderTitleOptions(this.state.titleBarList)
+                    }
+                  </ul>
                 </div>
-              ) : (<span></span>)
+                {
+                  (
+                    <div className='brand'>
+                      <p>请选择品牌</p>
+                      <div className='brand-options'>
+                        <ul>
+                          {
+                            this.renderBrandOptions(this.state.titleBarList)
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  )
+                }
+              </div>) : (<span></span>)
+
           }
           {
             res.data.list ? (
@@ -781,24 +848,101 @@ export default class FormRender extends Component {
 
       });
   }
+
   //点击车型
-  CarModelOnclick(id,text) {
+  CarModelOnclick(id, text) {
     text && this.state.carSystemText && this.state.brandText ?
       this.setState({
-        carList :[
-          {label:this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id},
+        carList: [
+          { label: this.state.brandText + '/' + this.state.carSystemText + '/' + text, value: id },
         ],
         carValue: id,
       }) : '';
-    this.props.field.setValues({ 'car.id': id});
+    // this.field.setValues({ 'car.id': id});
+    this.props.field.setValues({ 'car.id': id });
     this.setState({
       overlay: '',
     });
   }
+  //展厅选择
+  onSelect =(e, value) =>{
+    const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
+    const limit = 990;
+    Req.getProductNumApi({
+      limit: limit,
+      exhibitionHallHierarchy: exhibitionHallHierarchy,
+    })
+      .then((res) => {
+        const { data } = res;
+        const { list } = data;
+        let dataSource = list.map((el) => {
+          return {
+            id: el.id,
+            label: el.name,
+            value: el.productCode,
+          };
+        });
+        this.setState({
+          productList: dataSource,
+        });
+      }, (error) => {
+        Req.tipError(error.msg);
+      });
+  }
+  //跳转
+  scrollToAnchor = (anchorName) => {
+    console.log(anchorName);
+    if (anchorName) {
+      let anchorElement = document.getElementById(anchorName);
+      if (anchorElement) {
+        console.log(anchorElement);
+        anchorElement.scrollIntoView();
+      }
+    }
+  };
+
+  //计算公式
+  numberOnchange = (el) => {
+    if (el.name == 'principalAmount' || el.name == 'loanPercentage') {
+      const carCarprice = this.props.field.getValue('car.carPrice');
+      if (carCarprice) {
+        const principalAmount = this.props.field.getValue('principalAmount');
+        const loanPercentage = this.props.field.getValue('loanPercentage');
+        if (el.name == 'principalAmount') {
+          var loanPercentage1 = principalAmount / carCarprice * 100.00;
+          this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+          return;
+        }
+        if (el.name =='loanPercentage') {
+          var principalAmount1 = loanPercentage * carCarprice / 100.00;
+          this.props.field.setValues({ 'principalAmount': principalAmount1 });
+          return;
+        }
+      }
+    }
+    // if(el.name == 'car.carPrice'){
+    //   const carCarprice = this.props.field.getValue('car.carPrice');
+    //   const principalAmount = this.props.field.getValue('principalAmount');
+    //   const loanPercentage = this.props.field.getValue('loanPercentage');
+    //   if(principalAmount){
+    //     var loanPercentage1 = principalAmount / carCarprice * 100.00;
+    //     this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+    //     return;
+    //   }
+    //   if (loanPercentage) {
+    //     var principalAmount1 = loanPercentage * carCarprice / 100.00;
+    //     this.props.field.setValues({ 'principalAmount': principalAmount1 });
+    //     return;
+    //   }
+    // }
+
+
+  };
+
   //label的提示
-  label = (label) =>{
-    var  labelName= <span> {label}:</span>
-    return(
+  label = (label) => {
+    var labelName = <span> {label}:</span>;
+    return (
       <Balloon
         type="primary"
         trigger={labelName}
@@ -806,52 +950,61 @@ export default class FormRender extends Component {
       >
         {label}
       </Balloon>
-    )
-  }
+    );
+  };
+  //number 类型的研制输入长度
+  checkLength = (value, number) => {
+    console.log(value);
+    console.log(number);
+    if (number && number != null) {
+      value = value.slice(0, 5);
+    }
+  };
   //更改渲染附属字段
-  isChange = (outIndex,inIndex)=>{
-    var name = this.props.detail.list[outIndex].fields[inIndex].name;
-    this.props.detail.list[outIndex].fields[inIndex].value = this.props.field.getValue(name);
-  }
+  isChange = (outIndex, inIndex) => {
+    var name = this.props.data[outIndex].fields[inIndex].name;
+    this.props.data[outIndex].fields[inIndex].value = this.props.field.getValue(name);
+  };
   //调用秒拒功能
-  refuse = (name)=>{
+  refuse = (name) => {
     //担保人材料上传列表增加一列
-    if(name == 'guarantor.name'){
-      const  guarantorName = this.props.field.getValue('guarantor.name');
-      var guarantorNameData = {id:'guarantorName',title:guarantorName ,draggable:true}
+    if (name == 'guarantor.name') {
+      const guarantorName = this.props.field.getValue('guarantor.name');
+      var guarantorNameData = { id: 'guarantorName', title: guarantorName, draggable: true };
       this.props.addColumn(guarantorNameData);
     }
     //共同贷款人材料上传列表增加一列
-    if(name == 'coBorrower.name'){
-      const  coBorrowerName = this.props.field.getValue('coBorrower.name');
-      var coBorrowerData = {id:'coBorrowerName',title:coBorrowerName ,draggable:true}
+    if (name == 'coBorrower.name') {
+      const coBorrowerName = this.props.field.getValue('coBorrower.name');
+      var coBorrowerData = { id: 'coBorrowerName', title: coBorrowerName, draggable: true };
       this.props.addColumn(coBorrowerData);
     }
     //共同贷款人秒拒
-    if(name == 'coBorrower.name' || name == 'coBorrower.idNo'|| name == 'coBorrower.mobile'){
-      const  coBorrowerName = this.props.field.getValue('coBorrower.name');
-      const  coBorrowerIdNo = this.props.field.getValue('coBorrower.idNo');
-      const  coBorrowerMobile = this.props.field.getValue('coBorrower.mobile');
-      if(coBorrowerName && coBorrowerIdNo && coBorrowerMobile){
+    if (name == 'coBorrower.name' || name == 'coBorrower.idNo' || name == 'coBorrower.mobile') {
+      const coBorrowerName = this.props.field.getValue('coBorrower.name');
+      const coBorrowerIdNo = this.props.field.getValue('coBorrower.idNo');
+      const coBorrowerMobile = this.props.field.getValue('coBorrower.mobile');
+      if (coBorrowerName && coBorrowerIdNo && coBorrowerMobile) {
         // alert('123')
       }
     }
     //担保人秒拒
-    if(name == 'guarantor.name' || name == 'guarantor.idNo'|| name == 'guarantor.mobile'){
-      const  guarantorName = this.props.field.getValue('guarantor.name');
-      const  guarantorIdNo = this.props.field.getValue('guarantor.idNo');
-      const  guarantorMobile = this.props.field.getValue('guarantor.mobile');
-      if(guarantorName && guarantorIdNo && guarantorMobile){
+    if (name == 'guarantor.name' || name == 'guarantor.idNo' || name == 'guarantor.mobile') {
+      const guarantorName = this.props.field.getValue('guarantor.name');
+      const guarantorIdNo = this.props.field.getValue('guarantor.idNo');
+      const guarantorMobile = this.props.field.getValue('guarantor.mobile');
+      if (guarantorName && guarantorIdNo && guarantorMobile) {
         // alert('123')
       }
     }
-  }
+  };
   //日期格式修改
-  formater = (val, str)=>{
+  formater = (val, str) => {
     return str;
-  }
+  };
+
   render() {
-    const { data, init, productList} = this.props;
+    const { data, init, productList } = this.props;
     return (
       this.renderForm(data)
     );
