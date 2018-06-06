@@ -497,8 +497,6 @@ export default class ProcessForm extends Component {
   }
 
   validateForm(){
-    console.log( this.refs.form.validateAll)
-    // this.refs.form.validate('taskItems[1].taskAlias');
     this.refs.form.validateAll();
   }
 
