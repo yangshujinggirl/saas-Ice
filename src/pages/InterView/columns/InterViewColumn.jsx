@@ -124,7 +124,7 @@ class InterViewColumn extends BaseColumn {
                 </a>
               ) : (<span></span>)
             }
-            {  record.type && record.type == 'loan'? (
+            {  0 && record.type && record.type == 'loan'? (
                     <span>
                       <a href="javascript:;"
                          onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.DOWN)}>
