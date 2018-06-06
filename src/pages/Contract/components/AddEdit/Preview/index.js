@@ -19,9 +19,9 @@ class Preview extends BaseApp {
       templateContent = draftToHtml(templateContent);
     }
     return(
-      <IceContainer className="pch-container contract-template-detail-page">
+      <IceContainer className="pch-container contract-template-detail-page" style={{'display':this.props.display}}>
           <div className="template-title">{templateName}</div>
-          <div className="template-detail-content">
+          <div className="template-detail-content wang-edtor-table-styles">
             <div dangerouslySetInnerHTML={{
               __html:templateContent
             }} />

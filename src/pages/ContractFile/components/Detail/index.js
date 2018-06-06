@@ -6,6 +6,7 @@ import { BaseApp } from 'base';
 import Req from '../../reqs/ContractFileReq';
 import { Title, PchTable, PchPagination } from 'components';
 import './index.scss';
+import '../../../../base/scss/tableEdtor.scss';
 
 const Toast = Feedback.toast;
 
@@ -124,7 +125,7 @@ class Detail extends BaseApp {
           <Title title="合同归档详情" />
           {
             isHasFile ?
-            <div id="section-to-print" className="main-content">
+            <div id="section-to-print" className="main-content wang-edtor-table-styles">
               <div dangerouslySetInnerHTML={{
                 __html:contractContent
               }} />

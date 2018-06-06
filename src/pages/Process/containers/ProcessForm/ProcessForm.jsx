@@ -98,6 +98,7 @@ export default class ProcessForm extends Component {
       // 只处理一次
       this.props.actions.changeHasProcess(true);
     } else {
+      this.currentTaskOrder = 1;
 
       // 新增时使用传递的数据设置
       // 默认名称为"新流程-MMddhhmmss"
@@ -233,6 +234,10 @@ export default class ProcessForm extends Component {
       if (this.props.params.id) {
         values.id = this.props.params.id;
       }
+      if(this.props.params.copy){
+        //复制流程的id改为0
+        value.id = 0;
+      }
       this.props.actions.save(values);
     });
   };
@@ -269,6 +274,10 @@ export default class ProcessForm extends Component {
       values.processType = 'LOAN';
       if (this.props.params.id) {
           values.id = this.props.params.id;
+      }
+      if(this.props.params.copy){
+        //复制流程的id改为0
+        value.id = 0;
       }
       console.log(values)
 
@@ -488,8 +497,6 @@ export default class ProcessForm extends Component {
   }
 
   validateForm(){
-    console.log( this.refs.form.validateAll)
-    // this.refs.form.validate('taskItems[1].taskAlias');
     this.refs.form.validateAll();
   }
 

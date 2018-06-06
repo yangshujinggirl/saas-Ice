@@ -6,6 +6,7 @@ import { Title } from 'components';
 import { Button, Feedback } from '@icedesign/base';
 import './index.scss';
 import Req from '../../reqs/ContractEditReq';
+import '../../../../base/scss/tableEdtor.scss';
 
 const Toast = Feedback.toast;
 
@@ -173,7 +174,7 @@ class AddEit extends BaseApp {
 
         {this.props.formData[this.state.currentIndex] ?
           <div>
-            <div className="main-contract-main-action" ref='contractEdit'>
+            <div className="main-contract-main-action wang-edtor-table-styles" ref='contractEdit'>
               <div dangerouslySetInnerHTML={{
                 __html: this.state.contractContent,
               }}/>

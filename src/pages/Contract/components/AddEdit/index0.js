@@ -24,6 +24,8 @@ import Req from '../../reqs/ContractReq';
 import Preview from './Preview';
 
 import './index.scss';
+import '../../../../base/scss/tableEdtor.scss';
+
 
 const {Row, Col} = Grid;
 const {Option} = Select;
@@ -66,14 +68,10 @@ class AddEit extends BaseComponent {
                                     'foreColor',  // 文字颜色
                                     'backColor',  // 背景颜色
                                     'link',  // 插入链接
-                                    // 'list',  // 列表
                                     'justify',  // 对齐方式
-                                    'quote',  // 引用
                                     'emoticon',  // 表情
                                     'image',  // 插入图片
                                     'table',  // 表格
-                                    'video',  // 插入视频
-                                    'code',  // 插入代码
                                     'undo',  // 撤销
                                     'redo'  // 重复
                                 ]
@@ -247,59 +245,62 @@ class AddEit extends BaseComponent {
       <IceContainer className="pch-container contract-edit-pages">
           <Title title="合同新增" />
           <div className="pch-form">
-          { moduleStatus == 0?
-            <IceFormBinderWrapper  value={value} ref="form">
-              <Form size="large">
-                <Row wrap justify="center">
-                  <Col span="6">
-                    <FormItem {...formItemLayout} label="合同名称:">
-                      <IceFormBinder
-                        name="templateName"
-                        required
-                        message="合同名称不为空">
-                          <Input size="large" placeholder="合同名称"/>
-                      </IceFormBinder>
-                      <IceFormError name="templateName" />
-                    </FormItem>
-                  </Col>
-                  <Col span={20}>
-                      <IceFormBinder
-                        name="templateContent"
-                        required
-                        message="合同内容不为空">
-                        <div ref="editorElem" id="editorElem"></div>
-                      </IceFormBinder>
-                      <IceFormError name="templateContent" />
-                      {/* <textarea style={{'width':'100%', 'resize':'vertical'}} disabled value={this.state.editorContent}/> */}
-                  </Col>
-                  <Col span={24}>
-                    <div className="btns-wrap">
-                      <Button
-                        onClick={this.cancelSubmit.bind(this)}
-                        type="normal"
-                        size="large">
-                          取消
-                      </Button>
-                      <Button
-                        onClick={this.handleSubmit.bind(this)}
-                        type="primary"
-                        size="large">
-                          保存
-                      </Button>
-                      <Button
-                        onClick={()=>this.previewStatus(1)}
-                        type="secondary"
-                        size="large">
-                          预览
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            </IceFormBinderWrapper>
-            :
-            <Preview templateContent={templateContent} templateName={templateName} onClick={(moduleStatus)=>this.previewStatus(moduleStatus)}/>
-          }
+            <div style={{'display':moduleStatus == 0?'block':'none'}}>
+              <IceFormBinderWrapper  value={value} ref="form">
+                <Form size="large">
+                  <Row wrap justify="center">
+                    <Col span="6">
+                      <FormItem {...formItemLayout} label="合同名称:">
+                        <IceFormBinder
+                          name="templateName"
+                          required
+                          message="合同名称不为空">
+                            <Input size="large" placeholder="合同名称"/>
+                        </IceFormBinder>
+                        <IceFormError name="templateName" />
+                      </FormItem>
+                    </Col>
+                    <Col span={20}>
+                        <IceFormBinder
+                          name="templateContent"
+                          required
+                          message="合同内容不为空">
+                          <div ref="editorElem" id="editorElem"></div>
+                        </IceFormBinder>
+                        <IceFormError name="templateContent" />
+                        {/* <textarea style={{'width':'100%', 'resize':'vertical'}} disabled value={this.state.editorContent}/> */}
+                    </Col>
+                    <Col span={24}>
+                      <div className="btns-wrap">
+                        <Button
+                          onClick={this.cancelSubmit.bind(this)}
+                          type="normal"
+                          size="large">
+                            取消
+                        </Button>
+                        <Button
+                          onClick={this.handleSubmit.bind(this)}
+                          type="primary"
+                          size="large">
+                            保存
+                        </Button>
+                        <Button
+                          onClick={()=>this.previewStatus(1)}
+                          type="secondary"
+                          size="large">
+                            预览
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </IceFormBinderWrapper>
+            </div>
+            <Preview
+              display={moduleStatus == 1?'block':'none'}
+              templateContent={templateContent}
+              templateName={templateName}
+              onClick={(moduleStatus)=>this.previewStatus(moduleStatus)}/>
           </div>
       </IceContainer>
     )
