@@ -869,6 +869,10 @@ export default class FormRender extends Component {
   onSelect =(e, value) =>{
     const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
     const limit = 990;
+    this.setState({
+      productList: '',
+    });
+    this.props.field.setValues({ 'productCode': null });
     Req.getProductNumApi({
       limit: limit,
       exhibitionHallHierarchy: exhibitionHallHierarchy,
@@ -921,21 +925,15 @@ export default class FormRender extends Component {
         }
       }
     }
-    // if(el.name == 'car.carPrice'){
-    //   const carCarprice = this.props.field.getValue('car.carPrice');
-    //   const principalAmount = this.props.field.getValue('principalAmount');
-    //   const loanPercentage = this.props.field.getValue('loanPercentage');
-    //   if(principalAmount){
-    //     var loanPercentage1 = principalAmount / carCarprice * 100.00;
-    //     this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
-    //     return;
-    //   }
-    //   if (loanPercentage) {
-    //     var principalAmount1 = loanPercentage * carCarprice / 100.00;
-    //     this.props.field.setValues({ 'principalAmount': principalAmount1 });
-    //     return;
-    //   }
-    // }
+    if(el.name == 'car.carPrice'){
+      const carCarprice = this.props.field.getValue('car.carPrice');
+      const principalAmount = this.props.field.getValue('principalAmount');
+      if(principalAmount){
+        var loanPercentage1 = principalAmount / carCarprice * 100.00;
+        this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
+        return;
+      }
+    }
 
 
   };
