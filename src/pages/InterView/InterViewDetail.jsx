@@ -78,7 +78,6 @@ export default class Demo extends Component {
    * <InterViewDetail {...this.props} />
    * @return {[type]} [description]
    */
-
   render() {
     let id = '',
       type = '';

@@ -60,6 +60,7 @@ export default class InterviwDialog extends Component {
             toggleHide: false,//控制弹框显示隐藏
             once: true,//初始化网易一次
         }
+        this.loanIdOnce = true;
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.initDate.accid && this.state.once) {
@@ -1246,6 +1247,13 @@ export default class InterviwDialog extends Component {
     render() {
         // console.log("this.state", this.state)
         let { id, type } = this.props, interviewDetail;
+        if (type == 'loan'&&this.loanIdOnce&&id) {
+            this.loanIdOnce = false;
+            http.loanId().then((res) => {
+                console.log(res)
+                id = res.data.visaInterview.loanId;
+            })
+        }
         if (id) {
             interviewDetail = <InterviewDetail id={id} type={type}></InterviewDetail>
         }
