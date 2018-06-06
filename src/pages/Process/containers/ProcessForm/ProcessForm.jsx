@@ -98,6 +98,7 @@ export default class ProcessForm extends Component {
       // 只处理一次
       this.props.actions.changeHasProcess(true);
     } else {
+      this.currentTaskOrder = 1;
 
       // 新增时使用传递的数据设置
       // 默认名称为"新流程-MMddhhmmss"
