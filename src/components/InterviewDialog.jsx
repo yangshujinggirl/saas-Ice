@@ -63,6 +63,7 @@ export default class InterviwDialog extends Component {
         this.loanIdOnce = true;
     }
     componentWillReceiveProps(nextProps) {
+        this.loanIdOnce = true;
         if (nextProps.initDate.accid && this.state.once) {
             console.log('data12345678987654567', nextProps.initDate)
             this._initNetcall(nextProps.initDate)
