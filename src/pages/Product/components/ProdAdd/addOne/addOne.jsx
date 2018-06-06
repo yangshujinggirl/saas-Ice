@@ -819,7 +819,7 @@ export default class addOne extends BaseCondition {
 												// 使用 RangePicker 组件输出的第二个参数字符串格式的日期
 												valueFormatter={(date, dateStr) => dateStr}
 											>
-												<RangePicker format={"YYYY-MM-DD"} style={{ width: "200px" }} style={{ width: '220px', height: '34px', lineHeight: '33px' }} />
+												<RangePicker format={"YYYY-MM-DD"} style={{ width: "200px" }} style={{ width: '220px', height: '34px', lineHeight: '32px' }} />
 											</IceFormBinder>
 											<div><IceFormError name="time" /></div>
 										</FormItem>
