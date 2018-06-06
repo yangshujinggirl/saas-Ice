@@ -98,15 +98,24 @@ class ContractEditColumn extends BaseColumn {
             cell: (value, index, record) => {
                 return (
                     <div className="pch-table-operation">
-                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
-                            编辑
-                        </a>
-                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
-                            取消
-                        </a>
-                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
-                            改纸质
-                        </a>
+                        {
+                          record.status != 6 &&
+                            <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                                编辑
+                            </a>
+                        }
+                        {
+                          record.status != 6 &&
+                            <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CANCEL)}>
+                                取消
+                            </a>
+                        }
+                        {
+                          record.status != 6 &&
+                            <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.CHANGE)}>
+                                改纸质
+                            </a>
+                        }
                     </div>
                     );
             }

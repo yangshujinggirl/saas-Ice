@@ -19,7 +19,25 @@
       white-space: nowrap;
 
     }
-    div:first-child{
+    .value{
+      width: 200px;
+      height: 40px;
+      line-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .linevalue{
+      width: 500px;
+      height: 40px;
+      line-height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .label{
       text-align: right;
       font-weight: 600;
       width: 180px;

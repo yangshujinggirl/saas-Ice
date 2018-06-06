@@ -104,8 +104,8 @@ export default class Huankuanfangshi extends Component {
 			callback('宽限期期限必填');
 			return;
 		}
-		if(Number(value)>=100000){
-			callback('最多五位')
+		if(Number(value)>=10000){
+			callback('最多四位')
 		}
 
 		var regex = /^\d+\.\d+$/;
@@ -130,6 +130,7 @@ export default class Huankuanfangshi extends Component {
 						placeholder="还款方式"
 						style={{ width: '200px' }}
 						onChange={this.changeValue}
+						size="large"
 					>
 						{
 							repaymentMethods.map((item, i) => {
@@ -153,7 +154,7 @@ export default class Huankuanfangshi extends Component {
 					name={`repaymentMethodsSetting[${index}].fixedAmount`}
 					validator={this.testChange2}
 				>
-					<Input placeholder="固定金额" htmlType='number' />
+					<Input placeholder="固定金额" htmlType='number' size="large" />
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`repaymentMethodsSetting[${index}].fixedAmount`} /></div>
 			</div>
@@ -168,7 +169,7 @@ export default class Huankuanfangshi extends Component {
 					name={`repaymentMethodsSetting[${index}].gracePeriod`}
 					validator={this.testChange3}
 				>
-					<Input placeholder="宽限期期限" htmlType='number' />
+					<Input placeholder="宽限期期限" htmlType='number' size="large" />
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`repaymentMethodsSetting[${index}].gracePeriod`} /></div>
 			</div>
@@ -188,6 +189,7 @@ export default class Huankuanfangshi extends Component {
 					<Select
 						placeholder="宽限期失效后还款方式"
 						style={{ width: '200px' }}
+						size="large"
 					>
 						{
 							repaymentMethods.map((item, i) => {

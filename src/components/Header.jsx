@@ -12,6 +12,8 @@ import AccountReq from '../pages/Account/reqs/AccountReq';
 import Interview from './Deepstream'
 import InterviewDialog from './InterviewDialog'
 import CommonReq from '../base/reqs/CommonReq';
+import http from '../pages/InterView/reqs/InterViewReq.js';
+
 
 export default class Header extends PureComponent {
   constructor(props) {
@@ -87,10 +89,21 @@ export default class Header extends PureComponent {
     })
   }
   interviewDetail(id, type) {
-    this.setState({
-      id,
-      type
-    })
+    if (type == 'loan') {
+      http.loanId(id).then((res) => {
+        id = res.data.visaInterview.loanId;
+        this.setState({
+          id,
+          type
+        })
+      })
+    } else {
+      this.setState({
+        id,
+        type
+      })
+    }
+
   }
   musicStateF(musicState) {
     this.setState({

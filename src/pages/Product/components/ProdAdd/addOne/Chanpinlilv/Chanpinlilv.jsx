@@ -77,12 +77,12 @@ export default class Chanpinlilv extends Component {
    getAgencyData = (data) => {
       data.map((item, i) => {
          item.label = item.name;
-         item.value = item.name;
+         item.value = item.idPath + '/';
          if (item.children.length > 0) {
             this.getAgencyData(item.children)
          } else {
             item.label = item.name;
-            item.value = item.name;
+            item.value = item.idPath + '/';
          }
       })
       let agencyData = this.state.agencyData;
@@ -195,12 +195,13 @@ export default class Chanpinlilv extends Component {
                name={`ratesSetting[${index}].channelTypes`}
             >
                <TreeSelect
-                  treeDefaultExpandAll
+                  // treeDefaultExpandAll
                   dataSource={agencyData}
                   // onChange={::this.handleChange}
                   style={{ width: 200 }}
                   // autoWidth
                   onChange={this.changeValue.bind(this)}
+                  size="large"
                />
             </IceFormBinder>
          </div>
@@ -215,7 +216,7 @@ export default class Chanpinlilv extends Component {
                name={`ratesSetting[${index}].interestRatesRangeMin`}
                validator={this.testChange2}
             >
-               <Input placeholder="最小执行年利率" htmlType ='number'/>
+               <Input placeholder="最小执行年利率" htmlType ='number'size="large"/>
             </IceFormBinder>
             <div style={{ display: 'inline' }}><IceFormError name={`ratesSetting[${index}].interestRatesRangeMin`} /></div>
          </div>
@@ -230,7 +231,7 @@ export default class Chanpinlilv extends Component {
                name={`ratesSetting[${index}].interestRatesRangeMax`}
                validator={this.testChange3}
             >
-               <Input placeholder="最大执行年利率" htmlType ='number'/>
+               <Input placeholder="最大执行年利率" htmlType ='number' size="large"/>
             </IceFormBinder>
             <div style={{ display: 'inline' }}><IceFormError name={`ratesSetting[${index}].interestRatesRangeMax`} /></div>
          </div>

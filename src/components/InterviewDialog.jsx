@@ -60,8 +60,10 @@ export default class InterviwDialog extends Component {
             toggleHide: false,//控制弹框显示隐藏
             once: true,//初始化网易一次
         }
+        this.loanIdOnce = true;
     }
     componentWillReceiveProps(nextProps) {
+        // this.loanIdOnce = true;
         if (nextProps.initDate.accid && this.state.once) {
             console.log('data12345678987654567', nextProps.initDate)
             this._initNetcall(nextProps.initDate)
@@ -1248,7 +1250,7 @@ export default class InterviwDialog extends Component {
         let { id, type } = this.props, interviewDetail;
         if (id) {
             interviewDetail = <InterviewDetail id={id} type={type}></InterviewDetail>
-        }
+        } 
         let content = [
             <div className={cx('pch-interview-box', { 'active': this.state.toggleHide,'min-height': this.state.isFullScreen})} key='1'>
                 <div className='pch-interview-left'>

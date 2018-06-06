@@ -224,7 +224,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanTermRangeMin`}
 					validator={this.testChange1}
 				>
-					<Input placeholder="最小期限" htmlType ='number'/>
+					<Input placeholder="最小期限" htmlType ='number' size="large"/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanTermRangeMin`} /></div>
 			</div>
@@ -239,7 +239,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanPercentageMax`}
 					validator={this.testChange2}
 				>
-					<Input placeholder="最大成数" htmlType ='number'/>
+					<Input placeholder="最大成数" htmlType ='number' size="large"/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanPercentageMax`} /></div>
 			</div>
@@ -254,7 +254,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanPercentageMin`}
 					validator={this.testChange3}
 				>
-					<Input placeholder="最小成数" htmlType ='number'/>
+					<Input placeholder="最小成数" htmlType ='number' size="large"/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanPercentageMin`} /></div>
 
@@ -270,7 +270,7 @@ export default class Chanpinchengshu extends Component {
 					name={`percentageSetting[${index}].loanTermRangeMax`}
 					validator={this.testChange4}
 				>
-					<Input placeholder="最大期限" htmlType ='number'/>
+					<Input placeholder="最大期限" htmlType ='number' size="large"/>
 				</IceFormBinder>
 				<div style={{ display: 'inline' }}><IceFormError name={`percentageSetting[${index}].loanTermRangeMax`} /></div>
 			</div>
