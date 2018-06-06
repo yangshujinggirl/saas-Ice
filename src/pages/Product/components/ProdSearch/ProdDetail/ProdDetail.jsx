@@ -85,7 +85,13 @@ export default class ProdDetail extends Component {
   relatedGroupType = (value, index, record) => {
     // let itemPath = record.relatedPath.split('/');
     let itemType = record.relatedPath1
-    return itemType == '10' ? '集团' : (itemType == '30' ? '渠道' : '厅店')
+    if(itemType=='10' || itemType== '20'){
+      return '集团'
+    }else if(itemType == '50' || itemType == '40'){
+      return '厅店'
+    }else {
+      return '渠道'
+    }
   }
   relatedGroupName= (value, index, record) => {
     let itemName = record.relatedPathName;
