@@ -23,7 +23,8 @@ export default class Header extends PureComponent {
       bool: false,
       id: '',
       type: '',
-      musicState: false
+      musicState: false,
+      contractId: ''
     }
   }
   getBreadCrumb(data, pathname) {
@@ -92,15 +93,21 @@ export default class Header extends PureComponent {
     if (type == 'loan') {
       http.loanId(id).then((res) => {
         id = res.data.visaInterview.loanId;
+        const contractId = res.data.visaInterview.contractId;
         this.setState({
           id,
-          type
+          type,
+          contractId,
         })
       })
     } else {
-      this.setState({
-        id,
-        type
+      http.loanId(id).then((res) => {
+        const contractId = res.data.visaInterview.contractId;        
+        this.setState({
+          id,
+          type,
+          contractId,
+        })
       })
     }
 
@@ -143,7 +150,7 @@ export default class Header extends PureComponent {
 
 
         {/* 面签弹框 */}
-        <InterviewDialog initDate={this.state.initDate} musicState={this.musicStateF.bind(this)} id={this.state.id} type={this.state.type}></InterviewDialog>
+        <InterviewDialog initDate={this.state.initDate} musicState={this.musicStateF.bind(this)} id={this.state.id} type={this.state.type} contractId={this.state.contractId}></InterviewDialog>
         <div className="ice-design-layout-header-menu" style={{
           display: 'flex'
         }}>

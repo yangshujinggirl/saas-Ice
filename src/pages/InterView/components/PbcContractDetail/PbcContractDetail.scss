@@ -7,11 +7,14 @@
     width: 58%;
   }
   .file{
-    width: 100%;
+    float: right;
+    &:nth-child(2) {
+      margin-left: 30px;
+    }
     text-align: center;
     a{
       color: #FC9E25;
+      cursor: pointer;
     }
-
   }
 }

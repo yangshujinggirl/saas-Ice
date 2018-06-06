@@ -3,6 +3,8 @@ import IceContainer from '@icedesign/container';
 import {
   FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
+import { hashHistory, Link } from 'react-router';
+
 import { Title } from 'components';
 import { BaseComponent } from 'base';
 import './PinganContractDetail.scss';
@@ -82,9 +84,12 @@ export default class PinganContractDetail extends BaseComponent {
       </Balloon>
     );
   };
-
+  goContract() {
+    let { formData ={},contract,id,contractId } = this.props ;    
+    window.open(`${location.origin}/#/contractedit/edit/${contractId}`,'_blank');
+  }
   render() {
-    let { formData ={} } = this.props ;
+    let { formData ={},contract,id } = this.props ;
     console.log(this.props)
     console.log(formData)
     return (
@@ -340,12 +345,21 @@ export default class PinganContractDetail extends BaseComponent {
               formData.signedDocumentUR && formData.signedDocumentUR != '' ?
                 (
                   <div className='file'>
-                    <a href={formData.signedDocumentUR} target='_blank'>查看贷签名文件</a>
+                    <a href={formData.signedDocumentUR} target='_blank'>查看待签名文件</a>
                   </div>
                 ) : (
                   <span></span>
                 )
             }
+            {/* {
+              contract=='1'? (
+                <div className='file'>
+                  <a onClick={this.goContract.bind(this)}>编辑待签名文件</a>
+                </div>
+              ) : (
+                <span></span>
+              )
+            } */}
           </div>
         </IceFormBinderWrapper>
       </IceContainer>

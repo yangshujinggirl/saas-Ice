@@ -87,10 +87,13 @@ export default class PbcContractDetail extends BaseComponent {
       </Balloon>
     );
   };
-
+  goContract() {
+    let { formData ={},contract,id,contractId } = this.props ;    
+    window.open(`${location.origin}/#/contractedit/edit/${contractId}`,'_blank');
+  }
   render() {
 
-    let { formData = {} } = this.props;
+    let { formData = {},contract } = this.props;
     return (
       <IceContainer className="pch-container PbcContractDetail">
         <Title title="中行合同详情"/>
@@ -922,6 +925,15 @@ export default class PbcContractDetail extends BaseComponent {
                   <span></span>
                 )
             }
+            {/* {
+              contract=='1'? (
+                <div className='file'>
+                  <a onClick={this.goContract.bind(this)}>编辑待签名文件</a>
+                </div>
+              ) : (
+                <span></span>
+              )
+            } */}
           </div>
         </IceFormBinderWrapper>
       </IceContainer>

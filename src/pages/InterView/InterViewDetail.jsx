@@ -84,11 +84,12 @@ class Demo extends Component {
    * @return {[type]} [description]
    */
   render() {
-    let id = '',
-      type = '';
+    let id = '', type = '', contract = '0', contractId = '';
     if (this.props.id) {
       id = this.props.id || '';
       type = this.props.type || '';
+      contract = '1';
+      contractId = this.props.contractId;
     } else {
       type = this.props.params.type;
       id = this.props.params.id;
@@ -96,15 +97,15 @@ class Demo extends Component {
     if (type && id) {
       switch (type) {
         case 'pbcContract': {
-          return (<PbcContractDetail {...this.props} formData={this.state.formData}></PbcContractDetail>);
+          return (<PbcContractDetail {...this.props} contract={contract} contractId={contractId}  formData={this.state.formData}></PbcContractDetail>);
           break;
         }
         case 'pinganContract': {
-          return (<PinganContractDetail {...this.props} formData={this.state.formData}></PinganContractDetail>);
+          return (<PinganContractDetail {...this.props} contract={contract} contractId={contractId} formData={this.state.formData}></PinganContractDetail>);
           break;
         }
         case 'loan': {
-          return (<LoanDetail {...this.props} formData={this.state.formData}></LoanDetail>);
+          return (<LoanDetail {...this.props} contract={contract} contractId={contractId} formData={this.state.formData}></LoanDetail>);
           break;
         }
         case 'interviewOnly': {

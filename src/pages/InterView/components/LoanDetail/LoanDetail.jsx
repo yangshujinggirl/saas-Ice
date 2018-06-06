@@ -176,12 +176,16 @@ export default class LoanDetail extends Component {
       </Col>
     );
   };
-
+  goContract() {
+    let { formData ={},contract,id,contractId } = this.props ;    
+    window.open(`${location.origin}/#/contractedit/edit/${contractId}`,'_blank');
+  }
   /**
    * 渲染
    */
   render() {
     const formData = this.props.formData || [];
+    const contract = this.props.contract;
     console.log(formData);
     return (
       <div className='LoanDetail'>
@@ -210,6 +214,15 @@ export default class LoanDetail extends Component {
 
           </Form>
         </div>
+        {
+          contract=='1'? (
+            <div className='file'>
+              <a onClick={this.goContract.bind(this)}  target='_blank'>编辑待签名文件</a>
+            </div>
+          ) : (
+            <span></span>
+          )
+        }
       </div>
     );
   }
