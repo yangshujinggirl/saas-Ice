@@ -30,7 +30,7 @@ export default {
     name: '合同编辑',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractEdit')));
+        callback(null, require('./ContractEdit').default);
       }, 'contractedit');
     }
   }],
@@ -39,7 +39,7 @@ export default {
     name: '待编辑列表',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractEditList')));
+        callback(null, require('./ContractEditList').default);
       }, 'contractedit');
     }
   }

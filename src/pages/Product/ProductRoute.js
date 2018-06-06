@@ -1,27 +1,5 @@
 import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as ProductActions from './actions/ProductAction.js'
-
-const mapStateToProps = (state, ownProps) => {
-  const data = state.ProductReducer;
-  return data;
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    actions: bindActionCreators(ProductActions, dispatch)
-  }
-}
-
-const connentAnything = (obj) => {
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(obj.default)
-}
-
 export default {
   path: "/product",
   name: '产品管理',
@@ -30,7 +8,7 @@ export default {
       name: '产品查询',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./containers/Product')));
+          callback(null, require('./containers/Product').default);
         }, 'product');
       }
     }, {
@@ -38,7 +16,7 @@ export default {
       name: '产品编辑',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/ProdSearch/SearchEdit')));
+          callback(null, require('./components/ProdSearch/SearchEdit').default);
         }, 'product');
       }
     }, {
@@ -46,7 +24,7 @@ export default {
       name: '产品详情',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/ProdSearch/ProdDetail')));
+          callback(null, require('./components/ProdSearch/ProdDetail').default);
         }, 'product');
       }
     }, {
@@ -54,7 +32,7 @@ export default {
       name: '产品新增',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./ProdAdd')));
+          callback(null, require('./ProdAdd').default);
         }, 'product');
       }
     }, {
@@ -62,7 +40,7 @@ export default {
       name: '产品新增',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/ProdAdd/addTwo')));
+          callback(null, require('./components/ProdAdd/addTwo').default);
         }, 'product');
       }
     }, {
@@ -70,7 +48,7 @@ export default {
       name: '权限编辑',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/ProdAdd/ProcessAuthEdit')));
+          callback(null, require('./components/ProdAdd/ProcessAuthEdit').default);
         }, 'product');
       }
     }, {
@@ -78,7 +56,7 @@ export default {
       name: '产品新增',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/ProdAdd/addThree')));
+          callback(null, require('./components/ProdAdd/addThree').default);
         }, 'product');
       }
     }, {
@@ -86,7 +64,7 @@ export default {
       name: '材料查询',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/FileList')));
+          callback(null, require('./components/FileList').default);
         }, 'product');
       }
     }, {
@@ -94,7 +72,7 @@ export default {
       name: '材料编辑',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/FileList/Dialog')));
+          callback(null, require('./components/FileList/Dialog').default);
         }, 'product');
       }
     }, {
@@ -102,7 +80,7 @@ export default {
       name: '材料新增',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./components/FileList/Dialog')));
+          callback(null, require('./components/FileList/Dialog').default);
         }, 'product');
       }
     },
@@ -112,7 +90,7 @@ export default {
   indexRoute: {
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./containers/Product')));
+        callback(null, require('./containers/Product').default);
       }, 'product');
     }
   }

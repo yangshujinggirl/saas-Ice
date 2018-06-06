@@ -1,27 +1,5 @@
 import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import ProcessActions from './actions/ProcessAction_.js'
-
-const mapStateToProps = (state, ownProps) => {
-  const data = state.ProcessReducer;
-  return data;
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    actions: bindActionCreators(ProcessActions, dispatch)
-  }
-}
-
-const connentAnything = (obj) => {
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(obj.default)
-}
-
 export default {
   path: "/process",
   name: "流程配置",
@@ -30,7 +8,7 @@ export default {
     name: '流程新增',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./containers/ProcessForm')));
+        callback(null, require('./containers/ProcessForm').default);
       }, 'process');
     }
   }, {
@@ -38,7 +16,7 @@ export default {
     name: '流程修改',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./containers/ProcessForm')));
+        callback(null, require('./containers/ProcessForm').default);
       }, 'process');
     }
   }, {
@@ -46,7 +24,7 @@ export default {
     name: '流程详情',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./containers/ProcessDetail')));
+        callback(null, require('./containers/ProcessDetail').default);
       }, 'process');
     }
   }, {
@@ -54,7 +32,7 @@ export default {
     name: '流程配置产品',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./containers/ProcessConfig')));
+        callback(null, require('./containers/ProcessConfig').default);
       }, 'process');
     }
   }],
@@ -62,8 +40,9 @@ export default {
   indexRoute: {
     name: '流程查询',
     getComponent(nextState, callback) {
+      console.log(nextState)
       require.ensure([], require => {
-        callback(null, connentAnything(require('./containers/Process')));
+        callback(null, require('./containers/Process').default);
       }, 'process');
     }
   }

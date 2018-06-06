@@ -30,7 +30,7 @@ export default {
       name: '签字列表',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./InterViewForm')));
+          callback(null, require('./InterViewForm').default);
         }, 'interview');
       }
     }, {
@@ -47,7 +47,7 @@ export default {
       name: '信用卡面签列表',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./InterViewOnly')));
+          callback(null, require('./InterViewOnly').default);
         }, 'interview');
       }
     }
@@ -57,7 +57,7 @@ export default {
     name: '面签列表',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./InterView')));
+        callback(null, require('./InterView').default);
       }, 'interview');
     }
   },

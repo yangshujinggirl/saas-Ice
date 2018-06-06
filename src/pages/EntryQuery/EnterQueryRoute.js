@@ -30,7 +30,7 @@ export default {
       name: '车贷申请详情',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./LoanDetails')));
+          callback(null, require('./LoanDetails').default);
         }, 'enterquery');
       }
     },
@@ -39,7 +39,7 @@ export default {
       name: '车贷申请',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./LoanModify')));
+          callback(null, require('./LoanModify').default);
         }, 'enterquery');
       }
     },
@@ -48,7 +48,7 @@ export default {
       name: '车贷申请',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./LoanApplication')));
+          callback(null, require('./LoanApplication').default);
         }, 'enterquery');
       }
     },
@@ -57,7 +57,7 @@ export default {
       name: '车贷申请',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./LoanApplicationOne')));
+          callback(null, require('./LoanApplicationOne').default);
         }, 'enterquery');
       }
     }
@@ -67,7 +67,7 @@ export default {
     name: '车贷查询',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./EntryQuery')));
+        callback(null, require('./EntryQuery').default);
       }, 'enterquery');
     }
   }

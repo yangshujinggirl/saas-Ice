@@ -7,6 +7,9 @@ import {
  } from "@icedesign/base";
  import EditPermissions from './components/EditPermissions';
 
+import * as ExamineApproveActions from './actions/ExamineApproveAction.js'
+import { PchConnect } from 'base';
+
 const { Row, Col } = Grid;
 
 class CheckAuthority extends Component {
@@ -54,4 +57,4 @@ class CheckAuthority extends Component {
   }
 }
 
-export default CheckAuthority;
+export default PchConnect(CheckAuthority, ExamineApproveActions, 'ExamineApproveReducer');

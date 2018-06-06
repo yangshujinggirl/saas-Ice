@@ -30,7 +30,7 @@ export default {
       name: '合同归档详情',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./ContractFileDetail')));
+          callback(null, require('./ContractFileDetail').default);
         }, 'contractfile');
       }
     },
@@ -39,7 +39,7 @@ export default {
       name: '合同下载',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./ContractFileDownLoad')));
+          callback(null, require('./ContractFileDownLoad').default);
         }, 'contractfile');
       }
     }
@@ -48,7 +48,7 @@ export default {
   indexRoute: {
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractFileList')));
+        callback(null, require('./ContractFileList').default);
       }, 'contractfile');
     }
   }

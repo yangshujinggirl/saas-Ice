@@ -1,24 +1,8 @@
 import React, { Component } from 'react';
 import Bind from './components/Bind';
 
-class ContractBind extends Component {
 
-  constructor(props) {
-    super(props);
+import * as ContractActions from './actions/ContractAction.js'
+import { PchConnect } from 'base';
 
-  }
-
-  /**
-   * <ContractDetail {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="contract-page">
-        <Bind {...this.props}/>
-      </div>
-    );
-  }
-}
-
-export default ContractBind;
+export default PchConnect(Bind, ContractActions, 'ContractReducer');

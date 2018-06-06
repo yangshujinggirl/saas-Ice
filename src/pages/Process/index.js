@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 // import * as ProcessActions from './actions/ProcessAction.js'
 import ProcessActions from './actions/ProcessAction_.js'
+import { PchConnect } from 'base';
 
 // console.log(ProcessActions);
 

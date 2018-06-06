@@ -1,23 +1,7 @@
 import React, { Component } from 'react';
 import ReviewApproveDetail from './components/ReviewApproveDetail';
 
-export default class Demo extends Component {
+import * as ReviewApproveAction from './actions/ReviewApproveAction.js'
+import { PchConnect } from 'base';
 
-  constructor(props) {
-    super(props);
-
-  }
-
-
-  /**
-   * <ReviewApproveDetail {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="reviewapprove-page">
-        <ReviewApproveDetail  {...this.props}></ReviewApproveDetail>
-      </div>
-    );
-  }
-}
+export default PchConnect(ReviewApproveDetail, ReviewApproveAction, 'ReviewApproveReducer');

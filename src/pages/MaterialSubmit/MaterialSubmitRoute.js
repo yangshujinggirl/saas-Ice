@@ -32,7 +32,7 @@ export default {
     name: '材料提交',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./MaterialSubmit')));
+        callback(null, require('./MaterialSubmit').default);
       }, 'materialsubmit');
     }
   }

@@ -1,3 +1,5 @@
 import ProcessConfig from './ProcessConfig';
+import ProcessActions from '../../actions/ProcessAction_.js'
+import { PchConnect } from 'base';
 
-export default ProcessConfig
+export default PchConnect(ProcessConfig, ProcessActions, 'ProcessReducer');

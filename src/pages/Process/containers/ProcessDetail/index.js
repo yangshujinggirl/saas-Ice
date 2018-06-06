@@ -1,3 +1,5 @@
 import ProcessDetail from './ProcessDetail';
+import ProcessActions from '../../actions/ProcessAction_.js'
+import { PchConnect } from 'base';
 
-export default ProcessDetail;
+export default PchConnect(ProcessDetail, ProcessActions, 'ProcessReducer');

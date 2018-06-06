@@ -30,7 +30,7 @@ export default {
     name:'合同新增',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractAdd')));
+        callback(null, require('./ContractAdd').default);
       }, 'contract');
     }
   },{
@@ -38,7 +38,7 @@ export default {
     name:'合同绑定产品',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractBind')));
+        callback(null, require('./ContractBind').default);
       }, 'contract');
     }
   },{
@@ -46,7 +46,7 @@ export default {
     name:'合同详情',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractDetail')));
+        callback(null, require('./ContractDetail').default);
       }, 'contract');
     }
   }],
@@ -54,7 +54,7 @@ export default {
   indexRoute: {
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ContractList')));
+        callback(null, require('./ContractList').default);
       }, 'contract');
     }
   }

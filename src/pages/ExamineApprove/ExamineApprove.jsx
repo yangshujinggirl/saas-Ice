@@ -1,22 +1,7 @@
 import React, { Component } from 'react';
 import ExamineApproveComponent from './components/ExamineApproveComponent';
 
-export default class Demo extends Component {
+import * as ExamineApproveActions from './actions/ExamineApproveAction.js'
+import { PchConnect } from 'base';
 
-  constructor(props) {
-    super(props);
-
-  }
-
-  /**
-   * <ExamineApprove {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="examineapprove-page">
-        <ExamineApproveComponent {...this.props}/>
-      </div>
-    );
-  }
-}
+export default PchConnect(ExamineApproveComponent, ExamineApproveActions, 'ExamineApproveReducer');

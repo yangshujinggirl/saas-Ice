@@ -7,7 +7,12 @@ import { hashHistory } from 'react-router';
 import Req from './reqs/InterViewReq';
 import { Feedback } from '@icedesign/base/index';
 const Toast = Feedback.toast;
-export default class Demo extends Component {
+
+
+import * as InterViewActions from './actions/InterViewAction.js'
+import { PchConnect } from 'base';
+
+class Demo extends Component {
 
   constructor(props) {
     super(props);
@@ -124,3 +129,5 @@ export default class Demo extends Component {
   //   );
   // }
 }
+
+export default PchConnect(Demo, InterViewActions, 'InterViewReducer');

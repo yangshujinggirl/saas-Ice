@@ -1,24 +1,8 @@
 import React, { Component } from 'react';
 import List from './components/List';
 
-class ContractFileList extends Component {
 
-  constructor(props) {
-    super(props);
+import * as ContractFileActions from './actions/ContractFileAction.js'
+import { PchConnect } from 'base';
 
-  }
-
-  /**
-   * <ContractFile {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="contractfile-page">
-        <List {...this.props}/>
-      </div>
-    );
-  }
-}
-
-export default ContractFileList;
+export default PchConnect(List, ContractFileActions, 'ContractFileReducer');

@@ -30,7 +30,7 @@ export default {
       name: '进件审查审批',
       getComponent(nextState, callback) {
         require.ensure([], require => {
-          callback(null, connentAnything(require('./ExamineApprove')));
+          callback(null, require('./ExamineApprove').default);
         }, 'examineapprove');
       }
     },
@@ -57,7 +57,7 @@ export default {
   indexRoute: {
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ExamineAudit')));
+        callback(null, require('./ExamineAudit').default);
       }, 'examineapprove');
     }
   }

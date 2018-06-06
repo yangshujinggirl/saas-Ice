@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
 import InterViewOnly from './components/InterViewOnly';
 
-export default class Demo extends Component {
 
-  constructor(props) {
-    super(props);
+import * as InterViewActions from './actions/InterViewAction.js'
+import { PchConnect } from 'base';
 
-  }
-
-  /**
-   * <InterView {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="interview-page">
-       <InterViewOnly {...this.props}/>
-      </div>
-    );
-  }
-}
+export default PchConnect(InterViewOnly, InterViewActions, 'InterViewReducer');

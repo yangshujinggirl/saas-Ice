@@ -1,3 +1,6 @@
-import DiaLog from './Dialog';
+import Dialog from './Dialog';
 
-export default DiaLog;
+import * as ProductAction from '../../../actions/ProductAction.js'
+import { PchConnect } from 'base';
+
+export default PchConnect(Dialog, ProductAction, 'ProductReducer');

@@ -7,6 +7,9 @@ import {
  } from "@icedesign/base";
 import './components/checkDetail.scss';
 
+import * as ExamineApproveActions from './actions/ExamineApproveAction.js'
+import { PchConnect } from 'base';
+
 const { Row, Col } = Grid;
 
 class CheckEssential extends Component {
@@ -40,4 +43,4 @@ class CheckEssential extends Component {
 }
 
 
-export default CheckEssential;
+export default PchConnect(CheckEssential, ExamineApproveActions, 'ExamineApproveReducer');

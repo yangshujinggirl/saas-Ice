@@ -44,7 +44,7 @@ export default {
     name: '审查审批详情',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ReviewApproveDetail')));
+        callback(null, require('./ReviewApproveDetail').default);
       }, 'reviewapprove');
     }
   }],
@@ -53,7 +53,7 @@ export default {
     name: '进件审核',
     getComponent(nextState, callback) {
       require.ensure([], require => {
-        callback(null, connentAnything(require('./ReviewApprove')));
+        callback(null, require('./ReviewApprove').default);
       }, 'reviewapprove');
     }
   }

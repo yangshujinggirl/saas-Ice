@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
 import InterViewForm from './components/InterViewForm';
 
-export default class Demo extends Component {
 
-  constructor(props) {
-    super(props);
-    
-  }
+import * as InterViewActions from './actions/InterViewAction.js'
+import { PchConnect } from 'base';
 
-  /**
-   * <InterViewForm {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="interview-page">
-        <InterViewForm {...this.props}/>
-      </div>
-    );
-  }
-}
+export default PchConnect(InterViewForm, InterViewActions, 'InterViewReducer');

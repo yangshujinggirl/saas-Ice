@@ -1,3 +1,6 @@
 import ProcessAuthEdit from './ProcessAuthEdit';
 
-export default ProcessAuthEdit;
+import * as ProductAction from '../../../actions/ProductAction.js'
+import { PchConnect } from 'base';
+
+export default PchConnect(ProcessAuthEdit, ProductAction, 'ProductReducer');

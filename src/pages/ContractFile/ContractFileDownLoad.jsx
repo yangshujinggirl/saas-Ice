@@ -1,22 +1,6 @@
-import React, { Component } from 'react';
-import { Grid } from "@icedesign/base";
 import DownLoad from './components/DownLoad';
-import { Title, PchTable, PchPagination, PchDialog } from 'components';
 
-const { Row, Col } = Grid;
+import * as ContractFileActions from './actions/ContractFileAction.js'
+import { PchConnect } from 'base';
 
-class ContractFileDownLoad extends Component {
-
-  constructor(props) {
-    super(props);
-  }
-  render() {
-
-    return (
-      <div className="contractfile-down-load-page">
-        <DownLoad {...this.props}/>
-      </div>
-    );
-  }
-}
-export default ContractFileDownLoad;
+export default PchConnect(DownLoad, ContractFileActions, 'ContractFileReducer');

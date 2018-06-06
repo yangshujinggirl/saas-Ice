@@ -1,24 +1,8 @@
 import React, { Component } from 'react';
 import Edit from './components/Edit';
 
-class ContractEdit extends Component {
 
-  constructor(props) {
-    super(props);
+import * as ContractEditActions from './actions/ContractEditAction.js'
+import { PchConnect } from 'base';
 
-  }
-
-  /**
-   * <ContractEditForm {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <div className="contractedit-page">
-        <Edit {...this.props}/>
-      </div>
-    );
-  }
-}
-
-export default ContractEdit;
+export default PchConnect(Edit, ContractEditActions, 'ContractEditReducer');
