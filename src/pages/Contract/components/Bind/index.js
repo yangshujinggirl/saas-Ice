@@ -137,7 +137,7 @@ class Bind extends BaseApp {
   onChange =(selectedRowKeys,records)=> {
      records = records.map((ele) => (
        {
-         productCategory: ele.productType,
+         productCategory: ele.productTypeName,
          productName: ele.name,
          id: ele.productCode
        }
@@ -194,6 +194,9 @@ class Bind extends BaseApp {
       })
     }).catch(err=>err)
   }
+  renderProductCategory(value, index, record) {
+    return ProductTypeMap[record.productCategory]
+  }
   //操作
   renderOperator = (value, index, record) => {
     return (
@@ -228,7 +231,7 @@ class Bind extends BaseApp {
                     <Button className="add-btn" onClick={this.addItem.bind(this)}> >> </Button>
                   </div>
                   <Table dataSource={this.state.dataSourceRight} className="part-right">
-                    <Table.Column title="产品类型" dataIndex="productCategory" />
+                    <Table.Column title="产品类型" cell={this.renderProductCategory} />
                     <Table.Column title="产品名称" dataIndex="productName" />
                     <Table.Column title="操作" cell={this.renderOperator} />
                   </Table>
