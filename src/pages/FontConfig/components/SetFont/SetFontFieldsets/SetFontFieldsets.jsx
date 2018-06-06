@@ -452,7 +452,6 @@ class SetFontFieldsets extends Component {
                                    <FieldsEmpty
                                      parent={index}
                                      index={0}
-                                     status={'empty'}
                                      moveCard={this.moveCard}/>
                                  }
                              </div>
