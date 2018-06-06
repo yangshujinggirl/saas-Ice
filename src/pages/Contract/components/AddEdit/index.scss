@@ -1,10 +1,8 @@
 .contract-edit-pages {
-  .next-form-left.next-form-large .next-form-item-label,
-  .next-form-left.next-form-large .next-form-text-align,
-  .next-form-left.next-form-large p {
-    line-height:normal;
-  }
   #editorElem .w-e-text-container {
+    p {
+      line-height: normal;
+    }
     height: 600px !important;
   }
   .contract-template-add-wrapper {
