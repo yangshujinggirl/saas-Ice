@@ -111,6 +111,8 @@ export default class OrgType extends Component {
         agencyName: item.agencyName,
         idPath: item.idPath,
         namePath: item.namePath,
+        relatedPath1:item.agencyType
+        
       });
     })
     return tempData;
@@ -160,6 +162,7 @@ export default class OrgType extends Component {
         relatedId: item.agencyId,
         relatedName: item.agencyType == 'group' ? item.agencyName : (item.agencyType == 'channel' ? item.agencyName : item.agencyName),
         relatedPath: item.idPath + '/',
+        relatedPath1:item.relatedPath1,
         relatedPathName: item.namePath + '/',
         type: 'GROUP'
       })
@@ -266,7 +269,7 @@ export default class OrgType extends Component {
               <Table
                 dataSource={this.state.dataSourceRight}
                 fixedHeader={true}
-                maxBodyHeight={547}
+                maxBodyHeight={430}
               >
                 <Table.Column title="类型" dataIndex="agencyType" width={50} />
                 <Table.Column title="名称" dataIndex="agencyName" width={300} />

@@ -123,6 +123,13 @@ class InterViewReq extends CurdReq {
 		}
 		return super.fetchData(options);
 	}
+	 	// 获取进件id
+	loanId(id) {
+		let options = {
+			url: this._config.CONTRACT_HOST +  `/interview/${id}/info`,
+		}
+		return super.fetchData(options);
+	}
 }
 
 export default new InterViewReq();

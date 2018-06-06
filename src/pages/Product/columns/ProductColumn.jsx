@@ -29,7 +29,7 @@ class ProductColumn extends BaseColumn {
          width: 100,
          cell: (value, index, record) => {
             let enable = record.enable
-            return `${enable == '1' ? (record.status == '0' ? '关闭' : (record.status == '1' ? '生效' : '失效')) : '草稿'}`
+            return `${enable == '1' ? (record.status == '1' ? '生效' : '关闭') : '草稿'}`
             // 0=未生效；1=生效；2=失效
             // return `${record.status == '0' ? '关闭' : (record.status == '1' ? '生效' : '失效')}`
          }

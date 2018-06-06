@@ -75,7 +75,7 @@ export default class ProcessFormItem extends Component {
 
         callback(undefined);
 
-        // 出发该校验需要在callback之后，确保formError已更新
+        // 触发该校验需要在callback之后，确保formError已更新
         if(Object.keys(hasErrorObj).length > 0){
             hasErrorObj = {};
             this.props.validateForm && this.props.validateForm();

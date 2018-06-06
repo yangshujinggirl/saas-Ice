@@ -55,13 +55,12 @@ class SetFontFieldsets extends Component {
      */
     handleGroupTitle = (index, view) => {
         let copyDate = this.props.resData;
-        let hasAName = copyDate.fieldset.some((item, i) => {
-          return item.name == view && index != i
-        });
-        if(hasAName){
-          Feedback.toast.error('区域名称重复')
-        }
-
+        // let hasAName = copyDate.fieldset.some((item, i) => {
+        //   return item.name == view && index != i
+        // });
+        // if(hasAName){
+        //   Feedback.toast.error('区域名称重复')
+        // }
 
         copyDate.fieldset[index].name = view
         copyDate.fieldset[index].fields.length && copyDate.fieldset[index].fields.map((item) => {
@@ -82,6 +81,13 @@ class SetFontFieldsets extends Component {
         let copyDate = this.props.resData;
         let obj = {}
         obj.fields = copyDate.fieldset[index].fields
+
+        let hasAName = copyDate.fieldset.some((item, i) => {
+          return item.name == copyDate.fieldset[index].name && index != i
+        });
+        if(hasAName){
+          Feedback.toast.error('区域名称重复')
+        }
 
         if (!id) {
             //新增时直接更改数据
@@ -452,7 +458,6 @@ class SetFontFieldsets extends Component {
                                    <FieldsEmpty
                                      parent={index}
                                      index={0}
-                                     status={'empty'}
                                      moveCard={this.moveCard}/>
                                  }
                              </div>

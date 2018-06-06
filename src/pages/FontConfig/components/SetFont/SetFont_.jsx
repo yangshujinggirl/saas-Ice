@@ -129,7 +129,7 @@
           let id = this.props.id;
           let id2 = this.props.id2;
           let resData = this.state.resData;
-
+          debugger
           let reqData = {
               "name": '',
               "businessType": "货款业务",
@@ -179,6 +179,9 @@
           // 转换fieldset到fields，并追加上fieldsetOrder排序字段
           resData.fieldset.map((item, i) => {
               item.fields.map((field) => {
+                if(field.fieldset != item.name) {
+                  field.fieldset = item.name;
+                }
                   field.fieldsetOrder = i;
                   reqData.fields.push(field)
               })

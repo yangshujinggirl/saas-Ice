@@ -48,7 +48,6 @@ export default class addThree extends Component {
          onChange: (selectedRowKeys, records) => {
             arrayRightData = [...records];
             arrayRightData.push(...this.state.dataSourceRight)
-            console.log(arrayRightData)
             this.setState({
                selectedRowKeys: selectedRowKeys,
             });
@@ -73,7 +72,6 @@ export default class addThree extends Component {
       })
       //合同模板
       Req.getContractTemplateList().then((data) => {
-         console.log(data)
          this.setState({
             templateList: data.data
          })
@@ -130,8 +128,7 @@ export default class addThree extends Component {
       let { product = {} } = formData
       let id = params.id;
       this.formRef.validateAll((error, value) => {
-         console.log(value)
-         this.state.processData.push(
+         this.state.processData=[
             {
                productId: product.id,
                productName: product.name,
@@ -144,9 +141,9 @@ export default class addThree extends Component {
                tenantId: product.tenantId,
                tenantName: "中行"
             }
-         )
+         ]
 
-         this.state.templateData={
+         this.state.templateData = {
             productCode: product.productCode,
             productCategory: this.productTypeChange(product.productType),
             productName: product.name,
@@ -156,23 +153,14 @@ export default class addThree extends Component {
          if (error) {
             return;
          }
-         let boolean = true;
+         //Req
          if (product.status == 1) {
             if (!value.processName) {
-               Feedback.toast.show({
-                  type: 'error',
-                  content: '流程名称未选择，产品不能生效',
-                  afterClose: () => {
-                    
-                  }
-               });
-               boolean = false
+               return Req.tipError('流程名称未选择，产品不能生效')
             }
          }
-         if (!boolean) return
-         console.log(this.state.processData, this.state.templateData)
          //提交当前填写的数据
-         this.props.actions.saveProductAdd(id, this.state.processData, value.processName||0, this.state.templateData);
+         this.props.actions.saveProductAdd(id, this.state.processData, value.processName || 0, this.state.templateData);
          this.setState({
             processData: []
          })
