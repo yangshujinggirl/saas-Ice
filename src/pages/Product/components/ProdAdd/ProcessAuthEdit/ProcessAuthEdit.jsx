@@ -21,24 +21,6 @@ export default class ProcessAuthEdit extends BaseApp {
             current: 1,
             rowSelection: {
                 selectedRowKeys: [],
-                // onChange:(selected, record, records)=>{
-                //     console.log(selected, records)
-                //     let { rowSelection } = this.state;
-                //     let selectedRowKeys = rowSelection.selectedRowKeys;
-                //     if(selected){
-                //         selectedRowKeys.push(record.id);
-                //         // 选中某行如果有子集则子集全选中
-                //         record.children && record.children.map((item) => {
-                //             if(selectedRowKeys.indexOf(item.id) == -1){
-                //                 selectedRowKeys.push(item.id);
-                //             }
-                //         })
-                //     }
-                //     rowSelection.selectedRowKeys = selectedRowKeys;
-                //         this.setState({
-                //             rowSelection
-                //         });
-                // },
                 onSelect: (selected, record, records) => {
                     console.log(selected)
                     if (!selected) {
@@ -104,6 +86,16 @@ export default class ProcessAuthEdit extends BaseApp {
                         record.selectedRoles = [];
                     }
 
+                },
+                onSelectAll:(selected, record,records)=>{
+                    if(!selected){
+                        console.log(record)
+                        let { rowSelectionTwo } = this.state;
+                        rowSelectionTwo.selectedRowKeys = [];
+                        this.setState({
+                            rowSelectionTwo
+                        });
+                    }
                 }
             }
         }
@@ -126,7 +118,9 @@ export default class ProcessAuthEdit extends BaseApp {
    }
 
 
-
+   componentWillUnmount(){
+       
+   }
     //确定
     submit() {
         let { params, actions } = this.props;

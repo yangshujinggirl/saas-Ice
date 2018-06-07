@@ -26,9 +26,8 @@ import Chanpinlilv from './Chanpinlilv';
 import Huankuanfangshi from './Huankuanfangshi';
 import Tiqianhuankuanfangshi from './Tiqianhuankuanfangshi';
 import ProductReq from '../../../reqs/ProductReq';
-import SpDataSource from '../../../../../base/utils/SpDataSource'
+ import {SpDataSource} from 'utils'
 import { BaseCondition } from 'base';
-import ProductCompare from '../../../config.js'
 import './addOne.scss';
 
 const { Row, Col } = Grid;
@@ -99,12 +98,12 @@ export default class addOne extends BaseCondition {
 				prepaymentSetting: [],
 				productScope: []
 			},
-			boolean:true
+			isFlag:true
 		};
 	}
-	onChangeBoolean=(boolean)=>{
+	onChangeBoolean=(isFlag)=>{
 		this.setState({
-			boolean:boolean
+			isFlag:isFlag
 		})
 	}
 	onFormChange = (value) => {
@@ -186,7 +185,7 @@ export default class addOne extends BaseCondition {
 	submit = () => {
 		this.formRef.validateAll((error, value) => {
 			console.log(error, value);
-			let {boolean} = this.state;
+			let {isFlag} = this.state;
 			let msg = '';
 			if (error) {
 				// 处理表单报错
@@ -208,7 +207,7 @@ export default class addOne extends BaseCondition {
 
 			//至少选择一种还款方式
 			if(value.repaymentMethodsSetting.length==0){
-				return	ProductReq.tipError('至少选择一中还款方式！')
+				return	ProductReq.tipError('至少选择一种还款方式！')
 			 }
 			//还款方式不能重复 
 			for (var i = 0; i < value.repaymentMethodsSetting.length - 1; i++) {
@@ -219,7 +218,7 @@ export default class addOne extends BaseCondition {
 				}
 			}
 
-			if(!boolean) return	ProductReq.tipError(msg)
+			if(!isFlag) return	ProductReq.tipError(msg)
 			
 			let AllValue = this.AllValue(value);
 			this.dataVerif(value);
@@ -378,7 +377,7 @@ export default class addOne extends BaseCondition {
 					Obj={this.state.value.prepaymentPeriodsLimit}
 					addItem={this.addNewItem.bind(this, 'prepaymentSetting')}
 					removeItem={this.removeItem.bind(this, 'prepaymentSetting')}
-					boolean= {this.state.boolean}
+					isFlag= {this.state.isFlag}
 					onChangeBoolean={this.onChangeBoolean}
 				/>
 			</div>
@@ -1095,7 +1094,7 @@ export default class addOne extends BaseCondition {
 											}}
 									addItem={this.addNewItem.bind(this, 'percentageSetting')}
 									removeItem={this.removeItem.bind(this, 'percentageSetting')}
-									boolean= {this.state.boolean}
+									isFlag= {this.state.isFlag}
 									onChangeBoolean={this.onChangeBoolean}
 									validateForm={this.validateForm.bind(this)}
 								/>
@@ -1232,7 +1231,7 @@ export default class addOne extends BaseCondition {
 									Obj={{interestRatesRangeMax:this.state.value.interestRatesRangeMax,interestRatesRangeMin:this.state.value.interestRatesRangeMin}}
 									addItem={this.addNewItem.bind(this, 'ratesSetting')}
 									removeItem={this.removeItem.bind(this, 'ratesSetting')}
-									boolean= {this.state.boolean}
+									isFlag= {this.state.isFlag}
 									onChangeBoolean={this.onChangeBoolean}
 									getProdeuctAgency={actions.getProdeuctAgency}
 								/>
@@ -1341,7 +1340,7 @@ export default class addOne extends BaseCondition {
 									data={data}
 									addItem={this.addNewItem.bind(this, 'repaymentMethodsSetting')}
 									removeItem={this.removeItem.bind(this, 'repaymentMethodsSetting')}
-									boolean= {this.state.boolean}
+									isFlag= {this.state.isFlag}
 									onChangeBoolean={this.onChangeBoolean}
 								/>
 								<Row wrap className='pch-adjust-next-col-size-18'>

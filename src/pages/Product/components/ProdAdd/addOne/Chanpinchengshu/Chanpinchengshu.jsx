@@ -64,7 +64,7 @@ export default class Chanpinchengshu extends Component {
 	};
 	//最小、大期限不可同时相等 
 	testChange1 = (rule, value, callback) => {
-		let { items, boolean, Obj } = this.props
+		let { items, isFlag, Obj } = this.props
 		let { loanTermRangeMin } = Obj
 		let oIndex = this.getArrIndex(items, { loanTermRangeMin: value });
 		let max = items[oIndex].loanTermRangeMax;
@@ -201,7 +201,7 @@ export default class Chanpinchengshu extends Component {
 
 	//最小、大期限不可同时相等
 	testChange4 = (rule, value, callback) => {
-		let { items, boolean, Obj } = this.props;
+		let { items, isFlag, Obj } = this.props;
 		let { loanTermRangeMax } = Obj
 		let oIndex = this.getArrIndex(items, { loanTermRangeMax: value });
 		let min = items[oIndex].loanTermRangeMin;

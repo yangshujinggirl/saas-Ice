@@ -99,6 +99,7 @@ export default class OrgType extends Component {
   componentWillUnmount(){
      //组件卸载，数据清空
     testarray = []
+    arrayRightData =[]
   }
 
   renderDataWithGroup = (type, list) => {
