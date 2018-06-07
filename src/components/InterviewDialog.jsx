@@ -1249,7 +1249,7 @@ export default class InterviwDialog extends Component {
         // console.log("this.state", this.state)
         let { id, type, contractId } = this.props, interviewDetail;
         if (id) {
-            interviewDetail = <InterviewDetail id={id} type={type} contractId={contractId}></InterviewDetail>
+            interviewDetail = <InterviewDetail id={id} types={type} contractId={contractId}></InterviewDetail>
         } 
         let content = [
             <div className={cx('pch-interview-box', { 'active': this.state.toggleHide,'min-height': this.state.isFullScreen})} key='1'>

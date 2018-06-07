@@ -27,7 +27,7 @@ class Demo extends Component {
       type = '';
     if (this.props.id) {
       id = this.props.id || '';
-      type = this.props.type || '';
+      type = this.props.types || '';
     } else {
       type = this.props.params.type;
       id = this.props.params.id;
@@ -87,7 +87,7 @@ class Demo extends Component {
     let id = '', type = '', contract = '0', contractId = '';
     if (this.props.id) {
       id = this.props.id || '';
-      type = this.props.type || '';
+      type = this.props.types || '';
       contract = '1';
       contractId = this.props.contractId;
     } else {
