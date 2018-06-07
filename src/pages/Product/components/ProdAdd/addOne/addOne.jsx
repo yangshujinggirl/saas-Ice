@@ -732,6 +732,11 @@ export default class addOne extends BaseCondition {
 		this.setState({ value });
 	}
 	
+	//
+	validateForm(){
+		// console.log('percentageSetting[0].loanPercentageMax')
+		// this.formRef.validate('percentageSetting[0].loanPercentageMax');
+	}
 	render() {
 		let {actions} = this.props;
 		let data = this.props.prodActions || {}
@@ -1092,6 +1097,7 @@ export default class addOne extends BaseCondition {
 									removeItem={this.removeItem.bind(this, 'percentageSetting')}
 									boolean= {this.state.boolean}
 									onChangeBoolean={this.onChangeBoolean}
+									validateForm={this.validateForm.bind(this)}
 								/>
 							</div>
 
