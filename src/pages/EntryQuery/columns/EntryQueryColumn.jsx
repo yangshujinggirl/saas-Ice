@@ -67,7 +67,10 @@ class EntryQueryColumn extends BaseColumn {
       dataIndex: 'principalAmount',
       width: 150,
       cell: (value, index, record) => {
-        return this.formatNumber(value, 2, true);
+        if(value){
+          return this.formatNumber(value, 2, true);
+        }
+        return;
       },
     }, {
       title: '贷款产品',
