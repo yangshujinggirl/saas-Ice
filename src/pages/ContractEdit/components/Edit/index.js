@@ -17,7 +17,7 @@ class AddEit extends BaseApp {
     borrowerIdNo: true, //主贷款人证件号码
     principalAmount: true, //申请贷款金额
     loanTerms: true, //申请期限(月)
-    productCode: true, //产品名称
+    productName: true, //产品名称
     interestRates: true, //执行年利率(%)
     repaymentMethod: true, //还款方式
     repaymentInterval: true, //还款周期
@@ -168,6 +168,7 @@ class AddEit extends BaseApp {
   }
 
   render() {
+    console.log(this.state.contractContent)
     return (
       <IceContainer className="pch-container contract-eidt-pages">
         <Title title="合同编辑"/>
