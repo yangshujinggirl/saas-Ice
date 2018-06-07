@@ -109,7 +109,7 @@ export default class ApprovalBox extends Component {
           </FormItem>
           <FormItem  className='item' label=""
                      {...formItemLayout}>
-            <button onClick={this.submit.bind(this)}>提交</button>
+            <Button  disabled={ this.props.disabled} onClick={this.submit.bind(this)}>提交</Button>
           </FormItem>
         </Form>
       </div>

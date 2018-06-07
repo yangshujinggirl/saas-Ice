@@ -54,6 +54,7 @@ class LoanApplicationOne extends Component {
       month: 1,
       index: 0,
       filedList: [],
+      disabled :false
     };
     this.field = new Field(this);
     // 请求参数缓存
@@ -233,6 +234,9 @@ class LoanApplicationOne extends Component {
   };
   //next下一步
   next = (e) => {
+    this.setState({
+      disabled : true
+    })
     e.preventDefault();
     this.field.validate((errors, values) => {
       if (errors) {
@@ -263,23 +267,26 @@ class LoanApplicationOne extends Component {
         this.queryCache['id'] = this.props.params.id;
         Req.saveFrom(this.queryCache)
           .then((res) => {
-            if (res && res.code == 200) {
+            this.setState({
+              disabled : false
+            })
               hashHistory.push({
                 pathname: '/entryQuery/loanApplication/' + this.props.params.id,
               });
-            }
           })
           .catch((error) => {
             console.log(errors);
+            Req.tipError(errors.msg)
           });
       } else {
         Req.addLoanApi(this.queryCache)
           .then((res) => {
-            if (res && res.code == 200) {
+            this.setState({
+              disabled : false
+            })
               hashHistory.push({
                 pathname: '/entryQuery/loanApplication/' + res.data.id,
               });
-            }
           })
           .catch((errors) => {
             Req.tipError(errors.msg)
@@ -374,7 +381,7 @@ class LoanApplicationOne extends Component {
                       <FormRender {...this.props} data={list || true} init={init} productList={dataSource}
                                   field={this.field} addColumn={this.addColumn.bind(this)}></FormRender>
                       <div className='botton-box pch-form-buttons'>
-                        <Button size="large" type="secondary" onClick={this.next}>下一步</Button>
+                        <Button size="large" disabled={ this.state.disabled} type="secondary"  onClick={this.next}>下一步</Button>
                       </div>
                     </Form>
                   </IceFormBinderWrapper>
