@@ -33,9 +33,9 @@ export default class CreditInformation extends BaseApp {
         this.props.actions.search(this._condition);
     }
     //点击签收
-    signIN = (taskId)=>{
+    signIN = (loanId)=>{
       Req.signIn({
-        taskId: taskId
+        loanId: loanId
       }).then((res)=>{
           this.fetchData();
       }).catch((error)=>{
@@ -58,7 +58,7 @@ export default class CreditInformation extends BaseApp {
             }
             // 签收
             case this.OPERATE_TYPE.OTHER1: {
-              this.signIN(data.taskId);
+              this.signIN(data.loanId);
               break;
             }
             // 征信录入

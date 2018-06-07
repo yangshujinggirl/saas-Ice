@@ -61,12 +61,11 @@ export default class ReviewApprove extends BaseApp {
   };
 
   //点击签收
-  signIN = (taskId) => {
+  signIN = (loanId) => {
     Req.signIn({
-      taskId: taskId,
+      loanId: loanId,
     })
       .then((res) => {
-        if (res && res.code == 200) {
           if (this.props.params.typeId) {
             if (this.props.params.typeId == 10 || this.props.params.typeId == 11) {
               this.fetchData({
@@ -76,7 +75,6 @@ export default class ReviewApprove extends BaseApp {
               this.fetchData();
             }
           }
-        }
       })
       .catch((error) => {
         Toast.show({
@@ -97,7 +95,7 @@ export default class ReviewApprove extends BaseApp {
     switch (type) {
       //签收
       case this.OPERATE_TYPE.OTHER1: {
-        this.signIN(data.taskId);
+        this.signIN(data.loanId);
         break;
       }
       //审查审批详情

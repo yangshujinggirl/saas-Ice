@@ -40,7 +40,7 @@ class ReviewApproveReq extends CurdReq{
   //点击点击签收
   signIn(data) {
     let options = {
-      url: this._config.WF_HOST + `/tasks/${data.taskId}/assignee`,
+      url: this._config.WF_HOST + `/tasks/${data.loanId}/assignee`,
       // url: `http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/assignee`,
       method: 'PUT',
     }
