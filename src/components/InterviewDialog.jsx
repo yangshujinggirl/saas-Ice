@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 import http from '../pages/InterView/reqs/InterViewReq.js';
 import InterviewDetail from '../pages/InterView/InterViewDetail.jsx';
+import { Dialog } from "@icedesign/base";
 
 export default class InterviwDialog extends Component {
 
@@ -58,7 +59,8 @@ export default class InterviwDialog extends Component {
                 highAudio: true
             },
             toggleHide: false,//控制弹框显示隐藏
-            once: true,//初始化网易一次
+            once: true,//初始化网易一次,
+            visible: false,
         }
         this.loanIdOnce = true;
     }
@@ -1134,8 +1136,21 @@ export default class InterviwDialog extends Component {
         $(".pch-interview-status1").show();
         _this._cancelCalling(true);
     }
+    _noClose() { 
+        this.setState({
+            visible: false
+        })
+    }
+    _noOK() { 
+        this.setState({
+            visible: true
+        })
+    }
     _cancelCalling(data) {
         let _this = this;
+        _this.setState({
+            visible: false
+        })
         console.log('取消视频请求');
         // 关闭面签弹框和开始提示音量
         // if (_this.listNum) {
@@ -1263,13 +1278,24 @@ export default class InterviwDialog extends Component {
                         <span className='icon' onClick={this._toggleScreenHandler.bind(this)}>&#xe672;</span>
                     </div>
                     <div id='interview-remove'></div>
-                    <div id='interview-cancal' onClick={this._cancelCalling.bind(this)}>
+                    <div id='interview-cancal' onClick={this._noOK.bind(this)}>
                         取消
                     </div>
                 </div>
             </div>,
             <div key='2' className={cx('pch-interview-shadow', { 'active': this.state.toggleHide })}>
-            </div>
+            </div>,
+            <Dialog
+            visible={this.state.visible}
+            onOk={this._cancelCalling.bind(this)}
+            closable="esc,mask,close"
+            onCancel={this._noClose.bind(this)}
+            onClose={this._noClose.bind(this)}
+            title="提示"
+            key='3'    
+          >
+            <div>您确定取消面签吗？</div> 
+          </Dialog>
         ]
 
         return content
