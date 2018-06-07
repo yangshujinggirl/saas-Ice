@@ -22,7 +22,8 @@
         overflow: hidden;
         display: inline-flex;
         .container-left {
-            width: 20% !important;
+            width: 15%;
+            max-width: 160px;
             box-sizing: border-box;
             color: #666;
             line-height: 30px;
@@ -60,6 +61,7 @@
             }
         }
         .container-right {
+            flex: 1;
             background: #fff;
             padding: 15px;
             padding-top: 25px;

@@ -38,6 +38,7 @@ export default class LoanApplication extends Component {
       value: {},
       dataSource: [],
       data: [],
+      disabled :false
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -135,6 +136,9 @@ export default class LoanApplication extends Component {
 
   //save
   save = (str) => {
+    this.setState({
+      disabled : true
+    })
     this.field.validate((errors, values) => {
       if (errors) {
         console.log('Errors in form!!!');
@@ -168,6 +172,9 @@ export default class LoanApplication extends Component {
       // this.queryCache.status = 'save'
       Req.saveFrom(this.queryCache)
         .then((res) => {
+          this.setState({
+            disabled : false
+          })
           if(str == 'submit'){
             Req.tipSuccess('提交成功');
             hashHistory.push('/entryQuery');
@@ -176,6 +183,9 @@ export default class LoanApplication extends Component {
           }
         })
         .catch((error) => {
+          this.setState({
+            disabled : false
+          })
           Req.tipError(error.msg)
         });
     });
@@ -240,10 +250,10 @@ export default class LoanApplication extends Component {
                       <div className='botton-box pch-form-buttons'>
                         {
                           this.state.hasCollection ? (
-                              <Button size="large" type="secondary" onClick={this.save.bind(this,'save')}>下一步</Button>
+                              <Button size="large" type="secondary" disabled={ this.state.disabled}  onClick={this.save.bind(this,'save')}>下一步</Button>
                             ) :
                             (
-                              <Button size="large" type="secondary" onClick={this.save.bind(this,'submit')}>提交</Button>
+                              <Button size="large" type="secondary"  disabled={ this.state.disabled} onClick={this.save.bind(this,'submit')}>提交</Button>
                             )
                         }
 

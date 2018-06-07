@@ -46,8 +46,9 @@ class ProcessAction extends BaseAction {
           },
           duration: 2000
         });
-      }).catch((res) => {
-        dispatch(this.fetchFailed({ isSubmiting: false }))
+      }).catch((err) => {
+        dispatch(this.fetchFailed({ isSubmiting: false }));
+        Req.tipError(err.msg);
       })
     }
   }
