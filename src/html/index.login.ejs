@@ -13,15 +13,12 @@
 	<meta name="version" value="<%= htmlWebpackPlugin.options.version%>" />
 	<title><%= htmlWebpackPlugin.options.title %></title>
 	<link rel="icon" type="image/png" href="public/images/favicon.ico">
-	<script>window.PC_ENV = '<%= htmlWebpackPlugin.options.env%>';window.PC_DEEPSTREAM_HOST='wss://deepstream-staging.pingchang666.com';</script>
-	<script src="public/js/NIM_Web_NIM_v4.5.5.js"></script>
-	<script src="public/js/NIM_Web_Netcall_v4.5.5.js"></script>	
-	<script src="public/js/NIM_Web_WebRTC_v4.5.5.js"></script>
+	<script>window.PC_ENV = '<%= htmlWebpackPlugin.options.env%>';</script>
 </head>
 
 <body>
 	<div id="ice-container"></div>
-	<script src="https://g.alicdn.com/code/npm/??react/16.2.0/umd/react.development.js,react-dom/16.2.0/umd/react-dom.development.js"></script>
+	<script src="https://g.alicdn.com/code/npm/??react/16.2.0/umd/react.production.min.js,react-dom/16.2.0/umd/react-dom.production.min.js"></script>
 </body>
 
 </html>
