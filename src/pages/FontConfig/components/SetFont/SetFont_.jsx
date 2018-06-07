@@ -176,12 +176,17 @@
             return;
           }
 
-          // 转换fieldset到fields，并追加上fieldsetOrder排序字段
+          // 给每个field字段添加fieldset，指定字段该区域的
+          // 给每个字段添加fieldsetorder排序，指明该字段所属区域的排序
+          // 给每个字段添加排序字段orderId，指明当前字段在该区域内的排序
+          // 这里的排序都是正序排列
+          // 转换fieldset到fields
           resData.fieldset.map((item, i) => {
-              item.fields.map((field) => {
-                if(field.fieldset != item.name) {
-                  field.fieldset = item.name;
-                }
+              item.fields.map((field, j) => {
+                  if(field.fieldset != item.name) {
+                    field.fieldset = item.name;
+                  }
+                  field.orderId = j;
                   field.fieldsetOrder = i;
                   reqData.fields.push(field)
               })
