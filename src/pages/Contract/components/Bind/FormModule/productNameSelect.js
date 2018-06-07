@@ -107,12 +107,12 @@ export default {
       focusMenu(menu, list, this)
       return false
     }
-    input.onblur = function(){
-      let list = [...this.parentNode.getElementsByTagName('li')];
-      list.forEach(li=>{
-        li.style.display = 'block'
-      })
-    }
+    // input.onblur = function(){
+    //   let list = [...this.parentNode.getElementsByTagName('li')];
+    //   list.forEach(li=>{
+    //     li.style.display = 'block'
+    //   })
+    // }
   },
   focusMenu(menu, menus, input, noInput){
       menu = menu instanceof Array && menu || [menu];
@@ -153,6 +153,10 @@ export default {
   hide(){
     if(this.data.selectBox){
       this.data.selectBox.className = this.data.selectBoxClass;
+      let list = [...this.data.selectBox.getElementsByTagName('li')];
+      list.forEach(li=>{
+        li.style.display = 'block'
+      })
     }
     return this;
   },
