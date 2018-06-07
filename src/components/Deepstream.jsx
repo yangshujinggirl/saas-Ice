@@ -18,7 +18,7 @@ export default class Deepstream extends Component {
             once: true
         }
         this.connectionState = false;
-        this.listNameArr = '';
+        this.listNameArr = [];
     }
     componentDidMount() {
         let _this = this;
@@ -40,7 +40,7 @@ export default class Deepstream extends Component {
         })
         
         http.initInterview().then((data) => {
-            this.listNameArr = data.data.list.split('$');
+            this.listNameArr = data.data.list&&data.data.list.split('$');
             this.deepLink();
         })
     }
@@ -53,7 +53,7 @@ export default class Deepstream extends Component {
     deepLink() {
         let _this = this;
         if (this.connectionState === 'OPEN' && this.listNameArr && this.listNameArr.length > 0) {
-            this.listNameArr.forEach((listname, index) => {
+            this.listNameArr&&this.listNameArr.forEach((listname, index) => {
                 let list = this.client.record.getList(listname);
                 list.subscribe(_this.listChanged.bind(_this, listname), true);
             })

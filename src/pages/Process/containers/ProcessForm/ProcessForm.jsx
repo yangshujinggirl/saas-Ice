@@ -281,25 +281,25 @@ export default class ProcessForm extends Component {
       }
       console.log(values)
 
-      // this.props.actions.save(values);
-      Req.save(values)
-        .then((res) => {
-          // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
-          Feedback.toast.show({
-            type: 'success',
-            content: values.processName + '产品流程已' + (values.status == 1 ? '提交' : '保存') + '成功',
-            afterClose: () => {
-              hashHistory.push('/process');
-            },
-            duration: 2000,
-          });
-        })
-        .catch((error) => {
-          Feedback.toast.show({
-            type: 'error',
-            content: error.msg,
-          });
-        });
+      this.props.actions.save(values);
+    //   Req.save(values)
+    //     .then((res) => {
+    //       // 提交成功后弹框提示“xxx产品流程已提交成功”，停留2秒后自动消失，在跳转到列表
+    //       Feedback.toast.show({
+    //         type: 'success',
+    //         content: values.processName + '产品流程已' + (values.status == 1 ? '提交' : '保存') + '成功',
+    //         afterClose: () => {
+    //           hashHistory.push('/process');
+    //         },
+    //         duration: 2000,
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       Feedback.toast.show({
+    //         type: 'error',
+    //         content: error.msg,
+    //       });
+    //     });
     });
   };
 

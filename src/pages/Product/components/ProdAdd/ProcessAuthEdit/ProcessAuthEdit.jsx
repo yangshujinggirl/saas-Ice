@@ -21,7 +21,26 @@ export default class ProcessAuthEdit extends BaseApp {
             current: 1,
             rowSelection: {
                 selectedRowKeys: [],
+                // onChange:(selected, record, records)=>{
+                //     console.log(selected, records)
+                //     let { rowSelection } = this.state;
+                //     let selectedRowKeys = rowSelection.selectedRowKeys;
+                //     if(selected){
+                //         selectedRowKeys.push(record.id);
+                //         // 选中某行如果有子集则子集全选中
+                //         record.children && record.children.map((item) => {
+                //             if(selectedRowKeys.indexOf(item.id) == -1){
+                //                 selectedRowKeys.push(item.id);
+                //             }
+                //         })
+                //     }
+                //     rowSelection.selectedRowKeys = selectedRowKeys;
+                //         this.setState({
+                //             rowSelection
+                //         });
+                // },
                 onSelect: (selected, record, records) => {
+                    console.log(selected)
                     if (!selected) {
                         record.selectedRoles = [];
                     }
@@ -30,11 +49,8 @@ export default class ProcessAuthEdit extends BaseApp {
                     if(selected){
                         selectedRowKeys.push(record.id);
                         // 选中某行如果有子集则子集全选中
-                        record.children && record.children.map((item) => {
-                            if(selectedRowKeys.indexOf(item.id) == -1){
-                                selectedRowKeys.push(item.id);
-                            }
-                        })
+                        this.multilayerStructure(record,selectedRowKeys)
+                       
                     }else{
                         let idx = selectedRowKeys.indexOf(record.id);
                         if(idx != -1){
@@ -46,7 +62,24 @@ export default class ProcessAuthEdit extends BaseApp {
                             rowSelection
                         });
 
-                }
+                },
+                onSelectAll:(selected, records)=>{
+                    console.log(selected,records)
+                    
+                    let { rowSelection } = this.state;
+                    let selectedRowKeys = rowSelection.selectedRowKeys;
+                    if(selected){   
+                        records.map((item,i)=>{
+                        selectedRowKeys.push(item.id)
+                            
+                        })
+                    }
+
+                    rowSelection.selectedRowKeys = selectedRowKeys;
+                        this.setState({
+                            rowSelection
+                        });
+                },
             },
             rowSelectionTwo: {
                 selectedRowKeys: [],
@@ -77,12 +110,20 @@ export default class ProcessAuthEdit extends BaseApp {
         let { actions } = this.props;
         actions.getPrivilegeOrgs()
     }
-    // componentWillReceiveProps(props) {
-    //     this.setState({
-    //         // visible: this.props.visible,
-    //         dataSourceRight:this.state.dataSourceRight
-    //     })
-    // }
+   //多级结构
+   multilayerStructure=(record,selectedRowKeys)=>{
+    record.children && record.children.map((item) => {
+        if(selectedRowKeys.indexOf(item.id) == -1){
+            selectedRowKeys.push(item.id);
+        }
+        if(item.children){
+            this.multilayerStructure(item,selectedRowKeys)
+        }
+    })
+    return selectedRowKeys
+   }
+
+
 
     //确定
     submit() {
