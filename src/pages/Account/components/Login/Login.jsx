@@ -1,6 +1,6 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
-import { Input, Button, Checkbox, Grid, Feedback } from '@icedesign/base';
+import { Input, Button, Checkbox, Grid } from '@icedesign/base';
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError, } from '@icedesign/form-binder';
 import IceIcon from '@icedesign/icon';
 import './Login.scss';
@@ -76,6 +76,10 @@ export default class Login extends Component {
                     Storage.remove('REMEMBER');
                 }
 
+                let lastLoginName = Storage.get('LASTLOGINNAME');
+                let isSameLoginName = values.userName == lastLoginName;
+                Storage.set('LASTLOGINNAME', values.userName);
+
                 let fromUrl = this.props.params.from;
                 let isSameSystem = false;
                 let system = res.data.type || 'daikuan';
@@ -86,15 +90,15 @@ export default class Login extends Component {
                 isSameSystem = fromUrl && fromUrl.indexOf(system) != -1;
 
                 // 跳转规则
-                // 1. 开发环境直接往fromUrl跳转（非域名访问都作为开发环境）
-                // 1. 系统相同则往来源地址跳转（系统相同则一定有来源地址）
+                // 1. 开发环境登录账号同上一次直接往fromUrl跳转（非域名访问都作为开发环境）否则跳转到默认页
+                // 1. 系统相同且登录账号同上一次则往来源地址跳转（系统相同则一定有来源地址）
                 // 2. 如果有来源则往来源地址跳转
                 // 3. 默认往当前登录用户的所属系统地址跳转
                 if (location.host.indexOf('pingchang666') == -1) {
                     // TODO 还有可能当前来源页并不是当前用户的权限内的
                     location.href = fromUrl ? decodeURIComponent(fromUrl) : '/';
                 } else {
-                    if (isSameSystem) {
+                    if (isSameSystem && isSameLoginName) {
                         location.href = decodeURIComponent(fromUrl);
                     } else {
                         //默认进入登录用户的所属系统，替换登录域名成相应系统的域名，
