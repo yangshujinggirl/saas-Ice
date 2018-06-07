@@ -25,17 +25,20 @@ export default class EntryTrack extends Component {
     console.log(this.props)
 
     Req.getTrackDetail({
-      businessId : this.props.params.id,
-      isApproveInfo :false
-    }).then((res)=>{
-      if(res.data && res.code == 200){
+      businessId: this.props.params.id,
+      isApproveInfo: false,
+    })
+      .then((res) => {
         this.setState({
-          trackList : res.data.trackList ? res.data.trackList : []
-        })
-      }else {
-
-      }
-    });
+          trackList: res.data.trackList ? res.data.trackList : [],
+        });
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'success',
+          content: '提交成功～',
+        });
+      });
   }
   //判断Json是否为kong
   isEmptyObject(e) {

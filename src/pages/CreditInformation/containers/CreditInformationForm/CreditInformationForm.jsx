@@ -113,8 +113,8 @@ export default class CreditInformationForm extends BaseComponent {
             });
             if (res.data.baseDocuments) {
               res.data.baseDocuments.map(item => {
-                console.log(item.type.indexOf('image') == 0);
-                if (item.type.indexOf('image') == 0) {
+                // console.log(item.type.indexOf('image') == 0);
+                if (this.isImg(item.imgURL)) {
                   item.downloadURL = item.location;
                   item.fileURL = item.location;
                   item.imgURL = item.location;

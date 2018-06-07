@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import {  Tablex } from '@icedesign/base';
+import { Tablex } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
-import  './EntryTrack.scss'
-import  classNames from  'classnames'
+import './EntryTrack.scss';
+import classNames from 'classnames';
 import { Feedback } from '@icedesign/base/index';
+
 const Toast = Feedback.toast;
 export default class EntryTrack extends Component {
   static displayName = 'EntryTrack';
@@ -17,100 +18,106 @@ export default class EntryTrack extends Component {
     super(props);
     this.state = {
       value: {},
-      Component :[],
+      Component: [],
       dataSource: [],
-      trackList:[]
+      trackList: [],
     };
   }
-  componentDidMount(){
-    let {actions} = this.props;
+
+  componentDidMount() {
+    let { actions } = this.props;
     // console.log(this.props)
 
     Req.getTrackDetail({
-      businessId : this.props.params.id,
-      isApproveInfo :false
-    }).then((res)=>{
-      if(res.data && res.code == 200){
+      businessId: this.props.params.id,
+      isApproveInfo: false,
+    })
+      .then((res) => {
         this.setState({
-          trackList : res.data.trackList ? res.data.trackList : []
-        })
-      }else {
-        Toast.show({
-          type: "success",
-          content: "提交成功～",
+          trackList: res.data.trackList ? res.data.trackList : [],
         });
-      }
-    });
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'success',
+          content: '提交成功～',
+        });
+      });
   }
+
   //判断Json是否为kong
   isEmptyObject(e) {
     var t;
-    for (t in e)
+    for (t in e) {
       return false;
+    }
     return true;
   }
+
   //获取变更字段
-  changeFile = (data)=>{
+  changeFile = (data) => {
     var list = [];
-    if(data.length >0){
-      data.map((item)=>{
-        list.push( <span key={i}>{item.name}: <i>({item.value})</i></span>)
-      })
+    if (data.length > 0) {
+      data.map((item) => {
+        list.push(<span key={i}>{item.name}: <i>({item.value})</i></span>);
+      });
     }
     return list;
-  }
+  };
+
   render() {
     let { trackList } = this.state;
     // console.log(trackList)
     return (
       <div className="part-same part-process info review-detail" id='流程轨迹'>
 
-                  <div className="process-action">
-                        {
-                          trackList.map((item,index)=>{
-                            var status = classNames({
-                              'circle status-red'    : item.choose == 'REJECT',
-                              'circle status-orange' : item.choose == undefined || item.choose == 'TOMAN',
-                              'circle status-green'  : item.choose == 'PASS' || item.choose == 'SUBMIT',
-                              'circle status-gray'   : item.choose == 'BACK',
-                            });
+        <div className="process-action">
+          {
+            trackList.map((item, index) => {
+              var status = classNames({
+                'circle status-red': item.choose == 'REJECT',
+                'circle status-orange': item.choose == undefined || item.choose == 'TOMAN',
+                'circle status-green': item.choose == 'PASS' || item.choose == 'SUBMIT',
+                'circle status-gray': item.choose == 'BACK',
+              });
 
-                            return (
-                              <div className="item" key={index}>
-                                <div className={status}>
-                                  <span>{item.chooseLable}</span>
-                                </div>
-                                  <div className="status-title"><b>{item.taskAlias}</b></div>
-                                <div className="status-desc">
-                                  {
-                                    item.changeFieldsLabel ?
-                                      item.changeFieldsLabel.split('|').map(el=>{
-                                        return (<span>{el}</span>)
-                                        }
-                                      ) : (<span></span>)
-                                  }
-                                  {
-                                    item.approveMsg ? (<span>审查意见:{item.approveMsg}</span>) :(<span></span>)
-                                  }
-                                  {
-                                    item.loanLabel ? (<span>{item.loanLabel}</span>) :(<span></span>)
-                                  }
-
-                                </div>
-
-                                <div className="content">
-                                  <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b></p>
-                                </div>
-
-                                <div className="content">
-                                  <p className='time'>时间：{item.approveDate}</p>
-                                </div>
-
-                            </div>)
-                        })
-                        }
-                        <div className='oneline'></div>
+              return (
+                <div className="item" key={index}>
+                  <div className={status}>
+                    <span>{item.chooseLable}</span>
                   </div>
+                  <div className="status-title"><b>{item.taskAlias}</b></div>
+                  <div className="status-desc">
+                    {
+                      item.changeFieldsLabel ?
+                        item.changeFieldsLabel.split('|')
+                          .map(el => {
+                              return (<span>{el}</span>);
+                            },
+                          ) : (<span></span>)
+                    }
+                    {
+                      item.approveMsg ? (<span>审查意见:{item.approveMsg}</span>) : (<span></span>)
+                    }
+                    {
+                      item.loanLabel ? (<span>{item.loanLabel}</span>) : (<span></span>)
+                    }
+
+                  </div>
+
+                  <div className="content">
+                    <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b></p>
+                  </div>
+
+                  <div className="content">
+                    <p className='time'>时间：{item.approveDate}</p>
+                  </div>
+
+                </div>);
+            })
+          }
+          <div className='oneline'></div>
+        </div>
       </div>
 
     );
