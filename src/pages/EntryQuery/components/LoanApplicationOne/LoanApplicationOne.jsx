@@ -84,7 +84,14 @@ class LoanApplicationOne extends Component {
         this.setState({
           filedList: res.data,
         });
-      })
+        res.data.list && res.data.list.map((item)=>{
+          item.fields && item.fields.map(el=>{
+            if(el.name == 'exhibitionHallHierarchy' && el.value){
+              this.getProductNum('exhibitionHallHierarchy',el.value);
+            }
+          })
+        })
+      },)
       .catch(error => {
         Toast.show({
           type: 'error',
@@ -94,9 +101,12 @@ class LoanApplicationOne extends Component {
   }
 
   //获取产品列表
-  getProductNum() {
+  getProductNum(str,value) {
     const limit = 990;
-    Req.getProductNumApi(limit)
+    Req.getProductNumApi({
+      limit:limit,
+      exhibitionHallHierarchy:value
+    })
       .then((res) => {
         const { data } = res;
         const { list } = data;
