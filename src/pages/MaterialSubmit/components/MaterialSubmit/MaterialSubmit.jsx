@@ -159,9 +159,7 @@ class MaterialSubmit extends BaseComponent {
 
   //提交
   submit = () => {
-    this.setState({
-      disabled: true,
-    });
+
     let id = this.props.params.id;
     let { originData, tableList, dataSource } = this.state;
     let data = [];
@@ -191,7 +189,9 @@ class MaterialSubmit extends BaseComponent {
         }
       }
     }
-
+    this.setState({
+      disabled: true,
+    });
     Req.saveMaterial(id, originData)
       .then((res) => {
         let d = {
@@ -222,9 +222,6 @@ class MaterialSubmit extends BaseComponent {
 
   //保存
   save = () => {
-    this.setState({
-      disabled: true,
-    });
     let { originData, tableList, dataSource } = this.state;
 
     originData.map((item) => {
@@ -242,6 +239,9 @@ class MaterialSubmit extends BaseComponent {
     });
 
     console.log(originData);
+    this.setState({
+      disabled: true,
+    });
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
         this.setState({

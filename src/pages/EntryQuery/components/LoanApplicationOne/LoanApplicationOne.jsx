@@ -234,9 +234,7 @@ class LoanApplicationOne extends Component {
   };
   //next下一步
   next = (e) => {
-    this.setState({
-      disabled : true
-    })
+
     e.preventDefault();
     this.field.validate((errors, values) => {
       if (errors) {
@@ -263,6 +261,9 @@ class LoanApplicationOne extends Component {
 
       // console.log(this.queryCache);
       // this.queryCache.status = 'save'
+      this.setState({
+        disabled : true
+      })
       if (this.props.params.id) {
         this.queryCache['id'] = this.props.params.id;
         Req.saveFrom(this.queryCache)

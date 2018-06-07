@@ -136,9 +136,6 @@ export default class LoanApplication extends Component {
 
   //save
   save = (str) => {
-    this.setState({
-      disabled : true
-    })
     this.field.validate((errors, values) => {
       if (errors) {
         console.log('Errors in form!!!');
@@ -170,6 +167,9 @@ export default class LoanApplication extends Component {
         this.queryCache['status'] = 'SUBMIT'
       }
       // this.queryCache.status = 'save'
+      this.setState({
+        disabled : true
+      })
       Req.saveFrom(this.queryCache)
         .then((res) => {
           this.setState({
