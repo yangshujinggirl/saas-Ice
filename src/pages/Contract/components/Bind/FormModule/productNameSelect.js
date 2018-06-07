@@ -97,8 +97,21 @@ export default {
     input.oninput = function(){
       let menu = [...this.parentNode.getElementsByTagName('div')];
       let list = [...this.parentNode.getElementsByTagName('li')];
+      list.forEach(li=>{
+        if(li.innerHTML.indexOf(this.value) > -1){
+          li.style.display = 'block'
+        }else{
+          li.style.display = 'none'
+        }
+      })
       focusMenu(menu, list, this)
       return false
+    }
+    input.onblur = function(){
+      let list = [...this.parentNode.getElementsByTagName('li')];
+      list.forEach(li=>{
+        li.style.display = 'block'
+      })
     }
   },
   focusMenu(menu, menus, input, noInput){
@@ -146,6 +159,7 @@ export default {
   destory(){
     this.options.forEach(opts=>{
       opts.parentNode.getElementsByTagName('input')[0].oninput = null;
+      opts.parentNode.getElementsByTagName('input')[0].onblur = null;
       opts.onclick = null;
     })
     return this;

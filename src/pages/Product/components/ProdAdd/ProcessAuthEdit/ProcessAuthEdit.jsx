@@ -73,6 +73,8 @@ export default class ProcessAuthEdit extends BaseApp {
                         selectedRowKeys.push(item.id)
                             
                         })
+                    }else{
+                        selectedRowKeys = []
                     }
 
                     rowSelection.selectedRowKeys = selectedRowKeys;

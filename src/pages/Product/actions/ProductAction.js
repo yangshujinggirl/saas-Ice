@@ -277,7 +277,9 @@ export const fileremove = (id) => {
       filesearch()(dispatch);
       //dispatch(fetchSuccess({delete: true}))
     }).catch((ex) => {
-      dispatch(fetchFailed(ex))
+        Req.tipError('该材料清单明细已关联进件数据，不能删除！',3000)
+        filesearch()(dispatch);
+      // dispatch(fetchFailed(ex))
     })
   }
 }
