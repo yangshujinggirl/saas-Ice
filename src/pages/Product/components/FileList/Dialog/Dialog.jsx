@@ -111,12 +111,6 @@ export default class DiaLog extends Component {
   removeRow(id, idx) {
     let fileList = this.state.value.fileList
 
-    //更改为直接删除，整体在提交接口
-    let tempData = this.props.editData;
-    tempData.collectionDetails.splice(idx, 1);
-    this.props.actions.changeFileDetail(tempData);
-    return;
-
     if(!id){
       // 不存在id即为新增加的行，不调用接口直接删除
       let tempData = this.props.editData;
@@ -129,6 +123,9 @@ export default class DiaLog extends Component {
         tempData.collectionDetails.splice(idx, 1);
         this.props.actions.changeFileDetail(tempData);
         // this.setState({ fileList });
+      }).catch((res)=>{
+        return	ProductReq.tipError('该材料清单明细已关联进件数据，不能删除！',3000)
+
       })
     }
   }
