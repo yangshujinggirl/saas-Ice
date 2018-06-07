@@ -92,7 +92,7 @@ export default class Chanpinlilv extends Component {
    }
    //渠道名称不可重复
    changeValue(value, option) {
-      let { items, boolean } = this.props
+      let { items, isFlag } = this.props
       let allArr = items;
       items.map((item, i) => {
          if (value == item.channelTypes) {

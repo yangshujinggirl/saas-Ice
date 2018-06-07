@@ -53,7 +53,7 @@ export default class Huankuanfangshi extends Component {
 
 	//还款方式不可重复
 	changeValue = (value, option) => {
-		let { items, boolean } = this.props
+		let { items, isFlag } = this.props
 		let allArr = items;
 		items.map((item, i) => {
 			if (value == item.repaymentMethods) {

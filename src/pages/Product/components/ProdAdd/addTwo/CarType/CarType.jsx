@@ -86,9 +86,10 @@ export default class CarType extends Component {
       actions.addTwoList(val, '')
 
    }
-   componentWillUnmount(){
+   componentWillUnmount(){ 
      //组件卸载，数据清空
-     testarray =[]
+     testarray =[];
+     arrayRightData =[]
    }
    renderDataWithCar = (type, list) => {
       let carType = CARTYPES[type];

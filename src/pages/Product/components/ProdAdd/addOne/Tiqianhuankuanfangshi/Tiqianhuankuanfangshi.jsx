@@ -65,7 +65,7 @@ export default class TIqianhuankanfangshi extends Component {
   };
   
   changValue1 = (rule, value, callback) => {
-    let { items, boolean,Obj } = this.props
+    let { items, isFlag,Obj } = this.props
     let {prepaymentPeriodsLimit} = Obj
     let oIndex = this.getArrIndex(items,{loanTermMin:value});
     let max = items[oIndex].loanTermMax;
@@ -112,7 +112,7 @@ export default class TIqianhuankanfangshi extends Component {
   }
 
   changValue2 = (rule, value, callback) => {
-    let { items, boolean,Obj } = this.props;
+    let { items, isFlag,Obj } = this.props;
     let oIndex = this.getArrIndex(items,{loanTermMax:value});
     let min = items[oIndex].loanTermMin;
 
