@@ -102,7 +102,7 @@ class BaseReq {
       msg  = res.data.msg  || res.data.message || msg;
       // 有些接口data会直接返回boolean值
       data = (typeof res.data.data == 'boolean' || res.data.data) ? res.data.data : data;
-      
+
       if (code == 200 && res.headers.token) {
         //处理请求头，获取token，存储cookie
         Cookie.set('PCTOKEN', res.headers.token);
@@ -235,7 +235,7 @@ Object.keys(Feedback.toast).forEach(k=>{
 
     opts = {...opts, ...rest}
     Feedback.toast[k]({
-      duration: 500,
+      duration: 2000,
       content: '未知信息',
       ...opts
     })

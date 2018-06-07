@@ -60,6 +60,7 @@ export default class FormRender extends Component {
       Component: [],
       list: [],
       dataSource: [],
+      // productList :[],
       overlay: '',
       brandList: [],//品牌列表
       carSystemList: [],//车系列表
@@ -183,13 +184,12 @@ export default class FormRender extends Component {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
-            dataSource={this.props.productList || []}
+            dataSource={this.state.productList ? this.state.productList  : this.props.productList}
           >
           </Select>
         </FormItem>);
       }
       else if (el.name == 'exhibitionHallHierarchy') {
-        console.log(el.name)
         return (<FormItem key={el.id} className='item' label={this.label(el.label)}
                           {...formItemLayout}>
           <Select
@@ -912,12 +912,12 @@ export default class FormRender extends Component {
       if (carCarprice) {
         const principalAmount = this.props.field.getValue('principalAmount');
         const loanPercentage = this.props.field.getValue('loanPercentage');
-        if (el.name == 'principalAmount') {
+        if (el.name == 'principalAmount' && principalAmount) {
           var loanPercentage1 = principalAmount / carCarprice * 100.00;
           this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
           return;
         }
-        if (el.name =='loanPercentage') {
+        if (el.name =='loanPercentage' && loanPercentage ) {
           var principalAmount1 = loanPercentage * carCarprice / 100.00;
           this.props.field.setValues({ 'principalAmount': principalAmount1 });
           return;
@@ -927,7 +927,7 @@ export default class FormRender extends Component {
     if(el.name == 'car.carPrice'){
       const carCarprice = this.props.field.getValue('car.carPrice');
       const principalAmount = this.props.field.getValue('principalAmount');
-      if(principalAmount){
+      if(principalAmount && carCarprice){
         var loanPercentage1 = principalAmount / carCarprice * 100.00;
         this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
         return;
