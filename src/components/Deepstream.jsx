@@ -22,8 +22,8 @@ export default class Deepstream extends Component {
     }
     componentDidMount() {
         let _this = this;
-        //<!-- wss://deepstream-staging.pingchang666.com --> 予发布
-        //<!-- ws://deepstream.pingchang666.com -->生产
+        //<!-- ws://deepstream-staging.pingchang666.com --> 予发布
+        //<!-- wss://deepstream.pingchang666.com -->生产
         let client = dt('ws://deepstream-staging.pingchang666.com');
         // let listNameArr = 'creditCard/d1cb47ee145e9e26008cff0d0c534157$creditCard/0acc7dfd8b1d24edd908c79c01d20574' //队列名称
         client.on('error', function (error) {
@@ -53,9 +53,11 @@ export default class Deepstream extends Component {
     deepLink() {
         let _this = this;
         if (this.connectionState === 'OPEN' && this.listNameArr && this.listNameArr.length > 0) {
-            this.listNameArr&&this.listNameArr.forEach((listname, index) => {
-                let list = this.client.record.getList(listname);
-                list.subscribe(_this.listChanged.bind(_this, listname), true);
+            this.listNameArr && this.listNameArr.forEach((listname, index) => {
+                if (listname) {
+                    let list = this.client.record.getList(listname);
+                    list.subscribe(_this.listChanged.bind(_this, listname), true);
+                }
             })
         }
     }
