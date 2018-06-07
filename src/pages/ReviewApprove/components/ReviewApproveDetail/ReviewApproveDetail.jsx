@@ -166,9 +166,6 @@ export default class ReviewApproveDetail extends Component {
   };
   //提交
   submit = (e, data) => {
-    this.setState({
-      disabled : true
-    })
     e.preventDefault();
     this.field.validate((errors, values) => {
       if (errors) {
@@ -212,6 +209,9 @@ export default class ReviewApproveDetail extends Component {
         // "taskId"     : this.props.params.taskId,
       };
       console.log(dataJson);
+      this.setState({
+        disabled : true
+      })
       Req.submitReview(dataJson)
         .then((res) => {
           this.setState({

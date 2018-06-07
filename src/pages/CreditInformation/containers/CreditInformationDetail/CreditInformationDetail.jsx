@@ -189,6 +189,9 @@ export default class CreditInformationDetail extends Component {
         // "taskId"     : this.props.params.taskId,
       };
       console.log(dataJson);
+      this.setState({
+        disabled: true,
+      });
       Req.submitReview(dataJson)
         .then((res) => {
           this.setState({

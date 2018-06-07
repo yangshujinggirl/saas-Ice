@@ -103,6 +103,12 @@ class InterViewColumn extends BaseColumn {
       title: '录制日期',
       dataIndex: 'videoUploadDate',
       width: 160,
+      cell: (value, index, record) => {
+        if(value){
+          return this.formatDate(value, 'yyyy-MM-dd hh:mm:ss');
+        }
+        return;
+      }
     }, {
       title: '进件编码',
       dataIndex: 'loanCode',

@@ -184,7 +184,7 @@ export default class FormRender extends Component {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
-            dataSource={this.state.productList ? this.state.productList  : this.props.productList}
+            dataSource={this.state.productList ? this.state.productList : this.props.productList}
           >
           </Select>
         </FormItem>);
@@ -247,6 +247,7 @@ export default class FormRender extends Component {
                 initValue: el.value ? parseFloat(el.value) : '',
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
+                  { validator: this.checkNum.bind(this, el) },
                 ],
                 props: {
                   onChange: (value) => {
@@ -272,7 +273,7 @@ export default class FormRender extends Component {
               initValue: el.value,
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
-                { validator: this.checkNum.bind(this, el.isRequired) },
+                { validator: this.checkNum.bind(this, el) },
               ],
               props: {
                 onChange: (value) => {
@@ -300,6 +301,7 @@ export default class FormRender extends Component {
                 initValue: el.value ? parseFloat(el.value) : '',
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
+                  { validator: this.checkInt.bind(this, el) },
                 ],
               })}
             />
@@ -319,7 +321,7 @@ export default class FormRender extends Component {
               initValue: el.value ? parseInt(el.value) : '',
               rules: [
                 { required: el.isRequired, message: el.label + '不能为空' },
-                { validator: this.checkInt.bind(this, el.isRequired) },
+                { validator: this.checkInt.bind(this, el) },
               ],
             })}
           />
@@ -503,17 +505,26 @@ export default class FormRender extends Component {
   };
 
   //验证数字
-  checkNum(flag, rule, value, callback) {
+  checkNum(el, rule, value, callback) {
     console.log(value);
     if (value == undefined || value == 'undefined') {
       callback();
     } else {
       if (value != '') {
-        value = parseInt(value);
+        // value = parseFloat(value);
         if (value) {
-          var ex = /^[0-9]\d*$/;
+          var ex = /^(?!(0[0-9]{0,}$))[0-9]{1,}[.]{0,}[0-9]{0,}$/;
           if (!ex.test(value)) {
             callback(new Error('请填写数字'));
+          }
+          else {
+            if (el.minValue && el.maxValue && (el.maxValue < value || el.minValue > value)) {
+              callback(new Error(`填写的数字应在${el.minValue}~${el.maxValue}之间`));
+            } else if (el.minValue && (el.minValue > value)) {
+              callback(new Error(`填写的数字应大于${el.minValue}`));
+            } else if (el.maxValue && (el.maxValue < value)) {
+              callback(new Error(`填写的数字应大于${el.maxValue}`));
+            }
           }
         } else if (isNaN(value)) {
           callback(new Error('请填写数字'));
@@ -524,17 +535,26 @@ export default class FormRender extends Component {
     callback();
   }
 
+
   //验证非负数
-  checkInt(flag, rule, value, callback) {
+  checkInt(el, rule, value, callback) {
     if (value == undefined || value == 'undefined') {
       callback();
     } else {
       if (value != '') {
-        value = parseInt(value);
         if (value) {
           var ex = /^([1-9]\d*|[0]{1,1})$/;
           if (!ex.test(value)) {
             callback(new Error('请填写整数'));
+          }
+          else {
+            if (el.minValue && el.maxValue && (el.maxValue < value || el.minValue > value)) {
+              callback(new Error(`填写的数字应在${el.minValue}~${el.maxValue}之间`));
+            } else if (el.minValue && (el.minValue > value)) {
+              callback(new Error(`填写的数字应大于${el.minValue}`));
+            } else if (el.maxValue && (el.maxValue < value)) {
+              callback(new Error(`填写的数字应大于${el.maxValue}`));
+            }
           }
         } else if (isNaN(value)) {
           callback(new Error('请填写整数'));
@@ -544,7 +564,6 @@ export default class FormRender extends Component {
     }
     callback();
   }
-
 
   onDateChange(date, formateDate) {
     console.log(date);
@@ -864,8 +883,9 @@ export default class FormRender extends Component {
       overlay: '',
     });
   }
+
   //展厅选择
-  onSelect =(e, value) =>{
+  onSelect = (e, value) => {
     const exhibitionHallHierarchy = this.props.field.getValue('exhibitionHallHierarchy');
     const limit = 990;
     this.setState({
@@ -892,7 +912,7 @@ export default class FormRender extends Component {
       }, (error) => {
         Req.tipError(error.msg);
       });
-  }
+  };
   //跳转
   scrollToAnchor = (anchorName) => {
     console.log(anchorName);
@@ -917,17 +937,17 @@ export default class FormRender extends Component {
           this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
           return;
         }
-        if (el.name =='loanPercentage' && loanPercentage ) {
+        if (el.name == 'loanPercentage' && loanPercentage) {
           var principalAmount1 = loanPercentage * carCarprice / 100.00;
           this.props.field.setValues({ 'principalAmount': principalAmount1 });
           return;
         }
       }
     }
-    if(el.name == 'car.carPrice'){
+    if (el.name == 'car.carPrice') {
       const carCarprice = this.props.field.getValue('car.carPrice');
       const principalAmount = this.props.field.getValue('principalAmount');
-      if(principalAmount && carCarprice){
+      if (principalAmount && carCarprice) {
         var loanPercentage1 = principalAmount / carCarprice * 100.00;
         this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
         return;

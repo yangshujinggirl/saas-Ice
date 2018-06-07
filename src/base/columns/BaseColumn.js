@@ -1,4 +1,5 @@
 import OperateTypeConstant from '../constants/OperateTypeConstant';
+import Tools from '../utils/Tools.js';
 
 /**
  * 列表的表头的基类，处理一些表头
@@ -18,6 +19,9 @@ class BaseColumn {
 
   getColumns() {
     return this._columns;
+  }
+  formatDate(date, pattern){
+    return Tools.formatDate(date, pattern)
   }
   /**
    * 千分位处理 num 处理的数据  cent 保留几位小数  isThousand 是否为千分位  true或者false
