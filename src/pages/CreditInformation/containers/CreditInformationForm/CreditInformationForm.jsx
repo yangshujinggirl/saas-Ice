@@ -227,10 +227,10 @@ export default class CreditInformationForm extends BaseComponent {
             const dialog = Dialog.confirm({
               content: '是否确认提交数据？',
               onOk: () => {
+                dialog.hide();
                 return new Promise(resolve => {
                   Req.saveForm(value)
                     .then((res) => {
-                      dialog.hide();
                       if (res && res.code == 200) {
                         this.alert();
                       } else {
@@ -241,7 +241,10 @@ export default class CreditInformationForm extends BaseComponent {
                       }
                     })
                     .catch((error) => {
-                      console.log(error);
+                      Toast.show({
+                        type: 'error',
+                        content: res.msg,
+                      });
                     });
                 });
               },
@@ -255,6 +258,10 @@ export default class CreditInformationForm extends BaseComponent {
         }
       })
       .catch((error) => {
+        Toast.show({
+          type: 'error',
+          content: res.msg,
+        });
       });
   };
   //处理不同字段

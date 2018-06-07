@@ -47,7 +47,9 @@ export default class ReviewApprove extends BaseApp {
 
   fetchData = (condition) => {
     if (this.props.params.typeId == 10 || this.props.params.typeId == 11) {
-      condition.taskTypeKey = 10
+      if(condition){
+        condition.taskTypeKey = 10
+      }
     }
     this.props.actions.search(condition);
   };

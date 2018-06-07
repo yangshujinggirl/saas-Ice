@@ -247,6 +247,7 @@ export default class FormRender extends Component {
                 initValue: el.value ? parseFloat(el.value) : '',
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
+                  { validator: this.checkN.bind(this,el.isRequired,el.minValue,el.maxValue) },
                 ],
                 props: {
                   onChange: (value) => {
@@ -501,6 +502,30 @@ export default class FormRender extends Component {
       );
     }
   };
+  //验证数字
+  checkN(flag,min,max, rule, value, callback) {
+    console.log(flag);
+    console.log(min);
+    console.log(max);
+    console.log(value);
+    if (value == undefined || value == 'undefined') {
+      callback();
+    } else {
+      if (value != '') {
+        value = parseInt(value);
+        if (value) {
+          var ex = /^[0-9]\d*$/;
+          if (!ex.test(value)) {
+            callback(new Error('请填写数字'));
+          }
+        } else if (isNaN(value)) {
+          callback(new Error('请填写数字'));
+        }
+        callback();
+      }
+    }
+    callback();
+  }
 
   //验证数字
   checkNum(flag, rule, value, callback) {
