@@ -307,7 +307,7 @@ export default class ProdDetail extends Component {
                 hasHeader
                 className="table"
               >
-                <Table.Column title="渠道" width={280} dataIndex="channelTypes" />
+                <Table.Column title="渠道" width={280} dataIndex="channelTypesDesc" />
                 <Table.Column title="最小执行年利率(%)" dataIndex="interestRatesRangeMin" />
                 <Table.Column title="最大执行年利率(%)" dataIndex="interestRatesRangeMax" />
               </Table>

@@ -39,6 +39,7 @@ export default class ReviewApproveDetail extends Component {
       result: {},
       _list: [],
       dataSource: [],
+      disabled : false
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -165,6 +166,9 @@ export default class ReviewApproveDetail extends Component {
   };
   //提交
   submit = (e, data) => {
+    this.setState({
+      disabled : true
+    })
     e.preventDefault();
     this.field.validate((errors, values) => {
       if (errors) {
@@ -210,6 +214,9 @@ export default class ReviewApproveDetail extends Component {
       console.log(dataJson);
       Req.submitReview(dataJson)
         .then((res) => {
+          this.setState({
+            disabled : false
+          })
           hashHistory.push(`reviewApprove/3`);
           Toast.show({
             type: 'success',
@@ -217,6 +224,9 @@ export default class ReviewApproveDetail extends Component {
           });
         })
         .catch((error) => {
+          this.setState({
+            disabled : false
+          })
           Toast.show({
             type: 'error',
             content: error.msg,
@@ -289,7 +299,7 @@ export default class ReviewApproveDetail extends Component {
               </div>
             </Col>
             <Col span="5" className='audit-information'>
-              <ApprovalBox {...this.props} reviewList={chooseMap} submit={this.submit.bind(this)}></ApprovalBox>
+              <ApprovalBox disabled={ this.state.disabled} {...this.props} reviewList={chooseMap} submit={this.submit.bind(this)} ></ApprovalBox>
             </Col>
           </Row>
         </div>

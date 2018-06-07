@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import dt from 'deepstream.io-client-js';
 import http from '../pages/InterView/reqs/InterViewReq.js';
-
+import {Feedback} from '@icedesign/base';
+const Toast = Feedback.toast;
 export default class Deepstream extends Component {
     constructor(props) {
         super(props)
@@ -158,6 +159,14 @@ export default class Deepstream extends Component {
     }
     interviewAnswer(id, listname, loanId, type) {
         let { client } = this.state
+        let userAgent = navigator.userAgent;
+            if (userAgent.indexOf("Chrome") == -1) {
+                Toast.show({
+                    type: "help",
+                    content: "视频面签暂只支持chrome～",
+                  });
+                return;
+            }
         http.initInterview().then((data) => {
             if (this.state.once) {
                 this.props.initNetcall(data.data, true)

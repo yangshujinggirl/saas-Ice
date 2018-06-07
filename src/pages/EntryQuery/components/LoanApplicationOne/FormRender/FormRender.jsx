@@ -60,6 +60,7 @@ export default class FormRender extends Component {
       Component: [],
       list: [],
       dataSource: [],
+      // productList :[],
       overlay: '',
       brandList: [],//品牌列表
       carSystemList: [],//车系列表
@@ -183,13 +184,12 @@ export default class FormRender extends Component {
               initValue: el.value,
               rules: [{ required: el.isRequired, message: '请选择' + el.label }],
             })}
-            dataSource={this.state.productList || []}
+            dataSource={this.state.productList ? this.state.productList  : this.props.productList}
           >
           </Select>
         </FormItem>);
       }
       else if (el.name == 'exhibitionHallHierarchy') {
-        console.log(el.name)
         return (<FormItem key={el.id} className='item' label={this.label(el.label)}
                           {...formItemLayout}>
           <Select
@@ -247,6 +247,7 @@ export default class FormRender extends Component {
                 initValue: el.value ? parseFloat(el.value) : '',
                 rules: [
                   { required: el.isRequired, message: el.label + '不能为空' },
+                  { validator: this.checkN.bind(this,el.isRequired,el.minValue,el.maxValue) },
                 ],
                 props: {
                   onChange: (value) => {
@@ -501,6 +502,30 @@ export default class FormRender extends Component {
       );
     }
   };
+  //验证数字
+  checkN(flag,min,max, rule, value, callback) {
+    console.log(flag);
+    console.log(min);
+    console.log(max);
+    console.log(value);
+    if (value == undefined || value == 'undefined') {
+      callback();
+    } else {
+      if (value != '') {
+        value = parseInt(value);
+        if (value) {
+          var ex = /^[0-9]\d*$/;
+          if (!ex.test(value)) {
+            callback(new Error('请填写数字'));
+          }
+        } else if (isNaN(value)) {
+          callback(new Error('请填写数字'));
+        }
+        callback();
+      }
+    }
+    callback();
+  }
 
   //验证数字
   checkNum(flag, rule, value, callback) {
@@ -912,12 +937,12 @@ export default class FormRender extends Component {
       if (carCarprice) {
         const principalAmount = this.props.field.getValue('principalAmount');
         const loanPercentage = this.props.field.getValue('loanPercentage');
-        if (el.name == 'principalAmount') {
+        if (el.name == 'principalAmount' && principalAmount) {
           var loanPercentage1 = principalAmount / carCarprice * 100.00;
           this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
           return;
         }
-        if (el.name =='loanPercentage') {
+        if (el.name =='loanPercentage' && loanPercentage ) {
           var principalAmount1 = loanPercentage * carCarprice / 100.00;
           this.props.field.setValues({ 'principalAmount': principalAmount1 });
           return;
@@ -927,7 +952,7 @@ export default class FormRender extends Component {
     if(el.name == 'car.carPrice'){
       const carCarprice = this.props.field.getValue('car.carPrice');
       const principalAmount = this.props.field.getValue('principalAmount');
-      if(principalAmount){
+      if(principalAmount && carCarprice){
         var loanPercentage1 = principalAmount / carCarprice * 100.00;
         this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
         return;

@@ -4,15 +4,15 @@ import {
   Grid,
   Form,
   Button,
-  Upload
+  Upload,
 } from '@icedesign/base';
 import {
   DragDropContext,
   DragDropContextProvider,
   DragSourceMonitor,
   DropTargetMonitor,
-} from 'react-dnd'
-import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend'
+} from 'react-dnd';
+import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend';
 import DragContext from './DragContext';
 import PchDragUpload from './DragUpload';
 import Req from '../../reqs/MaterialSubmitReq';
@@ -47,7 +47,8 @@ class MaterialSubmit extends BaseComponent {
           id: 'fileSize',
           title: '限制大小',
         }],
-      fileList: []
+      fileList: [],
+      disabled: false,
     };
 
     this.currentId = 1;
@@ -142,9 +143,9 @@ class MaterialSubmit extends BaseComponent {
       imgURL: data.downloadUrl,
       downloadURL: data.downloadUrl,
       fileURL: data.downloadUrl,
-      status: 'done'
-    })
-    
+      status: 'done',
+    });
+
     this.setState({
       fileList: fileList,
     });
@@ -154,14 +155,17 @@ class MaterialSubmit extends BaseComponent {
   cancel = (e) => {
     e.preventDefault();
     hashHistory.push('/entryQuery');
-  }
+  };
 
   //提交
   submit = () => {
+    this.setState({
+      disabled: true,
+    });
     let id = this.props.params.id;
     let { originData, tableList, dataSource } = this.state;
     let data = [];
-    
+
     originData.map((item) => {
       let key = '';
       if (item.type == '主贷人') {
@@ -190,24 +194,37 @@ class MaterialSubmit extends BaseComponent {
 
     Req.saveMaterial(id, originData)
       .then((res) => {
-          let d = {
-            id: id,
-            status: 'SUBMIT'
-          };
+        let d = {
+          id: id,
+          status: 'SUBMIT',
+        };
 
-          Req.saveFrom(d)
-            .then((res) => {
-                Req.tipSuccess('提交成功');
-                hashHistory.push('/entryQuery');
-            })
-            .catch((errors) => {
-              console.log(errors);
+        Req.saveFrom(d)
+          .then((res) => {
+            this.setState({
+              disabled: false,
             });
+            Req.tipSuccess('提交成功');
+            hashHistory.push('/entryQuery');
+          })
+          .catch((errors) => {
+            console.log(errors);
+            this.setState({
+              disabled: false,
+            });
+            Req.tipError(errors.msg);
+          });
+      })
+      .catch(error => {
+        Req.tipError(errors.msg);
       });
-  }
+  };
 
   //保存
   save = () => {
+    this.setState({
+      disabled: true,
+    });
     let { originData, tableList, dataSource } = this.state;
 
     originData.map((item) => {
@@ -224,19 +241,28 @@ class MaterialSubmit extends BaseComponent {
       });
     });
 
-    console.log(originData)
+    console.log(originData);
     Req.saveMaterial(this.props.params.id, originData)
       .then((res) => {
-          Req.tipSuccess('保存成功，请提交～')
+        this.setState({
+          disabled: false,
+        });
+        Req.tipSuccess('保存成功，请提交～');
+      })
+      .catch(error => {
+        this.setState({
+          disabled: false,
+        });
+        Req.tipError(errors.msg);
       });
-  }
+  };
 
-  handleChangeData(data){
+  handleChangeData(data) {
     this.setState(data);
   }
 
-  handleTestDrop(){
-    console.log(arguments)
+  handleTestDrop() {
+    console.log(arguments);
   }
 
   render() {
@@ -245,7 +271,7 @@ class MaterialSubmit extends BaseComponent {
     return (
       <DragDropContextProvider backend={HTML5Backend}>
         <IceContainer className="pch-container">
-          <Title title="材料提交" />
+          <Title title="材料提交"/>
           <div className="pch-form material-files-form">
             {/*<div className="material-files-upload">
             <PchDragUpload />
@@ -269,7 +295,7 @@ class MaterialSubmit extends BaseComponent {
                 <div className="material-files-upload-button">
                   <div className="icon material-files-upload-button-icon">&#xe628;</div>
                   <p className="material-files-upload-button-text">
-                     {/*将文件拖到此处，或 */}
+                    {/*将文件拖到此处，或 */}
                     <em>点击上传</em>
                   </p>
                 </div>
@@ -277,16 +303,16 @@ class MaterialSubmit extends BaseComponent {
             </div>
             <DragContext
               fileList={fileList}
-              tableList={tableList} 
+              tableList={tableList}
               dataSource={dataSource}
               onChangeData={this.handleChangeData.bind(this)}
             />
-            
+
             <div className="pch-form-buttons">
-              <Button size="large" type="secondary" onClick={this.submit}>
+              <Button size="large" type="secondary" disabled={this.state.disabled} onClick={this.submit}>
                 提交
               </Button>
-              <Button size="large" type="primary" onClick={this.save}>
+              <Button size="large" type="primary" disabled={this.state.disabled} onClick={this.save}>
                 保存
               </Button>
               <Button size="large" type="normal" onClick={this.cancel}>

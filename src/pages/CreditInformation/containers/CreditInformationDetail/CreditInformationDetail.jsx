@@ -27,7 +27,7 @@ export default class CreditInformationDetail extends Component {
     this.field = new Field(this);
     this.state = {
       index: 0,
-      dataSource:[]
+      dataSource: [],
     };
     // 请求参数缓存
     this.queryCache = {};
@@ -51,6 +51,7 @@ export default class CreditInformationDetail extends Component {
     console.log(this.props.params.id);
 
   }
+
   //获取产品列表
   getProductNum() {
     const limit = 990;
@@ -73,9 +74,10 @@ export default class CreditInformationDetail extends Component {
           });
         }
       }, (error) => {
-
+        Req.tipError(error.msg)
       });
   }
+
   // 取消
   handleCancel() {
   }
@@ -152,6 +154,9 @@ export default class CreditInformationDetail extends Component {
   };
   //提交
   submit = (e, data) => {
+    this.setState({
+      disabled: true,
+    });
     e.preventDefault();
     this.field.validate((errors, values) => {
       if (errors) {
@@ -186,17 +191,21 @@ export default class CreditInformationDetail extends Component {
       console.log(dataJson);
       Req.submitReview(dataJson)
         .then((res) => {
-          if (res && res.code == 200) {
-
-            hashHistory.push(`creditinformation`);
-            Toast.show({
-              type: 'success',
-              content: '提交成功～',
-            });
-          }
+          this.setState({
+            disabled: false,
+          });
+          hashHistory.push(`creditinformation`);
+          Toast.show({
+            type: 'success',
+            content: '提交成功～',
+          });
         })
         .catch((error) => {
           console.log(error);
+          this.setState({
+            disabled: false,
+          });
+          Req.tipError(error.msg)
         });
     });
   };
@@ -257,7 +266,8 @@ export default class CreditInformationDetail extends Component {
                     field={this.field}
                     size="large"
                   >
-                    <FormRender {...this.props} data={details.list} init={init} field={this.field} productList={dataSource}
+                    <FormRender {...this.props} data={details.list} init={init} field={this.field}
+                                productList={dataSource}
                                 addColumn={this.addColumn.bind(this)}></FormRender>
                   </Form>
                 </IceFormBinderWrapper>
@@ -266,13 +276,14 @@ export default class CreditInformationDetail extends Component {
                   <MaterialSubmit {...this.props}></MaterialSubmit>
                 </div>
                 <div className='botton-box pch-form-buttons'>
-                  <Button  size="large" type="secondary" onClick={this.back}>返回</Button>
+                  <Button size="large" type="secondary" onClick={this.back}>返回</Button>
                 </div>
               </div>
 
             </Col>
             <Col span="5" className='audit-information'>
-              <ApprovalBox {...this.props} reviewList={chooseMap} submit={this.submit.bind(this)}></ApprovalBox>
+              <ApprovalBox disabled={this.state.disabled} {...this.props} reviewList={chooseMap}
+                           submit={this.submit.bind(this)}></ApprovalBox>
             </Col>
           </Row>
 

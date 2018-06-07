@@ -1319,6 +1319,9 @@ body {
         }
         #interview-box {
             height: 210px;
+            >div {
+                width: 100% !important;
+            }
             &.active {
                 height: 430px;
             }
