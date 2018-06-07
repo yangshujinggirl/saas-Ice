@@ -36,7 +36,7 @@ export default class BaseComponent extends Component {
             imgURL: res.data[0].downloadUrl,
             fileName:res.data[0].filename || res.data[0].name,
             fileURL: res.data[0].downloadUrl,
-            type:res.data[0].fileType,
+            type:res.data[0].contentType,
             size: res.data[0].size
           }
         } else {

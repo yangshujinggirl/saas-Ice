@@ -118,9 +118,11 @@ export default class CreditInformationForm extends BaseComponent {
                   item.downloadURL = item.location;
                   item.fileURL = item.location;
                   item.imgURL = item.location;
+                  item.type = item.type;
                 } else {
                   item.downloadURL = item.location;
                   item.fileURL = item.location;
+                  item.type = item.type;
                   item.imgURL = '/public/images/creditInformation/filed.png';
                 }
               });
@@ -339,6 +341,7 @@ export default class CreditInformationForm extends BaseComponent {
   }
   //上传文件改变时调用
   handleFileChange(info) {
+    console.log(info)
     info.fileList.map(item => {
       if (item.status == 'done') {
         if (this.isImg(item.imgURL)) {
@@ -350,12 +353,14 @@ export default class CreditInformationForm extends BaseComponent {
             item.size = item.originFileObj.size;
             item.downloadURL = item.downloadURL;
             item.fileURL = item.downloadURL;
+            item.type = item.response.type
             item.imgURL = '/public/images/creditInformation/filed.png';
           }
           else{
             item.size = item.originFileObj.size;
             item.downloadURL = item.imgURL;
             item.fileURL = item.imgURL;
+            item.type = item.response.type
             item.imgURL = '/public/images/creditInformation/filed.png';
           }
         }
