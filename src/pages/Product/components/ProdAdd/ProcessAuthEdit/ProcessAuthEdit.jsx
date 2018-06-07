@@ -22,7 +22,6 @@ export default class ProcessAuthEdit extends BaseApp {
             rowSelection: {
                 selectedRowKeys: [],
                 onSelect: (selected, record, records) => {
-                    console.log(selected)
                     if (!selected) {
                         record.selectedRoles = [];
                     }
@@ -46,7 +45,6 @@ export default class ProcessAuthEdit extends BaseApp {
 
                 },
                 onSelectAll:(selected, records)=>{
-                    console.log(selected,records)
                     
                     let { rowSelection } = this.state;
                     let selectedRowKeys = rowSelection.selectedRowKeys;
@@ -88,13 +86,11 @@ export default class ProcessAuthEdit extends BaseApp {
 
                 },
                 onSelectAll:(selected, record,records)=>{
+                     let { orgsData = {} } = this.props;
                     if(!selected){
-                        console.log(record)
-                        let { rowSelectionTwo } = this.state;
-                        rowSelectionTwo.selectedRowKeys = [];
-                        this.setState({
-                            rowSelectionTwo
-                        });
+                        orgsData.otherOrgs.map((item,i)=>{
+                            item.selectedRoles = []
+                        })
                     }
                 }
             }
