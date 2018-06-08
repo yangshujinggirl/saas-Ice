@@ -24,7 +24,7 @@ export default class Deepstream extends Component {
         let _this = this;
         //<!-- ws://deepstream-staging.pingchang666.com --> 予发布
         //<!-- wss://deepstream.pingchang666.com -->生产
-        let client = dt(PC_DEEPSTREAM_HOST);
+        let client = dt(http._config.PC_DEEPSTREAM_HOST);
         // let listNameArr = 'creditCard/d1cb47ee145e9e26008cff0d0c534157$creditCard/0acc7dfd8b1d24edd908c79c01d20574' //队列名称
         client.on('error', function (error) {
             console.log(error)

@@ -46,6 +46,7 @@ git push origin $param
 cd ../
 
 # 执行构建
+export NODE_BUILD=$param
 npm run prod
 
 # 拷贝打包后的代码
