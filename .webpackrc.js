@@ -9,6 +9,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var package = require('./package.json');
 var NODE_ENV = (process.env.NODE_ENV || 'DEVELOPMENT').toUpperCase();
 var __DEV__ = NODE_ENV !== 'PRODUCTION';
+var NODE_BUILD = process.env.NODE_BUILD || 'dev';
 
 module.exports = {
     output: {
@@ -93,7 +94,8 @@ module.exports = {
             // hash: hash,
             author: package.author,
             time: getDate(),
-            env: NODE_ENV
+            env: NODE_ENV,
+            config: getConfig()
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
@@ -128,44 +130,6 @@ module.exports = {
             minChunks: 3
         }),
     ],
-    // module: {
-    //     rules: [{
-    //         test: /\.jsx$/,
-    //         exclude: /node_modules/,
-    //         use: {
-    //             loader: 'babel-loader',
-    //             options: {
-    //                 babelrc: false,
-    //                 presets: [
-    //                     [
-    //                         'babel-preset-env',
-    //                         {
-    //                             modules: false,
-    //                             targets: {
-    //                                 browsers: [
-    //                                     'last 2 versions',
-    //                                     'Firefox ESR',
-    //                                     '> 1%',
-    //                                     'ie >= 9',
-    //                                     'iOS >= 8',
-    //                                     'Android >= 4',
-    //                                 ],
-    //                             },
-    //                         },
-    //                     ],
-    //                     'babel-preset-react',
-    //                     'babel-preset-stage-0',
-    //                 ],
-    //                 plugins: [
-    //                     'syntax-dynamic-import',
-    //                     'babel-plugin-transform-decorators-legacy',
-    //                     'babel-plugin-transform-es2015-object-super',
-    //                     'babel-plugin-transform-runtime',
-    //                 ],
-    //             }
-    //         },
-    //     }, ],
-    // }
 };
 
 
@@ -176,4 +140,12 @@ function getDate() {
 
 function getFullNum(n) {
     return n < 10 ? '0' + n : n;
+}
+
+/**
+ * 获取当前环境需要的配置
+ * @return {[type]} [description]
+ */
+function getConfig(){
+    return {}
 }

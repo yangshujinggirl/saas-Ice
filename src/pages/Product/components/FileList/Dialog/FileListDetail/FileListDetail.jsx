@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Router, Route, Link } from 'react-router'
-import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
+import {
+    FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder, FormError as IceFormError,
 } from '@icedesign/form-binder';
-import { Input, NumberPicker, Checkbox, Select, Table} from '@icedesign/base';
+import { Input, NumberPicker, Checkbox, Select, Table } from '@icedesign/base';
 
-const {Group: CheckboxGroup} = Checkbox;
+const { Group: CheckboxGroup } = Checkbox;
 
 export default class DiaLog extends Component {
 
@@ -25,9 +26,20 @@ export default class DiaLog extends Component {
             return;
         }
 
+        let reg = /\s|\xA0/g;
+        if (reg.test(value)) {
+            callback('不能有空格');
+            return
+        }
+        let reg2 = /[，\s_'’‘\"”“|\\~#$@%^&*!()。;\/<>\?？]/;
+        if (reg2.test(value)) {
+            callback('不能有特殊字符');
+            return
+        }
+
         let { data = [] } = this.props;
         data.map((item, i) => {
-            if(item.fileName == value && i != index){
+            if (item.fileName == value && i != index) {
                 callback('材料名称不能重复');
             }
         })
@@ -40,28 +52,28 @@ export default class DiaLog extends Component {
                 <IceFormBinder required name={`collectionDetails[${index}].fileName`} validator={this.validatorFileName.bind(this, index)}>
                     <Input size="large" placeholder="材料名称" />
                 </IceFormBinder>
-                <div><IceFormError name={`collectionDetails[${index}].fileName`}/></div>
+                <div><IceFormError name={`collectionDetails[${index}].fileName`} /></div>
             </div>
-            );
+        );
     }
 
     renderFileType = (value, index, record, context) => {
         return (
             <div>
-            {record.fileTypeArr && record.fileTypeArr.map((typeItem, j) => {
-                return (
-                    <div className="filelist-exts-row" key={j}>
-                        <span className="filelist-exts-row-name">{typeItem.name}</span>
-                        <IceFormBinder name={`collectionDetails[${index}].fileTypeArr[${j}].value`}>
-                            <CheckboxGroup value={typeItem.value} dataSource={typeItem.exts} onChange={this.props.onChangeType.bind(this, index, j)} />
-                        </IceFormBinder>
-                    </div>
-                )
-            })}
-            <IceFormBinder name={`collectionDetails[${index}].fileType`} required message="文件类型必填">
-                <Input size="large" placeholder="文件类型" htmlType="hidden" />
-            </IceFormBinder>
-            <div><IceFormError name={`collectionDetails[${index}].fileType`}/></div>
+                {record.fileTypeArr && record.fileTypeArr.map((typeItem, j) => {
+                    return (
+                        <div className="filelist-exts-row" key={j}>
+                            <span className="filelist-exts-row-name">{typeItem.name}</span>
+                            <IceFormBinder name={`collectionDetails[${index}].fileTypeArr[${j}].value`}>
+                                <CheckboxGroup value={typeItem.value} dataSource={typeItem.exts} onChange={this.props.onChangeType.bind(this, index, j)} />
+                            </IceFormBinder>
+                        </div>
+                    )
+                })}
+                <IceFormBinder name={`collectionDetails[${index}].fileType`} required message="文件类型必填">
+                    <Input size="large" placeholder="文件类型" htmlType="hidden" />
+                </IceFormBinder>
+                <div><IceFormError name={`collectionDetails[${index}].fileType`} /></div>
             </div>
         );
     }
@@ -76,16 +88,16 @@ export default class DiaLog extends Component {
                         max={100}
                         min={0} />
                 </IceFormBinder>
-                <div><IceFormError name={`collectionDetails[${index}].fileSize`}/></div>
+                <div><IceFormError name={`collectionDetails[${index}].fileSize`} /></div>
             </div>
-            );
+        );
     }
     renderOperate = (value, index, record, context) => {
         return (
             <div className="filter-table-operation">
                 <a href="#" onClick={this.handleRemoveClick.bind(this, record.id, index)}>删除</a>
             </div>
-            );
+        );
     }
 
     handleRemoveClick(id, index, e) {
@@ -94,7 +106,7 @@ export default class DiaLog extends Component {
     }
 
     render() {
-        let {data} = this.props;
+        let { data } = this.props;
         return (
             <Table dataSource={data} className="basic-table">
                 <Table.Column title="材料名称" cell={this.renderFileName} width={230} />
