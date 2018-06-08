@@ -4,6 +4,7 @@ import { Input, Grid, Select, Button, DatePicker, Form } from '@icedesign/base';
 
 import { FormBinderWrapper as IceFormBinderWrapper, FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 const {Row, Col} = Grid;
 const {Option} = Select;
@@ -20,7 +21,7 @@ const formItemLayout = {
 //获取下拉
 import { company_type } from '../../../config'
 
-export default class Filter extends Component {
+export default class Filter extends BaseCondition {
     constructor() {
         super();
 
@@ -50,30 +51,30 @@ export default class Filter extends Component {
                 <IceFormBinderWrapper value={this.state.value} onChange={this.filterFormChange}>
                     <Form size="large" direction="hoz">
                         <Row wrap>
-                            <Col xxs={24} xs={12} l={7} xl={6}>
-                                <FormItem {...formItemLayout} label="证件类型：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="证件类型：">
                                     <IceFormBinder name="icType">
                                         <Select size="large" hasClear={true} placeholder="请选择" dataSource={company_type}>
                                         </Select>
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={7} xl={6}>
-                                <FormItem {...formItemLayout} label="证件号码：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="证件号码：">
                                     <IceFormBinder name="icNo">
                                         <Input size="large" placeholder="证件号码" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={6} xl={6}>
-                                <FormItem {...formItemLayout} label="真实姓名：">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} label="真实姓名：">
                                     <IceFormBinder name="userName">
                                         <Input size="large" placeholder="真实姓名" />
                                     </IceFormBinder>
                                 </FormItem>
                             </Col>
-                            <Col xxs={24} xs={12} l={4} xl={6}>
-                                <FormItem {...formItemLayout} className="pch-condition-operate">
+                            <Col {...this.colspans}>
+                                <FormItem {...this.formItemLayout} className="pch-condition-operate">
                                     <Button onClick={this.handleSubmit.bind(this)} type="secondary" htmlType="submit">
                                         查询
                                     </Button>

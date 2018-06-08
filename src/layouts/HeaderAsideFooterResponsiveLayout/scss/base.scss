@@ -1274,7 +1274,7 @@ body {
     background: #fff;
     z-index: 6;
     max-height: 600px;
-    overflow:auto;
+    overflow:hidden;
     min-height: 330px;
     border-radius: 4px;
     padding-bottom: 20px;
@@ -1286,10 +1286,13 @@ body {
         min-height: 550px;
     }
     .pch-interview-left {
-        float: left;
-        width: 70%;
+        float: right;
+        width: 100%;
         box-sizing: border-box;
         padding-right: 20px;
+        overflow: auto;
+        padding-right: 31%;
+        max-height: 580px;
         .custom-input {
             width: 100% !important;
         }
@@ -1300,8 +1303,8 @@ body {
         }
     }
     .pch-interview-right {
-        position: fixed;
-        right: 5px;
+        position: absolute;
+        right: 15px;
         top: 50px;
         width: 30%;
         min-height: 500px;
