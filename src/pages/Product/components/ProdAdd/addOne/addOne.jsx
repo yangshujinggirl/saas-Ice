@@ -782,6 +782,7 @@ export default class addOne extends BaseCondition {
 											>
 												<Input size="large" placeholder="产品名称"
 													className="custom-input"
+													maxLength="50"
 												/>
 											</IceFormBinder>
 											<div><IceFormError name="name" /></div>
