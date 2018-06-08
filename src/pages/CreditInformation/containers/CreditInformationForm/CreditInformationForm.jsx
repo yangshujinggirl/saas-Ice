@@ -113,25 +113,17 @@ export default class CreditInformationForm extends BaseComponent {
             });
             if (res.data.baseDocuments) {
               res.data.baseDocuments.map(item => {
-                // console.log(item.type.indexOf('image') == 0);
-                if (this.isImg(item.imgURL)) {
-                  item.downloadURL = item.location;
-                  item.fileURL = item.location;
-                  item.imgURL = item.location;
-                  item.type = item.type;
-                } else {
-                  item.downloadURL = item.location;
-                  item.fileURL = item.location;
-                  item.type = item.type;
-                  item.imgURL = '/public/images/creditInformation/filed.png';
-                }
+                item.downloadURL = item.location;
+                item.fileURL = item.location;
+                item.imgURL = item.location;
+                item.type = item.type;
               });
               this.setState({
                 fileList: res.data.baseDocuments,
               });
             }
             //判断第几个人录入 1 代表第一个  2代表第二个
-            console.log(res.data.flowFlag)
+            console.log(res.data.flowFlag);
             if (res.data.flowFlag) {
               this.setState({
                 flowFlag: res.data.flowFlag,
@@ -179,15 +171,16 @@ export default class CreditInformationForm extends BaseComponent {
             type: item.type,
           });
         });
-        if(value.baseDocuments.length > 0){
+        console.log(value);
+        if (value.baseDocuments.length > 0) {
           this.postData(value)
-        }else {
+        } else {
           Toast.show({
             type: 'help',
             content: '请上传文件～',
           });
         }
-      }else{
+      } else {
         this.postData(value);
       }
 
@@ -299,7 +292,7 @@ export default class CreditInformationForm extends BaseComponent {
     if (value) {
       console.log(typeof (value));
       if (parseFloat(value) < 0 || String(value)
-          .indexOf('.') > -1) {
+        .indexOf('.') > -1) {
         callback('只能输入正整数');
         return;
       }
@@ -335,35 +328,41 @@ export default class CreditInformationForm extends BaseComponent {
     }
     return true;
   }
+
   //判断图片类型
   isImg(url) {
     return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
   }
+
   //上传文件改变时调用
   handleFileChange(info) {
-    console.log(info)
+    console.log(info);
     info.fileList.map(item => {
       if (item.status == 'done') {
-        if (this.isImg(item.imgURL)) {
-          item.size = item.originFileObj.size;
-          item.downloadURL = item.imgURL;
-          item.fileURL = item.imgURL;
-        } else {
-          if(item.downloadURL){
-            item.size = item.originFileObj.size;
-            item.downloadURL = item.downloadURL;
-            item.fileURL = item.downloadURL;
-            item.type = item.response.type
-            item.imgURL = '/public/images/creditInformation/filed.png';
-          }
-          else{
-            item.size = item.originFileObj.size;
-            item.downloadURL = item.imgURL;
-            item.fileURL = item.imgURL;
-            item.type = item.response.type
-            item.imgURL = '/public/images/creditInformation/filed.png';
-          }
-        }
+        // item.size = item.response.size;
+        item.downloadURL = item.imgURL;
+        item.fileURL = item.imgURL;
+        item.type = item.response.type;
+        // if (this.isImg(item.imgURL)) {
+        //   item.size = item.originFileObj.size;
+        //   item.downloadURL = item.imgURL;
+        //   item.fileURL = item.imgURL;
+        // } else {
+        //   if (item.downloadURL) {
+        //     item.size = item.originFileObj.size;
+        //     item.downloadURL = item.downloadURL;
+        //     item.fileURL = item.downloadURL;
+        //     item.type = item.response.type;
+        //     item.imgURL = '/public/images/creditInformation/filed.png';
+        //   }
+        //   else {
+        //     item.size = item.originFileObj.size;
+        //     item.downloadURL = item.imgURL;
+        //     item.fileURL = item.imgURL;
+        //     item.type = item.response.type;
+        //     item.imgURL = '/public/images/creditInformation/filed.png';
+        //   }
+        // }
       }
     });
     this.setState(
@@ -375,17 +374,17 @@ export default class CreditInformationForm extends BaseComponent {
   onRemove(info) {
 
     var arr = this.state.fileList;
-    if(this.state.flowFlag == 1){
+    if (this.state.flowFlag == 1) {
       for (var i = 0; i < arr.length; i++) {
         if (arr[i].downloadURL == info.downloadURL) {
           arr.splice(i, 1);
           i--;
         }
       }
-    }else{
+    } else {
       Toast.show({
         type: 'help',
-        content: "不能删除文件",
+        content: '不能删除文件',
       });
     }
     this.setState({
@@ -425,10 +424,10 @@ export default class CreditInformationForm extends BaseComponent {
       }
       if (key == 'loanAccountStatus') {
         return (
-          <Select  size="large" placeholder="请选择" className="custom-input"
+          <Select size="large" placeholder="请选择" className="custom-input"
                   dataSource={this.state.dataList}/>);
       }
-      return (<Select  size="large" placeholder="请选择" className="custom-input"
+      return (<Select size="large" placeholder="请选择" className="custom-input"
                       dataSource={this.state.opption}/>);
 
     }
@@ -443,6 +442,15 @@ export default class CreditInformationForm extends BaseComponent {
     let { fileList, tableList, dataSource } = this.state;
     let { differentFiled = {} } = this.state.value;
     console.log(differentFiled);
+    let  arr = []
+    fileList && fileList.map((item) => {
+      arr.push({
+        ...item,
+        imgURL: this.isImg(item.imgURL) ? item.imgURL : '/public/images/creditInformation/filed.png',
+      })
+
+    });
+
 
     // console.log(list)
 
@@ -474,7 +482,7 @@ export default class CreditInformationForm extends BaseComponent {
               onRemove={this.onRemove.bind(this)}
               className='upload-picture  upload-picture-list'
               listType="picture-card"
-              fileList={fileList}
+              fileList={arr}
             />
             <Form>
               <Row wrap>
@@ -1369,7 +1377,7 @@ const styles = {
     hegiht: '120px',
     maxWidth: '780px',
   },
-  diff :{
-    border: "red 1px solid",
-  }
+  diff: {
+    border: 'red 1px solid',
+  },
 };
