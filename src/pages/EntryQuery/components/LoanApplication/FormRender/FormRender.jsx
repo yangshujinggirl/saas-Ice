@@ -119,6 +119,7 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
+            size = 'large'
             defaultValue={el.value}
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
@@ -148,6 +149,7 @@ export default class FormRender extends Component {
             <Select
               hasClear
               autoWidth
+              size = 'large'
               overlay={this.state.overlay}
               // onClick={this.onInputFocus.bind(this)}
               // onSearch={this.onInputUpdate.bind(this)}
@@ -176,6 +178,7 @@ export default class FormRender extends Component {
         return (<FormItem key={el.id} className='item' label={this.label(el.label)}
                           {...formItemLayout}>
           <Select
+            size = 'large'
             defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
@@ -193,6 +196,7 @@ export default class FormRender extends Component {
         return (<FormItem key={el.id} className='item' label={this.label(el.label)}
                           {...formItemLayout}>
           <Select
+            size = 'large'
             defaultValue={el.value}
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
@@ -217,6 +221,7 @@ export default class FormRender extends Component {
                   {...formItemLayout}>
           <Select
             // defaultValue={el.value}
+            size = 'large'
             disabled={el.isReadonly}
             placeholder={'请选择' + el.label}
             style={{ width: '100%' }}
@@ -263,6 +268,7 @@ export default class FormRender extends Component {
         <FormItem key={el.id} className='item' label={this.label(el.label)}
                   {...formItemLayout}>
           <Input
+            size = 'large'
             disabled={el.isReadonly}
             placeholder={'请输入' + el.label}
             trim
@@ -313,6 +319,7 @@ export default class FormRender extends Component {
                   {...formItemLayout}>
           <Input
             trim
+            size = 'large'
             placeholder={'请输入' + el.label}
             disabled={el.isReadonly}
             addonAfter={el.append}
@@ -473,6 +480,7 @@ export default class FormRender extends Component {
         <FormItem key={el.id} style={{ width: '90%' }} className='item' label={this.label(el.label)}
                   {...formItemLayoutTEXT}>
           <Input multiple='6'
+                 size = 'large'
                  placeholder={'请输入' + el.label}
                  style={{ width: '100%' }}
                  disabled={el.isReadonly}
@@ -490,6 +498,7 @@ export default class FormRender extends Component {
         <FormItem key={el.id} style={{ width: '70%' }} className='item' label={this.label(el.label)}
                   {...formItemLayoutR}>
           <Input
+            size = 'large'
             placeholder={'请输入' + el.label}
             style={{ width: '100%' }}
             disabled={el.isReadonly}
@@ -503,7 +512,6 @@ export default class FormRender extends Component {
       );
     }
   };
-
   //验证数字
   checkNum(el, rule, value, callback) {
     console.log(value);
