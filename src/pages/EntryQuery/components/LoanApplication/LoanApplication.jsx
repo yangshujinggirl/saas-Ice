@@ -219,7 +219,7 @@ export default class LoanApplication extends Component {
     const init = this.field.init;
     const { dataSource = [] } = this.state;
     return (
-      <IceContainer className="loanApplication">
+      <IceContainer className="loanApplication pch-container">
         <legend className="pch-legend">
           <span className="pch-legend-legline"></span>车贷申请
         </legend>

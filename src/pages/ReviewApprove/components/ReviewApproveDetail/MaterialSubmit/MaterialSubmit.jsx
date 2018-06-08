@@ -94,7 +94,7 @@ export default class MaterialSubmit extends Component {
     console.log(dataSource)
     return (
       <div className='info'  id='材料提交' style={styles.center}>
-        <Table dataSource={dataSource} className="basic-table" style={styles.width}>
+        <Table dataSource={dataSource}  style={styles.width}>
           {tableList.map((item,index) =>{
             return (
               <Table.Column title={item.title}  dataIndex={item.id} key={index}/>

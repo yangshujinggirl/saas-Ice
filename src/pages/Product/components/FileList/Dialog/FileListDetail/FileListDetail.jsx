@@ -108,7 +108,7 @@ export default class DiaLog extends Component {
     render() {
         let { data } = this.props;
         return (
-            <Table dataSource={data} className="basic-table">
+            <Table dataSource={data}>
                 <Table.Column title="材料名称" cell={this.renderFileName} width={230} />
                 <Table.Column title="文件类型" cell={this.renderFileType} />
                 <Table.Column title="限制大小" cell={this.renderFileSize} width={200} />

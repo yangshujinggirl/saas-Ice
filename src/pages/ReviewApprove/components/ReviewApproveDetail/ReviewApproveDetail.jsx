@@ -255,7 +255,7 @@ export default class ReviewApproveDetail extends Component {
     const { dataSource = [] } = this.state;
     const init = this.field.init;
     return (
-      <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle ReviewApproveDetail' style={styles.bg}>
+      <IceContainer title="进件审批查询-审批（平常风控）-流程轨迹" className='subtitle pch-container ReviewApproveDetail' style={styles.bg}>
         <div className='pch-form'>
           <Row>
             <Col span="19" className='review-form'>

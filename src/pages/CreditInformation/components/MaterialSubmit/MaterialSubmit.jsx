@@ -89,7 +89,7 @@ export default class MaterialSubmit extends Component {
     let { fileList, tableList, dataSource } = this.state;
     return (
       <div  style={styles.center}>
-        <Table dataSource={dataSource} className="basic-table" style={styles.width}>
+        <Table dataSource={dataSource}  style={styles.width}>
           {tableList.map((item,index) =>{
             return (
               <Table.Column title={item.title}  dataIndex={item.id} key={index}/>

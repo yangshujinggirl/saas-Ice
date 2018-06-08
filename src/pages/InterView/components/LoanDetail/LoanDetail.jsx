@@ -188,7 +188,7 @@ export default class LoanDetail extends Component {
     const contract = this.props.contract;
     console.log(formData);
     return (
-      <div className='LoanDetail'>
+      <div className='LoanDetail pch-container'>
         <div className='pch-form'>
           <Form size="large">
             {

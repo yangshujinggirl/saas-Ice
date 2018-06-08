@@ -147,7 +147,6 @@ export default class EnhanceTable extends Component {
             dataSource={tableData.list}
             isLoading1={tableData.__loading}
             isLoading={this.props.isFetching}
-            className="basic-table"
             style={styles.basicTable}
             hasBorder={false}
           >

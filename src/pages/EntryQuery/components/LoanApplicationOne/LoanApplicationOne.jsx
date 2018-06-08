@@ -354,7 +354,7 @@ class LoanApplicationOne extends Component {
     const { dataSource } = this.state;
     // console.log(list);
     return (
-      <IceContainer className="loanApplicationOne" style={styles.Bottom}>
+      <IceContainer className="loanApplicationOne pch-container" style={styles.Bottom}>
         <legend className="pch-legend">
           <span className="pch-legend-legline"></span>车贷申请
         </legend>

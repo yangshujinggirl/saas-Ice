@@ -120,7 +120,7 @@ class  SearchForm extends BaseCondition {
                     <Button type="secondary" htmlType='submit' onClick={this.handleSubmit.bind(this)}>
                       查询
                     </Button>
-                    
+
                     <Button
                       type="primary"
                       style={{ marginLeft: '10px' }}
@@ -187,7 +187,7 @@ export default class EnhanceTable extends Component {
           <SearchForm onSubmit={(values) =>this.searchConditon(values)}/>
           <Table
             dataSource={list}
-            className="basic-table"
+            // className="basic-table"
             hasBorder={false}
           >
             <Table.Column
