@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 import http from '../pages/InterView/reqs/InterViewReq.js';
 import InterviewDetail from '../pages/InterView/InterViewDetail.jsx';
-import { Dialog } from "@icedesign/base";
+import { Dialog,Feedback } from "@icedesign/base";
 
 export default class InterviwDialog extends Component {
 
@@ -1258,7 +1258,11 @@ export default class InterviwDialog extends Component {
         _this.setState({
             toggleHide: false,
         })
-        _this.props.musicState(false);
+         _this.props.musicState(false);
+         Feedback.toast.show({
+            type: "help",
+            content: "对方已挂断面签～",
+          });
     }
     render() {
         // console.log("this.state", this.state)
