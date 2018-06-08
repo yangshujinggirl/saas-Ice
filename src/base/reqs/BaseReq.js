@@ -51,7 +51,7 @@ class BaseReq {
         headers: header,
         data: options.data,
         params: options.params,
-        timeout: 5000
+        timeout: 10000
       })
       .then(r=>{
         r = this._processResponse(r);
