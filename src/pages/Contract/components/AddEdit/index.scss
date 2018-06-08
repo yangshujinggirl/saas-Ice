@@ -1,0 +1,23 @@
+.contract-edit-pages {
+  #editorElem .w-e-text-container {
+    p {
+      line-height: normal;
+    }
+    height: 600px !important;
+  }
+  .contract-template-add-wrapper {
+    line-height: normal;
+    border: 1px solid #ccc;
+    .contract-template-editor {
+      padding: 0 20px;
+      height: 600px;
+    }
+  }
+  .btns-wrap {
+    text-align:center;
+    padding: 60px 0 200px;
+    button {
+      margin-right: 10px;
+    }
+  }
+}

@@ -1,0 +1,170 @@
+
+
+.loanApplicationOne{
+  .loan{
+    height: 750px;
+    width: 100%;
+    .title{
+      float: left;
+      width: 80%;
+      height: 100%;
+      opacity: 0.6;
+      background: #FDF4E3;
+      box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+      -webkit-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+      -moz-box-shadow: inset 1px 0 0 0 #F6DCA9, inset -1px 0 0 0 #F6DCA9, inset 0 1px 0 0 #F6DCA9, inset 0 -1px 0 0 #F6DCA9;
+      padding: 20px 00px 0px 35px;
+      box-sizing: border-box;
+      font-family: PingFangSC-Regular;
+      font-size: 14px;
+      color: #000000;
+      letter-spacing: 0.92px;
+      line-height: 30px;
+      overflow-y: scroll;
+      a{
+        display: block;
+        color: #000000;
+      }
+      a.active {
+        position: relative;
+        color: #FC9E25;
+        text-decoration: none;
+        &::after {
+          content: '*';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: -11px;
+          font-size: 12px;
+        }
+      }
+      li:hover{
+        cursor:pointer;
+      }
+    }
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  input[type="number"]{
+    -moz-appearance: textfield;
+  }
+  .botton-col{
+    .next-btn-primary{
+      background: #FC9E25 !important;
+      width: 150px;
+      height: 30px;
+    }
+  }
+  .botton-box{
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+  // 修改ui组件错误提示不占空间
+  .next-form-item-control {
+    .next-form-item-explain {
+      top: 29px;
+      position: absolute;
+    }
+  }
+  .pch-form{
+    padding: 20px 0px 0px 0px;
+    .review-form{
+      background: #FFFEFB;
+      border: 1px solid #F6DCA9;
+      border-left: none ;
+      border-radius: 1px;
+      display: inline-flex;
+      height: 800px;
+      .review-page{
+        height: 800px;
+        width: 15%;
+        max-width: 160px;
+        box-sizing: border-box;
+        .title{
+          float: left;
+          width: 100%;
+          height: 100%;
+          background: #FFF3E4;
+          box-sizing: border-box;
+          border: 1px solid #F6DCA9;
+          border-top: none;
+          overflow-y: scroll;
+          ul{
+            padding-left: 25px;
+            a{
+              display: block;
+              color: rgb(102, 102, 102);
+              font-family: PingFangSC-Medium;
+              font-size: 15px;
+              letter-spacing: 0;
+              line-height: 48px;
+              text-align: left;
+            }
+            a.active {
+              position: relative;
+              color: #FC9E25;
+              text-decoration: none;
+              &::after {
+                content: '*';
+                display: block;
+                position: absolute;
+                top: 0;
+                left: -11px;
+                font-size: 12px;
+              }
+            }
+            li:hover{
+              cursor:pointer;
+            }
+          }
+
+        }
+        .title::-webkit-scrollbar {display:none}
+      }
+      .rcontent-edito{
+        float: right;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-y: scroll;
+      }
+      .rcontent-edito::-webkit-scrollbar {
+        display: none;
+      }
+      .review-detail{
+        margin-bottom: 20px;
+        .name{
+          display: block;
+          height: 44px;
+          background: #FFF3E4;
+          border-bottom: 1px solid #F6DCA9;
+          border-radius: 1px;
+          line-height: 44px;
+          font-family: PingFangSC-Medium;
+          font-size: 14px;
+          color: #000000;
+          letter-spacing: 0;
+          padding-left: 24px;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+  .next-number-picker-handler-wrap {
+    display: none;
+  }
+  .next-number-picker-normal .next-number-picker-input {
+    width: 100%;
+  }
+  .next-number-picker-input-wrap {
+    width: 100%;
+  }
+  .next-number-picker-normal {
+    width: 100%;
+  }
+  .next-number-picker-input-wrap {
+    overflow: hidden;
+    float: none;
+  }
+}

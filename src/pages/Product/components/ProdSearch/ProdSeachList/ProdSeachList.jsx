@@ -73,8 +73,10 @@ export default class ProdSeachList extends Component {
   }
   //状态
   status(value, index, record){
-    // 0=未生效；1=生效；2=失效
-    return`${record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')}`
+    let enable = record.enable
+    console.log(enable)
+    // 0=未生效；1=生效；2=失效  
+    return`${enable == '1' ?(record.status=='0'?'关闭':(record.status=='1'?'生效':'失效')):'草稿'}`
   }
   //金额范围
   moneyRange(value, index, record) {
@@ -101,11 +103,13 @@ export default class ProdSeachList extends Component {
     return record.isRetainage? '是':'否'
   }
   renderOperator = (value, index, record) => {
+    let enable = record.enable
     return (
       <div>
         <button
           className="editbtn"
           onClick = {()=>this.editItem(record)}
+          style={{display: enable == 0 ? 'none' : ''}}
         >
           编辑</button>
         <button
@@ -140,6 +144,7 @@ Order=(dataIndex,order) =>{
     order:{desc}
 }
   render() {
+    debugger
     const { list=[], total, limit, page} = this.props.pageData;
     const { init, getValue } = this.field;
 
@@ -243,14 +248,14 @@ Order=(dataIndex,order) =>{
             isZebra={true}
             onSort={this.Order}
           >
-            <Table.Column title="产品编号" dataIndex="productCode" width={160} />
+            <Table.Column title="产品编号ss" dataIndex="productCode" width={160} />
             <Table.Column title="产品名称" dataIndex="name" width={200} />
-            <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} />
+            {/* <Table.Column title="合同显示名称" dataIndex="contractDisplayName" width={160} /> */}
             <Table.Column title="状态" cell={this.status} width={100} />
             <Table.Column title="产品类型" dataIndex="productType" width={160} />
             <Table.Column title="生效期限" cell={this.timeRange} width={250} />
             <Table.Column title="尾款产品" cell={this.isRetainage} width={120} />
-            <Table.Column title="资金方" dataIndex="createdUser" width={120} />
+            <Table.Column title="资方" dataIndex="tenantName" width={120} />
             <Table.Column title="金额范围(元)" width={200} cell={this.moneyRange} />
             <Table.Column title="期限范围(月)" cell={this.monthRange} width={120} />
             <Table.Column title="贷款比率(%)" cell={this.loanNpiRange} width={120} />

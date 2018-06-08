@@ -1,3 +1,46 @@
 .next-transfer-panel-item {
   border:1px solid #ec9d00
 }
+.removeBtn{
+  background: #fff ;
+  color:  #1AA8F0  ;
+  cursor:  pointer ;
+}
+.div {
+  display:  inline-block ;
+  width:  100% ;
+}
+.SpaLeft{
+  margin-left:  20px ;
+  display:  inline-block ;
+  width:  50px ;
+  text-align:  center ;
+}
+.SpaRight {
+  display:  inline-block ;
+  width:  75% ;
+  text-align:  center ;
+}
+.filterCol {
+  display:  flex ;
+  align-items:  center ;
+  margin-bottom:  20px ;
+}
+.formItem {
+  margin-bottom:  24px ;
+}
+.btns {
+  width:  90px ;
+  height:  30px ;
+  line-height:  30px ;
+  border:  none ;
+  font-size:  16px ;
+  border-radius:  none !important ;
+  background:  #FC9E25 ;
+  color:  #fff ;
+  margin-left:  20px
+
+}
+.pagination {
+  margin-top:  10px
+}

@@ -14,19 +14,6 @@ import classNames from 'classnames';
 const { Row, Col } = Grid;
 
 
-@DataBinder({
-  details: {
-    // 详细请求配置请参见 https://github.com/axios/axios
-    url: 'http://172.16.0.242:7300/mock/5a52d55884e9091a31919308/example/loan/derails',
-    defaultBindingData: {
-      list: [],
-      total: 100,
-      pageSize: 10,
-      currentPage: 1,
-    },
-  },
-})
-
 
 export default class LoanDetails extends Component {
   static displayName = 'LoanDetails';
@@ -62,22 +49,32 @@ export default class LoanDetails extends Component {
   //渲染标题
   renderTitle = (data) =>{
     const  list = [];
+    const  titleList = [];
     if(!this.isEmptyObject(data)){
-      var falg = false;
+      var materialsFalg = false;//材料标志falg
+      var trackFalg = false;//轨迹标志falg
       data.map((el,i)=>{
         if(el.name == '材料提交'){
-          falg = true;
+          materialsFalg = true;
         }
+        if(el.name == '流程轨迹'){
+          trackFalg = true;
+        }
+        titleList.push(el);
       })
-      if(!falg){
-        data.push({name:'材料提交',fields:[]})
+      if(!trackFalg){
+        titleList.unshift({name:'流程轨迹',fields:[]})
       }
-      data.map((item,index)=>{
+      if(!materialsFalg){
+        titleList.push({name:'材料提交',fields:[]})
+      }
+
+      titleList.map((item,index)=>{
         var btnClass = classNames({
           'active': this.state.index == index,
         });
         list.push(
-          <a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a>
+          <li><a  key={index} className={btnClass}  onClick={this.titleClick.bind(this,index,item.name)}>{item.name}</a></li>
         )
       })
     }
@@ -100,7 +97,10 @@ export default class LoanDetails extends Component {
   //请求数据
   fetchData = () => {
     let {actions} = this.props;
-    actions.getDetail(this.props.params.id);
+    actions.getDetail({
+      id:this.props.params.id,
+      // step:1
+    });
     // this.props.updateBindingData('details', {
     //   data:this.queryCache ,
     // });
@@ -116,34 +116,48 @@ export default class LoanDetails extends Component {
   render() {
     // const details = this.props.bindingData.details;
     const details = this.props.detail || {};
-    console.log(details.list)
-    console.log(details)
-    console.log(this.props.params);
     return (
-      <IceContainer title="车贷申请" className='subtitle' style={styles.bg}>
-            <Row  className='modify-page'>
-                <Col span="3">
-                  <div className='title'>
-                    <ul>
-                      {this.renderTitle(details.list)}
-                    </ul>
-                  </div>
-                </Col>
-                <Col span="21" className='modify-form'>
-                  <div className="rcontent-edito">
-                    <Detail dataSource={details.list} ></Detail>
-                    <MaterialSubmit {...this.props}></MaterialSubmit>
-                    <EntryTrack {...this.props}></EntryTrack>
-                    <div className='botton-box'>
-                      <Button className='botton' onClick={this.back}>返回</Button>
-                    </div>
-                  </div>
+      <IceContainer className="loan-details">
+        <legend className="pch-legend">
+          <span className="pch-legend-legline"></span>车贷申请
+        </legend>
+        <div className='pch-form'>
+          <Row>
+            <Col className='review-form'>
+              <div className='review-page'>
+                <div className='title'>
+                  <ul>
+                    {this.renderTitle(details.list)}
+                  </ul>
+                </div>
+              </div>
+              <div className="rcontent-edito modify-form">
+                <div className='review-detail' id='流程轨迹'>
+                  <span className='name'>流程轨迹</span>
+                  <EntryTrack {...this.props} dataSource={details.list}></EntryTrack>
+                </div>
+
+                <Detail dataSource={details.list} ></Detail>
+
+                <div className='review-detail' id='材料提交'>
+                  <span className='name'>材料提交</span>
+                  <MaterialSubmit {...this.props}></MaterialSubmit>
+                </div>
+                <div className='botton-box pch-form-buttons'>
+                  <Button size="large" type="secondary" onClick={this.back}>返回</Button>
+                </div>
+              </div>
 
 
-                </Col>
-            </Row>
+            </Col>
+          </Row>
 
+        </div>
       </IceContainer>
+
+
+
+
     );
   }
 }
@@ -151,5 +165,8 @@ export default class LoanDetails extends Component {
 const styles = {
   bg:{
     backgroundColor:'#fffffB'
-  }
+  },
+  Bottom: {
+    marginBottom: '10px',
+  },
 };

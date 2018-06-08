@@ -4,8 +4,6 @@
 }
 .pch-breadcrumb {
   background-color: #fff;
-//   height: 34px;
-//   line-height: 34px;
   padding: 0 20px;
   border-radius: 2px;
   .layui-breadcrumb {
@@ -25,25 +23,13 @@
   }
 }
 
-// .legend {
-//     margin-left: 0;
-//     padding-left: 15px;
-//     padding-top: 12px;
-//     background-color: #fff;
-//     font-size: 18px;
-//     font-weight: 500;
-//     line-height: 25px;
-//     padding-bottom: 14px;
-//     .legLine {
-//         display: inline-block;
-//         zoom: 1;
-//         vertical-align: top;
-//         margin-right: 12px;
-//         width: 4px;
-//         height: 25px;
-//         background-color: #ec9d00;
-//     }  
-// }
+.form{
+    padding-top:0px !important;
+    padding-left: 0 !important;
+}
+.select {
+    width: 174px !important;
+}
 .lx-mid-line {
     padding-left: 3px !important;
     padding-right: 3px !important;
@@ -62,9 +48,7 @@
     padding: 0 2px;
     color: #dd4444;
 }
-.next-checkbox-label {
-    margin:0 10px;
-}
+
 .layui-textarea {
     min-height: 100px;
     height: auto;
@@ -75,19 +59,6 @@
     line-height: 20px;
     border-color: #999
 }
-// .f-box {
-//     margin: 0 15px;
-//     padding: 25px 0 0 0;
-//     border-top: 1px solid #d8d8d8;
-// }
-// .table-title {
-//     height: 41px;
-//     line-height: 41px;
-//     text-align: center;
-//     border: 1px solid #f6dca9;
-//     border-bottom: none;
-//     background: #fdf4e3;
-// }
 
 .deleteBtn {
     border: none;
@@ -97,29 +68,29 @@
 
 }
 
-// .next-btn-box {
-//     width: 100%;
-//     text-align: center;
-//     // overflow: hidden;
-//     height: 100px;
-//     position: relative;
-//     cursor: pointer;
-//     .next-btn-lx {
-//         position: absolute;
-//         top:20px;
-//         left: 50%;
-//         height: 50px;
-//         width: 120px;
-//         background: #FC9E25;
-//         color: #fff;
-//         text-align: center;
-//         line-height: 50px;
-//         font-size: 18px;
-//     }
-// }
-
 .next-transfer-operations .next-btn-primary {
     background: #ec9d00 !important;
 }
+.process-lable{
+    height: 34px;
+    line-height: 34px;
+}
 
-
+.pc-form-line{
+    background: #FFF3E4;
+    padding-top:10px;
+    height: 58px; 
+}
+.addThree-detail-btn{
+    cursor: pointer;
+    color: #1AA8F0;
+    height: 58px;
+    line-height: 35px;
+}
+.addThree-detail-btn:hover{
+    color: #1AA8F0;
+}
+.process-labe-width{
+    display: inline-block;
+    width: 400%;
+}

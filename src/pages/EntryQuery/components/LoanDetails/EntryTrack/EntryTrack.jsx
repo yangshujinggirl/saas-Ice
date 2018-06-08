@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import {  Table } from '@icedesign/base';
+import { Tablex } from '@icedesign/base';
 import Req from '../../../reqs/EntryQueryReq';
-import  './EntryTrack.scss'
-import  classNames from  'classnames'
+import './EntryTrack.scss';
+import classNames from 'classnames';
+import { Feedback } from '@icedesign/base/index';
+
+const Toast = Feedback.toast;
 export default class EntryTrack extends Component {
   static displayName = 'EntryTrack';
 
@@ -15,108 +18,105 @@ export default class EntryTrack extends Component {
     super(props);
     this.state = {
       value: {},
-      Component :[],
+      Component: [],
       dataSource: [],
-      trackList:[
-        {
-          "taskId" : "123",  // 任务id
-          "taskName" : "任务名称",
-          "taskAlias" : "任务别名",
-          "status" : "通过",  // 任务状态
-          "approveMsg" : "审核意见",
-          "changeFields" : {  // 进件变更字段
-            "salesman" : "张三",
-            "nationality" : "中国",
-            "housePropertyNumber" : "195345421",
-          },
-          "operatorName" : "张三",
-          "operatorNum" : "操作人账号",
-          "approveDate" : "2018-12-22 12:22:33"
-        },
-        {
-          "taskId" : "234",  // 任务id
-          "taskName" : "任务名称",
-          "taskAlias" : "任务别名",
-          "status" : "拒绝",  // 任务状态
-          "approveMsg" : "审核意见",
-          "changeFields" : {  // 进件变更字段
-            "salesman" : "张三",
-            "nationality" : "中国",
-            "housePropertyNumber" : "195345421",
-          },
-          "operatorName" : "张三",
-          "operatorNum" : "操作人账号",
-          "approveDate" : "2018-12-22 12:22:33"
-        },
-        {
-          "taskId" : "432",  // 任务id
-          "taskName" : "任务名称",
-          "taskAlias" : "任务别名",
-          "status" : "退回中行审查",  // 任务状态
-          "approveMsg" : "审核意见",
-          "changeFields" : {  // 进件变更字段
-            "salesman" : "张三",
-            "nationality" : "中国",
-            "housePropertyNumber" : "195345421",
-          },
-          "operatorName" : "张三",
-          "operatorNum" : "操作人账号",
-          "approveDate" : "2018-12-22 12:22:33"
-        },
-      ]
+      trackList: [],
     };
   }
-  componentDidMount(){
-    // this.getLoanUpload(this.props.params.id);
-    console.log(this.props)
-  }
-  //获取上传资料列表
-  getLoanUpload(id) {
 
-  }
-  renderTrack(trackList){
+  componentDidMount() {
+    let { actions } = this.props;
+    // console.log(this.props)
 
+    Req.getTrackDetail({
+      businessId: this.props.params.id,
+      isApproveInfo: false,
+    })
+      .then((res) => {
+        this.setState({
+          trackList: res.data.trackList ? res.data.trackList : [],
+        });
+      })
+      .catch(error => {
+        Toast.show({
+          type: 'error',
+          content: error.msg,
+        });
+      });
   }
+
+  //判断Json是否为kong
+  isEmptyObject(e) {
+    var t;
+    for (t in e) {
+      return false;
+    }
+    return true;
+  }
+
+  //获取变更字段
+  changeFile = (data) => {
+    var list = [];
+    if (data.length > 0) {
+      data.map((item) => {
+        list.push(<span key={i}>{item.name}: <i>({item.value})</i></span>);
+      });
+    }
+    return list;
+  };
+
   render() {
     let { trackList } = this.state;
-    console.log(trackList)
+    // console.log(trackList)
     return (
-      <div className="part-same part-process info" id='流程轨迹'>
-        <h4>流程轨迹</h4>
+      <div className="part-same part-process info review-detail" id='流程轨迹'>
+
         <div className="process-action">
           {
-
-            trackList.map((item,index)=>{
+            trackList.map((item, index) => {
               var status = classNames({
-                'circle status-error': item.status,
-                'circle status-success': item.status,
-                'circle status-return': item.status,
-                'circle status-manpower': item.status,
+                'circle status-red': item.choose == 'REJECT',
+                'circle status-orange': item.choose == undefined || item.choose == 'TOMAN',
+                'circle status-green': item.choose == 'PASS' || item.choose == 'SUBMIT',
+                'circle status-gray': item.choose == 'BACK',
               });
 
               return (
                 <div className="item" key={index}>
-                  <div className={status}>{item.status}</div>
-                  <div className="status-title"><b>{item.taskName}</b></div>
-                  <div className="status-desc">
-                    <span>申请金额:10000 <i>(7000)</i></span>
-                    <span>申请金额:10000 <i>(7000)</i></span>
-                    <span>审查意见:驰名商标是否具有明确含义的，并且与汉字形成一一对应的关系</span>
+                  <div className={status}>
+                    <span>{item.chooseLable}</span>
                   </div>
-                  {/*<div className="content">*/}
-                  {/*<p className="opinion">评审意见:<span>{item.approveMsg}</span></p>*/}
-                  {/*</div>*/}
+                  <div className="status-title"><b>{item.taskAlias}</b></div>
+                  <div className="status-desc">
+                    {
+                      item.changeFieldsLabel ?
+                        item.changeFieldsLabel.split('|')
+                          .map(el => {
+                              return (<span>{el}</span>);
+                            },
+                          ) : (<span></span>)
+                    }
+                    {
+                      item.approveMsg ? (<span>审查意见:{item.approveMsg}</span>) : (<span></span>)
+                    }
+                    {
+                      item.loanLabel ? (<span>{item.loanLabel}</span>) : (<span></span>)
+                    }
+
+                  </div>
+
                   <div className="content">
-                    <p><b>办理人:</b>&nbsp;&nbsp;{item.operatorName}（{item.operatorNum}）</p>
+                    <p>办理人:<b>&nbsp;&nbsp;{item.operatorName}</b></p>
                   </div>
 
                   <div className="content">
                     <p className='time'>时间：{item.approveDate}</p>
                   </div>
 
-                </div>)
+                </div>);
             })
           }
+          <div className='oneline'></div>
         </div>
       </div>
 

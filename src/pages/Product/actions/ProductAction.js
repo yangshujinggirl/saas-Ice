@@ -6,9 +6,10 @@ import { hashHistory } from 'react-router';
 /**
  * 请求开始的通知
  */
-function fetchStart() {
+function fetchStart(data = {}) {
   return {
     type: T.FETCH_START,
+    ...data,
     time: Date.now()
   }
 }
@@ -57,7 +58,7 @@ export const prodActions = (condition) => {
       if (!res || res.code != 200) {
         data = {};
       }
-      
+
       // 添加一个默认全部选项
       data.repaymentPeriodFrequency && data.repaymentPeriodFrequency.splice(0, 0, {
         value: 'ALL_CHOICE',
@@ -93,10 +94,9 @@ export const save = (data) => {
     dispatch(fetchStart())
 
     Req.save(data).then((res) => {
-      if (!res || res.code != 200) return;
-      // console.log(res)
       hashHistory.push(`/product/addtwo/${res.data.id}`)
     }).catch((ex) => {
+      Req.tipError(ex.msg,1000)
       dispatch(fetchFailed(ex))
     })
   }
@@ -109,21 +109,56 @@ export const productsave = (data, id) => {
 
     Req.productsave(data, id).then((res) => {
       if (!res || res.code != 200) return;
-      hashHistory.push(`/product/addthree/${id}`)
+      hashHistory.push(`/product/process/${id}`)
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
   }
 }
-////产品提交第三步保存
-export const prodHtmlSave = (data, id) => {
+//产品权限编辑
+export const saveProductAuth = (data,id) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.prodHtmlSave(data, id).then((res) => {
+    Req.saveProductAuth(data, id).then((res) => {
       if (!res || res.code != 200) return;
-      hashHistory.push('/product/search')
+      hashHistory.push(`/product/addthree/${id}`)
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+
+}
+//产品提交第三步保存
+export const saveProductAdd = (id, data,processDefId,tempData) => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.saveProductAdd(id, data,processDefId).then((res) => {
+
+      if (!res || res.code != 200){
+        return;
+      }else{
+        Req.getProductStatus(id).then((res)=>{
+          dispatch(fetchSuccess({ status: true }))
+        }).catch((ex)=>{
+            dispatch(fetchFailed(ex))
+
+        })
+
+
+        Req.saveContractTemplate(tempData).then((res)=>{
+          if (!res || res.code != 200) return;
+
+          hashHistory.push('/product/search');
+
+        }).catch((ex)=>{
+            dispatch(fetchFailed(ex))
+
+        })
+
+
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -135,7 +170,9 @@ export const getDetail = (id) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data }))
+      if(res.code==200){
+        dispatch(fetchSuccess({ formData: res.data }))
+      }
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -170,16 +207,19 @@ export const edit = (id) => {
 //产品修改后保存
 export const prodrevise = (condition) => {
   return (dispatch) => {
-    dispatch(fetchStart())
+    dispatch(fetchStart({isSubmiting: true}))
     Req.prodrevise(condition).then((res) => {
-      if (!res || res.code != 200) return;
+      Req.tipSuccess('编辑成功！',500,() => {
+          dispatch(fetchSuccess({isSubmiting: false}))
+          hashHistory.push('/product/search');
+      });
     }).catch((ex) => {
-      dispatch(fetchFailed(ex))
+      dispatch(fetchStart({isSubmiting: false}))
+      // dispatch(fetchFailed(ex))
     })
   }
 }
-
-// 获取材料列表
+  //材料清单查询
 export const filesearch = (condition) => {
   return (dispatch) => {
     dispatch(fetchStart())
@@ -190,6 +230,7 @@ export const filesearch = (condition) => {
     })
   }
 }
+
 
 //材料清单明细
 export const fileDetail = (id) => {
@@ -236,7 +277,9 @@ export const fileremove = (id) => {
       filesearch()(dispatch);
       //dispatch(fetchSuccess({delete: true}))
     }).catch((ex) => {
-      dispatch(fetchFailed(ex))
+        Req.tipError('该材料清单明细已关联进件数据，不能删除！',3000)
+        filesearch()(dispatch);
+      // dispatch(fetchFailed(ex))
     })
   }
 }
@@ -271,11 +314,24 @@ export const fileEditSave = (value, id) => {
   }
 }
 
+//品牌、车型、车系
 export const addTwoList = (data, formData, page) => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.addTwoList(data, formData, page).then((res) => {
-      dispatch(fetchSuccess({ addTwoData: res }))
+      dispatch(fetchSuccess({ addTwoData: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+//集团、渠道、厅店
+export const getGroupList = (data, formData, page) =>{
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.getGroupList(data, formData, page).then((res) => {
+      dispatch(fetchSuccess({ groupData: res.data }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
     })
@@ -314,14 +370,49 @@ export const fileNameRepeat = (condition) => {
   }
 }
 
-export function changeViewToForm() {
-  return change({ view: 'form' });
+//合同模板列表
+export const getContractTemplateList = (condition)=>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getContractTemplateList(condition).then((res) => {
+      if (res.code == 200) {
+        dispatch(fetchSuccess({ templateList: res.data }))
+      }
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
 }
 
-export function changeViewToList() {
-  return change({ view: 'list' });
+//渠道
+export const getProdeuctAgency=(condition)=>{
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.getProdeuctAgency(condition).then((res) => {
+      if (!res || res.code != 200) return;
+      dispatch(fetchSuccess({ AgencyData: res.data }))
+
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
 }
 
-export function changeViewToView() {
-  return change({ view: 'view' });
+
+//权限编辑机构／角色
+export const getPrivilegeOrgs = () => {
+  return (dispatch)=>{
+    dispatch(fetchStart())
+
+    Req.getPrivilegeOrgs().then((res) => {
+      // if (res.code != 200) return;
+      dispatch(fetchSuccess({ orgsData: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
 }

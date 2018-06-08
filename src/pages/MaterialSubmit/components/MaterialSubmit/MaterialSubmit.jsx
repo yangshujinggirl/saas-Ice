@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select ,Field,NumberPicker, Balloon, Radio, Checkbox, DatePicker,Table, Upload } from '@icedesign/base';
-import { DragDropContext, DropTarget } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import DragFile from './DragFile';
-import DropCell from './DropCell';
-import  Req from '../../reqs/MaterialSubmitReq'
+import {
+  Grid,
+  Form,
+  Button,
+  Upload,
+} from '@icedesign/base';
+import {
+  DragDropContext,
+  DragDropContextProvider,
+  DragSourceMonitor,
+  DropTargetMonitor,
+} from 'react-dnd';
+import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend';
+import DragContext from './DragContext';
+import PchDragUpload from './DragUpload';
+import Req from '../../reqs/MaterialSubmitReq';
 import { hashHistory } from 'react-router';
-const { DragUpload, ImageUpload } = Upload;
-require('./index.scss')
-import { Feedback } from "@icedesign/base";
+import { BaseComponent } from 'base';
+import { Title } from 'components';
 
-const Toast = Feedback.toast;
-const cardTarget = {
-  drop() {},
-}
+require('./index.scss');
+const { Core, DragUpload, ImageUpload } = Upload;
 
-class MaterialSubmit extends Component {
+class MaterialSubmit extends BaseComponent {
   static displayName = 'MaterialSubmit';
 
   static propTypes = {};
@@ -26,249 +33,297 @@ class MaterialSubmit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      queryCache:{},
-      value: {},
-      Component :[],
       dataSource: [],
       tableList: [
-        {id: 'id',title:'序号'},
-        {id:'fileName',title: '材料名称'},
-        {id:'fileSize',title:'限制大小'}],
-      fileList: [
-      // {
-      //   id: 1,
-      //   fileName: "IMG.png",
-      //   status: "done",
-      //   size: 1024,
-      //   downloadURL:
-      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-      //   fileURL:
-      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg",
-      //   imgURL:
-      //     "https://img.alicdn.com/tps/TB19O79MVXXXXcZXVXXXXXXXXXX-1024-1024.jpg"
-      // }
-      ],
-      upLoadList:[]
+        {
+          id: 'id',
+          title: '序号',
+        },
+        {
+          id: 'fileName',
+          title: '材料名称',
+        },
+        {
+          id: 'fileSize',
+          title: '限制大小',
+        }],
+      fileList: [],
+      disabled: false,
     };
+
+    this.currentId = 1;
   }
-  componentDidMount(){
+
+  componentDidMount() {
     this.getLoanUpload(this.props.params.id);
-    console.log(this.props)
   }
+
   //获取上传资料列表
   getLoanUpload(id) {
     Req.getLoanUploadApi(id)
       .then((res) => {
-        if(!res || res.code != 200){
-          return;
-        }
-
         const { data } = res;
         const { list } = data;
 
         let dataSource = [];
-        if(list && list.length > 0 && list[0].collectionDetails){
+        if (list && list.length > 0 && list[0].collectionDetails) {
           dataSource = list[0].collectionDetails;
         }
 
         list.map((el) => {
-          var _josn = {}
-          if(el.type == '主贷人'){
-             _josn = {id:'principalLender',title:el.name ,draggable:true}
-            this.state.tableList.push(_josn)
+          var _josn = {};
+          if (el.type == '主贷人') {
+            _josn = {
+              id: 'principalLender',
+              title: el.name,
+              draggable: true,
+            };
+            this.state.tableList.push(_josn);
             this.processDataSource(dataSource, 'principalLender');
-          }
-          else if(el.type == '共借人'){
-            _josn = {id:'coBorrower',title:el.name ,draggable:true}
-            this.state.tableList.push(_josn)
+          } else if (el.type == '共借人') {
+            _josn = {
+              id: 'coBorrower',
+              title: el.name,
+              draggable: true,
+            };
+            this.state.tableList.push(_josn);
             this.processDataSource(dataSource, 'coBorrower');
           }
-          if(el.type == '担保人'){
-            _josn = {id:'guarantor',title:el.name ,draggable:true}
-            this.state.tableList.push(_josn)
+          if (el.type == '担保人') {
+            _josn = {
+              id: 'guarantor',
+              title: el.name,
+              draggable: true,
+            };
+            this.state.tableList.push(_josn);
             this.processDataSource(dataSource, 'guarantor');
           }
-        })
+        });
         this.setState({
-          dataSource:dataSource,
-          originData: list
-        })
-      },(error) => {
-        console.log(error)
-      })
+          dataSource: dataSource,
+          originData: list,
+        });
+      }, (error) => {
+        console.log(error);
+      });
   }
-  processDataSource(dataSource, key){
+
+  processDataSource(dataSource, key) {
     dataSource.map((item, i) => {
       item[key] = item.downloadUrl;
     });
   }
-  handleFileChange(info){
-    console.log(info)
-    this.setState({fileList: info.fileList})
-  }
-  renderCell(key, value, index, record){
-    return(
-      <DropCell
-        key={record.id}
-        index={index}
-        data={record}
-        type={key}
-        moveCard={this.moveCard.bind(this)}
-        onRemoveClick={this.handleRemoveClick.bind(this)}
-      />
-    )
-  }
-  findFile(id){
-    const { fileList } = this.state
-    const file = fileList.filter(c => c.id === id)[0]
 
-    return {
-      file,
-      index: fileList.indexOf(file),
-    }
-  }
-  moveCard(targetIndex, sourceId, isCancel, lastTargetIndex, type) {
-    // console.log('moveCard', arguments);
-    let { dataSource, fileList} = this.state
-    let dragCard = this.findFile(sourceId);
-    let d = dataSource[targetIndex];
-
-    if(isCancel){
-      d[type] = undefined;
-      dragCard.file.isUsed = false;
-    }else{
-      if(typeof lastTargetIndex != 'undefined'){
-        dataSource[lastTargetIndex][type] = undefined;
+  handleFileChange(info) {
+    // console.log(info);
+    info.fileList.map((item, i) => {
+      if (item.status == 'done') {
+        if (!item.id) {
+          item.id = this.currentId;
+          this.currentId++;
+        }
+        item.size = item.originFileObj.size;
+        item.downloadURL = item.imgURL;
+        item.fileURL = item.imgURL;
       }
-      if(typeof d.sourceId != 'undefined'){
-        let lastDragCard = this.findFile(d.sourceId);
-        lastDragCard.file.isUsed = false;
-      }
-      dragCard.file.isUsed = true;
-      d[type] = dragCard.file.imgURL;
-      d.sourceIndex = dragCard.index;
-      d.sourceId = sourceId;
-    }
-    this.setState({dataSource,fileList})
-  }
-  handleRemoveClick(index, sourceId, type, imgURL){
-    let { dataSource, fileList} = this.state;
-    let dragCard = this.findFile(sourceId);
-    let d = dataSource[index];
+    });
 
-    if(!sourceId){
-      fileList.push({
-        id: fileList.length + 1,
-        imgURL: imgURL,
-        status: 'done'
-      })
-    }else{
-      dragCard.file.isUsed = false;
-    }
-    d[type] = undefined;
-    this.setState({dataSource,fileList})
+    this.setState({
+      fileList: info.fileList,
+    });
   }
+
+  handleSuccessChange(data, file) {
+    data = data.data[0];
+    let fileList = this.state.fileList;
+    fileList.push({
+      id: this.currentId,
+      size: data.size,
+      fileName: data.name,
+      imgURL: data.downloadUrl,
+      downloadURL: data.downloadUrl,
+      fileURL: data.downloadUrl,
+      status: 'done',
+    });
+
+    this.setState({
+      fileList: fileList,
+    });
+  }
+
   //cancel 提交
   cancel = (e) => {
     e.preventDefault();
     hashHistory.push('/entryQuery');
-  }
+  };
+
   //提交
   submit = () => {
-    this.state.queryCache.id = this.props.params.id;
-    this.state.queryCache.status = 1;
 
+    let id = this.props.params.id;
     let { originData, tableList, dataSource } = this.state;
     let data = [];
-    originData.map((item) =>{
+
+    originData.map((item) => {
       let key = '';
-      if(item.type == '主贷人'){
+      if (item.type == '主贷人') {
         key = 'principalLender';
-      }else if(item.type == '共借人'){
+      } else if (item.type == '共借人') {
         key = 'coBorrower';
-      }else{
+      } else {
         key = 'guarantor';
       }
       item.collectionDetails.map((citem, j) => {
-        citem.downloadUrl = dataSource[j][key]
-      })
-    })
+        citem.downloadUrl = dataSource[j][key];
+      });
+    });
 
     console.log(originData);
-    Req.saveMaterial(this.props.params.id, originData).then((res) => {
-      if(res && res.code == 200){
-
-        Req.saveFrom(this.state.queryCache).then((res) =>{
-          console.log(res)
-          if(res && res.code == 200){
-            Toast.success('提交成功');
-            hashHistory.push('/entryQuery');
-          }
-        }).catch((errors) =>{
-          console.log(errors);
-        });
+    for (var i = 0; i < originData.length; i++) {
+      for (var j = 0; j < originData[i].collectionDetails.length; j++) {
+        var el = originData[i].collectionDetails[j];
+        // console.log(el);
+        if (!el.downloadUrl) {
+          Req.tipError(`${originData[i].type}${originData[i].name}的${el.fileName}材料必须上传~`);
+          return;
+        }
       }
-    })
-  }
+    }
+    this.setState({
+      disabled: true,
+    });
+    Req.saveMaterial(id, originData)
+      .then((res) => {
+        let d = {
+          id: id,
+          status: 'SUBMIT',
+        };
+
+        Req.saveFrom(d)
+          .then((res) => {
+            this.setState({
+              disabled: false,
+            });
+            Req.tipSuccess('提交成功');
+            hashHistory.push('/entryQuery');
+          })
+          .catch((errors) => {
+            console.log(errors);
+            this.setState({
+              disabled: false,
+            });
+            Req.tipError(errors.msg);
+          });
+      })
+      .catch(error => {
+        Req.tipError(errors.msg);
+      });
+  };
+
   //保存
-  save =  () =>{
-    Toast.success('保存成功，请提交～');
+  save = () => {
+    let { originData, tableList, dataSource } = this.state;
+
+    originData.map((item) => {
+      let key = '';
+      if (item.type == '主贷人') {
+        key = 'principalLender';
+      } else if (item.type == '共借人') {
+        key = 'coBorrower';
+      } else {
+        key = 'guarantor';
+      }
+      item.collectionDetails.map((citem, j) => {
+        citem.downloadUrl = dataSource[j][key];
+      });
+    });
+
+    console.log(originData);
+    this.setState({
+      disabled: true,
+    });
+    Req.saveMaterial(this.props.params.id, originData)
+      .then((res) => {
+        this.setState({
+          disabled: false,
+        });
+        Req.tipSuccess('保存成功，请提交～');
+      })
+      .catch(error => {
+        this.setState({
+          disabled: false,
+        });
+        Req.tipError(errors.msg);
+      });
+  };
+
+  handleChangeData(data) {
+    this.setState(data);
   }
+
+  handleTestDrop() {
+    console.log(arguments);
+  }
+
   render() {
-    const { connectDropTarget  } = this.props
+    const { connectDropTarget } = this.props;
     let { fileList, tableList, dataSource } = this.state;
-    return connectDropTarget(
-      <div>
-        <IceContainer title="材料提交" className='subtitle'>
-          <ImageUpload
-            className='upload-picture'
-            listType="picture-card"
-            action="/loanApi/file/upload"
-            data={{'path':'path/to/file'}}
-            formatter={(res) => {return { code: res.length>0? '0' : '1', imgURL: res[0].downloadUrl} }}
-            accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-            fileList={this.state.fileList}
-            showUploadList={false}
-            onChange={this.handleFileChange.bind(this)}
-          />
-          <div
-            className="material-files"
-            >
-            {fileList.map((item, idx) => {
-              return(
-                <DragFile
-                  key={idx}
-                  id={item.id}
-                  index={idx}
-                  data={item}
-                  moveCard={this.moveCard.bind(this)}
-                />
-              )
-            })}
-          </div>
-          <Table dataSource={dataSource} className="basic-table">
-            {tableList.map((item,index) =>{
-              let myCell;
-              if(item.draggable){
-                myCell = this.renderCell.bind(this, item.id);
-              }
-              return (
-                <Table.Column title={item.title} cell={myCell} dataIndex={item.id} key={index}/>
-              )
-            })}
-          </Table>
-          <div className='button-box'>
-            <Button onClick={this.submit}>提交</Button>
-            <Button onClick={this.save}>保存</Button>
-            <Button onClick={this.cancel}>取消</Button>
+    return (
+      <DragDropContextProvider backend={HTML5Backend}>
+        <IceContainer className="pch-container">
+          <Title title="材料提交"/>
+          <div className="pch-form material-files-form">
+            {/*<div className="material-files-upload">
+            <PchDragUpload />
+            </div>*/}
+            {/*<div className="material-files-upload">
+              <DragUpload
+                {...this.UPLOAD_CONFIG}
+                showUploadList={false}
+                accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+              />
+            </div>
+            <br/>*/}
+            <div className="material-files-upload" onDrop={this.handleTestDrop}>
+              <Upload
+                {...this.UPLOAD_CONFIG}
+                className="material-files-upload-upload"
+                fileList={fileList}
+                showUploadList={false}
+                draggable={true}
+                onChange={this.handleFileChange.bind(this)}>
+                <div className="material-files-upload-button">
+                  <div className="icon material-files-upload-button-icon">&#xe628;</div>
+                  <p className="material-files-upload-button-text">
+                    {/*将文件拖到此处，或 */}
+                    <em>点击上传</em>
+                  </p>
+                </div>
+              </Upload>
+            </div>
+            <DragContext
+              fileList={fileList}
+              tableList={tableList}
+              dataSource={dataSource}
+              onChangeData={this.handleChangeData.bind(this)}
+            />
+
+            <div className="pch-form-buttons">
+              <Button size="large" type="secondary" disabled={this.state.disabled} onClick={this.submit}>
+                提交
+              </Button>
+              <Button size="large" type="primary" disabled={this.state.disabled} onClick={this.save}>
+                保存
+              </Button>
+              <Button size="large" type="normal" onClick={this.cancel}>
+                取消
+              </Button>
+            </div>
           </div>
         </IceContainer>
-      </div>
+      </DragDropContextProvider>
     );
   }
 }
 
-MaterialSubmit = DropTarget('CARD', cardTarget, connect => ({
-  connectDropTarget: connect.dropTarget(),
-}))(MaterialSubmit)
-export default DragDropContext(HTML5Backend)(MaterialSubmit);
+export default (MaterialSubmit);

@@ -74,7 +74,7 @@ export default class AdFont extends Component {
             FontConfigReq.changPageName(reqDate,this.state.id).then((data) => {
                 let res = data.data;
                 if (data.code == 200) {
-                    this.props.router.push(`/font/set?id=${this.state.id}`)  
+                    this.props.router.push(`/font/set/${this.state.id}`)  
                 } else {
                     Dialog.alert({
                         content: res.msg,
@@ -88,7 +88,7 @@ export default class AdFont extends Component {
             FontConfigReq.save(reqDate).then((data) => {
                 let res = data.data;
                 if (data.code == 200) {
-                    this.props.router.push(`/font/set?id=${res.id}&pageName=${pageName}`)
+                    this.props.router.push(`/font/set/${res.id}?pageName=${pageName}`)
                 } else {
                     Dialog.alert({
                         content: res.msg,
@@ -190,62 +190,52 @@ export default class AdFont extends Component {
         
         return (
             <IceContainer className="pch-container addFont">
-                {/* <IceContainer className='subtitle'>
-                    <div className="pageName">
-                        <label>页面成名</label>
-                        <input type="text" name='' onChange={this.onChang.bind(this)} />
-                    </div>
-                </IceContainer> */}
                 <legend className="pch-legend" >
                   <span className="pch-legend-legline"></span>选择字段
                 </legend>
-                    {
-                        <div>
-                            <div className="diffence" style={{marginTop:20}}>字段（已锁定）</div>
-                            {/* <DragFields
-                                isFixed={true}
-                                data={this.state.isFixed}
-                                onChange={this.changeFixedFieldsSort.bind(this)}
-                            /> */}
-                            {this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
-                                return (
-                                    <div className="listCode selectCode isFixed" key={index}>
-                                        {item.label}
-                                        <span className="icon">&#xe62c;</span>
-                                    </div>
-                                )
-                            })}
-                            <div className="diffence">字段（可选字段）</div>
-                            {/* <DragFields
-                                data={this.state.resDate}
-                                onChange={this.changeFieldsSort.bind(this)}
-                                onFieldClick={this.addClass.bind(this)}
-                                onOperateClick={this.selected.bind(this)}
-                            /> */}
-                            
-                            {this.state.resDate.map((item, index) => {
-                                return (
-                                    <div className='subDif' key={index}>
-                                        <div>{item.name}</div>
-                                        <div className="select">
-                                            <span onClick={this.selected.bind(this,index,true)}> 全选</span>
-                                            <span onClick={this.selected.bind(this,index,false)}>反选</span>
+                <div>
+                    <div className="diffence" style={{marginTop:20}}>字段（已锁定）</div>
+                    {/* <DragFields
+                        isFixed={true}
+                        data={this.state.isFixed}
+                        onChange={this.changeFixedFieldsSort.bind(this)}
+                    /> */}
+                    {this.state.isFixed[0] && this.state.isFixed[0].fields.map((item, index) => {
+                        return (
+                            <div className="listCode selectCode isFixed" key={index}>
+                                {item.label}
+                                <span className="icon">&#xe62c;</span>
+                            </div>
+                        )
+                    })}
+                    <div className="diffence">字段（可选字段）</div>
+                    {/* <DragFields
+                        data={this.state.resDate}
+                        onChange={this.changeFieldsSort.bind(this)}
+                        onFieldClick={this.addClass.bind(this)}
+                        onOperateClick={this.selected.bind(this)}
+                    /> */}
+                    
+                    {this.state.resDate.map((item, index) => {
+                        return (
+                            <div className='subDif' key={index}>
+                                <div>{item.name}</div>
+                                <div className="select">
+                                    <span onClick={this.selected.bind(this,index,true)}> 全选</span>
+                                    <span onClick={this.selected.bind(this,index,false)}>反选</span>
+                                </div>
+                                {item.fields.map((item, subindex) => {
+                                    return (
+                                        <div className={cx('listCode',{'selectCode': item.checked})} onClick={this.addClass.bind(this,index,subindex)} key={subindex}>
+                                            {item.label}
+                                            <span className="icon">&#xe62c;</span>
                                         </div>
-                                        {item.fields.map((item, subindex) => {
-                                            return (
-                                                <div className={cx('listCode',{'selectCode': item.checked})} onClick={this.addClass.bind(this,index,subindex)} key={subindex}>
-                                                    {item.label}
-                                                    <span className="icon">&#xe62c;</span>
-                                                </div>
-                                            )
-                                        })}
-                                        
-                                    </div>
-
-                                )
-                            })}
-                        </div>
-                    }
+                                    )
+                                })}
+                            </div>
+                        )
+                    })}
+                </div>
                 <div className='btn-list'>
                     <Button onClick={this.submit.bind(this)} type="normal" className='next-btn-search btn'>
                         下一步

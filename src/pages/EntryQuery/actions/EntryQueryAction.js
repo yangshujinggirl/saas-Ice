@@ -62,6 +62,20 @@ export const search = (condition) => {
   }
 }
 
+// 获取第一页字段
+export const searchField = (condition) => {
+  return (dispatch) => {
+
+    dispatch(fetchStart())
+
+    Req.searchField(condition).then((res) => {
+      dispatch(fetchSuccess({ fieldList: res.data }))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
 // 保存表单
 export const save = (data) => {
   return (dispatch) => {
@@ -77,12 +91,12 @@ export const save = (data) => {
 }
 
 // 获取详情
-export const getDetail = (id) => {
+export const getDetail = (data) => {
   return (dispatch) => {
 
     dispatch(fetchStart())
 
-    Req.getDetail(id).then((res) => {
+    Req.getDetail(data).then((res) => {
       dispatch(fetchSuccess({ detail: res.data, view: 'form' }))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))
@@ -132,6 +146,18 @@ export const getSelectList = () => {
   return (dispatch) => {
     dispatch(fetchStart())
     Req.getSelectList(id).then((res) => {
+      dispatch(fetchSuccess({data: res.data}))
+    }).catch((ex) => {
+      dispatch(fetchFailed(ex))
+    })
+  }
+}
+
+// 获取产品列表
+export const getProductList = () => {
+  return (dispatch) => {
+    dispatch(fetchStart())
+    Req.getProductNumApi(id).then((res) => {
       dispatch(fetchSuccess({data: res.data}))
     }).catch((ex) => {
       dispatch(fetchFailed(ex))

@@ -1,154 +1,168 @@
 
-  .part-same {
-    .module-name {
-      font-weight: bold;
-      padding:14px 0 14px 20px;
-      color: #000;
-      background: #F9F8F8;
-      box-shadow: inset 0 -1px 0 0 #ECE9EC;
-      margin-bottom:20px;
-    }
+.part-same {
+  .module-name {
+    font-weight: bold;
+    padding:14px 0 14px 20px;
+    color: #000;
+    background: #F9F8F8;
+    box-shadow: inset 0 -1px 0 0 #ECE9EC;
+    margin-bottom:20px;
   }
-  .part-process {
-    .process-action {
-      padding:10px 0 10px 30px;
-      box-sizing: border-box;
-      .item:not(:last-child) {
-        padding-bottom: 62px;
-        position: relative;
-        &:before {
-          content: '';
-          width: 0;
-          height: 58px;
-          border-left: 1px dashed #7A756B;
-          position: absolute;
-          left: 30px;
-          bottom: 2px;
-        }
-      }
-      .circle,
-      .status-title,
-      .status-desc,
-      .content {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .circle {
-        width: 60px;
-        height: 60px;
-        line-height: 60px;
-        text-align: center;
-        border-radius: 50%;
-        color: #fff;
-        margin-right: 25px;
-        &.status-error {
-          background-color: #FF6666;
-        }
-        &.status-success {
-          background-color:#66CC99;
-        }
-        &.status-return {
-          background: #66CCFF;
-        }
-        &.status-manpower {
-          background: #FFCC66;
-        }
-      }
-      .status-title {
-        width: 15%;
-        font-size: 16px;
-        color: #1B2630;
-      }
-      .status-desc {
-        width:20%;
-        color: #444;
-        display: inline-flex;
-        flex-wrap: wrap;
-        span{
-          display: block;
-          width: 100%;
-          i{
-            font-style: normal ;
-            color: #FD5848;
-          }
-        }
-      }
-      .content {
-        color: #1B2630;
-        margin-left: 30px;
-        width: 22%;
-        .time {
-          color:#ABA9A5;
-        }
-        .opinion{
-          margin-left: 30px;
-          span{
-            color: #FD5848;
-          }
-        }
-      }
+}
+.part-process {
+  .process-action {
+    padding:10px 0 10px 30px;
+    box-sizing: border-box;
+    position: relative;
+    .item:not(:last-child) {
+      padding-bottom: 62px;
+      position: relative;
     }
-  }
-  .part-suggest {
-    .suggest-action {
-      text-align: center;
-      height: 200px;
-    }
-  }
-  .part-partner {
-    .partner-action {
-      padding: 0 20px 44px;
-    }
-    .item {
-      margin-bottom:20px;
-    }
-    .partner-name {
-      padding: 0 0 8px;
-      color: #000;
-    }
-    .info-action {
-      color: #444;
-      border: 1px solid #D9D9D9;
-      padding-bottom:28px;
-    }
-    .col {
+    .circle,
+    .status-title,
+    .status-desc,
+    .content {
       display: inline-block;
-      width: 25%;
-      height: 50px;
-      text-align: center;
-      line-height: 50px;
       vertical-align: middle;
     }
-    .table-row {
-      padding: 0 24px;
-      background: #E3F2EC;
-      height: 50px;
-      line-height: 50px;
-
-    }
-    .row-list {
-      padding:0 24px;
-      .row {
-        background: #F9F8F8;
-        border: 1px solid #D9D9D9;
-        margin-top: 16px;
+    .circle {
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      border-radius: 50%;
+      color: #fff;
+      margin-right: 25px;
+      position: relative;
+      z-index:10;
+      &.status-red {
+        background: #FF6666;
       }
-      .col:not(:last-child) {
-        border-right: 1px solid #D9D9D9;
+      &.status-orange {
+        background: #FFCC66;
+        position: relative;
+        line-height: inherit;
+        >span {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 100%;
+          transform: translate(-50%,-50%)
+        }
+      }
+      &.status-green {
+        background: #66CC99;
+      }
+      &.status-gray {
+        background: #CCCCCC;
       }
     }
-  }
-  .part-base-info {
-    .row-action {
-      display: flex;
+    .status-title {
+      width: 15%;
+      font-size: 16px;
+      color: #1B2630;
+    }
+    .status-desc {
+      width:20%;
+      color: #444;
+      display: inline-flex;
       flex-wrap: wrap;
-      padding: 0 10px;
-    }
-    .item {
-      width: 25%;
-      margin: 10px 0px;
-      &.full-line {
+      word-wrap: break-word;
+      span{
+        display: block;
         width: 100%;
+        i{
+          font-style: normal ;
+          color: #FD5848;
+        }
       }
     }
+    .content {
+      color: #1B2630;
+      margin-left: 30px;
+      width: 22%;
+      .time {
+        color:#ABA9A5;
+      }
+      .opinion{
+        margin-left: 30px;
+        span{
+          color: #FD5848;
+        }
+      }
+    }
+    .oneline{
+      border: .5px  #7A756B dashed;
+      position: absolute;
+      height: calc(100% - 70px);
+      top: 70px;
+      left: 60px;
+      z-index: 2;
+    }
   }
+
+
+}
+.part-suggest {
+  .suggest-action {
+    text-align: center;
+    height: 200px;
+  }
+}
+.part-partner {
+  .partner-action {
+    padding: 0 20px 44px;
+  }
+  .item {
+    margin-bottom:20px;
+  }
+  .partner-name {
+    padding: 0 0 8px;
+    color: #000;
+  }
+  .info-action {
+    color: #444;
+    border: 1px solid #D9D9D9;
+    padding-bottom:28px;
+  }
+  .col {
+    display: inline-block;
+    width: 25%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    vertical-align: middle;
+  }
+  .table-row {
+    padding: 0 24px;
+    background: #E3F2EC;
+    height: 50px;
+    line-height: 50px;
+
+  }
+  .row-list {
+    padding:0 24px;
+    .row {
+      background: #F9F8F8;
+      border: 1px solid #D9D9D9;
+      margin-top: 16px;
+    }
+    .col:not(:last-child) {
+      border-right: 1px solid #D9D9D9;
+    }
+  }
+}
+.part-base-info {
+  .row-action {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 10px;
+  }
+  .item {
+    width: 25%;
+    margin: 10px 0px;
+    &.full-line {
+      width: 100%;
+    }
+  }
+}

@@ -19,7 +19,6 @@ const customHeaderNavs = [];
 const customAsideNavs = [];
 
 import BaseConfig from './config/BaseConfig';
-import { Storage } from './base/utils';
 import myCustomNavs from './_navs';
 
 let leafs = [];

@@ -99,7 +99,7 @@ export default class EnhanceTable extends Component {
 
   filterFormChange = (value) => {
     console.log(value);
-    
+
     this.setState({
       filterFormValue: value,
     });
@@ -138,7 +138,7 @@ export default class EnhanceTable extends Component {
           <Table
             dataSource={tableData.list}
             isLoading={tableData.__loading}
-            className="basic-table"
+            // className="basic-table"
             hasBorder={false}
           >
             <Table.Column

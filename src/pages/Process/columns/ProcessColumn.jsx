@@ -10,43 +10,64 @@ class ProcessColumn extends BaseColumn {
         super();
 
         this._columns = [{
+            title: 'ID',
+            dataIndex: 'id',
+            width: 80
+        }, {
             title: '业务类型',
-            dataIndex: 'productCode',
-            width: 160
+            dataIndex: 'businessTypeName',
+            width: 140
         }, {
             title: '流程名称',
-            dataIndex: 'name',
+            dataIndex: 'processName',
             width: 200
         }, {
             title: '资方',
-            dataIndex: 'contractDisplayName',
-            width: 160
+            dataIndex: 'tenantName',
+            width: 140
         }, {
-            title: '产品类型',
-            dataIndex: 'productType',
-            width: 160
-        }, {
-            title: '产品名称',
-            dataIndex: 'endedAt',
-            width: 250
+            title: '状态',
+            dataIndex: 'status',
+            width: 100,
+            cell: (value, index, record) =>{
+                return record.status == '1' ? '已完成' : '未完成';
+            }
         }, {
             title: '最后修改时间',
-            dataIndex: 'commissionRate',
-            width: 120
+            dataIndex: 'updatedAt',
+            width: 140
         }, {
             title: '操作',
             dataIndex: 'visible',
             lock: 'right',
-            width: 140,
+            width: 180,
             cell: (value, index, record) => {
+
+                let editdom, productdom;
+                if(record.status == '1'){
+                    //完成显示产品按钮，否则显示修改按钮
+                    productdom = 
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER)}>
+                            产品
+                        </a>
+                }
+                if(!record.bindProduct || record.bindProduct < 1){
+                    // 绑定了产品则不能显示修改按钮
+                    editdom = 
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
+                            修改
+                        </a>
+                }
                 return (
-                    <div>
-                        <button className="editbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}>
-                            编辑
-                        </button>
-                        <button className="searchbtn" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
-                            查看
-                        </button>
+                    <div className="pch-table-operation">
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>
+                            详情
+                        </a>
+                        {editdom}
+                        {productdom}
+                        <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.OTHER1)}>
+                            复制
+                        </a>
                     </div>
                     );
             }

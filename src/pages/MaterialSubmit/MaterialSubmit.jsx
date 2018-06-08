@@ -1,20 +1,7 @@
 import React, { Component } from 'react';
 import Submit from './components/MaterialSubmit';
 
-export default class MaterialSubmit extends Component {
+import * as MaterialSubmitActions from './actions/MaterialSubmitAction.js'
+import { PchConnect } from 'base';
 
-  constructor(props) {
-    super(props);
-
-  }
-
-  /**
-   * <MaterialSubmit {...this.props} />
-   * @return {[type]} [description]
-   */
-  render() {
-    return (
-      <Submit  {...this.props}></Submit>
-    );
-  }
-}
+export default PchConnect(Submit, MaterialSubmitActions, 'MaterialSubmitReducer');

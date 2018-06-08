@@ -8,6 +8,10 @@ class DragFile extends Component {
     constructor(props) {
         super(props);
     }
+    isImg(url) {
+        return /(\.gif|\.png|\.jpg|\.jpeg)+$/i.test(url);
+    }
+    
     render() {
         const {
         	className,
@@ -19,11 +23,11 @@ class DragFile extends Component {
             onClick
         } = this.props
         const opacity = isDragging ? 0.1 : 1
-
+        let imgURL = this.isImg(data.imgURL) ? data.imgURL : '/public/images/creditInformation/filed.png';
         return connectDragSource(
           <div className="material-files-item" style={{opacity,display: data.isUsed ? 'none' : ''}}>
             <div className="material-files-item-thumbnail">
-                <div style={{backgroundImage: `url(${data.imgURL})`}} a={data.imgURL}></div>
+                {data.imgURL && <div style={{backgroundImage: `url(${imgURL})`}} a={imgURL}></div>}
             </div>
             <span className="material-files-item-name">
               {data.fileName}
@@ -38,7 +42,7 @@ const cardSource = {
         return {
             id: props.id,
             index: props.index,
-            type: props.type
+            type: props.type,
         }
     },
 

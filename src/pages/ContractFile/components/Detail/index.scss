@@ -1,0 +1,45 @@
+.contract-file-pages {
+  .no-template {
+    text-align: center;
+    font-size: 16px;
+    padding: 60px 0 20px;
+  }
+  .main-content {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+  .value-styles {
+    padding: 0 20px;
+    border-bottom: 1px solid #ccc;
+  }
+  .handle-btn-list-wrap {
+    text-align: center;
+    padding: 30px 0;
+    button {
+      background-color: #FC9E25;
+      margin-right: 10px;
+    }
+    .next-btn.disabled, .next-btn[disabled] {
+      background-color: #F4F4F4;
+      border-color: #DCDEE3;
+    }
+  }
+}
+
+@media print {
+    body{
+        visibility: hidden;
+    }
+    #section-to-print {
+      visibility: visible;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+      -ms-transform:translateX(-50%);	/* IE 9 */
+      -moz-transform:translateX(-50%);	/* Firefox */
+      -o-transform:translateX(-50%);
+    }
+}

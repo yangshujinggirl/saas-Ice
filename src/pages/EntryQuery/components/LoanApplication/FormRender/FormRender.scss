@@ -1,0 +1,244 @@
+.modify-form{
+  height: 100%;
+  background: #FFFEFB;
+  overflow-y: scroll;
+  .info{
+    height: auto;
+    .title-text{
+      display: block;
+      height: 44px;
+      background: #FFF3E4;
+      border-bottom: 1px solid #F6DCA9;
+      border-radius: 1px;
+      line-height: 44px;
+      font-family: PingFangSC-Medium;
+      font-size: 14px;
+      color: #000000;
+      letter-spacing: 0;
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+    h4{
+      font-family: PingFangSC-Medium;
+      font-size: 15px;
+      //color: #FC9E25;
+      letter-spacing: 0;
+      height: 30px;
+      border-bottom:  1px #D8D8D8 solid;
+    }
+
+    .info-row{
+      display: flex;
+      flex-wrap: wrap;
+      .item{
+        width: 33%;
+        margin: 10px 0px;
+
+      }
+      .half{
+        width: 100%;
+      }
+      .single-line{
+        width: 100%;
+      }
+      .subsidiary-field{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 3px;
+      }
+      .CheckboxGroup{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+    }
+    .button-box{
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      margin-bottom: 200px;
+      margin-top: 50px;
+      width: 100%;
+      button{
+        border-radius: 3px;
+        height: 34px;
+        width: 120px;
+        margin-right: 10px;
+        color: #ffffff;
+      }
+      button:nth-child(1){
+        background: #FC9E25;
+      }
+    }
+    .upload-picture{
+      width: 100%;
+      margin:20px 0;
+    }
+  }
+
+
+}
+.modify-form::-webkit-scrollbar {
+  display: none;
+}
+
+.pch-from-select-overlay{
+  background: #FFF;
+  display: inline-flex;
+  justify-content: space-around;
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-left: 5px;
+  border: 1px #CCCCCC solid;
+  .title-bar{
+    width: 20px;
+    display: table-cell;
+    height: 330px;
+    text-align: center;
+    margin-right: 10px;
+    ul li a{
+      display: block;
+      width: 20px;
+      height: 18px;
+      text-decoration: none;
+      line-height: 20px;
+      display: block;
+      color: #333;
+    }
+    ul li a:focus {
+      outline: none;
+    }
+    ul li:focus {
+      outline: none;
+    }
+  }
+  .brand{
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 150px;
+    display: table-cell;
+    border: 1px solid #eee;
+    p{
+      margin-left: 10px;
+    }
+    .brand-options{
+      height: 330px;
+      overflow: auto;
+
+      ul li a{
+        text-decoration: none;
+        line-height: 30px;
+        height: 30px;
+        display: block;
+        color: #333;
+        text-indent: 15px;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow:hidden;
+      }
+      ul li a:hover{
+        color: #fff;
+        background: #ec9d00;
+      }
+      ul li a:focus {
+        outline: none;
+      }
+      ul li:focus {
+        outline: none;
+      }
+      .active{
+        color: #fff;
+        background: #ec9d00;
+      }
+      .title-bar{
+        display: block;
+        width: 100%;
+        height: 30px;
+        background: #EEE;
+        text-align: center;
+        font-size: 14px;
+        line-height: 30px;
+      }
+    }
+    .brand-options::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .carsystem{
+    margin-left: 10px;
+    width: 200px;
+    display: table-cell;
+    border: 1px solid #eee;
+    h5{
+      margin-left: 10px;
+    }
+    .carsystem-options{
+      height: 330px;
+      overflow: auto;
+      ul li a{
+        text-decoration: none;
+        line-height: 30px;
+        height: 30px;
+        display: block;
+        color: #333;
+        text-indent: 15px;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow:hidden;
+      }
+      ul li a:hover{
+        color: #fff;
+        background: #ec9d00;
+      }
+      .active{
+        color: #fff;
+        background: #ec9d00;
+      }
+    }
+    .carsystem-options::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .carmodel{
+    margin-left: 10px;
+    width: 330px;
+    height: 340px;
+    overflow: auto;
+    display: table-cell;
+    border: 1px solid #eee;
+    h5{
+      margin-left: 10px;
+    }
+    .carmodel-options{
+      height: 340px;
+      overflow: auto;
+      ul li a{
+        text-decoration: none;
+        line-height: 30px;
+        height: 30px;
+        display: block;
+        color: #333;
+        text-indent: 15px;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        overflow:hidden;
+      }
+      ul li a:hover{
+        color: #fff;
+        background: #ec9d00;
+      }
+      .active{
+        color: #fff;
+        background: #ec9d00;
+      }
+    }
+    .carmodel-options::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+

@@ -1,0 +1,38 @@
+.report{
+  .upload-picture{
+    width: 100%;
+    margin-top: 20px;
+    .next-upload-list-picture-card {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      .next-upload-select-picture-card{
+        display: none;
+      }
+    }
+  }
+  Form{
+    margin-top: 20px;
+    .tip{
+      display: block;
+      line-height: 17px;
+    }
+    .button-box{
+      .button{
+        width: 120px;
+        height: 40px;
+        background-color: #FC9E25;
+      }
+    }
+    .pch-form-buttons{
+      padding: 30px 0;
+    }
+  }
+  .next-overlay-wrapper .next-overlay-inner {
+    z-index: 1001;
+    max-width: 800px;
+  }upload-picture-list
+  .upload-picture-list{
+
+  }
+}

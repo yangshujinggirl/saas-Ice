@@ -6,11 +6,12 @@ import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 const { Row, Col } = Grid;
 const { Option } = Select;
 
-export default class Filter extends Component {
+export default class Filter extends BaseCondition {
   static displayName = 'Filter';
   render() {
     return (

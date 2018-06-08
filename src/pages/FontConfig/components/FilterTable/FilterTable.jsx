@@ -17,6 +17,7 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import { BaseCondition } from 'base';
 
 import FontConfigReq from './../../reqs/FontConfigReq.js'
 import './FilterTable.scss';
@@ -24,16 +25,7 @@ import './FilterTable.scss';
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
-const formItemLayout = {
-  labelCol: {
-    span: 8
-  },
-  wrapperCol: {
-    span: 12
-  }
-};
-
-class  SearchForm extends Component {
+class  SearchForm extends BaseCondition {
   constructor(props) {
     super(props)
     this.field = new Field(this)
@@ -48,18 +40,6 @@ class  SearchForm extends Component {
   addPage() {
     hashHistory.push(`font/add?pageName=${this.state.values.name}`)
   }
-  //提交表单
-  handleSubmit(e) {
-    const { searchEvent } = this.props;
-    e.preventDefault();
-    this.field.validate((errors, values) => {
-      if (errors) {
-        return;
-      }
-      
-      searchEvent(this.state.values)
-    });
-  }
   render() {
     const { init } = this.field;
 
@@ -71,8 +51,8 @@ class  SearchForm extends Component {
               direction="hoz"
               >
               <Row wrap>
-                <Col s="8" l="8">
-                  <FormItem {...formItemLayout} label="资方名称：">
+                <Col {...this.colspans}>
+                  <FormItem {...this.formItemLayout} label="资方名称：">
                     <IceFormBinder
                       name="tenantId"
                     >
@@ -84,8 +64,8 @@ class  SearchForm extends Component {
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-                <Col s="8" l="8">
-                  <FormItem {...formItemLayout} label="业务类型：">
+                <Col {...this.colspans}>
+                  <FormItem {...this.formItemLayout} label="业务类型：">
                     <IceFormBinder
                     name="businessType"
                     >
@@ -97,8 +77,8 @@ class  SearchForm extends Component {
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-                <Col s="8" l="8">
-                  <FormItem {...formItemLayout} label="功能模块：">
+                <Col {...this.colspans}>
+                  <FormItem {...this.formItemLayout} label="功能模块：">
                     <IceFormBinder
                       name="functionType"
                     >
@@ -110,8 +90,8 @@ class  SearchForm extends Component {
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-                <Col s="8" l="8">
-                  <FormItem {...formItemLayout} label="流程名称：">
+                <Col {...this.colspans}>
+                  <FormItem {...this.formItemLayout} label="流程名称：">
                     <IceFormBinder
                       name="process"
                     >
@@ -123,8 +103,8 @@ class  SearchForm extends Component {
                     </IceFormBinder>
                   </FormItem>
                 </Col>
-                <Col s="8" l="8">
-                  <FormItem {...formItemLayout} label="页面名称：">
+                <Col {...this.colspans}>
+                  <FormItem {...this.formItemLayout} label="页面名称：">
                     <IceFormBinder
                       name="name"
                     >
@@ -135,12 +115,12 @@ class  SearchForm extends Component {
                     </IceFormBinder>
                   </FormItem>
                   </Col>
-                <Col s="8" l="8">
-                  <FormItem {...formItemLayout} label="&nbsp;">
+                <Col {...this.colspans}>
+                  <FormItem {...this.formItemLayout} label="&nbsp;">
                     <Button type="secondary" htmlType='submit' onClick={this.handleSubmit.bind(this)}>
                       查询
                     </Button>
-                    
+
                     <Button
                       type="primary"
                       style={{ marginLeft: '10px' }}
@@ -187,10 +167,10 @@ export default class EnhanceTable extends Component {
         className="filter-table-operation"
         style={styles.filterTableOperation}
       >
-        <Link to={`/font/view?id=${record.id}`} className='operate-btn'>
+        <Link to={`/font/view/${record.id}`} className='operate-btn'>
           详情
         </Link>
-        <Link to={`/font/set?id=${record.id}`}  className='operate-btn'>
+        <Link to={`/font/set/${record.id}`}  className='operate-btn'>
           编辑
         </Link>
       </div>
@@ -204,10 +184,10 @@ export default class EnhanceTable extends Component {
         <legend className="pch-legend" >
           <span className="pch-legend-legline"></span>页面配置
         </legend>
-          <SearchForm searchEvent={(values) =>this.searchConditon(values)}/>
+          <SearchForm onSubmit={(values) =>this.searchConditon(values)}/>
           <Table
             dataSource={list}
-            className="basic-table"
+            // className="basic-table"
             hasBorder={false}
           >
             <Table.Column

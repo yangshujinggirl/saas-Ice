@@ -1,0 +1,35 @@
+.contract-eidt-pages {
+  .main-contract-main-action {
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px 0;
+  }
+  .contract-edit-bottom-div {
+    text-align: center;
+    padding: 20px 0;
+    button {
+      background-color: #FC9E25;
+      margin-right: 10px;
+    }
+    .next-btn.disabled, .next-btn[disabled] {
+      background-color: #F4F4F4;
+      border-color: #DCDEE3;
+    }
+  }
+  .input-disabled {
+    border: 0px;
+    border-bottom: 1px solid;
+    text-align: center;
+  }
+  .contract-edit-title {
+    text-align: center;
+    margin: 30px 0px;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .no-data-title {
+    margin: 40px 0px;
+    text-align: center;
+    font-size: 16px;
+  }
+}

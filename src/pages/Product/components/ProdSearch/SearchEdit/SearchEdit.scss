@@ -24,7 +24,9 @@ border-radius: 2px;
     }
 }
 }
-
+.pch-from-searchedit-name{
+  line-height: 34px;
+}
 // .legend {
 //   margin-left: 0;
 //   padding-left: 15px;
@@ -62,9 +64,7 @@ border-radius: 2px;
   padding: 0 2px;
   color: #dd4444;
 }
-.next-checkbox-label {
-  margin:0 10px;
-}
+
 .layui-textarea {
   min-height: 100px;
   height: auto;
@@ -100,26 +100,13 @@ border-radius: 2px;
   color: #fff !important;
 
 }
+.searchedit-history{
+  text-indent: 10px;
+  font-family: PingFangSC-Medium;
+  font-size: 14px;
+  color: #000;
+  margin-bottom: 20px;;
 
-// .next-btn-box {
-//   width: 100%;
-//   text-align: center;
-//   // overflow: hidden;
-//   height: 100px;
-//   position: relative;
-//   cursor: pointer;
-//   .next-btn-lx {
-//       position: absolute;
-//       top:20px;
-//       left: 50%;
-//       height: 50px;
-//       width: 150px;
-//       background: #ec9d00;
-//       color: #fff;
-//       text-align: center;
-//       line-height: 50px;
-//       font-size: 16px;
-//   }
-// }
+}
 
 

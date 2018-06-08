@@ -1,0 +1,25 @@
+.contract-bind-page {
+  .pch-form {
+    padding: 0;
+  }
+  .action-block {
+    padding: 30px 0 220px;
+  }
+  .change-product {
+    padding: 30px 0 40px;
+    .product-list,
+    .part-right,
+    .btn-wrap {
+      display: inline-block;
+      vertical-align: middle;
+      width: 45%;
+    }
+    .btn-wrap {
+      width: 10%;
+      text-align: center;
+    }
+    .part-right {
+      vertical-align: top;
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import Product from './';
 import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
@@ -7,44 +6,92 @@ export default {
   childRoutes: [{
       path: 'search',
       name: '产品查询',
-      component: Product.ProductSearch
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./containers/Product').default);
+        }, 'product');
+      }
     }, {
       path: 'searchedit/:id',
       name: '产品编辑',
-      component: Product.SearchEdit
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/ProdSearch/SearchEdit').default);
+        }, 'product');
+      }
     }, {
       path: 'proddetail/:id',
       name: '产品详情',
-      component: Product.ProductDetail
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/ProdSearch/ProdDetail').default);
+        }, 'product');
+      }
     }, {
       path: 'add',
       name: '产品新增',
-      component: Product.ProductAdd
-    },  {
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./ProdAdd').default);
+        }, 'product');
+      }
+    }, {
       path: 'addtwo/:id',
       name: '产品新增',
-      component: Product.AddTwo
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/ProdAdd/addTwo').default);
+        }, 'product');
+      }
+    }, {
+      path: 'process/:id',
+      name: '权限编辑',
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/ProdAdd/ProcessAuthEdit').default);
+        }, 'product');
+      }
     }, {
       path: 'addthree/:id',
       name: '产品新增',
-      component: Product.AddThree
-    },{
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/ProdAdd/addThree').default);
+        }, 'product');
+      }
+    }, {
       path: 'filelist',
       name: '材料查询',
-      component: Product.FileList
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/FileList').default);
+        }, 'product');
+      }
     }, {
       path: 'fileedit/:id',
       name: '材料编辑',
-      component: Product.FileEdit
-    },{
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/FileList/Dialog').default);
+        }, 'product');
+      }
+    }, {
       path: 'fileListnew',
       name: '材料新增',
-      component: Product.FileEdit
+      getComponent(nextState, callback) {
+        require.ensure([], require => {
+          callback(null, require('./components/FileList/Dialog').default);
+        }, 'product');
+      }
     },
 
   ],
   component: Layout,
   indexRoute: {
-    component: Product.Product
+    getComponent(nextState, callback) {
+      require.ensure([], require => {
+        callback(null, require('./containers/Product').default);
+      }, 'product');
+    }
   }
 }

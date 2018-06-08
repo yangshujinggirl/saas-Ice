@@ -1,3 +1,5 @@
-import SearchEdit from './SearchEdit';
+import SearchEdit from './SearchEdit.jsx';
+import * as ProductAction from '../../../actions/ProductAction.js'
+import { PchConnect } from 'base';
 
-export default SearchEdit;
+export default PchConnect(SearchEdit, ProductAction, 'ProductReducer');

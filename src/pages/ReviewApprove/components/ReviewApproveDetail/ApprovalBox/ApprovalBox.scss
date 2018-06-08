@@ -1,0 +1,36 @@
+.review-smallfrom{
+  width: 100%;
+  padding-left: 8%;
+  box-sizing: border-box;
+  .form-item{
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+  }
+  .item{
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    .text{
+      width: 90%;
+      height: 150px;
+    }
+    .select{
+      width: 100% !important;
+      min-width: 120px !important;
+    }
+    Button{
+      height: 26px;
+      width: 70px;
+      line-height: 26px;
+      border: none;
+      background: #FC9E25;
+      border-radius: 4px;
+      font-family: PingFangSC-Medium;
+      font-size: 13px;
+      color: #FFFFFF;
+      letter-spacing: 0;
+      line-height: 16px;
+    }
+  }
+}

@@ -138,6 +138,42 @@
 
 
 .user-login{
+    position: relative;
+    height: 100vh;
+
+
+    .user-login-bg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+    }
+
+    .pch-login-form{
+
+      .layui-form-item{
+            margin-bottom: 25px;
+            flex-direction: column;
+        }
+    }
+
+  .input-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #999;
+  }
+
+  .submit-btn{
+    border-radius: 28px;
+  }
+
+  input[type="checkbox"]{
+    margin-left: 5px;
+  }
+
     .next-checkbox-label {
         color: #999;
         font-size: 13px;
@@ -145,5 +181,17 @@
     .next-input-medium input{
         height: 38px;
         font-size: 12px;
+
+        &::placeholder{
+            color: #999;
+        }
+    }
+    
+    .next-checkbox.hovered .next-checkbox-inner, .next-checkbox.focused .next-checkbox-inner{
+        border-color: #fc9e85;
+        background-color: #fff3e4;
+    }
+    .next-checkbox.checked.hovered .next-checkbox-inner > .next-icon, .next-checkbox.checked.focused .next-checkbox-inner > .next-icon{
+        color: #fc9e85;
     }
 }

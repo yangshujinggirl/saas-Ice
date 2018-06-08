@@ -42,9 +42,7 @@ body {
     padding: 0 2px;
     color: #dd4444;
 }
-.next-checkbox-label {
-    margin:0 10px;
-}
+
 .layui-textarea {
     min-height: 100px;
     height: auto;
@@ -83,4 +81,16 @@ body {
         text-align: center;
         vertical-align:middle;
     }
+}
+.product-detail-des{
+    display: inline-block;
+    width: 70%;
+    min-height:80px;
+}
+.table-height{
+    height: 20px;
+}
+.templatesName{
+    display: inline-block;
+    width: 80%;
 }

@@ -37,7 +37,7 @@ export default class PchTable extends Component{
     processData(data) {
         data && data.map((item, i) => {
             item.onOperateClick = (type) => { this.props.onOperateClick(item, type) };
-            
+
             // if(item.children && item.children.length > 0){
             //     this.processData(item.children);
             // }
@@ -52,6 +52,7 @@ export default class PchTable extends Component{
     render() {
         const dataSource = this.processData(this.props.dataSource);
         const columns = this.processColumn(this.props.columns);
+        const isLoading = this.props.isLoading;
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -61,7 +62,7 @@ export default class PchTable extends Component{
 
         return (
             <div className="pch-table">
-                <Table dataSource={dataSource} isZebra={true}>
+                <Table dataSource={dataSource} isLoading={isLoading}>
                 	{columns && columns.map((item, i) => {
                     	return <Table.Column key={i} {...item} />
                 	})}

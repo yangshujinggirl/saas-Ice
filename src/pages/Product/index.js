@@ -1,15 +1,14 @@
-import Product from './Product'
-// import ProductForm from './ProductForm'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ProductActions from './actions/ProductAction.js'
-import ProductSearch from './ProdSearch'
+import ProductSearch from './containers/Product'
 import SearchEdit from './components/ProdSearch/SearchEdit'
 import ProductDetail from './components/ProdSearch/ProdDetail'
 import ProductAdd from './ProdAdd'
 import AddOne from './components/ProdAdd/addOne'
 import AddTwo from './components/ProdAdd/addTwo'
 import AddThree from './components/ProdAdd/addThree'
+import ProcessProduct from './components/ProdAdd/ProcessAuthEdit'
 import FileList from './components/FileList'
 import Fileedit from './components/FileList/Dialog'
 const mapStateToProps = (state, ownProps) => {
@@ -22,11 +21,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         actions: bindActionCreators(ProductActions, dispatch)
     }
 }
-
-let ProductObj = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Product);
 
 //查询
 let productSearch = connect(
@@ -67,6 +61,11 @@ let addThree = connect(
     mapStateToProps,
     mapDispatchToProps
 )(AddThree);
+//产品绑定流程
+let processProduct = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProcessProduct)
 //资料清单
 let fileList = connect(
     mapStateToProps,
@@ -79,7 +78,6 @@ let fileedit = connect(
 )(Fileedit);
 
 export default {
-    Product: ProductObj,
     ProductSearch: productSearch,
     ProductAdd: productAdd,
     FileList: fileList,
@@ -88,5 +86,6 @@ export default {
     AddOne:addOne,
     AddTwo:addTwo,
     AddThree:addThree,
+    ProcessProduct:processProduct,
     FileEdit:fileedit,
 }
