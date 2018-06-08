@@ -88,7 +88,7 @@ export default class PbcContractDetail extends BaseComponent {
     );
   };
   goContract() {
-    let { formData ={},contract,id,contractId } = this.props ;    
+    let { formData ={},contract,id,contractId } = this.props ;
     window.open(`${location.origin}/#/contractedit/edit/${contractId}`,'_blank');
   }
   render() {
@@ -99,7 +99,7 @@ export default class PbcContractDetail extends BaseComponent {
         <Title title="中行合同详情"/>
         <IceFormBinderWrapper value={formData} onBlur={this.formChange}>
           <div className='pch-form'>
-            <Form>
+            <Form size="large">
               <Row wrap>
                 <Col {...this.colspans}>
                   <FormItem {...formItemLayout} label={<span> 合同编号:</span>}>

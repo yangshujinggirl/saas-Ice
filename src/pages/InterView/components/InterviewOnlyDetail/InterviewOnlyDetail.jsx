@@ -79,7 +79,7 @@ export default class InterviewOnlyDetail extends BaseComponent {
           <Title title="仅面签详情"/>
           <IceFormBinderWrapper value={formData}>
             <div className='pch-form'>
-              <Form>
+              <Form size="large">
                 <Row wrap>
                   <Col {...this.colspans}>
                     <FormItem {...formItemLayout} label={<span> 姓名:</span>}>

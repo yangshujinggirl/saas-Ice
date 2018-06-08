@@ -154,8 +154,8 @@ export default class LoanDetail extends Component {
               el.attached[el.value].map((e, i) => {
                 list.push(
                   <Col {...this.colspans} key={i}>
-                    <FormItem {...formItemLayout} label={<span> {e.label}:</span>}>
-                      <Input key={i} disabled size="large" className="custom-input" value={e.value}/>
+                    <FormItem {...formItemLayout}  label={<span> {e.label}:</span>}>
+                      <Input key={i} disabled  className="custom-input" value={e.value}/>
                     </FormItem>
                   </Col>,
                 );
@@ -177,7 +177,7 @@ export default class LoanDetail extends Component {
     );
   };
   goContract() {
-    let { formData ={},contract,id,contractId } = this.props ;    
+    let { formData ={},contract,id,contractId } = this.props ;
     window.open(`${location.origin}/#/contractedit/edit/${contractId}`,'_blank');
   }
   /**
@@ -190,7 +190,7 @@ export default class LoanDetail extends Component {
     return (
       <div className='LoanDetail'>
         <div className='pch-form'>
-          <Form>
+          <Form size="large">
             {
               formData.list && formData.list.length > 0 ? formData.list.map(item => {
                 return (

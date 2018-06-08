@@ -449,6 +449,7 @@ export default class CreditInformationForm extends BaseComponent {
                 showUploadList={false}
                 url="/saas/file/upload"
                 disabled={this.state.flowFlag != 1}
+                // limit ='10'
                 onChange={this.handleFileChange.bind(this)}
               >
                 <div className="material-files-upload-button">
