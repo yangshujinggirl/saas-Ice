@@ -181,6 +181,10 @@
     .next-input-medium input{
         height: 38px;
         font-size: 12px;
+
+        &::placeholder{
+            color: #999;
+        }
     }
     
     .next-checkbox.hovered .next-checkbox-inner, .next-checkbox.focused .next-checkbox-inner{
