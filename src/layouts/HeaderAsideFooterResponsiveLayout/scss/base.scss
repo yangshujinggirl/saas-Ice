@@ -915,8 +915,6 @@ body {
     line-height: 20px;
 }
 
-.next-row-wrap {}
-
 //多选框文字
 .next-checkbox-label {
     font-family: PingFangSC-Regular;
@@ -934,60 +932,34 @@ body {
 
 //长度，宽度
 .custom-input {
-    width: 220px !important; // height: 33px !important;
-    // font-size: 14px;
-    // line-height: 33px !important;
+    width: 220px !important;
 }
 
 .custom-select {
-    width: 220px !important; // height: 33px !important;
-    // font-size: 14px;
-    // line-height: 30px !important;
+    width: 220px !important;
 }
 
-//表格.next-table .next-table-inner .next-table-header
-.next-table .next-table-inner .next-table-header .next-table-header-inner {
-    table {
-        border: 1px solid #F6DCA9;
-        border-collapse: collapse;
-        border-spacing: 0;
-        th {
-            background: #FDF4E3 !important; //border:1px solid #F6DCA9 ;
-            border-top: 1px solid #F6DCA9;
-            border-left: 1px solid #F6DCA9;
-            border-right: 1px solid #F6DCA9;
-            font-family: PingFangSC-Medium;
-            font-size: 14px;
-            color: #000000;
-            td {
-                border-color: #F6DCA9;
-                background: #fff !important
-            }
+.next-table{
+    table{
+        tr:first-child td{
+            border-top-width: 0;
         }
     }
-}
 
-.next-table .next-table-inner .next-table-body {
-    table {
-        border: 1px solid #F6DCA9;
-        border-collapse: collapse;
-        border-spacing: 0;
-        tr {
-            td {
-                border: 1px solid #F6DCA9 !important;
-                background: #fff !important
-            }
-            .last {
-                border: 1px solid #F6DCA9 !important;
-            }
-        }
+    .next-table-row.hovered{
+        background: #FFFAF1;
     }
-}
 
-//表格鼠标划过
-.next-table .next-table-inner .next-table-body .hovered:hover {
-    td {
-        background: #FFFAF1 !important;
+    th{
+        background: #FDF4E3;
+        border: 1px solid #F6DCA9;
+        font-family: PingFangSC-Medium;
+        font-size: 14px;
+        color: #000000;
+    }
+
+    td{
+        border: 1px solid #F6DCA9;
     }
 }
 

@@ -62,7 +62,7 @@ export default class PchTable extends Component{
 
         return (
             <div className="pch-table">
-                <Table dataSource={dataSource} isZebra={true} isLoading={isLoading}>
+                <Table dataSource={dataSource} isLoading={isLoading}>
                 	{columns && columns.map((item, i) => {
                     	return <Table.Column key={i} {...item} />
                 	})}
