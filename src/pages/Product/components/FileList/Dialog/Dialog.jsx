@@ -276,14 +276,27 @@ export default class DiaLog extends Component {
       callback('清单名称必填')
       return;
     }
+    
+    let reg = /\s|\xA0/g;
+    if(reg.test(value)){
+      callback('不能有空格');
+      return
+    }
+    let reg2=/[，\s_'’‘\"”“|\\~#$@%^&*!()。;\/<>\?？]/;  
+    if(reg2.test(value)){
+      callback('不能有特殊字符');
+      return
+    }
+
     ProductReq.fileNameRepeat(value).then((res) =>{
       if(res.data){
         callback("该名已存在")
       }
       callback()
     })
+    callback()
   }
-
+  
   testName=(id,data) =>{
     if(id){
       return(<p className="next-form-text-align">{data.name}</p>)
