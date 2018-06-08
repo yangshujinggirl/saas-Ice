@@ -1,20 +1,35 @@
-import [MODULE] from './';
 import Layout from "../../layouts/HeaderAsideFooterResponsiveLayout";
 
 export default {
   path: "/[ROUTERPATH]",
   childRoutes: [{
     path: 'add',
-    component: [MODULE].[MODULE]Form
+    getComponent(nextState, callback) {
+      require.ensure([], require => {
+        callback(null, require('./containers/[MODULE]Form').default);
+      }, 'process');
+    }
   },{
     path: 'edit/:id',
-    component: [MODULE].[MODULE]Form
+    getComponent(nextState, callback) {
+      require.ensure([], require => {
+        callback(null, require('./containers/[MODULE]Form').default);
+      }, 'process');
+    }
   },{
     path: 'detail/:id',
-    component: [MODULE].[MODULE]Detail
+    getComponent(nextState, callback) {
+      require.ensure([], require => {
+        callback(null, require('./containers/[MODULE]Detail').default);
+      }, 'process');
+    }
   }],
   component: Layout,
   indexRoute: {
-    component: [MODULE].[MODULE]
+    getComponent(nextState, callback) {
+      require.ensure([], require => {
+        callback(null, require('./containers/[MODULE]').default);
+      }, 'process');
+    }
   }
 }

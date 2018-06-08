@@ -1,107 +1,77 @@
+
+
+import { BaseAction } from 'base';
 import T from '../constants/[MODULE]Constant'
 import Req from '../reqs/[MODULE]Req'
+import { hashHistory } from 'react-router'
 
-/*******以下定义需要通知到reduucer的全局方法，约定返回数据包括类型＋其余参数*******/
+class [MODULE]Action extends BaseAction {
 
-/**
- * 请求开始的通知
- */
-function fetchStart() {
-  return {
-    type: T.FETCH_START,
-    time: Date.now()
+  constructor() {
+    super(Req, null, T);
+
+    // 初始化一些数据
+    this.init();
+  }
+
+  // 获取列表
+  search(condition) {
+    return (dispatch) => {
+
+      dispatch(this.fetchStart({ formData: {} }))
+
+      Req.search(condition).then((res) => {
+        if (res.code == 200) {
+          dispatch(this.fetchSuccess({ pageData: res.data }))
+        }
+      }).catch((ex) => {
+        dispatch(this.fetchFailed(ex))
+      })
+    }
+  }
+
+  // 保存表单
+  save(data) {
+    return (dispatch) => {
+
+      dispatch(this.fetchStart())
+
+      Req.save(data).then((res) => {
+        dispatch(this.fetchSuccess({ formData: {} }))
+      }).catch((ex) => {
+        dispatch(this.fetchFailed(ex))
+      })
+    }
+  }
+
+  // 获取详情
+  getDetail(id){
+    return (dispatch) => {
+
+      dispatch(this.fetchStart())
+
+      Req.getDetail(id).then((res) => {
+        dispatch(this.fetchSuccess({ formData: res.data}))
+      }).catch((ex) => {
+        dispatch(this.fetchFailed(ex))
+      })
+    }
+  }
+
+  // 删除一条记录
+  remove(id){
+    return (dispatch) => {
+
+      dispatch(this.fetchStart())
+
+      Req.delete(id).then((res) => {
+        dispatch(this.fetchSuccess({delete: true}))
+      }).catch((ex) => {
+        dispatch(this.fetchFailed(ex))
+      })
+    }
   }
 }
 
+export default new [MODULE]Action().actions;
 
-/**
- * 请求成功的通知
- * @param data 成功后的数据
- */
-function fetchSuccess(data) {
-  return {
-    type: T.FETCH_SUCCESS,
-    ...data,
-    time: Date.now()
-  }
-}
-
-/**
- * 请求失败后的通知
- * @param error 异常信息
- */
-function fetchFailed(error) {
-  return {
-    type: T.FETCH_FAILED,
-    error,
-    time: Date.now()
-  }
-}
-
-function change(data) {
-  return {
-    type: T.CHANGE,
-    ...data,
-    time: Date.now()
-  }
-}
-
-
-// 获取列表
-export const search = (condition) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.search(condition).then((res) => {
-      if(!res || res.code != 200) return;
-      dispatch(fetchSuccess({ pageData: res.data }))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-// 保存表单
-export const save = (data) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.save(data).then((res) => {
-      dispatch(fetchSuccess({ formData: {} }))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-// 获取详情
-export const getDetail = (id) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.getDetail(id).then((res) => {
-      dispatch(fetchSuccess({ formData: res.data}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-// 删除一条记录
-export const remove = (id) => {
-  return (dispatch) => {
-
-    dispatch(fetchStart())
-
-    Req.delete(id).then((res) => {
-      dispatch(fetchSuccess({delete: true}))
-    }).catch((ex) => {
-      dispatch(fetchFailed(ex))
-    })
-  }
-}
-
-/*****添加自定义的方法*****/
