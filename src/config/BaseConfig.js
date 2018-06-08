@@ -11,7 +11,7 @@ class BaseConfig {
   static IS_AUTO_MENU_USED = false; //是否使用自动生成菜单
 }
 
-let build = 'PRO';
+let build = 'PRO';//默认使用线上环境配置
 if ('PC_ENV' in window && PC_ENV == 'PRODUCTION') {
   //如果是非开发环境
   //依据运行时的hostname区分是哪种环境，测试、staging、线上

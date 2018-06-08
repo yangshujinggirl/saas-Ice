@@ -18,10 +18,20 @@ export default class BaseCondition extends Component {
     // 表单的FormItem的布局比例
     this.formItemLayout = {
       labelCol: {
-        span: 8
+        span: 10
       },
       wrapperCol: {
         span: 12
+      }
+    };
+
+    // 表单的FormItem的布局比例
+    this.formItemLayout2 = {
+      labelCol: {
+        span: 10
+      },
+      wrapperCol: {
+        span: 14
       }
     };
 
@@ -29,7 +39,7 @@ export default class BaseCondition extends Component {
     this.colspans = {
       xxs: 24,
       xs: 12,
-      l: 8,
+      l: 6,
       xl: 6
     };
 
