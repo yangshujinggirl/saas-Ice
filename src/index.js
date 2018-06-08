@@ -5,8 +5,8 @@ import 'core-js';
 
 import ReactDOM from 'react-dom';
 // 载入默认全局样式 normalize 、.clearfix 和一些 mixin 方法等
-import routes from './routes';
-// import routes from './routes2';
+// import routes from './routes';
+import routes from './routes2';
 // import DeepApp from './base/third/DeepApp.jsx';
 
 // let app = new DeepApp();
