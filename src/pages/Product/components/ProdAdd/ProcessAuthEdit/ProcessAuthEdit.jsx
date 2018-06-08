@@ -351,7 +351,7 @@ export default class ProcessAuthEdit extends BaseApp {
                             </Button>
                         </div>
                         <div className="part-r">
-                            <Table dataSource={dataSourceRight} fixedHeader maxBodyHeight={370}>
+                            <Table dataSource={dataSourceRight}  maxBodyHeight={370}>
                                 <Table.Column title="权限" cell={this.orgNameShow} />
                                 <Table.Column title="操作" cell={this.renderOperation.bind(this)} />
                             </Table>

@@ -244,7 +244,6 @@ export default class OrgType extends Component {
                 rowSelection={{
                   ...this.state.rowSelection
                 }}
-                fixedHeader={true}
                 maxBodyHeight={547}
                 primaryKey='agencyId'
               >
@@ -269,7 +268,6 @@ export default class OrgType extends Component {
             <div className="table-right">
               <Table
                 dataSource={this.state.dataSourceRight}
-                fixedHeader={true}
                 maxBodyHeight={430}
               >
                 <Table.Column title="类型" dataIndex="agencyType" width={50} />
