@@ -27,6 +27,8 @@ if ('PC_ENV' in window && PC_ENV == 'PRODUCTION') {
   build = 'DEV';
 }
 
+BaseConfig.RUNTIME_ENV = build;
+
 if (config[build]) {
   Object.assign(BaseConfig, config[build]);
 }

@@ -86,7 +86,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: package.title + ' ' + NODE_ENV + ' ' + package.version,
-            template: __DEV__ ? 'src/html/index.dev.ejs' : 'src/html/index.ejs',
+            template: getTemplate(),
             filename: __DEV__ ? 'index.html' : '../index.html',
             name: package.name,
             description: package.description,
@@ -146,6 +146,17 @@ function getFullNum(n) {
  * 获取当前环境需要的配置
  * @return {[type]} [description]
  */
-function getConfig(){
+function getConfig() {
     return {}
+}
+
+function getTemplate() {
+    if (__DEV__) {
+        return 'src/html/index.dev.ejs';
+    }
+    if (NODE_BUILD.toLowerCase() == 'login') {
+        return 'src/html/index.login.ejs';
+    }
+    return 'src/html/index.ejs';
+
 }
