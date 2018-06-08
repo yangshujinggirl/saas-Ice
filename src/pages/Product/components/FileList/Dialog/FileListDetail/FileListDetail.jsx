@@ -31,11 +31,11 @@ export default class DiaLog extends Component {
             callback('不能有空格');
             return
         }
-        let reg2 = /[，\s_'’‘\"”“|\\~#$@%^&*!()。;\/<>\?？]/;
-        if (reg2.test(value)) {
-            callback('不能有特殊字符');
-            return
-        }
+        // let reg2 = /[，\s_'’‘\"”“|\\~#$@%^&*!()。;\/<>\?？]/;
+        // if (reg2.test(value)) {
+        //     callback('不能有特殊字符');
+        //     return
+        // }
 
         let { data = [] } = this.props;
         data.map((item, i) => {
