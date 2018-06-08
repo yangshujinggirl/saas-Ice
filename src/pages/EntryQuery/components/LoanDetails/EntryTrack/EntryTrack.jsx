@@ -39,8 +39,8 @@ export default class EntryTrack extends Component {
       })
       .catch(error => {
         Toast.show({
-          type: 'success',
-          content: '提交成功～',
+          type: 'error',
+          content: error.msg,
         });
       });
   }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import {  Table } from '@icedesign/base';
+import {  Table,Feedback } from '@icedesign/base';
 import Req from '../../reqs/CreditInformationReq';
 import  './EntryTrack.scss'
 import  classNames from  'classnames'
+const Toast = Feedback.toast;
 export default class EntryTrack extends Component {
   static displayName = 'EntryTrack';
 
@@ -35,8 +36,8 @@ export default class EntryTrack extends Component {
       })
       .catch(error => {
         Toast.show({
-          type: 'success',
-          content: '提交成功～',
+          type: 'error',
+          content: error.msg,
         });
       });
   }
@@ -108,6 +109,7 @@ export default class EntryTrack extends Component {
                 </div>)
             })
           }
+          <div className='oneline'></div>
         </div>
       </div>
 
