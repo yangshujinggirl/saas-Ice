@@ -107,7 +107,6 @@ export default class CreditInformationForm extends BaseComponent {
       //请求征信接口
       Req.getCreditDetail(params.id)
         .then((res) => {
-          if (res && res.code == 200 && res.data) {
             this.setState({
               formData: res.data,
             });
@@ -133,15 +132,13 @@ export default class CreditInformationForm extends BaseComponent {
               //处理不同字段
               this.checkDiff(res.data.diffArrStr);
             }
-          } else {
-            Toast.show({
-              type: 'error',
-              content: res.msg,
-            });
-          }
         })
         .catch((error) => {
           console.log(error);
+          Toast.show({
+            type: 'error',
+            content: error.msg,
+          });
         });
     }
   }
@@ -190,7 +187,6 @@ export default class CreditInformationForm extends BaseComponent {
   postData = (value) => {
     Req.postDiff(value)
       .then((res) => {
-        if (res && res.data && res.code == 200) {
           if (res.data.diffArrStr) {
             //处理不同字段
             this.checkDiff(res.data.diffArrStr);
@@ -204,17 +200,13 @@ export default class CreditInformationForm extends BaseComponent {
                 dialogConfirm.hide();
                 Req.saveForm(value)
                   .then((res) => {
-                    if (res && res.code == 200) {
                       this.alert();
-                    } else {
-                      Toast.show({
-                        type: 'error',
-                        content: res.msg,
-                      });
-                    }
                   })
                   .catch((error) => {
-                    console.log(error);
+                    Toast.show({
+                      type: 'error',
+                      content: error.msg,
+                    });
                   });
               },
             });
@@ -226,36 +218,23 @@ export default class CreditInformationForm extends BaseComponent {
                 return new Promise(resolve => {
                   Req.saveForm(value)
                     .then((res) => {
-                      if (res && res.code == 200) {
                         this.alert();
-                      } else {
-                        Toast.show({
-                          type: 'error',
-                          content: res.msg,
-                        });
-                      }
                     })
                     .catch((error) => {
                       Toast.show({
                         type: 'error',
-                        content: res.msg,
+                        content: error.msg,
                       });
                     });
                 });
               },
             });
           }
-        } else {
-          Toast.show({
-            type: 'error',
-            content: res.msg,
-          });
-        }
       })
       .catch((error) => {
         Toast.show({
           type: 'error',
-          content: res.msg,
+          content: error.msg,
         });
       });
   };
