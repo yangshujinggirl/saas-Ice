@@ -934,12 +934,12 @@ export default class FormRender extends Component {
         const principalAmount = this.props.field.getValue('principalAmount');
         const loanPercentage = this.props.field.getValue('loanPercentage');
         if (el.name == 'principalAmount' && principalAmount) {
-          var loanPercentage1 = principalAmount / carCarprice * 100.00;
+          var loanPercentage1 = (principalAmount / carCarprice * 100.00).toFixed(2);
           this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
           return;
         }
         if (el.name == 'loanPercentage' && loanPercentage) {
-          var principalAmount1 = loanPercentage * carCarprice / 100.00;
+          var principalAmount1 = (loanPercentage * carCarprice / 100.00).toFixed(2);
           this.props.field.setValues({ 'principalAmount': principalAmount1 });
           return;
         }
@@ -949,7 +949,7 @@ export default class FormRender extends Component {
       const carCarprice = this.props.field.getValue('car.carPrice');
       const principalAmount = this.props.field.getValue('principalAmount');
       if (principalAmount && carCarprice) {
-        var loanPercentage1 = principalAmount / carCarprice * 100.00;
+        var loanPercentage1 = (principalAmount / carCarprice * 100.00).toFixed(2);
         this.props.field.setValues({ 'loanPercentage': loanPercentage1 });
         return;
       }
