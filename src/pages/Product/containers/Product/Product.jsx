@@ -41,6 +41,11 @@ export default class Product extends BaseApp {
                 hashHistory.push(`product/searchedit/${id}`);
                 break;
             }
+            case this.OPERATE_TYPE.EDITDRAFT: {
+                // 修改
+                hashHistory.push(`product/add/${id}`);
+                break;
+            }
             case this.OPERATE_TYPE.VIEW: {
                 // 详情
                 hashHistory.push(`product/proddetail/${id}`);

@@ -19,6 +19,7 @@ import {
 	Form,
 	Feedback
 } from '@icedesign/base';
+import Req from '../../../reqs/ProductReq';
 
 
 import Chanpinchengshu from './Chanpinchengshu';
@@ -100,6 +101,91 @@ export default class addOne extends BaseCondition {
 			},
 			isFlag:true
 		};
+	}
+	componentWillMount() {
+		this.initPage()
+	}
+	componentDidMount() {
+		let { actions } = this.props
+		actions.prodActions();
+	}
+	initPage() {
+		let id = this.props.params.id;
+		if(id) {
+			this.editorPage(id);
+		}
+	}
+	editorPage(id) {
+		this.props.actions.getDetail(id)//传参数，eg:ID
+		Req.getDetail(id)
+		.then((res) => {
+			const { data } =res;
+    	console.log(data);
+			this.initValue(data)
+    },error => {
+			Req.tipError(error.msg)
+		})
+		// console.log(this.props)
+	}
+	initValue(data) {
+		let {
+			product,
+			percentageSetting,
+			prepaymentSetting,
+			productScopes,
+			ratesSetting,
+			repaymentMethodsSetting
+		 } = data;
+		 console.log(typeof (product.purposguaranteeMethodType))
+		 console.log(typeof (product.guaranteeMethodType))
+		let value = {
+					tenantId: SpDataSource.defaultValue,
+					tenantName: SpDataSource.defaultLabel,
+					name: product.name,
+					productType: product.productType,
+					time:[product.effectiveDate,product.expirationDate],
+					isPermittedDiscount: product.isPermittedDiscount,
+					status: product.status,
+					isRetainage: product.isRetainage,
+					paymentOfLoan: product.paymentOfLoan,
+					purposeOfLoan: product.purposeOfLoan,
+					guaranteeMethodType: product.guaranteeMethodType,
+					description: product.description,
+					collectionDetailListId: product.collectionDetailListId,
+					loanTermChange: product.loanTermChange,
+					principalAmountMin: product.principalAmountMin,
+					principalAmountMax: product.principalAmountMax,
+					enable: product.enable,
+					loanTermRangeMin: product.loanTermRangeMin,
+					loanTermRangeMax: product.loanTermRangeMax,
+					loanPercentageMin: product.loanPercentageMin,
+					loanPercentageMax: product.loanPercentageMax,
+					interestLoanRateChange: product.interestLoanRateChange,
+					interestRateRules: product.interestRateRules,
+					interestRateModel: product.interestRateModel,
+					interestRatesRangeMin: product.interestRatesRangeMin,
+					interestRatesRangeMax: product.interestRatesRangeMax,
+					interestRateBaseDate: product.interestRateBaseDate,
+					repaymentAccountChange: product.repaymentAccountChange,
+					repaymentPeriodFrequency: product.repaymentPeriodFrequency,
+					repaymentPeriodFrequencySubmit: product.repaymentPeriodFrequencySubmit,
+					repaymentDateChange: product.repaymentDateChange,
+					gracePeriodChange: product.gracePeriodChange,
+					repaymentMethodChange: product.repaymentMethodChange,
+					isEarlyRepaymentAllowed: product.isEarlyRepaymentAllowed,
+					prepaymentAmountMin: product.prepaymentAmountMin,
+					prepaymentPeriodsLimit: product.prepaymentPeriodsLimit,
+					penaltyBasicAmount: product.penaltyBasicAmount,
+					penaltyCalculationType: product.penaltyCalculationType,
+					percentageSetting: product.percentageSetting,
+					ratesSetting: product.ratesSetting,
+					repaymentMethodsSetting: product.repaymentMethodsSetting,
+					prepaymentSetting: product.prepaymentSetting,
+					productScope: product.productScope
+		}
+		this.setState({
+			value
+		})
 	}
 	onChangeBoolean=(isFlag)=>{
 		this.setState({
@@ -194,13 +280,13 @@ export default class addOne extends BaseCondition {
 			// 提交当前填写的数据
 			value.effectiveDate = value.time[0];
 			value.expirationDate = value.time[1]
-			
+
 			//渠道不能重复
 			for (var i = 0; i < value.ratesSetting.length - 1; i++) {
 				for (var j = i + 1; j < value.ratesSetting.length; j++) {
 					if ((value.ratesSetting[i].channelTypes == value.ratesSetting[j].channelTypes)) {
 						return	ProductReq.tipError('渠道不能重复！')
-				
+
 					}
 				}
 			}
@@ -209,7 +295,7 @@ export default class addOne extends BaseCondition {
 			if(value.repaymentMethodsSetting.length==0){
 				return	ProductReq.tipError('至少选择一种还款方式！')
 			 }
-			//还款方式不能重复 
+			//还款方式不能重复
 			for (var i = 0; i < value.repaymentMethodsSetting.length - 1; i++) {
 				for (var j = i + 1; j < value.repaymentMethodsSetting.length; j++) {
 					if ((value.repaymentMethodsSetting[i].repaymentMethods == value.repaymentMethodsSetting[j].repaymentMethods)) {
@@ -219,18 +305,13 @@ export default class addOne extends BaseCondition {
 			}
 
 			if(!isFlag) return	ProductReq.tipError(msg)
-			
+
 			let AllValue = this.AllValue(value);
 			this.dataVerif(value);
 			this.props.actions.save(AllValue);
 		});
 	};
-	componentDidMount() {
-		let { actions } = this.props
-		console.log(this.props)
-		actions.prodActions();
 
-	}
 	addNewItem(key) {
 		let newData = this.state.value[key];
 		newData.push({})
@@ -383,7 +464,7 @@ export default class addOne extends BaseCondition {
 			</div>
 		)
 	};
-	
+
 	//贷款期限不允许变更时其他不可被选
 	loanTermChange = (data) => {
 		data.map((item, i) => {
@@ -455,7 +536,7 @@ export default class addOne extends BaseCondition {
 		})
 	}
 
-	//申请金额范围 
+	//申请金额范围
 	principalAmountMinChange = (rule, value, callback) => {
 		let min = this.state.value;
 		if (rule.required && !value) {
@@ -475,7 +556,7 @@ export default class addOne extends BaseCondition {
 		if(valLenght.length > 14){
 			callback('金额不能超过14位')
 		}
-		
+
 		//保留两位小数
 		var dot = value.indexOf(".");
 		if (dot != -1) {
@@ -628,7 +709,7 @@ export default class addOne extends BaseCondition {
 		if (value < 0) {
 			callback('最小提前还款金额不能小于0');
 		}
-		
+
 		let valLenght = value.split('.')[0]
 		if(valLenght.length > 14){
 			callback('金额不能超过14位')
@@ -730,7 +811,7 @@ export default class addOne extends BaseCondition {
 
 		this.setState({ value });
 	}
-	
+
 	//
 	validateForm(){
 		// console.log('percentageSetting[0].loanPercentageMax')
@@ -743,6 +824,7 @@ export default class addOne extends BaseCondition {
 		fileData = fileData.data || {}
 		fileData = fileData.list || []
 		let collData = this.Option(fileData);
+		console.log(this.state.value)
 		return (
 			<IceContainer className="pch-container">
 				<legend className="pch-legend">
@@ -814,7 +896,7 @@ export default class addOne extends BaseCondition {
 									</Col>
 								</Row>
 								<Row wrap>
-								
+
 									<Col xxs={24} xs={12} l={8} >
 										<FormItem {...formItemLayout} label={<span><span className="label-required">*</span>生效期限:</span>}>
 											<IceFormBinder
@@ -1002,8 +1084,8 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.principalAmountMinChange}
 													>
-														<Input size="large" 
-															className="addone-input" 
+														<Input size="large"
+															className="addone-input"
 															htmlType ='number'
 															/>
 													</IceFormBinder>
@@ -1016,8 +1098,8 @@ export default class addOne extends BaseCondition {
 														required
 														validator={this.principalAmountMaxChange}
 													>
-														<Input size="large" 
-														className="addone-input" 
+														<Input size="large"
+														className="addone-input"
 														htmlType ='number'
 														/>
 
@@ -1435,4 +1517,3 @@ const styles = {
 		paddingTop: '26px',
 	},
 };
-

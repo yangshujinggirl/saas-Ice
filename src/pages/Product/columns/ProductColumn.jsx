@@ -17,7 +17,7 @@ class ProductColumn extends BaseColumn {
          title: '产品名称',
          dataIndex: 'name',
          width: 200
-       }, 
+       },
       //{
       //    title: '合同显示名称',
       //    dataIndex: 'contractDisplayName',
@@ -88,7 +88,7 @@ class ProductColumn extends BaseColumn {
                <div className="pch-table-operation">
                   <a href="javascript:;" onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.VIEW)}>查看</a>
                   <a href="javascript:;"
-                     onClick={record.onOperateClick.bind(this, this.OPERATE_TYPE.EDIT)}
+                     onClick={record.onOperateClick.bind(this, enable != '1'?this.OPERATE_TYPE.EDIT:this.OPERATE_TYPE.EDITDRAFT)}
                      style={{ display: enable == 0 ? 'none' : '' }}
                   >编辑</a>
                </div>

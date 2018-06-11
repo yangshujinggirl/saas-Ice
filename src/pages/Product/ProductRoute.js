@@ -28,7 +28,7 @@ export default {
         }, 'product');
       }
     }, {
-      path: 'add',
+      path: 'add(/:id)',
       name: '产品新增',
       getComponent(nextState, callback) {
         require.ensure([], require => {

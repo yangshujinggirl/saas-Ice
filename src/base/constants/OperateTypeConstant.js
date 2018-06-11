@@ -32,6 +32,7 @@ const OPERATE_TYPE = {
     SIGN:'sign',//签字
     COPY:'copy',//复制
     DOWNLOAD:'download',//下载
+    EDITDRAFT:'editdraft',//草稿编辑
 };
 
 export default OPERATE_TYPE;
